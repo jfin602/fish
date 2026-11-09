@@ -1,5 +1,7 @@
 using Godot;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fish;
 
@@ -14,6 +16,10 @@ public partial class PlayShell : Node
     private Button _resume = null!;
     private Button _options = null!;
     private Label _sensitivityLabel = null!;
+    private HSlider _legacySensitivity = null!;
+    private CheckButton _legacyInvert = null!;
+    private OptionButton _mode = null!;
+    private ControlPresetsPanel _presetEditor = null!;
     private readonly ControlPresetStore _presets = new();
     private readonly List<ControlPreset> _profileChoices = [];
 
@@ -96,60 +102,71 @@ public partial class PlayShell : Node
         var modeLabel = new Label { Text = "Swim controls" };
         modeLabel.AddThemeFontSizeOverride("font_size", 16);
         items.AddChild(modeLabel);
-        var mode = new OptionButton { Name = "InputModeOption", FocusMode = Control.FocusModeEnum.All };
-        foreach (var id in new[] { ControlPreset.KeyboardId, ControlPreset.MouseId, ControlPreset.HybridId })
-            foreach (var profile in _presets.List())
-                if (profile.Id == id) _profileChoices.Add(profile);
-        foreach (var profile in _presets.List())
-            if (!profile.IsBuiltin) _profileChoices.Add(profile);
-        for (var index = 0; index < _profileChoices.Count; index++)
-            mode.AddItem(_profileChoices[index].Name, index);
-        mode.Select(_profileChoices.FindIndex(profile => profile.Id == _presets.CurrentId));
-        ApplyFocusStyle(mode);
-        mode.ItemSelected += index =>
+        _mode = new OptionButton { Name = "InputModeOption", FocusMode = Control.FocusModeEnum.All };
+        RefreshModeChoices();
+        ApplyFocusStyle(_mode);
+        _mode.ItemSelected += index =>
         {
             if (index < 0 || index >= _profileChoices.Count) return;
             var profile = _profileChoices[(int)index];
-            _presets.Choose(profile.Id);
-            _presets.Save();
-            _fish.SetActivePreset(profile);
-            _preferences.ChooseInputMode(_fish.ActiveInputMode);
-            UpdateHelp();
+            var previous = _presets.CurrentId;
+            try
+            {
+                _presets.Choose(profile.Id);
+                _presets.Save();
+            }
+            catch (Exception error) when (error is ArgumentException or System.IO.IOException or UnauthorizedAccessException)
+            {
+                _presets.Choose(previous);
+                RefreshModeChoices();
+                _sensitivityLabel.Text = "Control selection could not be saved: " + error.Message;
+                return;
+            }
+            ActivateProfile(profile);
         };
-        items.AddChild(mode);
+        items.AddChild(_mode);
+        var presetsButton = new Button { Name = "ControlPresetsButton", Text = "Control Presets…", FocusMode = Control.FocusModeEnum.All };
+        ApplyFocusStyle(presetsButton);
+        presetsButton.Pressed += () =>
+        {
+            _panel.Visible = false;
+            _presetEditor.Open();
+            _fish.ClearAndDisarmInput();
+        };
+        items.AddChild(presetsButton);
 
         _sensitivityLabel = new Label();
         items.AddChild(_sensitivityLabel);
-        var sensitivity = new HSlider
+        _legacySensitivity = new HSlider
         {
             Name = "MouseSensitivitySlider", MinValue = 0.04, MaxValue = 0.4,
             Step = 0.01, Value = _preferences.MouseSensitivity,
             FocusMode = Control.FocusModeEnum.All
         };
-        ApplyFocusStyle(sensitivity);
-        sensitivity.ValueChanged += value =>
+        ApplyFocusStyle(_legacySensitivity);
+        _legacySensitivity.ValueChanged += value =>
         {
             _preferences.ChooseMouseSensitivity((float)value);
             _fish.ConfigureMouse(_preferences.MouseSensitivity, _preferences.InvertMouseY);
             _fish.ClearAndDisarmInput();
             UpdateSensitivityLabel();
         };
-        items.AddChild(sensitivity);
+        items.AddChild(_legacySensitivity);
 
-        var invert = new CheckButton
+        _legacyInvert = new CheckButton
         {
             Name = "InvertMouseYToggle", Text = "Invert mouse vertical",
             ButtonPressed = _preferences.InvertMouseY,
             FocusMode = Control.FocusModeEnum.All
         };
-        ApplyFocusStyle(invert);
-        invert.Toggled += value =>
+        ApplyFocusStyle(_legacyInvert);
+        _legacyInvert.Toggled += value =>
         {
             _preferences.ChooseInvertMouseY(value);
             _fish.ConfigureMouse(_preferences.MouseSensitivity, value);
             _fish.ClearAndDisarmInput();
         };
-        items.AddChild(invert);
+        items.AddChild(_legacyInvert);
 
         var showHelp = new CheckButton
         {
@@ -175,15 +192,44 @@ public partial class PlayShell : Node
         quit.Pressed += () => GetTree().Quit();
         items.AddChild(quit);
 
+        _presetEditor = new ControlPresetsPanel(_presets, () => _fish.ActivePreset, profile =>
+        {
+            ActivateProfile(profile);
+            RefreshModeChoices();
+        }, () =>
+        {
+            _panel.Visible = true;
+            _resume.GrabFocus();
+        });
+        center.AddChild(_presetEditor);
+
         GetViewport().SizeChanged += UpdateLayout;
-        UpdateSensitivityLabel();
+        UpdateLegacyMouseControls();
         UpdateLayout();
     }
 
     public override void _Input(InputEvent @event)
     {
+        if (_overlay.Visible && _presetEditor.Visible)
+        {
+            if (_presetEditor.HandleModalInput(@event))
+            {
+                GetViewport().SetInputAsHandled();
+                return;
+            }
+            if (@event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.Escape })
+            {
+                _presetEditor.RequestClose();
+                GetViewport().SetInputAsHandled();
+                return;
+            }
+            return;
+        }
         if (_fish.IsPauseEvent(@event))
         {
+            // Mouse clicks in an open menu belong to Controls, even if the active
+            // profile binds that button to Pause/Options during gameplay.
+            if (_overlay.Visible && @event is InputEventMouseButton) return;
             if (_overlay.Visible && @event is InputEventKey) Resume();
             else if (!_overlay.Visible) Pause();
             GetViewport().SetInputAsHandled();
@@ -193,7 +239,10 @@ public partial class PlayShell : Node
     public override void _Notification(int what)
     {
         if ((what == (int)NotificationApplicationFocusOut || what == (int)NotificationWMWindowFocusOut) && IsNodeReady())
+        {
+            _presetEditor.CancelModal();
             Pause();
+        }
     }
 
     private void Pause()
@@ -210,6 +259,12 @@ public partial class PlayShell : Node
 
     private void Resume()
     {
+        if (_presetEditor.Visible)
+        {
+            _presetEditor.CancelModal();
+            _presetEditor.Hide();
+            _panel.Visible = true;
+        }
         GetViewport().SetInputAsHandled();
         _fish.ClearAndDisarmInput();
         _overlay.Visible = false;
@@ -231,6 +286,8 @@ public partial class PlayShell : Node
         _options.Position = new Vector2(Mathf.Max(0, viewport.X - 164), 12);
         _options.Size = new Vector2(148, 34);
         _panel.CustomMinimumSize = new Vector2(Mathf.Min(480, Mathf.Max(240, viewport.X - 32)), 0);
+        _presetEditor.CustomMinimumSize = new Vector2(Mathf.Min(760, Mathf.Max(310, viewport.X - 24)),
+            Mathf.Min(650, Mathf.Max(300, viewport.Y - 24)));
         UpdateHelp();
     }
 
@@ -238,11 +295,18 @@ public partial class PlayShell : Node
     {
         var viewport = GetViewport().GetVisibleRect().Size;
         _help.Visible = _preferences.ShowControlHelp && !_overlay.Visible;
-        _help.Text = _fish.ActivePresetId == ControlPreset.HybridId
-            ? "W/Left: swim   S/Right: slow   A/D + Mouse: turn   Up/Down + Mouse: pitch   Wheel: zoom   Middle/Esc: pause"
-            : _fish.ActiveInputMode == DisplayPreferences.MouseMode
-            ? "Mouse: steer   Left: swim   Right: slow   WASD: camera   Shift: hold view   Wheel: zoom   Middle/Esc: pause"
-            : "W/S: swim/slow   A/D: turn   Up/Down: pitch   Left/Right: camera   Shift+arrows: camera   Wheel: zoom   Esc: pause";
+        var profile = _fish.ActivePreset;
+        string Keys(ControlAction action) => string.Join("/", profile.Bindings(action).Select(ControlPresetsPanel.BindingName));
+        string Axis(SteeringAxis axis) =>
+            (profile.MouseX.Steering == axis ? "Mouse X" : "") +
+            (profile.MouseY.Steering == axis ? (profile.MouseX.Steering == axis ? "/Mouse Y" : "Mouse Y") : "");
+        var otherPause = string.Join("/", profile.Bindings(ControlAction.PauseOptions)
+            .Where(binding => binding != new ControlBinding(BindingDevice.PhysicalKey, ControlPreset.RecoveryKey))
+            .Select(ControlPresetsPanel.BindingName));
+        _help.Text = $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+            $"Turn: {Keys(ControlAction.YawLeft)}/{Keys(ControlAction.YawRight)} {Axis(SteeringAxis.Yaw)}  " +
+            $"Pitch: {Keys(ControlAction.PitchUp)}/{Keys(ControlAction.PitchDown)} {Axis(SteeringAxis.Pitch)}  " +
+            $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}";
         _help.Position = new Vector2(20, 16);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
@@ -250,7 +314,37 @@ public partial class PlayShell : Node
     }
 
     private void UpdateSensitivityLabel() =>
-        _sensitivityLabel.Text = $"Mouse sensitivity: {_preferences.MouseSensitivity:F2}° per pixel";
+        _sensitivityLabel.Text = _presets.Current.IsBuiltin
+            ? $"Mouse sensitivity: {_preferences.MouseSensitivity:F2}° per pixel"
+            : "Custom mouse settings: edit in Control Presets";
+
+    private void UpdateLegacyMouseControls()
+    {
+        _legacySensitivity.Editable = _presets.Current.IsBuiltin;
+        _legacyInvert.Disabled = !_presets.Current.IsBuiltin;
+        UpdateSensitivityLabel();
+    }
+
+    private void ActivateProfile(ControlPreset profile)
+    {
+        _fish.SetActivePreset(profile);
+        _preferences.ChooseInputMode(_fish.ActiveInputMode);
+        UpdateLegacyMouseControls();
+        UpdateHelp();
+    }
+
+    private void RefreshModeChoices()
+    {
+        _profileChoices.Clear();
+        var all = _presets.List();
+        foreach (var id in new[] { ControlPreset.KeyboardId, ControlPreset.MouseId, ControlPreset.HybridId })
+            _profileChoices.Add(all.First(profile => profile.Id == id));
+        _profileChoices.AddRange(all.Where(profile => !profile.IsBuiltin));
+        _mode.Clear();
+        for (var i = 0; i < _profileChoices.Count; i++)
+            _mode.AddItem(_profileChoices[i].Name, i);
+        _mode.Select(_profileChoices.FindIndex(profile => profile.Id == _presets.CurrentId));
+    }
 
     private static void ApplyFocusStyle(Control control)
     {

@@ -1,6 +1,6 @@
 # c1-bindings — Hybrid control presets and live rebinding
 
-**Status: P1 model/store and P2 runtime resolver implemented; P3–P5 remain.** [Implementation evidence](qualification/implementation.md) records focused checks and the current P10 candidate of right mouse slow / middle mouse pause. Native comparison and final binding acceptance remain open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
+**Status: P1 model/store, P2 runtime resolver, and P3 preset editor implemented; P4–P5 remain.** [Implementation evidence](qualification/implementation.md) records focused checks and the current P10 candidate of right mouse slow / middle mouse pause. Native comparison and final binding acceptance remain open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
 
 ## Goal and boundary
 
@@ -22,7 +22,7 @@ Inspect branch/HEAD, current local changes, and history. There are pre-existing 
 | --- | --- | --- | --- |
 | P1 | [Action and preset model](P1-control-actions-and-preset-store.txt) | Stable actions, immutable templates, user profiles, safe persistence/migration | T1, no native pause |
 | P2 | [Hybrid runtime input](P2-hybrid-runtime-input.txt) | Implemented; one shared motor intent from keyboard/mouse, safe switching and input ownership | T2 headless evidence, native observation open |
-| P3 | [Preset creator UI](P3-preset-creator-ui.txt) | Accessible in-game create/edit/rebind/save/apply workflow | T2, no native pause |
+| P3 | [Preset creator UI](P3-preset-creator-ui.txt) | Implemented pause editor with draft, capture, conflict and persistence checks | T2 headless evidence; native observation remains P5 |
 | P4 | [Rapid comparison and hardening](P4-rapid-comparison-and-hardening.txt) | Quick-switch testing, optional portable presets, regression coverage | T2, no native pause |
 | P5 | [Native closeout](P5-native-bindings-closeout.txt) | Real Fish window/device observations, evidence, handoff to P1 P10 | T3, mandatory manual handoff |
 

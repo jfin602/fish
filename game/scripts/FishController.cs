@@ -19,6 +19,7 @@ public partial class FishController : CharacterBody3D
     public string ActiveInputMode => _input.UsesKeyboardSteering
         ? DisplayPreferences.KeyboardMode : DisplayPreferences.MouseMode;
     public string ActivePresetId => _input.Profile.Id;
+    public ControlPreset ActivePreset => _input.Profile;
     public bool UsesMouseInput => _input.UsesMouse;
     public bool IsPauseEvent(InputEvent @event)
     {
