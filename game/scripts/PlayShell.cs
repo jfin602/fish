@@ -235,7 +235,7 @@ public partial class PlayShell : Node
         _help.Visible = _preferences.ShowControlHelp && !_overlay.Visible;
         _help.Text = _preferences.InputMode == DisplayPreferences.MouseMode
             ? "Mouse: steer   Left: swim   Right: slow   WASD: camera   Shift: hold view   Wheel: zoom   Middle/Esc: pause"
-            : "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Wheel: zoom   Esc: pause/options";
+            : "W/S: swim/slow   A/D: turn   Up/Down: pitch   Left/Right: camera   Shift+arrows: camera   Wheel: zoom   Esc: pause";
         _help.Position = new Vector2(20, 16);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;

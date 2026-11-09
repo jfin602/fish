@@ -119,7 +119,7 @@ func _run() -> void:
 		return
 	paused = false
 	await _tick(2)
-	if not _require(camera.global_position.distance_to(Vector3(-4, 3.83, -0.59)) < 0.2,
+	if not _require(camera.global_position.distance_to(Vector3(-4, 4, -0.2)) < 0.2,
 			"resume retained stale interpolation after teleport"):
 		return
 	var previous_size := root.get_visible_rect().size
@@ -128,7 +128,7 @@ func _run() -> void:
 	await process_frame
 	await _tick(2)
 	if not _require(root.get_visible_rect().size != previous_size and
-			camera.global_position.distance_to(Vector3(-3.2, 3.83, -0.59)) < 0.2 and
+			camera.global_position.distance_to(Vector3(-3.2, 4, -0.2)) < 0.2 and
 			camera.fov == 68.0,
 			"viewport resize did not reset follow or preserve projection"):
 		return

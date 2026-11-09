@@ -6,8 +6,8 @@ namespace Fish;
 public partial class FishController : CharacterBody3D
 {
     [Export] public SwimTuning Tuning { get; set; } = new();
-    private const float HorizontalLimit = 8.3f;
-    private const float VerticalLimit = 3.0f;
+    private const float HorizontalLimit = 24.9f;
+    private const float VerticalLimit = 9.0f;
     private readonly MouseSwimInput _mouse = new();
     private SwimState _state;
     private bool _inputArmed = true;

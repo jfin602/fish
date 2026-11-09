@@ -69,6 +69,39 @@ func _run() -> void:
 	if not _require(camera.global_position.distance_to(fish.global_position) < keyboard_zoom_before - 0.2,
 			"wheel zoom did not work in keyboard mode"):
 		return
+	await _tick(45)
+	var keyboard_camera_center := camera.global_position
+	var keyboard_fish_basis := fish.global_basis
+	_key(KEY_LEFT, true)
+	await _tick(18)
+	_key(KEY_LEFT, false)
+	if not _require(camera.global_position.distance_to(keyboard_camera_center) > 0.3 and
+			fish.global_basis.is_equal_approx(keyboard_fish_basis),
+			"bare Left did not pan the keyboard camera independently of the fish"):
+		return
+	await _tick(75)
+	if not _require(camera.global_position.distance_to(keyboard_camera_center) < 0.12,
+			"keyboard camera did not return after Left release"):
+		return
+	_key(KEY_SHIFT, true)
+	_key(KEY_RIGHT, true)
+	_key(KEY_UP, true)
+	await _tick(20)
+	_key(KEY_RIGHT, false)
+	_key(KEY_UP, false)
+	await _tick(75)
+	var keyboard_held_camera := camera.global_position
+	await _tick(20)
+	if not _require(camera.global_position.distance_to(keyboard_held_camera) < 0.03 and
+			keyboard_held_camera.distance_to(keyboard_camera_center) > 0.4 and
+			fish.global_basis.is_equal_approx(keyboard_fish_basis),
+			"Shift+arrows did not hold the camera without pitching the fish"):
+		return
+	_key(KEY_SHIFT, false)
+	await _tick(90)
+	if not _require(camera.global_position.distance_to(keyboard_camera_center) < 0.12,
+			"keyboard camera did not return after Shift release"):
+		return
 	var options_point := options.get_global_rect().get_center()
 	_mouse_button(MOUSE_BUTTON_LEFT, true, options_point)
 	await process_frame
@@ -266,5 +299,5 @@ func _run() -> void:
 			config.get_value("input", "invert_mouse_y"),
 			"local mode/sensitivity/inversion did not persist"):
 		return
-	print("INPUT_LIFECYCLE_OK keyboard mouse right-slow middle-pause camera-pan shift-hold wheel-zoom focus capture rearm preferences")
+	print("INPUT_LIFECYCLE_OK keyboard-arrow-camera shift-hold mouse right-slow middle-pause camera-pan wheel-zoom focus capture rearm preferences")
 	quit()

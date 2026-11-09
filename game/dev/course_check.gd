@@ -44,7 +44,8 @@ func verify_course() -> void:
 	var decor: Node3D = main.get_node_or_null("Habitat/StarterDecor")
 	var ambient: Node3D = main.get_node_or_null("Habitat/AmbientFish")
 	var sand: MeshInstance3D = main.get_node_or_null("Habitat/Floor/Mesh")
-	if course == null or fish == null or shell == null or player == null or decor == null or ambient == null or sand == null:
+	var shelf: MeshInstance3D = main.get_node_or_null("Habitat/CourseShelf/Mesh")
+	if course == null or fish == null or shell == null or player == null or decor == null or ambient == null or sand == null or shelf == null:
 		fail("main scene, P1 shell or required P3 art is incomplete")
 		return
 	if not player.scene_file_path.ends_with("/quaternius/Fish3.fbx"):
@@ -66,6 +67,10 @@ func verify_course() -> void:
 	var sand_material: StandardMaterial3D = sand.material_override
 	if sand_material == null or sand_material.albedo_texture == null or not sand_material.albedo_texture.resource_path.ends_with("/coast_sand_01_Diffuse_2k.jpg"):
 		fail("Coast Sand 01 is not on the seabed")
+		return
+	var shelf_material: StandardMaterial3D = shelf.material_override
+	if shelf_material == null or shelf_material.albedo_texture != sand_material.albedo_texture or not is_equal_approx(shelf.global_position.y, -4.2) or shelf_material.uv1_scale != Vector3(3, 3, 1) or sand_material.uv1_scale != Vector3(9, 9, 1):
+		fail("local course shelf or enlarged seabed lost the selected sand material/tiling")
 		return
 	var spawn: Marker3D = course.get_node("Spawn")
 	var entry: Marker3D = course.get_node("GapEntry")
@@ -123,9 +128,9 @@ func verify_course() -> void:
 	if post.get_node_or_null("Mesh") == null or post_collision == null or post_collision.shape == null or sphere_hits(space, post.global_position, fish_shape.radius, fish).is_empty():
 		fail("camera-check post is not visible and blocking")
 		return
-	for point in [Vector3(-9.5, 0, 0), Vector3(9.5, 0, 0), Vector3(0, 0, -9.5), Vector3(0, 0, 9.5)]:
+	for point in [Vector3(-28.5, 0, 0), Vector3(28.5, 0, 0), Vector3(0, 0, -28.5), Vector3(0, 0, 28.5), Vector3(0, -12.6, 0), Vector3(0, 12.6, 0)]:
 		if sphere_hits(space, point, fish_shape.radius, fish).is_empty():
 			fail("habitat boundary is missing at " + str(point))
 			return
-	print("COURSE_CHECK_OK four_resources=loaded shell=present spawn=clear gap_width=", snappedf(gap_width, 0.001), " fish_diameter=", fish_shape.radius * 2.0, " gap_samples=3 rock=blocking bounds=4")
+	print("COURSE_CHECK_OK four_resources=loaded shell=present spawn=clear gap_width=", snappedf(gap_width, 0.001), " fish_diameter=", fish_shape.radius * 2.0, " gap_samples=3 rock=blocking bounds=6")
 	quit()

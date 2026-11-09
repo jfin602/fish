@@ -12,7 +12,8 @@ public static class KeyboardSwimInput
         Input.GetActionStrength("swim_thrust"),
         Input.GetActionStrength("swim_slow"),
         Input.GetActionStrength("swim_yaw_right") - Input.GetActionStrength("swim_yaw_left"),
-        Input.GetActionStrength("swim_pitch_up") - Input.GetActionStrength("swim_pitch_down"));
+        Input.IsKeyPressed(Key.Shift) ? 0 :
+            Input.GetActionStrength("swim_pitch_up") - Input.GetActionStrength("swim_pitch_down"));
 
     public static bool AllReleased()
     {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_main"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
@@ -19,16 +19,22 @@ albedo_color = Color(0.93, 0.3, 0.12, 1)
 albedo_color = Color(0.64, 0.83, 0.27, 1)
 
 [sub_resource type="BoxMesh" id="floor_mesh"]
-size = Vector3(19, 0.2, 19)
+size = Vector3(57, 0.2, 57)
 
 [sub_resource type="BoxShape3D" id="floor_shape"]
+size = Vector3(57, 0.2, 57)
+
+[sub_resource type="BoxMesh" id="shelf_mesh"]
+size = Vector3(19, 0.2, 19)
+
+[sub_resource type="BoxShape3D" id="shelf_shape"]
 size = Vector3(19, 0.2, 19)
 
 [sub_resource type="BoxMesh" id="wall_mesh"]
-size = Vector3(0.2, 8, 19)
+size = Vector3(0.2, 25.2, 57)
 
 [sub_resource type="BoxShape3D" id="wall_shape"]
-size = Vector3(0.2, 8, 19)
+size = Vector3(0.2, 25.2, 57)
 
 [sub_resource type="SphereMesh" id="fish_body"]
 radius = 0.55
@@ -52,7 +58,7 @@ light_energy = 1.4
 [node name="MovementCourse" parent="Habitat" instance=ExtResource("3_course")]
 
 [node name="Floor" type="StaticBody3D" parent="Habitat"]
-position = Vector3(0, -4.2, 0)
+position = Vector3(0, -12.6, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="Habitat/Floor"]
 mesh = SubResource("floor_mesh")
@@ -61,14 +67,24 @@ surface_material_override/0 = SubResource("water")
 [node name="Collision" type="CollisionShape3D" parent="Habitat/Floor"]
 shape = SubResource("floor_shape")
 
+[node name="CourseShelf" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, -4.2, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Habitat/CourseShelf"]
+mesh = SubResource("shelf_mesh")
+surface_material_override/0 = SubResource("water")
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/CourseShelf"]
+shape = SubResource("shelf_shape")
+
 [node name="Ceiling" type="StaticBody3D" parent="Habitat"]
-position = Vector3(0, 4.2, 0)
+position = Vector3(0, 12.6, 0)
 
 [node name="Collision" type="CollisionShape3D" parent="Habitat/Ceiling"]
 shape = SubResource("floor_shape")
 
 [node name="WestWall" type="StaticBody3D" parent="Habitat"]
-position = Vector3(-9.5, 0, 0)
+position = Vector3(-28.5, 0, 0)
 
 [node name="Mesh" type="MeshInstance3D" parent="Habitat/WestWall"]
 mesh = SubResource("wall_mesh")
@@ -78,20 +94,20 @@ surface_material_override/0 = SubResource("water")
 shape = SubResource("wall_shape")
 
 [node name="EastWall" type="StaticBody3D" parent="Habitat"]
-position = Vector3(9.5, 0, 0)
+position = Vector3(28.5, 0, 0)
 
 [node name="Collision" type="CollisionShape3D" parent="Habitat/EastWall"]
 shape = SubResource("wall_shape")
 
 [node name="NorthWall" type="StaticBody3D" parent="Habitat"]
-position = Vector3(0, 0, -9.5)
+position = Vector3(0, 0, -28.5)
 rotation = Vector3(0, 1.5707964, 0)
 
 [node name="Collision" type="CollisionShape3D" parent="Habitat/NorthWall"]
 shape = SubResource("wall_shape")
 
 [node name="SouthWall" type="StaticBody3D" parent="Habitat"]
-position = Vector3(0, 0, 9.5)
+position = Vector3(0, 0, 28.5)
 rotation = Vector3(0, 1.5707964, 0)
 
 [node name="Collision" type="CollisionShape3D" parent="Habitat/SouthWall"]

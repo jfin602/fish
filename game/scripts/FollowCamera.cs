@@ -79,7 +79,7 @@ public partial class FollowCamera : Node3D
             return;
         }
 
-        UpdateMouseCamera((float)delta);
+        UpdateCameraControls((float)delta);
 
         var fishPosition = _fish.GlobalPosition;
         if (fishPosition.DistanceTo(_previousFishPosition) > TeleportDistance) _resetPending = true;
@@ -126,9 +126,10 @@ public partial class FollowCamera : Node3D
             right * tuning.CameraShoulderOffset + Vector3.Up * (orbitRadius * Mathf.Sin(elevation));
     }
 
-    private void UpdateMouseCamera(float delta)
+    private void UpdateCameraControls(float delta)
     {
-        if (!_fish.CanUseMouseCamera)
+        var mouseMode = _fish.ActiveInputMode == DisplayPreferences.MouseMode;
+        if (mouseMode ? !_fish.CanUseMouseCamera : !_fish.CanZoomCamera)
         {
             _panYaw = 0;
             _panPitch = 0;
@@ -136,9 +137,13 @@ public partial class FollowCamera : Node3D
         }
 
         var tuning = _fish.Tuning;
-        var yaw = (Input.IsKeyPressed(Key.D) ? 1 : 0) - (Input.IsKeyPressed(Key.A) ? 1 : 0);
-        var pitch = (Input.IsKeyPressed(Key.W) ? 1 : 0) - (Input.IsKeyPressed(Key.S) ? 1 : 0);
         var hold = Input.IsKeyPressed(Key.Shift);
+        var yaw = mouseMode
+            ? (Input.IsKeyPressed(Key.D) ? 1 : 0) - (Input.IsKeyPressed(Key.A) ? 1 : 0)
+            : (Input.IsKeyPressed(Key.Right) ? 1 : 0) - (Input.IsKeyPressed(Key.Left) ? 1 : 0);
+        var pitch = mouseMode
+            ? (Input.IsKeyPressed(Key.W) ? 1 : 0) - (Input.IsKeyPressed(Key.S) ? 1 : 0)
+            : hold ? (Input.IsKeyPressed(Key.Up) ? 1 : 0) - (Input.IsKeyPressed(Key.Down) ? 1 : 0) : 0;
         var decay = 1.0f - Mathf.Exp(-Mathf.Max(0.01f, tuning.CameraPanReturnResponse) * delta);
         _panYaw = yaw != 0
             ? Mathf.Clamp(_panYaw + Mathf.DegToRad(tuning.CameraPanYawRateDegrees) * yaw * delta,

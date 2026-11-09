@@ -35,7 +35,7 @@ Show visible tail and body motion during swimming, easing during a glide. The bo
 
 Camera offsets, smoothing, animation strength, and obstacle transitions need actual playtesting. A still image or headless position assertion cannot establish comfortable control or camera feel.
 
-P10 owner feedback rejects a side-offset follow camera. The current direction is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. These are implemented candidate controls, pending final native qualification and owner acceptance.
+P10 owner feedback rejects a side-offset follow camera. The current direction is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. In keyboard mode, Left/Right arrows pan the camera; holding Shift makes all four arrow keys control and hold the camera, and releasing Shift returns it. Without Shift, Up/Down still pitch the fish. These are implemented candidate controls, pending final native qualification and owner acceptance.
 
 ## Core acceptance and work order
 

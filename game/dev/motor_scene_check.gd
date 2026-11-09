@@ -22,7 +22,8 @@ func _run_schedule(fps: int) -> Vector3:
 	Engine.max_fps = fps
 	var scene := _new_course()
 	var fish: CharacterBody3D = scene.get_node("Fish")
-	await physics_frame
+	for tick in range(3):
+		await physics_frame
 	Input.action_press("swim_thrust")
 	for tick in range(90):
 		await physics_frame
@@ -39,13 +40,14 @@ func _run() -> void:
 	if not _require(low.distance_to(high) < 0.08, "render cadence changed equal-physics thrust position"):
 		return
 	if not _require(low.z < -3.5 and absf(low.x) < 0.02 and absf(low.y) < 0.02,
-			"W did not propel nose-forward from spawn"):
+			"W did not propel nose-forward from spawn: low=%s high=%s" % [low, high]):
 		return
 
 	Engine.max_fps = 0
 	var scene := _new_course()
 	var fish: CharacterBody3D = scene.get_node("Fish")
-	await physics_frame
+	for tick in range(3):
+		await physics_frame
 	Input.action_press("swim_thrust")
 	for tick in range(30):
 		await physics_frame
@@ -87,7 +89,8 @@ func _run() -> void:
 
 	scene = _new_course()
 	fish = scene.get_node("Fish")
-	await physics_frame
+	for tick in range(3):
+		await physics_frame
 	Input.action_press("swim_thrust")
 	Input.action_press("swim_pitch_up")
 	for tick in range(60):
@@ -116,7 +119,8 @@ func _run() -> void:
 
 	scene = _new_course()
 	fish = scene.get_node("Fish")
-	await physics_frame
+	for tick in range(3):
+		await physics_frame
 	fish.position = Vector3(-2.6, -3, 0)
 	Input.action_press("swim_thrust")
 	for tick in range(120):
@@ -135,14 +139,14 @@ func _run() -> void:
 		await physics_frame
 	Input.action_release("swim_thrust")
 	var gap_z := fish.global_position.z
-	if not _require(gap_z < -6.1 and gap_z >= -8.3,
+	if not _require(gap_z < -6.1 and gap_z >= -24.9,
 			"fish failed to traverse the passage within bounds"):
 		return
 	Input.action_press("swim_thrust")
-	for tick in range(90):
+	for tick in range(360):
 		await physics_frame
 	Input.action_release("swim_thrust")
-	if not _require(fish.global_position.z >= -8.3001 and fish.global_position.z <= -8.29,
+	if not _require(fish.global_position.z >= -24.9001 and fish.global_position.z <= -24.89,
 			"fish exceeded the north habitat bound"):
 		return
 	print("MOTOR_SCENE_OK render_position_difference=%.4f rock_z=%.3f gap_z=%.3f bound_z=%.3f" % [

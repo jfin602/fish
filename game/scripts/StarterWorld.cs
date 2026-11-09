@@ -116,14 +116,18 @@ public static class StarterWorld
             if (fish.GetNodeOrNull<MeshInstance3D>(oldPart) is { } oldMesh) oldMesh.Visible = false;
 
         var floor = main.GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
-        floor.MaterialOverride = new StandardMaterial3D
+        var sandMaterial = new StandardMaterial3D
         {
             AlbedoTexture = diffuse,
             NormalEnabled = true,
             NormalTexture = normal,
             RoughnessTexture = roughness,
-            Uv1Scale = new Vector3(3, 3, 1),
+            Uv1Scale = new Vector3(9, 9, 1),
         };
+        floor.MaterialOverride = sandMaterial;
+        var shelfSandMaterial = (StandardMaterial3D)sandMaterial.Duplicate();
+        shelfSandMaterial.Uv1Scale = new Vector3(3, 3, 1);
+        main.GetNode<MeshInstance3D>("Habitat/CourseShelf/Mesh").MaterialOverride = shelfSandMaterial;
         main.GetNode<WorldEnvironment>("WorldEnvironment").Environment = new Godot.Environment
         {
             BackgroundMode = Godot.Environment.BGMode.Color,
