@@ -15,7 +15,7 @@ The [swimming contract](../../systems/swimming-and-camera.md) owns the approved 
 | Natural core movement | Quick acceleration, gradual release slowdown, controlled keyboard braking, curved turns with mild anticipation, pitch-based depth travel, reliable collision and input handling. |
 | Both desktop modes | The same course is comfortable in mouse-only mode and keyboard fallback, including pause, settings, and resumption with each device method alone. |
 | Camera and body feel | Whole-fish framing from behind/slightly above, moderate distance, smooth follow, obstacle adjustment, steady horizon, visible swimming/gliding motion and bend/lean in turns. |
-| Selected ocean scene | Actual Emperor Angelfish, Rock Face 01, Coast Sand 01, and Soft Coral Set integrated and observed; exact asset preparation and distribution boundaries recorded. |
+| Selected ocean scene | Quaternius `Fish3` / `ClownFish`, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* integrated and observed; exact asset preparation and distribution boundaries recorded. Other Quaternius fish may populate the scene without ecology behavior. |
 | Fullscreen presentation | Fullscreen startup and a borderless windowed-fullscreen testing option, readable layout and camera at actual display sizes, safe focus/mode transitions in both input modes. |
 | Settled dynamics | A saved, reproducible tuning profile and controls description, identified source/configuration/asset candidate, all seven checks, and the owner's explicit acceptance of several minutes of actual swimming. |
 
@@ -51,18 +51,18 @@ Use explicit mode selection; incidental mouse movement must not switch modes. Cl
 
 Follow the unbanked gameplay root, with separate visual body lean. Use time-based smoothing and an obstacle query that excludes the player. Keep readable space ahead and recover camera distance smoothly after obstructions clear. Handle climbs/dives and near-vertical orientation without horizon roll or singular jumps. Avoid stacking enough motor, camera and animation lag to make steering feel delayed.
 
-Inspect the imported Angelfish skeleton and actual clip names. Drive effort/glide blending from propulsion and measured motion, and turn deformation from steering. Keep imported root motion from translating or rotating the collision root. Use suitable real clips or a bounded bone/visual adaptation of this selected asset; an advertised turn animation is not proof of usable turning. Record the actual animation mapping and values.
+Inspect the imported selected ocean fish's skeleton and actual clip names. Drive effort/glide blending from propulsion and measured motion, and turn deformation from steering. Keep imported root motion from translating or rotating the collision root. Use suitable real clips or a bounded bone/visual adaptation of this selected asset; an advertised turn animation is not proof of usable turning. Record the actual animation mapping and values.
 
 ## Selected asset integration
 
 | Selected asset | P1 use |
 | --- | --- |
-| Emperor Angelfish | Controlled visual fish with prepared Godot materials, usable swim/glide motion, and turn bend/lean. It remains an art-test candidate, not the final species decision. |
+| Quaternius `Fish3` / `ClownFish` | Controlled visual fish with prepared Godot materials, usable swim/glide motion, and turn bend/lean. It remains an art-test candidate, not the final species decision. |
 | Rock Face 01 | Recognizable obstacles, circling route, and a passage; author collision that agrees with visible clearance. |
 | Coast Sand 01 | Material on Fish-authored seabed geometry, with usable spatial scale. |
-| Soft Coral Set | Selected coral pieces providing reef context and readable spatial cues; deliberately specify any collidable pieces. |
+| Smithsonian *Heliopora coerulea* | One acquired coral specimen providing reef context and readable spatial cues; assess geometry cost and deliberately specify any collidable pieces. |
 
-Keep the course small and reproducible: open travel, a slowing landmark, upper/lower landmarks, a rock loop, turnaround space, a gap, and nearby geometry that tests camera visibility. Record scene scale, starting position and route. Do not import the full later shortlist. Inspect Sea life only if a concrete follow-up need warrants it; it does not silently replace a required starter asset.
+Keep the course small and reproducible: open travel, a slowing landmark, upper/lower landmarks, a rock loop, turnaround space, a gap, and nearby geometry that tests camera visibility. Record scene scale, starting position and route. Do not import the full later shortlist. Sea life was inventoried during P2 but its fish are unrigged and its packed third-party texture rights are unresolved; it does not replace a required starter asset.
 
 The public repository must not contain restricted vendor model/texture/animation data, including converted or embedded copies. Before acquisition/preparation, establish and verify an ignored in-project location for restricted assets and keep source archives outside tracked public content. Public code can load a documented local resource path and give a clear missing-asset diagnostic. Do not use static scene dependencies that make the project unreadable on a clone without the private resources, or silently qualify a placeholder as the selected fish. A diagnostic placeholder can help isolated development but cannot pass G1.3 or final acceptance.
 

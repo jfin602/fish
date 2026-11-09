@@ -87,7 +87,7 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 **Result: NOT OBSERVED.**
 
-- The controlled visual fish is the selected Emperor Angelfish; Rock Face 01, Coast Sand 01 on authored seabed geometry, and Soft Coral Set are visibly present in the actual P1 course.
+- The controlled visual fish is Quaternius `Fish3` / `ClownFish`; Rock Face 01, Coast Sand 01 on authored seabed geometry, and Smithsonian *Heliopora coerulea* are visibly present in the actual P1 course. Additional Quaternius fish may populate the scene without implying ecology mechanics.
 - Actual package/source/license/credit identity, preparation, local installation and import status are recorded; restricted originals, conversions and embedded payloads remain outside public tracked content.
 - Scale, materials, fin/coral transparency, fish deformation, collision clearance and representative scene performance are observed. The visible geometry agrees with the tested navigation and camera.
 - Missing required resources produce an actionable diagnostic. A placeholder or unapproved substitute cannot qualify this Gate. The test fish does not settle the final species/growth-art decision.

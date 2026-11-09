@@ -1,10 +1,10 @@
 # P1 — Settle core swimming
 
-**State: assessed, planned and authored; NOT EXECUTED.** The controls design is approved. This stack must implement, tune and qualify it using the selected ocean assets and fullscreen presentation before P1 can pass.
+**State: P1 shell and P2 acquisition implemented by direct execution through root version `0.1.2`; A local populated-world prototype exists; P3/P4 qualification and native observation remain pending.** The controls design is approved. Later stack tasks remain unexecuted. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it. This stack must implement, tune and qualify swimming with the revised ocean asset set and fullscreen presentation before Phase 1 can pass.
 
 ## Scope and finish line
 
-Deliver natural, nimble, easy-to-control swimming in mouse-only mode and keyboard fallback, with curved turning, pitch-based depth travel, quick acceleration, gradual slowing, the approved follow camera, and visible fish motion. Integrate Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set in a compact ocean course. Establish fullscreen and windowed fullscreen in the first implementation task and use them throughout development.
+Deliver natural, nimble, easy-to-control swimming in mouse-only mode and keyboard fallback, with curved turning, pitch-based depth travel, quick acceleration, gradual slowing, the approved follow camera, and visible fish motion. The revised starter slots are Quaternius `Fish3` / `ClownFish` from the owner-provided Animated Fish Pack, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea*. The low-poly fish is a P1 test choice, not the final art/species decision. Establish fullscreen and windowed fullscreen in the first implementation task and use them throughout development.
 
 By the end, the actual swimming dynamics must be settled: final bindings and tuning recorded, all seven owner-approved checks observed in both desktop modes, display/asset integration qualified, and the owner accepting the implemented feel. A prototype with unfinished core tuning cannot close P1. [Phase design](../../planning/p1/core-swimming.md), [swimming contract](../../systems/swimming-and-camera.md), [assets](../../art-and-assets.md), [validation](../../validation.md), and [G1.1–G1.4](../../roadmap.md#p1--swim-through-a-habitat) own the contracts.
 
@@ -18,10 +18,10 @@ After actual P0 readiness is established, deliberately prepare the **`0.1.0`** b
 
 | Order | Prompt | Assigned version | Validation / execution boundary |
 | --- | --- | --- | --- |
-| P1 | [Fullscreen play shell](P1-fullscreen-play-shell.txt) | `0.1.1` | T1; NOT EXECUTED. |
-| P2 | [Starter asset acquisition](P2-starter-asset-acquisition.txt) | `0.1.2` | T1; NOT EXECUTED. |
-| P3 | [Godot asset preparation](P3-godot-asset-preparation.txt) | `0.1.3` | T1; NOT EXECUTED. |
-| P4 | [Ocean movement course](P4-ocean-movement-course.txt) | `0.1.4` | T2; NOT EXECUTED. |
+| P1 | [Fullscreen play shell](P1-fullscreen-play-shell.txt) | `0.1.1` | T1 direct execution recorded in [implementation evidence](qualification/implementation.md); native P5 still pending. |
+| P2 | [Starter asset acquisition](P2-starter-asset-acquisition.txt) | `0.1.2` | T1 direct acquisition passed with the owner-provided Quaternius pack and three environment sources; see implementation evidence. |
+| P3 | [Godot asset preparation](P3-godot-asset-preparation.txt) | `0.1.3` | Local import/loader prototype added; full preparation and qualification pending. |
+| P4 | [Ocean movement course](P4-ocean-movement-course.txt) | `0.1.4` | Decorative population added; authored course/collision and T2 qualification pending. |
 | P5 | [Native display and assets](P5-native-display-and-assets.txt) | `0.1.5` | T3; mandatory native/manual handoff. |
 | P6 | [Swim motor and keyboard](P6-swim-motor-and-keyboard.txt) | `0.1.6` | T1; NOT EXECUTED. |
 | P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2; NOT EXECUTED. |
@@ -50,7 +50,7 @@ The runner performs pending ordinary prompts and pauses before P5, P10 and P11 b
 
 For P5 and P10, complete the actual manual work, review its evidence and changes, then let the authorized coordinating session create the exact version checkpoint before resuming. Child prompts do not self-commit. P11 always leaves its final changes reviewable. Do not manufacture a checkpoint for missing evidence or owner acceptance. A direct interactive execution can use the same briefs; record that mode and reconcile history before a later runner resume.
 
-P2 can require an owner-supplied archive or account handoff if actual source access is unavailable. Prepare the exact requested item and destination, preserve completed work, and withhold its version until acquisition requirements pass. The stack does not authorize bypassing account or license restrictions. Once started, do not rewrite active prompt files under the runner.
+P2's original named asset instructions are superseded by [decisions C30–C31](../../decisions-and-questions.md) and [the current manifest](../../assets/p1-starter-manifest.md). The owner supplied Quaternius's Animated Fish Pack and selected its `Fish3` / `ClownFish` for provisional player art, with other pack models for world population. The earlier BlendSwap/Blender downloads remain inventoried separately. Do not bypass account or license restrictions or rewrite active prompt files under a runner.
 
 ## Evidence created during execution
 

@@ -50,6 +50,26 @@ public partial class Main : Node3D
 
         AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences));
 
+        if (!StarterWorld.TryPopulate(this, fish, out var assetDiagnostic))
+        {
+            GD.PushError(assetDiagnostic);
+            var label = new Label
+            {
+                Name = "AssetDiagnostic",
+                Text = $"Starter art unavailable: {assetDiagnostic}\nSee game/assets/README.md.",
+                Position = new Vector2(18, 82),
+                CustomMinimumSize = new Vector2(720, 80),
+                AutowrapMode = TextServer.AutowrapMode.WordSmart,
+                MouseFilter = Control.MouseFilterEnum.Ignore,
+            };
+            GetNode<CanvasLayer>("PrototypeHelp").AddChild(label);
+            if (OS.GetCmdlineUserArgs().Contains("--smoke"))
+            {
+                GetTree().Quit(1);
+                return;
+            }
+        }
+
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
             CallDeferred(MethodName.VerifySmoke);
     }
@@ -60,6 +80,21 @@ public partial class Main : Node3D
         if (!fish.IsInsideTree() || fish.GlobalPosition.Y < -3.0f || fish.GlobalPosition.Y > 3.0f)
         {
             GD.PushError("FISH_SMOKE_FAILED C# fish was not initialized within habitat");
+            GetTree().Quit(1);
+            return;
+        }
+        var skeleton = GetNodeOrNull<Skeleton3D>("Fish/PlayerVisual/Armature/Skeleton3D");
+        var animation = GetNodeOrNull<AnimationPlayer>("Fish/PlayerVisual/AnimationPlayer");
+        var ambient = GetNodeOrNull<Node3D>("Habitat/AmbientFish");
+        var decor = GetNodeOrNull<Node3D>("Habitat/StarterDecor");
+        var floor = GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
+        if (skeleton is null || skeleton.GetBoneCount() == 0 ||
+            animation is null || !animation.HasAnimation("Armature|Swim") ||
+            ambient is null || ambient.GetChildCount() < 3 ||
+            decor is null || decor.GetChildCount() != 4 ||
+            floor.MaterialOverride is not StandardMaterial3D sand || sand.AlbedoTexture is null)
+        {
+            GD.PushError("FISH_SMOKE_FAILED starter resources did not instantiate fully");
             GetTree().Quit(1);
             return;
         }

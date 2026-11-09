@@ -1,4 +1,6 @@
 /artifacts/
+/artifacts/assets/source/
+/game/assets/vendor-local/
 /.codex-runs/
 /node_modules/
 /game/.godot/

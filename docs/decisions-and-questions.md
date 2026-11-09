@@ -40,7 +40,7 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C14 | Lock down core swimming, turning, and slowing before adding movement abilities. | S6 |
 | C15 | The next implementation focus after core lock is [Movement abilities](planning/p1/movement-abilities.md): short speed burst, precision mode, and quick evasive turn. | S6 |
 | C16 | Use realistic ocean creatures and environments as the initial habitat and visual direction, starting from free assets suitable for eventual commercial game use. | S7 |
-| C17 | Use the approved [ocean asset shortlist and starter order](art-and-assets.md): Emperor Angelfish, Rock Face 01, Coast Sand 01, and Soft Coral Set form the first art/import set; inspect Sea life next, with the other entries reserved for later expansion. | S7 |
+| C17 | Original [ocean starter order](art-and-assets.md) used Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set. This named set is superseded by C30 after actual acquisition checks. | S7 |
 | C18 | Qualify mouse-only controls and a keyboard fallback first; controller support follows later, with eventual support for both desktop and controller. | S8; worksheet Q02 |
 | C19 | In mouse-only mode, mouse movement steers, vertical movement pitches, and a held mouse button supplies speed/thrust input. | S8; Q02, Q06 |
 | C20 | Keyboard left/right inputs turn through curved paths; backward input slows the fish. Exact bindings remain open. | S8; Q05 |
@@ -50,9 +50,11 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C24 | Visible tail/body motion eases during gliding; the fish bends/leans into turns while the camera follows with a steady horizon. | S8; Q09 |
 | C25 | Free look is deferred for the initial core-controls scope. | S8; Q03 |
 | C26 | The seven accepted playtest criteria must be observed in both desktop modes, including the owner's judgment of enjoyable, natural and easy swimming, before the implemented core is locked for progression. | S8; Q10 |
-| C27 | P1 integrates and visibly uses the four selected starter assets: Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set. | S9; S7 starter order |
+| C27 | P1 integrates and visibly uses four verified starter assets. The original named set is superseded by C30; G1.3 still requires four actual assets in native play. | S9; C30 |
 | C28 | P1 finishes with swimming dynamics tuned, documented and accepted through actual owner play in both desktop modes; unfinished core feel is not deferred beyond the phase. | S9; S8 criteria |
 | C29 | Develop the game for fullscreen from the start, with windowed fullscreen available for easier testing. | S9 |
+| C30 | The first P1 set is a **still unselected** realistic rigged ocean fish with a verified swim cycle, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea*. Emperor Angelfish is removed because official acquisition needs Unity/account-backed tooling; Soft Coral Set is replaced because its official anonymous download is unavailable. Sea life and the downloaded Great White Shark are evaluation/later content, and Rigged Archer Fish is excluded from the ocean starter. Final player species remains open. | Owner's resumed P2 direction, 2026-11-09; [P2 manifest](assets/p1-starter-manifest.md) |
+| C31 | For the P1 test scene, use the owner-provided [Quaternius Animated Fish Pack](assets/p1-starter-manifest.md#quaternius-pack-inspection). Fish3 (`ClownFish`) is the provisional small player fish; other pack fish may populate the world without implementing ecology or predator behavior. This explicitly accepts a low-poly prototype asset while retaining realistic ocean creatures and environments as the longer-term art direction. C31 fills C30's unselected fish slot; it does not decide the final player species. | Owner request and pack inspection, 2026-11-09 |
 
 ## Working designs
 

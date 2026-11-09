@@ -33,19 +33,19 @@ Anchor/scale menu and control-help layout to the actual viewport. Establish deli
 
 ## P2 — Starter asset acquisition
 
-Use exactly the four first-set sources from [art and assets](../../art-and-assets.md): Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set. Inventory the acquired archives, dependencies and source terms. Record exact source/creator/package/date/hash/license/credit data in a public-safe manifest. Distinguish research, acquisition, preparation, import and observation.
+Use the revised four starter slots from [art and assets](../../art-and-assets.md): Quaternius `Fish3` / `ClownFish` from the owner-provided Animated Fish Pack, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea*. The original prompt names are superseded by the owner's resumed P2 decisions. Inventory acquired originals, dependencies and source terms. Record exact source/creator/package/date/hash/license/credit data in a public-safe manifest. Distinguish research, acquisition, preparation, import and observation. The low-poly pack is an explicit P1 prototype choice; final realistic art and player species remain open.
 
 Before putting any vendor files in the checkout, add and verify ignores for source archives and the local restricted payload directory. Restricted data must also stay out of tracked scenes/resources and generated packs. If access needs an owner-provided package, identify the precise link, archive and destination; preserve partial work rather than pretending a download occurred. No silent substitute or later-shortlist expansion.
 
 ## P3 — Godot asset preparation
 
-Inspect actual Angelfish mesh/skeleton/clips, extract or convert through supported tools, rebuild suitable materials and document scale/orientation/root-motion treatment. Do not assume Unity prefabs/shaders transfer or advertised clip names are correct. Preserve the selected fish; required rig/material repairs belong to this task or a clearly bounded continuation.
+Inspect Quaternius `Fish3` / `ClownFish` mesh/skeleton/`Swim` action, extract or convert through supported tools, rebuild suitable materials and document scale/orientation/root-motion treatment. Do not assume Blender or FBX clips transfer unchanged. Preserve the acquired source; required rig/material repairs belong to this task or a clearly bounded continuation. Other pack fish may be prepared for non-gameplay world population. Sea life pieces may be considered only after embedded third-party texture rights are resolved or those maps are excluded.
 
 Prepare the rock, sand material and selected coral pieces with suitable measured scale/texture choices. Public-safe wrappers may load documented local resource paths dynamically. A fresh clone without required restricted resources must remain inspectable and report an actionable missing-asset condition; it cannot silently substitute a fish and pass selected-asset checks. Record actual local install/import mapping in `game/assets/README.md` and append command evidence.
 
 ## P4 — Ocean movement course
 
-Compose a compact saved 3D scene using all four selected assets. Author seabed geometry for Coast Sand, rock obstacles/passage, coral placement, open water, a slowing target and upper/lower landmarks. Use deliberate simple collision shapes that agree with visible gaps and fish dimensions; visual triangles are not the collision policy. Keep start location, scale and route reproducible.
+Compose a compact saved 3D scene using all four selected assets. Author seabed geometry for Coast Sand, rock obstacles/passage, coral placement, open water, a slowing target and upper/lower landmarks. Place a bounded number of other prepared Quaternius fish for visible world life, without adding ecology or predator behavior. Use deliberate simple collision shapes that agree with visible gaps and fish dimensions; visual triangles are not the collision policy. Keep start location, scale and route reproducible.
 
 Use the existing provisional P0 controls to make the scene inspectable until P6/P7 replace the movement behavior. Preserve the fullscreen shell. Check saved-resource references, collision layers, bounds, spawn clearance and composition through the actual import/build/scene checks. Visible material quality and final movement remain unobserved until their native tasks.
 
@@ -53,7 +53,7 @@ Use the existing provisional P0 controls to make the scene inspectable until P6/
 
 Pause for a real native-capable session. Inspect the correct Fish editor/runtime, start the main scene fullscreen, select windowed fullscreen, test launch overrides and saved-choice precedence, and inspect focus/capture/layout at actual display dimensions. Check pointer/keyboard access to the current panel; the final desktop swimming modes are qualified in P10.
 
-Observe all four actual selected assets, Angelfish materials/fin transparency/basic imported motion, obstacle/seabed/coral scale and visible route. Verify fresh-profile startup, saved-choice relaunch and temporary-override non-persistence using isolated or restored settings. Exercise the reversible missing-resource diagnostic in the native window, restore all required resources, and record representative scene frame timing/FPS and display/render settings. Record any concrete repair before progressing to detailed movement work. This early checkpoint cannot lock core dynamics or pass final G1.1/G1.2. Its source-bound evidence supports the eventual asset/display Gates, subject to later changes.
+Observe all four actual selected assets, selected fish materials/fin transparency/basic imported motion, obstacle/seabed/coral scale and visible route. Verify fresh-profile startup, saved-choice relaunch and temporary-override non-persistence using isolated or restored settings. Exercise the reversible missing-resource diagnostic in the native window, restore all required resources, and record representative scene frame timing/FPS and display/render settings. Record any concrete repair before progressing to detailed movement work. This early checkpoint cannot lock core dynamics or pass final G1.1/G1.2. Its source-bound evidence supports the eventual asset/display Gates, subject to later changes.
 
 ## P6 — Shared motor and keyboard
 
@@ -73,7 +73,7 @@ Implement behind/slightly-above framing, moderate distance, route visibility, sm
 
 ## P9 — Fish body motion
 
-Connect the prepared Angelfish clips/bones to actual propulsion, speed and steering. Make tail/body motion visible during effort, easing in the glide, with bend/lean in turns. Contain imported root motion and keep the collision root authoritative. Document actual clip/skeleton mapping and state transitions; no feeding/attack/death behavior follows from those clips being present.
+Connect the prepared selected ocean fish's clips/bones to actual propulsion, speed and steering. Make tail/body motion visible during effort, easing in the glide, with bend/lean in turns. Contain imported root motion and keep the collision root authoritative. Document actual clip/skeleton mapping and state transitions; no feeding/attack/death behavior follows from those clips being present.
 
 Keep restricted meshes/textures/animations in the established ignored path, including any edited or converted resource. Public code and independent configuration may describe how to drive them. Verify animation-state changes and resource boundaries; the actual visual result and comfort are part of P10.
 
