@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=16 format=3]
 
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_main"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
 [ext_resource type="PackedScene" path="res://scenes/movement_course.tscn" id="3_course"]
 [ext_resource type="Resource" path="res://resources/swim_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" path="res://scripts/FollowCamera.cs" id="5_camera"]
 
 [sub_resource type="StandardMaterial3D" id="water"]
 albedo_color = Color(0.07, 0.3, 0.38, 1)
@@ -146,10 +147,9 @@ scale = Vector3(0.12, 0.12, 0.12)
 mesh = SubResource("fish_body")
 
 [node name="CameraRig" type="Node3D" parent="Fish"]
+script = ExtResource("5_camera")
 
 [node name="Camera3D" type="Camera3D" parent="Fish/CameraRig"]
-position = Vector3(0, 2.1, 6)
-rotation = Vector3(-0.32, 0, 0)
 current = true
 
 [node name="PrototypeHelp" type="CanvasLayer" parent="."]

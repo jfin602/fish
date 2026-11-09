@@ -52,6 +52,12 @@ input_lifecycle_check() {
   logged input-lifecycle 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/input_lifecycle_check.gd
   grep -Fq 'INPUT_LIFECYCLE_OK' "$LOGS/input-lifecycle.log" || { echo 'Input lifecycle marker missing' >&2; return 1; }
 }
+camera_scene_check() {
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/camera-scene.XXXXXX")
+  logged camera-scene 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/camera_scene_check.gd
+  grep -Fq 'CAMERA_SCENE_OK' "$LOGS/camera-scene.log" || { echo 'Camera scene marker missing' >&2; return 1; }
+}
 case "${1:-help}" in
   doctor)
     need_tools
@@ -70,7 +76,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
