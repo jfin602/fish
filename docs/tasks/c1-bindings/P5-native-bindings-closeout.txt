@@ -1,0 +1,25 @@
+TASK: Correction 1 / P5 — Native bindings closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.1.9`.
+
+GOAL / MANUAL HANDOFF
+This is c1-bindings' ONE FINAL CLOSEOUT and mandatory native Godot/owner checkpoint. The inherited Browser required field pauses the runner; browser access alone does not control the native Godot window. Use an actual Fish Linux desktop/native input session or owner-reported playtest with exact evidence. If unavailable, record BLOCKED / NOT OBSERVED and do not call the correction fully qualified.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c1-bindings/README.md, implementation-plan.md P5 and P1–P4 implementation evidence; inspect real modified source, actual scene, test configuration and the relevant swimming acceptance and P1 P10 task. Confirm repo/branch/version/history, root 0.1.9, Fish MCP target and preservation of unrelated work. Do not rerun ordinary checks without a material source change or gap.
+
+NATIVE PLAY / OBSERVATION
+1. In normal fullscreen and windowed fullscreen, exercise Keyboard Only (W/S/A/D/Up/Down), Mouse Only (relative X/Y, left thrust, right menu) and Hybrid Swim (W/S plus mouse X/Y and optional keyboard steering). Record normal swim, turn, depth and slowdown actions as observed; do not treat these observations as P1's final owner feel approval.
+2. From pause/options use pointer and keyboard focus to create, duplicate, rename, delete and save a custom preset; bind a key and mouse button, change sensitivity/inversion, demonstrate conflict warning/resolve and an intentionally invalid/unbound control recovery path. Confirm Escape/visible menu fallback, cancel/revert, resume without first-frame leak, and reliable switching after a restart.
+3. Compare same obstacle route with at least two distinct hybrids. Switch active presets without restarting while held input is being released; verify no huge mouse movement, stuck thrust/turn, fish relocation, lost momentum unrelated to pause, menu trap or unintended simulation progress. Exercise debug quick-cycle if implemented, and ensure it does not steal a custom binding.
+4. Exercise focus loss/refocus, capture/release, display change and pause resume. Confirm live game help matches current bindings. If controller, abilities, first-person, free look or survival functions are absent, do not classify them as tested or required.
+5. Record the precise Fish source revision, local changes, Godot/.NET/platform, input device, test scene, profile data, actions and expected/observed outcomes. Keep stable screenshots/video/logs only when available; no claims from screenshots alone.
+
+CLOSEOUT / EVIDENCE
+Create or update docs/tasks/c1-bindings/qualification/native-controls.md and a single docs/tasks/c1-bindings/closeout.md. Preserve failed attempts and later repairs; map each scoped acceptance criterion to PASS, FAIL, NOT OBSERVED or specific BLOCKED. Reconcile only owning input docs, relevant docs/tasks index/BOOT routing when unambiguous, and note P1 P10's remaining native owner-acceptance duty. Do not mark G1.1–G1.4, P1 or final dynamics GREEN on a control-editor code build or on this correction alone. Follow the accepted core design unless the owner explicitly approves a substantive change.
+
+VALIDATE / VERSION / GIT
+T3 real-window input qualification plus T1 documentation/link/diff checks. Run targeted checks for any closeout fix, git diff --check, confirm no package-lock.json, no untracked third-party assets and package.json **unchanged** at 0.1.9. If native acceptance fails, leave this correction NOT GREEN and hand back an exact repair task; do not fabricate PASS or alter root version. Leave the final closeout uncommitted for human review; do not self-commit or push. Runner execution of this prompt does not itself approve closeout.
