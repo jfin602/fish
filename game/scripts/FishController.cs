@@ -17,6 +17,9 @@ public partial class FishController : CharacterBody3D
     private bool _mouseCaptureActive;
 
     public string ActiveInputMode => _inputMode;
+    public float PresentationSpeed => _state.Speed;
+    public float PresentationEffort { get; private set; }
+    public float PresentationTurn { get; private set; }
 
     public override void _Ready() => MotionMode = MotionModeEnum.Floating;
 
@@ -32,6 +35,8 @@ public partial class FishController : CharacterBody3D
         if (!_inputArmed)
         {
             Velocity = Vector3.Zero;
+            PresentationEffort = 0;
+            PresentationTurn = 0;
             // The release tick itself cannot propel the fish.
             if (KeyboardSwimInput.AllReleased() &&
                 !Input.IsMouseButtonPressed(MouseButton.Left) &&
@@ -42,7 +47,13 @@ public partial class FishController : CharacterBody3D
         var intent = _inputMode == DisplayPreferences.MouseMode
             ? _mouse.Consume((float)delta, Tuning, _mouseSensitivity, _invertMouseY)
             : KeyboardSwimInput.Read();
+        var previousYaw = _state.Yaw;
         _state = SwimMotor.Step(_state, intent, (float)delta, Tuning);
+        PresentationEffort = intent.Slow > 0 ? 0 : Mathf.Clamp(intent.Thrust, 0, 1);
+        PresentationTurn = delta > 0 && Tuning.YawRateDegrees > 0
+            ? Mathf.Clamp(Mathf.Wrap(_state.Yaw - previousYaw, -Mathf.Pi, Mathf.Pi) /
+                (Mathf.DegToRad(Tuning.YawRateDegrees) * (float)delta), -1, 1)
+            : 0;
         Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
         Velocity = _state.Velocity;
         MoveAndSlide();
@@ -67,6 +78,8 @@ public partial class FishController : CharacterBody3D
         _inputArmed = false;
         _mouseCaptureActive = false;
         _mouse.Clear();
+        PresentationEffort = 0;
+        PresentationTurn = 0;
         _state.Speed = 0;
         _state.Velocity = Vector3.Zero;
         Velocity = Vector3.Zero;

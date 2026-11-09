@@ -20,4 +20,13 @@ public partial class SwimTuning : Resource
     [Export] public float CameraFieldOfView { get; set; } = 68.0f;
     [Export] public float CameraFollowResponse { get; set; } = 7.0f;
     [Export] public float CameraRecoveryResponse { get; set; } = 3.0f;
+    [Export] public float SwimCadenceHz { get; set; } = 1.15f;
+    [Export] public float GlideCadenceHz { get; set; } = 0.35f;
+    [Export] public float SwimIntensity { get; set; } = 1.0f;
+    [Export] public float GlideIntensity { get; set; } = 0.12f;
+    [Export] public float SwimActivityResponse { get; set; } = 7.0f;
+    [Export] public float GlideEasingResponse { get; set; } = 3.0f;
+    [Export] public float TurnBendDegrees { get; set; } = 8.0f;
+    [Export] public float TurnLeanDegrees { get; set; } = 6.0f;
+    [Export] public float TurnResponse { get; set; } = 8.0f;
 }

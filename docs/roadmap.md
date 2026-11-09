@@ -15,7 +15,7 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 | P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | IN PROGRESS through direct P4 work; Gates not passed. |
 =======
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
-| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | IN PROGRESS through direct P4 work; Gates not passed. |
+| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | IN PROGRESS through direct P9 work; Gates not passed. |
 >>>>>>> Stashed changes
 | P2 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop. | NOT STARTED. |
 | P3 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
@@ -58,11 +58,11 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 ## P1 — Swim through a habitat
 
-**Status: IN PROGRESS through direct P8 follow-camera implementation; all G1 Gates remain NOT OBSERVED as complete.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4/P6–P8 implementation evidence](tasks/p1/qualification/implementation.md) and [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md). The provisional display and selected assets were observed on Linux/X11, and P6–P8 headless motor/input/camera checks passed; final V01–V02 and V16–V17 acceptance awaits body motion and owner tuning.
+**Status: IN PROGRESS through direct P9 fish-motion implementation; all G1 Gates remain NOT OBSERVED as complete.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4/P6–P9 implementation evidence](tasks/p1/qualification/implementation.md) and [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md). The provisional display and selected assets were observed on Linux/X11, and P6–P9 headless motor/input/camera/pose checks passed; final V01–V02 and V16–V17 acceptance awaits native integrated tuning and owner review.
 
 **Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
 
-**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P8 were executed directly; the phase runner has not run this stack. P5's native Linux/X11 checkpoint and P6–P8 headless motor/input/camera checks are recorded; owner tuning and final review remain ahead.
+**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P9 were executed directly; the phase runner has not run this stack. P5's native Linux/X11 checkpoint and P6–P9 headless motor/input/camera/pose checks are recorded; owner tuning and final review remain ahead.
 
 ### G1.1 — Swimming and physical space
 

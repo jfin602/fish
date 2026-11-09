@@ -78,6 +78,14 @@ public static class StarterWorld
             diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-imported-body-stripes-outline-materials";
             return false;
         }
+        var motion = FishVisualMotion.CreateVerified(fish, playerVisual, playerSkeleton,
+            playerAnimation, swimClip);
+        if (motion is null)
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-Root-Spine3-Tail-swim-tracks";
+            return false;
+        }
         if (!HasPreparedStaticMaterial(rockScene, "rock_face_01", true, true, true))
         {
             playerVisual.Free();
@@ -102,7 +110,7 @@ public static class StarterWorld
         playerVisual.Name = "PlayerVisual";
         playerVisual.Scale = Vector3.One * 0.12f;
         playerVisual.RotationDegrees = new Vector3(0, 90, 0);
-        PlayLoop(playerAnimation, "Armature|Swim");
+        playerVisual.AddChild(motion);
         foreach (var oldPart in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
             if (fish.GetNodeOrNull<MeshInstance3D>(oldPart) is { } oldMesh) oldMesh.Visible = false;
 

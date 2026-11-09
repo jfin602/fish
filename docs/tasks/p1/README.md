@@ -1,6 +1,6 @@
 # P1 — Settle core swimming
 
-**State: P1–P8 implemented and checked by direct execution through root version `0.1.8`; P9 fish body motion is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md); P6–P8 motor, input and camera have headless source-bound checks in [implementation evidence](qualification/implementation.md). Native two-mode comfort, camera feel, body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
+**State: P1–P9 implemented and checked by direct execution through root version `0.1.9`; P10 native tuning is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md); P6–P9 motor, input, camera and Fish3 pose have headless source-bound checks in [implementation evidence](qualification/implementation.md). Native two-mode comfort, camera feel, rendered body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
 
 ## Scope and finish line
 
@@ -26,7 +26,7 @@ After actual P0 readiness is established, deliberately prepare the **`0.1.0`** b
 | P6 | [Swim motor and keyboard](P6-swim-motor-and-keyboard.txt) | `0.1.6` | T1 motor/keyboard and scene checks passed by direct execution; [evidence](qualification/implementation.md#p6--shared-swim-motor-and-keyboard-fallback-direct-execution-2026-11-09). Native feel remains P10. |
 | P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2 saved-scene input/mode/pause checks passed by direct execution; native comfort remains P10. |
 | P8 | [Follow camera](P8-follow-camera.txt) | `0.1.8` | T1 saved-scene follow, obstruction, pause and resize checks passed by direct execution; native comfort remains P10. |
-| P9 | [Fish body motion](P9-fish-body-motion.txt) | `0.1.9` | T1; NOT EXECUTED. |
+| P9 | [Fish body motion](P9-fish-body-motion.txt) | `0.1.9` | T1 real-scene Fish3 swim/glide/turn pose, loop, pause and isolation checks passed by direct execution; native deformation/feel remains P10. |
 | P10 | [Owner tuning and dynamics lock](P10-owner-tuning-and-dynamics-lock.txt) | `0.1.10` | T3; mandatory owner/native handoff and iterative acceptance. |
 | P11 | [Swimming closeout](P11-swimming-closeout.txt) | `0.1.11` | Manual final evidence review; leave changes reviewable. |
 
