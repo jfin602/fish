@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01–Q08 answered for the initial scope; free look deferred; Movement abilities follow core lock.  
-**Answers recorded:** 8 of 10 (8 answered).  
-**Next question:** Q09 — Body movement and camera stability.
+**Status:** In progress; Q01–Q09 answered for the initial scope; free look deferred; Movement abilities follow core lock.  
+**Answers recorded:** 9 of 10 (9 answered).  
+**Next question:** Q10 — Ready-for-gameplay playtest.
 
 ## Purpose and scope
 
@@ -119,7 +119,7 @@ Consider fish size on screen, distance, height, visibility ahead, zoom, and how 
   > Continue
 
 - **Decision notes:** The third-person camera sits behind and slightly above the fish at a moderate distance, showing its whole body and enough space ahead to read the route. It follows direction changes smoothly without abrupt camera movement and adjusts near rocks and other obstacles to keep the fish visible. These are the accepted framing and follow targets; free look remains deferred under Q03.
-- **Open details:** Exact distance, height, framing, smoothing rates, and how obstacle adjustment is achieved remain implementation and playtest choices. Zoom controls are not selected. How much body banking or other animation the camera inherits remains for Q09.
+- **Open details:** Exact distance, height, framing, smoothing rates, and how obstacle adjustment is achieved remain implementation and playtest choices. Zoom controls are not selected. Q09 selects visible fish body movement with a steady camera horizon.
 
 ## Q08 — Extra movement actions
 
@@ -144,11 +144,18 @@ Q05 already selects backward keyboard input to slow the fish. Possible additiona
 
 Consider tail motion during effort and gliding, body lean during turns, and whether the camera keeps a stable horizon. Include any dislike of camera shake, bobbing, or rolling. Describe the desired sensation; detailed animation production can follow later.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:**
+
+  > Visible tail and body motion while swimming, easing during a glide.
+  > The body bends and leans into turns.
+  > The camera follows smoothly while keeping a steady horizon, allowing the fish’s movement to provide the sense of motion.
+  >
+  > Continue
+
+- **Decision notes:** The fish has visible tail and body motion during swimming, easing during a glide, and bends and leans into turns. The camera follows smoothly while keeping a steady horizon; the fish's body movement supplies the sense of motion. Preserve Q07's smooth follow through direction and depth changes.
+- **Open details:** Tail/body animation strength, cadence, turn lean, and blending between swimming and gliding remain to be tuned in play. The animation technique and exact camera smoothing settings are not selected.
 
 ## Q10 — Ready-for-gameplay playtest
 
