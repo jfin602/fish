@@ -1,6 +1,6 @@
 # P1 — Settle core swimming
 
-**State: P1 shell, P2 acquisition and P3 asset preparation implemented by direct execution through root version `0.1.3`; the local world is populated, while P4 course and P5 native qualification remain pending.** The controls design is approved. Later stack tasks remain unexecuted. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it. This stack must implement, tune and qualify swimming with the revised ocean asset set and fullscreen presentation before Phase 1 can pass.
+**State: P1–P5 implemented and checked by direct execution through root version `0.1.5`; P6 motor and keyboard work is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md). Final input modes, camera, body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
 
 ## Scope and finish line
 
@@ -21,8 +21,8 @@ After actual P0 readiness is established, deliberately prepare the **`0.1.0`** b
 | P1 | [Fullscreen play shell](P1-fullscreen-play-shell.txt) | `0.1.1` | T1 direct execution recorded in [implementation evidence](qualification/implementation.md); native P5 still pending. |
 | P2 | [Starter asset acquisition](P2-starter-asset-acquisition.txt) | `0.1.2` | T1 direct acquisition passed with the owner-provided Quaternius pack and three environment sources; see implementation evidence. |
 | P3 | [Godot asset preparation](P3-godot-asset-preparation.txt) | `0.1.3` | T1 import/loader and negative readiness checks passed by direct execution; see implementation evidence. |
-| P4 | [Ocean movement course](P4-ocean-movement-course.txt) | `0.1.4` | Decorative population added; authored course/collision and T2 qualification pending. |
-| P5 | [Native display and assets](P5-native-display-and-assets.txt) | `0.1.5` | T3; mandatory native/manual handoff. |
+| P4 | [Ocean movement course](P4-ocean-movement-course.txt) | `0.1.4` | Saved course, four-source composition and T2 checks passed by direct execution; see implementation evidence. |
+| P5 | [Native display and assets](P5-native-display-and-assets.txt) | `0.1.5` | T3 native Linux/X11 checkpoint passed for the provisional shell and four assets by direct execution; [evidence and captures](qualification/native-display-and-assets.md). Coordinator checkpoint remains separate. |
 | P6 | [Swim motor and keyboard](P6-swim-motor-and-keyboard.txt) | `0.1.6` | T1; NOT EXECUTED. |
 | P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2; NOT EXECUTED. |
 | P8 | [Follow camera](P8-follow-camera.txt) | `0.1.8` | T1; NOT EXECUTED. |

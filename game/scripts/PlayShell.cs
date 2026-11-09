@@ -26,7 +26,6 @@ public partial class PlayShell : Node
         AddChild(canvas);
         _overlay = new Control { Visible = false, MouseFilter = Control.MouseFilterEnum.Ignore };
         canvas.AddChild(_overlay);
-        _overlay.SetAnchorsPreset(Control.LayoutPreset.FullRect);
 
         var shade = new ColorRect
         {
@@ -138,6 +137,9 @@ public partial class PlayShell : Node
     private void UpdateLayout()
     {
         var viewport = GetViewport().GetVisibleRect().Size;
+        // CanvasLayer is not a Control parent, so the overlay needs an explicit viewport size.
+        _overlay.Position = Vector2.Zero;
+        _overlay.Size = viewport;
         _panel.CustomMinimumSize = new Vector2(Mathf.Min(480, Mathf.Max(240, viewport.X - 32)), 0);
         UpdateHelp();
     }

@@ -58,11 +58,11 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 ## P1 — Swim through a habitat
 
-**Status: IN PROGRESS through direct P4 implementation; all G1 Gates remain NOT OBSERVED.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4 implementation evidence](tasks/p1/qualification/implementation.md). Scenarios V01–V02 and V16–V17.
+**Status: IN PROGRESS through direct P5 native checkpoint; all G1 Gates remain NOT OBSERVED as complete.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4 implementation evidence](tasks/p1/qualification/implementation.md) and [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md). The provisional display and selected assets were observed on Linux/X11; final V01–V02 and V16–V17 acceptance awaits completed controls/camera/motion and owner tuning.
 
 **Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
 
-**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P4 were executed directly; the phase runner has not run this stack. Native display/asset inspection, owner tuning and final review remain ahead.
+**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P5 were executed directly; the phase runner has not run this stack. P5's native Linux/X11 checkpoint is recorded; owner tuning and final review remain ahead.
 
 ### G1.1 — Swimming and physical space
 
