@@ -1,0 +1,29 @@
+TASK: Phase 0 / P2 — Godot Editor MCP integration
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.0.2`.
+
+GOAL
+Install/enable and configure Fish's Godot Editor MCP integration using the chosen hybridindie/godot-mcp server/addon. Prepare a correct isolated editor connection for the native P3 closeout, preserving Space Factory's setup. This prompt qualifies configuration only; a loaded live connection and rendered runtime are not assumed.
+
+PREREQUISITES AND NARROW READING
+Require P1's actual project/CLI and applicable passing checks. Read AGENTS.md, BOOT.md, the p0 README, implementation-plan.md P2, docs/development.md MCP sections, and qualification/implementation.md. Inspect current HEAD/dirty work, game/project.godot, tools/dev, existing local client configuration and actual available MCP tools. Preserve all owner work and unrelated/global configuration; never print secrets.
+
+IMPLEMENTATION
+1. Identify the exact Godot Editor MCP installation and upstream stable server/addon compatibility. Reference new-install pair: Python package godot-editor-mcp==2026.11.4 and release tag 2026.11.04 at https://github.com/hybridindie/godot-mcp/releases/tag/2026.11.04. Reuse a suitable established local installation deliberately; do not replace Space Factory's tool globally or copy moving beta main. An isolated pinned uvx --from invocation can avoid changing its installation. Verify actual installed release metadata and record any coherent deviation.
+2. Install the matching addon under game/addons/godot_mcp/ from the matching release asset. Retain upstream license/notices and a traceable version/source. Enable the editor plugin in project.godot; add the matching supported MCPRuntimeProbe autoload if required for live state/input/screenshots. Inspect actual addon paths rather than inventing them. Keep development GDScript separate from C# gameplay and preserve the upstream supported export no-op behavior.
+3. Inspect current Codex/Godot entries and active loopback listeners. Prepare ignored Fish-local .codex/config.toml using the supported project configuration layer, with the actual command/args/cwd. Locally override the existing Godot server key when appropriate; if using a different key, avoid an inherited conflicting listener only within Fish. Do not overwrite unrelated entries, change Space Factory's project files, force-replace user-level config, or bypass trust/approval requirements. The upstream config --client codex --project ... --write helper still targets the user-level file; do not use --force blindly.
+4. Set the absolute Fish game directory via GODOT_MCP_PROJECT_DIR, actual .NET executable via GODOT_MCP_GODOT_BIN, and a verified unused loopback GODOT_MCP_BRIDGE_URL distinct from Space Factory. Start with only the installed toolsets needed for inspection, 3D/scene edits, runtime/input/testing and editor capture. Store machine values locally. Ensure tools/dev editor forwards the same bridge URL to the Godot editor; the server setting alone cannot route the addon. Retain safe wrapper argument handling.
+5. Validate configuration syntax, matching versions, enabled plugin/probe paths, resolved invocation and Git ignore coverage. Use the pinned CLI doctor with the Fish project/environment as available; record exact output and distinguish missing live listener from invalid static setup. A TCP listener is not proof of correct peer identity. If an editor is opened, reopen/reload after external plugin-list changes as needed and affect only this task's Fish session.
+6. Document actual setup in docs/development.md and qualification/implementation.md, including pinned invocation, local config locations (no secrets), bridge selection method, installed addon/probe, usable diagnostics and exact client restart/reload step if new tools are not yet available. Do not claim G0.2/G0.3 pass from configuration. Preserve the existing C# build path: MCP C# read/write/list capability does not compile or validate C#.
+
+VALIDATION
+Tier T1 configuration/install checks. Prove version pairing, valid referenced paths, enabled plugin/probe configuration, correct local routing and ignored absolute configuration. Run only checks affected by the addon/settings change; if import/build is needed, use the composed wrapper rather than repeat unchanged checks. Preserve meaningful diagnostics when a live listener/client session is not present. Live peer identity, scene manipulation, rendered capture and input are mandatory P3 checks after a refreshed client session.
+
+DONE CONDITION AND REPORT
+Fish's matched MCP components and isolated local configuration are ready, required static/configuration checks pass, and any reload/native verification requirement has an exact handoff. Append source-bound configuration evidence and limitations. A missing installed dependency, invalid addon or unusable config is a failed/blocked setup; a pending normal client reload is an explicit P3 prerequisite, not a fabricated live success. No gameplay systems or other projects are changed.
+
+VERSIONING AND GIT
+Only after required configuration checks pass, set the existing root package.json version to 0.0.2. A failed fresh task retains 0.0.1; preserve compatible partial work. The runner owns child-task checkpoint commits. Direct interactive execution remains reviewable and is recorded as such. Do not push from this prompt.

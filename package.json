@@ -1,0 +1,16 @@
+{
+  "name": "fish",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Development-only phase runner for Fish",
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "fish:phase": "node scripts/fish-phase.mjs",
+    "fish:phase:validate": "node scripts/validate-fish-phase.mjs",
+    "test:runner": "node --test test/unit/fish-phase-prompt-grammar.test.ts test/unit/fish-phase-runner.test.ts",
+    "test": "npm run test:runner"
+  }
+}

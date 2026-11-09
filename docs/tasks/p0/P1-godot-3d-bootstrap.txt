@@ -1,0 +1,32 @@
+TASK: Phase 0 / P1 — Godot 3D bootstrap
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.0.1`.
+
+GOAL
+Create the actual Godot .NET/C# foundation for jfin602/fish and the thin development CLI. Produce a small real 3D scene with a controllable placeholder fish and a third-person camera, suitable for the next MCP integration step. This is foundation work, not qualified survival gameplay.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p0/README.md, the P1 section of implementation-plan.md, docs/development.md, docs/technical-direction.md, and MODULES.md. Read only the swimming/system passages needed to preserve 3D/third-person intent. Inspect repository/branch/HEAD, dirty work and actual files. Continue compatible existing work; do not overwrite owner changes. The fresh baseline is package 0.0.0; reconcile any partial continuation rather than resetting it.
+
+IMPLEMENTATION
+1. Discover actual Godot .NET and dotnet installations. Reuse the compatible Space Factory toolchain where available without changing that repository or system defaults. Reference pins are Godot 4.7.2 .NET, Godot.NET.Sdk/4.7.2, .NET SDK 10.0.403 and net10.0. Record actual versions. If these cannot be used, explain the concrete incompatibility and choose only a necessary coherent documented adjustment; do not silently switch language/editor edition. Install missing prerequisites through official user-local mechanisms when available and authorized by this setup task; preserve access controls.
+2. Create game/project.godot, Fish.csproj, Fish.sln and global.json with coherent pins. Use C# gameplay in namespace Fish. Begin with Compatibility rendering as a reversible simple-3D default. Create a real scenes/main.tscn with Node3D composition, Camera3D, light, spatial landmarks/static collision bounds and a simple visible fish-shaped placeholder. Use native primitive geometry; no external art dependency.
+3. Add a small C# movement controller with documented horizontal/vertical input, no underwater gravity fall, sensible physics updates and bounded collision behavior. Put the main camera behind/above the fish and keep it distinct from movement authority. Include readable prototype control help and normal input release/focus handling. These are working bootstrap controls; defer burst, first-person polish and final swimming feel.
+4. Create tools/dev, executable and independent of caller CWD. Implement doctor, import, build, check, editor, run, inspect-scene and automation-smoke as specified in docs/development.md. Use safe quoted arguments, GODOT_CMD array support and DOTNET_BIN from ignored tools/local.env; do not eval command strings. Run dotnet from game/ so global.json actually selects its SDK. Keep generated logs/output under artifacts/. Missing tools/scenes and timeouts must return actionable nonzero results.
+5. Make check compose import, C# build, a bounded smoke of the actual main scene and a disposable saved-scene round trip once. Emit FISH_SMOKE_OK only after real C# initialization/assertions succeed. Treat missing marker, runtime/script errors and timeout as failure. A minimal isolated GDScript SceneTree helper under game/dev/ may use Godot's PackedScene/ResourceSaver APIs; first-party gameplay remains C#. Remove temporary fixtures and preserve necessary UID sidecars.
+6. Update owning development/module/current-state docs to the actual created scope, controls, command composition and tool versions. Keep native observations unqualified until P3. Preserve the root runner commands and existing ignore rules.
+
+SCOPE LIMITS
+No feeding, prey/predator AI, growth, real saves, permanent-death storage, narrative generation, history menu, procedural world, advanced water, release export or imported Space Factory gameplay. Do not add empty future frameworks, npm dependencies or a root package-lock.json. MCP installation belongs to P2.
+
+VALIDATION
+Tier T1. Run doctor, then the composed check once on the final candidate. Verify actual C# execution, saved-scene serialization/reload, missing-scene nonzero behavior and one wrapper command from another CWD. Inspect logs and source/fixture cleanliness. Do not add a broad test framework or repeat component builds already performed by check. Initial installation/import may exceed ordinary time targets: preserve progress and precise remaining work rather than claim a pass.
+
+DONE CONDITION AND REPORT
+The real Fish 3D C# project and commands exist, required T1 checks pass, and documentation describes their actual boundaries. Create/append docs/tasks/p0/qualification/implementation.md with source identity, actual versions/paths, commands/results, smoke/scene evidence, controls, any pin deviation and P2 handoff. Keep G0.2/G0.3 and native swimming quality NOT OBSERVED. Report implementation, verification and progression separately.
+
+VERSIONING AND GIT
+Only after required P1 checks pass, set the root package.json version to 0.0.1, preserving all other metadata. A failed fresh task retains 0.0.0; do not discard partial work. Do not self-commit or push from a runner child; the runner owns implementation checkpoints. In direct interactive execution, leave changes reviewable and record that mode rather than fabricating runner history.

@@ -1,0 +1,33 @@
+TASK: Phase 0 / P3 — Native foundation closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.0.3`.
+
+MANUAL FINAL BOUNDARY
+This is p0's sole final closeout. The inherited Browser required field means native Godot/MCP/manual observation, and the runner pauses even with --closeout. Execute deliberately in an interactive session after P1/P2, reloading Codex if needed to expose the new local tools. Preserve existing trust/approval controls. Use actual native tools or the owner's returned observations; keep unavailable behavior NOT OBSERVED. Browser access alone does not control a native game.
+
+GOAL AND PREREQUISITES
+Qualify only Fish roadmap G0.1, G0.2 and G0.3. Require the actual P1 project/CLI and P2 configuration, not merely their documents. Read AGENTS.md, BOOT.md, the p0 README, implementation-plan.md P3/evidence sections, current qualification/implementation.md, P0 roadmap criteria and validation B01-B04. Inspect current source identity, local changes, actual controls, display and MCP availability. Recheck prior evidence only when intervening changes invalidate it.
+
+A — CORRECT EDITOR AND SCENE
+1. Open the real Fish editor with tools/dev editor and its matching local bridge environment. Query the available server-info and health tools. Record the actual absolute project path, engine/server/addon versions and reported capabilities. Confirm the connected editor is this Fish game directory before any mutation. Configured project env or an open port is not sufficient; repair routing or report a blocker if the peer is wrong.
+2. Inspect the actual main scene tree through MCP. Verify the placeholder fish, 3D camera, light and test-habitat nodes. Perform one bounded create/edit/save/reload/assert operation on a disposable scene under the development fixture location, then remove it without changing unrelated owner scenes. Coordinate external writes with editor saves. Preserve evidence of serialized values, not only transient viewport state.
+
+B — REAL GAME AND INPUT
+1. Compile C# using the existing .NET command as needed, avoiding an unchanged duplicate build. Launch the actual main scene through the connected editor's live runtime tools. Inspect real runtime state and confirm the matching probe is present when required. Do not substitute a separate headless process for this live observation.
+2. Observe the 3D scene and primary third-person view. Use the actual documented horizontal and vertical controls. Record fish position before input, after a bounded held action, and after release; demonstrate movement and release rather than merely reporting injected input counts. Check the foundation collision bounds and camera's visible relation to the fish. These observations qualify bootstrap controls only, not final swimming quality.
+3. Capture actual running-game pixels with the runtime screenshot tool or native capture, and inspect the returned image. An editor viewport image is separately labeled. Read runtime/debug output, identify any errors, stop the Fish play session cleanly and confirm the editor remains usable. Close only sessions launched for this task when cleanup is needed.
+4. Record expected and observed outcomes per B01-B04 as PASS, FAIL, NOT OBSERVED or BLOCKED with a specific dependency. A necessary client restart or missing input/capture tool is a precise handoff, not a pass. Repair only concrete small foundation defects in scope, then rerun affected checks; preserve prior failures.
+
+C — SINGLE CLOSEOUT
+1. Create docs/tasks/p0/qualification/native-playtest.md with source revision/dirty-source identity, actual platform/tool versions, peer path, actions, state deltas, inspected captures, logs and limitations. Retain essential evidence under the task or stable links; do not leave required evidence only in disposable local artifacts.
+2. Create docs/tasks/p0/closeout.md mapping every G0.1-G0.3 criterion to the actual configuration, headless, scene and native evidence. Separate implementation, verification and progression. Missing required native evidence prevents a complete Phase even if useful setup can proceed.
+3. Reconcile docs/roadmap.md, p0 README, BOOT.md, MODULES.md and docs/development.md to actual state. Keep later gameplay Phases NOT STARTED. If all P0 Gates pass, route the next scope to P1 swimming/habitat planning; do not implement it now. Review links and git diff --check without repeating unchanged gameplay solely because documentation was updated.
+
+VALIDATION AND REPORT
+Tier T3 native foundation, then T1 documentation reconciliation. Report exact candidate, all three Gate outcomes, runtime input/capture results, C# build evidence, MCP identity/configuration, commands and remaining steps. No ecosystem, growth, persistence, narrative, history-menu, final first-person or release/platform claims are in this closeout. No Fish platform outside the one actually tested is qualified.
+
+VERSIONING AND GIT
+Set only the existing root package.json version to 0.0.3 when all selected P0 Gates and closeout pass. Failed or unobserved required evidence retains the previous 0.0.2 checkpoint. Do not self-commit or push the manual closeout; leave final changes reviewable and preserve the runner's human-review boundary.
