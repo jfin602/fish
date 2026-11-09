@@ -1,0 +1,28 @@
+TASK: Correction 1 / P2 — Hybrid runtime input
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.1.9`.
+
+GOAL
+Make keyboard and mouse usable simultaneously through one profile-driven SwimIntent, with the established SwimMotor and player collision root untouched. Preserve usable Keyboard Only and Mouse Only fallback profiles.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, c1-bindings README.md and implementation-plan.md P2, the P1 store implementation/evidence, docs/systems/swimming-and-camera.md, and only affected game/scripts/SwimMotor.cs, FishController.cs, KeyboardSwimInput.cs, MouseSwimInput.cs, PlayShell.cs, DisplayPreferences.cs and relevant actual-scene tests. Inspect HEAD/dirty tree and require the P1 correction checkpoint or equivalent reconciled direct evidence, root 0.1.9 and intact P1 P9 foundation.
+
+IMPLEMENT
+1. Replace FishController's exclusive selected-adapter path with one active-profile input resolver that reads configured physical keyboard and mouse button events and relative mouse motion. Produce ONE SwimIntent per physics tick and call SwimMotor.Step exactly once. Do not duplicate the motor, recalculate physics from input-frame events, change camera or move the fish root from the UI.
+2. Define deterministic combined input rules: thrust/slow are bounded at 0..1 regardless of duplicate keys/buttons; yaw and pitch digital versus mouse contributions mix once with opposing directions canceling and final magnitude clamped; mouse relative X/Y integrated/consumed exactly once per physics step. Preserve clamped sensitivity/inversion, warp filtering, capture initialization and headless determinism. A keyboard-only profile ignores mouse steering and a mouse-only profile remains fully usable without keyboard.
+3. Apply changes to the active preset atomically at a safe input boundary. Clear held/queued controls and disarm until menu activation/captured input is released; suppress incidental mouse movement and synthetic warp on capture. Do NOT reset the fish transform, collision state, SwimTuning or physical speed solely because the profile changed; existing pause semantics still freeze gameplay. Refactor ClearAndDisarmInput thoughtfully to distinguish intentional stop/reset from control-switch neutralization.
+4. Protect Escape recovery, pause options, capture/focus loss, restore after refocus, display switching and menu input ownership. A click/keypress used to apply/resume/change a binding must not propel the fish on the first gameplay frame. Keep existing selected-mode preferences compatible with persisted profiles.
+5. Add bounded scene-bound checks for simultaneous W + mouse yaw/pitch, mouse-button/key overlap, opposing steer inputs, clamps, capture/rearm, switch while held, pause/focus and legacy profile parity.
+
+SCOPE / DEFERRALS
+No preset creator visuals (P3), rapid-cycle overlay (P4), motor feel changes, camera rewrites, survival state, controller, free look or future abilities. Preserve reversible implementation and explicit limited tests.
+
+VALIDATE
+T2. Inspect the composition of ./tools/dev check, then run it once when meaningful with focused source-bound input tests and existing motor/scene checks; avoid duplicated full builds. Test both legacy control paths and hybrid in the real saved Fish scene, including harmless profile changes during motion. git diff --check; keep package.json at 0.1.9. Headless event tests are NOT native comfort evidence. Append dated outcomes, failures and P3 UI handoff to c1-bindings/qualification/implementation.md.
+
+DONE / VERSION / HANDOFF
+All three built-in profiles produce correct bounded intent through the same motor; no stuck movement, double-dispatch, capture spike or simulation reset on profile change. No regression in keyboard/mouse-only inputs. No package version change, self-commit or push; runner owns checkpoint.
