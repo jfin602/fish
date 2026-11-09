@@ -23,8 +23,8 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 
 | ID | Scenario and required result | Gates |
 | --- | --- | --- |
-| V01 | Swim in horizontal and vertical directions; turn, release input and meet boundaries/cover; equivalent simulation conditions are independent of render/view changes. | G1.1 |
-| V02 | Follow fish through shelter and open space; inspect depth/heading, occlusion, focus and viewport readability in the actual game. | G1.2 |
+| V01 | Complete the accepted core movement course in mouse-only mode and the keyboard fallback. Observe quick acceleration, gradual release slowdown, keyboard backward-input slowing, curved turns/turnarounds, gaps, pitch-based travel to upper/lower landmarks, release, pause/resume, collisions and boundaries. Equivalent simulation conditions remain independent of render/view changes. | G1.1 |
+| V02 | Observe the same course and several minutes of free swimming in both desktop modes. Verify accepted third-person framing, smooth follow, obstacle visibility, swimming/gliding body motion, turning lean and a steady camera horizon. Record focus/viewport behavior and the owner's judgment of comfort, natural feel, nimbleness and ease of control. | G1.2 |
 | V03 | Consume food/prey, repeat callbacks or competing contacts, reject ineligible prey, and account for one removal/reward per entity. | G2.1 |
 | V04 | Cross growth thresholds while near geometry; verify continuous identity, visible/body changes, usable shelter changes and a food-chain reversal. | G2.1 |
 | V05 | Observe a predator's detection/attack, a legitimate escape and a lethal encounter; each event's cause agrees with authoritative state. | G2.2 |
@@ -41,6 +41,30 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
+## Core movement acceptance
+
+**Design and criteria approved — 2026-11-09; execution results remain owned by the roadmap.** The [completed worksheet Q10](planning/p1/swim-controls-worksheet.md#q10--ready-for-gameplay-playtest) accepts these seven criteria for the [core swimming contract](systems/swimming-and-camera.md):
+
+| Criterion | Required owner-play result | Scenario |
+| --- | --- | --- |
+| 1. Start and slow predictably | Accelerate quickly, approach a chosen landmark, and slow near it with confidence. | V01 |
+| 2. Turn through a small course | Circle rocks, reverse direction through a turn, and pass through gaps with the intended slight need to anticipate. | V01 |
+| 3. Navigate vertically | Reach landmarks above and below, then return to level swimming without losing your bearings. | V01 |
+| 4. Keep the view comfortable | The fish and route remain readable through turns, climbs, dives, and nearby obstacles. | V02 |
+| 5. Recover control cleanly | Pause and resume without stuck inputs or unexpected movement. | V01 |
+| 6. Use both desktop modes | Complete the same course comfortably with mouse-only controls and the keyboard fallback. | V01, V02 |
+| 7. Enjoy swimming itself | Spend several minutes exploring and feel that the fish is natural, nimble, and easy to control. | V02 |
+
+Use one compact course with open space, landmarks at different depths, rocks to circle and a gap/passage. Record its layout, source revision, platform, bindings/tuning, selected mode, actions, outcomes and owner feedback. Each desktop mode needs its own observations; completing the course in one mode does not qualify the other.
+
+Observe slowing on propulsion release in mouse mode and the selected backward-input slowing in keyboard mode. An active mouse brake has no selected binding yet. Intended gradual coasting is not stuck input. Return to level travel through the implemented controls; automatic leveling has not been selected.
+
+V02 observes a camera behind/slightly above at moderate distance, with the whole fish and route ahead visible, smooth direction/depth following, and adjustment near geometry. Body/tail motion eases during gliding and the fish bends/leans into turns. A steady horizon does not require fixed camera pitch.
+
+The owner evaluates several minutes of free swimming in both modes for enjoyment, natural feel, nimbleness and ease. Record this judgment directly; automated movement assertions cannot supply it.
+
+The implemented core is locked for progression only after required native observations and owner acceptance are recorded for G1.1/G1.2. Movement abilities follow that actual core acceptance. Controller support, free look, movement abilities, growth-dependent handling, feeding and predators belong to later scope; the other gameplay scenarios remain required when those systems are implemented.
+
 ## Requirement coverage
 
 | Confirmed requirement | Planned evidence |
@@ -49,6 +73,9 @@ These IDs are scenario references, not installed test commands. Write executable
 | C05–C07: one life across sessions, permanent death, no offline simulation | V06–V09; V14. |
 | C08–C10: brief factual recounting and all stories in main-menu history | V08; V10–V12; V14. |
 | C11–C13: reference workflow, Godot/MCP starter and honest setup boundary | Starter content/link/diff and runner checks; B01–B04 after p0. |
+| C14–C15: core first, then Movement abilities | V01/V02 and recorded owner acceptance establish the prerequisite; the abilities require their own later task evidence. |
+| C16–C17: realistic ocean direction and approved asset shortlist | [Art and assets](art-and-assets.md) selection record and acquisition/import checks; selection alone does not qualify an import or runtime suitability. |
+| C18–C26: desktop controls, swimming feel, camera/body presentation, free-look deferral and owner acceptance | V01/V02 in both desktop modes; inspect initial scope and record the owner's actual play judgment. Later controller support needs separate qualification. |
 
 IDs refer to [the decision register](decisions-and-questions.md). A coverage mapping is not a passed result.
 

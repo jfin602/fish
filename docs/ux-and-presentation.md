@@ -26,7 +26,9 @@ These labels are working UI wording. Continue, New life, and Life History must r
 
 Prioritize the fish, nearby food, useful shelter, and threats. Size differences should be visually legible. If health, stamina, hunger, or growth meters are implemented, derive them from authoritative state and show information that helps the next decision.
 
-The camera follows the current decisions in [swimming and camera](systems/swimming-and-camera.md). Plants, rocks, depth changes, and lighting can provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the selected sources and preparation checks. Detailed water effects, fog, and exact HUD treatment remain open.
+The approved [swimming presentation](systems/swimming-and-camera.md) places the camera behind and slightly above the fish at a moderate distance, showing its whole body and useful space ahead. It follows direction and depth changes smoothly, adjusts near obstacles to keep the fish visible, and keeps a steady horizon while the body bends and leans into turns. Visible tail and body motion eases during a glide.
+
+Plants, rocks, depth changes, and lighting can provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the selected sources and preparation checks. Exact camera offsets and smoothing, animation strength, detailed water effects, fog, and HUD treatment remain tuning or production choices.
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 

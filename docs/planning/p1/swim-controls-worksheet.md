@@ -2,13 +2,13 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01–Q09 answered for the initial scope; free look deferred; Movement abilities follow core lock.  
-**Answers recorded:** 9 of 10 (9 answered).  
-**Next question:** Q10 — Ready-for-gameplay playtest.
+**Status:** Complete; design and playtest criteria approved on 2026-11-09. Free look is deferred; Movement abilities follow acceptance of the implemented core.  
+**Answers recorded:** 10 of 10 (10 answered).  
+**Next step:** Implement and tune the approved core after verifying the foundation, then qualify it through native play and owner acceptance.
 
 ## Purpose and scope
 
-The owner wants to settle fish controls and movement feel before developing the survival mechanics. This worksheet captures those choices through ten questions, discussed and saved one at a time.
+The owner wants to settle fish controls and movement feel before developing the survival mechanics. All ten questions were discussed, saved, and accepted through the final documentation review on 2026-11-09. This worksheet preserves the conversation; the [swimming contract](../../systems/swimming-and-camera.md) owns the consolidated requirements.
 
 Third person is already the primary perspective; first person remains an optional view of the same fish. The questions focus on the primary swimming experience. Suggested examples below are possibilities to discuss, not selected defaults.
 
@@ -16,7 +16,7 @@ The owner has played a tech demo. Record their observations as owner feedback; d
 
 [Swimming and camera](../../systems/swimming-and-camera.md) owns the movement contract. This worksheet holds the discussion and answers for [P1](../../roadmap.md#p1--swim-through-a-habitat) and the controls decision Q02 in the [decision register](../../decisions-and-questions.md). An answer records design intent; implementation and native playtest evidence remain separate.
 
-## Working through the worksheet
+## Record and revision process
 
 1. Ask the next question in conversation, with the optional examples when useful. The owner may answer freely, combine examples, or leave a detail open.
 2. Save each answer to this file before moving on. Preserve the owner's words under **Owner answer** and date the entry. Put interpretation under **Decision notes**, clearly identifying any proposed interpretation.
@@ -34,7 +34,7 @@ Optional starting points: quick and nimble; smooth and flowing with some weight;
 - **Recorded:** 2026-11-09.
 - **Owner answer:** Yes, your description is pretty spot on. Uh, I like the line movement that requires planning. Your fish should feel nimble and agile in the water, but it's still water after all. So there's slight fluid dynamics where you have to turn a little earlier than normal to make the turn in time and stuff like that. But at the end of the day, it shouldn't be hard to control the fish
 - **Decision notes:** Summary of the owner's answer: the fish should feel nimble and agile, with slight water effects that reward anticipating a turn and starting it a little earlier. It should remain easy to control. This establishes the desired feel; the precise movement model remains open.
-- **Open details:** Exact momentum, acceleration, stopping behavior, and turning response will be refined in Q04 and Q05, preserving the nimble, approachable feel.
+- **Open details:** Q04 and Q05 settle the qualitative acceleration, slowing, and turning behavior. Exact numeric response remains for implementation and playtesting, preserving the nimble, approachable feel.
 
 ## Q02 — Input device and comfort
 
@@ -47,7 +47,7 @@ Examples: keyboard and mouse; gamepad; both, with one named as the first playtes
 - **Owner answer:** We should target keyboard and mouse first and support controller later on. I feel like controller might be the best way to get the most natural feel, but that really limits who can play the game. So both needs to be possible
 - **Owner elaboration (2026-11-09):** Within the keyboard and mouse department, there should be two modes as well. So there, I, I think that we could have a particularly mouse-based game mode or control mode where the mouse controls direction and your movements of the mouse control like the direction the fish is going. And then holding one of the buttons of the mouse controls like speed or thrust or whatever. And you could do it all from a USB mouse. That would be pretty natural too, but not everybody has a USB mouse, which is why there would be a fallback keyboard option
 - **Decision notes:** Summary of the owner's answers: target keyboard and mouse first, with two desktop control modes. A mouse-only mode uses mouse movement to control the fish's direction and a held mouse button to control swimming speed or thrust; the exact speed/thrust model is still open. A keyboard fallback supports players without an external mouse. Add controller support later, with both desktop controls and controller ultimately supported. The owner expects a controller, and potentially the mouse-only mode, to feel natural; keeping keyboard controls available broadens access.
-- **Open details:** Mouse button assignment, exact speed/thrust behavior, keyboard bindings, camera/free-look behavior, comfort settings, and the controller implementation milestone remain open. The explicit steering and held-button choices are carried into Q03 and Q04.
+- **Open details:** Mouse button assignment, exact speed/thrust implementation, keyboard bindings, comfort settings, and the controller implementation milestone remain open. Q03 defers free look; Q07 and Q09 settle the qualitative camera behavior.
 
 ## Q03 — Looking and steering
 
@@ -61,7 +61,7 @@ Examples: the fish steers toward the view while swimming; looking and steering a
 - **Owner follow-up (2026-11-09):** Let's not worry about free look right now
 - **Free look:** Deferred for the current controls work.
 - **Decision notes:** Answered for the initial scope using the owner's combined choices: mouse movement steers the fish (Q02); keyboard left/right inputs make curved turns and backward input slows the fish (Q05); both modes pitch to change depth (Q06); the camera follows from behind and slightly above, with smooth direction changes and obstacle adjustment (Q07). Free look remains explicitly deferred.
-- **Open details:** Exact camera tuning belongs to Q07, and camera response to body animation belongs to Q09. Free look can be revisited later; it is outside the current controls scope.
+- **Open details:** Q07 and Q09 settle the follow and steady-horizon behavior; numeric camera tuning remains open. Free look can be revisited later; it is outside the current controls scope.
 
 ## Q04 — Starting, coasting, and stopping
 
@@ -99,7 +99,7 @@ Examples: look or aim up and down, then swim in that direction; use dedicated ri
 - **Owner answer:** Yes, continue
 - **Confirmation context:** The owner was asked whether changing depth should tilt the fish's nose up or down and then swim in that direction, using vertical mouse movement in mouse mode and up/down steering inputs in keyboard mode. The owner accepted this proposal.
 - **Decision notes:** Both desktop control modes change depth by pitching the fish upward or downward and swimming along that direction. Vertical mouse movement controls the pitch in mouse-only mode; keyboard up/down steering inputs provide the equivalent behavior.
-- **Open details:** Exact keyboard bindings, vertical sensitivity, pitch limits, and any return-to-level assistance remain open. Camera response during climbs and dives belongs to Q07 and Q09.
+- **Open details:** Exact keyboard bindings, vertical sensitivity, pitch limits, and any return-to-level assistance remain open. Q07 and Q09 define smooth camera following with a steady horizon through direction and depth changes.
 
 ## Q07 — Third-person camera
 
@@ -163,8 +163,21 @@ Consider tail motion during effort and gliding, body lean during turns, and whet
 
 Examples: approach and stop near a landmark; weave between rocks; turn around predictably; reach a point above or below; pass through a gap; regain control cleanly after pausing; enjoy several minutes of free swimming. Identify the actions and feel that matter most to you, including any behavior that would still make the controls feel unfinished.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:** Yes, lock all this down in the docs with a final /docs-review
+- **Confirmation context:** The owner accepted the seven proposed playtest criteria listed below and requested their final documentation review and application.
+- **Decision notes:** These are the accepted requirements for the core playtest in both desktop modes. The design is approved; actual implementation, native observations, and the owner's acceptance of the implemented feel are still required before the core is locked for progression to Movement abilities.
+- **Open details:** Concrete course layout, bindings, tuning values, source revision, and platform will be recorded during implementation and qualification.
+
+### Accepted playtest criteria
+
+1. **Start and slow predictably:** Accelerate quickly, approach a chosen landmark, and slow near it with confidence.
+2. **Turn through a small course:** Circle rocks, reverse direction through a turn, and pass through gaps with the intended slight need to anticipate.
+3. **Navigate vertically:** Reach landmarks above and below, then return to level swimming without losing your bearings.
+4. **Keep the view comfortable:** The fish and route remain readable through turns, climbs, dives, and nearby obstacles.
+5. **Recover control cleanly:** Pause and resume without stuck inputs or unexpected movement.
+6. **Use both desktop modes:** Complete the same course comfortably with mouse-only controls and the keyboard fallback.
+7. **Enjoy swimming itself:** Spend several minutes exploring and feel that the fish is natural, nimble, and easy to control.
+
+Detailed execution and evidence requirements are owned by [validation](../../validation.md#core-movement-acceptance). A completed worksheet records decisions and does not pass a gameplay Gate.

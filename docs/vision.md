@@ -44,7 +44,7 @@ The recounting emphasizes actual turning points. A short life can have a short s
 
 ## Scope
 
-The first playable work should prove a compact version of swimming, feeding, growth, and escaping. The first integrated survival slice must also prove continuing a life across sessions, permanent death, a factual recounting, and revisiting that story from the main menu.
+The first playable work should establish natural, nimble, easy-to-control swimming and a comfortable third-person camera. Actual playtesting and owner acceptance lock the core before the selected [Movement abilities](planning/p1/movement-abilities.md) follow-up. The later compact survival loop adds feeding, growth, and escaping. The first integrated survival slice must also prove continuing a life across sessions, permanent death, a factual recounting, and revisiting that story from the main menu.
 
 The owner selected realistic ocean creatures and environments on 2026-11-09. [Art and assets](art-and-assets.md) records the approved asset shortlist and first import set. The final player species, specific ocean biome, detailed water presentation, procedural generation, number of simultaneous living saves, and cross-run unlocks remain open. Multiplayer, breeding, detailed biological simulation, and online services are not part of the initial scope.
 

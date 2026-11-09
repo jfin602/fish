@@ -2,19 +2,57 @@
 
 ## Status and ownership
 
-**Planned; no implementation or native qualification.** The confirmed perspective is 3D with third person as the primary view and an optional first-person view for the same fish. This document owns player movement and camera behavior; [ecology and growth](ecology-and-growth.md) owns size and feeding, and [UX](../ux-and-presentation.md) owns visible feedback.
+**Design approved — 2026-11-09.** The completed [ten-question worksheet](../planning/p1/swim-controls-worksheet.md) preserves the owner's answers and final review. This document owns the accepted core movement and camera contract. [Validation](../validation.md#core-movement-acceptance) owns the accepted playtest scenarios, and [the roadmap](../roadmap.md) owns actual Phase/Gate results.
 
-## Controls discussion
+The owner reported playing a tech demo. The reviewed GitHub snapshot contains the starter and documentation; this review does not establish the local demo's implementation or qualify its feel. Design approval is complete. The implemented core still needs native playtesting and owner acceptance.
 
-The owner requested a [ten-question swim controls worksheet](../planning/p1/swim-controls-worksheet.md) on 2026-11-09. Work through it one question at a time and save each answer there. It captures the desired movement feel before survival mechanics are developed; its examples remain proposals until answered. Reconcile the movement contract from the recorded choices while keeping implementation and native qualification distinct.
+Third person is the primary view. Optional first person remains part of the wider game for the same fish. [Ecology and growth](ecology-and-growth.md) owns size and feeding; [UX](../ux-and-presentation.md) owns presentation beyond swimming.
 
-## Working prototype
+## Accepted core feel
 
-Use a compact 3D habitat with clear depth cues, a visible fish body, and a camera that leaves enough space to read nearby threats. The owner's selected initial focus is normal swimming, curved turning, vertical movement, and slowing. The [worksheet](../planning/p1/swim-controls-worksheet.md) records the device and control choices; exact bindings and tuning remain to be settled.
+The fish should feel natural, nimble, agile, and easy to control. A slight sense of water resistance and momentum rewards starting a turn a little early. Acceleration is quick; slowing after propulsion input is released is more gradual. Tune these qualities together so the player can approach a target and navigate deliberately.
 
-On 2026-11-09, the owner selected **[Movement abilities](../planning/p1/movement-abilities.md)** as the next implementation focus once the core is locked down: short speed burst, precision mode, and quick evasive turn. These follow the core controls work.
+Left/right steering makes curved turns. Depth changes come from pitching the fish's nose upward or downward and swimming in that direction. These are desired movement qualities; the precise movement algorithm and numerical response remain tuning choices.
 
-Swimming should be responsive while still conveying a moving body. The first prototype should establish how the player aims, changes depth, turns around cover, and stops or slows. Detailed hydrodynamics, currents, advanced animation, and multiple locomotion styles are later possibilities.
+## Initial control modes
+
+Keyboard/mouse development and qualification come first. Both desktop modes must be usable on the same playtest course.
+
+| Mode | Accepted behavior |
+| --- | --- |
+| Mouse-only | Mouse movement steers the fish; vertical mouse movement pitches it up/down. Holding a mouse button controls swimming speed or thrust. Releasing propulsion produces the selected gradual slowdown. The mode is playable using the mouse alone. |
+| Keyboard fallback | Provides control without an external mouse. Left/right input steers through curved paths; backward input slows the fish. Up/down steering inputs pitch the fish for vertical travel. Exact propulsion and steering keys remain to be assigned. |
+
+Backward keyboard input is a slowing command. A turnaround is performed through a curved steering turn. The specific mouse button, speed-demand versus thrust implementation, and any active slowing input for mouse mode remain open.
+
+Controller support follows later, with eventual support for controller as well as desktop controls. The owner's expectation that a controller may feel especially natural does not replace qualification of either desktop mode. **Free look is deferred** for the current controls scope.
+
+## Camera and body presentation
+
+The third-person camera sits behind and slightly above the fish at a moderate distance. Keep its whole body visible and leave enough space ahead to read the route. Follow direction and depth changes smoothly while keeping up with the fish. Near rocks and other obstacles, adjust the camera to keep the fish visible; the exact obstruction technique remains open.
+
+Show visible tail and body motion during swimming, easing during a glide. The body bends and leans into turns. The camera follows smoothly with a steady horizon, letting the fish's movement supply the sense of motion. A steady horizon must remain compatible with following climbs and dives.
+
+Camera offsets, smoothing, animation strength, and obstacle transitions need actual playtesting. A still image or headless position assertion cannot establish comfortable control or camera feel.
+
+## Core acceptance and work order
+
+Implement and tune normal swimming, turning, vertical travel, and slowing first, with the selected camera and body motion. The owner-approved [core acceptance criteria](../validation.md#core-movement-acceptance) cover predictable starting/slowing, curved navigation, depth control, camera comfort, pause/resume, both desktop modes, and enjoyable free swimming.
+
+The core is locked for progression when the required native observations and the owner's acceptance of the implemented feel are recorded. Completing the worksheet or approving this design does not establish that result.
+
+After that core acceptance, **[Movement abilities](../planning/p1/movement-abilities.md)** is the next selected implementation focus: short speed burst, precision mode, and quick evasive turn. Their internal order, inputs, tuning, and any costs/cooldowns remain open. Feeding, predators, growth, saving, and the broader life loop follow their own roadmap scope.
+
+## Remaining tuning and bindings
+
+| Area | Still to determine |
+| --- | --- |
+| Input details | Exact keys and mouse buttons, keyboard propulsion input, sensitivity, comfort settings, and the input needed for any active mouse-mode slowing. |
+| Movement response | Speed/thrust implementation, cruising speed, acceleration and slowing rates, turn radius/rate at different speeds, near-stationary handling, pitch limits, and any leveling assistance. |
+| Presentation | Exact camera offsets and framing, follow smoothing, obstacle adjustment, optional zoom behavior, animation cadence/amplitude, and transitions between effort and gliding. |
+| Later work | Controller layout/milestone, free-look design if revisited, and the detailed Movement abilities design. |
+
+These details should be chosen and documented during implementation and playtesting without changing the accepted qualitative control model. Neither a realistic fluid solver nor a particular animation technique has been selected.
 
 ## State boundaries
 
@@ -22,26 +60,15 @@ Swimming should be responsive while still conveying a moving body. The first pro
 - Input requests movement or actions; the camera does not own the fish's survival state.
 - Camera changes preserve identity, location, growth, health, resources, and active encounters.
 - Input captured by menus must not continue swimming or trigger a bite when the menu closes.
-- Pausing and resuming must clear stale input without advancing the paused simulation.
+- Pausing and resuming must clear stale input without advancing the paused simulation. Intended coasting after input release is distinct from stuck propulsion input.
 - Visual scale, collision shape, and camera distance need an explicit policy as the fish grows. A visual enlargement alone must not claim qualified passage through cover.
 
 Third-person collision avoidance should keep the fish readable near rocks and plants. First person needs an intentional eye position, visibility treatment for the fish mesh, and usable near clipping. Switching view must not move the fish through an obstacle or provide a different collision footprint.
 
-## Threat readability
+## Later integration checks
 
-Movement and camera tests must include threats above and below the player, close cover, a tight turn, and pursuing prey near a boundary. Audio, screen-edge indicators, and predator posture are possible aids. Their exact design is open; the target is an understandable opportunity to react.
+When the relevant systems exist, extend movement and camera checks to threats above/below, close cover, and pursuing prey near boundaries. Audio, screen-edge indicators, and predator posture remain possible aids; their exact design is open.
 
-For the later Movement abilities work, any burst must have a clearly observable availability and effect. If stamina or cooldown is selected, its authoritative state persists through view changes and saves. Numeric costs, recovery speed, and whether burst helps both escape and pursuit remain tuning choices.
+For later Movement abilities, any burst must have an observable availability and effect. If stamina or cooldown is selected, its authoritative state persists through view changes and saves. Costs, recovery, and use in escape/pursuit remain later tuning choices.
 
-## Acceptance targets
-
-These are future checks, not completed results:
-
-- Navigate in all intended directions and reach visible food without fighting the camera.
-- Use cover to escape a readable predator approach.
-- Keep the same fish state through repeated third-/first-person switches.
-- Preserve collision boundaries at multiple fish sizes.
-- Pause, open a menu, resume, and regain control without stuck movement.
-- Resume a saved position near cover with coherent camera and collision state.
-
-Use [validation](../validation.md) for evidence standards. Headless position assertions cannot establish camera comfort or readable native presentation.
+Preserve the wider game checks: reach food without fighting the camera; use cover during a readable predator approach; preserve fish state through view switches; preserve collision boundaries at multiple sizes; and resume saved positions near cover coherently. Those checks belong to the relevant later [validation scenarios](../validation.md), separate from the initial core lock.

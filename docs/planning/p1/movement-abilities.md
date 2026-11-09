@@ -7,7 +7,7 @@
 
 First make normal swimming, turning, and slowing feel right. Once the owner locks down that core, **Movement abilities** is the next implementation focus. This sequence comes from the owner's [worksheet answer Q08](swim-controls-worksheet.md#q08--extra-movement-actions).
 
-The [swimming contract](../../systems/swimming-and-camera.md) owns movement behavior, and [the roadmap](../../roadmap.md) owns Phase/Gate progress. The core playtest targets are being settled in worksheet Q10. Completing the worksheet records design choices; the core still needs actual playtesting and owner acceptance.
+The [swimming contract](../../systems/swimming-and-camera.md) owns movement behavior, and [the roadmap](../../roadmap.md) owns Phase/Gate progress. The owner approved the seven core playtest criteria in worksheet Q10; [validation](../../validation.md#core-movement-acceptance) owns their execution and evidence requirements. The completed worksheet locks the design. Actual native playtesting and owner acceptance must lock the implemented core before this follow-up begins.
 
 ## Selected follow-up
 

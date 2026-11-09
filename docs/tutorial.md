@@ -26,6 +26,8 @@ The first real death introduces the recounting and its permanent history entry. 
 
 ## Prototype boundaries
 
+The current core-controls playtest precedes the feeding-and-escape opening described above. Its accepted scenarios are owned by [validation](validation.md#core-movement-acceptance), using the [swimming contract](systems/swimming-and-camera.md). The tutorial sequence remains a later working design.
+
 An initial movement sandbox may offer a development reset. Label it clearly as a test action and keep it separate from the eventual saved-life rules. A sandbox reset does not prove permanent death, save recovery, or history behavior.
 
 The early gameplay prototype should get the player back to meaningful feeding and escape decisions promptly after failure. Exact growth speed, threat timing, and tutorial repetition are tuning choices. The [roadmap](roadmap.md) determines when those choices are tested.

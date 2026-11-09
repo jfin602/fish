@@ -7,15 +7,15 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Area | Actual state |
 | --- | --- |
 | Product | Owner-approved 3D fish survival, a saved living fish across sessions, permanent death, and a main-menu archive of brief life stories. |
-| Documentation | Initial product/system contracts, decisions, roadmap, workflow, and setup instructions authored. See [starter evidence](docs/tasks/repository-bootstrap/qualification.md). |
+| Documentation | Core-controls design and playtest criteria approved; [worksheet](docs/planning/p1/swim-controls-worksheet.md) complete at 10/10. [Swimming](docs/systems/swimming-and-camera.md) owns the accepted contract. See [starter evidence](docs/tasks/repository-bootstrap/qualification.md) for the original import. |
 | Phase runner | Space Factory's Node.js runner ported as `fish:phase` and `fish:phase:validate`; package version starts at `0.0.0`. This is development metadata. |
-| Game and developer CLI | `game/` and `tools/dev` have not been created. No Fish game runtime exists yet. |
+| Game and developer CLI | The reviewed GitHub snapshot has no `game/` or `tools/dev`. The owner reports playing a local tech demo; its checkout and runtime have not been inspected by this documentation review. |
 | Engine direction | Godot 4 .NET/C#; reference pins and 3D renderer decision are in [technical direction](docs/technical-direction.md). |
 | Art and habitat | Realistic ocean creatures and environments selected; [art and assets](docs/art-and-assets.md) owns the nine-asset shortlist and four-asset starter set. Downloads, imports, and runtime suitability remain unverified. |
 | Godot Editor MCP | Required development integration, researched and specified; not installed or observed for Fish by this starter. |
 | Gameplay/platform evidence | None. Space Factory's Linux observations do not qualify Fish; no Fish platform has passed. |
-| Next task | Execute the authored [p0 Godot/MCP foundation stack](docs/tasks/p0/README.md). All game Phases remain NOT STARTED. |
-| Active design discussion | Work through the [swim controls worksheet](docs/planning/p1/swim-controls-worksheet.md) one question at a time, saving each answer. Follow its current next-question pointer. |
+| Next task | Inspect the actual checkout and reconcile foundation evidence; use the authored [p0 stack](docs/tasks/p0/README.md) for missing foundation work. Then implement/tune the accepted core controls and perform [V01–V02](docs/validation.md#core-movement-acceptance). |
+| Controls sequence | Design approved; actual core playtest acceptance still required. [Movement abilities](docs/planning/p1/movement-abilities.md) follows that acceptance. Free look is deferred; controller support comes later. |
 
 ## Product contract to preserve
 
@@ -25,12 +25,12 @@ The [decision register](docs/decisions-and-questions.md) separates confirmed beh
 
 ## Next bounded scope
 
-P0 creates a visibly runnable 3D Godot .NET foundation, a thin developer CLI, and an isolated Godot Editor MCP connection. It ends with real editor/runtime observations on the owner's available desktop. It does not implement feeding, predators, growth, saves, death, stories, or the history menu.
+The design discussion is complete. Inspect the real checkout first: the published snapshot is the starter, while the owner reports a local demo. Preserve existing work and reconcile what p0 has actually completed before rerunning foundation tasks.
 
-1. Inspect the real checkout and local tools; preserve existing owner work and the Space Factory setup.
-2. Read [p0's plan and prompts](docs/tasks/p0/README.md) and the routed setup docs.
-3. Validate with `npm run fish:phase:validate -- p0`.
-4. Execute only the authorized bootstrap scope, preserving manual checkpoints and truthful evidence.
-5. Reconcile the roadmap, task records, module map, and setup docs after actual execution. The next gameplay phase is P1 swimming/habitat, not an automatic extension of p0.
+1. Verify the current checkout, local tools, and Fish/Space Factory MCP isolation using the [p0 task](docs/tasks/p0/README.md) and [development setup](docs/development.md). P0 establishes the 3D foundation and tools; it does not qualify final swimming feel.
+2. Use the [approved swimming contract](docs/systems/swimming-and-camera.md), [remaining tuning/bindings](docs/systems/swimming-and-camera.md#remaining-tuning-and-bindings), and completed worksheet to scope the core implementation.
+3. Implement and tune normal swimming, turning, depth travel, slowing, camera following, and body motion in the mouse-only mode and keyboard fallback.
+4. Observe the same course and free swimming in both modes against [V01–V02](docs/validation.md#core-movement-acceptance), then record the owner's acceptance of the implemented feel in task evidence and the roadmap.
+5. Once the actual core is accepted, move to the selected Movement abilities follow-up. The current design approval does not advance any gameplay Gate.
 
 Keep detailed results in task evidence. Update this guide after a real change in the next action or current implementation.

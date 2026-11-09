@@ -59,7 +59,7 @@ For the first authorized art/import task:
 2. Inspect geometry, textures, scale, orientation, deforming bones, and available animation clips. Bake or adapt authoring-specific rigs/materials when required; do not assume Unity prefabs/shaders or Blender procedural effects transfer.
 3. Assemble one small scene with the four starter assets. Check swimming loops, speed transitions, fin transparency, body deformation, material consistency, and visibility from the actual third-person camera.
 4. Check representative fish/vegetation duplication on the target machine before expanding the habitat. Record actual performance and preparation changes, rather than inferring suitability from polygon counts alone.
-5. Keep imported visual motion aligned with the choices in [swimming and camera](systems/swimming-and-camera.md) and the [active worksheet](planning/p1/swim-controls-worksheet.md). Core swimming, turning, and slowing remain the current priority; [Movement abilities](planning/p1/movement-abilities.md) follows core lock.
+5. Keep imported visual motion aligned with the choices in [swimming and camera](systems/swimming-and-camera.md) and the [completed worksheet](planning/p1/swim-controls-worksheet.md). Core swimming, turning, and slowing remain the current priority; [Movement abilities](planning/p1/movement-abilities.md) follows core lock.
 
 This document does not execute an import or expand the [p0 foundation scope](tasks/p0/README.md). P0 may still use simple native geometry and a placeholder fish to establish the development loop.
 

@@ -50,9 +50,11 @@ The following stages describe an intended experience; they are not fixed level n
 
 The central early proof is a visible change in food-chain position. A species that initially threatens the player can become suitable prey after sufficient growth, if the selected prototype's size rules permit it. Growth must stay within one fish's identity; changing species is not part of the approved life progression.
 
-## Candidate controls and feedback
+## Controls and feedback
 
-A third-person camera behind and above the fish, direct swimming, a feeding action, and a short speed burst are working designs for the first prototype. Tiny food could be collected by contact, while live prey requires an aimed bite. Exact bindings, steering, burst cost, and feeding rules must be tested in a running 3D scene.
+The core control direction is owner-approved in the [swimming contract](systems/swimming-and-camera.md), with the conversation preserved in the [completed worksheet](planning/p1/swim-controls-worksheet.md). First establish natural, nimble swimming that remains easy to control, using the mouse-only mode and keyboard fallback. Controller support follows later; free look is deferred.
+
+After actual playtesting and owner acceptance of the core, [Movement abilities](planning/p1/movement-abilities.md) is the next implementation focus. Feeding belongs to the later survival loop. Tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
 
 Threats must remain legible above, below, and outside the camera's immediate view. Candidate predator behavior is approach, a readable attack commitment, pursuit, and disengagement. Small fish can use cover and turning; larger fish gain useful hunting capability. Numeric advantages and handling changes are tuning decisions.
 
@@ -64,7 +66,11 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 ## First playable and integrated scope
 
-The first gameplay prototype uses one compact 3D ocean habitat, one controllable fish, small food, one prey type, and one predator type. It should prove responsive swimming, a readable escape, visible growth, and a meaningful change in what the player can eat. [Art and assets](art-and-assets.md) owns the approved ocean asset shortlist and first import set. The selected test assets do not settle the final player species or require every shortlisted creature and environment asset to appear together. Specific content and quantities are prototype choices.
+The first playable movement work uses a compact 3D ocean test habitat and one controllable fish to qualify the accepted core controls and camera in both desktop input modes. Once that core is accepted in play, Movement abilities follows according to [the roadmap](roadmap.md).
+
+[Art and assets](art-and-assets.md) owns the approved ocean asset shortlist and first import set. The selected test assets do not settle the final player species or require every shortlisted creature and environment asset to appear together.
+
+The later feeding-and-growth prototype uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 

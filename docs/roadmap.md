@@ -55,23 +55,26 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 **Status: NOT STARTED.** Scenarios V01–V02.
 
-**Owner-selected sequence — 2026-11-09:** first lock down the core controls using the [swim worksheet](planning/p1/swim-controls-worksheet.md) and actual playtesting. **[Movement abilities](planning/p1/movement-abilities.md)** is the next implementation focus after that core is accepted. The linked plan owns the three selected follow-ups and their remaining design choices.
+**Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
 
 ### G1.1 — Swimming and physical space
 
 **Result: NOT OBSERVED.**
 
-- Adopt and document a bounded 3D control scheme; movement/turning feel responsive in actual play.
-- Horizontal/vertical travel, collision and shelter geometry behave coherently, including repeated input and boundary cases.
+- Implement the accepted mouse-only mode and keyboard fallback; each completes the same core movement course comfortably.
+- Observe quick acceleration, gradual release slowdown, keyboard backward-input slowing, curved turns/turnarounds, gap navigation, and pitch-based travel to upper/lower landmarks and back to level travel.
+- Observe clean input release and pause/resume with coherent collisions and boundaries. Intended coasting remains distinguishable from stuck input.
 - Rendering/view changes do not alter equivalent movement/time outcomes. Qualify the core controls before the Movement abilities follow-up.
 
 ### G1.2 — Third-person readability
 
 **Result: NOT OBSERVED.**
 
-- The camera follows the same fish, supports understandable heading/depth and handles nearby geometry without hiding necessary action.
-- The initial habitat has readable shelter and exposed travel/feeding areas using provisional assets.
-- Observe mouse/focus/release behavior and controls at the chosen supported viewport; camera/UI state does not become simulation authority.
+- Observe the accepted third-person framing: behind/slightly above, moderate distance, whole fish and route ahead visible, smooth direction/depth following, and adjustment near geometry.
+- Observe visible swimming/gliding body animation and turning lean with a steady camera horizon.
+- The initial test habitat has readable cover, open travel, landmarks at different depths, and gaps using provisional assets.
+- Observe focus/release and supported-viewport behavior in both modes; camera/UI state does not become simulation authority.
+- Record the owner's judgment that several minutes of ordinary swimming feel natural, nimble, comfortable and easy to control in both modes. This actual acceptance, together with G1.1, locks the core for the Movement abilities follow-up.
 
 ## P2 — Feed, escape and grow
 
