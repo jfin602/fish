@@ -33,8 +33,25 @@ func _run() -> void:
 			camera.keep_aspect == Camera3D.KEEP_HEIGHT and camera.near <= 0.1,
 			"active camera profile or world-space rig missing"):
 		return
-	if not _require(camera.global_position.z > 3.8 and camera.global_position.y > 0.8,
+	if not _require(camera.global_position.z > 3.3 and camera.global_position.y > 1.5 and
+			absf(camera.global_position.x - fish.global_position.x) < 0.01,
 			"spawn camera is not behind and above the fish"):
+		return
+	Input.action_press("swim_yaw_right")
+	await _tick(8)
+	Input.action_release("swim_yaw_right")
+	var rear := Vector2(camera.global_position.x - fish.global_position.x,
+		camera.global_position.z - fish.global_position.z).normalized()
+	var desired_rear := Vector2(fish.global_basis.z.x, fish.global_basis.z.z).normalized()
+	var turn_lag := absf(rear.angle_to(desired_rear))
+	if not _require(turn_lag > 0.05 and turn_lag < 0.5,
+			"camera did not lag slightly behind an actual motor turn"):
+		return
+	await _tick(45)
+	rear = Vector2(camera.global_position.x - fish.global_position.x,
+		camera.global_position.z - fish.global_position.z).normalized()
+	if not _require(absf(rear.angle_to(desired_rear)) < 0.02,
+			"camera did not return behind the fish after the turn"):
 		return
 	# Freeze only the motor in this fixture; camera still reads the real fish transform.
 	fish.set_physics_process(false)
@@ -86,8 +103,8 @@ func _run() -> void:
 	var early_recovery := camera.global_position.z
 	await _tick(90)
 	var recovered_z := camera.global_position.z
-	if not _require(early_recovery > blocked_z and early_recovery < 4.1 and
-			recovered_z > 4.0 and recovered_z < 4.3,
+	if not _require(early_recovery > blocked_z and early_recovery < 3.7 and
+			recovered_z > 3.7 and recovered_z < 3.9,
 			"camera failed smooth recovery after post cleared"):
 		return
 	post.position.x -= 5.0
@@ -102,7 +119,7 @@ func _run() -> void:
 		return
 	paused = false
 	await _tick(2)
-	if not _require(camera.global_position.distance_to(Vector3(-4, 3.1, 0.2)) < 0.2,
+	if not _require(camera.global_position.distance_to(Vector3(-4, 3.83, -0.59)) < 0.2,
 			"resume retained stale interpolation after teleport"):
 		return
 	var previous_size := root.get_visible_rect().size
@@ -111,10 +128,10 @@ func _run() -> void:
 	await process_frame
 	await _tick(2)
 	if not _require(root.get_visible_rect().size != previous_size and
-			camera.global_position.distance_to(Vector3(-3.2, 3.1, 0.2)) < 0.2 and
+			camera.global_position.distance_to(Vector3(-3.2, 3.83, -0.59)) < 0.2 and
 			camera.fov == 68.0,
 			"viewport resize did not reset follow or preserve projection"):
 		return
-	print("CAMERA_SCENE_OK blocked_z=%.3f recovery_z=%.3f viewport=%s" % [
-		blocked_z, recovered_z, root.get_visible_rect().size])
+	print("CAMERA_SCENE_OK turn_lag=%.3f blocked_z=%.3f recovery_z=%.3f viewport=%s" % [
+		turn_lag, blocked_z, recovered_z, root.get_visible_rect().size])
 	quit()

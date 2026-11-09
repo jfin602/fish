@@ -109,7 +109,8 @@ public static class StarterWorld
         fish.AddChild(playerVisual);
         playerVisual.Name = "PlayerVisual";
         playerVisual.Scale = Vector3.One * 0.12f;
-        playerVisual.RotationDegrees = new Vector3(0, 90, 0);
+        // Fish3's Face-to-Tail axis imports toward +Z; align its nose with motor forward (-Z).
+        playerVisual.RotationDegrees = new Vector3(0, 180, 0);
         playerVisual.AddChild(motion);
         foreach (var oldPart in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
             if (fish.GetNodeOrNull<MeshInstance3D>(oldPart) is { } oldMesh) oldMesh.Visible = false;

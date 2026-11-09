@@ -44,6 +44,12 @@ func _run() -> void:
 				"required deforming bone or rotation track missing: " + name):
 			return
 	var tail := skeleton.find_bone("Tail")
+	var face := skeleton.find_bone("Face")
+	var rest_facing := (skeleton.to_global(skeleton.get_bone_global_rest(face).origin) -
+		skeleton.to_global(skeleton.get_bone_global_rest(tail).origin)).normalized()
+	if not _require(rest_facing.dot(-fish.global_basis.z) > 0.85,
+			"Fish3 nose does not align with the authoritative swim heading"):
+		return
 	var neutral := clip.rotation_track_interpolate(
 		clip.find_track(NodePath("Armature/Skeleton3D:Tail"), Animation.TYPE_ROTATION_3D), 0.0)
 	# Give the motor room to coast without meeting the north course boundary.

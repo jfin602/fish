@@ -9,12 +9,14 @@ public sealed class MouseSwimInput
     private const float MaximumQueuedPixels = 80f;
     private Vector2 _pendingPixels;
     private bool _thrustHeld;
+    private bool _slowHeld;
     private bool _ignoreNextMotion = true;
 
     public void Clear()
     {
         _pendingPixels = Vector2.Zero;
         _thrustHeld = false;
+        _slowHeld = false;
         _ignoreNextMotion = true;
     }
 
@@ -28,6 +30,11 @@ public sealed class MouseSwimInput
         if (@event is InputEventMouseButton button && button.ButtonIndex == MouseButton.Left)
         {
             _thrustHeld = button.Pressed;
+            return;
+        }
+        if (@event is InputEventMouseButton brake && brake.ButtonIndex == MouseButton.Right)
+        {
+            _slowHeld = brake.Pressed;
             return;
         }
         if (@event is not InputEventMouseMotion motion) return;
@@ -47,11 +54,11 @@ public sealed class MouseSwimInput
     {
         var pixels = _pendingPixels;
         _pendingPixels = Vector2.Zero;
-        if (delta <= 0) return new SwimIntent(_thrustHeld ? 1 : 0, 0, 0, 0);
+        if (delta <= 0) return new SwimIntent(_thrustHeld ? 1 : 0, _slowHeld ? 1 : 0, 0, 0);
         var yaw = pixels.X * sensitivity / (Mathf.Max(0.001f, tuning.YawRateDegrees) * delta);
         var pitchPixels = invertY ? pixels.Y : -pixels.Y;
         var pitch = pitchPixels * sensitivity / (Mathf.Max(0.001f, tuning.PitchRateDegrees) * delta);
-        return new SwimIntent(_thrustHeld ? 1 : 0, 0,
+        return new SwimIntent(_thrustHeld ? 1 : 0, _slowHeld ? 1 : 0,
             Mathf.Clamp(yaw, -1, 1), Mathf.Clamp(pitch, -1, 1));
     }
 }

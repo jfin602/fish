@@ -94,7 +94,7 @@ public partial class PlayShell : Node
         items.AddChild(modeLabel);
         var mode = new OptionButton { Name = "InputModeOption", FocusMode = Control.FocusModeEnum.All };
         mode.AddItem("Keyboard", 0);
-        mode.AddItem("Mouse only", 1);
+        mode.AddItem("Mouse steering + camera keys", 1);
         mode.Select(_preferences.InputMode == DisplayPreferences.MouseMode ? 1 : 0);
         ApplyFocusStyle(mode);
         mode.ItemSelected += index =>
@@ -177,7 +177,7 @@ public partial class PlayShell : Node
             GetViewport().SetInputAsHandled();
         }
         else if (@event is InputEventMouseButton button && button.Pressed &&
-                 button.ButtonIndex == MouseButton.Right &&
+                 button.ButtonIndex == MouseButton.Middle &&
                  _preferences.InputMode == DisplayPreferences.MouseMode)
         {
             if (!_overlay.Visible) Pause();
@@ -234,8 +234,8 @@ public partial class PlayShell : Node
         var viewport = GetViewport().GetVisibleRect().Size;
         _help.Visible = _preferences.ShowControlHelp && !_overlay.Visible;
         _help.Text = _preferences.InputMode == DisplayPreferences.MouseMode
-            ? "Mouse: move to turn/pitch   Hold left: swim   Right: pause/options"
-            : "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Esc: pause/options";
+            ? "Mouse: steer   Left: swim   Right: slow   WASD: camera   Shift: hold view   Wheel: zoom   Middle/Esc: pause"
+            : "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Wheel: zoom   Esc: pause/options";
         _help.Position = new Vector2(20, 16);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;

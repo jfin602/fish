@@ -45,6 +45,7 @@ func _run() -> void:
 	root.add_child(scene)
 	current_scene = scene
 	var fish: CharacterBody3D = scene.get_node("Fish")
+	var camera: Camera3D = scene.get_node("Fish/CameraRig/Camera3D")
 	var shell: Node = scene.get_node("PlayShell")
 	await _tick(3)
 	# The shell builds its controls in C#, so discover them by stable names.
@@ -60,6 +61,13 @@ func _run() -> void:
 	if not _require(mode.selected == 0, "fresh profile did not start in keyboard mode"):
 		return
 	if not _require(options.visible, "mouse-only entry to options is absent"):
+		return
+	var keyboard_zoom_before := camera.global_position.distance_to(fish.global_position)
+	_mouse_button(MOUSE_BUTTON_WHEEL_UP, true, Vector2(100, 100))
+	_mouse_button(MOUSE_BUTTON_WHEEL_UP, false, Vector2(100, 100))
+	await _tick(28)
+	if not _require(camera.global_position.distance_to(fish.global_position) < keyboard_zoom_before - 0.2,
+			"wheel zoom did not work in keyboard mode"):
 		return
 	var options_point := options.get_global_rect().get_center()
 	_mouse_button(MOUSE_BUTTON_LEFT, true, options_point)
@@ -150,11 +158,56 @@ func _run() -> void:
 	if not _require(absf(fish.rotation.y - yaw) < 0.0001 and absf(fish.rotation.x - pitch) < 0.0001,
 			"mouse displacement applied more than once"):
 		return
+	await _tick(45) # Let the following view settle after the mouse yaw/pitch probe.
 	_key(KEY_W, true)
-	await _tick(8)
+	var centered_eye := camera.global_position
+	await _tick(20)
 	_key(KEY_W, false)
 	if not _require(fish.global_position.distance_to(start) < 0.001,
 			"inactive keyboard thrust moved mouse fish"):
+		return
+	if not _require(camera.global_position.y > centered_eye.y + 0.15,
+			"mouse-mode W did not lift the camera view"):
+		return
+	await _tick(65)
+	if not _require(camera.global_position.distance_to(centered_eye) < 0.13,
+			"camera did not return after W release"):
+		return
+	_key(KEY_SHIFT, true)
+	_key(KEY_A, true)
+	_key(KEY_S, true)
+	await _tick(22)
+	_key(KEY_A, false)
+	_key(KEY_S, false)
+	await _tick(65)
+	var held_eye := camera.global_position
+	await _tick(20)
+	if not _require(camera.global_position.distance_to(held_eye) < 0.03 and
+			camera.global_position.distance_to(centered_eye) > 0.4 and
+			fish.global_position.distance_to(start) < 0.001,
+			"Shift did not hold the panned camera without moving the fish"):
+		return
+	_key(KEY_SHIFT, false)
+	await _tick(90)
+	if not _require(camera.global_position.distance_to(centered_eye) < 0.13,
+			"releasing Shift did not return the camera to center: actual=%s baseline=%s" % [camera.global_position, centered_eye]):
+		return
+	var default_distance := camera.global_position.distance_to(fish.global_position)
+	for i in 2:
+		_mouse_button(MOUSE_BUTTON_WHEEL_UP, true, Vector2(100, 100))
+		_mouse_button(MOUSE_BUTTON_WHEEL_UP, false, Vector2(100, 100))
+	await _tick(35)
+	var zoomed_distance := camera.global_position.distance_to(fish.global_position)
+	if not _require(zoomed_distance < default_distance - 0.45 and
+			fish.global_position.distance_to(start) < 0.001,
+			"wheel-up zoom did not move the camera toward the fish without moving it"):
+		return
+	for i in 2:
+		_mouse_button(MOUSE_BUTTON_WHEEL_DOWN, true, Vector2(100, 100))
+		_mouse_button(MOUSE_BUTTON_WHEEL_DOWN, false, Vector2(100, 100))
+	await _tick(75)
+	if not _require(absf(camera.global_position.distance_to(fish.global_position) - default_distance) < 0.12,
+			"wheel-down zoom did not restore the default camera distance: before=%.3f in=%.3f after=%.3f" % [default_distance, zoomed_distance, camera.global_position.distance_to(fish.global_position)]):
 		return
 	_mouse_button(MOUSE_BUTTON_LEFT, true)
 	await _tick(18)
@@ -168,11 +221,20 @@ func _run() -> void:
 			"primary release did not enter passive coast"):
 		return
 	_mouse_button(MOUSE_BUTTON_RIGHT, true)
-	await process_frame
+	await _tick(1)
+	if not _require(not paused, "right-button slowing opened the pause menu"):
+		return
+	await _tick(27)
+	if not _require(fish.velocity.length() < 0.1 and not paused,
+			"right-button slowing failed to stop without reverse swimming"):
+		return
 	_mouse_button(MOUSE_BUTTON_RIGHT, false)
+	_mouse_button(MOUSE_BUTTON_MIDDLE, true)
+	await process_frame
+	_mouse_button(MOUSE_BUTTON_MIDDLE, false)
 	await process_frame
 	if not _require(paused and Input.mouse_mode == Input.MOUSE_MODE_VISIBLE,
-			"secondary button did not pause and release capture"):
+			"middle button did not pause and release capture"):
 		return
 	# Switching back while primary is held must neutralize both adapters.
 	_mouse_button(MOUSE_BUTTON_LEFT, true)
@@ -204,5 +266,5 @@ func _run() -> void:
 			config.get_value("input", "invert_mouse_y"),
 			"local mode/sensitivity/inversion did not persist"):
 		return
-	print("INPUT_LIFECYCLE_OK keyboard mouse pause focus capture rearm preferences")
+	print("INPUT_LIFECYCLE_OK keyboard mouse right-slow middle-pause camera-pan shift-hold wheel-zoom focus capture rearm preferences")
 	quit()

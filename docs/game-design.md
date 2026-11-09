@@ -52,7 +52,7 @@ The central early proof is a visible change in food-chain position. A species th
 
 ## Controls and feedback
 
-The core control direction is owner-approved in the [swimming contract](systems/swimming-and-camera.md), with the conversation preserved in the [completed worksheet](planning/p1/swim-controls-worksheet.md). First establish natural, nimble swimming that remains easy to control, using the mouse-only mode and keyboard fallback. Controller support follows later; free look is deferred.
+The core control direction is owner-approved in the [swimming contract](systems/swimming-and-camera.md), with the conversation preserved in the [completed worksheet](planning/p1/swim-controls-worksheet.md). First establish natural, nimble swimming that remains easy to control, using mouse steering and keyboard fallback. Controller support follows later. P10 owner feedback added a limited, self-returning camera pan in mouse mode and wheel zoom in either mode; a broader free-look system remains later work.
 
 After actual playtesting and owner acceptance of the core, [P2 worldbuilding](planning/p2/underwater-world.md) is the next roadmap focus: turn the movement laboratory into a natural underwater reef space and establish the water presentation. [Movement abilities](planning/p1/movement-abilities.md) remain accepted future movement work. Feeding belongs to P3; tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
 

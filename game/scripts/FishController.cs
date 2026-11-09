@@ -17,6 +17,10 @@ public partial class FishController : CharacterBody3D
     private bool _mouseCaptureActive;
 
     public string ActiveInputMode => _inputMode;
+    public bool CanUseMouseCamera => _inputMode == DisplayPreferences.MouseMode &&
+        _mouseCaptureActive && _inputArmed && !GetTree().Paused;
+    public bool CanZoomCamera => _inputArmed && !GetTree().Paused &&
+        (_inputMode == DisplayPreferences.KeyboardMode || _mouseCaptureActive);
     public float PresentationSpeed => _state.Speed;
     public float PresentationEffort { get; private set; }
     public float PresentationTurn { get; private set; }
@@ -40,7 +44,8 @@ public partial class FishController : CharacterBody3D
             // The release tick itself cannot propel the fish.
             if (KeyboardSwimInput.AllReleased() &&
                 !Input.IsMouseButtonPressed(MouseButton.Left) &&
-                !Input.IsMouseButtonPressed(MouseButton.Right)) _inputArmed = true;
+                !Input.IsMouseButtonPressed(MouseButton.Right) &&
+                !Input.IsMouseButtonPressed(MouseButton.Middle)) _inputArmed = true;
             return;
         }
 
@@ -83,11 +88,13 @@ public partial class FishController : CharacterBody3D
         _state.Speed = 0;
         _state.Velocity = Vector3.Zero;
         Velocity = Vector3.Zero;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.ClearLookOffset();
     }
 
     public void SetInputMode(string mode)
     {
         if (!DisplayPreferences.IsSupportedInputMode(mode)) return;
+        if (_inputMode != mode) GetNodeOrNull<FollowCamera>("CameraRig")?.ResetZoom();
         ClearAndDisarmInput();
         _inputMode = mode;
     }

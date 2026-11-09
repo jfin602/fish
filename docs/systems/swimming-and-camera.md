@@ -25,7 +25,7 @@ Keyboard/mouse development and qualification come first. Both desktop modes must
 
 Backward keyboard input is a slowing command. A turnaround is performed through a curved steering turn. The specific mouse button, speed-demand versus thrust implementation, and any active slowing input for mouse mode remain open.
 
-Controller support follows later, with eventual support for controller as well as desktop controls. The owner's expectation that a controller may feel especially natural does not replace qualification of either desktop mode. **Free look is deferred** for the current controls scope.
+Controller support follows later, with eventual support for controller as well as desktop controls. The owner's expectation that a controller may feel especially natural does not replace qualification of either desktop mode. During P10, the owner revised the camera scope: in mouse mode, W/S move the camera up/down and A/D orbit it around the fish, returning to center after release; holding Shift retains that offset until Shift is released. The fish remains steerable and pausable using only the mouse. A broader independent free-look system remains later work.
 
 ## Camera and body presentation
 
@@ -34,6 +34,8 @@ The third-person camera sits behind and slightly above the fish at a moderate di
 Show visible tail and body motion during swimming, easing during a glide. The body bends and leans into turns. The camera follows smoothly with a steady horizon, letting the fish's movement supply the sense of motion. A steady horizon must remain compatible with following climbs and dives.
 
 Camera offsets, smoothing, animation strength, and obstacle transitions need actual playtesting. A still image or headless position assertion cannot establish comfortable control or camera feel.
+
+P10 owner feedback rejects a side-offset follow camera. The current direction is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. These are implemented candidate controls, pending final native qualification and owner acceptance.
 
 ## Core acceptance and work order
 
