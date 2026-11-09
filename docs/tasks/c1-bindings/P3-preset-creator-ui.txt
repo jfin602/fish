@@ -1,0 +1,28 @@
+TASK: Correction 1 / P3 — Preset creator UI
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.1.9`.
+
+GOAL
+Provide a usable in-game pause/options Control Presets editor with rebinding, custom profiles and safe apply/revert, without bloating the test-session shell or losing keyboard-only/mouse-only menu access.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, c1-bindings README.md and implementation-plan.md P3, P1/P2 code/evidence, docs/ux-and-presentation.md focus/display sections, and actual PlayShell.cs, DisplayPreferences.cs, new preset model/store/resolver, runtime scene and relevant focus tests. Confirm root 0.1.9, expected correction P1–P2 completion, Fish repo identity and unrelated changes before editing.
+
+IMPLEMENT
+1. Extend the existing pause/options surface with a distinct Control Presets panel reachable by button and keyboard focus. Show built-in and custom named profiles and active/edited distinction; built-ins cannot be overwritten, but can be duplicated. Support Create/Save As, Duplicate, Rename, Delete, Reset, Save/Apply and Revert (with confirmation for destructive operations). Keep a recoverable prior selected profile if an edit or apply is cancelled.
+2. Display semantic actions with their current key/button bindings, support multiple bindings per action and remove/replace. Clicking a rebinding row begins a clear modal capture state and captures only a new physical keyboard key or mouse button. Use a separate explicit editor for mouse X/Y steering direction and sensitivity/inversion; do not capture incidental pointer movement as a key/button. Detect and explain conflicting assignments; disallow ambiguous competing actions or require explicit conflict resolution. Preserve unbindable reliable Pause/Escape/menu recovery.
+3. Consume captured or UI-activation events so they cannot simultaneously trigger movement or dismiss the menu; handle Escape as cancel during capture, not as a destructive rebind. Manage pointer release/recapture and focus correctly when entering, exiting, applying, pausing or losing window focus. Both mouse-only and keyboard-only players must be able to open, edit or exit settings. Keep show-controls help derived from current active bindings.
+4. Keep layouts usable in fullscreen and windowed fullscreen, including smaller windows. Reuse Godot Controls and minimal C# view/state components; avoid new art/dependencies and a general settings editor. Preserve the existing display controls, menu buttons and project renderer.
+5. Add focused UI tests for profile creation/duplicate/rename/delete/save/reload, binding a new key/mouse button, conflicts, safe cancel/reset, apply/revert, tab/keyboard focus, pointer selection and no input leak through Resume.
+
+SCOPE / DEFERRALS
+No developer quick-cycle (P4), controller support, long-term action categories, chatty onboarding, visual polish unrelated to control discoverability, physics changes or sweeping PlayShell rewrite. Native feel and genuine window interaction remain P5.
+
+VALIDATE
+T2. Inspect ./tools/dev check's work to avoid redundant runs. Run changed C# build/scene checks and targeted real-UI input/focus integration tests, including event capture's first gameplay frame and both display modes to the extent testable headlessly. Run git diff --check, verify root stays 0.1.9 and that no imported asset/vendor content is tracked. Record exact evidence and any unobserved native behaviors under c1-bindings/qualification/implementation.md.
+
+DONE / VERSION / HANDOFF
+Player can author custom hybrid bindings with visible conflict and cancellation behavior, apply and save them, relaunch and recover them, and always reach settings safely. Existing mode/display choices still work. Report unresolved P5 native checks and P4 quick-comparison handoff. Do not self-commit/push or change package version.
