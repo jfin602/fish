@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01 answered.  
-**Answers recorded:** 1 of 10.  
-**Next question:** Q02 — Input device and comfort.
+**Status:** In progress; Q01–Q02 answered; Q03–Q04 partially answered.  
+**Answers recorded:** 4 of 10 (2 answered; 2 partial).  
+**Next question:** Q03 — Looking and steering.
 
 ## Purpose and scope
 
@@ -42,11 +42,12 @@ Optional starting points: quick and nimble; smooth and flowing with some weight;
 
 Examples: keyboard and mouse; gamepad; both, with one named as the first playtest target. Include any essential preferences such as inverted look, sensitivity, hold versus toggle controls, or rebinding. Exact bindings can follow the movement choices.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:** We should target keyboard and mouse first and support controller later on. I feel like controller might be the best way to get the most natural feel, but that really limits who can play the game. So both needs to be possible
+- **Owner elaboration (2026-11-09):** Within the keyboard and mouse department, there should be two modes as well. So there, I, I think that we could have a particularly mouse-based game mode or control mode where the mouse controls direction and your movements of the mouse control like the direction the fish is going. And then holding one of the buttons of the mouse controls like speed or thrust or whatever. And you could do it all from a USB mouse. That would be pretty natural too, but not everybody has a USB mouse, which is why there would be a fallback keyboard option
+- **Decision notes:** Summary of the owner's answers: target keyboard and mouse first, with two desktop control modes. A mouse-only mode uses mouse movement to control the fish's direction and a held mouse button to control swimming speed or thrust; the exact speed/thrust model is still open. A keyboard fallback supports players without an external mouse. Add controller support later, with both desktop controls and controller ultimately supported. The owner expects a controller, and potentially the mouse-only mode, to feel natural; keeping keyboard controls available broadens access.
+- **Open details:** Mouse button assignment, exact speed/thrust behavior, keyboard bindings, camera/free-look behavior, comfort settings, and the controller implementation milestone remain open. The explicit steering and held-button choices are carried into Q03 and Q04.
 
 ## Q03 — Looking and steering
 
@@ -54,11 +55,11 @@ Examples: keyboard and mouse; gamepad; both, with one named as the first playtes
 
 Examples: the fish steers toward the view while swimming; looking and steering are independent; ordinary look steers the fish but a separate free-look action lets you inspect the surroundings. Consider looking behind or above while continuing along the same route.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Partial.
+- **Recorded:** 2026-11-09; carried forward from the owner's Q02 elaboration.
+- **Owner answer:** "the mouse controls direction and your movements of the mouse control like the direction the fish is going." The full statement is preserved in Q02.
+- **Decision notes:** The owner selected mouse movement to steer the fish in the mouse-only mode. This does not yet settle independent looking or how looking and steering work in the keyboard fallback.
+- **Open details:** Whether a free-look action can look around without changing the fish's direction; the keyboard mode's looking/steering relationship. Camera framing and follow behavior remain for Q07.
 
 ## Q04 — Starting, coasting, and stopping
 
@@ -66,11 +67,11 @@ Examples: the fish steers toward the view while swimming; looking and steering a
 
 Describe ordinary movement: holding an input to propel the fish or setting a sustained speed; immediate or gradual acceleration; stopping promptly or coasting after release. Use approaching a small landmark as the example. Optional special actions are covered in Q08.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Partial.
+- **Recorded:** 2026-11-09; carried forward from the owner's Q02 elaboration.
+- **Owner answer:** "And then holding one of the buttons of the mouse controls like speed or thrust or whatever." The full statement is preserved in Q02.
+- **Decision notes:** In mouse-only mode, holding a mouse button controls swimming speed or thrust. The owner has not yet chosen between those models. Preserve Q01's nimble feel and modest anticipation when refining the response.
+- **Open details:** The mouse button, speed versus thrust behavior, acceleration while held, coasting or stopping after release, and the equivalent keyboard input remain open.
 
 ## Q05 — Turning and directional movement
 
