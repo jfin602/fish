@@ -8,6 +8,7 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | --- | --- |
 | [p0](p0/README.md) | Godot/C#/MCP foundation: assessed, planned and authored; not executed. |
 | [p1](p1/README.md) | Settle core swimming with selected assets and fullscreen/windowed-fullscreen play; assessed, planned and authored, not executed. Requires actual P0 readiness and deliberate `0.1.0` entry. |
+| [c1-bindings](c1-bindings/README.md) | Authored, unexecuted correction for hybrid mouse/keyboard control presets, in-game rebinding and rapid live comparison; requires unchanged `0.1.9` on the inspected source. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for this documentation and runner import; no gameplay qualification. |
 
 ## Stack layout
