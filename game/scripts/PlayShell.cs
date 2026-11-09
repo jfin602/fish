@@ -148,7 +148,7 @@ public partial class PlayShell : Node
     {
         var viewport = GetViewport().GetVisibleRect().Size;
         _help.Visible = _preferences.ShowControlHelp && !_overlay.Visible;
-        _help.Text = "WASD / arrows: swim   E or Space: up   Q or PageDown: down   Esc: pause/options";
+        _help.Text = "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Esc: pause/options";
         _help.Position = new Vector2(20, 16);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;

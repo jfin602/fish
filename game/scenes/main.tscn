@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_main"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
 [ext_resource type="PackedScene" path="res://scenes/movement_course.tscn" id="3_course"]
+[ext_resource type="Resource" path="res://resources/swim_tuning.tres" id="4_tuning"]
 
 [sub_resource type="StandardMaterial3D" id="water"]
 albedo_color = Color(0.07, 0.3, 0.38, 1)
@@ -112,6 +113,7 @@ surface_material_override/0 = SubResource("marker_mat")
 collision_layer = 1
 collision_mask = 1
 script = ExtResource("2_fish")
+Tuning = ExtResource("4_tuning")
 
 [node name="Collision" type="CollisionShape3D" parent="Fish"]
 shape = SubResource("fish_shape")
@@ -157,4 +159,4 @@ offset_left = 18.0
 offset_top = 16.0
 offset_right = 700.0
 offset_bottom = 72.0
-text = "FOUNDATION PROTOTYPE  |  WASD / arrows: swim  |  E or Space: up  |  Q or PageDown: down"
+text = "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Esc: pause/options"

@@ -60,7 +60,7 @@ From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `
 | `./tools/dev inspect-scene <path>` | Inspect a real saved scene; missing paths fail nonzero. |
 | `./tools/dev automation-smoke` | Create/edit/save/reload/assert/remove a disposable scene using Godot APIs. |
 
-Generated command logs live under ignored `artifacts/logs/`; relevant UID sidecars are tracked. The C# smoke prints `FISH_SMOKE_OK` only after its main-scene assertions. Timeouts, missing markers, and engine/script errors fail the wrapper. The prototype controls are `WASD`/arrows horizontally, `E`/Space up, `Q`/PageDown down. The visible help labels them as a foundation prototype. The scene's x/y/z limits are ±8.3/±3/±8.3, with static enclosing collision geometry. Final swimming feel is not claimed.
+Generated command logs live under ignored `artifacts/logs/`; relevant UID sidecars are tracked. The C# smoke prints `FISH_SMOKE_OK` only after its main-scene assertions. Timeouts, missing markers, and engine/script errors fail the wrapper. P6's provisional keyboard controls are `W` thrust, `S` slowing, `A`/`D` yaw, Up/Down pitch and Esc pause. The scene's x/y/z limits are ±8.3/±3/±8.3, with static enclosing collision geometry. These are implementation defaults; final swimming feel is not claimed.
 
 Exports are later qualification scope. When introduced, use named platform presets and matching .NET export templates, retain the associated .NET runtime output, and test each claimed target separately. A configured preset is not a successful export or target-OS run.
 

@@ -2,14 +2,13 @@ using Godot;
 
 namespace Fish;
 
-/// <summary>Foundation prototype controls: WASD/arrows horizontal, E/Space up, Q/PageDown down.</summary>
+/// <summary>Authoritative fish transform, velocity and collision body.</summary>
 public partial class FishController : CharacterBody3D
 {
-    [Export] public float SwimSpeed { get; set; } = 4.0f;
+    [Export] public SwimTuning Tuning { get; set; } = new();
     private const float HorizontalLimit = 8.3f;
     private const float VerticalLimit = 3.0f;
-    private static readonly string[] SwimActions =
-        ["swim_left", "swim_right", "swim_forward", "swim_back", "swim_up", "swim_down"];
+    private SwimState _state;
     private bool _inputArmed = true;
 
     public override void _Ready() => MotionMode = MotionModeEnum.Floating;
@@ -19,43 +18,43 @@ public partial class FishController : CharacterBody3D
         if (!_inputArmed)
         {
             Velocity = Vector3.Zero;
-            // Wait for every old key to be released, then skip one more physics tick.
-            if (AllSwimActionsReleased()) _inputArmed = true;
+            // The release tick itself cannot propel the fish.
+            if (KeyboardSwimInput.AllReleased()) _inputArmed = true;
             return;
         }
-        var horizontal = Input.GetVector("swim_left", "swim_right", "swim_forward", "swim_back");
-        var vertical = Input.GetActionStrength("swim_up") - Input.GetActionStrength("swim_down");
-        var direction = new Vector3(horizontal.X, vertical, horizontal.Y).Normalized();
-        Velocity = direction * SwimSpeed;
+
+        _state = SwimMotor.Step(_state, KeyboardSwimInput.Read(), (float)delta, Tuning);
+        Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
+        Velocity = _state.Velocity;
         MoveAndSlide();
 
-        // A second, explicit limit is useful even when a collision is missed by a future scene edit.
-        Position = new Vector3(
+        // Collision and the existing habitat bounds remain authoritative.
+        var clamped = new Vector3(
             Mathf.Clamp(Position.X, -HorizontalLimit, HorizontalLimit),
             Mathf.Clamp(Position.Y, -VerticalLimit, VerticalLimit),
             Mathf.Clamp(Position.Z, -HorizontalLimit, HorizontalLimit));
+        var effective = Velocity;
+        if (!Mathf.IsEqualApprox(clamped.X, Position.X)) effective.X = 0;
+        if (!Mathf.IsEqualApprox(clamped.Y, Position.Y)) effective.Y = 0;
+        if (!Mathf.IsEqualApprox(clamped.Z, Position.Z)) effective.Z = 0;
+        Position = clamped;
+        Velocity = effective;
+        _state.Velocity = effective;
+        _state.Speed = effective.Length();
     }
 
     public void ClearAndDisarmInput()
     {
         _inputArmed = false;
+        _state.Speed = 0;
+        _state.Velocity = Vector3.Zero;
         Velocity = Vector3.Zero;
-    }
-
-    private static bool AllSwimActionsReleased()
-    {
-        foreach (var action in SwimActions)
-            if (Input.IsActionPressed(action)) return false;
-        return true;
     }
 
     public override void _Notification(int what)
     {
-        if (what == NotificationApplicationFocusOut)
-        {
-            foreach (var action in SwimActions)
-                Input.ActionRelease(action);
-            ClearAndDisarmInput();
-        }
+        if (what != NotificationApplicationFocusOut) return;
+        KeyboardSwimInput.ReleaseAll();
+        ClearAndDisarmInput();
     }
 }

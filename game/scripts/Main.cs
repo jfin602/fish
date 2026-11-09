@@ -92,13 +92,21 @@ public partial class Main : Node3D
         var decor = GetNodeOrNull<Node3D>("Habitat/StarterDecor");
         var course = GetNodeOrNull<Node3D>("Habitat/MovementCourse");
         var floor = GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
-        if (skeleton is null || skeleton.GetBoneCount() == 0 ||
+        if (fish.Tuning.ResourcePath != "res://resources/swim_tuning.tres" ||
+            skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
             ambient is null || ambient.GetChildCount() < 3 ||
             decor is null || decor.GetChildCount() != 4 || course is null ||
             floor.MaterialOverride is not StandardMaterial3D sand || sand.AlbedoTexture is null)
         {
             GD.PushError("FISH_SMOKE_FAILED starter resources did not instantiate fully");
+            GetTree().Quit(1);
+            return;
+        }
+        try { MotorChecks.Run(fish.Tuning); }
+        catch (Exception error)
+        {
+            GD.PushError($"FISH_SMOKE_FAILED motor: {error.Message}");
             GetTree().Quit(1);
             return;
         }
