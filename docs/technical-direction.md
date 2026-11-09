@@ -13,6 +13,7 @@
 | First verification target | Owner's Linux desktop, following the reference workflow. Other desktop targets require separate evidence. |
 | Initial renderer | Compatibility as a reversible bootstrap default inherited from Space Factory. It can render the simple 3D prototype; final water/lighting ambitions and renderer choice remain a later measured decision. |
 | Development orchestration | Existing Node.js 24 phase runner; a thin repository-relative `tools/dev` created by p0. |
+| P1 display contract | Fullscreen development from the first task, with windowed fullscreen for testing; [P1 design](planning/p1/core-swimming.md) and [UX](ux-and-presentation.md#fullscreen-presentation) own mappings, layout and acceptance. |
 
 These pins are source references, not a claim that Fish has installed or run them. P0 must inspect the actual machine and preserve suitable existing installations. If the reference pins cannot be used, record the exact incompatibility and deliberate replacement coherently; never silently change the language, editor edition, SDK, or unrelated Space Factory setup. [Development setup](development.md) owns installation details and verification.
 
@@ -45,6 +46,10 @@ Fish and Space Factory must have distinct project/bridge routing. Keep absolute 
 P0 creates a small 3D test habitat with a placeholder fish, simple input-driven movement and a third-person camera, sufficient to prove the development loop. This is a labeled foundation, not qualified swimming, feeding, or survival. Defer first-person polish, ecosystem AI, growth, saves, menus, and narratives to their roadmap Phases.
 
 Do not copy Space Factory's 2D scenes, assets, ship/factory rules, input assumptions, or qualification results. Port the useful workflow and tooling conventions, then implement Fish's own 3D state and presentation.
+
+## P1 implementation boundary
+
+After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selected-asset course, shared swim motor, mouse/keyboard adapters, follow camera and fish animation, and settles the dynamics through actual owner play. Small local display/input preferences and a pause/settings surface are part of this scope; survival saves and menus remain later work. Inspect the actual local demo before mapping planned source boundaries. Asset imports and fullscreen support are planned, not established by this document.
 
 ## Source references
 

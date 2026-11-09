@@ -66,7 +66,7 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 ## First playable and integrated scope
 
-The first playable movement work uses a compact 3D ocean test habitat and one controllable fish to qualify the accepted core controls and camera in both desktop input modes. Once that core is accepted in play, Movement abilities follows according to [the roadmap](roadmap.md).
+[P1](tasks/p1/README.md) uses a compact 3D ocean test habitat and one controllable fish to settle the accepted core controls and camera in both desktop input modes. It integrates the four selected starter assets, develops fullscreen from the first task, and provides windowed fullscreen for testing. P1 ends with recorded tuning and actual owner acceptance of the dynamics. Once that core and P1 review are accepted, Movement abilities follows according to [the roadmap](roadmap.md).
 
 [Art and assets](art-and-assets.md) owns the approved ocean asset shortlist and first import set. The selected test assets do not settle the final player species or require every shortlisted creature and environment asset to appear together.
 

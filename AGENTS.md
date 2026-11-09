@@ -18,7 +18,7 @@ The starter contains documentation and a Node.js development phase runner. The G
 | Execute an explicitly selected task stack | `npm run fish:phase -- <folder>` |
 | Check runner behavior and prompt grammar | `npm run test:runner` |
 
-The authored first stack is `p0`. Node.js 24 is required; no npm dependencies or install step are needed. `tools/dev` commands are planned in p0 and become available only after that implementation. Check the actual files before invoking them.
+The authored stacks are [p0 foundation](docs/tasks/p0/README.md) and [p1 core swimming](docs/tasks/p1/README.md). P1 execution requires actual P0 readiness and its documented Phase-entry baseline; authoring is not execution. Node.js 24 is required; no npm dependencies or install step are needed. `tools/dev` commands are planned in p0 and become available only after that implementation. Check the actual files before invoking them.
 
 ## Documentation routing
 

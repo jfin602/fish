@@ -1,0 +1,31 @@
+TASK: Phase 1 / P8 — Third-person following camera
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.8`.
+
+GOAL
+Implement the accepted camera: behind/slightly above, moderate distance, readable body/route, smooth direction/depth following, obstacle adjustment and steady horizon. Integrate both controls and the existing fullscreen course for P10's native tuning.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md and its implementation-plan.md P8 section. Read camera/state boundaries in docs/systems/swimming-and-camera.md, validation V02, P7 evidence and camera/course/display code. Require successful P7 and checkpoint 0.1.7. Inspect identity and changes; adapt existing scene ownership and preserve owner work, P0, assets, motor and inputs.
+
+IMPLEMENTATION
+1. Attach camera behavior to the authoritative fish position and unbanked swimming orientation. Keep the camera rig distinct from animated body nodes and simulation authority. Target a viewpoint behind/slightly above with modest forward look-ahead. Follow changes of heading and depth; a steady horizon means avoiding inherited roll, not fixing world height or preventing pitch.
+2. Expose a compact tuning profile for following distance, height, look-ahead, field of view and response. Initial values are provisional estimates; preserve body visibility and useful route space at the actual fish scale. Apply time-based following response with bounded lag, avoiding oscillation or repeated smoothing that makes steering appear delayed. Use a stable orientation basis at the selected pitch limits, including near-vertical headings.
+3. Use the existing physics layers and a suitable camera obstruction cast/shape, excluding the fish and its visual children. Move the viewpoint inward promptly when geometry blocks its intended position, then recover smoothly when clear. Respect near clipping, visible body clearance and the course's tight passages. Camera recovery must not oscillate against a surface or move the fish. Preserve obstacle visibility rather than treating camera collision as permission to alter gameplay geometry.
+4. Handle initialization, course reset, pause/resume and supported viewport/window changes. Reset stale interpolation history to avoid sweeping from an old position. Preserve both display choices, the fresh-profile Fullscreen default, saved-choice/temporary-override behavior and input capture. Keep framing coherent for the observed display dimensions; record tested sizes rather than claiming arbitrary platform support.
+5. Keep the same camera behavior in both desktop modes. Reuse the existing tuning/help interface if needed and document the actual profile. Complete the implementation now; P10 owns iterative native comfort tuning and correction, not a deferred camera feature build.
+
+SCOPE LIMITS
+No free look, first person, camera-driven movement, controller, abilities, cinematic shake, survival or growth. Keep fixes local to the camera/integration. Preserve partial work if this ordinary task overruns.
+
+VALIDATION
+Tier T1. Inspect and run ./tools/dev check once with bounded real-scene camera assertions: valid transforms through yaw/pitch limits; no roll from a banked visual child; retraction against representative course geometry; recovery when clear; no fish-transform changes from camera updates; pause/reset without stale interpolation. Verify viewport-change handling with the actual scene interface. Run git diff --check. Record commands, parameters and outcomes. Mathematical framing and headless casts cannot establish comfortable following, clipping-free rendered pixels or owner enjoyment; those remain native P10 checks.
+
+DONE CONDITION AND REPORT
+The accepted camera behaviors are implemented and required focused checks pass. Append docs/tasks/p1/qualification/implementation.md with source identity, profile, test outcomes, edge cases and P9/P10 handoff. Keep G1.2 and native readability unqualified. Final P1 acceptance requires the owner to see a comfortable camera with the actual animated fish and selected assets.
+
+VERSIONING AND GIT
+Only after checks pass, set package.json version to 0.1.8, preserving other metadata. A failed fresh task retains 0.1.7; reconcile partial work without resetting it. Do not commit or push. The runner owns checkpoints; direct execution leaves reviewed changes for its coordinator and records that mode.

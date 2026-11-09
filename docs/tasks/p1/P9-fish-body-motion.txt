@@ -1,0 +1,31 @@
+TASK: Phase 1 / P9 — Fish swimming and turning animation
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.9`.
+
+GOAL
+Finish swimming, gliding and turning on the prepared Emperor Angelfish. Tail/body activity expresses effort, eases during glide and bends/leans into turns; the camera keeps its steady horizon. Deliver the complete candidate to P10 for owner tuning and lock.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md and its implementation-plan.md P9 section. Read body/state boundaries in docs/systems/swimming-and-camera.md, restrictions in docs/art-and-assets.md, P3's preparation manifest and P8 evidence. Inspect actor, clips/bones, motor signals and animation integration. Require successful P8 and checkpoint 0.1.8. Inspect identity/changes; preserve owner work and asset boundaries. Missing required art blocks progression.
+
+IMPLEMENTATION
+1. Inspect the imported skeleton, clips, bind pose, orientation, loop settings and root tracks. Reuse P3's asset and public wrapper. Adapt verified animation nodes rather than guessing bones or adding another actor. Keep restricted source and converted art in their established ignored/local locations; tracked scenes must not embed mesh, texture, animation or packed-scene contents that expose those assets.
+2. Drive visual presentation from the common motor's actual propulsion effort, speed, angular response and paused state. Blend the available swimming motion smoothly as effort changes; release reduces tail/body intensity into the accepted glide while momentum persists. Derive the response from simulation time/signals so it agrees across input modes and frame schedules. Avoid abrupt restarts, frozen mid-stroke transitions or an unrelated constant swim loop.
+3. Use actual prepared turning clips where suitable; otherwise apply bounded procedural offsets to verified deforming bones, layered over the swim pose. Produce body bend and modest visual lean consistent with the turning direction and magnitude. Preserve fins, eyes and mesh integrity. Keep baseline-pose restoration and transition handling explicit so repeated turns do not accumulate deformation.
+4. Apply pitch/heading through the swimming root and visual deformation beneath it. Disable/isolate root-motion tracks that would move the collision body. Body lean must not rotate the camera. Keep collision, physics scale and movement response unchanged by playback; motion must remain readable at the following distance.
+5. Expose P10 parameters: swim cadence/intensity, glide easing, turn-bend/lean strength and transition response. Preserve selected asset credit/provenance and record any preparation changes. Update current animation mapping and handoff notes. There must be a complete working core candidate at this boundary; successful P10/P11 cannot leave missing body behavior as future polish.
+
+SCOPE LIMITS
+No feeding/attack/death gameplay, new species, growth, controller, free look, Movement abilities or camera roll. Asset clips do not expand scope. Preserve P0, fullscreen and P6-P8; retain partial progress if this ordinary task overruns.
+
+VALIDATION
+Tier T1. Inspect then run ./tools/dev check once using the actual prepared actor. Verify required clips/bones resolve, playback/loops produce valid poses, release changes the swim/glide blend, opposite turns restore/reverse deformation, and pause prevents animation-time advancement. Assert that visual animation cannot alter authoritative position, collision or camera roll. Check for missing-resource/runtime errors and restricted asset leakage in the diff; run git diff --check. Record actual commands and results. Pose/state checks do not qualify natural-looking deformation or native motion; P10 must observe the rendered candidate.
+
+DONE CONDITION AND REPORT
+Required behaviors/checks pass. Append docs/tasks/p1/qualification/implementation.md with identity, asset/clip mapping, parameters, modifications, results and remaining native observations. Hand off both modes to P10. Do not claim core lock, G1.2 or owner acceptance from headless checks.
+
+VERSIONING AND GIT
+After checks pass, set only package.json version to 0.1.9. A failed fresh task retains 0.1.8; reconcile partial continuation. Do not commit or push. The runner owns checkpoints; direct execution leaves changes for coordinator review and records that mode.

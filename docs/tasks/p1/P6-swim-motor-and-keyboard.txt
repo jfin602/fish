@@ -1,0 +1,31 @@
+TASK: Phase 1 / P6 — Swim motor and keyboard controls
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.6`.
+
+GOAL
+Implement the shared C# swimming motor and complete keyboard fallback in the accepted ocean course. Establish quick acceleration, gradual slowing, curved turns and nose-directed depth travel. Preserve both display choices, the fresh-profile Fullscreen default, and saved-choice/temporary-override behavior; actual feel is tuned and accepted in P10.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md and its implementation-plan.md P6 section. Read accepted feel, modes, tuning and state boundaries in docs/systems/swimming-and-camera.md, plus movement source and developer-check composition. Require successful P5 evidence and checkpoint 0.1.5. Inspect identity, HEAD and local changes; preserve the owner's demo, P0 and compatible partial work. Missing prerequisites block progression.
+
+IMPLEMENTATION
+1. Trace the actual fish root, collision body, input and physics loop. Adapt existing files; names such as FishMotor.cs, KeyboardSwimInput.cs and a SwimTuning resource are suggestions. Keep one authoritative position, orientation, velocity and collision body. Input supplies intent; visuals and camera cannot move this root.
+2. Advance movement using physics delta time. Apply prompt propulsion response and weaker passive slowdown. Heading changes continuously while velocity aligns gradually, retaining mild momentum through curved turns. Separate tuning for acceleration, passive slowing, keyboard slowing and steering/alignment. Cap speed and angular response; keyboard slowing approaches zero without commanding reverse swimming. Resolve course collisions and bounds through the existing physics body without underwater gravity fall.
+3. Use the provisional bindings W propulsion, S slowing, A/D yaw, Up/Down pitch and Esc pause. Pitch the nose and swim along that orientation; avoid strafing or direct level vertical translation. Do not add automatic leveling. Choose documented reversible pitch limits and usable near-rest steering; test edge cases rather than leaving the fish unable to turn away from cover. Opposing inputs resolve consistently; simultaneous propulsion/slowing must not create unintended acceleration.
+4. Expose a small coherent tuning resource used by both future adapters. Label initial rates, limits and any estimated timings as implementation defaults awaiting P10. Keep physical units and fish/course scale consistent. Preserve the P1 pause shell, keyboard menu navigation and fullscreen behavior; clear stale propulsion/steering on pause. Intended coasting after release remains distinguishable from held input.
+5. Extend the existing bounded scene smoke only for material motor risks. Keep input, simulation and presentation separated without creating unused controller/ability frameworks. Record the actual defaults and source ownership for the next prompt.
+
+SCOPE LIMITS
+No mouse adapter, controller, free look, Movement abilities, automatic leveling, first person, survival or growth. Preserve prepared assets, the course and existing P0 tools. Budget for one focused ordinary task; preserve partial work if it overruns.
+
+VALIDATION
+Tier T1. Inspect then run ./tools/dev check once with focused motor assertions: acceleration; monotonic release slowdown with a visible coast interval; S slowing without reversal; curved turns and pitched travel; pause freeze; representative collision/bounds. Compare equal-duration intent sequences under different render schedules with documented numerical tolerance. Run git diff --check. Record actual commands, values and outcomes; headless assertions do not prove comfortable input or native swimming feel.
+
+DONE CONDITION AND REPORT
+Both the motor and keyboard path work in the actual course and required T1 checks pass. Append source-bound evidence to docs/tasks/p1/qualification/implementation.md, including defaults, failures/repairs and P7 handoff. Core Gates and owner acceptance remain unqualified until P10; successful P1 completion cannot retain unfinished core-feel TODOs.
+
+VERSIONING AND GIT
+After checks pass, set only package.json version to 0.1.6. A failed fresh task retains 0.1.5; reconcile resumed state without downgrading unrelated work. Do not commit or push. The runner owns checkpoints; a direct-execution coordinator reviews changes and records that execution mode.

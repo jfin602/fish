@@ -1,0 +1,28 @@
+TASK: Phase 1 / P2 — Starter asset acquisition
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.2`.
+
+GOAL
+Acquire and inspect the four selected starter assets, preserve traceable provenance, and establish safe local storage before Godot preparation. Required assets are Emperor Angelfish, Rock Face 01, Coast Sand 01, and Soft Coral Set. This task establishes acquisition readiness, not a successful engine import or visual qualification.
+
+PREREQUISITES AND NARROW READING
+Require actual P0 completion, the deliberate Phase 1 entry at 0.1.0, and successful P1 work at root version 0.1.1. Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md, implementation-plan.md P2, docs/art-and-assets.md, and P1's qualification/implementation.md entry. Inspect HEAD, dirty work, .gitignore, existing asset files and owner-provided archives. Preserve compatible work. Inspect the actual tools/dev composition before invoking any project checks; acquisition alone does not require rebuilding Godot.
+
+IMPLEMENTATION
+1. Resolve the four canonical source listings from docs/art-and-assets.md. Reuse identifiable owner-provided downloads where their source, contents and terms can be established. Otherwise acquire the selected packages through available authorized access. Capture package/version identity, creator, source URL, acquisition date, exact license/version, notices and required credit. Do not infer archive contents from the listings or copy credentials and signed download URLs into public records.
+2. Before copying or extracting resources, establish ignore coverage for original working archives outside Godot's import tree, such as artifacts/assets/source/, and restricted resources under game/assets/vendor-local/. These paths are proposals to map onto the real checkout. Under the recorded terms, Emperor Angelfish's original and converted meshes, textures and animations stay outside tracked public content. Public wrappers must not embed that data in scene/resource files. Preserve unrelated ignore rules and owner originals.
+3. Inspect archives and dependencies without treating included vendor scripts as Fish gameplay. Inventory actual formats, textures, rig/clip presence, notices and missing references. Record SHA-256 checksums for each acquired archive or source file. Preserve exact terms privately where necessary; retain distributable credits and source records. Retain download records for CC0 sources and Soft Coral's actual attribution terms.
+4. Materialize docs/assets/p1-starter-manifest.md with one entry per required asset. Distinguish acquired, prepared, imported and observed states; only acquisition can pass here. Record safe relative locations and the next preparation action. Use ignored local configuration for machine-specific paths. Create game/assets/README.md with the actual acquisition/storage procedure and missing-package instructions.
+5. Acquire only this first set. Sea life inspection requires a concrete documented need; the four later expansion assets remain later. If access, terms or a package is unavailable, preserve useful work and identify the exact source/item or owner handoff needed. Do not bypass account controls, silently substitute another model, or advance with a placeholder.
+
+VALIDATION
+Tier T1. Run sha256sum on actual acquired files and reconcile every manifest entry with inspected contents. Use git check-ignore -v on actual private archive/resource paths, inspect git ls-files and the diff for restricted or embedded vendor data, then git diff --check. All four packages and required provenance must be usable for P3. No engine or visual result is implied. Acquisition/inventory may exceed ordinary time targets; record the cause and checkpoint remaining work truthfully.
+
+DONE CONDITION AND REPORT
+Append source identity, acquisition results, provenance, storage/ignore checks, exact commands and blockers to docs/tasks/p1/qualification/implementation.md. Hand P3 the four actual packages and manifest. Missing required access/content withholds completion and version advancement.
+
+VERSIONING AND GIT
+After required checks pass, set root package.json to the assigned version, preserving other metadata. Failure retains the previous successful version and partial work. Do not self-commit or push; the runner owns checkpoints. Record direct execution separately and leave its changes reviewable.

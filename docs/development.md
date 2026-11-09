@@ -24,6 +24,7 @@ Run these from the repository root:
 
 ```bash
 npm run fish:phase:validate -- p0
+npm run fish:phase:validate -- p1
 npm run test:runner
 ```
 
@@ -104,6 +105,12 @@ An editor viewport screenshot and a running-game screenshot establish different 
 - [Live runtime and screenshots](https://hybridindie.github.io/godot-mcp/guides-playtest-debug.html)
 - [Stable C# contract](https://github.com/hybridindie/godot-mcp/blob/2026.11.04/tests/contract/test_csharp_phase1.py)
 - [Official Codex MCP configuration](https://developers.openai.com/codex/mcp/) and [configuration precedence](https://developers.openai.com/codex/config-basic/)
+
+## Planned P1 display and asset workflow
+
+The [P1 stack](tasks/p1/README.md) is authored, not executed. After actual P0 readiness, its [entry procedure](tasks/p1/manual/entry-and-resume.md) prepares the root `0.1.0` baseline. The first task adds fullscreen startup, windowed fullscreen and a documented temporary display-mode override to the actual `tools/dev run`; these additions are not present in the published starter.
+
+P1 also establishes verified local installation/preparation instructions for the four selected starter assets. Restricted vendor originals and converted resources remain in an ignored local location, with public-safe code, provenance and explicit missing-asset diagnostics. Actual paths, commands, input/display settings and accepted tuning are recorded during implementation. Observe the native game window for display/focus claims; editor preview and headless checks establish different results.
 
 ## Evidence status
 

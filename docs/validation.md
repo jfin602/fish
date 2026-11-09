@@ -38,6 +38,8 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 | V13 | Toggle first/third person at different sizes and near cover; state/identity/time remain unchanged by viewpoint and controls/readability remain usable. | G5.1 |
 | V14 | Play feeding, escape and growth; suspend/resume across sessions; die; read true recap; revisit archive and begin a new hatchling with prior story intact. | G5.2 |
 | V15 | Build/export/run each explicitly claimed desktop target; verify the complete named scope in that target environment and record configuration-only targets separately. | G5.2 |
+| V16 | In the real P1 course, observe the controlled Emperor Angelfish plus Rock Face 01, Coast Sand 01 and Soft Coral Set. Verify actual provenance/preparation, materials/deformation, scale, collision agreement, representative performance, public-source boundaries and explicit missing-resource behavior. | G1.3 |
+| V17 | Observe fullscreen startup and windowed fullscreen in a native game window. Verify saved choice/temporary override, readable viewport layout and camera, then both input modes across both display options with pause, transitions, Alt-Tab/refocus, capture/rearm and independent menu access. Record effective backend behavior and tested display sizes. | G1.4 |
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
@@ -63,6 +65,8 @@ V02 observes a camera behind/slightly above at moderate distance, with the whole
 
 The owner evaluates several minutes of free swimming in both modes for enjoyment, natural feel, nimbleness and ease. Record this judgment directly; automated movement assertions cannot supply it.
 
+P1 must finish with the dynamics settled. Record the final bindings, motor model and values, pitch/near-rest policy, camera and animation settings, source/configuration identity, selected asset identity and actual owner acceptance. Use the [P1 stack](tasks/p1/README.md) for the tuning loop and evidence records. V16/V17 qualify the selected scene and display behavior; a placeholder-only or unfinished-feel result cannot complete P1.
+
 The implemented core is locked for progression only after required native observations and owner acceptance are recorded for G1.1/G1.2. Movement abilities follow that actual core acceptance. Controller support, free look, movement abilities, growth-dependent handling, feeding and predators belong to later scope; the other gameplay scenarios remain required when those systems are implemented.
 
 ## Requirement coverage
@@ -76,6 +80,7 @@ The implemented core is locked for progression only after required native observ
 | C14–C15: core first, then Movement abilities | V01/V02 and recorded owner acceptance establish the prerequisite; the abilities require their own later task evidence. |
 | C16–C17: realistic ocean direction and approved asset shortlist | [Art and assets](art-and-assets.md) selection record and acquisition/import checks; selection alone does not qualify an import or runtime suitability. |
 | C18–C26: desktop controls, swimming feel, camera/body presentation, free-look deferral and owner acceptance | V01/V02 in both desktop modes; inspect initial scope and record the owner's actual play judgment. Later controller support needs separate qualification. |
+| C27–C29: P1 selected assets, settled dynamics and fullscreen-first delivery | V01/V02 with the final accepted tuning record; V16/V17 on the accepted candidate; all G1.1–G1.4 required for P1 completion. |
 
 IDs refer to [the decision register](decisions-and-questions.md). A coverage mapping is not a passed result.
 

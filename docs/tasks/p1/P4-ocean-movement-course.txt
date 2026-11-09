@@ -1,0 +1,28 @@
+TASK: Phase 1 / P4 — Ocean movement course
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.4`.
+
+GOAL
+Compose a compact ocean movement course using all four prepared starter assets and the fullscreen/pause shell. Establish geometry, collision and landmarks for later tuning. Produce integration evidence; native visual quality and final swimming acceptance remain unqualified.
+
+PREREQUISITES AND NARROW READING
+Require actual P0 completion, the reconciled 0.1.0 Phase entry, P1's shell and successful P3 at root version 0.1.3. Read AGENTS.md, BOOT.md, p1 README, implementation-plan.md P4, the approved swimming contract, validation V01/V02/V16, docs/art-and-assets.md, the starter manifest, game/assets/README.md and relevant qualification/implementation.md entries. Inspect the actual main scene, resource loader, existing controller/camera, tools/dev composition, HEAD and dirty work. Preserve compatible local changes and Fish MCP isolation.
+
+IMPLEMENTATION
+1. Resolve the main scene and prepared-resource mapping. Compose saved scenes and small C# responsibilities suited to that checkout; game/scenes/ is a proposed location. Retain P1's startup fullscreen, windowed-fullscreen selection and pause/input shell on the main-scene path.
+2. Instance Emperor Angelfish as the player visual through P3's loading boundary. Keep a simple collision body and movement authority independent of bones, animation and visual scale. Reuse the foundation controller/camera for course checks; final motor/input, follow-camera and swim-motion behavior belong to P6–P9. Missing required art retains the diagnostic and cannot produce an asset pass.
+3. Create a bounded open-water area, a slowing/approach target, identifiable upper and lower landmarks, rocks to circle, a usable gap/passage, and nearby geometry for camera-obstruction checks. Apply Coast Sand to Fish-authored seabed geometry, use Rock Face for meaningful rocky formations, and place selected Soft Coral pieces as readable scene elements. All four required sources must participate; native diagnostic landmarks may supplement them.
+4. Document working world scale from inspected fish/model dimensions: fish collision size, course extents, spawn and landmark positions, and gap clearance. Keep these in task evidence or an owned course description. Make clearances meaningful relative to the fish. Use simple explicit static obstacle collision; decoration must not unexpectedly block routes. Check orientations and avoid spawn overlap or misleading visual/collision offsets.
+5. Add restrained lighting/background treatment sufficient for later observation while retaining the existing renderer. Keep the course finite and reproducible, with a clearly identified development reset if needed. No prey, predators, feeding, growth, persistence, movement abilities, free look or additional asset roster. Do not hide absent selected resources behind substitutes or embed restricted vendor data in tracked scenes/resources.
+
+VALIDATION
+Tier T2. Inspect wrapper composition and run its composed check once on the final scene, plus only uncovered course assertions. Use tools/dev inspect-scene with the actual saved path. Verify all four resource identities load, the authoritative fish and shell are present, landmark transforms are valid, spawn is collision-free, and geometry queries demonstrate the intended gap/bounds. Check a reversible missing-required-asset case only if course wiring changed that behavior. Run git diff --check and inspect tracked/ignored asset boundaries. Headless success proves composition/state, not visible camera clearance, material quality, fullscreen behavior or feel.
+
+DONE CONDITION AND REPORT
+Append source identity, actual scene paths, course dimensions, resource mapping, collision checks, exact commands and limitations to qualification/implementation.md. Update the manifest only from observed preparation/loading results. Hand P5 a reproducible native inspection route and expected four-asset composition; P5 owns visible display/asset evidence. Preserve incomplete work and withhold completion if required resources or integration checks fail.
+
+VERSIONING AND GIT
+Advance root package.json to the assigned version only after required integration checks pass; otherwise retain the prior successful version. Do not self-commit or push: the runner owns checkpoints. Record direct execution separately and leave its changes reviewable.

@@ -1,0 +1,31 @@
+TASK: Phase 1 / P7 — Mouse mode and input lifecycle
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.7`.
+
+GOAL
+Complete mouse-only control and integrate both desktop modes with clean pause, focus, capture and mode switching. Both adapters drive P6's motor and remain independently usable in the fullscreen shell.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md and its implementation-plan.md P7 section. Read modes/state boundaries in docs/systems/swimming-and-camera.md, P6 evidence and actual input/pause/display code. Require successful P6 and checkpoint 0.1.6. Inspect identity, HEAD, changes and bindings. Preserve owner work, P0, assets and evidence; missing prerequisites block progression.
+
+IMPLEMENTATION
+1. Add a mouse adapter to the same intent-to-motor path used by keyboard controls. Relative horizontal motion steers yaw; relative vertical motion pitches the nose. Holding the primary mouse button supplies propulsion; releasing it invokes P6's passive slowdown. A secondary-button press opens pause/options. These are provisional bindings for P10, not new owner-selected button assignments. Add no mouse brake, reverse swimming or free-look mode.
+2. Accumulate relative movement safely and consume it exactly once. Avoid multiplying integrated pixel displacement by frame time again, applying events in both input and physics callbacks, or retaining a large steering backlog. Motor integration remains physics-delta-based. Clear pending motion at capture, focus, pause and mode boundaries; guard against synthetic recenter/warp deltas. Expose sensitivity and inversion through the existing compact options flow as documented tuning defaults.
+3. Keep mode selection explicit. Only the selected adapter generates swimming intent; incidental motion cannot switch modes. Switching neutralizes both adapters and requires fresh propulsion input. Reuse the menu/focus system: mouse-only users can select a mode, pause, resume and operate relevant options without keys; keyboard users can do the same through focus navigation and activation.
+4. Implement consistent input ownership across gameplay and menus. Consume the action that opens/resumes a menu so it cannot become propulsion or steering. Suppress menu-owned input until released before rearming gameplay. Focus loss pauses the local test simulation and clears held/queued input; returning focus leaves an explicit resume step. Release mouse capture for menus and restore it deliberately. Preserve both display choices, the fresh-profile Fullscreen default, saved-choice/temporary-override behavior and supported transitions.
+5. Exercise the integration through the actual scene and input boundary, not a duplicate test-only controller. Update visible control help and actual binding documentation. Record the settings used and any intentional mode differences without changing the common motor response.
+
+SCOPE LIMITS
+No controller, abilities, free look, first person, survival or broad settings framework. Preserve keyboard behavior and P6 tuning. Keep this ordinary task focused; retain partial work on overrun.
+
+VALIDATION
+Tier T2. Inspect composition and run ./tools/dev check once with bounded integration scenarios: mouse movement/hold/release; keyboard parity; inactive-mode suppression; pause/resume; focus loss; mode switching while propulsion is held; menu activation without leaked input; capture reset without a steering spike. Exercise menu focus/activation for each device path. Run git diff --check. Record actual commands and state traces. Synthetic events and headless UI checks establish integration only; native focus, capture and device comfort remain required at P10.
+
+DONE CONDITION AND REPORT
+Both modes and input lifecycle pass the required integration checks. Append docs/tasks/p1/qualification/implementation.md with source identity, commands/results, input transitions, selected defaults, limitations and P8 handoff. Do not mark V01/V02 or owner acceptance passed. P10 must settle bindings and repair actual usability failures before core lock.
+
+VERSIONING AND GIT
+After checks pass, set only package.json version to 0.1.7. A failed fresh task retains 0.1.6; preserve and reconcile partial continuation. Do not commit or push. The runner owns checkpoints; a direct-execution coordinator reviews the diff and records that execution mode.

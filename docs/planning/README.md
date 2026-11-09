@@ -7,6 +7,7 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | Plan | State |
 | --- | --- |
 | [P0 — Godot/MCP foundation](p0/foundation.md) | Authored, unexecuted. |
+| [P1 — Core swimming, ocean scene and fullscreen](p1/core-swimming.md) | Assessed and planned; [execution stack](../tasks/p1/README.md) authored, not executed. |
 | [P1 — Swim controls worksheet](p1/swim-controls-worksheet.md) | Complete: 10/10 answers; design and playtest criteria approved. Implementation and native acceptance remain separate. |
 | [Movement abilities](p1/movement-abilities.md) | Owner-selected next implementation focus after core controls are locked down. |
 

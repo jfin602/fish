@@ -6,12 +6,12 @@ This is the single Phase/Gate progress authority. A Gate passes when all its cri
 
 ## Delivery direction
 
-Build one small, complete fish life before expanding content: a readable 3D habitat, feeding and predator escape, meaningful growth, save/resume, permanent death, a factual life recounting, and a persistent main-menu archive. The [decision register](decisions-and-questions.md) identifies unselected species, habitat, balance, art and larger-world choices.
+Build one small, complete fish life before expanding content: a readable 3D habitat, feeding and predator escape, meaningful growth, save/resume, permanent death, a factual life recounting, and a persistent main-menu archive. The [decision register](decisions-and-questions.md) identifies open final-species, specific-biome, balance, detailed-presentation and larger-world choices within the selected ocean direction.
 
 | Phase | Observable outcome | State |
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | NOT STARTED; [stack authored](tasks/p0/README.md). |
-| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | NOT STARTED. |
+| P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | NOT STARTED; [stack authored](tasks/p1/README.md). |
 | P2 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop. | NOT STARTED. |
 | P3 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P4 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -53,9 +53,11 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 ## P1 — Swim through a habitat
 
-**Status: NOT STARTED.** Scenarios V01–V02.
+**Status: NOT STARTED.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md). Scenarios V01–V02 and V16–V17.
 
 **Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
+
+**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. The authored stack has native display/asset inspection, owner tuning, and final review boundaries; it has not run.
 
 ### G1.1 — Swimming and physical space
 
@@ -72,9 +74,29 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 - Observe the accepted third-person framing: behind/slightly above, moderate distance, whole fish and route ahead visible, smooth direction/depth following, and adjustment near geometry.
 - Observe visible swimming/gliding body animation and turning lean with a steady camera horizon.
-- The initial test habitat has readable cover, open travel, landmarks at different depths, and gaps using provisional assets.
+- The test habitat uses the four selected starter assets, with readable cover, open travel, landmarks at different depths, and gaps; G1.3 owns their preparation and native integration evidence.
 - Observe focus/release and supported-viewport behavior in both modes; camera/UI state does not become simulation authority.
 - Record the owner's judgment that several minutes of ordinary swimming feel natural, nimble, comfortable and easy to control in both modes. This actual acceptance, together with G1.1, locks the core for the Movement abilities follow-up.
+
+### G1.3 — Selected ocean assets in the running course
+
+**Result: NOT OBSERVED.**
+
+- The controlled visual fish is the selected Emperor Angelfish; Rock Face 01, Coast Sand 01 on authored seabed geometry, and Soft Coral Set are visibly present in the actual P1 course.
+- Actual package/source/license/credit identity, preparation, local installation and import status are recorded; restricted originals, conversions and embedded payloads remain outside public tracked content.
+- Scale, materials, fin/coral transparency, fish deformation, collision clearance and representative scene performance are observed. The visible geometry agrees with the tested navigation and camera.
+- Missing required resources produce an actionable diagnostic. A placeholder or unapproved substitute cannot qualify this Gate. The test fish does not settle the final species/growth-art decision.
+
+### G1.4 — Fullscreen presentation and input lifecycle
+
+**Result: NOT OBSERVED.**
+
+- Fullscreen is the fresh-profile startup presentation from the first P1 implementation task; windowed fullscreen provides a full-display testing option. Record actual backend behavior when requested modes are equivalent.
+- Local display choice and temporary developer overrides work as documented. Observe actual native windows, viewport dimensions and readable anchored UI/camera framing.
+- Test both desktop input modes across both display options, including pause, mode changes, Alt-Tab/focus loss, explicit resume and fresh input after recapture. UI actions must not leak into propulsion.
+- Mouse-only controls include pointer-accessible pause/settings; keyboard fallback includes complete keyboard navigation. Display transitions do not alter authoritative fish state or advance paused simulation.
+
+P1 completion also requires a source/configuration/asset-bound accepted tuning record and the owner's explicit acceptance of the seven swimming criteria in both modes. Core feel cannot remain an unfinished later-polish item. The next selected movement scope is Movement abilities after this acceptance and P1 review.
 
 ## P2 — Feed, escape and grow
 

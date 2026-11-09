@@ -32,6 +32,14 @@ Plants, rocks, depth changes, and lighting can provide spatial cues. The visual 
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 
+## Fullscreen presentation
+
+**Owner-selected for P1 — 2026-11-09:** develop for fullscreen from the start, with windowed fullscreen available for easier testing. A fresh settings profile starts fullscreen; windowed fullscreen fills the desktop display without window decorations and supports the testing workflow. The [P1 plan](planning/p1/core-swimming.md#fullscreen-from-the-first-task) owns provisional engine mappings and launch behavior; actual platform support must be observed.
+
+Design camera framing, readable control help and the small pause/options interface for actual display dimensions. Use anchored/scaled layout, pointer operation and complete keyboard focus/navigation. Retain the local display preference and keep a temporary development override separate from saved choice. These preferences do not implement living-save persistence.
+
+Pause and clear input on focus loss; resume deliberately with fresh input after recapture. Display/mode changes must not leak menu clicks into propulsion or change authoritative fish state. Native fullscreen and windowed-fullscreen observation is required in both desktop input modes under [V17](validation.md); an embedded editor preview does not establish that result. The final accepted swimming profile includes the display/camera behavior tested in P1.
+
 ## Pause, saving, and recovery
 
 Provide a clear way to pause and leave a session. Saving should communicate whether the operation succeeded. If it fails, retain the current life and explain the problem; do not falsely claim the player can safely resume a state that was not saved.

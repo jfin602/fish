@@ -1,0 +1,28 @@
+TASK: Phase 1 / P1 — Fullscreen play shell
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.1`.
+
+GOAL
+Establish fullscreen presentation and a windowed-fullscreen testing option from the first P1 change, with readable pause/settings UI and a clean focus/input boundary. Preserve the real foundation and provisional controls for the later asset and movement tasks.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/p1/README.md, manual/entry-and-resume.md, implementation-plan.md's entry/P1 sections, docs/planning/p1/core-swimming.md's fullscreen section, and relevant docs/development.md and UX display contract. Inspect HEAD, dirty work, actual game/project.godot, main scene, input/pause code and tools/dev. Actual P0 readiness must be reconciled; the fresh entry version is 0.1.0. Preserve a compatible local demo and partial work. If foundation prerequisites are missing, record the specific gap and route the existing p0 work; do not recreate or falsely qualify it.
+
+IMPLEMENTATION
+1. Map the actual scene/application owners before editing. Make a fresh-profile normal launch use Fullscreen and offer Windowed fullscreen in a small pause/options panel. Follow the phase plan's provisional engine mapping, checking installed APIs and backend behavior. Windowed fullscreen fills the native display without decorations; equivalent backend modes must be reported honestly. Preserve the existing renderer and Godot/.NET pins.
+2. Store the selected display and relevant input preferences locally, separately from future living-save data. A launch override takes precedence for that session without rewriting the saved choice. Implement and document tools/dev run --display-mode=fullscreen and --display-mode=windowed-fullscreen, or a verified equally explicit syntax. These are new wrapper/game-owned options; validate supported values, quote arguments safely and preserve existing build/run composition. Do not assume Godot recognizes a made-up flag.
+3. Anchor and scale help/menu layout to the actual viewport. Support pointer operation and visible keyboard focus/activation. Provide resume, display choice and a clean way to quit the test session. Keep the panel small; do not build the later survival menu. Add no UI that falsely advertises an unfinished input mode; explicit completed mode selection arrives in P7.
+4. Pause the test simulation and clear accumulated movement/deltas on focus loss or pause. Mode changes must release input safely. Resume deliberately; consume the resume click/key so it cannot propel the fish, and require new input after release/rearm. Adapt the existing P0 controls without replacing the motor in this task.
+5. Document actual command/configuration behavior and known platform boundaries. Keep native display observations pending for P5; an embedded editor preview or headless call is not proof of fullscreen operation.
+
+SCOPE
+Application/display shell, local preferences and focused pause/focus integration only. No asset downloads, core motor replacement, ability, controller, free look, first person, survival save/menu system, new renderer or release exports.
+
+VALIDATION AND DONE
+Tier T1. Inspect actual doctor/check composition, then run the smallest import/build/scene checks needed once. Check setting precedence, supported/invalid launch arguments, local persistence and clearing/rearm behavior where source-level checks can demonstrate it. Native rendering, focus transitions and full-display layout remain NOT OBSERVED until P5. Append docs/tasks/p1/qualification/implementation.md with exact candidate, commands/results, changed behavior, startup defaults, override syntax and limits. Done means the shell and configuration exist and required focused checks pass, ready for actual assets; it does not pass G1.4 yet.
+
+VERSIONING AND GIT
+After required checks pass, set only root package.json version to 0.1.1, preserving metadata/scripts. Failed fresh work retains 0.1.0 and its partial changes. No npm install or root package-lock.json. Do not self-commit or push; the runner owns its checkpoint. Direct execution leaves a reviewable change set and records that mode for coordinated checkpoint reconciliation.

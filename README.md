@@ -6,7 +6,7 @@ Play primarily in third person, with an optional first-person view. Continue the
 
 ## Current state
 
-This is the documentation and development-workflow starter. It includes the ported Space Factory phase runner and an authored Godot/MCP bootstrap stack. No Godot project or gameplay has been implemented or qualified yet.
+This published starter includes documentation, the ported Space Factory phase runner, and authored Godot/MCP foundation and core-swimming stacks. It has no Godot project or developer CLI yet. The owner's reported local tech demo has not been inspected by this documentation work.
 
 The chosen technical direction is Godot 4 .NET with C# and Godot Editor MCP, following Space Factory's development approach and adapting the game to 3D. Exact reference versions and the limits of their verification are in [development setup](docs/development.md).
 
@@ -20,6 +20,7 @@ The chosen technical direction is Godot 4 .NET with C# and Godot Editor MCP, fol
 - [Development workflow](docs/workflow.md)
 - [Godot and MCP setup contract](docs/development.md)
 - [P0 bootstrap stack](docs/tasks/p0/README.md)
+- [P1 core swimming, selected assets and fullscreen stack](docs/tasks/p1/README.md)
 - [Decisions and open questions](docs/decisions-and-questions.md)
 
 ## Development runner
@@ -28,6 +29,7 @@ From the repository root, use Node.js 24. The runner has no npm dependencies, so
 
 ```bash
 npm run fish:phase:validate -- p0
+npm run fish:phase:validate -- p1
 npm run test:runner
 ```
 
@@ -38,6 +40,8 @@ npm run fish:phase -- p0
 ```
 
 P0 prepares the Godot 3D project, integrates the editor MCP, and ends with a required native closeout. The runner pauses for prompts marked as requiring visible/manual observation. See [the runner guide](docs/phase-runner.md) for exact behavior, versions, checkpoints, and resume rules. `tools/dev` is created by p0; it is not present in this starter.
+
+P1 is assessed and authored to settle both desktop swimming modes using the four starter assets, fullscreen and windowed fullscreen. Its [entry procedure](docs/tasks/p1/manual/entry-and-resume.md) requires actual P0 completion and a deliberate `0.1.0` baseline before `npm run fish:phase -- p1`. Authoring leaves the current root version unchanged. P1 includes native/manual checks and actual owner acceptance of the dynamics.
 
 ## Repository layout
 

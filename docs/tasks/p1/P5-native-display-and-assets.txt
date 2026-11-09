@@ -1,0 +1,27 @@
+TASK: Phase 1 / P5 — Native display and assets checkpoint
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.1.5`.
+
+MANUAL NATIVE BOUNDARY
+Execute interactively after P1–P4. This metadata pauses the runner; ordinary browser access cannot qualify native Godot. Follow manual/entry-and-resume.md. This dedicated T3 checkpoint may exceed the ordinary 15-minute budget because native display changes and asset inspection require observed results. Preserve progress and an exact handoff when tools or owner observations are unavailable.
+
+GOAL AND PREREQUISITES
+Establish that the selected habitat and display shell work in a real native game window before final movement tuning. Read AGENTS.md, BOOT.md, this stack's README, the P5 plan section, docs/development.md, docs/art-and-assets.md, validation V16–V17, and current qualification/implementation.md. Inspect P1–P4 changes, docs/assets/p1-starter-manifest.md and game/assets/README.md. Require actual P0 qualification, the four acquired/prepared assets, the assembled scene and existing display controls. A manifest entry alone establishes no runtime success.
+
+A — IDENTIFY AND LAUNCH
+1. Record revision, relevant dirty-source hashes, operating system, display backend, monitor/resolution, renderer and actual Godot/.NET versions. Verify the live MCP peer's exact Fish game path before editor mutations. Inspect the installed runtime/capture tool capabilities; coordinate external changes with editor saves.
+2. Use existing tools/dev doctor and tools/dev run, or the equivalent already-qualified native launch path. Inspect command composition and reuse current successful import/build evidence; rebuild only affected source. Launch an independent native game window. An embedded editor preview or headless process cannot satisfy this checkpoint.
+3. Observe startup covering the selected display, with no game-window border and usable UI. The default Fullscreen choice requests exclusive fullscreen where supported. Windowed fullscreen is borderless at the display's native size, using Godot ordinary fullscreen. Record the requested mode, actual backend and effective behavior; Wayland may make both choices equivalent. Do not infer exclusive ownership from a filled screen.
+
+B — DISPLAY, FOCUS AND CONTENT
+1. Change Fullscreen to Windowed fullscreen and back through the actual settings flow. Observe window coverage, viewport/aspect, camera framing, UI layout and usable navigation after each transition. Exercise Alt-Tab away/back in each mode. Verify cursor release for menus/focus loss, deliberate capture on gameplay return and no accidental activation or stuck held input. This verifies the current shell; P7/P10 must requalify the completed input lifecycle.
+2. Observe a fresh-profile Fullscreen launch, save Windowed fullscreen and relaunch, then exercise each documented temporary display override. Relaunch without the override to confirm the saved preference remains intact. Use a disposable settings profile or restore the owner's original preference. Check actual viewport dimensions and a second practical display size/aspect where available; record the tested scope.
+3. Inspect Emperor Angelfish, Rock Face 01, Coast Sand 01 applied to seabed geometry, and Soft Coral Set in the running scene. Record each asset's actual scene/import identity and inspected capture. Check fish orientation/scale, materials, visible available animation, obstacle collision and habitat readability. Keep source-only or failed imports separate from visible integration. Do not replace a missing selected asset with an unlabeled stand-in.
+4. Use P3's reversible missing-resource override to observe the actionable diagnostic in the native window and verify the shell remains usable. Restore all four assets and recheck readiness. Record representative frame timing/FPS, display/render settings and scene composition, with visible stalls or limits; no production performance budget is inferred.
+5. Capture and inspect actual native game pixels, including both display choices and all four assets. Check runtime output/errors and responsiveness. Repair bounded shell/import/scene defects, then repeat only affected observations; preserve failed attempts. Final swimming feel, later mechanics and platform portability are outside this checkpoint.
+
+EVIDENCE, DONE CONDITION AND VERSIONING
+Create qualification/native-display-and-assets.md with exact source identity, commands, expected/observed results, durable capture references, backend limitations and per-check PASS/FAIL/NOT OBSERVED/BLOCKED. Update the asset manifest's observed runtime fields without exposing restricted model/texture sources. Keep G1.1/G1.2 and unobserved final lifecycle criteria unqualified. All required display and four-asset observations must pass before setting the existing root package.json to 0.1.5; otherwise retain 0.1.4 and record the blocker. Report repairs, evidence and next P6 action. Do not self-commit or push. The coordinator reviews the completed manual checkpoint and makes the exact-subject 0.1.5 checkpoint before runner resume.

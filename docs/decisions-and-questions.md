@@ -16,6 +16,8 @@
 
 - **S8 — Final core-controls review (2026-11-09):** the owner completed the [ten-question worksheet](planning/p1/swim-controls-worksheet.md), accepted all seven proposed core playtest criteria in Q10, and requested: “Yes, lock all this down in the docs with a final /docs-review.” This approves the documented design and criteria; actual implementation and owner play acceptance remain separate.
 
+- **S9 — P1 delivery and fullscreen scope (2026-11-09):** the owner requested `/docs-apply + /prompt-ass + /prompt-plan + /prompt-write p1`, then directed: “Use the assets chosen in the docs as part of the p1 plan. By the end of p1 the swimming dynamics should be set. Also develop for full screen from the start. With a windowed full screen mode for easier testing”. The [P1 design](planning/p1/core-swimming.md) and [execution stack](tasks/p1/README.md) apply this scope without claiming execution.
+
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
 ## Confirmed requirements
@@ -48,6 +50,9 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C24 | Visible tail/body motion eases during gliding; the fish bends/leans into turns while the camera follows with a steady horizon. | S8; Q09 |
 | C25 | Free look is deferred for the initial core-controls scope. | S8; Q03 |
 | C26 | The seven accepted playtest criteria must be observed in both desktop modes, including the owner's judgment of enjoyable, natural and easy swimming, before the implemented core is locked for progression. | S8; Q10 |
+| C27 | P1 integrates and visibly uses the four selected starter assets: Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set. | S9; S7 starter order |
+| C28 | P1 finishes with swimming dynamics tuned, documented and accepted through actual owner play in both desktop modes; unfinished core feel is not deferred beyond the phase. | S9; S8 criteria |
+| C29 | Develop the game for fullscreen from the start, with windowed fullscreen available for easier testing. | S9 |
 
 ## Working designs
 
@@ -62,6 +67,7 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | W07 | A final-size fish image, optional name, short story, and supporting statistics form the death/history entry. | [UX](ux-and-presentation.md) |
 | W08 | Early growth milestones arrive quickly; larger stages can last longer across sessions. | [Opening experience](tutorial.md) |
 | W09 | Discovery records and cosmetic rewards could provide carryover without altering starting survival stats. | [Feature ideas](../feature-ideas.md) |
+| W10 | The [P1 plan](planning/p1/core-swimming.md) provides reversible initial bindings, a shared speed-demand motor, display mappings and focus policy; final core settings are settled through P1 playtesting. | [Core swimming plan](planning/p1/core-swimming.md) |
 
 Engineering invariants in the system documents preserve confirmed behavior: stable run identity, idempotent feeding/death/archive operations, no offline simulation, factual story provenance, and separation of active saves from history. Their exact code and storage format remain unimplemented.
 
@@ -72,7 +78,7 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 | ID | Decision | When it matters |
 | --- | --- | --- |
 | Q01 | Final player species and specific ocean biome; the marine setting and realistic asset direction are confirmed by S7. | Before committing to production content and ecological composition. |
-| Q02 | Only the [remaining tuning and bindings](systems/swimming-and-camera.md#remaining-tuning-and-bindings), later controller details, and Movement abilities specifics remain open. Qualitative core controls and playtest criteria are confirmed in C18–C26. | Core implementation/playtesting first; ability details after actual core acceptance. |
+| Q02 | Only the [remaining tuning and bindings](systems/swimming-and-camera.md#remaining-tuning-and-bindings), later controller details, and Movement abilities specifics remain open. Qualitative core controls and playtest criteria are confirmed in C18–C26. | Resolve and record core bindings/tuning before P1 closes; controller and ability details follow their later scope. |
 | Q03 | Growth model, edible-size rule, body/collision scaling, maximum size, and balancing rates. | Before qualifying the first feeding-to-growth loop. |
 | Q04 | Hunger, diet restrictions, injury recovery, attack damage, and additional death causes. | Before broad survival mechanics are implemented. |
 | Q05 | Intended life/session lengths, full-size payoff, aging, and any victory or ending. | Before long-term pacing and content expansion. |

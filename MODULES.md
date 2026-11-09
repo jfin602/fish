@@ -12,6 +12,7 @@ This map distinguishes current source from intended boundaries. Inspect the chec
 | `test/unit/` | Ported runner and prompt-grammar regression coverage; these are not gameplay tests. |
 | `package.json` | Private Node tooling commands and Phase/checkpoint version metadata. |
 | `docs/tasks/p0/` | Authored, unexecuted Godot/MCP bootstrap instructions. |
+| `docs/tasks/p1/` | Authored, unexecuted core swimming, selected-asset, fullscreen and owner-acceptance instructions. |
 
 ## P0 intended source boundaries
 
@@ -27,6 +28,10 @@ This map distinguishes current source from intended boundaries. Inspect the chec
 | `tools/local.env`, `.codex/config.toml` | Ignored, machine-local executable/bridge/client configuration. |
 
 The bootstrap decides concrete files using the installed tools and the narrow p0 requirements. Keep the upstream editor bridge separate from simulation and do not open its network service in a player build.
+
+## P1 planned source mapping
+
+The [P1 implementation plan](docs/tasks/p1/implementation-plan.md#planned-source-ownership) maps proposed display/settings, input/motor, camera/animation, asset and course responsibilities onto the actual checkout at execution. These are planned boundaries, not existing gameplay modules. Restricted vendor resources need an ignored local installation path; public code and source-safe configuration remain tracked.
 
 ## Gameplay boundaries to introduce when needed
 

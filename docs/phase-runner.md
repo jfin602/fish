@@ -48,6 +48,8 @@ The authored p0 stack has three bounded prompts:
 
 P1 and P2 are implementation work; P3 is the final native closeout. The actual prompt files own prerequisites, checks, and limitations. A failed local tool connection must be reported truthfully rather than counted as observed. The mandatory P3 handoff is reached even with `--closeout`.
 
+The authored [p1 stack](tasks/p1/README.md) contains eleven tasks targeting `0.1.1` through `0.1.11`. After actual P0 evidence is reconciled, prepare its deliberate `0.1.0` baseline before runner invocation; authoring does not change the starter version. P5 and P10 are intermediate native/manual checkpoints, and P11 is the final Browser-required closeout. Follow [P1 entry and resume](tasks/p1/manual/entry-and-resume.md) for reviewed exact-subject checkpoints and the final human-review boundary. `npm run fish:phase:validate -- p1` validates grammar/version assignments only, not runtime readiness.
+
 ## Prompt grammar and templates
 
 Place prompt files directly in `docs/tasks/<folder>/`. The runner reads all direct `.txt` entries and does not recurse into `manual/` or other subfolders. Use `P1-<lower-kebab-slug>.txt`, `P2-<lower-kebab-slug>.txt`, and so on, contiguous from P1 without leading zeros. Keep support notes in Markdown.

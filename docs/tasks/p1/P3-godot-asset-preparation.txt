@@ -1,0 +1,28 @@
+TASK: Phase 1 / P3 — Godot asset preparation
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.1.3`.
+
+GOAL
+Prepare the four acquired starter assets for the installed Godot project and implement a small, reliable loading boundary. Produce real resource/rig/material evidence and an actionable missing-required-asset diagnostic. Visible quality remains for P5; this task does not qualify swimming feel.
+
+PREREQUISITES AND NARROW READING
+Require actual P0 completion, the reconciled 0.1.0 Phase entry, P1's display/pause shell and successful P2 at root version 0.1.2. Read AGENTS.md, BOOT.md, p1 README, implementation-plan.md P3, docs/art-and-assets.md, docs/assets/p1-starter-manifest.md, game/assets/README.md, relevant development/import guidance and prior qualification/implementation.md entries. Inspect the real resource tree, tool versions, tools/dev composition, HEAD and dirty work. Proposed paths must follow the actual checkout.
+
+IMPLEMENTATION
+1. Confirm all four P2 packages, checksums and source/license records. Preserve restricted originals and every converted derivative under effective ignored storage. Keep acquisition archives outside Godot's import tree. Inspect real formats and supported local conversion tools; prefer a prepared Godot-supported scene format without assuming Unity prefabs/shaders or Blender authoring rigs transfer intact. Reuse the established renderer and toolchain.
+2. Prepare Emperor Angelfish's mesh, skeleton, textures and actual clips. Record original-to-prepared resource/clip mappings. Check scale, forward/up axes, bone hierarchy, skin/deforming tracks, loop settings, root motion and material dependencies. Rebuild necessary Godot materials, including fin transparency. Movement authority remains separate from visual animation; prevent imported root motion from applying a second translation. Importing feeding/attack/death clips does not authorize those mechanics. Final swim/glide/turn blending belongs to P9.
+3. Prepare Rock Face geometry/materials, Coast Sand's real texture set, and selected Soft Coral meshes/materials. Coast Sand supplies a material for Fish-authored terrain, not a ready-made seabed. Preserve notices and record conversions and chosen texture variants. P4 owns course placement and collision composition; avoid broad terrain, water, ecology or renderer work.
+4. Create the minimal prepared-resource mapping and loader needed by the actual C# project; document their real paths in game/assets/README.md. Resolve required local resources through checked paths rather than hard missing ext_resource references that prevent scene parsing. Public wrappers/configuration may reference ignored resource paths but must not embed prohibited mesh, texture or animation data.
+5. When a required asset is missing or invalid, implement an explicit startup diagnostic identifying the item and preparation action. Keep P1's display/pause controls usable. Required-asset checks must fail meaningfully; a diagnostic placeholder may assist investigation but cannot count as selected-asset integration. Extend the existing thin development checks only as needed, and update the manifest's prepared/imported states from actual results.
+
+VALIDATION
+Tier T1. Inspect tools/dev composition, then run the affected import/build and bounded real-resource instantiation checks once through the existing wrapper. Verify all four resources and dependencies load, the fish skeleton/clip mapping exists, and missing-resource handling yields the intended diagnostic state and failed readiness result. Simulate absence only with a reversible local fixture/override; restore originals. Run git diff --check and inspect tracked/ignored content for restricted derivatives. Headless assertions do not prove rendered transparency, deformation quality or diagnostic pixels; reserve those observations for P5.
+
+DONE CONDITION AND REPORT
+Append exact preparation commands/tools, actual mappings, resource checks, missing-asset behavior and limitations to qualification/implementation.md. Keep all observed-in-game statuses unclaimed. Conversion/rig repair may exceed the ordinary budget; preserve progress and concrete blockers without replacing the owner's assets.
+
+VERSIONING AND GIT
+Advance root package.json to the assigned version only after required checks pass. Otherwise retain the prior successful version. Preserve owner work and source archives. The runner owns checkpoint commits; do not self-commit or push. Record direct execution and leave it reviewable.

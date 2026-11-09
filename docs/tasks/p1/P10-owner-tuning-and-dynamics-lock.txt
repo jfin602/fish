@@ -1,0 +1,35 @@
+TASK: Phase 1 / P10 — Owner tuning and dynamics lock
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.1.10`.
+
+MANUAL NATIVE BOUNDARY
+Run interactively after P1–P9, following manual/entry-and-resume.md. This T3 owner qualification intentionally exceeds an ordinary prompt budget when play, feedback and retuning require it. Automation supports observations; it cannot supply the owner's judgment. Preserve partial evidence and the next action when a required tool or owner session is unavailable.
+
+GOAL AND NARROW READING
+Make implemented core swimming accepted through real owner play in both desktop modes. Read AGENTS.md, BOOT.md, the P10 plan section, docs/systems/swimming-and-camera.md, worksheet question 10, validation V01–V02/V16–V17, G1.1–G1.4 and current implementation/native-display evidence. Require the four selected assets, final motor/input/camera/body implementation and a usable native display shell. Preserve existing work; inspect actual bindings and configuration instead of inventing approved defaults.
+
+A — REPRODUCIBLE NATIVE CANDIDATE
+Record revision, dirty-source fingerprints, platform/backend, tools and relevant asset identities. Confirm the MCP peer is this Fish project before mutations. Launch a real native game window through tools/dev run or its qualified equivalent; inspect command composition to avoid unchanged duplicate builds. Verify Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set remain visibly integrated. Use the same documented course with approach markers, rocks, gaps and above/below landmarks for both modes.
+
+B — OWNER PLAY AND REPAIR LOOP
+Observe and record all seven criteria separately for mouse-only and keyboard fallback:
+1. Accelerate quickly, approach a landmark, release propulsion and slow predictably with gradual deceleration. Verify keyboard backward input slows instead of reversing; record how mouse-only slowing works.
+2. Circle rocks, turn back through a curved path and navigate gaps with slight anticipation, retaining nimble, easy control.
+3. Pitch toward upper/lower landmarks, swim along the heading and return to level travel without losing bearings; do not assume automatic leveling.
+4. Keep the whole fish and route readable through turns, climbs, dives and obstacles. Check the moderate behind/above view, smooth following, steady horizon, turn bend/lean, active swimming and eased glide animation.
+5. Pause/resume without stuck inputs, unwanted steering or thrust. Distinguish intended coasting from stale input; inspect cursor capture and actual control state.
+6. Complete the same course comfortably with only the mouse and with the keyboard fallback. Include reachable pause/settings controls and mode switching. Mouse-only stays fully mouse-operable; keyboard fallback remains usable without an external mouse.
+7. Have the owner explore freely for several minutes per mode and judge natural, nimble, easy swimming. Record actual duration and feedback, not inferred satisfaction.
+
+Run a four-cell smoke matrix: each input mode in Fullscreen and Windowed fullscreen. Check launch/transition coverage, UI, cursor, Alt-Tab return and pause/resume. Record requested and effective modes; backend equivalence is not evidence of exclusive fullscreen. No embedded-preview substitution. Record representative frame timing/FPS, visible stalls, hardware and display/render settings while swimming the final four-asset course. Recheck V16/V17 observations invalidated since P5, including the native missing-resource diagnostic and saved-choice/override behavior; restore all resources/settings before acceptance. Record measured limits without inventing a production performance budget.
+
+Ask for concrete owner feedback on the observed candidate, adjust only core motor/input/camera/body/display defects, and repeat affected checks. Continue until the owner explicitly accepts the final feel in both modes. Preserve rejected attempts. No speed burst, precision mode, evasive turn, free look, controller or later-game implementation belongs here.
+
+C — LOCK EVIDENCE AND VALUES
+Create qualification/swimming-acceptance.md with the seven-by-two results, display matrix, actions, durations, inspected native captures, errors, fixes and actual owner acceptance tied to the final candidate. Create qualification/accepted-tuning.md listing exact tracked configuration paths, field names, units and values for motor, steering/pitch, input sensitivity/bindings, camera and animation, plus source/config/asset fingerprints. Runtime-only tweaks must be saved and verified before acceptance; identify changes after any earlier play session. Retain essential evidence durably.
+
+DONE CONDITION AND VERSIONING
+All required native observations and explicit final owner acceptance must pass. Missing evidence or rejection retains 0.1.9; do not advance from documentation approval. Only then set root package.json to 0.1.10, report G1.1–G1.4 evidence and hand off P11. Do not self-commit or push. After review, the coordinator creates the exact-subject 0.1.10 checkpoint before runner resume.

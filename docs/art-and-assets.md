@@ -6,7 +6,7 @@
 
 This document owns the approved sources, starter order, licensing notes, and asset preparation checks. [The decision register](decisions-and-questions.md) records the approval as S7/C16/C17. [The roadmap](roadmap.md) continues to own implementation progress.
 
-**All nine entries are selected for sourcing/evaluation only.** Listing and license research was checked on 2026-11-09; no asset download, archive inspection, Godot import, runtime performance, or final production acceptance has been verified. A free listing is not proof that its materials, rig, or animations work in Fish.
+**The four starter assets are selected for P1 acquisition, preparation and runtime integration; the other entries retain their later sourcing/evaluation order.** The owner's P1 request is recorded as S9/C27 in [the decision register](decisions-and-questions.md) and planned in [the P1 stack](tasks/p1/README.md). Listing and license research was checked on 2026-11-09; no asset download, archive inspection, Godot import, runtime performance, or final production acceptance has been verified. A free listing is not proof that its materials, rig, or animations work in Fish.
 
 ## Approved starter order
 
@@ -52,6 +52,8 @@ At acquisition, retain the exact source URL, creator, download date, package/ver
 ## Godot preparation and first checks
 
 Use the existing Godot .NET/C# direction. Prefer glTF/GLB for prepared scene assets; FBX is also supported. Direct Blender import invokes Blender's glTF exporter. OBJ does not carry skeletal animation. These format capabilities are documented by [Godot's 3D import guide](https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/available_formats.html); they do not qualify any shortlisted download.
+
+P1's authored [acquisition, preparation and course tasks](tasks/p1/implementation-plan.md#p2--starter-asset-acquisition) must use the first set in the actual movement scene. Keep exact provenance and a reproducible local installation path; selected-asset acceptance requires all four in native play. A placeholder can isolate development but cannot pass the P1 asset requirement. Source access or a defective asset needs a precise dependency/repair record; do not silently substitute another shortlist entry.
 
 For the first authorized art/import task:
 

@@ -1,0 +1,34 @@
+TASK: Phase 1 / P11 — Swimming closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.1.11`.
+
+MANUAL FINAL BOUNDARY
+This is p1's sole final closeout. Execute interactively after the reviewed P10 checkpoint. The runner pauses at this metadata even with --closeout. Follow manual/entry-and-resume.md; do not launch a recursive runner. This prompt reviews T3 native qualification and performs T1 documentation reconciliation. Fresh native qualification is required only for missing or invalidated observations, and may require a longer owner session.
+
+GOAL AND PREREQUISITES
+Close Phase 1 only when its implemented core, integrated assets and display/input lifecycle have complete evidence. Read AGENTS.md, BOOT.md, this stack's README and P11 plan section, roadmap G1.1–G1.4, validation V01–V02/V16–V17, qualification/implementation.md, qualification/native-display-and-assets.md, qualification/swimming-acceptance.md and qualification/accepted-tuning.md. Inspect docs/assets/p1-starter-manifest.md, game/assets/README.md and changed owning contracts. Require actual P0 pass reconciliation and P1–P10 results, not authored promises or inferred success.
+
+A — VERIFY EVIDENCE APPLIES
+1. Record current revision, local changes and relevant source/config/asset fingerprints. Compare with the final owner-accepted candidate, including main scene/collision, display UI, input lifecycle, motor, camera, animation and asset identities. A checkpoint commit changes the revision label without necessarily changing gameplay; explain that mapping. Separate documentation/package-version-only edits from gameplay changes.
+2. Reuse applicable observations on unchanged gameplay. Do not rerun the game, ask the owner to repeat acceptance or rebuild solely because documentation changed. Where an intervening change invalidates evidence, identify the affected criterion and repeat only necessary native checks using P10's protocol. Any changed feel requires owner acceptance of the resulting candidate. Preserve earlier failures and qualify only the actual platform/backend observed.
+3. Confirm captures contain inspected native game pixels, not only an editor preview, and that commands/logs establish the claimed observations. Verify durable references remain accessible. Missing images, unavailable owner feedback or unexplained source drift remain NOT OBSERVED/BLOCKED, with specific recovery actions.
+
+B — MAP ALL FOUR GATES
+Create closeout.md with per-criterion evidence and PASS/FAIL/NOT OBSERVED/BLOCKED dispositions:
+- G1.1: controlled swimming and physical space, quick acceleration/gradual slowdown, curved turns, vertical travel and the same course in both desktop modes.
+- G1.2: readable smooth camera and body/tail motion, comfortable navigation, all seven approved criteria observed separately in both modes and explicit owner acceptance after several minutes of free swimming per mode.
+- G1.3: Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set acquired, prepared and visibly integrated; provenance, license/credit records and public-safe installation mapping are retained. Require native missing-resource diagnostic and final representative-performance evidence as well. Source selection is not integration.
+- G1.4: default Fullscreen, borderless native-size Windowed fullscreen, effective backend behavior, usable UI and both-mode display/focus/cursor/pause lifecycle evidence. Never claim exclusive fullscreen when only equivalent backend behavior was observed.
+
+Check exact accepted tuning values are saved in tracked configuration and documented with their final identity. Neither a green build nor owner approval of the design substitutes for native results. Every required Gate must pass before Phase 1 passes.
+
+C — RECONCILE AND REPORT
+Update roadmap, this task README, BOOT, MODULES, development setup and changed owning docs once, matching actual results. Retain later-game scenarios/statuses. Route the next bounded scope to Movement abilities only after actual core acceptance; do not implement it here. Distinguish unresolved defects from deferred enhancements and preserve historical failures.
+
+Run npm run fish:phase:validate -- p1, inspect changed links and git diff --check. Review evidence consistency without unrelated suites. Report exact accepted candidate, commands reused/rerun, owner decision, all Gate outcomes, limitations and next action.
+
+VERSIONING AND GIT
+Set only the existing root package.json version to 0.1.11 when all four Gates and reconciliation pass. Any required gap retains 0.1.10 and an incomplete closeout. Do not self-commit or push. Leave final changes reviewable and preserve the runner's final human-review boundary.

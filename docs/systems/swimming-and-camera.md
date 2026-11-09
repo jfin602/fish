@@ -43,6 +43,12 @@ The core is locked for progression when the required native observations and the
 
 After that core acceptance, **[Movement abilities](../planning/p1/movement-abilities.md)** is the next selected implementation focus: short speed burst, precision mode, and quick evasive turn. Their internal order, inputs, tuning, and any costs/cooldowns remain open. Feeding, predators, growth, saving, and the broader life loop follow their own roadmap scope.
 
+## P1 delivery requirement
+
+The owner requires swimming dynamics to be set by the end of P1. The [P1 plan](../planning/p1/core-swimming.md) and [execution stack](../tasks/p1/README.md) include the four selected ocean starter assets, fullscreen development from the first task, windowed fullscreen for testing, and a dedicated owner tuning loop. Finish with the implemented motor, bindings, camera and body-motion settings recorded against the accepted candidate. The current review has not run that work.
+
+Exact choices below remain open at authoring and must be resolved as needed for the core before P1 passes. Future controller and Movement abilities details stay separate. Fullscreen/layout/focus behavior is owned by [UX](../ux-and-presentation.md#fullscreen-presentation); runtime evidence is owned by validation V16/V17 and the roadmap's G1.3/G1.4.
+
 ## Remaining tuning and bindings
 
 | Area | Still to determine |

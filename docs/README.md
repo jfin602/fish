@@ -10,6 +10,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Game design](game-design.md) | Overall life loop and relationship between systems. |
 | [Swimming and camera](systems/swimming-and-camera.md) | Approved core controls, movement feel, camera/body presentation, remaining tuning and later integration boundaries. |
 | [Swim controls worksheet](planning/p1/swim-controls-worksheet.md) | Completed owner discussion and provenance for all ten controls answers. |
+| [P1 core swimming plan](planning/p1/core-swimming.md) | Selected-asset/fullscreen delivery, implementation starting points, tuning loop and phase finish line. |
 | [Movement abilities](planning/p1/movement-abilities.md) | Selected follow-up after actual core acceptance: burst, precision mode and evasive turn. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
@@ -38,6 +39,8 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 ## Approved core-controls design
 
 The [completed worksheet](planning/p1/swim-controls-worksheet.md) was accepted in the final documentation review on 2026-11-09. Use the [swimming contract](systems/swimming-and-camera.md) for the design and [validation V01–V02](validation.md#core-movement-acceptance) for the seven accepted playtest criteria. Actual native acceptance of the implemented core is still required before Movement abilities.
+
+The authored [P1 execution stack](tasks/p1/README.md) adds the selected starter assets and fullscreen/windowed-fullscreen delivery. It requires settled dynamics and owner acceptance by P1 completion. Inspect the real local foundation and follow its entry-baseline procedure before execution; the published version and gameplay results remain unchanged by authoring.
 
 ## Status language
 
