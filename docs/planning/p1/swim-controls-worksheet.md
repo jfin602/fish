@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01–Q02 answered; Q03–Q04 partially answered; free look deferred.  
-**Answers recorded:** 4 of 10 (2 answered; 2 partial).  
-**Next question:** Q04 — Starting, coasting, and stopping.
+**Status:** In progress; Q01, Q02, and Q04 answered; Q03 partially answered; free look deferred.  
+**Answers recorded:** 4 of 10 (3 answered; 1 partial).  
+**Next question:** Q05 — Turning and directional movement.
 
 ## Purpose and scope
 
@@ -69,11 +69,12 @@ Examples: the fish steers toward the view while swimming; looking and steering a
 
 Describe ordinary movement: holding an input to propel the fish or setting a sustained speed; immediate or gradual acceleration; stopping promptly or coasting after release. Use approaching a small landmark as the example. Optional special actions are covered in Q08.
 
-- **Status:** Partial.
+- **Status:** Answered.
 - **Recorded:** 2026-11-09; carried forward from the owner's Q02 elaboration.
 - **Owner answer:** "And then holding one of the buttons of the mouse controls like speed or thrust or whatever." The full statement is preserved in Q02.
-- **Decision notes:** In mouse-only mode, holding a mouse button controls swimming speed or thrust. The owner has not yet chosen between those models. Preserve Q01's nimble feel and modest anticipation when refining the response.
-- **Open details:** The mouse button, speed versus thrust behavior, acceleration while held, coasting or stopping after release, and the equivalent keyboard input remain open.
+- **Owner follow-up (2026-11-09):** Acceleration should be pretty quick. Fish are naturally pretty fast. Slowing down should be a more gradual process. But really we're going for the most natural fish feel we can achieve
+- **Decision notes:** Summary of the owner's answer: acceleration should be quick, with more gradual slowing when swimming input is released. Natural fish movement is the desired feel, while preserving Q01's nimble, agile, easy-to-control target. Holding a mouse button remains the chosen mouse-mode input for swimming speed or thrust; its precise implementation is still open.
+- **Open details:** Exact acceleration and slowing rates, cruising speed, glide duration, mouse button assignment, speed versus thrust implementation, and the equivalent keyboard input remain to be tuned or selected. Optional active braking remains a Q08 choice.
 
 ## Q05 — Turning and directional movement
 
