@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01, Q02, Q04, and Q05 answered; Q03 partially answered; free look deferred.  
-**Answers recorded:** 5 of 10 (4 answered; 1 partial).  
-**Next question:** Q06 — Swimming upward and downward.
+**Status:** In progress; Q01, Q02, Q04, Q05, and Q06 answered; Q03 partially answered; free look deferred.  
+**Answers recorded:** 6 of 10 (5 answered; 1 partial).  
+**Next question:** Q07 — Third-person camera.
 
 ## Purpose and scope
 
@@ -94,11 +94,12 @@ Examples: turn its nose and swim in an arc; slide sideways while keeping its hea
 
 Examples: look or aim up and down, then swim in that direction; use dedicated rise and dive inputs; combine both. Picture reaching a point directly above or below and then returning to level swimming.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:** Yes, continue
+- **Confirmation context:** The owner was asked whether changing depth should tilt the fish's nose up or down and then swim in that direction, using vertical mouse movement in mouse mode and up/down steering inputs in keyboard mode. The owner accepted this proposal.
+- **Decision notes:** Both desktop control modes change depth by pitching the fish upward or downward and swimming along that direction. Vertical mouse movement controls the pitch in mouse-only mode; keyboard up/down steering inputs provide the equivalent behavior.
+- **Open details:** Exact keyboard bindings, vertical sensitivity, pitch limits, and any return-to-level assistance remain open. Camera response during climbs and dives belongs to Q07 and Q09.
 
 ## Q07 — Third-person camera
 
