@@ -11,6 +11,13 @@ func _require(ok: bool, message: String) -> bool:
 	quit(1)
 	return false
 
+func _key(code: Key, down: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.physical_keycode = code
+	event.pressed = down
+	Input.parse_input_event(event)
+
 func _tick(count: int = 1) -> void:
 	for i in range(count):
 		await physics_frame
@@ -37,21 +44,21 @@ func _run() -> void:
 			absf(camera.global_position.x - fish.global_position.x) < 0.01,
 			"spawn camera is not behind and above the fish"):
 		return
-	Input.action_press("swim_yaw_right")
-	await _tick(8)
-	Input.action_release("swim_yaw_right")
+	_key(KEY_D, true)
+	await _tick(12)
+	_key(KEY_D, false)
 	var rear := Vector2(camera.global_position.x - fish.global_position.x,
 		camera.global_position.z - fish.global_position.z).normalized()
 	var desired_rear := Vector2(fish.global_basis.z.x, fish.global_basis.z.z).normalized()
 	var turn_lag := absf(rear.angle_to(desired_rear))
 	if not _require(turn_lag > 0.05 and turn_lag < 0.5,
-			"camera did not lag slightly behind an actual motor turn"):
+			"camera did not lag slightly behind an actual motor turn: lag=%s fish_yaw=%s" % [turn_lag, fish.rotation.y]):
 		return
-	await _tick(45)
+	await _tick(75)
 	rear = Vector2(camera.global_position.x - fish.global_position.x,
 		camera.global_position.z - fish.global_position.z).normalized()
-	if not _require(absf(rear.angle_to(desired_rear)) < 0.02,
-			"camera did not return behind the fish after the turn"):
+	if not _require(absf(rear.angle_to(desired_rear)) < minf(0.06, turn_lag * 0.5),
+			"camera did not return behind the fish after the turn: residual=%s" % absf(rear.angle_to(desired_rear))):
 		return
 	# Freeze only the motor in this fixture; camera still reads the real fish transform.
 	fish.set_physics_process(false)

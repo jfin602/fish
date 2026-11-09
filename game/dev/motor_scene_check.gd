@@ -18,17 +18,27 @@ func _require(condition: bool, label: String) -> bool:
 	quit(1)
 	return false
 
+func _key(code: Key, down: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.physical_keycode = code
+	event.pressed = down
+	Input.parse_input_event(event)
+
 func _run_schedule(fps: int) -> Vector3:
 	Engine.max_fps = fps
 	var scene := _new_course()
 	var fish: CharacterBody3D = scene.get_node("Fish")
 	for tick in range(3):
 		await physics_frame
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
+	for tick in range(30):
+		await physics_frame
+	var start := fish.global_position
 	for tick in range(90):
 		await physics_frame
-	Input.action_release("swim_thrust")
-	var result := fish.global_position
+	_key(KEY_W, false)
+	var result := fish.global_position - start
 	current_scene = null
 	scene.queue_free()
 	await process_frame
@@ -37,7 +47,7 @@ func _run_schedule(fps: int) -> Vector3:
 func _run() -> void:
 	var low: Vector3 = await _run_schedule(30)
 	var high: Vector3 = await _run_schedule(120)
-	if not _require(low.distance_to(high) < 0.08, "render cadence changed equal-physics thrust position"):
+	if not _require(low.distance_to(high) < 0.08, "render cadence changed equal-physics thrust position: low=%s high=%s diff=%s" % [low, high, low.distance_to(high)]):
 		return
 	if not _require(low.z < -3.5 and absf(low.x) < 0.02 and absf(low.y) < 0.02,
 			"W did not propel nose-forward from spawn: low=%s high=%s" % [low, high]):
@@ -48,14 +58,14 @@ func _run() -> void:
 	var fish: CharacterBody3D = scene.get_node("Fish")
 	for tick in range(3):
 		await physics_frame
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	for tick in range(30):
 		await physics_frame
-	Input.action_press("swim_slow")
+	_key(KEY_S, true)
 	for tick in range(30):
 		await physics_frame
-	Input.action_release("swim_thrust")
-	Input.action_release("swim_slow")
+	_key(KEY_W, false)
+	_key(KEY_S, false)
 	if not _require(fish.velocity.length() < 0.02 and fish.global_position.z < -0.5,
 			"S failed to slow W without reversing"):
 		return
@@ -63,23 +73,23 @@ func _run() -> void:
 	for tick in range(3):
 		await physics_frame
 	var yaw_before := fish.rotation.y
-	Input.action_press("swim_yaw_left")
-	Input.action_press("swim_yaw_right")
-	Input.action_press("swim_pitch_up")
-	Input.action_press("swim_pitch_down")
+	_key(KEY_A, true)
+	_key(KEY_D, true)
+	_key(KEY_UP, true)
+	_key(KEY_DOWN, true)
 	for tick in range(12):
 		await physics_frame
-	Input.action_release("swim_yaw_left")
-	Input.action_release("swim_pitch_up")
-	Input.action_release("swim_pitch_down")
+	_key(KEY_A, false)
+	_key(KEY_UP, false)
+	_key(KEY_DOWN, false)
 	if not _require(absf(fish.rotation.y - yaw_before) < 0.001 and absf(fish.rotation.x) < 0.001,
 			"opposing steering keys failed to cancel"):
 		return
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	for tick in range(30):
 		await physics_frame
-	Input.action_release("swim_thrust")
-	Input.action_release("swim_yaw_right")
+	_key(KEY_W, false)
+	_key(KEY_D, false)
 	if not _require(fish.global_position.x > 0.2 and fish.rotation.y < -0.5,
 			"D failed to turn the body and curve the route"):
 		return
@@ -91,12 +101,12 @@ func _run() -> void:
 	fish = scene.get_node("Fish")
 	for tick in range(3):
 		await physics_frame
-	Input.action_press("swim_thrust")
-	Input.action_press("swim_pitch_up")
+	_key(KEY_W, true)
+	_key(KEY_UP, true)
 	for tick in range(60):
 		await physics_frame
-	Input.action_release("swim_thrust")
-	Input.action_release("swim_pitch_up")
+	_key(KEY_W, false)
+	_key(KEY_UP, false)
 	if not _require(fish.global_position.y > 0.4 and fish.rotation.x > 0.5,
 			"Up did not pitch nose and produce upward travel"):
 		return
@@ -122,10 +132,10 @@ func _run() -> void:
 	for tick in range(3):
 		await physics_frame
 	fish.position = Vector3(-2.6, -3, 0)
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	for tick in range(120):
 		await physics_frame
-	Input.action_release("swim_thrust")
+	_key(KEY_W, false)
 	var rock_z := fish.global_position.z
 	if not _require(rock_z > -3.4 and rock_z < -2.5,
 			"west rock failed to block the authoritative fish body"):
@@ -134,18 +144,18 @@ func _run() -> void:
 	fish.call("ClearAndDisarmInput")
 	for tick in range(3):
 		await physics_frame
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	for tick in range(120):
 		await physics_frame
-	Input.action_release("swim_thrust")
+	_key(KEY_W, false)
 	var gap_z := fish.global_position.z
 	if not _require(gap_z < -6.1 and gap_z >= -24.9,
 			"fish failed to traverse the passage within bounds"):
 		return
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	for tick in range(360):
 		await physics_frame
-	Input.action_release("swim_thrust")
+	_key(KEY_W, false)
 	if not _require(fish.global_position.z >= -24.9001 and fish.global_position.z <= -24.89,
 			"fish exceeded the north habitat bound"):
 		return

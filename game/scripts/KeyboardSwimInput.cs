@@ -1,29 +1,113 @@
 using Godot;
+using System.Collections.Generic;
 
 namespace Fish;
 
-/// <summary>Keyboard-only intent; it never changes fish state directly.</summary>
-public static class KeyboardSwimInput
+/// <summary>Physical controls for one active preset. Events become one physics intent.</summary>
+public sealed class ProfileSwimInput
 {
-    private static readonly string[] Actions =
-        ["swim_thrust", "swim_slow", "swim_yaw_left", "swim_yaw_right", "swim_pitch_up", "swim_pitch_down"];
+    private readonly HashSet<int> _keys = [];
+    private readonly HashSet<int> _buttons = [];
+    private readonly HashSet<int> _blockedKeys = [];
+    private readonly HashSet<int> _blockedButtons = [];
+    private readonly MouseSwimInput _mouse = new();
+    private ControlPreset _profile = ControlPreset.Builtins()[0];
 
-    public static SwimIntent Read() => new(
-        Input.GetActionStrength("swim_thrust"),
-        Input.GetActionStrength("swim_slow"),
-        Input.GetActionStrength("swim_yaw_right") - Input.GetActionStrength("swim_yaw_left"),
-        Input.IsKeyPressed(Key.Shift) ? 0 :
-            Input.GetActionStrength("swim_pitch_up") - Input.GetActionStrength("swim_pitch_down"));
+    public ControlPreset Profile => _profile;
+    public bool AllReleased => _keys.Count == 0 && _buttons.Count == 0 &&
+        _blockedKeys.Count == 0 && _blockedButtons.Count == 0;
+    public int HeldCount => _keys.Count + _buttons.Count;
+    public bool UsesMouse => _profile.MouseX.Steering != SteeringAxis.None ||
+        _profile.MouseY.Steering != SteeringAxis.None || HasMouseBinding();
+    public bool UsesKeyboardSteering => HasKeyBinding(ControlAction.Thrust) ||
+        HasKeyBinding(ControlAction.Slow) || HasKeyBinding(ControlAction.YawLeft) ||
+        HasKeyBinding(ControlAction.YawRight) || HasKeyBinding(ControlAction.PitchUp) ||
+        HasKeyBinding(ControlAction.PitchDown);
 
-    public static bool AllReleased()
+    public void Select(ControlPreset profile)
     {
-        foreach (var action in Actions)
-            if (Input.IsActionPressed(action)) return false;
-        return true;
+        _profile = profile;
+        _mouse.Clear();
     }
 
-    public static void ReleaseAll()
+    public void ClearQueued()
     {
-        foreach (var action in Actions) Input.ActionRelease(action);
+        _blockedKeys.UnionWith(_keys);
+        _blockedButtons.UnionWith(_buttons);
+        _keys.Clear();
+        _buttons.Clear();
+        _mouse.Clear();
+    }
+    public void CaptureStarted() => _mouse.OnCaptureStarted();
+
+    public void Accept(InputEvent @event, bool gameplayMouseCaptured)
+    {
+        if (@event is InputEventKey key && !key.Echo)
+        {
+            var code = (int)key.PhysicalKeycode;
+            if (code == 0) code = (int)key.Keycode;
+            if (key.Pressed)
+            {
+                if (!_blockedKeys.Contains(code)) _keys.Add(code);
+            }
+            else
+            {
+                _keys.Remove(code);
+                _blockedKeys.Remove(code);
+            }
+        }
+        else if (@event is InputEventMouseButton button && button.ButtonIndex is not
+                 (MouseButton.WheelUp or MouseButton.WheelDown or MouseButton.WheelLeft or MouseButton.WheelRight))
+        {
+            var code = (int)button.ButtonIndex;
+            if (button.Pressed)
+            {
+                if (!_blockedButtons.Contains(code)) _buttons.Add(code);
+            }
+            else
+            {
+                _buttons.Remove(code);
+                _blockedButtons.Remove(code);
+            }
+        }
+        if (gameplayMouseCaptured) _mouse.Accept(@event);
+    }
+
+    public SwimIntent Consume(float delta, SwimTuning tuning, bool captured,
+        float sensitivity, bool invertY)
+    {
+        var steering = captured ? _mouse.ConsumeSteering(delta, tuning, _profile, sensitivity, invertY) : Vector2.Zero;
+        var yaw = (IsDown(ControlAction.YawRight, captured) ? 1 : 0) - (IsDown(ControlAction.YawLeft, captured) ? 1 : 0);
+        var pitch = (IsDown(ControlAction.PitchUp, captured) ? 1 : 0) - (IsDown(ControlAction.PitchDown, captured) ? 1 : 0);
+        if (Input.IsKeyPressed(Key.Shift) && !UsesMouse) pitch = 0; // Legacy keyboard camera hold.
+        return new SwimIntent(IsDown(ControlAction.Thrust, captured) ? 1 : 0,
+            IsDown(ControlAction.Slow, captured) ? 1 : 0,
+            Mathf.Clamp(yaw + steering.X, -1, 1), Mathf.Clamp(pitch + steering.Y, -1, 1));
+    }
+
+    public bool IsDown(ControlAction action, bool captured)
+    {
+        foreach (var binding in _profile.Bindings(action))
+            if (binding.Device == BindingDevice.PhysicalKey ? _keys.Contains(binding.Code) :
+                captured && _buttons.Contains(binding.Code)) return true;
+        return false;
+    }
+
+    private bool HasKeyBinding(ControlAction action)
+    {
+        foreach (var binding in _profile.Bindings(action))
+            if (binding.Device == BindingDevice.PhysicalKey) return true;
+        return false;
+    }
+
+    private bool HasMouseBinding()
+    {
+        foreach (var action in System.Enum.GetValues<ControlAction>())
+        {
+            if (action == ControlAction.PauseOptions) continue;
+            foreach (var binding in _profile.Bindings(action))
+                if (binding.Device == BindingDevice.MouseButton) return true;
+        }
+        return false;
     }
 }

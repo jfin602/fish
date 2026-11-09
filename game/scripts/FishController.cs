@@ -8,52 +8,88 @@ public partial class FishController : CharacterBody3D
     [Export] public SwimTuning Tuning { get; set; } = new();
     private const float HorizontalLimit = 24.9f;
     private const float VerticalLimit = 9.0f;
-    private readonly MouseSwimInput _mouse = new();
+    private readonly ProfileSwimInput _input = new();
     private SwimState _state;
     private bool _inputArmed = true;
-    private string _inputMode = DisplayPreferences.KeyboardMode;
     private float _mouseSensitivity = 0.12f;
     private bool _invertMouseY;
+    private bool _legacyMouseSettings;
     private bool _mouseCaptureActive;
 
-    public string ActiveInputMode => _inputMode;
-    public bool CanUseMouseCamera => _inputMode == DisplayPreferences.MouseMode &&
+    public string ActiveInputMode => _input.UsesKeyboardSteering
+        ? DisplayPreferences.KeyboardMode : DisplayPreferences.MouseMode;
+    public string ActivePresetId => _input.Profile.Id;
+    public bool UsesMouseInput => _input.UsesMouse;
+    public bool IsPauseEvent(InputEvent @event)
+    {
+        if (@event is InputEventKey { Pressed: true, Echo: false } key)
+        {
+            var code = (int)key.PhysicalKeycode;
+            if (code == 0) code = (int)key.Keycode;
+            if (code == ControlPreset.RecoveryKey) return true;
+            foreach (var binding in _input.Profile.Bindings(ControlAction.PauseOptions))
+                if (binding.Device == BindingDevice.PhysicalKey && binding.Code == code) return true;
+        }
+        if (@event is InputEventMouseButton { Pressed: true } button)
+        {
+            if (_input.UsesMouse && (int)button.ButtonIndex == ControlPreset.RecoveryMouseButton)
+                return true;
+            foreach (var binding in _input.Profile.Bindings(ControlAction.PauseOptions))
+                if (binding.Device == BindingDevice.MouseButton && binding.Code == (int)button.ButtonIndex)
+                    return true;
+        }
+        return false;
+    }
+    public bool CanUseMouseCamera => !_input.UsesKeyboardSteering && _input.UsesMouse &&
         _mouseCaptureActive && _inputArmed && !GetTree().Paused;
     public bool CanZoomCamera => _inputArmed && !GetTree().Paused &&
-        (_inputMode == DisplayPreferences.KeyboardMode || _mouseCaptureActive);
+        (!_input.UsesMouse || _mouseCaptureActive);
     public float PresentationSpeed => _state.Speed;
     public float PresentationEffort { get; private set; }
     public float PresentationTurn { get; private set; }
+    public float LastThrust { get; private set; }
+    public float LastSlow { get; private set; }
+    public float LastYaw { get; private set; }
+    public float LastPitch { get; private set; }
+    public int MotorStepCount { get; private set; }
+    public string GetActivePresetId() => ActivePresetId;
+    public float GetLastThrust() => LastThrust;
+    public float GetLastSlow() => LastSlow;
+    public float GetLastYaw() => LastYaw;
+    public float GetLastPitch() => LastPitch;
+    public bool GetInputArmed() => _inputArmed;
+    public int GetHeldInputCount() => _input.HeldCount;
+    public int GetMotorStepCount() => MotorStepCount;
 
     public override void _Ready() => MotionMode = MotionModeEnum.Floating;
 
     public override void _Input(InputEvent @event)
     {
-        if (_inputMode != DisplayPreferences.MouseMode || !_mouseCaptureActive || !_inputArmed ||
-            GetTree().Paused) return;
-        _mouse.Accept(@event);
+        _input.Accept(@event, _mouseCaptureActive && _inputArmed && !GetTree().Paused);
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        var intent = new SwimIntent(0, 0, 0, 0);
         if (!_inputArmed)
         {
-            Velocity = Vector3.Zero;
-            PresentationEffort = 0;
-            PresentationTurn = 0;
             // The release tick itself cannot propel the fish.
-            if (KeyboardSwimInput.AllReleased() &&
-                !Input.IsMouseButtonPressed(MouseButton.Left) &&
-                !Input.IsMouseButtonPressed(MouseButton.Right) &&
-                !Input.IsMouseButtonPressed(MouseButton.Middle)) _inputArmed = true;
-            return;
+            if (_input.AllReleased) _inputArmed = true;
         }
-
-        var intent = _inputMode == DisplayPreferences.MouseMode
-            ? _mouse.Consume((float)delta, Tuning, _mouseSensitivity, _invertMouseY)
-            : KeyboardSwimInput.Read();
+        else
+        {
+            var sensitivity = _legacyMouseSettings ? _mouseSensitivity : _input.Profile.MouseSensitivity;
+            var invertY = _legacyMouseSettings ? _invertMouseY : _input.Profile.MouseY.Inverted;
+            intent = _input.Consume((float)delta, Tuning, _mouseCaptureActive,
+                sensitivity, invertY);
+        }
+        LastThrust = intent.Thrust;
+        LastSlow = intent.Slow;
+        LastYaw = intent.Yaw;
+        LastPitch = intent.Pitch;
         var previousYaw = _state.Yaw;
         _state = SwimMotor.Step(_state, intent, (float)delta, Tuning);
+        MotorStepCount++;
         PresentationEffort = intent.Slow > 0 ? 0 : Mathf.Clamp(intent.Thrust, 0, 1);
         PresentationTurn = delta > 0 && Tuning.YawRateDegrees > 0
             ? Mathf.Clamp(Mathf.Wrap(_state.Yaw - previousYaw, -Mathf.Pi, Mathf.Pi) /
@@ -78,44 +114,64 @@ public partial class FishController : CharacterBody3D
         _state.Speed = effective.Length();
     }
 
-    public void ClearAndDisarmInput()
+    public void ClearAndDisarmInput() => ClearAndDisarmInput(true);
+
+    public void ClearAndDisarmInput(bool stopMotion)
     {
         _inputArmed = false;
         _mouseCaptureActive = false;
-        _mouse.Clear();
+        _input.ClearQueued();
         PresentationEffort = 0;
         PresentationTurn = 0;
-        _state.Speed = 0;
-        _state.Velocity = Vector3.Zero;
-        Velocity = Vector3.Zero;
-        GetNodeOrNull<FollowCamera>("CameraRig")?.ClearLookOffset();
+        LastThrust = LastSlow = LastYaw = LastPitch = 0;
+        if (stopMotion)
+        {
+            _state.Speed = 0;
+            _state.Velocity = Vector3.Zero;
+            Velocity = Vector3.Zero;
+        }
+        if (stopMotion) GetNodeOrNull<FollowCamera>("CameraRig")?.ClearLookOffset();
     }
 
+    public void SetActivePreset(ControlPreset profile)
+    {
+        ClearAndDisarmInput(stopMotion: false);
+        _input.Select(profile);
+        _legacyMouseSettings = profile.IsBuiltin;
+        // Keep live switches usable too; a paused menu retains its visible pointer.
+        if (!GetTree().Paused)
+        {
+            Input.MouseMode = _input.UsesMouse ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
+            if (_input.UsesMouse) ResetMouseCapture();
+        }
+    }
+
+    // Compatibility for the old two-choice shell and saved preferences.
     public void SetInputMode(string mode)
     {
         if (!DisplayPreferences.IsSupportedInputMode(mode)) return;
-        if (_inputMode != mode) GetNodeOrNull<FollowCamera>("CameraRig")?.ResetZoom();
-        ClearAndDisarmInput();
-        _inputMode = mode;
+        var id = mode == DisplayPreferences.MouseMode ? ControlPreset.MouseId : ControlPreset.KeyboardId;
+        foreach (var profile in ControlPreset.Builtins())
+            if (profile.Id == id) { SetActivePreset(profile); return; }
     }
 
     public void ConfigureMouse(float sensitivity, bool invertY)
     {
-        _mouseSensitivity = Mathf.Clamp(sensitivity, 0.04f, 0.4f);
+        _mouseSensitivity = float.IsFinite(sensitivity)
+            ? Mathf.Clamp(sensitivity, 0.04f, 0.4f) : ControlPreset.DefaultSensitivity;
         _invertMouseY = invertY;
-        _mouse.Clear();
+        _input.ClearQueued();
     }
 
     public void ResetMouseCapture()
     {
-        _mouse.OnCaptureStarted();
+        _input.CaptureStarted();
         _mouseCaptureActive = true;
     }
 
     public override void _Notification(int what)
     {
         if (what != NotificationApplicationFocusOut) return;
-        KeyboardSwimInput.ReleaseAll();
         ClearAndDisarmInput();
     }
 }

@@ -31,3 +31,20 @@ The P1 prompt says Mouse Only must use **right-button pause**. Live P10 source a
 | `git diff --check`; `test ! -e package-lock.json`; root version check | PASS | No whitespace errors, no lockfile, `package.json` still `0.1.9`. |
 
 No P1 Gate status or historical P1 execution evidence was changed.
+
+## P2 — Hybrid runtime input (2026-11-09)
+
+Pre-task `main` HEAD: `213f4f688b3894f2a0d187c302c73025421ce5bb` (the C1 P1 store checkpoint). Root version stayed `0.1.9`. The working tree already contained partial P2 edits to the resolver, shell and scene checks; this turn continued them without discarding that work. P1 P9's saved Fish3 scene, collision root, shared `SwimMotor`, tuning and camera remained in place. The Godot MCP server reported version `2026.11.04` but no editor connection, so the installed Godot 4.7.2 .NET headless runner supplied scene evidence.
+
+`ProfileSwimInput` resolves the active preset's physical keys, mouse buttons and captured relative motion to one bounded `SwimIntent` per physics tick. Duplicate thrust/slow requests remain 1, opposing digital directions cancel, and digital plus mouse yaw/pitch sum once before clamping. `MouseSwimInput` retains first-motion suppression, per-event warp rejection and queued-pixel caps; sensitivity is finite and clamped. `FishController` calls the unchanged `SwimMotor.Step` once per active physics tick, including a neutral coasting tick while disarmed after a profile switch. Profile selection clears held/queued controls and changes pointer capture without changing fish transform, collision, speed, tuning or camera state. Intentional pause/focus/display stops retain their existing stop semantics. The shell exposes the three built-ins in its existing selector and preserves legacy preferences; the current P10 candidate remains right mouse slow and middle mouse pause with Escape recovery.
+
+| Check | Outcome | Scope |
+| --- | --- | --- |
+| Inspected `./tools/dev check`, then ran it once | BLOCKED at import | Composition: import → one .NET build → C# smoke → scene automation/negative scene check → input, camera and animation scene probes. Sandbox denied Godot's local socket and editor-settings write; later stages did not run. |
+| `./tools/dev build` on final C# | PASS | Zero warnings and errors. |
+| Isolated saved-scene `hybrid_input_check.gd` | PASS | W with mouse yaw/pitch in one motor tick; one-time motion consumption; overlapping thrust/slow; opposing steer; final clamps; capture warp; live switch with held W and continuing coast; mouse-only fallback; Escape, focus and display menu ownership. |
+| Isolated saved-scene `input_lifecycle_check.gd`, `motor_scene_check.gd`, `camera_scene_check.gd`, `animation_scene_check.gd` | PASS | Existing keyboard/mouse paths, pause/rearm, collision/bounds, camera and Fish3 pose. Motor and animation fixtures now send physical key events. Camera fixture checks recentering against measured turn lag and course obstruction. |
+| Isolated C# `--control-preset-check`; `git diff --check`; root version | PASS | Three templates, migration/store regressions, clean diff, unchanged `0.1.9`. Expected invalid-store fixture warnings appeared. |
+| Native Fish input comfort, actual OS capture/focus and fullscreen switching | NOT OBSERVED | Headless Godot reports effective display `Minimized`; P5/P1 P10 require real desktop observation. |
+
+Initial focused scene runs failed because the old animation fixture used action presses that no longer reach physical bindings, and the camera fixture expected exact recentering despite its measured course offset. Those fixtures were corrected and passed on rerun. P3 should build the preset creator/rebinding UI, show active-profile sensitivity and inversion accurately, and retain the menu-event suppression and existing right-slow/middle-pause candidate for P5 native comparison. No P1 Gate or final binding comfort is claimed; no self-commit or push was made.

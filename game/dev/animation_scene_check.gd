@@ -15,6 +15,13 @@ func _tick(count: int) -> void:
 	for i in range(count):
 		await physics_frame
 
+func _key(code: Key, down: bool) -> void:
+	var event := InputEventKey.new()
+	event.keycode = code
+	event.physical_keycode = code
+	event.pressed = down
+	Input.parse_input_event(event)
+
 func _state(motion: Node) -> Vector3:
 	return motion.call("GetPresentationState")
 
@@ -55,7 +62,7 @@ func _run() -> void:
 	# Give the motor room to coast without meeting the north course boundary.
 	fish.position = Vector3(0, 0, 4)
 	await _tick(3)
-	Input.action_press("swim_thrust")
+	_key(KEY_W, true)
 	await _tick(20)
 	var powered := _state(motion)
 	if not _require(powered.x > 0.8 and fish.velocity.length() > 0.5 and
@@ -79,7 +86,7 @@ func _run() -> void:
 			player.current_animation_position < clip.length,
 			"swim phase did not loop continuously across imported clip seam"):
 		return
-	Input.action_release("swim_thrust")
+	_key(KEY_W, false)
 	var release_phase := _state(motion).z
 	await _tick(30)
 	var gliding := _state(motion)
@@ -87,7 +94,7 @@ func _run() -> void:
 			fish.velocity.length() > 0.5 and gliding.z != release_phase,
 			"release failed to ease activity while momentum and glide animation continue"):
 		return
-	Input.action_press("swim_yaw_right")
+	_key(KEY_D, true)
 	await _tick(20)
 	var right_turn := _state(motion)
 	var right_pose := visual.quaternion
@@ -95,15 +102,15 @@ func _run() -> void:
 			absf(camera.global_basis.x.y) < 0.001,
 			"right turn lacks visual bend/lean or rolls camera"):
 		return
-	Input.action_release("swim_yaw_right")
-	Input.action_press("swim_yaw_left")
+	_key(KEY_D, false)
+	_key(KEY_A, true)
 	await _tick(24)
 	var left_turn := _state(motion)
 	if not _require(left_turn.y < -0.7 and visual.quaternion.angle_to(right_pose) > 0.12 and
 			absf(camera.global_basis.x.y) < 0.001,
 			"opposite turn did not reverse visual pose with steady horizon"):
 		return
-	Input.action_release("swim_yaw_left")
+	_key(KEY_A, false)
 	await _tick(70)
 	if not _require(absf(_state(motion).y) < 0.01 and
 			visual.quaternion.angle_to(base_visual_rotation) < 0.01,

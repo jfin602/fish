@@ -1,4 +1,5 @@
 using Godot;
+using System.Collections.Generic;
 
 namespace Fish;
 
@@ -13,6 +14,8 @@ public partial class PlayShell : Node
     private Button _resume = null!;
     private Button _options = null!;
     private Label _sensitivityLabel = null!;
+    private readonly ControlPresetStore _presets = new();
+    private readonly List<ControlPreset> _profileChoices = [];
 
     public PlayShell(FishController fish, Label help, DisplayPreferences preferences)
     {
@@ -24,11 +27,12 @@ public partial class PlayShell : Node
 
     public override void _Ready()
     {
+        _presets.Load();
         _fish.ConfigureMouse(_preferences.MouseSensitivity, _preferences.InvertMouseY);
-        _fish.SetInputMode(_preferences.InputMode);
-        Input.MouseMode = _preferences.InputMode == DisplayPreferences.MouseMode
+        _fish.SetActivePreset(_presets.Current);
+        Input.MouseMode = _fish.UsesMouseInput
             ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
-        if (_preferences.InputMode == DisplayPreferences.MouseMode) _fish.ResetMouseCapture();
+        if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
 
         var canvas = new CanvasLayer();
         AddChild(canvas);
@@ -93,15 +97,23 @@ public partial class PlayShell : Node
         modeLabel.AddThemeFontSizeOverride("font_size", 16);
         items.AddChild(modeLabel);
         var mode = new OptionButton { Name = "InputModeOption", FocusMode = Control.FocusModeEnum.All };
-        mode.AddItem("Keyboard", 0);
-        mode.AddItem("Mouse steering + camera keys", 1);
-        mode.Select(_preferences.InputMode == DisplayPreferences.MouseMode ? 1 : 0);
+        foreach (var id in new[] { ControlPreset.KeyboardId, ControlPreset.MouseId, ControlPreset.HybridId })
+            foreach (var profile in _presets.List())
+                if (profile.Id == id) _profileChoices.Add(profile);
+        foreach (var profile in _presets.List())
+            if (!profile.IsBuiltin) _profileChoices.Add(profile);
+        for (var index = 0; index < _profileChoices.Count; index++)
+            mode.AddItem(_profileChoices[index].Name, index);
+        mode.Select(_profileChoices.FindIndex(profile => profile.Id == _presets.CurrentId));
         ApplyFocusStyle(mode);
         mode.ItemSelected += index =>
         {
-            var choice = index == 1 ? DisplayPreferences.MouseMode : DisplayPreferences.KeyboardMode;
-            _fish.SetInputMode(choice);
-            _preferences.ChooseInputMode(choice);
+            if (index < 0 || index >= _profileChoices.Count) return;
+            var profile = _profileChoices[(int)index];
+            _presets.Choose(profile.Id);
+            _presets.Save();
+            _fish.SetActivePreset(profile);
+            _preferences.ChooseInputMode(_fish.ActiveInputMode);
             UpdateHelp();
         };
         items.AddChild(mode);
@@ -170,17 +182,10 @@ public partial class PlayShell : Node
 
     public override void _Input(InputEvent @event)
     {
-        if (@event is InputEventKey key && key.Pressed && !key.Echo && key.Keycode == Key.Escape)
+        if (_fish.IsPauseEvent(@event))
         {
-            if (_overlay.Visible) Resume();
-            else Pause();
-            GetViewport().SetInputAsHandled();
-        }
-        else if (@event is InputEventMouseButton button && button.Pressed &&
-                 (int)button.ButtonIndex == ControlPreset.RecoveryMouseButton &&
-                 _preferences.InputMode == DisplayPreferences.MouseMode)
-        {
-            if (!_overlay.Visible) Pause();
+            if (_overlay.Visible && @event is InputEventKey) Resume();
+            else if (!_overlay.Visible) Pause();
             GetViewport().SetInputAsHandled();
         }
     }
@@ -210,9 +215,9 @@ public partial class PlayShell : Node
         _overlay.Visible = false;
         _options.Visible = true;
         GetTree().Paused = false;
-        Input.MouseMode = _preferences.InputMode == DisplayPreferences.MouseMode
+        Input.MouseMode = _fish.UsesMouseInput
             ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
-        if (_preferences.InputMode == DisplayPreferences.MouseMode) _fish.ResetMouseCapture();
+        if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
         UpdateHelp();
         _resume.ReleaseFocus();
     }
@@ -233,7 +238,9 @@ public partial class PlayShell : Node
     {
         var viewport = GetViewport().GetVisibleRect().Size;
         _help.Visible = _preferences.ShowControlHelp && !_overlay.Visible;
-        _help.Text = _preferences.InputMode == DisplayPreferences.MouseMode
+        _help.Text = _fish.ActivePresetId == ControlPreset.HybridId
+            ? "W/Left: swim   S/Right: slow   A/D + Mouse: turn   Up/Down + Mouse: pitch   Wheel: zoom   Middle/Esc: pause"
+            : _fish.ActiveInputMode == DisplayPreferences.MouseMode
             ? "Mouse: steer   Left: swim   Right: slow   WASD: camera   Shift: hold view   Wheel: zoom   Middle/Esc: pause"
             : "W/S: swim/slow   A/D: turn   Up/Down: pitch   Left/Right: camera   Shift+arrows: camera   Wheel: zoom   Esc: pause";
         _help.Position = new Vector2(20, 16);
