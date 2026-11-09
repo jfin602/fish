@@ -89,7 +89,7 @@ Write `qualification/swimming-acceptance.md` and `qualification/accepted-tuning.
 
 Map G1.1–G1.4 to the actual implementation, asset, display and acceptance records. Check that accepted evidence still describes the delivered gameplay/configuration/assets; rerun only checks invalidated by later changes. Documentation-only reconciliation does not require a new gameplay run.
 
-Update the roadmap, task disposition, BOOT, MODULES, development instructions and relevant owning docs once. Replace remaining-core-tuning language with the actual accepted profile and evidence on success, preserving the worksheet's historical answers. Later controller/ability work stays separately open. P1 is complete only when every Gate passes; leave the closeout changes reviewable and route Movement abilities as the next selected movement work.
+Update the roadmap, task disposition, BOOT, MODULES, development instructions and relevant owning docs once. Replace remaining-core-tuning language with the actual accepted profile/evidence on success, preserving the worksheet's historical answers. Later controller/ability work stays separately open. P1 is complete only when every Gate passes; leave the closeout changes reviewable and route the next Phase to the already-authored P2 underwater-world stack.
 
 ## Evidence, versions and recovery
 

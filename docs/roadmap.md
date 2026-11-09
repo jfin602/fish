@@ -1,113 +1,132 @@
 # Fish roadmap
 
-**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 IN PROGRESS through direct P4 implementation, with all G1 Gates still NOT OBSERVED. Later gameplay Phases NOT STARTED.** [P0 closeout](tasks/p0/closeout.md) is the source-bound foundation record. The earlier documentation/runner starter is recorded separately in [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md).
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 IN PROGRESS through direct P9 implementation with final native tuning/closeout still open; P2 underwater-world design selected and planned but NOT STARTED.** This is the single Phase/Gate progress authority.
 
-This is the single Phase/Gate progress authority. A Gate passes when all its criteria have source-bound evidence; a Phase passes when all its Gates pass. [Validation](validation.md) defines scenarios, while task qualification records hold results. Update status here with a link to the actual evidence.
+A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
 ## Delivery direction
 
-Build one small, complete fish life before expanding content: a readable 3D habitat, feeding and predator escape, meaningful growth, save/resume, permanent death, a factual life recounting, and a persistent main-menu archive. The [decision register](decisions-and-questions.md) identifies open final-species, specific-biome, balance, detailed-presentation and larger-world choices within the selected ocean direction.
+Build one small, complete fish life in deliberate layers: first make swimming enjoyable, then make the place worth swimming through, then add the food chain, persistence/death, remembered lives, and full integrated qualification. The current P2 decision intentionally puts the underwater world before ecology so feeding and predator behavior are designed inside useful terrain rather than around the flat P1 movement laboratory.
 
 | Phase | Observable outcome | State |
 | --- | --- | --- |
-<<<<<<< Updated upstream
-| P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | NOT STARTED; [stack authored](tasks/p0/README.md). |
-| P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | IN PROGRESS through direct P4 work; Gates not passed. |
-=======
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
-| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | IN PROGRESS through direct P9 work; Gates not passed. |
->>>>>>> Stashed changes
-| P2 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop. | NOT STARTED. |
-| P3 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
-| P4 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
-| P5 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation. | NOT STARTED. |
+| P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | IN PROGRESS through direct P9; final native tuning and Gate review open. |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **NOT STARTED; [design](planning/p2/underwater-world.md) and [stack](tasks/p2/README.md) authored.** |
+| P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
+| P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
+| P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
+| P6 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation. | NOT STARTED. |
 
 ## P0 — Godot and MCP foundation
 
-**Status: COMPLETE on the observed Linux/X11 desktop.** [Foundation design](planning/p0/foundation.md); [p0 closeout](tasks/p0/closeout.md). Scenarios B01–B04 passed as recorded in the [native playtest](tasks/p0/qualification/native-playtest.md).
+**Status: COMPLETE on the observed Linux/X11 desktop.** [Foundation design](planning/p0/foundation.md); [p0 closeout](tasks/p0/closeout.md). Scenarios B01–B04 passed as recorded in the P0 evidence.
 
 ### G0.1 — Reproducible 3D project and CLI
 
-**Result: PASS.** Actual pins, C# scene execution, wrapper and scene round trip are in [implementation evidence](tasks/p0/qualification/implementation.md).
+**Result: PASS.**
 
 - Godot .NET/C# project and coherent engine/SDK pins exist under `game/`.
-- A real main scene contains a small 3D test habitat, controllable placeholder fish and third-person camera; prototype controls are documented.
-- The repository-relative developer CLI reports readiness, imports, compiles and performs a bounded real-scene smoke with meaningful failure behavior.
-- Saved-scene inspection and disposable save/reload automation work without leaving source artifacts.
-- Current capabilities and platform evidence are documented precisely.
+- The repository-relative developer CLI imports, builds, checks, opens the editor/runs the game, and performs bounded scene automation with meaningful failures.
+- The foundation scene, C# execution and saved-scene round trips were observed at the documented source/platform boundary.
 
 ### G0.2 — Correct, isolated Godot Editor MCP connection
 
-**Result: PASS.** Matched components, Fish-local configuration, live peer identity and editor save/reload are in [implementation](tasks/p0/qualification/implementation.md) and [native playtest](tasks/p0/qualification/native-playtest.md).
+**Result: PASS.**
 
-- The selected stable server and matching addon are installed/configured with traceable versions and notices.
-- Fish's local configuration preserves Space Factory and unrelated client settings, uses a distinct local bridge, and stays out of Git.
-- Live server/peer inspection identifies this Fish checkout before mutation; real scene inspection and a bounded saved-scene operation work.
-- C# compilation remains an actual .NET build; a configured server or TCP listener alone cannot pass this Gate.
+- Selected server/addon components and Fish-local routing were configured without replacing Space Factory settings.
+- A live peer identified this Fish checkout before editor mutation; scene inspection/save/reload succeeded.
+- C# compilation remains an actual .NET build rather than an MCP-connectivity inference.
 
 ### G0.3 — Native development loop
 
-**Result: PASS.** Live keyboard/action state, prototype bounds, captured game frames, editor output and clean stop are in the [native playtest](tasks/p0/qualification/native-playtest.md).
+**Result: PASS.**
 
-- Open the real Fish editor and launch the actual main scene on the selected desktop.
-- Observe the 3D fish/camera, demonstrate movement including vertical travel, release input, and confirm the foundation bounds.
-- Use the live MCP/runtime path to inspect state, capture real game pixels and verify a bounded input change; stop cleanly and check output.
-- Record source revision, platform/tool versions, actions/results and evidence. A reload or unavailable native tool remains an explicit gap until performed.
-
-These Gates qualify the development foundation only. Final swimming feel, food-chain gameplay, persistence, history and other platforms remain later work.
+- The actual Fish editor/main scene ran on Linux/X11.
+- Prototype horizontal/vertical movement, release, runtime state, running-game pixels and clean stop were observed.
+- This qualifies the development loop, not final swimming/world quality.
 
 ## P1 — Swim through a habitat
 
-**Status: IN PROGRESS through direct P9 fish-motion implementation; all G1 Gates remain NOT OBSERVED as complete.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4/P6–P9 implementation evidence](tasks/p1/qualification/implementation.md) and [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md). The provisional display and selected assets were observed on Linux/X11, and P6–P9 headless motor/input/camera/pose checks passed; final V01–V02 and V16–V17 acceptance awaits native integrated tuning and owner review.
+**Status: IN PROGRESS through direct P9 fish-motion implementation; all G1 Gates remain open pending the final native candidate and evidence review.** [P1 design](planning/p1/core-swimming.md); [p1 stack](tasks/p1/README.md); [implementation evidence](tasks/p1/qualification/implementation.md); [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md).
 
-**Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
-
-**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P9 were executed directly; the phase runner has not run this stack. P5's native Linux/X11 checkpoint and P6–P9 headless motor/input/camera/pose checks are recorded; owner tuning and final review remain ahead.
+The completed controls worksheet establishes the qualitative core and seven owner-play criteria. P1 closes only when the actual bindings/tuning, camera/body motion, selected assets and display/input lifecycle are validated together and the owner accepts the swimming feel. P2 planning does not waive that boundary.
 
 ### G1.1 — Swimming and physical space
 
-**Result: NOT OBSERVED.**
+**Result: NOT OBSERVED as complete.**
 
-- Implement the accepted mouse-only mode and keyboard fallback; each completes the same core movement course comfortably.
-- Observe quick acceleration, gradual release slowdown, keyboard backward-input slowing, curved turns/turnarounds, gap navigation, and pitch-based travel to upper/lower landmarks and back to level travel.
-- Observe clean input release and pause/resume with coherent collisions and boundaries. Intended coasting remains distinguishable from stuck input.
-- Rendering/view changes do not alter equivalent movement/time outcomes. Qualify the core controls before the Movement abilities follow-up.
+- The accepted desktop control paths complete the same core movement course comfortably.
+- Observe quick acceleration, gradual release slowdown, explicit slowing behavior, curved turns/turnarounds, gap navigation and pitch-based upper/lower travel.
+- Observe clean release and pause/resume with coherent collision/bounds; intended coasting is distinguishable from stuck input.
+- Rendering/view changes do not change equivalent authoritative movement/time outcomes.
 
 ### G1.2 — Third-person readability
 
-**Result: NOT OBSERVED.**
+**Result: NOT OBSERVED as complete.**
 
-- Observe the accepted third-person framing: behind/slightly above, moderate distance, whole fish and route ahead visible, smooth direction/depth following, and adjustment near geometry.
-- Observe visible swimming/gliding body animation and turning lean with a steady camera horizon.
-- The test habitat uses the four selected starter assets, with readable cover, open travel, landmarks at different depths, and gaps; G1.3 owns their preparation and native integration evidence.
-- Observe focus/release and supported-viewport behavior in both modes; camera/UI state does not become simulation authority.
-- Record the owner's judgment that several minutes of ordinary swimming feel natural, nimble, comfortable and easy to control in both modes. This actual acceptance, together with G1.1, locks the core for the Movement abilities follow-up.
+- Observe behind/slightly-above framing at moderate distance with the whole fish and useful route ahead visible.
+- Observe smooth direction/depth follow, obstacle adjustment, visible swimming/glide motion and turning bend/lean with a steady horizon.
+- Record the owner's judgment after several minutes of ordinary swimming that the implemented core is natural, nimble, comfortable and easy to control.
 
 ### G1.3 — Selected ocean assets in the running course
 
-**Result: NOT OBSERVED.**
+**Result: NOT OBSERVED as complete.**
 
-- The controlled visual fish is Quaternius `Fish3` / `ClownFish`; Rock Face 01, Coast Sand 01 on authored seabed geometry, and Smithsonian *Heliopora coerulea* are visibly present in the actual P1 course. Additional Quaternius fish may populate the scene without implying ecology mechanics.
-- Actual package/source/license/credit identity, preparation, local installation and import status are recorded; restricted originals, conversions and embedded payloads remain outside public tracked content.
-- Scale, materials, fin/coral transparency, fish deformation, collision clearance and representative scene performance are observed. The visible geometry agrees with the tested navigation and camera.
-- Missing required resources produce an actionable diagnostic. A placeholder or unapproved substitute cannot qualify this Gate. The test fish does not settle the final species/growth-art decision.
+- Quaternius `Fish3` / `ClownFish`, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea* are the required P1 set.
+- Provenance/preparation/local installation/public-source boundaries remain recorded.
+- Scale, materials/deformation, collision agreement, representative scene performance and missing-resource diagnostics must apply to the final P1 candidate.
+- These starter assets are inputs to P2 composition; they do not by themselves make a finished world.
 
 ### G1.4 — Fullscreen presentation and input lifecycle
 
+**Result: NOT OBSERVED as complete.**
+
+- Fresh-profile fullscreen and windowed-fullscreen testing behavior work as documented for the observed backend.
+- Both accepted desktop input paths survive pause, mode/profile changes, focus loss/refocus and display changes without leaked propulsion or trapped UI focus.
+- Camera/UI framing remains readable at tested viewport dimensions.
+
+P1 completion records the final accepted tuning/profile. [Movement abilities](planning/p1/movement-abilities.md) remain approved future movement work, but the owner has superseded their immediate scheduling: **P2 worldbuilding is the next roadmap Phase after P1**.
+
+## P2 — Build the underwater world
+
+**Status: NOT STARTED.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+
+P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
+
+### G2.1 — Natural reef habitat and traversal
+
 **Result: NOT OBSERVED.**
 
-- Fullscreen is the fresh-profile startup presentation from the first P1 implementation task; windowed fullscreen provides a full-display testing option. Record actual backend behavior when requested modes are equivalent.
-- Local display choice and temporary developer overrides work as documented. Observe actual native windows, viewport dimensions and readable anchored UI/camera framing.
-- Test both desktop input modes across both display options, including pause, mode changes, Alt-Tab/focus loss, explicit resume and fresh input after recapture. UI actions must not leak into propulsion.
-- Mouse-only controls include pointer-accessible pause/settings; keyboard fallback includes complete keyboard navigation. Display transitions do not alter authoritative fish state or advance paused simulation.
+- Normal play no longer exposes the P1 flat-floor/ceiling/test-course presentation, colored target spheres, camera-check post or other obvious developer geometry.
+- Build a continuous natural seabed with varied elevation, coral/reef areas, rock walls/formations, arches or tunnels/caves, overhangs, open swimming pockets and recognizable landmarks at multiple depths.
+- The player cannot escape beneath the seabed or through intended world limits. Visual geometry and simplified collision agree well enough that tunnels, cover and camera clearance are understandable.
+- At least one broad route, one tighter rock passage/tunnel and one meaningful vertical route can be traversed comfortably with the accepted P1 fish/camera.
+- Preserve the P1 movement course as a dedicated qualification/development fixture or equivalent; removing it from normal presentation must not erase historical evidence.
 
-P1 completion also requires a source/configuration/asset-bound accepted tuning record and the owner's explicit acceptance of the seven swimming criteria in both modes. Core feel cannot remain an unfinished later-polish item. The next selected movement scope is Movement abilities after this acceptance and P1 review.
+### G2.2 — Convincing underwater atmosphere and renderer
 
-## P2 — Feed, escape and grow
+**Result: NOT OBSERVED.**
+
+- Compare the actual post-P1 candidate under the current Compatibility renderer and Forward+ on the target desktop before locking the P2 renderer. Record startup/material correctness, available effects, native visual result, errors and representative performance; do not select Forward+ by assumption.
+- With the selected renderer, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.
+- The effect stack remains comfortable in motion and preserves readable fish/world silhouettes. HUD/pause/settings remain crisp and are not accidentally treated as geometry inside the water.
+- Renderer/presentation changes do not change authoritative swimming, time, input semantics or fish identity. Representative native performance is recorded on the P2 habitat.
+
+### G2.3 — Movement-reactive water presentation
+
+**Result: NOT OBSERVED.**
+
+- Water visibly reacts to the fish using bounded presentation effects: ordinary swimming has a readable but restrained disturbance, acceleration increases it, gliding reduces it, and hard turning produces a directional change/turbulence cue.
+- Effects originate from believable body/tail space, remain coherent through pitch/yaw, do not obscure the camera, and clear/freeze appropriately across pause/reset/focus lifecycle.
+- The effect reads movement state without applying forces, modifying collision or becoming the source of speed/turn state.
+- Particle/trail counts and materials are bounded and representative native performance remains acceptable for the chosen P2 scene.
+
+## P3 — Feed, escape and grow
 
 **Status: NOT STARTED.** Scenarios V03–V05. [Ecology contract](systems/ecology-and-growth.md).
 
-### G2.1 — Feeding and visible growth
+### G3.1 — Feeding and visible growth
 
 **Result: NOT OBSERVED.**
 
@@ -116,78 +135,78 @@ P1 completion also requires a source/configuration/asset-bound accepted tuning r
 - Growth visibly updates the same fish and relevant body/collision/camera behavior without clipping, invalid spawning or new identity.
 - Demonstrate a meaningful food-chain reversal using a documented species/size rule; growth changes habitat use and hunting opportunity.
 
-### G2.2 — Readable predation and meaningful events
+### G3.2 — Readable predation and meaningful events
 
 **Result: NOT OBSERVED.**
 
 - A predator can detect, pursue and catch the player; an observable escape route/timing works in a separate scenario.
-- Threat cues, attack commitment and failure cause are understandable in native play, including danger from outside the immediate forward view.
-- Death and key growth/hunt/escape events have actual authoritative causes and stable identities for later persistence/story use.
-- New test lives reset the intended prototype state; durable multi-session behavior is not claimed yet.
+- Threat cues, attack commitment and failure cause are understandable in native play, including danger outside the immediate forward view.
+- Death and key growth/hunt/escape events have authoritative causes/stable identities for later persistence/story use.
+- New test lives reset intended prototype state; durable multi-session behavior is not claimed yet.
 
-## P3 — A life across sessions
+## P4 — A life across sessions
 
 **Status: NOT STARTED.** Scenarios V06–V09. [Run/persistence contract](systems/survival-and-runs.md).
 
-### G3.1 — Suspend and resume one living fish
+### G4.1 — Suspend and resume one living fish
 
 **Result: NOT OBSERVED.**
 
 - Save, close and resume the same life with coherent growth, health, position, simulation time, consumed entities and relevant encounter state.
 - No offline hunger, predation, cooldown progress or growth is applied.
-- Continue/New Life behavior follows an explicitly chosen active-slot/checkpoint policy; replacing a living save cannot silently erase it.
+- Continue/New Life follows an explicitly chosen active-slot/checkpoint policy; replacing a living save cannot silently erase it.
 - Storage incompatibility/corruption is reported with recoverable data preserved, separately from in-world death.
 
-### G3.2 — Durable death and independent history records
+### G4.2 — Durable death and independent history records
 
 **Result: NOT OBSERVED.**
 
-- An actual terminal outcome prevents normal and supported recovery paths from reviving that run.
-- Death retains the event/final-state data needed for a recounting under one stable run ID.
+- An actual terminal outcome prevents normal/supported recovery paths from reviving that run.
+- Death retains event/final-state data needed for a recounting under one stable run ID.
 - Interruption/retry at material death/archive boundaries converges to one terminal outcome and one completed-life record.
 - A new hatchling receives a new run identity without clearing prior completed-life records.
 
-## P4 — Remember every life
+## P5 — Remember every life
 
 **Status: NOT STARTED.** Scenarios V10–V12. [Story/archive contract](systems/life-stories-and-history.md).
 
-### G4.1 — Brief, factual recounting
+### G5.1 — Brief, factual recounting
 
 **Result: NOT OBSERVED.**
 
-- Death presents a brief account built from supported events and final state; each factual claim is traceable.
+- Death presents a brief account built from supported events/final state; every factual claim is traceable.
 - Short and eventful lives produce appropriate accounts without fabricated achievements, intent or attacker identity.
-- Skipping presentation preserves the final saved narrative; a failed presentation cannot reverse death.
+- Skipping presentation preserves the final saved narrative; presentation failure cannot reverse death.
 
-### G4.2 — Main-menu Life History
+### G5.2 — Main-menu Life History
 
 **Result: NOT OBSERVED.**
 
 - Main menu exposes Life History with an honest empty state and access to every saved completed story.
-- Open, read, return, start another life, close and reopen: the prior entries/text remain intact and the dead fish remains unplayable.
-- A representative larger archive preserves reachability and readable navigation, with no silent truncation or duplicate lives.
+- Open/read/return/start another life/restart: prior entries and text remain intact and dead fish remain unplayable.
+- A representative larger archive preserves reachability/readability with no silent truncation or duplicate lives.
 
-## P5 — Qualify the complete experience
+## P6 — Qualify the complete experience
 
 **Status: NOT STARTED.** Scenarios V13–V15.
 
-### G5.1 — Optional first person and presentation
+### G6.1 — Optional first person and presentation
 
 **Result: NOT OBSERVED.**
 
-- Toggle the optional first-person view on the same fish and return to third person without changing simulation state or invalidating a save.
-- Observe camera clipping, input/focus, threat feedback, text readability and recap navigation with the implemented size range.
-- Keep the primary third-person experience readable; document the selected visual/performance scope from measured play.
+- Toggle optional first person on the same fish and return to third person without changing simulation state or invalidating a save.
+- Observe camera clipping, input/focus, threat feedback, text readability and recap navigation across the implemented size range.
+- Keep the primary third-person experience readable and record the selected visual/performance scope from measured play.
 
-### G5.2 — Full life and platform qualification
+### G6.2 — Full life and platform qualification
 
 **Result: NOT OBSERVED.**
 
-- Complete a real feeding/growth/escape sequence, save and resume it across application sessions, then die and review its true saved story in the main menu.
-- Start another hatchling and prove the prior history remains; repeat with a short life and verify distinct identities/accounts.
-- Record the complete flow on an identified source/platform without debug rewards substituting for the claimed gameplay.
-- Qualify any claimed export and target OS separately. Configured Windows/macOS presets or the reference game's results are insufficient.
+- Complete feeding/growth/escape, suspend/resume across sessions, die, and read the true saved story.
+- Start another hatchling and prove prior history remains; repeat with a short life and distinct identity/account.
+- Record the complete flow on an identified source/platform without debug rewards substituting for claimed gameplay.
+- Qualify each claimed export/target OS separately.
 
 ## After this slice
 
-Use observed play to choose more species/habitats, content generation, long-life pacing, art/audio depth, discovery/cosmetic carryover and performance budgets. Those choices stay open until they affect a selected task. Do not turn the initial doc set into an obligation to build every proposed mechanic at once.
+Use observed play to choose the final species/biome, larger habitat strategy, additional species/vegetation, long-life pacing, art/audio depth, discovery/cosmetic carryover and production performance budgets. Do not turn the first reef slice into an obligation to solve world generation or every future visual effect.

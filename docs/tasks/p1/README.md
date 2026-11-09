@@ -8,7 +8,7 @@ Deliver natural, nimble, easy-to-control swimming in mouse-only mode and keyboar
 
 By the end, the actual swimming dynamics must be settled: final bindings and tuning recorded, all seven owner-approved checks observed in both desktop modes, display/asset integration qualified, and the owner accepting the implemented feel. A prototype with unfinished core tuning cannot close P1. [Phase design](../../planning/p1/core-swimming.md), [swimming contract](../../systems/swimming-and-camera.md), [assets](../../art-and-assets.md), [validation](../../validation.md), and [G1.1–G1.4](../../roadmap.md#p1--swim-through-a-habitat) own the contracts.
 
-Movement abilities is the selected follow-up after accepted core swimming. Controller, free look, first person, survival systems, growth, later asset expansion and production water are outside this stack. Local display/input preferences and a minimal pause/settings interface are included.
+The owner later selected **P2 underwater world** as the next roadmap Phase after accepted core swimming. Movement abilities remain approved future work but are no longer the immediate follow-up. Controller, free look, first person, survival systems, growth and production-world rendering remain outside this P1 stack. Local display/input preferences and a minimal pause/settings interface are included.
 
 ## Entry prerequisites and version plan
 
@@ -68,4 +68,4 @@ These records are not prefilled as observations. Retain required evidence durabl
 
 ## Completion
 
-Every P1 Gate requires its actual evidence. If the owner still finds turning, slowing, depth control, camera or body motion unfinished, continue the scoped tuning/repair work and keep P1 incomplete. On success, the final docs identify the accepted dynamics and next Movement abilities scope. They do not treat controller support or survival mechanics as already implemented.
+Every P1 Gate requires its actual evidence. If the owner still finds turning, slowing, depth control, camera or body motion unfinished, continue the scoped tuning/repair work and keep P1 incomplete. On success, the final docs identify the accepted dynamics and route the next Phase to [P2 underwater world](../p2/README.md). Movement abilities stay separately open. They do not treat controller support or survival mechanics as already implemented.

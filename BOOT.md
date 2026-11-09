@@ -6,51 +6,36 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 
 | Area | Actual state |
 | --- | --- |
-| Product | Owner-approved 3D fish survival, a saved living fish across sessions, permanent death, and a main-menu archive of brief life stories. |
-<<<<<<< Updated upstream
-| Documentation | Core-controls design and playtest criteria approved; [worksheet](docs/planning/p1/swim-controls-worksheet.md) complete at 10/10. [Swimming](docs/systems/swimming-and-camera.md) owns the accepted contract. See [starter evidence](docs/tasks/repository-bootstrap/qualification.md) for the original import. |
-| Phase runner | Space Factory's Node.js runner ported as `fish:phase` and `fish:phase:validate`; package version starts at `0.0.0`. This is development metadata. |
-| Game and developer CLI | The reviewed GitHub snapshot has no `game/` or `tools/dev`. The owner reports playing a local tech demo; its checkout and runtime have not been inspected by this documentation review. |
-| Engine direction | Godot 4 .NET/C#; reference pins and 3D renderer decision are in [technical direction](docs/technical-direction.md). |
-| Art and habitat | Realistic ocean creatures and environments selected; [art and assets](docs/art-and-assets.md) owns the nine-asset shortlist and four-asset starter set. Downloads, imports, and runtime suitability remain unverified. |
-| Godot Editor MCP | Required development integration, researched and specified; not installed or observed for Fish by this starter. |
-| Gameplay/platform evidence | None. Space Factory's Linux observations do not qualify Fish; no Fish platform has passed. |
-| Next task | Inspect the real checkout and reconcile P0 evidence, then prepare the deliberate `0.1.0` entry baseline and execute the authored [p1 stack](docs/tasks/p1/README.md). Use [p0](docs/tasks/p0/README.md) only for missing foundation requirements. |
-| P1 plan | Assessed and authored, not executed: four selected starter assets, both desktop controls, camera/body motion, native tuning and accepted dynamics by phase end. Root version remains `0.0.0` in this published starter. |
-| Display | Develop fullscreen from the first P1 task, with windowed fullscreen for testing; actual display/input behavior remains unobserved. |
-| Controls sequence | Design approved; actual core playtest acceptance and P1 review still required. [Movement abilities](docs/planning/p1/movement-abilities.md) follows. Free look is deferred; controller support comes later. |
-=======
-| Documentation | Product/system contracts and workflow remain; [P0 closeout](docs/tasks/p0/closeout.md) records implemented foundation evidence. |
-| Phase runner | Node.js `fish:phase` and `fish:phase:validate` retained. Direct P0 execution reached package checkpoint `0.0.3`; no runner checkpoint commits were made. |
-| Game and developer CLI | `game/` contains a runnable 3D C# foundation; `tools/dev` imports, builds, checks, opens editor and runs Fish. |
-| Engine | Godot 4.7.2 .NET, Godot.NET.Sdk 4.7.2, SDK 10.0.403, `net10.0`, Compatibility renderer on this Linux desktop. |
-| Godot Editor MCP | Matched 2026.11.04 server/addon, isolated Fish-local 19080 bridge; live Fish peer and scene operations passed. Reload Codex in Fish to expose the local tools in the app. |
-| Gameplay/platform evidence | P0 development foundation G0.1–G0.3 passed on Linux/X11 only. Survival gameplay, exports and other platforms remain unqualified. |
-| Next task | Plan the separate [P1 swimming/habitat Phase](docs/roadmap.md#p1--swim-through-a-habitat); do not infer final swimming quality from foundation controls. |
->>>>>>> Stashed changes
+| Product | Owner-approved 3D fish survival: one living fish across sessions, permanent death, a brief factual life recounting, and a main-menu Life History archive. |
+| Foundation | P0 is complete on the observed Linux/X11 desktop; the Godot .NET project, developer CLI, and isolated Godot Editor MCP path are implemented and qualified for the foundation scope. |
+| Current gameplay | P1 is in progress through direct P9 implementation. The shared motor, desktop inputs, follow camera, Fish3 animation, selected starter assets, fullscreen shell, and movement course exist. Final native two-mode tuning/owner acceptance is still required. |
+| Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is authored at root version `0.1.9`; execute/reconcile it only against the actual current P1 tree. It does not close P1 by itself. |
+| Next Phase | **P2 — Build the underwater world** is the selected next roadmap Phase after P1 closes. It replaces the prototype-course presentation with a natural reef habitat, locks the renderer from measured testing, adds underwater atmosphere, and adds movement-reactive water presentation. |
+| Renderer | The current implementation uses Godot Compatibility. P2 does **not** preselect Forward+; its first tasks compare the actual P1 candidate under Compatibility and Forward+ on the target desktop, then record one renderer for the phase. |
+| Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
+| Root version | Published root `package.json` is `0.1.9` at this handoff. P2 authoring does not change it. After P1 is actually closed, deliberately prepare the `0.2.0` phase-entry baseline before running [p2](docs/tasks/p2/README.md). |
+| Later gameplay | Feeding/predators/growth move to P3. Persistence/death becomes P4, life recounting/history P5, and integrated qualification P6. [Movement abilities](docs/planning/p1/movement-abilities.md) remain accepted future work but are no longer the immediate post-P1 roadmap step. |
 
 ## Product contract to preserve
 
-**Current P9 handoff (2026-11-09):** [P5 native evidence](docs/tasks/p1/qualification/native-display-and-assets.md) qualifies the provisional fullscreen/windowed shell and four selected assets on Linux/X11; [P6–P9 implementation evidence](docs/tasks/p1/qualification/implementation.md) records the shared motor, both desktop input paths, follow camera and Fish3 swim/glide/turn pose checks through root `0.1.9`. Quaternius `Fish3` / `ClownFish` is the provisional player, with seven stationary pack fish; Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea* complete the selected set. Source/import mapping is in [the starter manifest](docs/assets/p1-starter-manifest.md), and [course layout](game/scenes/README.md) records the saved route. P10 native two-mode comfort, camera feel, rendered body motion and swimming feel remain unqualified. Sea life still contains packed images with unresolved third-party rights. The planned `0.1.0` checkpoint is absent from Git history; no historical baseline has been fabricated. The earlier starter names in authored prompts are superseded by [decisions C30–C31](docs/decisions-and-questions.md).
-
 One fish's life is one run. The fish grows by feeding while avoiding predators, with third person as the primary perspective and first person as an optional view. Closing the game suspends the living run; death ends it permanently. Each dead life produces a short factual recounting retained under **Life History** in the main menu, independent of later runs.
 
-The [decision register](docs/decisions-and-questions.md) separates confirmed behavior and the realistic ocean direction from unsettled final player species, specific ocean biome, detailed presentation, balance, and progression choices. [Art and assets](docs/art-and-assets.md) records the approved sources and starter order. Do not treat selection as an asset import or a passed gameplay Gate.
+The [decision register](docs/decisions-and-questions.md) separates confirmed behavior from unsettled final player species, production biome, balance, long-life pacing and later presentation choices. P2 establishes a convincing reef-like underwater environment for the current slice without claiming the final production biome or world-generation strategy.
 
-## Completed foundation boundary
+## P1 completion boundary
 
-<<<<<<< Updated upstream
-The design discussion is complete. Inspect the real checkout first: the published snapshot is the starter, while the owner reports a local demo. Preserve existing work and reconcile what p0 has actually completed before rerunning foundation tasks.
+P1 remains the movement-quality gate. Finish the active control correction when applicable, then complete [P10 owner tuning](docs/tasks/p1/P10-owner-tuning-and-dynamics-lock.txt) and [P11 closeout](docs/tasks/p1/P11-swimming-closeout.txt). P1 is complete only when G1.1–G1.4 have source-bound evidence and the owner accepts the actual implemented swimming feel. Do not use P2 authoring to waive an unfinished P1 requirement.
 
-1. Verify the current checkout, local tools, and Fish/Space Factory MCP isolation using the [p0 task](docs/tasks/p0/README.md) and [development setup](docs/development.md). P0 establishes the 3D foundation and tools; it does not qualify final swimming feel.
-2. Follow [P1 entry and resume](docs/tasks/p1/manual/entry-and-resume.md) after actual P0 readiness; deliberately prepare the `0.1.0` baseline before starting the runner. Do not rerun P0 or manufacture history for already verified work.
-3. Execute the [P1 stack](docs/tasks/p1/README.md): fullscreen shell, acquisition/preparation of the four starter assets, course, early native inspection, shared motor and both input modes, camera and body motion.
-4. Complete the dedicated owner tuning task and [V01–V02/V16–V17](docs/validation.md). Settle and record the dynamics; all G1.1–G1.4 require actual evidence before P1 passes. Respect the native/manual boundaries at task P5, P10 and P11.
-5. After core acceptance and P1 review, route the selected Movement abilities follow-up. Authored prompts and grammar validation do not advance a gameplay Gate.
-=======
-P0 created a visibly runnable 3D Godot .NET foundation, a thin developer CLI, and an isolated Godot Editor MCP connection. It ended with real editor/runtime observations on the owner's Linux desktop. It did not implement feeding, predators, growth, saves, death, stories, or the history menu.
+The P1 movement course remains useful as a development/qualification fixture. P2 should stop presenting that course as the normal game world rather than deleting evidence needed to understand P1.
 
-Review [P0's implementation](docs/tasks/p0/qualification/implementation.md), [native playtest](docs/tasks/p0/qualification/native-playtest.md), and [closeout](docs/tasks/p0/closeout.md) for exact checks and limitations. Open the editor with `./tools/dev editor` or run Fish with `./tools/dev run` from this checkout. The next gameplay phase is P1 swimming/habitat, not an automatic extension of p0.
->>>>>>> Stashed changes
+## P2 entry and boundary
 
-Keep detailed results in task evidence. Update this guide after a real change in the next action or current implementation.
+After P1 closes:
+
+1. Inspect branch/HEAD, local changes, package version, final P1 tuning, current renderer and actual native evidence. Preserve compatible work.
+2. Deliberately prepare root version **`0.2.0`** before invoking the runner; P2 prompts then target `0.2.1` onward.
+3. Execute [the P2 stack](docs/tasks/p2/README.md): renderer trial/lock, natural habitat, reef/tunnels, underwater atmosphere, fish-reactive water, native tuning, and closeout.
+4. Keep rendering/world presentation read-only with respect to authoritative fish movement. A particle wake, post effect, fog change or camera effect must not change the motor, fish identity or simulation time.
+5. Do not implement feeding, predators, growth, saves, death/history, controller, first person, or Movement abilities as hidden P2 scope.
+
+Keep detailed execution results in task evidence. Update this guide only when actual implementation/evidence or the selected next action changes.

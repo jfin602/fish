@@ -11,7 +11,7 @@
 | Project location | `game/`, with `Fish.csproj`, `Fish.sln`, and `global.json`. |
 | Editor integration | Godot Editor MCP from `hybridindie/godot-mcp`; local Python MCP server plus the matching Godot editor addon. |
 | First verification target | Owner's Linux desktop, following the reference workflow. Other desktop targets require separate evidence. |
-| Initial renderer | Compatibility as a reversible bootstrap default inherited from Space Factory. It can render the simple 3D prototype; final water/lighting ambitions and renderer choice remain a later measured decision. |
+| Renderer | Compatibility is the currently implemented reversible bootstrap/P1 default. **P2 explicitly compares Compatibility and Forward+ on the actual post-P1 candidate/target desktop, then records one renderer for the underwater-world Phase.** No document preselects Forward+. |
 | Development orchestration | Existing Node.js 24 phase runner; a thin repository-relative `tools/dev` created by p0. |
 | P1 display contract | Fullscreen development from the first task, with windowed fullscreen for testing; [P1 design](planning/p1/core-swimming.md) and [UX](ux-and-presentation.md#fullscreen-presentation) own mappings, layout and acceptance. |
 
@@ -23,7 +23,15 @@ Keep authoritative fish/run/ecology state separate from input adapters, camera t
 
 Introduce stable run and significant event IDs when their first owning systems are added. Growth, consumption, health changes, escapes, and death must have inspectable real causes. An event journal should capture meaningful occurrences, not every rendered frame. [The module map](../MODULES.md) describes intended responsibilities without requiring empty frameworks.
 
-Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. Final player species, specific ocean biome, detailed material/water treatment, world generation, and exact balance remain open. Asset selection does not change the bootstrap renderer or expand p0's implementation boundary.
+Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. P2 now owns the first deliberate habitat/water treatment and renderer lock; final player species, production biome, larger world generation, and exact balance remain open. Asset selection alone does not change the renderer or establish runtime suitability.
+
+## P2 worldbuilding and rendering boundary
+
+After P1 closes, [P2](planning/p2/underwater-world.md) replaces the visible movement-laboratory presentation with a compact authored reef-like habitat. Preserve the P1 movement course as a development/qualification fixture rather than keeping its targets/posts/box room in normal play.
+
+Use a measured renderer decision: prepare the same post-P1 candidate under current Compatibility and Forward+, observe actual material correctness, available underwater effects, errors and representative native performance on the target desktop, then choose one renderer for the phase. Do not maintain two production rendering paths without a concrete platform requirement.
+
+Underwater presentation may use environment fog/depth attenuation, top-biased light, color absorption/grade, caustic-style animated illumination, suspended particles and bounded screen-space treatment. HUD/pause/settings must remain readable and outside inappropriate world distortion. Fish-reactive wakes/turbulence/particles read velocity/acceleration/turn state without applying forces or owning simulation state. Renderer changes, particles and shaders must not alter authoritative movement or time.
 
 ## Persistence and narrative boundaries
 
@@ -49,7 +57,11 @@ Do not copy Space Factory's 2D scenes, assets, ship/factory rules, input assumpt
 
 ## P1 implementation boundary
 
-After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selected-asset course, shared swim motor, mouse/keyboard adapters, follow camera and fish animation, and settles the dynamics through actual owner play. Small local display/input preferences and a pause/settings surface are part of this scope; survival saves and menus remain later work. Inspect the actual local demo before mapping planned source boundaries. Asset imports and fullscreen support are planned, not established by this document.
+After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selected-asset course, shared swim motor, mouse/keyboard adapters, follow camera and fish animation, and settles the dynamics through actual owner play. Small local display/input preferences and a pause/settings surface are part of this scope; survival saves and menus remain later work. P2 planning does not permit unfinished P1 movement/camera behavior to be deferred.
+
+## P2 implementation boundary
+
+After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) owns renderer comparison/lock, natural habitat composition, underwater atmosphere and fish-reactive water presentation. It does not add ecology, growth, persistence, first person or Movement abilities.
 
 ## Source references
 

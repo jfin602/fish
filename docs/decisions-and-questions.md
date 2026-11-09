@@ -18,6 +18,8 @@
 
 - **S9 — P1 delivery and fullscreen scope (2026-11-09):** the owner requested `/docs-apply + /prompt-ass + /prompt-plan + /prompt-write p1`, then directed: “Use the assets chosen in the docs as part of the p1 plan. By the end of p1 the swimming dynamics should be set. Also develop for full screen from the start. With a windowed full screen mode for easier testing”. The [P1 design](planning/p1/core-swimming.md) and [execution stack](tasks/p1/README.md) apply this scope without claiming execution.
 
+- **S10 — P2 underwater world (2026-11-09):** with core controls nearing completion, the owner selected worldbuilding as Phase 2. The current flat/two-ground/test-shape presentation should be replaced by a natural coral/reef floor, rock tunnels and a generally pleasant environment. The whole screen/world must read as underwater, and the fish should create fluid-looking water disturbance that highlights its movement. The accepted documentation review places a measured Compatibility-versus-Forward+ renderer comparison at P2 entry, keeps the P1 movement course as a development fixture rather than normal presentation, and moves feeding/predators/growth to P3.
+
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
 ## Confirmed requirements
@@ -38,7 +40,7 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C12 | Use Godot and Godot Editor MCP, adopting the reference's Godot .NET/C# development direction. | S5 |
 | C13 | The repository bootstrap prepares documentation and a Codex Godot setup prompt; gameplay completion is not claimed by the starter. | S5 |
 | C14 | Lock down core swimming, turning, and slowing before adding movement abilities. | S6 |
-| C15 | The next implementation focus after core lock is [Movement abilities](planning/p1/movement-abilities.md): short speed burst, precision mode, and quick evasive turn. | S6 |
+| C15 | [Movement abilities](planning/p1/movement-abilities.md)—short speed burst, precision mode, and quick evasive turn—remain an approved future feature group. S10 supersedes only their immediate scheduling: P2 worldbuilding is next after P1. | S6; S10 |
 | C16 | Use realistic ocean creatures and environments as the initial habitat and visual direction, starting from free assets suitable for eventual commercial game use. | S7 |
 | C17 | Original [ocean starter order](art-and-assets.md) used Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set. This named set is superseded by C30 after actual acquisition checks. | S7 |
 | C18 | Qualify mouse-only controls and a keyboard fallback first; controller support follows later, with eventual support for both desktop and controller. | S8; worksheet Q02 |
@@ -55,6 +57,11 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C29 | Develop the game for fullscreen from the start, with windowed fullscreen available for easier testing. | S9 |
 | C30 | The first P1 set is a **still unselected** realistic rigged ocean fish with a verified swim cycle, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea*. Emperor Angelfish is removed because official acquisition needs Unity/account-backed tooling; Soft Coral Set is replaced because its official anonymous download is unavailable. Sea life and the downloaded Great White Shark are evaluation/later content, and Rigged Archer Fish is excluded from the ocean starter. Final player species remains open. | Owner's resumed P2 direction, 2026-11-09; [P2 manifest](assets/p1-starter-manifest.md) |
 | C31 | For the P1 test scene, use the owner-provided [Quaternius Animated Fish Pack](assets/p1-starter-manifest.md#quaternius-pack-inspection). Fish3 (`ClownFish`) is the provisional small player fish; other pack fish may populate the world without implementing ecology or predator behavior. This explicitly accepts a low-poly prototype asset while retaining realistic ocean creatures and environments as the longer-term art direction. C31 fills C30's unselected fish slot; it does not decide the final player species. | Owner request and pack inspection, 2026-11-09 |
+| C32 | After P1 core swimming closes, the next roadmap Phase is **P2 — Build the underwater world**. Feeding/predators/growth shift to P3; later persistence/history/integration Phases shift accordingly. | S10 |
+| C33 | P2 normal play replaces the flat/test-course look with a natural reef-like seabed, coral areas, rock formations with a tunnel/tight passage, open pockets, cover/overhang and meaningful vertical routes. Obvious developer shapes and exposed box-room boundaries do not remain the finished presentation. | S10 |
+| C34 | P2 must make the scene read unmistakably as underwater using layered atmosphere rather than only a flat tint: depth/distance treatment, underwater lighting/color, moving caustic-style light, suspended matter and restrained whole-view water treatment are in scope. | S10 |
+| C35 | P2 adds movement-reactive water presentation around the fish. Ordinary swimming, acceleration/high effort, gliding and hard turns must produce visibly different disturbance without changing authoritative movement physics. | S10 |
+| C36 | P2 begins with a measured Compatibility-versus-Forward+ comparison on the actual post-P1 candidate/target desktop, then locks one renderer for the phase. Forward+ is not preselected by documentation. | S10 |
 
 ## Working designs
 
@@ -70,6 +77,8 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | W08 | Early growth milestones arrive quickly; larger stages can last longer across sessions. | [Opening experience](tutorial.md) |
 | W09 | Discovery records and cosmetic rewards could provide carryover without altering starting survival stats. | [Feature ideas](../feature-ideas.md) |
 | W10 | The [P1 plan](planning/p1/core-swimming.md) provides reversible initial bindings, a shared speed-demand motor, display mappings and focus policy; final core settings are settled through P1 playtesting. | [Core swimming plan](planning/p1/core-swimming.md) |
+| W11 | P2 uses one compact authored/modular reef habitat before committing to production terrain/procedural generation. The P1 course remains a separate qualification fixture. | [P2 underwater-world plan](planning/p2/underwater-world.md) |
+| W12 | Fish-reactive water is a rendering/particle/shader presentation effect driven read-only from movement state, not a fluid simulation or alternate movement authority. | [P2 underwater-world plan](planning/p2/underwater-world.md) |
 
 Engineering invariants in the system documents preserve confirmed behavior: stable run identity, idempotent feeding/death/archive operations, no offline simulation, factual story provenance, and separation of active saves from history. Their exact code and storage format remain unimplemented.
 
@@ -84,15 +93,15 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 | Q03 | Growth model, edible-size rule, body/collision scaling, maximum size, and balancing rates. | Before qualifying the first feeding-to-growth loop. |
 | Q04 | Hunger, diet restrictions, injury recovery, attack damage, and additional death causes. | Before broad survival mechanics are implemented. |
 | Q05 | Intended life/session lengths, full-size payoff, aging, and any victory or ending. | Before long-term pacing and content expansion. |
-| Q06 | Authored versus procedural habitats, seeds, starting variation, and population replenishment. | Before expanding the first small habitat. |
+| Q06 | P2 uses a compact authored/modular habitat for the current slice. Procedural generation, seeds, larger-world variation and population replenishment remain open for later expansion. | Before expanding beyond the first qualified habitat. |
 | Q07 | One or multiple living save slots, manual/automatic checkpoint policy, abandonment records, and supported recovery guarantees. | Before save/menu qualification. |
 | Q08 | Narrative length, fish naming, portraits, narration, filtering, sorting, and optional archive deletion. | Before the first polished history flow. |
 | Q09 | Cross-run discovery persistence, cosmetics, unlocks, or permanent stat progression. | Before implementing any carryover beyond saved stories. |
-| Q10 | Detailed visual treatment, water effects, audio direction, performance budget, renderer choice, and platform qualification within the confirmed realistic ocean direction. | Bootstrap records its scoped choice; production decisions follow measured needs. |
+| Q10 | P2 now owns the first deliberate underwater visual treatment and measured renderer lock. Audio direction, production performance budgets, final biome/art treatment and wider platform qualification remain open. | Resolve the P2 renderer during its early native comparison; revisit production choices from measured later needs. |
 
 ## Design approval and actual core acceptance
 
-S8 closes the design discussion. It does not claim that a local demo has passed: [validation V01–V02](validation.md#core-movement-acceptance) requires native observations and owner acceptance of the implemented feel. The roadmap's implementation and Gate results remain the evidence authority.
+S8 closes the P1 core-control design discussion. It does not claim that a local demo has passed: [validation V01–V02](validation.md#core-movement-acceptance) requires native observations and owner acceptance of the implemented feel. S10 subsequently changes the roadmap sequence after that core lock: P2 worldbuilding comes next, while Movement abilities remain accepted future work. The roadmap's implementation and Gate results remain the evidence authority.
 
 ## Keeping the register current
 

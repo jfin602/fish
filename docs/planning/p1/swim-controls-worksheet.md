@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** Complete; design and playtest criteria approved on 2026-11-09. Free look is deferred; Movement abilities follow acceptance of the implemented core.  
+**Status:** Complete historical design record; design and playtest criteria approved on 2026-11-09. Free look is deferred. Q08's Movement-abilities sequencing is preserved as the original answer, but the later P2 underwater-world decision supersedes it as the immediate roadmap next step.  
 **Answers recorded:** 10 of 10 (10 answered).  
-**Next step:** Implement and tune the approved core after verifying the foundation, then qualify it through native play and owner acceptance.
+**Next step:** Finish/qualify the approved P1 core through native play and owner acceptance; then enter P2 worldbuilding. Movement abilities remain approved future work.
 
 ## Purpose and scope
 

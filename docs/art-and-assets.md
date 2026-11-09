@@ -6,7 +6,7 @@
 
 This document owns the approved sources, starter order, licensing notes, and asset preparation checks. [The decision register](decisions-and-questions.md) records the approval as S7/C16/C17. [The roadmap](roadmap.md) continues to own implementation progress.
 
-**P2 starter decision revised 2026-11-09:** The owner provided Quaternius's Animated Fish Pack and selected its small `Fish3` / `ClownFish` as the provisional player, with other pack fish for world population. Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the other three acquired starter sources. This is a deliberate low-poly P1 prototype exception to the longer-term realistic-ocean art direction, recorded in [decision C31](decisions-and-questions.md). [The P2 manifest](assets/p1-starter-manifest.md) records actual pack inspection and prior candidate evidence. The four sources import and instantiate in the local Godot prototype; [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md) confirms their visible integration and representative timing on Linux/X11, with final art and motion quality still open.
+**P1 starter decision revised 2026-11-09:** The owner provided Quaternius's Animated Fish Pack and selected its small `Fish3` / `ClownFish` as the provisional player, with other pack fish for world population. Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the other three acquired starter sources. This is a deliberate low-poly P1 prototype exception to the longer-term realistic-ocean art direction, recorded in [decision C31](decisions-and-questions.md). [The P2 manifest](assets/p1-starter-manifest.md) records actual pack inspection and prior candidate evidence. The four sources import and instantiate in the local Godot prototype; [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md) confirms their visible integration and representative timing on Linux/X11, with final art and motion quality still open.
 
 ## Approved starter order
 
@@ -50,6 +50,14 @@ These roles are content candidates. An included attack or death animation does n
 
 [Soft Coral Set — Kanna-Nakajima](https://sketchfab.com/3d-models/soft-coral-set-256355f15fcb4095af17b75ae572bff0) was the original coral choice. Its public metadata lists CC BY 4.0 and says it is downloadable, but the official anonymous download API returned HTTP 401 requiring credentials on 2026-11-09. It was therefore replaced for the starter workflow with the account-free Smithsonian coral scan above. The two assets differ: the replacement is one specimen and may require optimization or duplication for useful reef composition. Soft Coral Set remains a researched option only if access is later authorized.
 
+## P2 worldbuilding use
+
+The P1 starter set is deliberately small and does not by itself constitute the finished P2 habitat. P2 should reuse Rock Face 01, Coast Sand 01 and Heliopora where they work, but composition must be driven by the habitat target rather than by forcing two rocks/two coral props to fill the world.
+
+The Smithsonian coral is a high-detail specimen; do not duplicate it densely without measuring the cost. Prepare efficient derivatives, sparse hero placement, instancing/LOD or lower-cost authored/provenance-safe pieces as needed. Additional P2 environment assets are allowed only when they are free, legally suitable for the project's intended direction, account-free or otherwise explicitly available to the owner, and recorded with source/creator/date/license/dependency information. No paid/account-gated asset becomes a hidden P2 requirement.
+
+Keep the normal public-repository boundary: permission to ship an asset in a game does not automatically permit raw source redistribution. The P2 renderer/habitat task may change materials, meshes, LODs or scene wrappers; record those transformations without replacing the original provenance.
+
 ## License and provenance handling
 
 Fish's repository is public. Permission to include an asset in a finished game is distinct from permission to distribute its source model and textures through GitHub.
@@ -74,14 +82,14 @@ For the first authorized art/import task:
 2. Inspect geometry, textures, scale, orientation, deforming bones, and available animation clips. Bake or adapt authoring-specific rigs/materials when required; do not assume Unity prefabs/shaders or Blender procedural effects transfer.
 3. Assemble one small scene with the four starter assets. Check swimming loops, speed transitions, fin transparency, body deformation, material consistency, and visibility from the actual third-person camera.
 4. Check representative fish/vegetation duplication on the target machine before expanding the habitat. Record actual performance and preparation changes, rather than inferring suitability from polygon counts alone.
-5. Keep imported visual motion aligned with the choices in [swimming and camera](systems/swimming-and-camera.md) and the [completed worksheet](planning/p1/swim-controls-worksheet.md). Core swimming, turning, and slowing remain the current priority; [Movement abilities](planning/p1/movement-abilities.md) follows core lock.
+5. Keep imported visual motion aligned with the choices in [swimming and camera](systems/swimming-and-camera.md) and the [completed worksheet](planning/p1/swim-controls-worksheet.md). P1 still must lock its core movement. After that, P2 worldbuilding is the next roadmap Phase; Movement abilities remain accepted future work.
 
-The P2/P3 source and import results are recorded in the [manifest](assets/p1-starter-manifest.md) and [implementation evidence](tasks/p1/qualification/implementation.md). The P0 foundation and its provisional controls remain the movement base for this art preparation.
+The **P1 task P2/P3** source and import results are recorded in the [manifest](assets/p1-starter-manifest.md) and [implementation evidence](tasks/p1/qualification/implementation.md). The P0/P1 movement implementation remains the base for P2 environment work.
 
 ## Remaining choices and limits
 
 - **Final player species and exact ocean biome:** open. The first test fish and reef arrangement do not settle production ecology or the complete species roster.
 - **Growth visuals:** no matching hatchling/juvenile/adult asset sequence has been verified. Scaling a mesh is a possible early prototype approach, not an approved final growth-art solution. Growth remains within the same fish identity.
-- **Water, lighting, and detailed visual treatment:** still to be designed and measured in Godot. Realistic source assets do not set a photorealism target or supply the finished underwater presentation.
-- **Renderer and performance budget:** follow [technical direction](technical-direction.md). Compatibility remains the reversible bootstrap default; this asset decision does not switch renderers.
+- **Water, lighting, and detailed visual treatment:** P2 now owns the first deliberate underwater treatment and native tuning. Realistic source assets do not set a photorealism target or supply that finished presentation by themselves.
+- **Renderer and performance budget:** follow [technical direction](technical-direction.md) and the [P2 plan](planning/p2/underwater-world.md). Compatibility is the current implementation; P2 compares it with Forward+ before locking one renderer. Production budgets and wider-platform claims remain later measured decisions.
 - **Implementation evidence:** P2 source downloads and inventories are recorded in the [manifest](assets/p1-starter-manifest.md). P3 verifies headless Godot imports and resource structure. Animation quality, collision/shelter function, native display and performance remain unqualified for later tasks. Asset acquisition alone passes no Roadmap Gate.

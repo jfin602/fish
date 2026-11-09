@@ -28,9 +28,19 @@ Prioritize the fish, nearby food, useful shelter, and threats. Size differences 
 
 The approved [swimming presentation](systems/swimming-and-camera.md) places the camera behind and slightly above the fish at a moderate distance, showing its whole body and useful space ahead. It follows direction and depth changes smoothly, adjusts near obstacles to keep the fish visible, and keeps a steady horizon while the body bends and leans into turns. Visible tail and body motion eases during a glide.
 
-Plants, rocks, depth changes, and lighting can provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the selected sources and preparation checks. Exact camera offsets and smoothing, animation strength, detailed water effects, fog, and HUD treatment remain tuning or production choices.
+Plants, rocks, depth changes, and lighting provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns selected sources and preparation checks. P2 now owns the first deliberate underwater-world treatment; exact final production biome/art/audio treatment remains later work.
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
+
+## Underwater world presentation
+
+**Owner-selected for P2 — 2026-11-09:** normal play should stop looking like a flat test course and instead read immediately as a natural underwater environment. Use a layered presentation: varied seabed/reef geometry, depth/distance haze, underwater color/contrast, light from above, moving caustic-style illumination, sparse suspended matter and a restrained whole-view water treatment. A uniform blue overlay by itself is insufficient.
+
+The player should be able to read open routes, rock tunnels/arches, overhangs, coral floor and upper/lower landmarks while the camera remains comfortable. Avoid distortion/noise strong enough to cause motion discomfort or hide collision boundaries. World limits should be visually natural rather than exposed box walls; the fish must not be able to swim below the seabed.
+
+Water should visibly react to movement. Ordinary swimming has a subtle wake/disturbance; stronger acceleration produces more activity; gliding reduces it; hard turns create a directional change. These are presentation effects driven read-only from actual movement state. They do not add force, change speed/collision or become simulation authority.
+
+Pause/settings/HUD are interface elements, not submerged geometry. Keep their text and focus state crisp and usable even if the 3D view receives screen-space distortion or color treatment. [P2 validation V18–V20](validation.md) owns native acceptance.
 
 ## Fullscreen presentation
 
@@ -62,5 +72,8 @@ The archive should remain reachable whether the player starts another life immed
 - The recounting can be skipped and later read in full from **Life History**.
 - A player can browse all retained stories and return to the menu without changing the active run.
 - Text, input focus, and any animations remain readable in the tested display conditions.
+- In the P2 habitat, normal swimming clearly reads as underwater at near/far/deep viewpoints without relying only on a flat tint.
+- The P2 environment provides natural seabed/reef routes, rock passage/cover and vertical navigation without visible developer-course presentation.
+- Movement-reactive water is visible but restrained, tracks the fish coherently, and does not change authoritative movement.
 
 These targets require native observation where presentation or input is claimed. Headless checks and MCP connectivity alone are not proof of a usable interface.

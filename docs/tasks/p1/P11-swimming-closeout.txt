@@ -20,13 +20,13 @@ B — MAP ALL FOUR GATES
 Create closeout.md with per-criterion evidence and PASS/FAIL/NOT OBSERVED/BLOCKED dispositions:
 - G1.1: controlled swimming and physical space, quick acceleration/gradual slowdown, curved turns, vertical travel and the same course in both desktop modes.
 - G1.2: readable smooth camera and body/tail motion, comfortable navigation, all seven approved criteria observed separately in both modes and explicit owner acceptance after several minutes of free swimming per mode.
-- G1.3: Emperor Angelfish, Rock Face 01, Coast Sand 01 and Soft Coral Set acquired, prepared and visibly integrated; provenance, license/credit records and public-safe installation mapping are retained. Require native missing-resource diagnostic and final representative-performance evidence as well. Source selection is not integration.
+- G1.3: Quaternius `Fish3` / `ClownFish`, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea* acquired/prepared/visibly integrated; provenance, license/credit records and public-safe installation mapping are retained. Require native missing-resource diagnostic and final representative-performance evidence as well. Source selection is not integration.
 - G1.4: default Fullscreen, borderless native-size Windowed fullscreen, effective backend behavior, usable UI and both-mode display/focus/cursor/pause lifecycle evidence. Never claim exclusive fullscreen when only equivalent backend behavior was observed.
 
 Check exact accepted tuning values are saved in tracked configuration and documented with their final identity. Neither a green build nor owner approval of the design substitutes for native results. Every required Gate must pass before Phase 1 passes.
 
 C — RECONCILE AND REPORT
-Update roadmap, this task README, BOOT, MODULES, development setup and changed owning docs once, matching actual results. Retain later-game scenarios/statuses. Route the next bounded scope to Movement abilities only after actual core acceptance; do not implement it here. Distinguish unresolved defects from deferred enhancements and preserve historical failures.
+Update roadmap, this task README, BOOT, MODULES, development setup and changed owning docs once, matching actual results. Retain later-game scenarios/statuses. On actual P1 success, route the next bounded scope to the already-selected P2 underwater-world Phase; Movement abilities remain accepted future work and are not implemented here. Distinguish unresolved defects from deferred enhancements and preserve historical failures.
 
 Run npm run fish:phase:validate -- p1, inspect changed links and git diff --check. Review evidence consistency without unrelated suites. Report exact accepted candidate, commands reused/rerun, owner decision, all Gate outcomes, limitations and next action.
 

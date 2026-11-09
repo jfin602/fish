@@ -41,13 +41,13 @@ Implement and tune normal swimming, turning, vertical travel, and slowing first,
 
 The core is locked for progression when the required native observations and the owner's acceptance of the implemented feel are recorded. Completing the worksheet or approving this design does not establish that result.
 
-After that core acceptance, **[Movement abilities](../planning/p1/movement-abilities.md)** is the next selected implementation focus: short speed burst, precision mode, and quick evasive turn. Their internal order, inputs, tuning, and any costs/cooldowns remain open. Feeding, predators, growth, saving, and the broader life loop follow their own roadmap scope.
+After that core acceptance, the owner now routes the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**. The previously selected [Movement abilities](../planning/p1/movement-abilities.md)—short speed burst, precision mode and quick evasive turn—remain approved future work, but their immediate scheduling is superseded. Feeding/predators/growth begin in P3.
 
 ## P1 delivery requirement
 
 The owner requires swimming dynamics to be set by the end of P1. The [P1 plan](../planning/p1/core-swimming.md) and [execution stack](../tasks/p1/README.md) include the four selected ocean starter assets, fullscreen development from the first task, windowed fullscreen for testing, and a dedicated owner tuning loop. Finish with the implemented motor, bindings, camera and body-motion settings recorded against the accepted candidate. The current review has not run that work.
 
-Exact choices below remain open at authoring and must be resolved as needed for the core before P1 passes. Future controller and Movement abilities details stay separate. Fullscreen/layout/focus behavior is owned by [UX](../ux-and-presentation.md#fullscreen-presentation); runtime evidence is owned by validation V16/V17 and the roadmap's G1.3/G1.4.
+Exact choices below remain open at authoring and must be resolved as needed for the core before P1 passes. Future controller and Movement abilities details stay separate; P2 must consume the accepted P1 movement/camera behavior rather than silently retuning it to make the environment work. Fullscreen/layout/focus behavior is owned by [UX](../ux-and-presentation.md#fullscreen-presentation); runtime evidence is owned by validation V16/V17 and the roadmap's G1.3/G1.4.
 
 ## Remaining tuning and bindings
 

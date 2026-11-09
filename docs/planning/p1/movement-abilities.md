@@ -1,13 +1,13 @@
 # Movement abilities
 
 **Decision date:** 2026-11-09  
-**Status:** Owner-selected next implementation focus after core controls are locked down. Deferred during core tuning; implementation and qualification are not claimed.
+**Status:** Owner-selected future movement feature group. Its original immediate-post-core scheduling was superseded on 2026-11-09 by the P2 underwater-world decision; implementation and qualification are not claimed.
 
 ## Priority and source
 
-First make normal swimming, turning, and slowing feel right. Once the owner locks down that core, **Movement abilities** is the next implementation focus. This sequence comes from the owner's [worksheet answer Q08](swim-controls-worksheet.md#q08--extra-movement-actions).
+First make normal swimming, turning, and slowing feel right. The owner originally selected **Movement abilities** as the next movement follow-up in [worksheet answer Q08](swim-controls-worksheet.md#q08--extra-movement-actions). A later owner decision selects [P2 worldbuilding](../p2/underwater-world.md) as the next roadmap Phase instead. This document preserves the accepted ability group without claiming a schedule.
 
-The [swimming contract](../../systems/swimming-and-camera.md) owns movement behavior, and [the roadmap](../../roadmap.md) owns Phase/Gate progress. The owner approved the seven core playtest criteria in worksheet Q10; [validation](../../validation.md#core-movement-acceptance) owns their execution and evidence requirements. The completed worksheet locks the design. Actual native playtesting and owner acceptance must lock the implemented core before this follow-up begins.
+The [swimming contract](../../systems/swimming-and-camera.md) owns movement behavior, and [the roadmap](../../roadmap.md) owns Phase/Gate progress. The owner approved the seven core playtest criteria in worksheet Q10; [validation](../../validation.md#core-movement-acceptance) owns their execution/evidence. Actual native playtesting and owner acceptance must still lock the implemented core before these abilities can safely build on it, whenever they are scheduled.
 
 ## Selected follow-up
 

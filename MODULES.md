@@ -1,6 +1,6 @@
 # Module map
 
-This map distinguishes implemented P0 source from later gameplay boundaries. Inspect the checkout before editing; a planned gameplay directory is not an implemented module.
+This map distinguishes implemented source from planned boundaries. Inspect the checkout before editing; a planned P2 path is not an implemented module until execution creates it.
 
 ## Existing development tooling
 
@@ -9,44 +9,54 @@ This map distinguishes implemented P0 source from later gameplay boundaries. Ins
 | `scripts/fish-phase.mjs` | Codex process orchestration, capacity retries, dirty-tree decisions, Git checkpoints/resume, and manual handoffs. |
 | `scripts/fish-phase-core.mjs` | Prompt grammar, task ordering/configuration, version rules, and runner planning helpers. |
 | `scripts/validate-fish-phase.mjs` | Read-only task-stack validation entry point. |
-| `test/unit/` | Ported runner and prompt-grammar regression coverage; these are not gameplay tests. |
+| `test/unit/` | Runner and prompt-grammar regression coverage; these are not gameplay tests. |
 | `package.json` | Private Node tooling commands and Phase/checkpoint version metadata. |
-<<<<<<< Updated upstream
-| `docs/tasks/p0/` | Authored, unexecuted Godot/MCP bootstrap instructions. |
-| `docs/tasks/p1/` | Authored, unexecuted core swimming, selected-asset, fullscreen and owner-acceptance instructions. |
-=======
-| `docs/tasks/p0/` | Executed briefs, implementation/native evidence and foundation closeout. |
->>>>>>> Stashed changes
+| `docs/tasks/p0/` | Executed foundation briefs and evidence. |
+| `docs/tasks/p1/` | Core-swimming implementation/evidence through direct P9, with native P10/P11 still ahead. |
+| `docs/tasks/c1-bindings/` | Authored correction for hybrid presets/rebinding; separate from Phase progression. |
+| `docs/tasks/p2/` | Authored underwater-world Phase stack; do not execute before actual P1 close and deliberate `0.2.0` entry. |
 
-## Implemented P0 source boundaries
+## Implemented Godot/P1 source boundaries
 
 | Path | Responsibility |
 | --- | --- |
-| `game/project.godot` | Compatibility renderer, prototype input definitions, main scene, enabled MCP addon and runtime probe. |
-| `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET SDK, target framework, solution, and .NET SDK pins. |
-| `game/scenes/main.tscn` | Saved 3D habitat, primitive fish, static bounds/landmarks, sun, third-person camera and prototype help. |
-| `game/scripts/Main.cs`, `FishController.cs` | Main-scene C# initialization/smoke and bounded prototype movement in the `Fish` namespace. |
-| `game/dev/scene_tool.gd` | Isolated headless saved-scene inspection and disposable serialization check; development-only helper. |
-| `game/addons/godot_mcp/` | Matched upstream 2026.11.04 editor bridge, runtime probe, license and UID sidecars. |
-| `tools/dev` | Repository-relative local CLI; owns doctor/import/build/check/editor/run/inspection composition. |
-| `tools/local.env`, `.codex/config.toml` | Ignored, machine-local executable/bridge/client configuration. |
+| `game/project.godot` | Godot project, current Compatibility renderer, main scene, display/input defaults, enabled MCP addon/runtime probe. |
+| `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET target and .NET SDK pins. |
+| `game/scenes/main.tscn` | Current normal-play root: boxed P1 habitat, world light/environment hook, fish/camera and prototype presentation. This is the source P2 replaces as the visible world, not evidence of a finished habitat. |
+| `game/scenes/movement_course.tscn` | Reproducible P1 movement/obstruction qualification fixture with markers and simple test geometry. Preserve it or an equivalent dedicated fixture when normal play moves to the P2 habitat. |
+| `game/scripts/Main.cs` | Main-scene initialization, shell setup and smoke integration. |
+| `game/scripts/StarterWorld.cs` | P1 local asset readiness, Fish3 visual, sand/rock/coral placement and stationary ambient fish. P2 should split/retire its world-dressing responsibility deliberately rather than growing it into a monolith. |
+| `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration and tuning. P2 presentation must not take ownership of these. |
+| `game/scripts/KeyboardSwimInput.cs`, `MouseSwimInput.cs` | Current desktop intent adapters; c1-bindings may revise this boundary before P1 closes. |
+| `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior. P2 geometry must support it without making camera state authoritative. |
+| `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
+| `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
+| `game/resources/swim_tuning.tres` | Tracked P1 movement/camera/animation tuning candidate. |
+| `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
+| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands. |
+| `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |
 
-The upstream editor bridge remains separate from simulation; its probe no-ops outside a debug session. [P0 implementation](docs/tasks/p0/qualification/implementation.md) and [native playtest](docs/tasks/p0/qualification/native-playtest.md) record the qualified scope.
+## P2 boundaries to introduce only when needed
 
-## P1 planned source mapping
+| Boundary | Owns | Does not own |
+| --- | --- | --- |
+| Habitat composition | Natural seabed, rock formations, tunnels/arches/caves, coral/reef placement, hidden world limits, spawn and traversal landmarks. | Fish movement rules, feeding, predator AI or save state. |
+| Underwater environment | Selected renderer configuration, light/fog/color/depth treatment, caustic-style surface lighting, suspended particles and bounded post-processing. | HUD simulation state or camera-driven gameplay advantages. |
+| Water reaction presentation | Read-only sampling of fish velocity/turn/acceleration to drive wakes, turbulence, bubbles/particles or trails. | Applying forces, changing collision, modifying speed or simulating authoritative fluid. |
+| Environment assets | Prepared reusable/optimized visual pieces, provenance/license records, local installation mapping and performance-minded instancing. | Treating an asset listing as runtime qualification. |
+| P1 qualification fixture | The preserved movement course and any checks still needed to reproduce P1 evidence. | Becoming the normal P2 world presentation. |
 
-The [P1 implementation plan](docs/tasks/p1/implementation-plan.md#planned-source-ownership) maps proposed display/settings, input/motor, camera/animation, asset and course responsibilities onto the actual checkout at execution. These are planned boundaries, not existing gameplay modules. Restricted vendor resources need an ignored local installation path; public code and source-safe configuration remain tracked.
+Names and exact paths are implementation choices. Prefer small reusable scenes/resources over one giant scripted world builder, and keep renderer-specific code behind the selected P2 presentation boundary.
 
-## Gameplay boundaries to introduce when needed
+## Later gameplay boundaries
 
 | Boundary | Owns | Does not own |
 | --- | --- | --- |
 | Fish/run simulation | Stable life identity, health, growth, body size, life state, simulation time. | Camera position, UI labels, narrative wording. |
-| Swimming/input adapter | Player intent, movement integration, collision responses. | Independent copies of health or growth. |
 | Ecology | Food/prey/predator entities, consumption, pursuit, escape and encounter outcomes. | Saving UI or final story prose. |
 | Persistence | Versioned active-life data, durable terminal state, archive writes and explicit recovery. | Treating storage failure as fish death. |
 | Life event journal | Bounded meaningful events with IDs, time, location/entity references and actual outcomes. | Invented achievements or frame-by-frame replay capture. |
 | Story/archive | Selection of supported life events, final saved account and history entries. | Reviving a dead life or requiring a remote AI service. |
 | Presentation | Third/first-person cameras, fish appearance, HUD, menus, recap/archive views. | Advancing simulation from rendering or history browsing. |
 
-These are responsibility boundaries, not a requirement to create frameworks, autoloads, or empty classes now. Start with the smallest implementation that keeps authoritative state clear. [Technical direction](docs/technical-direction.md) and the owning system documents define invariants.
+These are responsibility boundaries, not a requirement to create frameworks, autoloads, or empty classes now.
