@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01, Q02, and Q04 answered; Q03 partially answered; free look deferred.  
-**Answers recorded:** 4 of 10 (3 answered; 1 partial).  
-**Next question:** Q05 — Turning and directional movement.
+**Status:** In progress; Q01, Q02, Q04, and Q05 answered; Q03 partially answered; free look deferred.  
+**Answers recorded:** 5 of 10 (4 answered; 1 partial).  
+**Next question:** Q06 — Swimming upward and downward.
 
 ## Purpose and scope
 
@@ -60,8 +60,8 @@ Examples: the fish steers toward the view while swimming; looking and steering a
 - **Owner answer:** "the mouse controls direction and your movements of the mouse control like the direction the fish is going." The full statement is preserved in Q02.
 - **Owner follow-up (2026-11-09):** Let's not worry about free look right now
 - **Free look:** Deferred for the current controls work.
-- **Decision notes:** Mouse movement remains the selected steering input for the mouse-only mode. The owner deferred free look for now. Q03 remains partially answered because the keyboard mode's looking/steering relationship is still open; address relevant directional-input and camera choices in Q05 and Q07 while continuing the worksheet.
-- **Open details:** Keyboard looking/steering and camera follow behavior remain to be defined. Free look is deferred and can be revisited later.
+- **Decision notes:** Mouse movement remains the selected steering input for the mouse-only mode. The owner deferred free look for now. Q05 now selects curved left/right turns and backward-input slowing for the keyboard fallback. Q03 remains partially answered while the camera's relationship to steering awaits Q07.
+- **Open details:** Camera response to steering and follow behavior remain for Q07. Free look is deferred and can be revisited later.
 
 ## Q04 — Starting, coasting, and stopping
 
@@ -74,7 +74,7 @@ Describe ordinary movement: holding an input to propel the fish or setting a sus
 - **Owner answer:** "And then holding one of the buttons of the mouse controls like speed or thrust or whatever." The full statement is preserved in Q02.
 - **Owner follow-up (2026-11-09):** Acceleration should be pretty quick. Fish are naturally pretty fast. Slowing down should be a more gradual process. But really we're going for the most natural fish feel we can achieve
 - **Decision notes:** Summary of the owner's answer: acceleration should be quick, with more gradual slowing when swimming input is released. Natural fish movement is the desired feel, while preserving Q01's nimble, agile, easy-to-control target. Holding a mouse button remains the chosen mouse-mode input for swimming speed or thrust; its precise implementation is still open.
-- **Open details:** Exact acceleration and slowing rates, cruising speed, glide duration, mouse button assignment, speed versus thrust implementation, and the equivalent keyboard input remain to be tuned or selected. Optional active braking remains a Q08 choice.
+- **Open details:** Exact acceleration and slowing rates, cruising speed, glide duration, mouse button assignment, speed versus thrust implementation, and keyboard propulsion input remain to be tuned or selected. Q05 selects backward keyboard input to slow the fish; its strength and the equivalent mouse-mode input remain open.
 
 ## Q05 — Turning and directional movement
 
@@ -82,11 +82,11 @@ Describe ordinary movement: holding an input to propel the fish or setting a sus
 
 Examples: turn its nose and swim in an arc; slide sideways while keeping its heading; swim backward; turn around to travel back the way it came. Describe the desired turning response at slow and fast speeds, including whether it can pivot while nearly still.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:** Left and right should turn the fish on a curved path and backward input should slow the fish down.
+- **Decision notes:** For the keyboard fallback, left and right steer the fish through a curved path. Backward input is a command to slow the fish down. Preserve Q01's nimble, easy-to-control feel with some anticipation when turning.
+- **Open details:** Exact bindings, turn rate/radius at different speeds, behavior while nearly still, and the strength of keyboard slowing remain to be tuned. The equivalent slowing input in mouse-only mode remains open.
 
 ## Q06 — Swimming upward and downward
 
@@ -116,7 +116,7 @@ Consider fish size on screen, distance, height, visibility ahead, zoom, and how 
 
 **Beyond ordinary swimming, which extra movement actions, if any, would make control more enjoyable?**
 
-Possibilities include a short speed burst, an active brake, a slow precision mode, or a quick evasive turn. Keeping only ordinary swimming is also an option. Describe the intended feel and preferred input; stamina costs, survival balance, and resource systems can remain open.
+Q05 already selects backward keyboard input to slow the fish. Possible additional actions include a short speed burst, a slow precision mode, or a quick evasive turn; the mouse-mode slowing input also remains open. Keeping the selected ordinary swimming controls is an option. Describe the intended feel and preferred input; stamina costs, survival balance, and resource systems can remain open.
 
 - **Status:** Unanswered.
 - **Recorded:** —
