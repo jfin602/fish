@@ -1,0 +1,27 @@
+TASK: Correction 1 / P1 — Control actions and preset store
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.1.9`.
+
+GOAL
+Provide a stable, serializable semantic-control preset contract that can express combined mouse and keyboard bindings while preserving the already implemented desktop controls and display preferences. This is the foundation for the runtime adapter and UI; do not implement a second motor.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c1-bindings/README.md, prompt-assessment.md, implementation-plan.md P1 and docs/systems/swimming-and-camera.md. Inspect actual main/working tree, package.json, game/scripts/DisplayPreferences.cs, KeyboardSwimInput.cs, MouseSwimInput.cs, FishController.cs, PlayShell.cs, SwimMotor.cs and game/project.godot. Check docs/tasks/p1/README.md and P9 evidence for version/implementation readiness. Require root 0.1.9 and preserve unrelated or partial work. The published root docs have unresolved conflict-marker text; do not treat both sides as true or silently resolve out-of-scope edits.
+
+IMPLEMENT
+1. Add a small first-party C# model for semantic actions: thrust, slow, yaw left/right, pitch up/down, pause/options. Keep physics, camera and fish state outside the model. Model multiple physical keyboard or mouse-button bindings for an action and assignable relative mouse X/Y steering as distinct axis input, with per-profile sensitivity and inversion. Use validated stable identity, bounded names/count, explicit schema version and safe defaults; no generic macro/chord engine.
+2. Ship immutable built-in Keyboard Only, Mouse Only and Hybrid Swim templates with editable copies. Keyboard Only retains W/S/A/D/Up/Down/Esc; Mouse Only retains X/Y steering, left-button thrust and right-button pause; provisional Hybrid uses W thrust, S slow, mouse X/Y steer plus A/D yaw and keyboard pitch fallback. All templates must be operable, but P10 decides final preferred bindings.
+3. Implement a versioned local user-profile store under user:// independent of living fish saves. Existing users retain the prior selected keyboard/mouse mode and mouse settings after upgrade; do not overwrite display choices in preferences.cfg. Fresh defaults must be deterministic and safe. Support list, create/duplicate, rename, delete, reset, choose current, save and load with immutable built-ins, conflict/invalid-binding guards, and fallback if data are missing/corrupt. Do not modify ProjectSettings at runtime or put user profiles into the public tracked Godot project file.
+4. Establish an always-reachable pause/menu recovery policy even if a user deletes or conflicts bindings; reserve Escape and a visible mouse menu affordance, with both input paths usable. Separate requested action from binding capture. Add focused tests of schema/migration/round trips, bad files, duplicate profiles, conflicts, reserved recovery and unchanged legacy display preferences.
+
+SCOPE / DEFERRALS
+Do not change motor tuning, FishController mode selection, scene assets, renderer, controller support or P1 Gate status in this prompt. Avoid broad settings refactors. Retain partial work and report a precise blocker if the local source differs materially from this contract.
+
+VALIDATE
+T1. Inspect ./tools/dev check composition; run only focused tests plus ./tools/dev check when the modified files require its integration path. Check no package-lock.json and git diff --check. Include tests tied to actual Godot/C# source, not test-only duplicate data types. Record invoked commands, config examples, PASS/FAIL/NOT OBSERVED and limitations under docs/tasks/c1-bindings/qualification/implementation.md.
+
+DONE / VERSION / HANDOFF
+The store round-trips templates and editable copies, handles corrupt config and upgrade safely, keeps menu recovery available, and passes focused checks. Keep package.json exactly 0.1.9, and preserve historical P1 execution evidence. Report concrete sources and the P2 input-resolver entry contract. Do not commit or push; the runner owns the correction checkpoint.
