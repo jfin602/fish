@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** Awaiting the first owner answer.  
-**Answers recorded:** 0 of 10.  
-**Next question:** Q01 — Desired swimming feel.
+**Status:** In progress; Q01 answered.  
+**Answers recorded:** 1 of 10.  
+**Next question:** Q02 — Input device and comfort.
 
 ## Purpose and scope
 
@@ -30,11 +30,11 @@ The owner has played a tech demo. Record their observations as owner feedback; d
 
 Optional starting points: quick and nimble; smooth and flowing with some weight; heavy and deliberate. Describe a mix or a reference game if that expresses it better. Include anything in the demo that already feels right.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:** Yes, your description is pretty spot on. Uh, I like the line movement that requires planning. Your fish should feel nimble and agile in the water, but it's still water after all. So there's slight fluid dynamics where you have to turn a little earlier than normal to make the turn in time and stuff like that. But at the end of the day, it shouldn't be hard to control the fish
+- **Decision notes:** Summary of the owner's answer: the fish should feel nimble and agile, with slight water effects that reward anticipating a turn and starting it a little earlier. It should remain easy to control. This establishes the desired feel; the precise movement model remains open.
+- **Open details:** Exact momentum, acceleration, stopping behavior, and turning response will be refined in Q04 and Q05, preserving the nimble, approachable feel.
 
 ## Q02 — Input device and comfort
 
