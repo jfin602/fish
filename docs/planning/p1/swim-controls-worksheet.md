@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01–Q02 answered; Q03–Q04 partially answered.  
+**Status:** In progress; Q01–Q02 answered; Q03–Q04 partially answered; free look deferred.  
 **Answers recorded:** 4 of 10 (2 answered; 2 partial).  
-**Next question:** Q03 — Looking and steering.
+**Next question:** Q04 — Starting, coasting, and stopping.
 
 ## Purpose and scope
 
@@ -58,8 +58,10 @@ Examples: the fish steers toward the view while swimming; looking and steering a
 - **Status:** Partial.
 - **Recorded:** 2026-11-09; carried forward from the owner's Q02 elaboration.
 - **Owner answer:** "the mouse controls direction and your movements of the mouse control like the direction the fish is going." The full statement is preserved in Q02.
-- **Decision notes:** The owner selected mouse movement to steer the fish in the mouse-only mode. This does not yet settle independent looking or how looking and steering work in the keyboard fallback.
-- **Open details:** Whether a free-look action can look around without changing the fish's direction; the keyboard mode's looking/steering relationship. Camera framing and follow behavior remain for Q07.
+- **Owner follow-up (2026-11-09):** Let's not worry about free look right now
+- **Free look:** Deferred for the current controls work.
+- **Decision notes:** Mouse movement remains the selected steering input for the mouse-only mode. The owner deferred free look for now. Q03 remains partially answered because the keyboard mode's looking/steering relationship is still open; address relevant directional-input and camera choices in Q05 and Q07 while continuing the worksheet.
+- **Open details:** Keyboard looking/steering and camera follow behavior remain to be defined. Free look is deferred and can be revisited later.
 
 ## Q04 — Starting, coasting, and stopping
 
