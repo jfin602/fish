@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01, Q02, Q04, Q05, and Q06 answered; Q03 partially answered; free look deferred.  
-**Answers recorded:** 6 of 10 (5 answered; 1 partial).  
-**Next question:** Q07 — Third-person camera.
+**Status:** In progress; Q01–Q07 answered for the initial scope; free look deferred.  
+**Answers recorded:** 7 of 10 (7 answered).  
+**Next question:** Q08 — Extra movement actions.
 
 ## Purpose and scope
 
@@ -55,13 +55,13 @@ Examples: keyboard and mouse; gamepad; both, with one named as the first playtes
 
 Examples: the fish steers toward the view while swimming; looking and steering are independent; ordinary look steers the fish but a separate free-look action lets you inspect the surroundings. Consider looking behind or above while continuing along the same route.
 
-- **Status:** Partial.
+- **Status:** Answered.
 - **Recorded:** 2026-11-09; carried forward from the owner's Q02 elaboration.
 - **Owner answer:** "the mouse controls direction and your movements of the mouse control like the direction the fish is going." The full statement is preserved in Q02.
 - **Owner follow-up (2026-11-09):** Let's not worry about free look right now
 - **Free look:** Deferred for the current controls work.
-- **Decision notes:** Mouse movement remains the selected steering input for the mouse-only mode. The owner deferred free look for now. Q05 now selects curved left/right turns and backward-input slowing for the keyboard fallback. Q03 remains partially answered while the camera's relationship to steering awaits Q07.
-- **Open details:** Camera response to steering and follow behavior remain for Q07. Free look is deferred and can be revisited later.
+- **Decision notes:** Answered for the initial scope using the owner's combined choices: mouse movement steers the fish (Q02); keyboard left/right inputs make curved turns and backward input slows the fish (Q05); both modes pitch to change depth (Q06); the camera follows from behind and slightly above, with smooth direction changes and obstacle adjustment (Q07). Free look remains explicitly deferred.
+- **Open details:** Exact camera tuning belongs to Q07, and camera response to body animation belongs to Q09. Free look can be revisited later; it is outside the current controls scope.
 
 ## Q04 — Starting, coasting, and stopping
 
@@ -107,11 +107,19 @@ Examples: look or aim up and down, then swim in that direction; use dedicated ri
 
 Consider fish size on screen, distance, height, visibility ahead, zoom, and how quickly the camera catches up. Describe a comfortable view while circling a rock or entering a narrow passage. Q03 owns whether looking changes swimming direction; this question owns framing and follow behavior.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:**
+
+  > Behind and slightly above the fish, with its whole body visible and enough space ahead to see where you’re going.
+  > A moderate distance, balancing a close connection to the fish with a useful view of the surroundings.
+  > Smooth following, keeping up with changes in direction without abrupt camera movements.
+  > Adjusting near rocks and other obstacles to keep the fish visible.
+  >
+  > Continue
+
+- **Decision notes:** The third-person camera sits behind and slightly above the fish at a moderate distance, showing its whole body and enough space ahead to read the route. It follows direction changes smoothly without abrupt camera movement and adjusts near rocks and other obstacles to keep the fish visible. These are the accepted framing and follow targets; free look remains deferred under Q03.
+- **Open details:** Exact distance, height, framing, smoothing rates, and how obstacle adjustment is achieved remain implementation and playtest choices. Zoom controls are not selected. How much body banking or other animation the camera inherits remains for Q09.
 
 ## Q08 — Extra movement actions
 
