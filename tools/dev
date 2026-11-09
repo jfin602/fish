@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|inspect-scene <path>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|inspect-scene <path>|inspect-course|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -86,6 +86,11 @@ case "${1:-help}" in
     if [[ $path == "$PROJECT/"* ]]; then path="res://${path#"$PROJECT/"}";
     elif [[ $path != res://* ]]; then path="res://${path#game/}"; fi
     scene_tool inspect-scene inspect "$path"
+    ;;
+  inspect-course)
+    need_tools
+    logged course-check 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/course_check.gd
+    grep -Fq 'COURSE_CHECK_OK' "$LOGS/course-check.log" || { echo 'Course assertion marker missing' >&2; exit 1; }
     ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;

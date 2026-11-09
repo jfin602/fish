@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; later gameplay Phases NOT STARTED.** [P0 closeout](tasks/p0/closeout.md) is the source-bound foundation record. The earlier documentation/runner starter is recorded separately in [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md).
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 IN PROGRESS through direct P4 implementation, with all G1 Gates still NOT OBSERVED. Later gameplay Phases NOT STARTED.** [P0 closeout](tasks/p0/closeout.md) is the source-bound foundation record. The earlier documentation/runner starter is recorded separately in [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md).
 
 This is the single Phase/Gate progress authority. A Gate passes when all its criteria have source-bound evidence; a Phase passes when all its Gates pass. [Validation](validation.md) defines scenarios, while task qualification records hold results. Update status here with a link to the actual evidence.
 
@@ -12,10 +12,10 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 | --- | --- | --- |
 <<<<<<< Updated upstream
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | NOT STARTED; [stack authored](tasks/p0/README.md). |
-| P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | NOT STARTED; [stack authored](tasks/p1/README.md). |
+| P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | IN PROGRESS through direct P4 work; Gates not passed. |
 =======
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
-| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | NOT STARTED. |
+| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | IN PROGRESS through direct P4 work; Gates not passed. |
 >>>>>>> Stashed changes
 | P2 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop. | NOT STARTED. |
 | P3 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
@@ -58,11 +58,11 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 ## P1 — Swim through a habitat
 
-**Status: NOT STARTED.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md). Scenarios V01–V02 and V16–V17.
+**Status: IN PROGRESS through direct P4 implementation; all G1 Gates remain NOT OBSERVED.** [P1 design](planning/p1/core-swimming.md); [p1 execution stack](tasks/p1/README.md); [P1–P4 implementation evidence](tasks/p1/qualification/implementation.md). Scenarios V01–V02 and V16–V17.
 
 **Design accepted — 2026-11-09:** the [completed worksheet](planning/p1/swim-controls-worksheet.md) establishes the core controls and seven playtest criteria, owned by the [swimming contract](systems/swimming-and-camera.md) and [validation V01–V02](validation.md#core-movement-acceptance). Implementation and native acceptance remain to be observed. Lock the implemented core through actual playtesting and owner acceptance before beginning **[Movement abilities](planning/p1/movement-abilities.md)**, the next selected implementation focus.
 
-**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. The authored stack has native display/asset inspection, owner tuning, and final review boundaries; it has not run.
+**P1 delivery scope — 2026-11-09:** use the approved four-asset starter set in the real course, develop fullscreen from the first task, and provide windowed fullscreen for testing. P1 closes only when the dynamics are tuned and accepted, the final profile is recorded, and all four Gates below pass. P1–P4 were executed directly; the phase runner has not run this stack. Native display/asset inspection, owner tuning and final review remain ahead.
 
 ### G1.1 — Swimming and physical space
 

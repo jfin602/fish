@@ -126,10 +126,10 @@ public static class StarterWorld
 
         var decor = new Node3D { Name = "StarterDecor" };
         main.GetNode<Node3D>("Habitat").AddChild(decor);
-        AddScene(decor, rockScene, "RockWest", new Vector3(-5.3f, -4.1f, -3.6f), 0.55f);
-        AddScene(decor, rockScene, "RockEast", new Vector3(5.2f, -4.1f, -5.6f), 0.42f);
-        AddScene(decor, coralScene, "CoralWest", new Vector3(-4.6f, -3.9f, -2.4f), 3.5f);
-        AddScene(decor, coralScene, "CoralEast", new Vector3(4.8f, -3.9f, -4.8f), 3.0f);
+        AddScene(decor, rockScene, "RockWest", CoursePosition(main, "RockWest"), 0.55f);
+        AddScene(decor, rockScene, "RockEast", CoursePosition(main, "RockEast"), 0.55f);
+        AddScene(decor, coralScene, "CoralWest", CoursePosition(main, "CoralWest"), 3.5f);
+        AddScene(decor, coralScene, "CoralEast", CoursePosition(main, "CoralEast"), 3.0f);
         foreach (var marker in new[] { "CoralNear", "CoralFar" })
             if (main.GetNodeOrNull<MeshInstance3D>($"Habitat/Landmarks/{marker}") is { } oldMarker)
                 oldMarker.Visible = false;
@@ -138,14 +138,14 @@ public static class StarterWorld
         main.GetNode<Node3D>("Habitat").AddChild(ambient);
         AddFish(ambient, "Fish1", "SchoolFishA", new Vector3(-3.5f, -0.4f, -4.5f), 0.10f);
         AddFish(ambient, "Fish2", "SchoolFishB", new Vector3(3.0f, 0.6f, -6.1f), 0.10f);
-        AddFish(ambient, "Fish3", "SchoolFishC", new Vector3(1.3f, -1.7f, -3.2f), 0.09f);
+        AddFish(ambient, "Fish3", "SchoolFishC", new Vector3(0, 1.4f, -7.2f), 0.09f);
         AddFish(ambient, "Manta ray", "Manta", new Vector3(-5.7f, 1.7f, -7.2f), 0.16f);
         AddFish(ambient, "Dolphin", "Dolphin", new Vector3(5.9f, 1.6f, -7.5f), 0.12f);
         AddFish(ambient, "Shark", "Shark", new Vector3(-6.6f, -0.3f, 3.8f), 0.14f);
         AddFish(ambient, "Whale", "Whale", new Vector3(5.8f, 0.2f, 4.7f), 0.12f);
 
         diagnostic = "";
-        GD.Print("FISH_STARTER_WORLD_READY player=Fish3 ambient=7 rocks=2 coral=2 sand=1");
+        GD.Print("FISH_STARTER_WORLD_READY player=Fish3 ambient=7 rocks=2 coral=2 sand=1 course=movement_course");
         return true;
     }
 
@@ -190,6 +190,9 @@ public static class StarterWorld
 
     private static bool IsTwoKilopixelTexture(Texture2D texture) =>
         texture.GetWidth() == 2048 && texture.GetHeight() == 2048;
+
+    private static Vector3 CoursePosition(Node3D main, string marker) =>
+        main.GetNode<Node3D>($"Habitat/MovementCourse/{marker}").Position;
 
     private static void AddScene(Node3D parent, PackedScene scene, string name, Vector3 position, float scale)
     {

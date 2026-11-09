@@ -48,7 +48,10 @@ public partial class Main : Node3D
 
         GD.Print("FISH_FOUNDATION_READY");
 
-        AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences));
+        AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences)
+        {
+            Name = "PlayShell",
+        });
 
         if (!StarterWorld.TryPopulate(this, fish, out var assetDiagnostic))
         {
@@ -87,11 +90,12 @@ public partial class Main : Node3D
         var animation = GetNodeOrNull<AnimationPlayer>("Fish/PlayerVisual/AnimationPlayer");
         var ambient = GetNodeOrNull<Node3D>("Habitat/AmbientFish");
         var decor = GetNodeOrNull<Node3D>("Habitat/StarterDecor");
+        var course = GetNodeOrNull<Node3D>("Habitat/MovementCourse");
         var floor = GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
         if (skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
             ambient is null || ambient.GetChildCount() < 3 ||
-            decor is null || decor.GetChildCount() != 4 ||
+            decor is null || decor.GetChildCount() != 4 || course is null ||
             floor.MaterialOverride is not StandardMaterial3D sand || sand.AlbedoTexture is null)
         {
             GD.PushError("FISH_SMOKE_FAILED starter resources did not instantiate fully");
