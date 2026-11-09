@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Baseline: 2026-11-09. All game Phases are NOT STARTED; all game Gates are NOT OBSERVED.** The documentation/runner starter is recorded separately in [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md). Authored prompts, passing runner tests, and Space Factory's results do not qualify a Fish gameplay Gate.
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; later gameplay Phases NOT STARTED.** [P0 closeout](tasks/p0/closeout.md) is the source-bound foundation record. The earlier documentation/runner starter is recorded separately in [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md).
 
 This is the single Phase/Gate progress authority. A Gate passes when all its criteria have source-bound evidence; a Phase passes when all its Gates pass. [Validation](validation.md) defines scenarios, while task qualification records hold results. Update status here with a link to the actual evidence.
 
@@ -10,8 +10,13 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 
 | Phase | Observable outcome | State |
 | --- | --- | --- |
+<<<<<<< Updated upstream
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | NOT STARTED; [stack authored](tasks/p0/README.md). |
 | P1 — Swim through a habitat | Settle swimming dynamics in both desktop modes, using the four starter assets and fullscreen/windowed-fullscreen play. | NOT STARTED; [stack authored](tasks/p1/README.md). |
+=======
+| P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
+| P1 — Swim through a habitat | Control a readable fish in a bounded 3D environment using the primary third-person camera. | NOT STARTED. |
+>>>>>>> Stashed changes
 | P2 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop. | NOT STARTED. |
 | P3 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P4 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -19,11 +24,11 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 
 ## P0 — Godot and MCP foundation
 
-**Status: NOT STARTED.** [Foundation design](planning/p0/foundation.md); [p0 stack](tasks/p0/README.md). Scenarios B01–B04.
+**Status: COMPLETE on the observed Linux/X11 desktop.** [Foundation design](planning/p0/foundation.md); [p0 closeout](tasks/p0/closeout.md). Scenarios B01–B04 passed as recorded in the [native playtest](tasks/p0/qualification/native-playtest.md).
 
 ### G0.1 — Reproducible 3D project and CLI
 
-**Result: NOT OBSERVED.**
+**Result: PASS.** Actual pins, C# scene execution, wrapper and scene round trip are in [implementation evidence](tasks/p0/qualification/implementation.md).
 
 - Godot .NET/C# project and coherent engine/SDK pins exist under `game/`.
 - A real main scene contains a small 3D test habitat, controllable placeholder fish and third-person camera; prototype controls are documented.
@@ -33,7 +38,7 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 
 ### G0.2 — Correct, isolated Godot Editor MCP connection
 
-**Result: NOT OBSERVED.**
+**Result: PASS.** Matched components, Fish-local configuration, live peer identity and editor save/reload are in [implementation](tasks/p0/qualification/implementation.md) and [native playtest](tasks/p0/qualification/native-playtest.md).
 
 - The selected stable server and matching addon are installed/configured with traceable versions and notices.
 - Fish's local configuration preserves Space Factory and unrelated client settings, uses a distinct local bridge, and stays out of Git.
@@ -42,7 +47,7 @@ Build one small, complete fish life before expanding content: a readable 3D habi
 
 ### G0.3 — Native development loop
 
-**Result: NOT OBSERVED.**
+**Result: PASS.** Live keyboard/action state, prototype bounds, captured game frames, editor output and clean stop are in the [native playtest](tasks/p0/qualification/native-playtest.md).
 
 - Open the real Fish editor and launch the actual main scene on the selected desktop.
 - Observe the 3D fish/camera, demonstrate movement including vertical travel, release input, and confirm the foundation bounds.

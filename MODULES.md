@@ -1,6 +1,6 @@
 # Module map
 
-This map distinguishes current source from intended boundaries. Inspect the checkout before editing; a planned directory is not an implemented module.
+This map distinguishes implemented P0 source from later gameplay boundaries. Inspect the checkout before editing; a planned gameplay directory is not an implemented module.
 
 ## Existing development tooling
 
@@ -11,23 +11,27 @@ This map distinguishes current source from intended boundaries. Inspect the chec
 | `scripts/validate-fish-phase.mjs` | Read-only task-stack validation entry point. |
 | `test/unit/` | Ported runner and prompt-grammar regression coverage; these are not gameplay tests. |
 | `package.json` | Private Node tooling commands and Phase/checkpoint version metadata. |
+<<<<<<< Updated upstream
 | `docs/tasks/p0/` | Authored, unexecuted Godot/MCP bootstrap instructions. |
 | `docs/tasks/p1/` | Authored, unexecuted core swimming, selected-asset, fullscreen and owner-acceptance instructions. |
+=======
+| `docs/tasks/p0/` | Executed briefs, implementation/native evidence and foundation closeout. |
+>>>>>>> Stashed changes
 
-## P0 intended source boundaries
+## Implemented P0 source boundaries
 
-| Planned path | Responsibility |
+| Path | Responsibility |
 | --- | --- |
-| `game/project.godot` | Engine settings, input definitions, main scene, and enabled editor addon. |
+| `game/project.godot` | Compatibility renderer, prototype input definitions, main scene, enabled MCP addon and runtime probe. |
 | `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET SDK, target framework, solution, and .NET SDK pins. |
-| `game/scenes/` | Saved 3D scene composition. P0 contains a minimal foundation scene. |
-| `game/scripts/` | First-party C# code in the `Fish` namespace. P0 owns only foundation behavior. |
-| `game/dev/` | Isolated headless/scene-development helpers; exclude them from player exports. |
-| `game/addons/godot_mcp/` | Versioned upstream editor bridge, with required notices and pinned source. |
-| `tools/dev` | Repository-relative local CLI; owns import/build/check/editor/run/inspection composition. |
+| `game/scenes/main.tscn` | Saved 3D habitat, primitive fish, static bounds/landmarks, sun, third-person camera and prototype help. |
+| `game/scripts/Main.cs`, `FishController.cs` | Main-scene C# initialization/smoke and bounded prototype movement in the `Fish` namespace. |
+| `game/dev/scene_tool.gd` | Isolated headless saved-scene inspection and disposable serialization check; development-only helper. |
+| `game/addons/godot_mcp/` | Matched upstream 2026.11.04 editor bridge, runtime probe, license and UID sidecars. |
+| `tools/dev` | Repository-relative local CLI; owns doctor/import/build/check/editor/run/inspection composition. |
 | `tools/local.env`, `.codex/config.toml` | Ignored, machine-local executable/bridge/client configuration. |
 
-The bootstrap decides concrete files using the installed tools and the narrow p0 requirements. Keep the upstream editor bridge separate from simulation and do not open its network service in a player build.
+The upstream editor bridge remains separate from simulation; its probe no-ops outside a debug session. [P0 implementation](docs/tasks/p0/qualification/implementation.md) and [native playtest](docs/tasks/p0/qualification/native-playtest.md) record the qualified scope.
 
 ## P1 planned source mapping
 

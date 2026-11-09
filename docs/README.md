@@ -1,6 +1,6 @@
 # Documentation index
 
-Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. This documentation describes a planned game and a working development runner; the Godot project is the next implementation step.
+Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. The P0 Godot/MCP foundation is implemented and [qualified on Linux/X11](tasks/p0/closeout.md); survival gameplay is planned.
 
 ## Ownership
 
@@ -34,7 +34,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## First task
 
-[P0 foundation design](planning/p0/foundation.md) and [p0 execution stack](tasks/p0/README.md) establish the 3D Godot .NET project and Godot Editor MCP integration. The stack is authored, not executed. The [repository-bootstrap record](tasks/repository-bootstrap/qualification.md) covers only this starter and runner port.
+[P0 foundation design](planning/p0/foundation.md), [execution stack](tasks/p0/README.md), and [closeout](tasks/p0/closeout.md) establish the 3D Godot .NET project and Godot Editor MCP integration. The [repository-bootstrap record](tasks/repository-bootstrap/qualification.md) covers the earlier documentation and runner port.
 
 ## Approved core-controls design
 

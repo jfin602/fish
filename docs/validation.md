@@ -1,6 +1,6 @@
 # Validation and evidence
 
-This document defines scenarios. [The roadmap](roadmap.md) alone owns current Phase/Gate results. All game scenarios below are planned and unqualified in the starter; [repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md) covers documentation and runner checks only.
+This document defines scenarios. [The roadmap](roadmap.md) alone owns current Phase/Gate results. Foundation B01–B04 passed on Linux/X11 in the [P0 native playtest](tasks/p0/qualification/native-playtest.md); later gameplay scenarios remain planned. [Repository-bootstrap evidence](tasks/repository-bootstrap/qualification.md) covers the earlier documentation and runner checks only.
 
 ## Evidence standard
 

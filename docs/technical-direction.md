@@ -1,6 +1,6 @@
 # Technical direction
 
-**State:** chosen development direction; no Fish Godot runtime exists in the starter. The owner asked to use Godot and Godot MCP as in Space Factory. Follow its .NET/C# development approach, adapted to this 3D game.
+**State:** chosen development direction with P0's Godot .NET/C# 3D foundation implemented and [qualified on Linux/X11](tasks/p0/closeout.md). The owner asked to use Godot and Godot MCP as in Space Factory; Fish adapts that workflow to a 3D game.
 
 ## Stack and first platform
 

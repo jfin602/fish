@@ -1,6 +1,6 @@
 # Development setup
 
-**Current state:** documentation and Node tooling only. P0 will create `game/` and `tools/dev`. No Fish engine install, build, editor connection, gameplay session, or export has been qualified yet.
+**Current state:** P0's Godot .NET 3D foundation and developer CLI are implemented and qualified on the owner's Linux/X11 desktop. [P0 implementation](tasks/p0/qualification/implementation.md), [native playtest](tasks/p0/qualification/native-playtest.md), and [closeout](tasks/p0/closeout.md) record the actual evidence. Survival gameplay and exports remain later work.
 
 ## Reference pins
 
@@ -16,7 +16,7 @@ The inspected Space Factory [development setup](https://github.com/jfin602/space
 | Godot Editor MCP | Stable release tag `2026.11.04`, Python package version `2026.11.4`, matching release addon. |
 | Runner | Node.js 24 (`>=24 <25`); no npm dependencies. |
 
-Reference values are not proof of local availability. Discover the actual editor/SDK and reuse suitable existing installations. Prefer Fish-local configuration to changing system defaults or Space Factory. Document a necessary deliberate deviation with its cause and measured result. Install missing components from official upstream sources using ordinary user-local mechanisms; a missing capability or access approval is an explicit blocker, not permission to bypass controls.
+The local P0 run used Godot `4.7.2.stable.mono.official.ed1daf0bf`, `Godot.NET.Sdk/4.7.2`, .NET SDK `10.0.403` and `net10.0` without a pin deviation. The editor is the existing user-local .NET build; no system default or Space Factory setup changed. Future machines must inspect their installations rather than treat these local paths as portable.
 
 ## Commands available now
 
@@ -34,30 +34,39 @@ Execution also requires a locally available/authenticated Codex CLI:
 npm run fish:phase -- p0
 ```
 
-The root `package.json` is private development metadata, starting at `0.0.0`. It is independent of engine pins and public release versions. Do not add a root package lock or npm dependencies to run the inherited tools. [The runner guide](phase-runner.md) owns its exact contract.
+The root `package.json` is private development metadata; P0 began at `0.0.0` and the passing direct closeout reaches `0.0.3`. It is independent of engine pins and public release versions. Do not add a root package lock or npm dependencies to run the inherited tools. [The runner guide](phase-runner.md) owns its exact contract.
 
-## Developer CLI to implement in P0
+The completed direct P0 stack assigned checkpoint `0.0.3`. To use the Godot project from any working directory:
 
-`tools/dev` must resolve the repository/project from its own location, use properly quoted arguments, and fail clearly on missing prerequisites. It should read ignored `tools/local.env` for actual local executable paths; preserve Space Factory's safe array-based `GODOT_CMD` convention and `DOTNET_BIN` override without evaluating arbitrary command strings.
+```bash
+/home/jfin/dev/fish/tools/dev editor
+/home/jfin/dev/fish/tools/dev run
+```
 
-| Planned command | Required behavior |
+From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `run` builds C# before opening the game; `editor` opens the .NET editor. The ignored `tools/local.env` on this desktop supplies `GODOT_CMD` as an argument array, `DOTNET_BIN`, and `GODOT_MCP_BRIDGE_URL`. On another machine, create that file with local executable paths; it is deliberately not committed. `tools/dev doctor` reports the selected tools and display. `tools/dev check` imports, builds once, runs a bounded C# main-scene smoke, and tests saved-scene automation/missing-scene failure. `inspect-scene <path>` accepts `res://`, `game/`-relative, or an absolute path under this checkout's `game/`.
+
+## Developer CLI implemented in P0
+
+`tools/dev` resolves the repository/project from its own location, uses quoted arguments, and fails on missing prerequisites. It reads ignored `tools/local.env` for local paths; `GODOT_CMD` is an argument array and `DOTNET_BIN` is invoked from `game/` so `global.json` selects the SDK.
+
+| Command | Current behavior |
 | --- | --- |
 | `./tools/dev doctor` | Report actual Godot version/.NET capability, SDK, project/config readiness and display availability. |
 | `./tools/dev import` | Import the Fish project and wait for completion; fail on engine errors/timeouts. |
 | `./tools/dev build` | Compile `game/Fish.csproj` with the pinned SDK. |
 | `./tools/dev check` | Compose import, build, a bounded real-main-scene C# smoke, and isolated scene-automation smoke once. |
 | `./tools/dev editor` | Open the Fish editor, forwarding the Fish bridge environment after P2. |
-| `./tools/dev run` | Build and launch the real Fish main scene, with documented composition. |
+| `./tools/dev run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]` | Build and launch the real Fish main scene. The optional, validated game-owned argument follows Godot's `--` separator and does not save a preference. |
 | `./tools/dev inspect-scene <path>` | Inspect a real saved scene; missing paths fail nonzero. |
 | `./tools/dev automation-smoke` | Create/edit/save/reload/assert/remove a disposable scene using Godot APIs. |
 
-Keep generated outputs under ignored `artifacts/`; preserve relevant UID sidecars. The C# smoke must prove real scene/C# execution and produce `FISH_SMOKE_OK` only after its assertions. Timeouts, missing markers, and engine/script errors are failures. Avoid creating a general testing framework for this foundation.
+Generated command logs live under ignored `artifacts/logs/`; relevant UID sidecars are tracked. The C# smoke prints `FISH_SMOKE_OK` only after its main-scene assertions. Timeouts, missing markers, and engine/script errors fail the wrapper. The prototype controls are `WASD`/arrows horizontally, `E`/Space up, `Q`/PageDown down. The visible help labels them as a foundation prototype. The scene's x/y/z limits are ±8.3/±3/±8.3, with static enclosing collision geometry. Final swimming feel is not claimed.
 
 Exports are later qualification scope. When introduced, use named platform presets and matching .NET export templates, retain the associated .NET runtime output, and test each claimed target separately. A configured preset is not a successful export or target-OS run.
 
 ## Godot Editor MCP
 
-Use [hybridindie/godot-mcp](https://github.com/hybridindie/godot-mcp), the `godot-editor-mcp` Python server, and its `addons/godot_mcp` editor addon. The selected stable [2026.11.04 release](https://github.com/hybridindie/godot-mcp/releases/tag/2026.11.04) is the reference pair for a new install; use its matching addon, not moving beta `main`. Inspect an existing suitable installation before replacing anything.
+Fish uses [hybridindie/godot-mcp](https://github.com/hybridindie/godot-mcp), with installed Python server package `2026.11.04` and the matching [2026.11.04 release addon](https://github.com/hybridindie/godot-mcp/releases/tag/2026.11.04) under `game/addons/godot_mcp/`. The plugin and `MCPRuntimeProbe` autoload are enabled in `project.godot`; the addon license and UID files are retained. MCP reports C# read/write support but no C# build capability; `tools/dev build` remains the compiler check.
 
 An isolated pinned invocation avoids replacing another project's installed tool:
 
@@ -80,7 +89,7 @@ Configure the actual local server command, Fish `game/` working directory and th
 | `GODOT_MCP_GODOT_BIN` | Actual compatible Godot .NET executable. |
 | `GODOT_MCP_DEFAULT_TOOLSETS` | Only the sets needed for inspection, scene/3D editing, runtime/input/testing and editor capture; inspect the installed tool catalog. |
 
-The Godot editor process must receive the same bridge URL as its server. `GODOT_MCP_PROJECT_DIR` alone does not prove the live peer is Fish; check returned project identity before mutations. Reopen the editor after externally changing the enabled plugin list when needed.
+The ignored `.codex/config.toml` supplies the existing pinned executable, Fish `cwd`/project directory, actual .NET editor path, and Fish bridge `ws://127.0.0.1:19080`, distinct from the preexisting 9080 user-level connection. `tools/local.env` passes that same bridge URL to `tools/dev editor`. In P0, `godot_get_server_info` identified the live peer as `/home/jfin/dev/fish/game/` before scene mutation. A fresh Codex app session or reload from this trusted Fish project is needed for its built-in tool inventory to use the local override; P0's live checks used a direct MCP client with the same configuration. Do not change the user's global server or Space Factory to route Fish.
 
 The upstream `config --client codex --project ... --write` helper writes the user-level Codex file; `--project` supplies a project value rather than selecting a project-local destination. Do not blindly use `--force` over an existing server. A Codex restart/reload may be required to load new MCP tools; record that exact handoff without claiming a connection that has not been observed.
 
@@ -106,14 +115,18 @@ An editor viewport screenshot and a running-game screenshot establish different 
 - [Stable C# contract](https://github.com/hybridindie/godot-mcp/blob/2026.11.04/tests/contract/test_csharp_phase1.py)
 - [Official Codex MCP configuration](https://developers.openai.com/codex/mcp/) and [configuration precedence](https://developers.openai.com/codex/config-basic/)
 
-## Planned P1 display and asset workflow
+## P1 display shell and planned asset workflow
 
-The [P1 stack](tasks/p1/README.md) is authored, not executed. After actual P0 readiness, its [entry procedure](tasks/p1/manual/entry-and-resume.md) prepares the root `0.1.0` baseline. The first task adds fullscreen startup, windowed fullscreen and a documented temporary display-mode override to the actual `tools/dev run`; these additions are not present in the published starter.
+The first P1 task was executed directly on the existing P0 working tree. Godot starts a fresh profile in `ExclusiveFullscreen` (`display/window/size/mode=4`). The pause/options panel offers **Fullscreen** (`Window.ModeEnum.ExclusiveFullscreen`) and **Windowed fullscreen** (`Window.ModeEnum.Fullscreen`), using the installed Godot 4.7.2 .NET API. The latter requests a full-display, undecorated window. Wayland treats the two modes equivalently; actual native behavior on this machine remains for P5.
+
+`./tools/dev run` still builds and launches the main scene. `./tools/dev run --display-mode=fullscreen` and `./tools/dev run --display-mode=windowed-fullscreen` pass a validated user argument to Fish after Godot's `--` separator. Unsupported values fail before build. The current session uses the override without rewriting `user://preferences.cfg`; a deliberate panel change saves the new choice. That local file stores `display/mode` and `input/show_control_help` separately from future living-save data. A missing file uses fullscreen with help shown. Escape opens the panel; Resume, display selection, help toggle and Quit test session have pointer and keyboard focus controls. Focus loss pauses and releases the pointer; resumption requires fresh movement input. P7 owns the later complete input-mode selector.
+
+The recorded P0 foundation is present, but this checkout currently has unresolved documentation merge entries and entered P1 at root version `0.0.3` rather than the planned `0.1.0` baseline. The direct P1 implementation now carries its assigned `0.1.1` in root `package.json`. [P1 implementation evidence](tasks/p1/qualification/implementation.md) records that entry/reconciliation boundary. Do not infer a runner-compatible checkpoint chain from the package version alone.
 
 P1 also establishes verified local installation/preparation instructions for the four selected starter assets. Restricted vendor originals and converted resources remain in an ignored local location, with public-safe code, provenance and explicit missing-asset diagnostics. Actual paths, commands, input/display settings and accepted tuning are recorded during implementation. Observe the native game window for display/focus claims; editor preview and headless checks establish different results.
 
 ## Evidence status
 
-The [repository-bootstrap record](tasks/repository-bootstrap/qualification.md) covers docs/runner checks only. P0 creates its actual configuration/build evidence under `docs/tasks/p0/qualification/` and its final `closeout.md` after execution. Neither exists as a passing runtime record in this starter.
+The [repository-bootstrap record](tasks/repository-bootstrap/qualification.md) covers docs/runner checks only. P0's [implementation](tasks/p0/qualification/implementation.md), [native playtest](tasks/p0/qualification/native-playtest.md), and [closeout](tasks/p0/closeout.md) qualify only the development foundation on this Linux desktop.
 
-Record Linux results only when observed on the selected revision. Windows/macOS behavior, exports, final water rendering, full swimming feel, save persistence and gameplay remain unqualified until their own Gates pass.
+Windows/macOS behavior, exports, final water rendering, full swimming feel, save persistence and survival gameplay remain unqualified until their own Gates pass.

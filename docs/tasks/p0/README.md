@@ -1,6 +1,6 @@
 # P0 — Godot and MCP foundation
 
-**State: assessed, planned and authored; NOT EXECUTED.** No Fish Godot project, editor connection or native gameplay is qualified by this stack's existence.
+**State: directly executed and closed out on Linux/X11.** [Implementation evidence](qualification/implementation.md), [native playtest](qualification/native-playtest.md), and [closeout](closeout.md) record what passed. This was not a phase-runner execution.
 
 ## Scope
 
@@ -14,11 +14,11 @@ Prepared root `package.json` baseline: **`0.0.0`**. Inspect the actual checkout 
 
 | Order | Prompt | Assigned version | Execution state |
 | --- | --- | --- | --- |
-| P1 | [Godot 3D bootstrap](P1-godot-3d-bootstrap.txt) | `0.0.1` | NOT EXECUTED; T1 project/CLI checks. |
-| P2 | [Godot MCP integration](P2-godot-mcp-integration.txt) | `0.0.2` | NOT EXECUTED; T1 configuration/installation checks. |
-| P3 | [Native foundation closeout](P3-native-foundation-closeout.txt) | `0.0.3` | NOT EXECUTED; T3 native/manual handoff. |
+| P1 | [Godot 3D bootstrap](P1-godot-3d-bootstrap.txt) | `0.0.1` | PASS; T1 project/CLI checks. |
+| P2 | [Godot MCP integration](P2-godot-mcp-integration.txt) | `0.0.2` | PASS; T1 configuration/installation checks. |
+| P3 | [Native foundation closeout](P3-native-foundation-closeout.txt) | `0.0.3` | PASS; T3 native observation and closeout. |
 
-P3 is the sole final closeout. Its exact `- Browser required: yes.` metadata causes a manual handoff even with `--closeout`. This means native Godot/MCP evidence, not browser gameplay.
+P3 is the sole final closeout. Its exact `- Browser required: yes.` metadata denotes a manual/native evidence boundary in runner mode. Direct execution fulfilled that boundary with the real editor, MCP and rendered game.
 
 ## Execution
 
@@ -28,20 +28,20 @@ Read [assessment](prompt-assessment.md) and [implementation plan](implementation
 npm run fish:phase:validate -- p0
 ```
 
-The requested runner workflow is:
+The authored runner invocation for P0 was deliberately not used; P0 was executed directly in this interactive session:
 
 ```bash
 npm run fish:phase -- p0
 ```
 
-It executes pending P1/P2 work with its normal configuration, retry and checkpoint rules, then pauses for the native P3 closeout. A direct interactive Codex session can instead execute the same briefs in order under explicit owner instruction. Do not launch a recursive runner from an already running task or fabricate runner checkpoint commits for direct execution.
+No recursive runner was launched and no runner checkpoint history was fabricated. The resulting changes remain reviewable in the working tree.
 
-P2 may require a Codex client reload to expose the new local MCP tools. Record completed configuration, actual checks, and the exact P3 continuation action. P2 completion is configuration success; live G0.2/G0.3 results remain unobserved until P3.
+The current app session's loaded MCP tools still point to the existing global connection. Reload/open Codex from this trusted Fish project to expose the local 19080 configuration in the app. P3's live Gate evidence was obtained through the same installed MCP server's direct client, connected to the Fish editor and verified before mutation.
 
-## Evidence to create during execution
+## Execution evidence
 
-Use `qualification/implementation.md` for P1/P2 commands, source identity, environment/configuration observations and limitations. Use `qualification/native-playtest.md` for P3's actual editor/MCP/game input and capture evidence. Create `closeout.md` for the final criterion mapping and disposition. These reports are not prefilled in the starter.
+The reports are [implementation](qualification/implementation.md), [native playtest](qualification/native-playtest.md), and [closeout](closeout.md).
 
-After each task's required checks pass, set only its assigned root package version. A failed fresh task retains the previous checkpoint. Continue partial work without discarding it or falsely advancing metadata. The runner owns implementation checkpoint commits; direct execution and native closeout leave changes reviewable under the workflow.
+The assigned checkpoint sequence reached root package version `0.0.3` after the passing closeout. This is development metadata, not a game release.
 
-At P3, reconcile only evidence-supported P0 Gates, setup docs, module map and BOOT. Later Phases stay NOT STARTED. If a native tool, editor, client reload or dependency prevents a required observation, record that exact gap and preserve the work; do not promote a headless/configuration result to native qualification.
+Later gameplay Phases stay NOT STARTED. The direct live evidence supports G0.1–G0.3; the MCP output ring's `output_pending` behavior remains a documented limitation, with editor process output checked separately.

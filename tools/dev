@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
+PROJECT="$ROOT/game"
+LOGS="$ROOT/artifacts/logs"
+mkdir -p "$LOGS"
+
+# This ignored file is a trusted local shell file. GODOT_CMD remains an argument array.
+if [[ -f "$ROOT/tools/local.env" ]]; then source "$ROOT/tools/local.env"; fi
+if [[ ! ${GODOT_CMD+x} ]]; then GODOT_CMD=("${GODOT_BIN:-godot}"); fi
+DOTNET_BIN=${DOTNET_BIN:-dotnet}
+if [[ $DOTNET_BIN == */* ]]; then
+  export DOTNET_ROOT="$(dirname -- "$DOTNET_BIN")"
+  export PATH="$DOTNET_ROOT:$PATH"
+fi
+if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
+
+usage() {
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|inspect-scene <path>|automation-smoke'
+}
+need_tools() {
+  command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
+  command -v "$DOTNET_BIN" >/dev/null || { echo "Missing .NET SDK executable: $DOTNET_BIN" >&2; exit 2; }
+}
+logged() {
+  local name=$1 limit=$2; shift 2
+  local log="$LOGS/$name.log" status=0
+  timeout --signal=TERM --kill-after=5s "${limit}s" "$@" >"$log" 2>&1 || status=$?
+  cat "$log"
+  if (( status != 0 )); then echo "$name failed (exit $status; $log)" >&2; return 1; fi
+  if grep -E '(^ERROR:|SCRIPT ERROR:|Failed to load|Cannot load|Could not resolve script|FISH_SMOKE_FAILED|SCENE_TOOL_FAILED)' "$log" >&2; then
+    echo "$name reported engine errors ($log)" >&2; return 1
+  fi
+}
+do_import() { logged import 120 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --import; }
+do_build() { (cd "$PROJECT" && logged build 180 "$DOTNET_BIN" build Fish.csproj --nologo); }
+smoke() {
+  logged smoke 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" -- --smoke
+  grep -Fq 'FISH_SMOKE_OK main scene and C# scripts executed' "$LOGS/smoke.log" || { echo 'C# smoke marker missing' >&2; return 1; }
+}
+scene_tool() { local label=$1; shift; logged "$label" 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- "$@"; }
+missing_scene_check() {
+  local log="$LOGS/missing-scene.log" status=0
+  timeout --signal=TERM --kill-after=5s 30s "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- inspect res://scenes/does-not-exist.tscn >"$log" 2>&1 || status=$?
+  if (( status != 1 )) || ! grep -Fq 'SCENE_TOOL_FAILED scene does not exist:' "$log"; then cat "$log" >&2; echo 'Missing-scene negative check failed' >&2; return 1; fi
+  echo 'Expected missing-scene failure confirmed'
+}
+case "${1:-help}" in
+  doctor)
+    need_tools
+    version=$("${GODOT_CMD[@]}" --version)
+    echo "Godot: $version (${GODOT_CMD[*]})"
+    [[ $version == *mono* ]] || { echo 'Godot executable lacks .NET support' >&2; exit 2; }
+    echo "dotnet: $DOTNET_BIN; selected SDK: $(cd "$PROJECT" && "$DOTNET_BIN" --version)"
+    echo "Project: $PROJECT; bridge: ${GODOT_MCP_BRIDGE_URL:-unset}; display: ${DISPLAY:-unset}; Wayland: ${WAYLAND_DISPLAY:-unset}"
+    for required in project.godot Fish.csproj global.json scenes/main.tscn; do
+      [[ -f "$PROJECT/$required" ]] || { echo "Fish project file missing: $PROJECT/$required" >&2; exit 2; }
+    done
+    echo 'Fish project files: ready (project, C# target, SDK pin, main scene)'
+    if [[ -f "$PROJECT/addons/godot_mcp/plugin.cfg" ]]; then
+      echo "MCP addon: $(sed -n 's/^version="\(.*\)"/\1/p' "$PROJECT/addons/godot_mcp/plugin.cfg")"
+    fi
+    ;;
+  import) need_tools; do_import ;;
+  build) need_tools; do_build ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check ;;
+  editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
+  run)
+    display_arg=()
+    if (( $# > 2 )); then usage >&2; exit 2; fi
+    if (( $# == 2 )); then
+      case "$2" in
+        --display-mode=fullscreen|--display-mode=windowed-fullscreen) display_arg=(-- "$2") ;;
+        *) usage >&2; echo "Unsupported display mode option: $2" >&2; exit 2 ;;
+      esac
+    fi
+    need_tools
+    do_build
+    exec "${GODOT_CMD[@]}" --path "$PROJECT" "${display_arg[@]}"
+    ;;
+  inspect-scene)
+    need_tools
+    [[ -n ${2:-} ]] || { usage >&2; exit 2; }
+    path=$2
+    if [[ $path == "$PROJECT/"* ]]; then path="res://${path#"$PROJECT/"}";
+    elif [[ $path != res://* ]]; then path="res://${path#game/}"; fi
+    scene_tool inspect-scene inspect "$path"
+    ;;
+  automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
+  help|-h|--help) usage ;;
+  *) usage >&2; exit 2 ;;
+esac

@@ -10,7 +10,7 @@ Use the routing table below to read only the relevant documents and source. Docu
 
 Fish is a planned 3D fish survival game: hatchling to large fish, primarily third person, with an optional first-person view. A living fish persists across play sessions; death permanently ends that life. A brief account of actual life events is retained in the main-menu Life History archive.
 
-The starter contains documentation and a Node.js development phase runner. The Godot project and developer CLI are the next task, not existing features. Follow the Godot 4 .NET/C# and Godot Editor MCP direction in [technical direction](docs/technical-direction.md). [Development setup](docs/development.md) owns exact reference pins, local configuration, command availability, and platform evidence.
+The repository contains documentation, a Node.js development phase runner, and the completed P0 Godot .NET/C# foundation. Follow the Godot Editor MCP direction in [technical direction](docs/technical-direction.md). [Development setup](docs/development.md) owns exact pins, local configuration, command availability, and platform evidence; [P0 closeout](docs/tasks/p0/closeout.md) owns the foundation qualification.
 
 | Need | Existing command from the repository root |
 | --- | --- |
@@ -18,7 +18,11 @@ The starter contains documentation and a Node.js development phase runner. The G
 | Execute an explicitly selected task stack | `npm run fish:phase -- <folder>` |
 | Check runner behavior and prompt grammar | `npm run test:runner` |
 
+<<<<<<< Updated upstream
 The authored stacks are [p0 foundation](docs/tasks/p0/README.md) and [p1 core swimming](docs/tasks/p1/README.md). P1 execution requires actual P0 readiness and its documented Phase-entry baseline; authoring is not execution. Node.js 24 is required; no npm dependencies or install step are needed. `tools/dev` commands are planned in p0 and become available only after that implementation. Check the actual files before invoking them.
+=======
+The first stack `p0` was directly executed. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` now provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and `automation-smoke`.
+>>>>>>> Stashed changes
 
 ## Documentation routing
 

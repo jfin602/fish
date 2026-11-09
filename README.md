@@ -6,7 +6,11 @@ Play primarily in third person, with an optional first-person view. Continue the
 
 ## Current state
 
+<<<<<<< Updated upstream
 This published starter includes documentation, the ported Space Factory phase runner, and authored Godot/MCP foundation and core-swimming stacks. It has no Godot project or developer CLI yet. The owner's reported local tech demo has not been inspected by this documentation work.
+=======
+P0's development foundation is implemented: a small runnable 3D Godot .NET scene, a C# placeholder fish with prototype movement, a developer CLI, and an isolated Godot Editor MCP setup. The [P0 closeout](docs/tasks/p0/closeout.md) qualifies this foundation on Linux/X11. Survival gameplay, saves, death and Life History remain planned.
+>>>>>>> Stashed changes
 
 The chosen technical direction is Godot 4 .NET with C# and Godot Editor MCP, following Space Factory's development approach and adapting the game to 3D. Exact reference versions and the limits of their verification are in [development setup](docs/development.md).
 
@@ -33,13 +37,15 @@ npm run fish:phase:validate -- p1
 npm run test:runner
 ```
 
-When ready to execute the authored stack with a locally installed and authenticated Codex CLI:
+The P0 stack has already been executed directly. The phase runner remains available for future task stacks with a locally installed and authenticated Codex CLI:
 
 ```bash
-npm run fish:phase -- p0
+npm run fish:phase -- <future-stack>
 ```
 
-P0 prepares the Godot 3D project, integrates the editor MCP, and ends with a required native closeout. The runner pauses for prompts marked as requiring visible/manual observation. See [the runner guide](docs/phase-runner.md) for exact behavior, versions, checkpoints, and resume rules. `tools/dev` is created by p0; it is not present in this starter.
+P0 was executed directly in an interactive session; no recursive runner or runner checkpoint commits were made. The runner remains available for later stacks. See [the runner guide](docs/phase-runner.md) for exact behavior, versions, checkpoints and resume rules.
+
+Open the Fish editor with `./tools/dev editor` or build and run the prototype with `./tools/dev run`. Run `./tools/dev doctor` to inspect local tool readiness and `./tools/dev check` for the bounded import/build/C# scene and save/reload checks. The CLI works from any working directory.
 
 P1 is assessed and authored to settle both desktop swimming modes using the four starter assets, fullscreen and windowed fullscreen. Its [entry procedure](docs/tasks/p1/manual/entry-and-resume.md) requires actual P0 completion and a deliberate `0.1.0` baseline before `npm run fish:phase -- p1`. Authoring leaves the current root version unchanged. P1 includes native/manual checks and actual owner acceptance of the dynamics.
 
@@ -51,7 +57,7 @@ P1 is assessed and authored to settle both desktop swimming modes using the four
 | `docs/` | Product contracts, workflow, roadmap, setup, validation, and decisions. |
 | `docs/planning/`, `docs/tasks/` | Scoped designs, executable prompts, and source-bound evidence. |
 | `scripts/`, `test/unit/`, `package.json` | Development phase runner and its tests/checkpoint metadata. |
-| `game/`, `tools/` | Planned Godot project and developer CLI, created during p0. |
+| `game/`, `tools/` | Implemented Godot .NET foundation and developer CLI. |
 | `known-issues.md`, `feature-ideas.md` | Observed defects and proposed additions. |
 | `artifacts/`, `.codex-runs/` | Ignored generated outputs when tools run. |
 
