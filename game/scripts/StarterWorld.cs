@@ -16,37 +16,85 @@ public static class StarterWorld
         ("Coast Sand 01 roughness", Base + "coast_sand_01/coast_sand_01_Rough_2k.jpg"),
         ("Heliopora coral", Base + "heliopora-coerulea.glb"),
     ];
+    private static readonly string[] RockDependencies =
+    [
+        Base + "rock_face_01/rock_face_01.bin",
+        Base + "rock_face_01/textures/rock_face_01_arm_2k.jpg",
+        Base + "rock_face_01/textures/rock_face_01_diff_2k.jpg",
+        Base + "rock_face_01/textures/rock_face_01_nor_gl_2k.jpg",
+    ];
 
     public static bool TryPopulate(Node3D main, FishController fish, out string diagnostic)
     {
-        foreach (var (item, path) in Required)
+        foreach (var path in RockDependencies)
         {
-            if (FileAccess.FileExists(path) && ResourceLoader.Exists(path)) continue;
-            diagnostic = $"FISH_ASSET_MISSING item={item} path={path} action=prepare-source-under-game/assets/vendor-local";
+            if (!FileAccess.FileExists(path))
+            {
+                diagnostic = $"FISH_ASSET_MISSING item=Rock-Face-01-dependency path={path} action=copy-complete-gltf-working-set";
+                return false;
+            }
+            if (!path.EndsWith(".jpg", StringComparison.Ordinal)) continue;
+            if (ResourceLoader.Exists(path) && ResourceLoader.Load<Texture2D>(path) is not null) continue;
+            diagnostic = $"FISH_ASSET_INVALID item=Rock-Face-01-dependency path={path} action=run-tools-dev-import";
             return false;
         }
-
-        var playerScene = ResourceLoader.Load<PackedScene>(Required[0].Path);
-        var rockScene = ResourceLoader.Load<PackedScene>(Required[1].Path);
-        var coralScene = ResourceLoader.Load<PackedScene>(Required[5].Path);
-        var diffuse = ResourceLoader.Load<Texture2D>(Required[2].Path);
-        var normal = ResourceLoader.Load<Texture2D>(Required[3].Path);
-        var roughness = ResourceLoader.Load<Texture2D>(Required[4].Path);
-        if (playerScene is null || rockScene is null || coralScene is null ||
-            diffuse is null || normal is null || roughness is null)
-        {
-            diagnostic = "FISH_ASSET_INVALID action=reimport-starter-files-and-check-dependencies";
-            return false;
-        }
+        if (!TryLoad(0, out PackedScene playerScene, out diagnostic)) return false;
+        if (!TryLoad(1, out PackedScene rockScene, out diagnostic)) return false;
+        if (!TryLoad(2, out Texture2D diffuse, out diagnostic)) return false;
+        if (!TryLoad(3, out Texture2D normal, out diagnostic)) return false;
+        if (!TryLoad(4, out Texture2D roughness, out diagnostic)) return false;
+        if (!TryLoad(5, out PackedScene coralScene, out diagnostic)) return false;
 
         var playerVisual = playerScene.Instantiate<Node3D>();
         var playerSkeleton = playerVisual.GetNodeOrNull<Skeleton3D>("Armature/Skeleton3D");
+        var playerMesh = playerVisual.GetNodeOrNull<MeshInstance3D>("Armature/Skeleton3D/ClownFish");
         var playerAnimation = playerVisual.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
-        if (playerSkeleton is null || playerSkeleton.GetBoneCount() == 0 ||
+        if (playerSkeleton is null || playerSkeleton.GetBoneCount() < 8 ||
+            playerMesh?.Mesh is null || playerMesh.Skin is null || playerMesh.Skin.GetBindCount() < 6 ||
+            playerMesh.Mesh.GetSurfaceCount() < 3 ||
             playerAnimation is null || !playerAnimation.HasAnimation("Armature|Swim"))
         {
             playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-FBX-skeleton-and-swim-import";
+            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-FBX-mesh-skin-and-swim-import";
+            return false;
+        }
+        var swimClip = playerAnimation.GetAnimation("Armature|Swim");
+        if (swimClip is null || swimClip.GetTrackCount() == 0 || swimClip.Length <= 0)
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-swim-clip";
+            return false;
+        }
+        for (var track = 0; track < swimClip.GetTrackCount(); track++)
+        {
+            if (swimClip.TrackGetType(track) == Animation.TrackType.Rotation3D) continue;
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=remove-imported-translation-or-scale-track";
+            return false;
+        }
+        if (!HasMaterialSurfaces(playerMesh.Mesh, 3))
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-imported-body-stripes-outline-materials";
+            return false;
+        }
+        if (!HasPreparedStaticMaterial(rockScene, "rock_face_01", true, true, true))
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Rock-Face-01 action=check-gltf-binary-and-texture-dependencies";
+            return false;
+        }
+        if (!HasPreparedStaticMaterial(coralScene, "Mesh", true, true, false))
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Heliopora-coral action=check-GLB-mesh-and-material";
+            return false;
+        }
+        if (!IsTwoKilopixelTexture(diffuse) || !IsTwoKilopixelTexture(normal) ||
+            !IsTwoKilopixelTexture(roughness))
+        {
+            playerVisual.Free();
+            diagnostic = "FISH_ASSET_INVALID item=Coast-Sand-01 action=check-2K-diffuse-normal-roughness-maps";
             return false;
         }
 
@@ -100,6 +148,48 @@ public static class StarterWorld
         GD.Print("FISH_STARTER_WORLD_READY player=Fish3 ambient=7 rocks=2 coral=2 sand=1");
         return true;
     }
+
+    private static bool TryLoad<T>(int index, out T resource, out string diagnostic) where T : Resource
+    {
+        resource = null!;
+        var (item, path) = Required[index];
+        if (!FileAccess.FileExists(path))
+        {
+            diagnostic = $"FISH_ASSET_MISSING item={item} path={path} action=prepare-source-under-game/assets/vendor-local";
+            return false;
+        }
+        if (!ResourceLoader.Exists(path) || (resource = ResourceLoader.Load<T>(path)) is null)
+        {
+            diagnostic = $"FISH_ASSET_INVALID item={item} path={path} action=run-tools-dev-import-and-check-dependencies";
+            return false;
+        }
+        diagnostic = "";
+        return true;
+    }
+
+    private static bool HasMaterialSurfaces(Mesh mesh, int minimumSurfaces)
+    {
+        if (mesh.GetSurfaceCount() < minimumSurfaces) return false;
+        for (var i = 0; i < mesh.GetSurfaceCount(); i++)
+            if (mesh.SurfaceGetMaterial(i) is not BaseMaterial3D) return false;
+        return true;
+    }
+
+    private static bool HasPreparedStaticMaterial(PackedScene scene, string meshPath,
+        bool albedo, bool normal, bool roughness)
+    {
+        var root = scene.Instantiate<Node3D>();
+        var mesh = root.GetNodeOrNull<MeshInstance3D>(meshPath)?.Mesh;
+        var material = mesh?.GetSurfaceCount() > 0 ? mesh.SurfaceGetMaterial(0) as BaseMaterial3D : null;
+        var valid = material is not null && (!albedo || material.AlbedoTexture is not null) &&
+            (!normal || material.NormalTexture is not null) &&
+            (!roughness || material.RoughnessTexture is not null);
+        root.Free();
+        return valid;
+    }
+
+    private static bool IsTwoKilopixelTexture(Texture2D texture) =>
+        texture.GetWidth() == 2048 && texture.GetHeight() == 2048;
 
     private static void AddScene(Node3D parent, PackedScene scene, string name, Vector3 position, float scale)
     {
