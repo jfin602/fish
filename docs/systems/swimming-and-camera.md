@@ -10,7 +10,9 @@ The owner requested a [ten-question swim controls worksheet](../planning/p1/swim
 
 ## Working prototype
 
-Use a compact 3D habitat with clear depth cues, a visible fish body, and a camera that leaves enough space to read nearby threats. Direct swimming, controlled turning, vertical movement, and a short burst of speed are the proposed initial actions. Exact keyboard, mouse, and controller mappings remain task-level choices.
+Use a compact 3D habitat with clear depth cues, a visible fish body, and a camera that leaves enough space to read nearby threats. The owner's selected initial focus is normal swimming, curved turning, vertical movement, and slowing. The [worksheet](../planning/p1/swim-controls-worksheet.md) records the device and control choices; exact bindings and tuning remain to be settled.
+
+On 2026-11-09, the owner selected **[Movement abilities](../planning/p1/movement-abilities.md)** as the next implementation focus once the core is locked down: short speed burst, precision mode, and quick evasive turn. These follow the core controls work.
 
 Swimming should be responsive while still conveying a moving body. The first prototype should establish how the player aims, changes depth, turns around cover, and stops or slows. Detailed hydrodynamics, currents, advanced animation, and multiple locomotion styles are later possibilities.
 
@@ -29,7 +31,7 @@ Third-person collision avoidance should keep the fish readable near rocks and pl
 
 Movement and camera tests must include threats above and below the player, close cover, a tight turn, and pursuing prey near a boundary. Audio, screen-edge indicators, and predator posture are possible aids. Their exact design is open; the target is an understandable opportunity to react.
 
-Any burst must have a clearly observable availability and effect. If stamina or cooldown is selected, its authoritative state persists through view changes and saves. Numeric costs, recovery speed, and whether burst helps both escape and pursuit remain tuning choices.
+For the later Movement abilities work, any burst must have a clearly observable availability and effect. If stamina or cooldown is selected, its authoritative state persists through view changes and saves. Numeric costs, recovery speed, and whether burst helps both escape and pursuit remain tuning choices.
 
 ## Acceptance targets
 

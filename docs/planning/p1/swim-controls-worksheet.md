@@ -2,9 +2,9 @@
 
 **Created:** 2026-11-09  
 **Last updated:** 2026-11-09  
-**Status:** In progress; Q01–Q07 answered for the initial scope; free look deferred.  
-**Answers recorded:** 7 of 10 (7 answered).  
-**Next question:** Q08 — Extra movement actions.
+**Status:** In progress; Q01–Q08 answered for the initial scope; free look deferred; Movement abilities follow core lock.  
+**Answers recorded:** 8 of 10 (8 answered).  
+**Next question:** Q09 — Body movement and camera stability.
 
 ## Purpose and scope
 
@@ -127,11 +127,16 @@ Consider fish size on screen, distance, height, visibility ahead, zoom, and how 
 
 Q05 already selects backward keyboard input to slow the fish. Possible additional actions include a short speed burst, a slow precision mode, or a quick evasive turn; the mouse-mode slowing input also remains open. Keeping the selected ordinary swimming controls is an option. Describe the intended feel and preferred input; stamina costs, survival balance, and resource systems can remain open.
 
-- **Status:** Unanswered.
-- **Recorded:** —
-- **Owner answer:** _Not answered yet._
-- **Decision notes:** _None recorded._
-- **Open details:** _None recorded._
+- **Status:** Answered.
+- **Recorded:** 2026-11-09.
+- **Owner answer:**
+
+  > Keep the current controls for now: Focus entirely on making normal swimming, turning, and slowing feel right.
+  >
+  > Then save the 3 suggestions and the next things to implement once we lock the core down. We'll call it movement abilities
+
+- **Decision notes:** Keep the current controls and focus on normal swimming, turning, and slowing until the core is locked down. The owner selected the three suggestions as the next implementation focus after that point, grouped under **Movement abilities**: a short speed burst, a precision mode, and a quick evasive turn. The follow-up is recorded in [Movement abilities](movement-abilities.md).
+- **Open details:** Ability implementation order, exact behavior, inputs, tuning, and any costs or cooldowns remain open for that follow-up. The core's mouse-mode slowing input is still a binding/design detail; it is not an additional movement ability.
 
 ## Q09 — Body movement and camera stability
 

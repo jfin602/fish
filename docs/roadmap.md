@@ -55,13 +55,15 @@ These Gates qualify the development foundation only. Final swimming feel, food-c
 
 **Status: NOT STARTED.** Scenarios V01–V02.
 
+**Owner-selected sequence — 2026-11-09:** first lock down the core controls using the [swim worksheet](planning/p1/swim-controls-worksheet.md) and actual playtesting. **[Movement abilities](planning/p1/movement-abilities.md)** is the next implementation focus after that core is accepted. The linked plan owns the three selected follow-ups and their remaining design choices.
+
 ### G1.1 — Swimming and physical space
 
 **Result: NOT OBSERVED.**
 
 - Adopt and document a bounded 3D control scheme; movement/turning feel responsive in actual play.
 - Horizontal/vertical travel, collision and shelter geometry behave coherently, including repeated input and boundary cases.
-- Rendering/view changes do not alter equivalent movement/time outcomes. Any burst/stamina mechanism is a documented scoped choice.
+- Rendering/view changes do not alter equivalent movement/time outcomes. Qualify the core controls before the Movement abilities follow-up.
 
 ### G1.2 — Third-person readability
 
