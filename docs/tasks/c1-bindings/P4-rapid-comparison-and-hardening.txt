@@ -1,0 +1,28 @@
+TASK: Correction 1 / P4 — Rapid comparison and hardening
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.1.9`.
+
+GOAL
+Enable efficient same-course comparison of user-created control profiles and harden the end-to-end saved bindings/input/pause/display lifecycle before the mandatory native handoff.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, c1-bindings README.md, implementation-plan.md P4 and actual P1–P3 evidence. Inspect relevant current ControlPreset store/resolver, FishController.cs, PlayShell.cs and scene-bound test entry points. Confirm correction checkpoints, version 0.1.9, unchanged SwimTuning, Fish project identity and local dirty changes.
+
+IMPLEMENT
+1. Add a **development-only** explicit quick-cycle control (for example F6 only in debug playtests, if not already bound) for moving among the three built-in and saved custom presets without reloading the scene. Include a brief active-preset label. If a shortcut conflicts with custom bindings, use a guarded alternative such as a selectable debug overlay instead of stealing gameplay controls. Retain normal pause-menu switching for all builds; no hidden retail shortcut.
+2. Ensure switching while moving keeps the fish identity, location, physical velocity, collision and camera intact. Reset only input-held/queued state and mouse capture, and rearm safely after release; never reset movement tuning or restart the trial. Offer a documented same-route comparison routine with explicit manual reset between trials rather than silently teleporting upon switching.
+3. Repeat targeted profile round-trip/restart checks; corrupted config recovery; missing/unbound/conflicting binding rejection; repeated mouse/keyboard/hybrid cycling; sensitivity/inversion changes; input while paused; mouse warps/focus loss; rebind capture and cancel; screen mode transitions and first frame after Resume. Prove source-bound motor result parity for equivalent intent and no duplicate physics step.
+4. Provide scoped JSON export/import for custom control presets ONLY if simple and safe within this prompt; use bounded schema/size/content checks, no arbitrary file writes, no overwriting built-ins. If it threatens the key outcome or exceeds the ordinary budget, record an explicit deferral, not a fake completed feature. No file/network sharing service.
+5. Update only affected current control documentation and display help for implemented behavior, retaining provisional P1 bindings and P10 final acceptance. Finish with reproducible candidate presets and a brief native test matrix for P5.
+
+SCOPE / DEFERRALS
+No further gameplay features, motor rebalancing, controller, ability actions, first person, survival saves, engine/renderer updates or general graphics-settings product. Do not silently repair unrelated BOOT/AGENTS/MODULES merge-marker blocks.
+
+VALIDATE
+T2. Inspect ./tools/dev check composition and execute the smallest real-scene and C# checks proving changes. Run git diff --check, review git diff status, preserve package.json 0.1.9 and keep untrusted/vendor assets out of staging. Add dated actual command/results and exact profile configurations to c1-bindings/qualification/implementation.md, labeling unobserved native behavior clearly.
+
+DONE / VERSION / HANDOFF
+Profiles can be switched repeatedly without trapped input or simulation reset; game window and stored settings recover; ordinary integration checks pass with honest gaps. P5 remains the native stop. No package version change, self-commit or push; runner owns checkpoint.
