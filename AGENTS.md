@@ -34,6 +34,7 @@ The authored first stack is `p0`. Node.js 24 is required; no npm dependencies or
 | Save/resume, pause, death, new lives | [Survival and runs](docs/systems/survival-and-runs.md) |
 | Life events, recounting, persistent archive | [Life stories and history](docs/systems/life-stories-and-history.md) |
 | Menus, HUD, onboarding, presentation | [UX](docs/ux-and-presentation.md), [tutorial](docs/tutorial.md) |
+| Ocean art, model sources, asset licenses and imports | [Art and assets](docs/art-and-assets.md) |
 | Acceptance and regressions | [Validation](docs/validation.md), relevant Gate and task evidence |
 | Defects and proposed enhancements | [Known issues](known-issues.md), [feature ideas](feature-ideas.md) |
 

@@ -6,7 +6,7 @@ This document organizes the Fish concept approved in the project discussion. [De
 
 ## Confirmed core
 
-- Control a fish in a 3D underwater environment, primarily in third person.
+- Control a fish in a realistic 3D ocean environment, primarily in third person.
 - Begin as a hatchling and survive long enough to grow into a large fish.
 - Find food and eat suitable smaller fish while avoiding being eaten.
 - Continue the same fish across multiple play sessions.
@@ -64,7 +64,7 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 ## First playable and integrated scope
 
-The first gameplay prototype uses one compact 3D habitat, one controllable fish, small food, one prey type, and one predator type. It should prove responsive swimming, a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities are prototype choices.
+The first gameplay prototype uses one compact 3D ocean habitat, one controllable fish, small food, one prey type, and one predator type. It should prove responsive swimming, a readable escape, visible growth, and a meaningful change in what the player can eat. [Art and assets](art-and-assets.md) owns the approved ocean asset shortlist and first import set. The selected test assets do not settle the final player species or require every shortlisted creature and environment asset to appear together. Specific content and quantities are prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 

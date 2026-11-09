@@ -11,6 +11,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Phase runner | Space Factory's Node.js runner ported as `fish:phase` and `fish:phase:validate`; package version starts at `0.0.0`. This is development metadata. |
 | Game and developer CLI | `game/` and `tools/dev` have not been created. No Fish game runtime exists yet. |
 | Engine direction | Godot 4 .NET/C#; reference pins and 3D renderer decision are in [technical direction](docs/technical-direction.md). |
+| Art and habitat | Realistic ocean creatures and environments selected; [art and assets](docs/art-and-assets.md) owns the nine-asset shortlist and four-asset starter set. Downloads, imports, and runtime suitability remain unverified. |
 | Godot Editor MCP | Required development integration, researched and specified; not installed or observed for Fish by this starter. |
 | Gameplay/platform evidence | None. Space Factory's Linux observations do not qualify Fish; no Fish platform has passed. |
 | Next task | Execute the authored [p0 Godot/MCP foundation stack](docs/tasks/p0/README.md). All game Phases remain NOT STARTED. |
@@ -20,7 +21,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 
 One fish's life is one run. The fish grows by feeding while avoiding predators, with third person as the primary perspective and first person as an optional view. Closing the game suspends the living run; death ends it permanently. Each dead life produces a short factual recounting retained under **Life History** in the main menu, independent of later runs.
 
-The [decision register](docs/decisions-and-questions.md) separates confirmed behavior from unsettled species, habitat, art, balance, and progression choices. Do not invent those choices as settled requirements.
+The [decision register](docs/decisions-and-questions.md) separates confirmed behavior and the realistic ocean direction from unsettled final player species, specific ocean biome, detailed presentation, balance, and progression choices. [Art and assets](docs/art-and-assets.md) records the approved sources and starter order. Do not treat selection as an asset import or a passed gameplay Gate.
 
 ## Next bounded scope
 

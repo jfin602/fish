@@ -22,7 +22,7 @@ Keep authoritative fish/run/ecology state separate from input adapters, camera t
 
 Introduce stable run and significant event IDs when their first owning systems are added. Growth, consumption, health changes, escapes, and death must have inspectable real causes. An event journal should capture meaningful occurrences, not every rendered frame. [The module map](../MODULES.md) describes intended responsibilities without requiring empty frameworks.
 
-Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry; species, final art, advanced water, world generation, and exact balance remain open.
+Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. Final player species, specific ocean biome, detailed material/water treatment, world generation, and exact balance remain open. Asset selection does not change the bootstrap renderer or expand p0's implementation boundary.
 
 ## Persistence and narrative boundaries
 

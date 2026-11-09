@@ -1,6 +1,6 @@
 # Decisions and open questions
 
-**Baseline date:** 2026-11-09. This register records the owner's Fish discussion and the repository initialization request. It is a design record, not implementation evidence.
+**Baseline date:** 2026-11-09. This register records the owner's Fish discussion, repository initialization request, and subsequent accepted design decisions. It is a design record, not implementation evidence.
 
 ## Provenance
 
@@ -11,6 +11,8 @@
 - **S5 — Development stack:** in the same request, the owner chose Godot and Godot MCP in the same manner as Space Factory and asked for a Codex prompt to create the Godot project after the documentation was set up. The port adopts the reference's Godot 4 .NET/C# direction; exact engine, SDK, and MCP installation details are owned by [development setup](development.md).
 
 - **S6 — Core controls and Movement abilities (2026-11-09):** in [worksheet Q08](planning/p1/swim-controls-worksheet.md#q08--extra-movement-actions), the owner chose to keep the current controls and first make normal swimming, turning, and slowing feel right. The owner selected the short speed burst, precision mode, and quick evasive turn as the next implementation focus once that core is locked down, named **Movement abilities**.
+
+- **S7 — Ocean art and asset selection (2026-11-09):** the owner requested free realistic fish models and surrounding scenery, chose "ocean creatures and environment" from the researched options, and then directed the assistant to lock the resulting shortlist into the repository docs. [Art and assets](art-and-assets.md) owns the nine approved sources, the four-asset first import set, and the preparation and licensing boundaries. This selects the art/sourcing direction; it does not claim acquisition, Godot import, or gameplay qualification.
 
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
@@ -33,6 +35,8 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C13 | The current work prepares the repository/docs and a Codex Godot setup prompt; gameplay completion is not claimed by the starter. | S5 |
 | C14 | Lock down core swimming, turning, and slowing before adding movement abilities. | S6 |
 | C15 | The next implementation focus after core lock is [Movement abilities](planning/p1/movement-abilities.md): short speed burst, precision mode, and quick evasive turn. | S6 |
+| C16 | Use realistic ocean creatures and environments as the initial habitat and visual direction, starting from free assets suitable for eventual commercial game use. | S7 |
+| C17 | Use the approved [ocean asset shortlist and starter order](art-and-assets.md): Emperor Angelfish, Rock Face 01, Coast Sand 01, and Soft Coral Set form the first art/import set; inspect Sea life next, with the other entries reserved for later expansion. | S7 |
 
 ## Working designs
 
@@ -56,7 +60,7 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 
 | ID | Decision | When it matters |
 | --- | --- | --- |
-| Q01 | Player species, freshwater or marine habitat, and visual identity. | Before committing to production content and art. |
+| Q01 | Final player species and specific ocean biome; the marine setting and realistic asset direction are confirmed by S7. | Before committing to production content and ecological composition. |
 | Q02 | Remaining control bindings and tuning, using the choices recorded in the [worksheet](planning/p1/swim-controls-worksheet.md); Movement abilities details remain open. | Core tuning first; ability details after core lock. |
 | Q03 | Growth model, edible-size rule, body/collision scaling, maximum size, and balancing rates. | Before qualifying the first feeding-to-growth loop. |
 | Q04 | Hunger, diet restrictions, injury recovery, attack damage, and additional death causes. | Before broad survival mechanics are implemented. |
@@ -65,7 +69,7 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 | Q07 | One or multiple living save slots, manual/automatic checkpoint policy, abandonment records, and supported recovery guarantees. | Before save/menu qualification. |
 | Q08 | Narrative length, fish naming, portraits, narration, filtering, sorting, and optional archive deletion. | Before the first polished history flow. |
 | Q09 | Cross-run discovery persistence, cosmetics, unlocks, or permanent stat progression. | Before implementing any carryover beyond saved stories. |
-| Q10 | Final art/audio style, performance budget, renderer choice, and platform qualification. | Bootstrap records its scoped choice; production decisions follow measured needs. |
+| Q10 | Detailed visual treatment, water effects, audio direction, performance budget, renderer choice, and platform qualification within the confirmed realistic ocean direction. | Bootstrap records its scoped choice; production decisions follow measured needs. |
 
 ## Keeping the register current
 

@@ -46,6 +46,6 @@ The recounting emphasizes actual turning points. A short life can have a short s
 
 The first playable work should prove a compact version of swimming, feeding, growth, and escaping. The first integrated survival slice must also prove continuing a life across sessions, permanent death, a factual recounting, and revisiting that story from the main menu.
 
-Exact species, habitat, visual style, procedural generation, number of simultaneous living saves, and cross-run unlocks remain open. Multiplayer, breeding, detailed biological simulation, and online services are not part of the initial scope.
+The owner selected realistic ocean creatures and environments on 2026-11-09. [Art and assets](art-and-assets.md) records the approved asset shortlist and first import set. The final player species, specific ocean biome, detailed water presentation, procedural generation, number of simultaneous living saves, and cross-run unlocks remain open. Multiplayer, breeding, detailed biological simulation, and online services are not part of the initial scope.
 
 Use [game design](game-design.md) for the connected loop, [system documents](README.md) for specific rules, and [the roadmap](roadmap.md) for sequencing and evidence.

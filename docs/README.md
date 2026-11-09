@@ -13,6 +13,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
 | [UX and presentation](ux-and-presentation.md) | Player entry points, feedback, menus, recap/history navigation. |
+| [Art and assets](art-and-assets.md) | Approved realistic ocean direction, asset shortlist, starter order, licenses and import checks. |
 | [Tutorial](tutorial.md) | Proposed first-life teaching sequence and readable early risks. |
 | [Technical direction](technical-direction.md) | Godot/C# architecture and development integration boundaries. |
 | [Development setup](development.md) | Reference pins, command availability, local setup and tool/platform verification. |

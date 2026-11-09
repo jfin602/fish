@@ -6,7 +6,7 @@ This document separates confirmed interface requirements from working presentati
 
 ## Confirmed perspective and continuity
 
-Third person is the main experience in a 3D underwater world. The player sees the same fish grow from hatchling to large fish. Optional first person offers another view of that life. Camera changes must not reset survival state or encounters.
+Third person is the main experience in a realistic 3D ocean world. The player sees the same fish grow from hatchling to large fish. Optional first person offers another view of that life. Camera changes must not reset survival state or encounters.
 
 A living fish can be continued across sessions. Death ends that life permanently. The main menu contains a history section for all completed fish stories, and death presents a brief recounting of the life that just ended.
 
@@ -26,7 +26,7 @@ These labels are working UI wording. Continue, New life, and Life History must r
 
 Prioritize the fish, nearby food, useful shelter, and threats. Size differences should be visually legible. If health, stamina, hunger, or growth meters are implemented, derive them from authoritative state and show information that helps the next decision.
 
-The working camera is slightly above and behind the fish, with useful visibility in the vertical direction. Plants, rocks, depth changes, and lighting can provide spatial cues. Art style, water effects, camera distance, fog, and exact HUD treatment are open choices.
+The camera follows the current decisions in [swimming and camera](systems/swimming-and-camera.md). Plants, rocks, depth changes, and lighting can provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the selected sources and preparation checks. Detailed water effects, fog, and exact HUD treatment remain open.
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 
