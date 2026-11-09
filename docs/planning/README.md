@@ -7,5 +7,6 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | Plan | State |
 | --- | --- |
 | [P0 — Godot/MCP foundation](p0/foundation.md) | Authored, unexecuted. |
+| [P1 — Swim controls worksheet](p1/swim-controls-worksheet.md) | Active owner discussion; follow the worksheet's next-question pointer. |
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md). Future phase folders should be added only when selected for real planning.

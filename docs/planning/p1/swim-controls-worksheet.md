@@ -1,0 +1,145 @@
+# Swim controls worksheet
+
+**Created:** 2026-11-09  
+**Last updated:** 2026-11-09  
+**Status:** Awaiting the first owner answer.  
+**Answers recorded:** 0 of 10.  
+**Next question:** Q01 — Desired swimming feel.
+
+## Purpose and scope
+
+The owner wants to settle fish controls and movement feel before developing the survival mechanics. This worksheet captures those choices through ten questions, discussed and saved one at a time.
+
+Third person is already the primary perspective; first person remains an optional view of the same fish. The questions focus on the primary swimming experience. Suggested examples below are possibilities to discuss, not selected defaults.
+
+The owner has played a tech demo. Record their observations as owner feedback; do not infer unobserved behavior or implementation from the published starter documentation.
+
+[Swimming and camera](../../systems/swimming-and-camera.md) owns the movement contract. This worksheet holds the discussion and answers for [P1](../../roadmap.md#p1--swim-through-a-habitat) and the controls decision Q02 in the [decision register](../../decisions-and-questions.md). An answer records design intent; implementation and native playtest evidence remain separate.
+
+## Working through the worksheet
+
+1. Ask the next question in conversation, with the optional examples when useful. The owner may answer freely, combine examples, or leave a detail open.
+2. Save each answer to this file before moving on. Preserve the owner's words under **Owner answer** and date the entry. Put interpretation under **Decision notes**, clearly identifying any proposed interpretation.
+3. Mark the question **Answered** when its main choice is clear, or **Partial** when a material choice remains open. Do not fill unanswered sections with assistant preferences. Record a deliberate deferral as **Deferred**.
+4. Update the answer count and next-question pointer. Count questions with saved owner responses; a partial or deferred answer is still a recorded response. Ask one question at a time, and do not ask again about details the owner has already supplied.
+5. Preserve dated revisions when an answer changes. Keep unresolved details visible. Once the answers define a coherent direction, reconcile the swimming contract and decision register from those answers; the roadmap continues to own implementation and qualification progress.
+
+## Q01 — Desired swimming feel
+
+**What should it feel like to control your fish, and what about the current demo would you keep or change to get there?**
+
+Optional starting points: quick and nimble; smooth and flowing with some weight; heavy and deliberate. Describe a mix or a reference game if that expresses it better. Include anything in the demo that already feels right.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q02 — Input device and comfort
+
+**Which input device should we design and tune the swimming controls for first?**
+
+Examples: keyboard and mouse; gamepad; both, with one named as the first playtest target. Include any essential preferences such as inverted look, sensitivity, hold versus toggle controls, or rebinding. Exact bindings can follow the movement choices.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q03 — Looking and steering
+
+**How should looking around relate to the direction your fish faces and swims?**
+
+Examples: the fish steers toward the view while swimming; looking and steering are independent; ordinary look steers the fish but a separate free-look action lets you inspect the surroundings. Consider looking behind or above while continuing along the same route.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q04 — Starting, coasting, and stopping
+
+**What should happen when you start swimming, release the movement input, and try to stop near something?**
+
+Describe ordinary movement: holding an input to propel the fish or setting a sustained speed; immediate or gradual acceleration; stopping promptly or coasting after release. Use approaching a small landmark as the example. Optional special actions are covered in Q08.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q05 — Turning and directional movement
+
+**How should left, right, and backward inputs move the fish?**
+
+Examples: turn its nose and swim in an arc; slide sideways while keeping its heading; swim backward; turn around to travel back the way it came. Describe the desired turning response at slow and fast speeds, including whether it can pivot while nearly still.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q06 — Swimming upward and downward
+
+**How would you like to control the fish's depth?**
+
+Examples: look or aim up and down, then swim in that direction; use dedicated rise and dive inputs; combine both. Picture reaching a point directly above or below and then returning to level swimming.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q07 — Third-person camera
+
+**Where should the third-person camera sit, and how should it follow you through turns and around nearby obstacles?**
+
+Consider fish size on screen, distance, height, visibility ahead, zoom, and how quickly the camera catches up. Describe a comfortable view while circling a rock or entering a narrow passage. Q03 owns whether looking changes swimming direction; this question owns framing and follow behavior.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q08 — Extra movement actions
+
+**Beyond ordinary swimming, which extra movement actions, if any, would make control more enjoyable?**
+
+Possibilities include a short speed burst, an active brake, a slow precision mode, or a quick evasive turn. Keeping only ordinary swimming is also an option. Describe the intended feel and preferred input; stamina costs, survival balance, and resource systems can remain open.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q09 — Body movement and camera stability
+
+**How much should the fish visibly bend, pitch, and bank as it swims, and how much of that motion should the camera follow?**
+
+Consider tail motion during effort and gliding, body lean during turns, and whether the camera keeps a stable horizon. Include any dislike of camera shake, bobbing, or rolling. Describe the desired sensation; detailed animation production can follow later.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._
+
+## Q10 — Ready-for-gameplay playtest
+
+**What should you be able to do comfortably in a playtest before we consider the swimming controls ready for the survival mechanics?**
+
+Examples: approach and stop near a landmark; weave between rocks; turn around predictably; reach a point above or below; pass through a gap; regain control cleanly after pausing; enjoy several minutes of free swimming. Identify the actions and feel that matter most to you, including any behavior that would still make the controls feel unfinished.
+
+- **Status:** Unanswered.
+- **Recorded:** —
+- **Owner answer:** _Not answered yet._
+- **Decision notes:** _None recorded._
+- **Open details:** _None recorded._

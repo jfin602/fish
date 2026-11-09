@@ -4,6 +4,10 @@
 
 **Planned; no implementation or native qualification.** The confirmed perspective is 3D with third person as the primary view and an optional first-person view for the same fish. This document owns player movement and camera behavior; [ecology and growth](ecology-and-growth.md) owns size and feeding, and [UX](../ux-and-presentation.md) owns visible feedback.
 
+## Controls discussion
+
+The owner requested a [ten-question swim controls worksheet](../planning/p1/swim-controls-worksheet.md) on 2026-11-09. Work through it one question at a time and save each answer there. It captures the desired movement feel before survival mechanics are developed; its examples remain proposals until answered. Reconcile the movement contract from the recorded choices while keeping implementation and native qualification distinct.
+
 ## Working prototype
 
 Use a compact 3D habitat with clear depth cues, a visible fish body, and a camera that leaves enough space to read nearby threats. Direct swimming, controlled turning, vertical movement, and a short burst of speed are the proposed initial actions. Exact keyboard, mouse, and controller mappings remain task-level choices.

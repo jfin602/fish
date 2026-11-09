@@ -14,6 +14,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Godot Editor MCP | Required development integration, researched and specified; not installed or observed for Fish by this starter. |
 | Gameplay/platform evidence | None. Space Factory's Linux observations do not qualify Fish; no Fish platform has passed. |
 | Next task | Execute the authored [p0 Godot/MCP foundation stack](docs/tasks/p0/README.md). All game Phases remain NOT STARTED. |
+| Active design discussion | Work through the [swim controls worksheet](docs/planning/p1/swim-controls-worksheet.md) one question at a time, saving each answer. Follow its current next-question pointer. |
 
 ## Product contract to preserve
 
