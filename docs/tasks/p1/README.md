@@ -1,6 +1,6 @@
 # P1 — Settle core swimming
 
-**State: P1–P6 implemented and checked by direct execution through root version `0.1.6`; P7 mouse mode and input lifecycle work is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md); the P6 motor and keyboard path have [headless source-bound checks](qualification/implementation.md#p6--shared-swim-motor-and-keyboard-fallback-direct-execution-2026-11-09). Final input modes, camera, body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
+**State: P1–P7 implemented and checked by direct execution through root version `0.1.7`; P8 follow camera is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md); P6 motor/keyboard and P7 mouse/input lifecycle have headless source-bound checks in [implementation evidence](qualification/implementation.md). Native two-mode comfort, camera, body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
 
 ## Scope and finish line
 
@@ -24,7 +24,7 @@ After actual P0 readiness is established, deliberately prepare the **`0.1.0`** b
 | P4 | [Ocean movement course](P4-ocean-movement-course.txt) | `0.1.4` | Saved course, four-source composition and T2 checks passed by direct execution; see implementation evidence. |
 | P5 | [Native display and assets](P5-native-display-and-assets.txt) | `0.1.5` | T3 native Linux/X11 checkpoint passed for the provisional shell and four assets by direct execution; [evidence and captures](qualification/native-display-and-assets.md). Coordinator checkpoint remains separate. |
 | P6 | [Swim motor and keyboard](P6-swim-motor-and-keyboard.txt) | `0.1.6` | T1 motor/keyboard and scene checks passed by direct execution; [evidence](qualification/implementation.md#p6--shared-swim-motor-and-keyboard-fallback-direct-execution-2026-11-09). Native feel remains P10. |
-| P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2; NOT EXECUTED. |
+| P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2 saved-scene input/mode/pause checks passed by direct execution; native comfort remains P10. |
 | P8 | [Follow camera](P8-follow-camera.txt) | `0.1.8` | T1; NOT EXECUTED. |
 | P9 | [Fish body motion](P9-fish-body-motion.txt) | `0.1.9` | T1; NOT EXECUTED. |
 | P10 | [Owner tuning and dynamics lock](P10-owner-tuning-and-dynamics-lock.txt) | `0.1.10` | T3; mandatory owner/native handoff and iterative acceptance. |

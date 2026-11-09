@@ -46,6 +46,12 @@ missing_scene_check() {
   if (( status != 1 )) || ! grep -Fq 'SCENE_TOOL_FAILED scene does not exist:' "$log"; then cat "$log" >&2; echo 'Missing-scene negative check failed' >&2; return 1; fi
   echo 'Expected missing-scene failure confirmed'
 }
+input_lifecycle_check() {
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/input-lifecycle.XXXXXX")
+  logged input-lifecycle 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/input_lifecycle_check.gd
+  grep -Fq 'INPUT_LIFECYCLE_OK' "$LOGS/input-lifecycle.log" || { echo 'Input lifecycle marker missing' >&2; return 1; }
+}
 case "${1:-help}" in
   doctor)
     need_tools
@@ -64,7 +70,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
