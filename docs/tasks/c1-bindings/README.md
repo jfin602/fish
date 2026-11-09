@@ -1,6 +1,6 @@
 # c1-bindings — Hybrid control presets and live rebinding
 
-**Status: authored correction, NOT EXECUTED.** This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
+**Status: P1 model/store implemented with a live binding-map conflict; P2–P5 not executed.** [P1 implementation evidence](qualification/implementation.md) records source, focused checks and the required Mouse Only mapping decision. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
 
 ## Goal and boundary
 

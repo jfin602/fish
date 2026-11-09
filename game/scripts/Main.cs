@@ -36,6 +36,12 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        if (OS.GetCmdlineUserArgs().Contains("--control-preset-check"))
+        {
+            try { ControlPresetChecks.Run(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"CONTROL_PRESET_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         var fish = GetNodeOrNull<FishController>("Fish");
         var camera = GetNodeOrNull<Camera3D>("Fish/CameraRig/Camera3D");
         var habitat = GetNodeOrNull<StaticBody3D>("Habitat/WestWall");

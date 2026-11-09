@@ -34,8 +34,8 @@ public partial class PlayShell : Node
         AddChild(canvas);
         _options = new Button
         {
-            Name = "OptionsButton", Text = "Options", FocusMode = Control.FocusModeEnum.All,
-            Visible = _preferences.InputMode == DisplayPreferences.KeyboardMode,
+            Name = "OptionsButton", Text = "Options (Middle)", FocusMode = Control.FocusModeEnum.All,
+            Visible = true,
             MouseFilter = Control.MouseFilterEnum.Stop
         };
         ApplyFocusStyle(_options);
@@ -177,7 +177,7 @@ public partial class PlayShell : Node
             GetViewport().SetInputAsHandled();
         }
         else if (@event is InputEventMouseButton button && button.Pressed &&
-                 button.ButtonIndex == MouseButton.Middle &&
+                 (int)button.ButtonIndex == ControlPreset.RecoveryMouseButton &&
                  _preferences.InputMode == DisplayPreferences.MouseMode)
         {
             if (!_overlay.Visible) Pause();
@@ -208,7 +208,7 @@ public partial class PlayShell : Node
         GetViewport().SetInputAsHandled();
         _fish.ClearAndDisarmInput();
         _overlay.Visible = false;
-        _options.Visible = _preferences.InputMode == DisplayPreferences.KeyboardMode;
+        _options.Visible = true;
         GetTree().Paused = false;
         Input.MouseMode = _preferences.InputMode == DisplayPreferences.MouseMode
             ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
@@ -223,8 +223,8 @@ public partial class PlayShell : Node
         // CanvasLayer is not a Control parent, so the overlay needs an explicit viewport size.
         _overlay.Position = Vector2.Zero;
         _overlay.Size = viewport;
-        _options.Position = new Vector2(Mathf.Max(0, viewport.X - 112), 12);
-        _options.Size = new Vector2(96, 34);
+        _options.Position = new Vector2(Mathf.Max(0, viewport.X - 164), 12);
+        _options.Size = new Vector2(148, 34);
         _panel.CustomMinimumSize = new Vector2(Mathf.Min(480, Mathf.Max(240, viewport.X - 32)), 0);
         UpdateHelp();
     }
