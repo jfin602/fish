@@ -20,3 +20,19 @@ The same atmosphere owns a simple shader sky with a bright sun cue. Both shaders
 | `git diff --check`, `git status --short`, version/renderer and payload search | Whitespace check passed; only the listed source, shaders with Godot UID sidecars, module map and this evidence file are changed. Tracked renderer remains `forward_plus`, root version remains `0.2.6`, and no package lock or vendor payload appeared. |
 
 Native visual quality, actual shader appearance, motion feel and performance are **NOT OBSERVED** here. P4 retains the real-window and owner checkpoint. P2 Gate status is unchanged.
+
+## Correction 2 P2 — organic caustics
+
+Date: 2026-11-10. Pre-task checkout: clean `main` at `f75a1d8c3597fb7e520e961473e6f33b959fc09c`; root version `0.2.6` and saved Forward+ renderer. Changes remain uncommitted for the phase runner.
+
+The production `MakeCausticTexture()` no longer combines periodic sine lattices. It generates a deterministic 256² texture once per atmosphere initialization from jittered cellular sites, a rotated and warped sample field, the nearest/second-nearest distance ridge, low-frequency gap modulation, and per-cell brightness. One decal still owns the projection. Its 100 × 24 × 100 m volume covers the 84 m habitat after a small off-axis rotation and bounded sub-metre drift; the focused check transforms reef anchors into decal-local coordinates. Emission energy is reduced from 0.45 to 0.32. Drift remains a presentation-only `_Process` update, frozen by tree pause and the atmosphere toggle. No seabed material, collision, fish, camera, tuning, or project setting changed.
+
+| Command/check | Result |
+| --- | --- |
+| `./tools/dev doctor` | Fish project, Godot 4.7.2 .NET, .NET 10.0.403 and MCP addon 2026.11.04 confirmed. MCP health reported no connected editor peer and a local bridge bind error, so no editor mutation was attempted. |
+| `env XDG_DATA_HOME=/tmp/fish-c2-data XDG_CONFIG_HOME=/tmp/fish-c2-config ./tools/dev import` | **Blocked** by sandbox denial of local sockets used by the Godot .NET editor and MCP addon. The command exited 1 after engine socket errors; import success is not claimed. |
+| `./tools/dev build` | Final build passed with zero warnings/errors. The initial focused check exposed that rotation was set only by the first process tick; the decal now has the intended initial rotation before play. |
+| `env XDG_DATA_HOME=/tmp/fish-c2-data XDG_CONFIG_HOME=/tmp/fish-c2-config ./tools/dev inspect-atmosphere` | Final `ATMOSPHERE_CHECK_OK` and `ATMOSPHERE_MOVEMENT_OK`. Checks verify one bounded rotated projection, finite energy/drift, generated texture with lit/dark samples, identical texture bytes across two scene instances, transformed rock/coral bounds, pause/toggle freezing and resumption, and equal 30-step fish routes with effects on/off. The missing optional screen shader warning is the expected negative case. |
+| `git diff --check`, status, version/renderer and source review | Whitespace check passed. `package.json` is `0.2.6`, `project.godot` names Fish and selects Forward+, and fish/camera/tuning/project diffs are empty. During final status review, unrelated `tools/asset-factory` changes and untracked files appeared after the initially clean checkout; they were not edited or validated by this P2 task and must be kept out of its runner-owned commit. |
+
+Organic appearance, moving pattern quality, coral/fish readability, and native cost are **NOT OBSERVED**. Structural checks do not certify those judgments; P4 retains them. P3 remains the next implementation step, and P2 Gate status remains open.

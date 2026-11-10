@@ -26,6 +26,8 @@ def export_selected_glb(
         export_format="GLB",
         use_selection=True,
         export_animations=include_animations,
+        export_animation_mode="ACTIONS",
+        export_rest_position_armature=True,
     )
     if "FINISHED" not in result:
         raise RuntimeError(f"Blender GLB export did not finish: {result}")

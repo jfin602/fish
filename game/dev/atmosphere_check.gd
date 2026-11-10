@@ -80,20 +80,42 @@ func _run() -> void:
 		fail("GPU motes are absent or unbounded")
 		return
 	var projections := 0
+	var caustic: Decal = null
 	for child in effects.get_children():
 		if child is Decal:
 			projections += 1
-			if child.texture_emission == null or child.emission_energy > 0.8 or child.size.x > 84.0:
+			caustic = child
+			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.4 or child.size != Vector3(100, 24, 100) or absf(child.rotation.y) < 0.05:
 				fail("caustic projection missing or unbounded")
 				return
-	if projections != 1 or shell_canvas == null:
+	if projections != 1 or caustic == null or shell_canvas == null:
 		fail("caustics or UI layer missing")
+		return
+	if not is_finite(atmosphere.get("CausticDrift")) or atmosphere.get("CausticDrift") <= 0.0 or atmosphere.get("CausticDrift") > 0.5:
+		fail("caustic drift is not finite and bounded")
+		return
+	var caustic_image: Image = caustic.texture_emission.get_image()
+	if caustic_image == null or caustic_image.get_size() != Vector2i(256, 256) or caustic.texture_albedo != caustic.texture_emission:
+		fail("generated caustic resource is absent or inconsistent")
+		return
+	var caustic_bytes: PackedByteArray = caustic_image.get_data()
+	var dark_samples := 0
+	var lit_samples := 0
+	for sample_y in range(0, 256, 8):
+		for sample_x in range(0, 256, 8):
+			var alpha: float = caustic_image.get_pixel(sample_x, sample_y).a
+			if alpha < 0.01:
+				dark_samples += 1
+			if alpha > 0.1:
+				lit_samples += 1
+	if dark_samples < 100 or lit_samples < 20:
+		fail("generated texture lacks bounded gaps or lit detail")
 		return
 	var reef: Node3D = main.get_node("Habitat/Composition/ReefComposition")
 	for section_name in ["Rocks", "Corals"]:
 		for piece in reef.get_node(section_name).get_children():
-			var position: Vector3 = piece.global_position
-			if absf(position.x) > 42.0 or absf(position.z) > 42.0 or position.y < -10.0 or position.y > 14.0:
+			var position: Vector3 = caustic.to_local(piece.global_position)
+			if absf(position.x) > 49.5 or absf(position.z) > 49.5 or absf(position.y) > 12.0:
 				fail("prepared rock/coral anchor falls outside caustic projection")
 				return
 	if screen.layer >= main.get_node("PrototypeHelp").layer or screen.layer >= shell_canvas.layer or rect.mouse_filter != Control.MOUSE_FILTER_IGNORE:
@@ -122,14 +144,27 @@ func _run() -> void:
 	if rect.size != root.get_visible_rect().size:
 		fail("screen treatment did not resize with viewport")
 		return
-	var caustic_before: Vector3 = effects.get_node("CausticProjection1").position
+	var caustic_before: Vector3 = caustic.position
+	var caustic_rotation_before: Vector3 = caustic.rotation
 	var surface_time_before: float = surface_material.get_shader_parameter("surface_time")
 	paused = true
 	await create_timer(0.15).timeout
-	if effects.get_node("CausticProjection1").position != caustic_before or surface_material.get_shader_parameter("surface_time") != surface_time_before:
+	if caustic.position != caustic_before or caustic.rotation != caustic_rotation_before or surface_material.get_shader_parameter("surface_time") != surface_time_before:
 		fail("presentation time advanced while paused")
 		return
 	paused = false
+	atmosphere.SetEnabled(false)
+	caustic_before = caustic.position
+	await process_frame
+	await process_frame
+	if effects.visible or caustic.position != caustic_before:
+		fail("caustic drift continued while atmosphere was disabled")
+		return
+	atmosphere.SetEnabled(true)
+	await process_frame
+	if caustic.position == caustic_before or not is_finite(caustic.position.x) or not is_finite(caustic.position.z) or absf(caustic.position.x) > 0.42 or absf(caustic.position.z) > 0.42:
+		fail("enabled caustic drift did not resume within bounds")
+		return
 	current_scene = null
 	main.queue_free()
 	await process_frame
@@ -142,5 +177,9 @@ func _run() -> void:
 	if missing_atmosphere.get_node_or_null("WaterScreen") != null or not missing.get_node("WorldEnvironment").environment.volumetric_fog_enabled:
 		fail("missing optional screen shader disabled required fog or left a broken layer")
 		return
-	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=upper-limit sky=sunlit caustics=1 motes=gpu ui=above-screen resize=responsive motor=unchanged")
+	var regenerated: Decal = missing_atmosphere.get_node("WaterEffects/CausticProjection1")
+	if regenerated.texture_emission == null or regenerated.texture_emission.get_image().get_data() != caustic_bytes:
+		fail("generated caustic texture changed between scene instances")
+		return
+	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=upper-limit sky=sunlit caustics=1 deterministic=gaps drift=paused-toggle motes=gpu ui=above-screen resize=responsive motor=unchanged")
 	quit()

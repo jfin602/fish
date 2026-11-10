@@ -25,7 +25,7 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "0,3,0.01")] public float SunEnergy { get; set; } = 1.25f;
     [Export(PropertyHint.Range, "-1.57,-0.2,0.01")] public float SunPitch { get; set; } = -1.05f;
     [Export(PropertyHint.Range, "-3.14,3.14,0.01")] public float SunYaw { get; set; } = -0.48f;
-    [Export(PropertyHint.Range, "0,0.8,0.01")] public float CausticEnergy { get; set; } = 0.45f;
+    [Export(PropertyHint.Range, "0,0.8,0.01")] public float CausticEnergy { get; set; } = 0.32f;
     [Export(PropertyHint.Range, "0,0.5,0.01")] public float CausticDrift { get; set; } = 0.10f;
     [Export(PropertyHint.Range, "0,2,0.1")] public float ScreenWarpPixels { get; set; } = 0.55f;
     [Export(PropertyHint.Range, "0,0.04,0.001")] public float ScreenColorVariation { get; set; } = 0.007f;
@@ -138,10 +138,10 @@ public partial class UnderwaterAtmosphere : Node3D
         for (var index = 0; index < _caustics.Length; index++)
         {
             if (_caustics[index] is not { } decal) continue;
-            var phase = (float)_presentationSeconds * CausticDrift + index * 1.7f;
-            decal.Position = new Vector3(0.45f * Mathf.Sin(phase), 2,
-                0.45f * Mathf.Cos(phase * 0.8f));
-            decal.Rotation = new Vector3(0, 0.035f * Mathf.Sin(phase * 0.6f), 0);
+            var phase = (float)_presentationSeconds * CausticDrift;
+            decal.Position = new Vector3(0.34f * (Mathf.Sin(phase) + 0.22f * Mathf.Sin(phase * 1.71f)), 2,
+                0.34f * (Mathf.Cos(phase * 0.73f) + 0.19f * Mathf.Sin(phase * 1.37f)));
+            decal.Rotation = new Vector3(0, 0.12f + 0.018f * Mathf.Sin(phase * 0.61f), 0);
         }
     }
 
@@ -207,7 +207,9 @@ public partial class UnderwaterAtmosphere : Node3D
             {
                 Name = $"CausticProjection{index + 1}",
                 Position = new Vector3(0, 2, 0),
-                Size = new Vector3(84, 24, 84),
+                Rotation = new Vector3(0, 0.12f, 0),
+                // 100 m covers the 84 m habitat after the small off-axis rotation and drift.
+                Size = new Vector3(100, 24, 100),
                 TextureAlbedo = texture,
                 AlbedoMix = 0,
                 TextureEmission = texture,
@@ -221,6 +223,32 @@ public partial class UnderwaterAtmosphere : Node3D
         }
     }
 
+    private static uint Hash(uint x, uint y, uint salt)
+    {
+        var value = x * 0x9e3779b9u ^ y * 0x85ebca6bu ^ salt;
+        value ^= value >> 16;
+        value *= 0x7feb352du;
+        value ^= value >> 15;
+        value *= 0x846ca68bu;
+        return value ^ (value >> 16);
+    }
+
+    private static float Random01(uint x, uint y, uint salt) =>
+        (Hash(x, y, salt) & 0x00ffffffu) / 16777215f;
+
+    private static float ValueNoise(float x, float y, uint salt)
+    {
+        var ix = Mathf.FloorToInt(x);
+        var iy = Mathf.FloorToInt(y);
+        var fx = x - ix;
+        var fy = y - iy;
+        fx *= fx * (3 - 2 * fx);
+        fy *= fy * (3 - 2 * fy);
+        var a = Mathf.Lerp(Random01((uint)ix, (uint)iy, salt), Random01((uint)(ix + 1), (uint)iy, salt), fx);
+        var b = Mathf.Lerp(Random01((uint)ix, (uint)(iy + 1), salt), Random01((uint)(ix + 1), (uint)(iy + 1), salt), fx);
+        return Mathf.Lerp(a, b, fy);
+    }
+
     private Texture2D MakeCausticTexture()
     {
         const int size = 256;
@@ -228,16 +256,48 @@ public partial class UnderwaterAtmosphere : Node3D
         for (var y = 0; y < size; y++)
         for (var x = 0; x < size; x++)
         {
-            var u = x * Mathf.Tau / size;
-            var v = y * Mathf.Tau / size;
-            var a = Mathf.Sin(14 * u + 1.4f * Mathf.Sin(6 * v));
-            var b = Mathf.Sin(12 * v - 1.2f * Mathf.Sin(8 * u));
-            var ridge = Mathf.Pow(Mathf.Max(0, 1 - Mathf.Abs(a + b) * 0.8f), 9);
-            var edge = Mathf.Pow(Mathf.Max(0, 1 - Mathf.Abs(x - 127.5f) / 127.5f), 0.5f) *
-                Mathf.Pow(Mathf.Max(0, 1 - Mathf.Abs(y - 127.5f) / 127.5f), 0.5f);
-            var line = Mathf.Sqrt(ridge) * edge;
-            image.SetPixel(x, y, new Color(CausticColor.R * line, CausticColor.G * line,
-                CausticColor.B * line, ridge * edge * CausticColor.A * 0.72f));
+            var u = (x + 0.5f) / size - 0.5f;
+            var v = (y + 0.5f) / size - 0.5f;
+            // Rotate the cells and bend their boundaries before measuring the two nearest sites.
+            var cellX = (0.95f * u - 0.31f * v + 0.5f) * 10f;
+            var cellY = (0.31f * u + 0.95f * v + 0.5f) * 9f;
+            cellX += 0.47f * (ValueNoise(u * 4f + 13f, v * 4f + 7f, 11) - 0.5f);
+            cellY += 0.47f * (ValueNoise(u * 4f + 3f, v * 4f + 17f, 23) - 0.5f);
+            var baseX = Mathf.FloorToInt(cellX);
+            var baseY = Mathf.FloorToInt(cellY);
+            var nearest = float.MaxValue;
+            var second = float.MaxValue;
+            var nearestX = 0;
+            var nearestY = 0;
+            for (var dy = -1; dy <= 1; dy++)
+            for (var dx = -1; dx <= 1; dx++)
+            {
+                var sx = baseX + dx;
+                var sy = baseY + dy;
+                var px = sx + 0.5f + 0.78f * (Random01((uint)sx, (uint)sy, 31) - 0.5f);
+                var py = sy + 0.5f + 0.78f * (Random01((uint)sx, (uint)sy, 47) - 0.5f);
+                var distance = (cellX - px) * (cellX - px) + (cellY - py) * (cellY - py);
+                if (distance < nearest)
+                {
+                    second = nearest;
+                    nearest = distance;
+                    nearestX = sx;
+                    nearestY = sy;
+                }
+                else if (distance < second) second = distance;
+            }
+            var width = 0.22f + 0.11f * Random01((uint)nearestX, (uint)nearestY, 59);
+            var ridge = Mathf.Clamp((width - (Mathf.Sqrt(second) - Mathf.Sqrt(nearest))) / width, 0f, 1f);
+            ridge *= ridge;
+            // Low frequency modulation opens gaps instead of drawing a continuous cell net.
+            var breakup = ValueNoise(u * 13f + 21f, v * 11f + 9f, 71);
+            var gap = Mathf.Clamp((breakup - 0.28f) * 3.5f, 0f, 1f);
+            var edge = Mathf.Clamp((0.49f - Mathf.Abs(u)) * 12f, 0f, 1f) *
+                Mathf.Clamp((0.49f - Mathf.Abs(v)) * 12f, 0f, 1f);
+            var brightness = 0.45f + 0.55f * Random01((uint)nearestX, (uint)nearestY, 83);
+            var strength = ridge * gap * edge * brightness;
+            image.SetPixel(x, y, new Color(CausticColor.R * strength, CausticColor.G * strength,
+                CausticColor.B * strength, strength * CausticColor.A * 0.55f));
         }
         return ImageTexture.CreateFromImage(image);
     }
