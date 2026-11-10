@@ -2,13 +2,13 @@ TASK: Correction 3 / P4 — Native visibility closeout
 
 - Recommended configuration: `GPT-6 Sol High`.
 - Browser required: yes.
-- Required unchanged project version: `0.3.0`.
+- Required unchanged project version: `0.3.6`.
 
 GOAL
 Qualify the discovery-fog correction through a real playable Fish Forward+ window, owner judgment and same-scene measurements. Close only the evidence-backed correction scope.
 
 NATIVE OWNER HANDOFF / READ
-The runner MUST pause here. Read c3 README/assessment/implementation-plan.md P4, P1–P3 source and evidence, docs/systems/underwater-visibility.md, validation V25, relevant P3 and c2 native records, current tools/dev and accepted source. Check HEAD/dirty state, 0.3.0 root version, selected renderer, actual Fish Godot project, hardware/display and active GFX preset. A web screenshot or headless run cannot substitute for controlling/observing the real Godot game.
+The runner MUST pause here. Read c3 README/assessment/implementation-plan.md P4, P1–P3 source and evidence, docs/systems/underwater-visibility.md, validation V25, relevant P3 and c2 native records, current tools/dev and accepted source. Check HEAD/dirty state, 0.3.6 root version, selected renderer, actual Fish Godot project, hardware/display and active GFX preset. A web screenshot or headless run cannot substitute for controlling/observing the real Godot game.
 
 PLAYTEST — REGULAR CAMERA AND REACHABLE ROUTES
 1. Use normal play and real control input. From at least two reachable look directions, face the opposite playable boundary across unobstructed water. The boundary should not be recognizable. Record whether fog rather than a blocking rock caused concealment.
@@ -24,4 +24,4 @@ Record source revision, package version, game/renderer/GFX config, test actions,
 Create docs/tasks/c3-visibility/closeout.md with what was actually completed, evidence links, open gaps, measured cost and owner acceptance if available. Reconcile owning docs and roadmap once only for evidenced behavior; preserve the historical P2 V18/V19 PASS and open G2.3/V20. Do not mark P3 complete solely because c3 passes.
 
 VALIDATE
-T3 native owner qualification plus T1 documentation links/diff checks, focused regressions if fixes were needed, git diff --check and preserved root 0.3.0. This is the single final closeout; leave closeout edits uncommitted for human review. Do not commit or push.
+T3 native owner qualification plus T1 documentation links/diff checks, focused regressions if fixes were needed, git diff --check and preserved root 0.3.6. This is the single final closeout; leave closeout edits uncommitted for human review. Do not commit or push.
