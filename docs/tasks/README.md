@@ -8,7 +8,7 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | --- | --- |
 | [p0](p0/README.md) | Godot/C#/MCP foundation: directly executed and qualified on the recorded Linux/X11 scope; see P0 closeout. |
 | [p1](p1/README.md) | Core swimming/assets/display: direct implementation through P9 at the authoring snapshot; final native tuning/closeout remain open. |
-| [c1-bindings](c1-bindings/README.md) | Authored correction for hybrid mouse/keyboard presets/rebinding; reconcile its unchanged-version requirement with the actual P1 tree before execution. |
+| [c1-bindings](c1-bindings/README.md) | P1–P4 implemented; P5 native evidence is partial and its closeout is NOT GREEN. Finish the listed native/owner checkpoint at unchanged `0.1.9`. |
 | [p2](p2/README.md) | **Authored, unexecuted** underwater-world Phase: renderer lock, natural reef habitat, underwater atmosphere and fish-reactive water; requires actual P1 close plus deliberate `0.2.0` entry. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
 

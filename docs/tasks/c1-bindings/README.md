@@ -1,6 +1,6 @@
 # c1-bindings — Hybrid control presets and live rebinding
 
-**Status: P1–P4 implemented; P5 native handoff remains.** [Implementation evidence](qualification/implementation.md) records focused checks and the current P10 candidate of right mouse slow / middle mouse pause. Native comparison and final binding acceptance remain open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
+**Status: P1–P4 implemented; P5 native qualification partial / NOT GREEN.** [Implementation evidence](qualification/implementation.md) records focused checks; [native evidence](qualification/native-controls.md) and the [single closeout](closeout.md) record the observed Fish-window paths and exact remaining work. The current P10 candidate is right mouse slow / middle mouse pause. Final binding acceptance remains open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
 
 ## Goal and boundary
 
@@ -24,7 +24,7 @@ Inspect branch/HEAD, current local changes, and history. There are pre-existing 
 | P2 | [Hybrid runtime input](P2-hybrid-runtime-input.txt) | Implemented; one shared motor intent from keyboard/mouse, safe switching and input ownership | T2 headless evidence, native observation open |
 | P3 | [Preset creator UI](P3-preset-creator-ui.txt) | Implemented pause editor with draft, capture, conflict and persistence checks | T2 headless evidence; native observation remains P5 |
 | P4 | [Rapid comparison and hardening](P4-rapid-comparison-and-hardening.txt) | Quick-switch testing, optional portable presets, regression coverage | T2, no native pause |
-| P5 | [Native closeout](P5-native-bindings-closeout.txt) | Real Fish window/device observations, evidence, handoff to P1 P10 | T3, mandatory manual handoff |
+| P5 | [Native closeout](P5-native-bindings-closeout.txt) | Partial native Fish window evidence; remaining actions in [qualification](qualification/native-controls.md#follow-up-qualification-task) | T3, mandatory manual handoff; NOT GREEN |
 
 Only P5 is classified as this stack's final closeout. The runner pauses on its exact `- Browser required: yes.` field: this means **native Godot observation** or owner playtest, not ordinary web browsing.
 
