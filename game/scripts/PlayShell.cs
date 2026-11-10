@@ -43,7 +43,7 @@ public partial class PlayShell : Node
             ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
 
-        var canvas = new CanvasLayer();
+        var canvas = new CanvasLayer { Layer = 10 };
         AddChild(canvas);
         _options = new Button
         {

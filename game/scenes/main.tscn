@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/Main.cs" id="1_main"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
 [ext_resource type="PackedScene" path="res://scenes/p2_habitat.tscn" id="3_habitat"]
 [ext_resource type="Resource" path="res://resources/swim_tuning.tres" id="4_tuning"]
 [ext_resource type="Script" path="res://scripts/FollowCamera.cs" id="5_camera"]
+[ext_resource type="Script" path="res://scripts/UnderwaterAtmosphere.cs" id="6_atmosphere"]
 
 [sub_resource type="StandardMaterial3D" id="fish_mat"]
 albedo_color = Color(0.98, 0.61, 0.15, 1)
@@ -28,6 +29,9 @@ environment = null
 [node name="Sun" type="DirectionalLight3D" parent="."]
 rotation = Vector3(-0.7, -0.5, 0)
 light_energy = 1.4
+
+[node name="UnderwaterAtmosphere" type="Node3D" parent="."]
+script = ExtResource("6_atmosphere")
 
 [node name="Habitat" parent="." instance=ExtResource("3_habitat")]
 
@@ -74,6 +78,7 @@ script = ExtResource("5_camera")
 current = true
 
 [node name="PrototypeHelp" type="CanvasLayer" parent="."]
+layer = 10
 
 [node name="Help" type="Label" parent="PrototypeHelp"]
 offset_left = 18.0

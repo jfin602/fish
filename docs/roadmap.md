@@ -12,7 +12,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1–P4 implemented, P5 atmosphere next; [stack](tasks/p2/README.md). |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1–P5 implemented, P6 fish-reactive water next; [stack](tasks/p2/README.md). |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -90,7 +90,7 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS; P1 comparison through P4 reef composition implemented; P5 atmosphere, P7 native qualification and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+**Status: IN PROGRESS; P1 comparison through P5 atmosphere implemented; P6 reaction, P7 native qualification and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
@@ -107,6 +107,8 @@ P2 turns the movement laboratory into a place that already feels like a game whe
 ### G2.2 — Convincing underwater atmosphere and renderer
 
 **Result: NOT OBSERVED.**
+
+P5 now installs [one tunable Forward+ atmosphere stack](tasks/p2/qualification/implementation.md#p2-p5--underwater-atmosphere) with volumetric/distance/height fog, top light, moving projected caustics, GPU motes and a screen pass below the UI. Import/build/scene checks and a rendered software Vulkan launch passed. V19’s native upper/lower and near/far observation, motion comfort and representative hardware performance remain for P7.
 
 - P2/P1 provides the Compatibility/Forward+ comparison. The owner ran Forward+ on the real desktop, observed smooth performance and selected it for P2. P2/P2 locked the tracked project to Forward+ and recorded that evidence; another native Compatibility run is not required unless Forward+ later develops a concrete blocker.
 - With **Forward+**, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.

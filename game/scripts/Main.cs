@@ -84,6 +84,9 @@ public partial class Main : Node3D
             }
         }
 
+        if (populated && !isCourseFixture && GetParent() is not RendererComparison)
+            GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
+
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
             CallDeferred(MethodName.VerifySmoke);
     }

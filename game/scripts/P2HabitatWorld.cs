@@ -26,11 +26,6 @@ public static class P2HabitatWorld
         if (!composition.TryBuild(seabed, out diagnostic)) return false;
 
         fish.Position = spawn.Position;
-        main.GetNode<WorldEnvironment>("WorldEnvironment").Environment = new Godot.Environment
-        {
-            BackgroundMode = Godot.Environment.BGMode.Color,
-            BackgroundColor = new Color(0.025f, 0.19f, 0.24f),
-        };
         diagnostic = "";
         GD.Print("FISH_HABITAT_READY player=Fish3 seabed=continuous palette=CoastSand01,Ground060,Gravel041,Rock063 course=fixture-only");
         return true;
