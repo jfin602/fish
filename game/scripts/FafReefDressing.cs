@@ -125,13 +125,16 @@ public partial class FafReefDressing : Node3D
         for (var i = 0; i < count; i++)
         {
             var entry = family[(cluster.Start + i * (family.Length == 12 ? 5 : 3)) % family.Length];
-            var offset = offsets[i % offsets.Length] * cluster.Spread;
+            // Rotate the silhouette sequence per pocket so neighboring gardens do
+            // not repeat the same coral/plant/detail stamp at a new coordinate.
+            var offset = offsets[(i + cluster.Start) % offsets.Length] * cluster.Spread;
             var angle = cluster.Yaw + (i % 3 - 1) * .14f;
             var rotated = offset.Rotated(angle);
             var x = cluster.X + rotated.X;
             var z = cluster.Z + rotated.Y;
             var y = terrain.GetVisibleHeightAt(x, z, seabed) + .015f;
-            var yaw = cluster.Yaw + i * 1.17f + cluster.Start * .31f;
+            var yaw = cluster.Yaw + i * 1.17f + cluster.Start * .31f
+                + .19f * Mathf.Sin(cluster.X * .21f + cluster.Z * .13f + i * 2.1f);
             var scale = entry.Family == FafEnvironmentFamily.Detail
                 ? 1.12f + .12f * ((i + cluster.Start) % 3)
                 : .82f + .14f * ((i + cluster.Start) % 4);
@@ -140,7 +143,10 @@ public partial class FafReefDressing : Node3D
             _placements.Add(new Placement(entry.Id, cluster.Zone, cluster.Name, position, yaw, scale, radius));
             if (!grouped.TryGetValue(entry.Id, out var transforms))
                 grouped[entry.Id] = transforms = new List<Transform3D>();
-            transforms.Add(new Transform3D(new Basis(Vector3.Up, yaw).Scaled(Vector3.One * scale), position));
+            var width = .90f + .10f * Mathf.Abs(Mathf.Sin(cluster.X * .17f + i * 1.7f));
+            var height = .88f + .12f * Mathf.Abs(Mathf.Cos(cluster.Z * .19f + i * 1.3f));
+            transforms.Add(new Transform3D(new Basis(Vector3.Up, yaw)
+                .Scaled(new Vector3(scale * width, scale * height, scale)), position));
         }
     }
 

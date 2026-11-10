@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/ReefComposition.cs" id="1_reef"]
 [ext_resource type="Script" path="res://scripts/FafTerrainWorld.cs" id="2_terrain"]
 [ext_resource type="Script" path="res://scripts/FafGeologyWorld.cs" id="3_geology"]
 [ext_resource type="Script" path="res://scripts/FafReefDressing.cs" id="4_dressing"]
+[ext_resource type="Script" path="res://scripts/FafAmbientReefLife.cs" id="5_ambient"]
 
 [sub_resource type="BoxShape3D" id="tunnel_west"]
 size = Vector3(5.8, 5.3, 7.0)
@@ -70,6 +71,11 @@ script = ExtResource("3_geology")
 script = ExtResource("4_dressing")
 
 [node name="Visuals" type="Node3D" parent="Dressing"]
+
+[node name="AmbientLife" type="Node3D" parent="."]
+script = ExtResource("5_ambient")
+
+[node name="Visuals" type="Node3D" parent="AmbientLife"]
 
 [node name="Collision" type="Node3D" parent="Geology"]
 

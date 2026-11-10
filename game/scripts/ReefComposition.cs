@@ -96,6 +96,9 @@ public partial class ReefComposition : Node3D
                 visual.AddChild(model);
                 model.Name = "PreparedVisual";
                 model.Position = Sources[id].BottomCenterOffset;
+                // P2 collision and source anchors remain for the accepted routes.
+                // FAF terrain, geology and dressing now own the visible reef art.
+                model.Visible = false;
                 counts[id] = counts.GetValueOrDefault(id) + 1;
             }
         }
@@ -125,6 +128,8 @@ public partial class ReefComposition : Node3D
             !geology.TryBuild(seabed, out diagnostic)) return false;
         if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
             !dressing.TryBuild(seabed, terrain, out diagnostic)) return false;
+        if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
+            !ambient.TryBuild(seabed, out diagnostic)) return false;
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;

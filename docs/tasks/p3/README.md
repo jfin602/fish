@@ -1,6 +1,6 @@
 # P3 — FAF reef world rebuild
 
-**Status: IN PROGRESS at root `0.3.5`; P1–P5 implemented, P6 ambient reef life/finish next.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
+**Status: IN PROGRESS at root `0.3.6`; P1–P6 implemented, P7 native review next.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
 
 Read the [phase design](../../planning/p3/reef-world-rebuild.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), [FAF art style](../../fish-asset-factory/art-style.md), [style proof 001](../../fish-asset-factory/style-proof-001/README.md) and [runner contract](../../phase-runner.md).
 
@@ -25,7 +25,7 @@ The original P3 P2–P4 prompt text was authored before S18 and may already exis
 
 ## Entry and version
 
-The deliberate P3 entry was **`0.3.0`** under owner transition S16; P1–P5 implemented `0.3.1`–`0.3.5` in order. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.
+The deliberate P3 entry was **`0.3.0`** under owner transition S16; P1–P6 implemented `0.3.1`–`0.3.6` in order. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.
 
 Before execution:
 
@@ -50,7 +50,7 @@ Before execution:
 
 P8 is the sole final closeout. P7 is the main native owner checkpoint.
 
-P1–P5 checks are in [implementation evidence](qualification/implementation.md); [Character Select evidence](qualification/character-select.md) records the P5 route and native-observation limits. The runner owns checkpoint commits.
+P1–P6 checks are in [implementation evidence](qualification/implementation.md); [Character Select evidence](qualification/character-select.md) records the P5 route and native-observation limits. The runner owns checkpoint commits.
 
 ## Required environment coverage
 

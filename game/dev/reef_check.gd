@@ -107,8 +107,8 @@ func _run() -> void:
 				return
 			counts[source_id] = counts.get(source_id, 0) + 1
 			var visual: Node3D = piece.get_node("Visual/PreparedVisual")
-			if visual.scene_file_path != SOURCES[source_id] or not visual.visible:
-				fail("prepared source path or visibility changed on " + piece.name)
+			if visual.scene_file_path != SOURCES[source_id] or visual.visible:
+				fail("prepared source path or transitional-art visibility changed on " + piece.name)
 				return
 			var meshes: Array[MeshInstance3D] = []
 			collect_meshes(visual, meshes)
@@ -226,7 +226,7 @@ func _run() -> void:
 	for mesh in upper_coral_meshes:
 		upper_coral_top = maxf(upper_coral_top, (mesh.global_transform * mesh.mesh.get_aabb()).end.y)
 	if marker(routes, "UpperLandmark").y - marker(routes, "LowerLandmark").y < 4.0 or upper_coral_top < 4.0:
-		fail("upper/lower landmark height separation or upper coral missing")
+		fail("upper/lower landmark height separation or retained coral anchor missing")
 		return
 	fish.global_position = marker(routes, "TunnelEntry")
 	var tunnel_motion: Vector3 = marker(routes, "TunnelExit") - fish.global_position

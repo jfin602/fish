@@ -17,7 +17,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
 | `docs/tasks/c2-depth/` | Five-band basin/depth-light correction with preserved historical failure and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
-| `docs/tasks/p3/` | FAF reef-world rebuild stack; P1–P5 are implemented through `0.3.5`, with P6 ambient life/finish next. |
+| `docs/tasks/p3/` | FAF reef-world rebuild stack; P1–P6 are implemented through `0.3.6`, with P7 native review next. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 

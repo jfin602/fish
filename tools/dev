@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-terrain|inspect-geology|inspect-dressing|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -84,6 +84,10 @@ dressing_check() {
   logged dressing-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_reef_dressing_check.gd
   grep -Fq 'FAF_DRESSING_OK variants=28 clusters=28 placements=295' "$LOGS/dressing-check.log" || { echo 'FAF dressing marker missing' >&2; return 1; }
 }
+ambient_check() {
+  logged ambient-check 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_ambient_check.gd
+  grep -Fq 'FAF_AMBIENT_OK schools=9 fish=31' "$LOGS/ambient-check.log" || { echo 'FAF ambient marker missing' >&2; return 1; }
+}
 atmosphere_check() {
   logged atmosphere-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_check.gd
   grep -Fq 'ATMOSPHERE_CHECK_OK' "$LOGS/atmosphere-check.log" || { echo 'Atmosphere assertion marker missing' >&2; return 1; }
@@ -122,7 +126,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; terrain_world_check; geology_check; dressing_check; atmosphere_check; water_reaction_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; terrain_world_check; geology_check; dressing_check; ambient_check; atmosphere_check; water_reaction_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
@@ -176,6 +180,7 @@ case "${1:-help}" in
   inspect-terrain) need_tools; terrain_world_check ;;
   inspect-geology) need_tools; geology_check ;;
   inspect-dressing) need_tools; dressing_check ;;
+  inspect-ambient) need_tools; ambient_check ;;
   inspect-atmosphere) need_tools; atmosphere_check ;;
   inspect-depth) need_tools; depth_check ;;
   inspect-water) need_tools; water_reaction_check ;;
