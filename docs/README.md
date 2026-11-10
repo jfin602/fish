@@ -1,6 +1,6 @@
 # Documentation index
 
-Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 is qualified on Linux/X11; P1 is in progress; P2 underwater-world planning is selected but not executed.
+Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete; P2 world qualification remains open at its owner/native checkpoint. [The roadmap](roadmap.md) owns exact Phase/Gate status.
 
 ## Ownership
 
@@ -17,7 +17,8 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
 | [UX and presentation](ux-and-presentation.md) | Player entry points, underwater presentation, feedback, menus, recap/history navigation. |
-| [Art and assets](art-and-assets.md) | Ocean direction, approved sources, provenance, licenses, imports and P2 environment-asset boundaries. |
+| [Art and assets](art-and-assets.md) | Historical source shortlist, provenance, licenses, imports and P2 environment-asset boundaries. |
+| [Fish Asset Factory](fish-asset-factory/README.md) | Original art pipeline, owner-approved [visual contract](fish-asset-factory/art-style.md), palette, construction standards, IDs, budgets, Blender/Godot handoff and visual review. |
 | [Tutorial](tutorial.md) | Proposed first-life teaching sequence and readable early risks. |
 | [Technical direction](technical-direction.md) | Godot/C# architecture, renderer decision boundary and development integration. |
 | [Development setup](development.md) | Reference pins, command availability, local setup and tool/platform verification. |
@@ -35,7 +36,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## Current sequence
 
-P1 still owns final movement acceptance. After actual P1 close, prepare the deliberate `0.2.0` baseline and execute [P2 worldbuilding](tasks/p2/README.md). P2 establishes the habitat and underwater presentation before P3 ecology. The previously selected Movement abilities remain a future enhancement rather than the next roadmap Phase.
+P1 is complete. [P2 worldbuilding](tasks/p2/README.md) has a candidate habitat and awaits its owner/native qualification; P3 ecology follows P2 completion. FAF is a parallel art tooling foundation and does not change that Gate sequence. The previously selected Movement abilities remain a future enhancement.
 
 ## Status language
 

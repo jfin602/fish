@@ -1,0 +1,14 @@
+# Palette families
+
+The [art-style contract](art-style.md) owns overall balance. These names guide generators and reviews; they are not a final RGB lock. Judge color under the accepted reef reference and the game's Forward+ water, light and fog. The initial code palette in [tooling](../../tools/asset-factory/blender/common/palette.py) offers editable starting swatches; visual testing can change them.
+
+| Family | Use |
+| --- | --- |
+| Reef reds, oranges, pinks | Coral focal groups and selected species accents. |
+| Reef blues, cyans, teals | Coral contrast, fish accents and water-adjacent forms. |
+| Vegetation greens | Graphic grass, kelp and fronds, with light/deep variants. |
+| Warm, light sand | Quiet readable seabed ground. |
+| Cool and warm rock neutrals | Blue/slate mass with limited warmer sunlit faces. |
+| Fish yellow, orange, blue, white, black | Species-defining blocks, stripes, eyes and fins; avoid random whole-body saturation. |
+
+Use a restrained neutral field with vivid living accents. Shared names help variants remain coherent; species anatomy and readable contrast govern the final choice. Do not infer that every reef object should use every family.

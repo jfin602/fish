@@ -15,6 +15,8 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p1/` | Completed core-swimming implementation and [closeout](docs/tasks/p1/closeout.md), with accepted source tuning and evidence limits. |
 | `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
 | `docs/tasks/p2/` | Underwater-world Phase stack; P1–P6 implemented, P7 native candidate recorded, P8 review BLOCKED pending owner/native qualification. |
+| `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
+| `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
 ## Implemented Godot/P1 and P2 foundation source boundaries
 

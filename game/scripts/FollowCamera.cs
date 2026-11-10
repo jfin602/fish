@@ -261,7 +261,7 @@ public partial class FollowCamera : Node3D
                 var horizontal = new Vector3(fromEye.X, 0, fromEye.Z);
                 if (horizontal.LengthSquared() > 0.0001f) _adaptiveRear = horizontal.Normalized();
                 _adaptiveElevation = Mathf.Atan2(GlobalPosition.Y - anchor.Y, horizontal.Length());
-                pixels = Vector2.Zero; // Discard motion queued before C was held.
+                pixels = Vector2.Zero; // Discard motion queued before Left Shift was held.
             }
             else
             {

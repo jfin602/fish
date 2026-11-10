@@ -26,7 +26,7 @@ public sealed class ControlPreset
     public const string HybridId = "builtin:hybrid";
     public const string Hybrid2Id = "builtin:hybrid2";
     public const string AdaptiveFollowId = "builtin:adaptive-follow";
-    public const int AdaptiveFreeLookKey = (int)Key.C;
+    public const int AdaptiveFreeLookKey = (int)Key.Shift;
     public const int RecoveryKey = (int)Key.Escape;
     public const int RecoveryMouseButton = (int)MouseButton.Middle;
     private static readonly ControlAction[] AllActions = Enum.GetValues<ControlAction>();
@@ -159,6 +159,14 @@ public sealed class ControlPreset
         hybrid2[ControlAction.PitchUp] = [KeyBinding(Key.W)];
         hybrid2[ControlAction.PitchDown] = [KeyBinding(Key.S)];
         hybrid2[ControlAction.PauseOptions] = [KeyBinding(Key.Escape), ButtonBinding(MouseButton.Middle)];
+        var adaptive = EmptyActions();
+        adaptive[ControlAction.Thrust] = [ButtonBinding(MouseButton.Left)];
+        adaptive[ControlAction.Slow] = [ButtonBinding(MouseButton.Right)];
+        adaptive[ControlAction.YawLeft] = [KeyBinding(Key.A)];
+        adaptive[ControlAction.YawRight] = [KeyBinding(Key.D)];
+        adaptive[ControlAction.PitchUp] = [KeyBinding(Key.W), KeyBinding(Key.Up)];
+        adaptive[ControlAction.PitchDown] = [KeyBinding(Key.S), KeyBinding(Key.Down)];
+        adaptive[ControlAction.PauseOptions] = [KeyBinding(Key.Escape), ButtonBinding(MouseButton.Middle)];
         return Array.AsReadOnly(new[]
         {
             new ControlPreset(KeyboardId, "Keyboard Only", keyboard, default, default, DefaultSensitivity),
@@ -166,7 +174,7 @@ public sealed class ControlPreset
             new ControlPreset(HybridId, "Hybrid Swim", hybrid, new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity),
             new ControlPreset(Hybrid2Id, "Hybrid 2", hybrid2, default, default, DefaultSensitivity,
                 CameraControlPolicy.MouseOrbit360),
-            new ControlPreset(AdaptiveFollowId, "Adaptive Follow", hybrid,
+            new ControlPreset(AdaptiveFollowId, "Adaptive Follow", adaptive,
                 new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity,
                 CameraControlPolicy.AdaptiveFollow)
         });

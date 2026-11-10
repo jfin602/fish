@@ -332,7 +332,7 @@ public partial class PlayShell : Node
             .Where(binding => binding != new ControlBinding(BindingDevice.PhysicalKey, ControlPreset.RecoveryKey))
             .Select(ControlPresetsPanel.BindingName));
         _help.Text = profile.CameraControl == CameraControlPolicy.AdaptiveFollow
-            ? $"{profile.Name}  Hold C + mouse: 360 free-look  " +
+            ? $"{profile.Name}  Hold Left Shift + mouse: 360 free-look  " +
               $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
               $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
               $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +

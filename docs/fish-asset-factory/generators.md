@@ -1,0 +1,5 @@
+# Reusable generators
+
+Do not create each successful asset as an unrelated one-off. When a form works, extract repeatable construction logic into its family generator and keep the source in [FAF tooling](../../tools/asset-factory/README.md). Parameterize the meaningful choices: fish body families, fins, fish rigging/weights, branching and plate coral, boulders/arches, kelp/grass and terrain chunks. Keep shared naming, palette, validation and export rules central.
+
+The first tooling commit supplies only shared foundations and empty family packages. A future generator should have a clear input contract, deterministic seed where variation is random, stable ID handling, meaningful parameters and a visual review loop. Generated `.blend`/`.glb` outputs are inspectable artifacts; a transient Blender MCP Python command alone is not a reusable generator. Add family logic only while building an actual reviewed asset, and preserve source/version in its [candidate record](blender-godot-contract.md#candidate-record).

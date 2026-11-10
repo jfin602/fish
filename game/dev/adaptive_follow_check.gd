@@ -22,6 +22,14 @@ func _key(code: Key, down: bool) -> void:
 	event.pressed = down
 	root.push_input(event, true)
 
+func _shift(down: bool, side: int = KEY_LOCATION_LEFT) -> void:
+	var event := InputEventKey.new()
+	event.keycode = KEY_SHIFT
+	event.physical_keycode = KEY_SHIFT
+	event.set("location", side)
+	event.pressed = down
+	root.push_input(event, true)
+
 func _motion(relative: Vector2) -> void:
 	var event := InputEventMouseMotion.new()
 	event.relative = relative
@@ -31,6 +39,12 @@ func _wheel(direction: MouseButton) -> void:
 	var event := InputEventMouseButton.new()
 	event.button_index = direction
 	event.pressed = true
+	root.push_input(event, true)
+
+func _mouse_button(button: MouseButton, down: bool) -> void:
+	var event := InputEventMouseButton.new()
+	event.button_index = button
+	event.pressed = down
 	root.push_input(event, true)
 
 func _button(shell: Node, name: String) -> Button:
@@ -53,6 +67,12 @@ func _run() -> void:
 	mode.item_selected.emit(4)
 	if not _require(fish.call("GetActivePresetId") == "builtin:adaptive-follow", "selection failed"):
 		return
+	var help := scene.get_node("PrototypeHelp/Help") as Label
+	if not _require(help.text.contains("Hold Left Shift + mouse: 360 free-look") and
+			help.text.contains("Pitch: W/Up/S/Down + Mouse Y") and
+			help.text.contains("Thrust: Left mouse") and help.text.contains("Slow: Right mouse"),
+			"Adaptive Follow help does not show new depth controls"):
+		return
 	_button(shell, "ResumeButton").pressed.emit()
 	await _tick(3)
 	_motion(Vector2(300, 300)) # Capture warp.
@@ -66,6 +86,28 @@ func _run() -> void:
 	if not _require(fish.call("GetLastYaw") > 0.2 and fish.call("GetLastPitch") > 0.2,
 			"deliberate mouse steering lost"):
 		return
+	_key(KEY_W, true)
+	await _tick()
+	if not _require(fish.call("GetLastPitch") == 1.0 and fish.call("GetLastThrust") == 0.0,
+			"W did not pitch up without thrust"):
+		return
+	_key(KEY_W, false)
+	_key(KEY_S, true)
+	await _tick()
+	if not _require(fish.call("GetLastPitch") == -1.0 and fish.call("GetLastSlow") == 0.0,
+			"S did not pitch down without slow"):
+		return
+	_key(KEY_S, false)
+	_mouse_button(MOUSE_BUTTON_LEFT, true)
+	await _tick()
+	if not _require(fish.call("GetLastThrust") == 1.0, "left mouse thrust changed"):
+		return
+	_mouse_button(MOUSE_BUTTON_LEFT, false)
+	_mouse_button(MOUSE_BUTTON_RIGHT, true)
+	await _tick()
+	if not _require(fish.call("GetLastSlow") == 1.0, "right mouse slow changed"):
+		return
+	_mouse_button(MOUSE_BUTTON_RIGHT, false)
 	_key(KEY_A, true)
 	_key(KEY_UP, true)
 	await _tick()
@@ -75,6 +117,17 @@ func _run() -> void:
 	_key(KEY_A, false)
 	_key(KEY_UP, false)
 	_key(KEY_C, true)
+	_motion(Vector2(25, 0))
+	await _tick()
+	if not _require(fish.call("GetLastYaw") > 0.0, "C still suppressed fish steering"):
+		return
+	_key(KEY_C, false)
+	_shift(true, KEY_LOCATION_RIGHT)
+	await _tick()
+	if not _require(fish.call("GetHeldInputCount") == 0, "Right Shift entered free-look"):
+		return
+	_shift(false, KEY_LOCATION_RIGHT)
+	_shift(true)
 	await _tick()
 	_motion(Vector2(80, 40))
 	await _tick()
@@ -84,23 +137,23 @@ func _run() -> void:
 	_key(KEY_ESCAPE, true)
 	await process_frame
 	_key(KEY_ESCAPE, false)
-	if not _require(paused, "C-held pause failed"):
+	if not _require(paused, "Left-Shift-held pause failed"):
 		return
 	_button(shell, "ResumeButton").pressed.emit()
-	_key(KEY_C, false)
+	_shift(false)
 	await _tick(3)
 	if not _require(fish.call("GetHeldInputCount") == 0 and
 			fish.call("GetLastYaw") == 0.0 and fish.call("GetLastThrust") == 0.0,
-			"C-held pause left input stuck"):
+			"Left-Shift-held pause left input stuck"):
 		return
-	_key(KEY_C, true)
+	_shift(true)
 	await _tick()
 	shell.notification(Node.NOTIFICATION_APPLICATION_FOCUS_OUT)
 	await process_frame
-	if not _require(paused, "C-held focus loss did not pause"):
+	if not _require(paused, "Left-Shift-held focus loss did not pause"):
 		return
 	_button(shell, "ResumeButton").pressed.emit()
-	_key(KEY_C, false)
+	_shift(false)
 	await _tick(3)
 	_key(KEY_A, true)
 	await _tick()
@@ -142,7 +195,7 @@ func _run() -> void:
 	var fish_transform := fish.global_transform
 	var fish_velocity := fish.velocity
 	var start_rear := (fish.global_position - camera.global_position).normalized()
-	_key(KEY_C, true)
+	_shift(true)
 	await _tick()
 	var entry_eye := camera.global_position
 	_motion(Vector2(75, 0))
@@ -162,7 +215,7 @@ func _run() -> void:
 			"C did not orbit around fish independently"):
 		return
 	var before_release := camera.global_position
-	_key(KEY_C, false)
+	_shift(false)
 	await _tick()
 	if not _require(camera.global_position.distance_to(before_release) < 1.5,
 			"free-look release jumped"):
@@ -173,7 +226,7 @@ func _run() -> void:
 			Vector2(recentered.x, recentered.z).normalized()) > 0.9,
 			"camera did not return behind fish"):
 		return
-	_key(KEY_C, true)
+	_shift(true)
 	await _tick()
 	_motion(Vector2(75, 0))
 	await _tick()
@@ -186,7 +239,7 @@ func _run() -> void:
 			"pause changed camera"):
 		return
 	_button(shell, "ResumeButton").pressed.emit()
-	_key(KEY_C, false)
+	_shift(false)
 	await _tick(2)
 	_motion(Vector2(300, 300))
 	await _tick()

@@ -307,7 +307,7 @@ public partial class ControlPresetsPanel : PanelContainer
         catch (ArgumentException)
         {
             Refresh();
-            _state.Text += " | C is reserved for Adaptive Follow free-look.";
+            _state.Text += " | Left Shift is reserved for Adaptive Follow free-look.";
         }
     }
     private void Remove(ControlAction action, int index)

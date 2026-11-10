@@ -10,15 +10,18 @@ public sealed class ProfileSwimInput
     private readonly HashSet<int> _buttons = [];
     private readonly HashSet<int> _blockedKeys = [];
     private readonly HashSet<int> _blockedButtons = [];
+    private bool _adaptiveLeftShiftDown;
+    private bool _adaptiveLeftShiftBlocked;
     private readonly MouseSwimInput _mouse = new();
     private ControlPreset _profile = ControlPreset.Builtins()[0];
 
     public ControlPreset Profile => _profile;
     public bool AllReleased => _keys.Count == 0 && _buttons.Count == 0 &&
-        _blockedKeys.Count == 0 && _blockedButtons.Count == 0;
-    public int HeldCount => _keys.Count + _buttons.Count;
+        _blockedKeys.Count == 0 && _blockedButtons.Count == 0 && !_adaptiveLeftShiftDown &&
+        !_adaptiveLeftShiftBlocked;
+    public int HeldCount => _keys.Count + _buttons.Count + (_adaptiveLeftShiftDown ? 1 : 0);
     public bool AdaptiveFreeLookHeld => _profile.CameraControl == CameraControlPolicy.AdaptiveFollow &&
-        _keys.Contains(ControlPreset.AdaptiveFreeLookKey);
+        _adaptiveLeftShiftDown;
     public bool UsesMouse => _profile.CameraControl == CameraControlPolicy.MouseOrbit360 ||
         _profile.MouseX.Steering != SteeringAxis.None ||
         _profile.MouseY.Steering != SteeringAxis.None || HasMouseBinding();
@@ -37,6 +40,8 @@ public sealed class ProfileSwimInput
     {
         _blockedKeys.UnionWith(_keys);
         _blockedButtons.UnionWith(_buttons);
+        _adaptiveLeftShiftBlocked |= _adaptiveLeftShiftDown;
+        _adaptiveLeftShiftDown = false;
         _keys.Clear();
         _buttons.Clear();
         _mouse.Clear();
@@ -49,9 +54,35 @@ public sealed class ProfileSwimInput
         {
             var code = (int)key.PhysicalKeycode;
             if (code == 0) code = (int)key.Keycode;
+            if (code == ControlPreset.AdaptiveFreeLookKey && !key.Pressed)
+            {
+                // A preset switch can leave a held Shift blocked in the old policy.
+                _keys.Remove(code);
+                _blockedKeys.Remove(code);
+                if (key.Location == KeyLocation.Left)
+                {
+                    _adaptiveLeftShiftDown = false;
+                    _adaptiveLeftShiftBlocked = false;
+                }
+            }
             if (code == ControlPreset.AdaptiveFreeLookKey &&
                 _profile.CameraControl == CameraControlPolicy.AdaptiveFollow)
-                _mouse.DiscardAdaptiveSteering();
+            {
+                if (key.Location == KeyLocation.Left)
+                {
+                    _mouse.DiscardAdaptiveSteering();
+                    if (key.Pressed)
+                    {
+                        if (!_adaptiveLeftShiftBlocked) _adaptiveLeftShiftDown = true;
+                    }
+                    else
+                    {
+                        _adaptiveLeftShiftDown = false;
+                        _adaptiveLeftShiftBlocked = false;
+                    }
+                }
+                return; // Right Shift does not control the Adaptive Follow camera.
+            }
             if (key.Pressed)
             {
                 if (!_blockedKeys.Contains(code)) _keys.Add(code);

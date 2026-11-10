@@ -2,11 +2,11 @@
 
 ## Decision and current state
 
-**Owner-approved direction — 2026-11-09:** use realistic ocean creatures and environments, starting from free assets suitable for eventual commercial game use. The owner chose the ocean shortlist after reviewing the research and requested that these decisions be recorded in the repository.
+**Historical sourcing decision — 2026-11-09:** the owner initially requested realistic ocean creatures and environments, starting from free assets suitable for eventual commercial game use. The selected ocean shortlist and its acquisition/provenance record remain valid as historical and transitional source work. The later [owner-approved Fish visual contract](fish-asset-factory/art-style.md) selects **bright stylized low-poly reef naturalism** for original production art; it supersedes realistic rendering as the target. Natural anatomy and recognizable marine species still matter.
 
-This document owns the approved sources, starter order, licensing notes, and asset preparation checks. [The decision register](decisions-and-questions.md) records the approval as S7/C16/C17. [The roadmap](roadmap.md) continues to own implementation progress.
+This document owns the approved sources, starter order, licensing notes, and asset preparation checks. [The decision register](decisions-and-questions.md) records the original approval as S7/C16/C17 and its later style revision. [Fish Asset Factory](fish-asset-factory/README.md) owns original-art construction and review. [The roadmap](roadmap.md) continues to own implementation progress.
 
-**P1 starter decision revised 2026-11-09:** The owner provided Quaternius's Animated Fish Pack and selected its small `Fish3` / `ClownFish` as the provisional player, with other pack fish for world population. Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the other three acquired starter sources. This is a deliberate low-poly P1 prototype exception to the longer-term realistic-ocean art direction, recorded in [decision C31](decisions-and-questions.md). [The P2 manifest](assets/p1-starter-manifest.md) records actual pack inspection and prior candidate evidence. The four sources import and instantiate in the local Godot prototype; [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md) confirms their visible integration and representative timing on Linux/X11, with final art and motion quality still open.
+**P1 starter decision revised 2026-11-09:** The owner provided Quaternius's Animated Fish Pack and selected its small `Fish3` / `ClownFish` as the provisional player, with other pack fish for world population. Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the other three acquired starter sources. At the time, this was a deliberate low-poly P1 prototype exception to the realistic-ocean plan, recorded in [decision C31](decisions-and-questions.md); the 2026-11-10 style decision later made intentional low-poly the production direction. [The P2 manifest](assets/p1-starter-manifest.md) records actual pack inspection and prior candidate evidence. The four sources import and instantiate in the local Godot prototype; [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md) confirms their visible integration and representative timing on Linux/X11, with final art and motion quality still open.
 
 ## Approved starter order
 
@@ -14,7 +14,7 @@ This document owns the approved sources, starter order, licensing notes, and ass
 2. **Additional downloaded ocean content:** Sea life (coral, plankton, fish meshes) and a Great White Shark from BlendSwap were inventoried. Sea life carries packed images with Poliigon product names; their redistribution rights remain unresolved. The shark is a later predator candidate. No entire Blender scene is approved for wholesale import.
 3. **Later expansion shortlist:** Tuna Fish Animated, Tropical Fish Pack, Great White Shark, and Kelp with animation, as the selected habitat and gameplay need them.
 
-The controllable art-test fish is `Fish3` / `ClownFish`; it does not decide the final player species or final visual treatment. Emperor Angelfish was removed from the starter set because official acquisition requires Unity Asset Store/Package Manager and account-backed tooling. The shortlist does not require every species and plant to coexist in one biome. Keep reef and kelp composition deliberate.
+The controllable art-test fish is `Fish3` / `ClownFish`; it does not decide the final player species or qualify the final visual treatment. Emperor Angelfish was removed from the starter set because official acquisition requires Unity Asset Store/Package Manager and account-backed tooling. The shortlist does not require every species and plant to coexist in one biome. Keep reef and kelp composition deliberate.
 
 ## Ocean creatures
 
@@ -90,7 +90,7 @@ The **P1 task P2/P3** source and import results are recorded in the [manifest](a
 
 ## Remaining choices and limits
 
-- **Final player species and exact ocean biome:** open. The first test fish and reef arrangement do not settle production ecology or the complete species roster.
+- **Final player species and exact ocean biome:** open. The first test fish and reef arrangement do not settle production ecology or the complete species roster. The overall stylized low-poly reef look is [owner-approved](fish-asset-factory/art-style.md).
 - **Growth visuals:** no matching hatchling/juvenile/adult asset sequence has been verified. Scaling a mesh is a possible early prototype approach, not an approved final growth-art solution. Growth remains within the same fish identity.
 - **Water, lighting, and detailed visual treatment:** P2 implements a Forward+ atmosphere and movement-reactive water candidate. Its final appearance and comfort remain open in [P8 review](tasks/p2/closeout.md); realistic source assets do not set a photorealism target by themselves.
 - **Renderer and performance budget:** [the P2 decision](tasks/p2/qualification/renderer-decision.md) locks normal play to Forward+; Compatibility remains a diagnostic comparison. Production budgets and wider-platform claims remain later measured decisions.

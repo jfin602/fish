@@ -66,9 +66,14 @@ public static class ControlPresetChecks
                 builtins[4].CameraControl == CameraControlPolicy.AdaptiveFollow &&
                 builtins[4].MouseX.Steering == SteeringAxis.Yaw &&
                 builtins[4].MouseY.Steering == SteeringAxis.Pitch &&
-                builtins[4].Bindings(ControlAction.PitchUp).Single().Code == (int)Key.Up &&
-                builtins[4].Bindings(ControlAction.Thrust).Any(b => b.Code == (int)MouseButton.Left) &&
-                builtins[4].Bindings(ControlAction.Slow).Any(b => b.Code == (int)MouseButton.Right),
+                builtins[4].Bindings(ControlAction.PitchUp).Select(b => b.Code)
+                    .SequenceEqual(new[] { (int)Key.W, (int)Key.Up }) &&
+                builtins[4].Bindings(ControlAction.PitchDown).Select(b => b.Code)
+                    .SequenceEqual(new[] { (int)Key.S, (int)Key.Down }) &&
+                builtins[4].Bindings(ControlAction.Thrust).Single() ==
+                    new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.Left) &&
+                builtins[4].Bindings(ControlAction.Slow).Single() ==
+                    new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.Right),
                 "templates match source control requests");
             Reject(() => store.Rename(ControlPreset.KeyboardId, "Changed"), "builtin rename");
             Reject(() => store.Delete(ControlPreset.MouseId), "builtin delete");
@@ -90,9 +95,13 @@ public static class ControlPresetChecks
                 new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.WheelUp)), "wheel cannot be captured");
             Reject(() => copy.WithBindings(ControlAction.Thrust), "unbound swim");
             Reject(() => copy.WithBindings(ControlAction.Slow), "unbound slow");
-            Reject(() => builtins[4].Copy("custom:" + Guid.NewGuid().ToString("N"), "Reserved C")
-                .WithBindings(ControlAction.YawLeft, new ControlBinding(BindingDevice.PhysicalKey, (int)Key.C)),
-                "Adaptive Follow reserves C");
+            Reject(() => builtins[4].Copy("custom:" + Guid.NewGuid().ToString("N"), "Reserved Shift")
+                .WithBindings(ControlAction.YawLeft, new ControlBinding(BindingDevice.PhysicalKey, (int)Key.Shift)),
+                "Adaptive Follow reserves Shift");
+            var adaptiveWithC = builtins[4].Copy("custom:" + Guid.NewGuid().ToString("N"), "C Steering")
+                .WithBindings(ControlAction.YawLeft, new ControlBinding(BindingDevice.PhysicalKey, (int)Key.C));
+            Require(adaptiveWithC.Bindings(ControlAction.YawLeft).Single().Code == (int)Key.C,
+                "C is available for custom Adaptive Follow bindings");
             var missingActions = Enum.GetValues<ControlAction>().ToDictionary(action => action,
                 action => copy.Bindings(action).ToArray());
             missingActions.Remove(ControlAction.Slow);
@@ -106,7 +115,7 @@ public static class ControlPresetChecks
             {
                 var resolver = new ProfileSwimInput();
                 resolver.Select(builtIn);
-                if (builtIn.Id is ControlPreset.MouseId or ControlPreset.Hybrid2Id)
+                if (builtIn.Id is ControlPreset.MouseId or ControlPreset.Hybrid2Id or ControlPreset.AdaptiveFollowId)
                     resolver.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true }, true);
                 else
                     resolver.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true }, true);
@@ -143,6 +152,14 @@ public static class ControlPresetChecks
             var adaptiveInput = new ProfileSwimInput();
             adaptiveInput.Select(builtins[4]);
             adaptiveInput.CaptureStarted();
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true }, true);
+            Require(adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false) ==
+                new SwimIntent(0, 0, 0, 1), "Adaptive Follow W pitches up without thrust");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false }, true);
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.S, Pressed = true }, true);
+            Require(adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false) ==
+                new SwimIntent(0, 0, 0, -1), "Adaptive Follow S pitches down without slow");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.S, Pressed = false }, true);
             adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(300, 0) }, true);
             adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false);
             adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(1, 0) }, true);
@@ -162,15 +179,30 @@ public static class ControlPresetChecks
                     builtins[4], 0.12f, false).X;
             Require(Math.Abs(deliveredYaw - 0.48f) < 0.01f,
                 "Adaptive Follow filtering preserves total deliberate turn");
-            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.C, Pressed = true }, true);
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Right, Pressed = true }, true);
+            Require(!adaptiveInput.AdaptiveFreeLookHeld, "Right Shift does not enter free-look");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Right, Pressed = false }, true);
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Left, Pressed = true }, true);
             adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(80, 80) }, true);
             Require(adaptiveInput.AdaptiveFreeLookHeld &&
                 adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false).Yaw == 0,
                 "C routes mouse away from fish");
-            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.C, Pressed = false }, true);
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Left, Pressed = false }, true);
             Require(!adaptiveInput.AdaptiveFreeLookHeld &&
                 adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false).Yaw == 0,
-                "C release clears free-look mouse motion");
+                "Left Shift release clears free-look mouse motion");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Left, Pressed = true }, true);
+            adaptiveInput.ClearQueued();
+            adaptiveInput.Select(builtins[3]);
+            Require(!adaptiveInput.AllReleased, "held Left Shift blocks preset switch");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.Shift,
+                Location = KeyLocation.Left, Pressed = false }, true);
+            Require(adaptiveInput.AllReleased, "Left Shift release rearms after preset switch");
             var adaptiveCopy = store.Duplicate(ControlPreset.AdaptiveFollowId, "My Adaptive");
             store.Choose(adaptiveCopy.Id);
             store.Save();
