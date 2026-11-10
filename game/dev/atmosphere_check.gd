@@ -73,6 +73,9 @@ func _run() -> void:
 	if plane.subdivide_width != 48 or plane.subdivide_depth != 48 or plane.size != Vector2(upper_box.size.x + 14.0, upper_box.size.z + 14.0):
 		fail("surface mesh does not cover the shoreline with bounded wave detail")
 		return
+	if absf(surface_material.get_shader_parameter("surface_half_size") - plane.size.x * 0.5) > 0.001:
+		fail("overhead surface edge fade is not anchored to its actual mesh")
+		return
 	var upper_top: float = upper.global_position.y + upper_box.size.y * 0.5
 	if surface.global_position.y - 0.242 <= upper_top or surface.global_position.y > upper_top + 0.45 or surface.global_position.y < 9.0:
 		fail("surface is not just above the saved upper collision")
@@ -163,7 +166,7 @@ func _run() -> void:
 			if absf(position.x) > 49.5 or absf(position.z) > 49.5:
 				fail("prepared rock/coral anchor falls outside caustic footprint")
 				return
-	if caustic.to_local(Vector3(0, main.get_node("Habitat/Seabed").GetHeightAt(0.0, -28.0), -28)).y >= -caustic.size.y * 0.5:
+	if caustic.to_local(Vector3(0, main.get_node("Habitat/Seabed").GetHeightAt(0.0, -21.0), -21)).y >= -caustic.size.y * 0.5:
 		fail("deep shelf still receives projected caustics")
 		return
 	if screen.layer >= main.get_node("PrototypeHelp").layer or screen.layer >= shell_canvas.layer or rect.mouse_filter != Control.MOUSE_FILTER_IGNORE:

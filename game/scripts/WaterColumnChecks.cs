@@ -22,6 +22,11 @@ public static class WaterColumnChecks
         var upper = main.GetNode<CollisionShape3D>("Habitat/HiddenLimits/Upper");
         var upperBox = (BoxShape3D)upper.Shape;
         var surface = main.GetNode<MeshInstance3D>("UnderwaterAtmosphere/WaterEffects/OverheadSurface");
+        var surfaceMaterial = (ShaderMaterial)surface.MaterialOverride;
+        Require(surfaceMaterial.Shader.Code.Contains("fog_disabled") &&
+            surfaceMaterial.Shader.Code.Contains("deep_cue") &&
+            surfaceMaterial.Shader.Code.Contains("edge_fade"),
+            "overhead-only deep transmission is missing");
         var surfaceY = upper.GlobalPosition.Y + upperBox.Size.Y * 0.5f + 0.34f;
         Require(Mathf.Abs(surfaceY - atmosphere.SurfaceHeight) < 0.001f &&
             Mathf.Abs(surfaceY - surface.GlobalPosition.Y) < 0.001f, "surface depth zero drifted");
@@ -43,8 +48,12 @@ public static class WaterColumnChecks
         {
             var store = new LightingPresetStore(file);
             var shallow = At(surfaceY, atmosphere, camera, env, sun);
+            Require(Mathf.Abs((float)surfaceMaterial.GetShaderParameter("camera_depth")) < 0.001f,
+                "shallow surface changed from its base treatment");
             var middle = At((surfaceY + deepY) * 0.5f, atmosphere, camera, env, sun);
             var deep = At(deepY, atmosphere, camera, env, sun);
+            Require(Mathf.Abs((float)surfaceMaterial.GetShaderParameter("camera_depth") - 1f) < 0.001f,
+                "deep overhead surface did not receive camera depth");
             Require(shallow.Depth < 0.001f && Mathf.Abs(middle.Depth - 0.5f) < 0.001f &&
                 deep.Depth > 0.999f, "depth normalization/easing failed");
             Require(shallow.Fog < middle.Fog && middle.Fog < deep.Fog &&

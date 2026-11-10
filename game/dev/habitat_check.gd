@@ -87,8 +87,8 @@ func _run() -> void:
 	if not is_finite(water_surface_y) or not is_finite(water_deep_y) or absf(water_surface_y - atmosphere.SurfaceHeight) > 0.001 or absf(water_deep_y - atmosphere.DeepReferenceHeight) > 0.001 or water_deep_y >= water_surface_y or not material.shader.code.contains("world_position.y"):
 		fail("seabed water-depth anchors are invalid")
 		return
-	var upper_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, 27.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
-	var lower_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, -28.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	var upper_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, 21.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	var lower_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, -21.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
 	if lower_depth - upper_depth < 0.5:
 		fail("upper/lower ledges cannot receive distinct world-depth treatment")
 		return
@@ -128,14 +128,14 @@ func _run() -> void:
 				fail("off-grid seabed collision hole or height mismatch at %s,%s expected=%s hit=%s" % [sample_x, sample_z, expected, hit])
 				return
 	var bands: Array[float] = []
-	for z in [27, 14, 0, -14, -28]:
+	for z in [21, 11, 0, -11, -21]:
 		bands.append(seabed.call("GetHeightAt", 0.0, float(z)))
 	for i in range(4):
 		if bands[i] - bands[i + 1] < 2.2:
 			fail("five ordered depth bands collapsed: " + str(bands))
 			return
-	for x in [3.0, 24.0]:
-		for z in range(-28, 28):
+	for x in [3.0, 21.0]:
+		for z in range(-21, 21):
 			var a: float = seabed.call("GetHeightAt", x, float(z))
 			var b: float = seabed.call("GetHeightAt", x, float(z + 1))
 			if absf(b - a) > 1.0:

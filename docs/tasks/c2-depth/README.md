@@ -1,8 +1,10 @@
 # c2-depth — depth-structured basin and water-column correction
 
-**State:** P1–P3 IMPLEMENTED / P4 NATIVE FAIL; correction NOT GREEN. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
+**State:** P1–P3 IMPLEMENTED / P4 historical NATIVE FAIL; R1 native authored-route and owner visual/feel PASS; correction GREEN. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
 
 [P1–P3 implementation evidence](qualification/implementation.md) records the depth basin, camera-depth extinction, world-depth lighting and focused T2 checks. [P4 native observation](qualification/native-depth.md) found unreachable authored shallow/deep route markers and unresolved visual criteria; [closeout review](closeout.md) keeps the correction open.
+
+[R1 repair evidence](qualification/r1-repair.md) records the measured player-reach regression, relocated authored lanes, reshaped geology/perimeter, deep surface cue and focused checks. The later [R1 native closeout](qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) verifies every actual authored marker with normal physical-key input, records comparable views/performance and the owner's direct acceptance of the full visual/feel checklist. It preserves the P4 FAIL. [Closeout](closeout.md#r1-native-closeout--2026-11-10) marks this correction GREEN while P2 G2.3/V20 remains open.
 
 ## Purpose
 
@@ -40,7 +42,7 @@ The owner pushed the accepted lighting candidate at `d292aebd` on 2026-11-10. Do
 | P3 | [Depth-integrated lighting](P3-depth-integrated-lighting.txt) | Implemented: world-depth seabed/shaft attenuation, deep caustic fade and shallow/deep probe; native counters blocked by absent display | T2 headless pass; P4 visual/performance review |
 | P4 | [Native depth closeout](P4-native-depth-closeout.txt) | Native review attempted; authored endpoints failed the fish bound, reachable proxies and visual/performance evidence recorded | T3 FAIL; repair and owner judgment needed |
 
-Only P4 is this correction's final closeout. Its `Browser required: yes.` metadata means an actual native Godot/owner handoff. The first P4 attempt did not pass; do not advance to broader P2 acceptance from its proxy route.
+P4 was the original planned closeout. Its `Browser required: yes.` metadata means an actual native Godot/owner handoff. That attempt failed and remains preserved; the later R1 repair and native owner closeout provide this correction's accepted result. P2 still needs G2.3/V20 before Phase completion.
 
 ## Acceptance boundary
 

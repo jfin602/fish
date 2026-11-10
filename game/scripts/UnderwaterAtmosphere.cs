@@ -254,6 +254,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _environment.AmbientLightEnergy = AmbientEnergy * (1f - 0.52f * depth);
         _sun.LightEnergy = SunEnergy * (1f - 0.65f * depth);
         _skyMaterial?.SetShaderParameter("water_depth", depth);
+        _surfaceMaterial?.SetShaderParameter("camera_depth", depth);
     }
 
     private void AddSky()
@@ -300,6 +301,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial.SetShaderParameter("wave_height", SurfaceWaveHeight);
         _surfaceMaterial.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
         _surfaceMaterial.SetShaderParameter("wave_detail", SurfaceWaveDetail);
+        _surfaceMaterial.SetShaderParameter("surface_half_size", (extent.X + 14.0f) * 0.5f);
         _surface = new MeshInstance3D
         {
             Name = "OverheadSurface",

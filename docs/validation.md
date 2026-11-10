@@ -46,7 +46,7 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
-**Current P2 result (2026-11-10):** [c2-depth P4 native evidence](tasks/c2-depth/qualification/native-depth.md) leaves V18 and V19 OPEN. V18 has a demonstrated failure: the authored shallow/deep markers on both lanes lie beyond the fish's ±24.9 m horizontal clamp, despite reachable proxy, alternate, tunnel and shelter swims. V19 shows cooler/dimmer depth direction and measured same-revision counters, but full visible distance fade, bright deep overhead surface and owner judgment are unresolved. V20 remains OPEN under the [P2 P8 review](tasks/p2/closeout.md); no new G2.3 claim follows from c2-depth.
+**Current P2 result (2026-11-10):** [c2-depth P4 native evidence](tasks/c2-depth/qualification/native-depth.md) remains a historical FAIL. The later [R1 native closeout](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) reaches all repaired authored primary/alternate and tunnel/shelter markers with normal physical-key input, captures comparable native views and warmed performance counters, and records the owner's explicit direct-play acceptance of all requested visual, effect, movement/camera/UI/GFX and smoothness criteria. **V18 and V19 PASS** for that source/display. The owner report is distinct from fixed-image and scripted-route evidence. **V20 remains OPEN** under the [P2 P8 review](tasks/p2/closeout.md); c2-depth does not qualify G2.3 or complete P2.
 
 ## Core movement acceptance
 

@@ -63,6 +63,10 @@ func marker(routes: Node3D, name: String) -> Vector3:
 		return Vector3.ZERO
 	return found.global_position
 
+func usable_margin(at: Vector3, reachable: Dictionary) -> float:
+	return minf(minf(at.x - reachable["x-1"], reachable["x1"] - at.x),
+		minf(at.z - reachable["z-1"], reachable["z1"] - at.z))
+
 func _run() -> void:
 	var packed: PackedScene = load("res://scenes/main.tscn")
 	var main: Node3D = packed.instantiate()
@@ -146,6 +150,24 @@ func _run() -> void:
 	if not sphere_hits(space, fish.global_position, 0.48, fish).is_empty() or not sphere_hits(space, Vector3(0, 2, 3.8), 0.22, fish).is_empty():
 		fail("spawn or camera starts inside reef collision")
 		return
+	# Measure the authoritative fish's own normal-play clamp after a physics tick.
+	# This catches markers that sit inside the mesh/hidden limits but outside play.
+	var reachable := {}
+	for axis in ["x", "z"]:
+		for sign in [-1, 1]:
+			fish.global_position = Vector3(sign * 35.0, 8.5, 0) if axis == "x" else Vector3(0, 8.5, sign * 35.0)
+			await physics_frame
+			var value: float = fish.global_position.x if axis == "x" else fish.global_position.z
+			reachable[axis + str(sign)] = value
+			if absf(value) < 23.0 or absf(value) > 30.0:
+				fail("normal fish reach probe was obstructed or unclamped: " + axis + str(sign) + "=" + str(value))
+				return
+	fish.global_position = Vector3.ZERO
+	fish.set_physics_process(false)
+	if usable_margin(Vector3(reachable["x1"] + 0.5, 0, 0), reachable) >= 3.7 or \
+		usable_margin(Vector3(0, 0, reachable["z-1"] - 0.5), reachable) >= 3.7:
+		fail("reachability regression did not reject mandatory markers beyond normal fish travel")
+		return
 	if not route_clear(space, fish, [marker(routes, "OpenStart"), marker(routes, "OpenMid"), marker(routes, "OpenFar")], "open"):
 		return
 	if not route_clear(space, fish, [marker(routes, "TunnelEntry"), marker(routes, "TunnelCenter"), marker(routes, "TunnelExit")], "tunnel"):
@@ -159,6 +181,10 @@ func _run() -> void:
 		var floors: Array[float] = []
 		for name in lane:
 			var at := marker(routes, name)
+			var margin := usable_margin(at, reachable)
+			if margin < 3.7:
+				fail("mandatory marker outside usable normal-play region: " + name + " margin=" + str(margin) + " reach=" + str(reachable))
+				return
 			var floor_y: float = seabed.call("GetHeightAt", at.x, at.z)
 			var clearance: float = routes.get_node(name).get_meta("height_above_floor", 2.0)
 			if absf(at.y - floor_y - clearance) > 0.01:
@@ -172,6 +198,17 @@ func _run() -> void:
 				return
 		if not route_clear(space, fish, points, str(lane[0])):
 			return
+		fish.global_position = points[0]
+		for target in points.slice(1):
+			if fish.move_and_collide(target - fish.global_position) != null or fish.global_position.distance_to(target) > 0.05:
+				fail("accepted fish collision body could not swim authored lane to " + str(target))
+				return
+		for target_index in range(points.size() - 2, -1, -1):
+			var target: Vector3 = points[target_index]
+			if fish.move_and_collide(target - fish.global_position) != null or fish.global_position.distance_to(target) > 0.05:
+				fail("accepted fish collision body could not return along authored lane to " + str(target))
+				return
+		print("REEF_DEPTH_ROUTE lane=%s points=%s floors=%s" % [lane[0], points, floors])
 	var tunnel := marker(routes, "TunnelCenter")
 	var shelter := marker(routes, "ShelterCenter")
 	if ray_hit(space, tunnel, tunnel + Vector3.UP * 5.0, fish).get("collider") != rocks.get_node("TunnelRoof"):
@@ -191,11 +228,10 @@ func _run() -> void:
 	if marker(routes, "UpperLandmark").y - marker(routes, "LowerLandmark").y < 4.0 or upper_coral_top < 4.0:
 		fail("upper/lower landmark height separation or upper coral missing")
 		return
-	fish.set_physics_process(false)
 	fish.global_position = marker(routes, "TunnelEntry")
 	var tunnel_motion: Vector3 = marker(routes, "TunnelExit") - fish.global_position
 	if fish.move_and_collide(tunnel_motion) != null or fish.global_position.distance_to(marker(routes, "TunnelExit")) > 0.05:
 		fail("accepted fish root could not traverse saved tunnel centerline")
 		return
-	print("REEF_CHECK_OK rocks=10 corals=8 sources=9 seabed_materials=4 triangles=%d routes=open,tunnel,shelter,vertical,depth,alternate camera_probe=clear" % triangles)
+	print("REEF_CHECK_OK rocks=10 corals=8 sources=9 seabed_materials=4 triangles=%d routes=open,tunnel,shelter,vertical,depth,alternate reach=%s marker_margin>=3.7 camera_probe=clear" % [triangles, reachable])
 	quit()

@@ -112,7 +112,7 @@ position = Vector3(10.1, 0, -13.2)
 collision_layer = 1
 collision_mask = 0
 metadata/source_id = "rock_face_01"
-metadata/height_above_floor = 4.4
+metadata/height_above_floor = 5.2
 
 [node name="Visual" type="Node3D" parent="Rocks/ShelterRoof"]
 rotation = Vector3(0, 0.1745329, 0)
@@ -152,7 +152,7 @@ position = Vector3(0, 1.7, 0)
 shape = SubResource("vertical_cap")
 
 [node name="BoulderMarker" type="StaticBody3D" parent="Rocks"]
-position = Vector3(19.7, 0, 6)
+position = Vector3(17.5, 0, 6)
 collision_layer = 1
 collision_mask = 0
 metadata/source_id = "boulder_01"
@@ -299,36 +299,36 @@ position = Vector3(11.5, 4, -1)
 metadata/height_above_floor = 8.5
 
 [node name="DepthShallow" type="Marker3D" parent="Routes"]
-position = Vector3(3, 0, 27)
+position = Vector3(3, 0, 21)
 
 [node name="DepthUpper" type="Marker3D" parent="Routes"]
-position = Vector3(3, 0, 14)
+position = Vector3(3, 0, 11)
 
 [node name="DepthMiddle" type="Marker3D" parent="Routes"]
 position = Vector3(3, 0, 0)
 
 [node name="DepthLower" type="Marker3D" parent="Routes"]
-position = Vector3(3, 0, -14)
+position = Vector3(3, 0, -11)
 
 [node name="DepthDeep" type="Marker3D" parent="Routes"]
-position = Vector3(3, 0, -28)
+position = Vector3(3, 0, -21)
 
 [node name="AltShallow" type="Marker3D" parent="Routes"]
-position = Vector3(24, 0, 27)
+position = Vector3(21, 0, 21)
 metadata/height_above_floor = 3.0
 
 [node name="AltUpper" type="Marker3D" parent="Routes"]
-position = Vector3(24, 0, 14)
+position = Vector3(21, 0, 11)
 metadata/height_above_floor = 3.0
 
 [node name="AltMiddle" type="Marker3D" parent="Routes"]
-position = Vector3(24, 0, 0)
+position = Vector3(21, 0, -1.5)
 metadata/height_above_floor = 3.0
 
 [node name="AltLower" type="Marker3D" parent="Routes"]
-position = Vector3(24, 0, -14)
+position = Vector3(21, 0, -11)
 metadata/height_above_floor = 3.0
 
 [node name="AltDeep" type="Marker3D" parent="Routes"]
-position = Vector3(24, 0, -28)
+position = Vector3(21, 0, -21)
 metadata/height_above_floor = 3.0

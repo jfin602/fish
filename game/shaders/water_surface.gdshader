@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded, cull_front, blend_mix;
+render_mode unshaded, cull_front, blend_mix, fog_disabled;
 
 // The surface is viewed from below. Time is supplied by the atmosphere so pause freezes it.
 uniform float surface_time = 0.0;
@@ -7,6 +7,8 @@ uniform vec3 sun_direction = vec3(0.0, 1.0, 0.0);
 uniform float wave_height = 1.0;
 uniform float wave_speed = 1.0;
 uniform float wave_detail = 0.8;
+uniform float camera_depth = 0.0;
+uniform float surface_half_size = 45.5;
 
 varying vec3 surface_world;
 varying vec3 surface_normal;
@@ -39,7 +41,15 @@ void fragment() {
     float glint = pow(sun, 150.0) * (0.7 + 0.3 * ripple);
     vec3 turquoise = mix(vec3(0.08, 0.42, 0.49), vec3(0.20, 0.66, 0.67),
         clamp(0.5 + 0.35 * ripple + 0.15 * wave_detail * detail, 0.0, 1.0));
+    float upward = smoothstep(0.15, 0.65, ray_up.y);
+    float deep_cue = camera_depth * upward;
+    // Only the overhead interface keeps transmitted light through deep water.
+    // Horizontal geometry still uses the unchanged water-column fog.
     ALBEDO = turquoise + vec3(0.22, 0.44, 0.40) * fresnel
-             + vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint;
-    ALPHA = mix(0.62, 0.88, fresnel);
+             + vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint
+             + deep_cue * (vec3(0.09, 0.24, 0.25) + vec3(0.26, 0.31, 0.20) * halo);
+    float edge_distance = max(abs(surface_world.x), abs(surface_world.z));
+    float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
+        surface_half_size - 2.0, edge_distance);
+    ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade;
 }

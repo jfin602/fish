@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-10. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 NOT GREEN after P8 and the failed c2-depth P4 native review.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-10. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 IN PROGRESS / NOT GREEN. c2-depth R1 is owner-green, qualifying G2.1/V18 and G2.2/V19 on the observed candidate; G2.3/V20 remains open.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -12,7 +12,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; P1–P6 implemented, [P8 review](tasks/p2/closeout.md) and [c2-depth P4 native failure](tasks/c2-depth/closeout.md) retain G2.1–G2.3 open. |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; [c2-depth R1 closeout](tasks/c2-depth/closeout.md#r1-native-closeout--2026-11-10) qualifies G2.1/G2.2, while G2.3/V20 still needs owner/native evidence. |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -90,13 +90,13 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained. [c2-depth](tasks/c2-depth/README.md) P1–P3 implemented a five-band candidate and depth lighting, but [P4 native review](tasks/c2-depth/qualification/native-depth.md) found unreachable authored endpoints and failed visual criteria. G2 Gates stay open until repaired and directly reobserved. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
+**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained. [c2-depth](tasks/c2-depth/README.md) P1–P3 implemented the five-band candidate and depth lighting; [P4 native review](tasks/c2-depth/qualification/native-depth.md) historically failed unreachable endpoints and visual criteria. [R1](tasks/c2-depth/qualification/r1-repair.md) repaired the candidate; its [native closeout](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) passed actual authored routes and received the owner's direct acceptance of terrain, depth presentation, effects, controls/UI and smoothness. G2.1 and G2.2 pass for this source; G2.3 remains open. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
 ### G2.1 — Natural reef habitat and traversal
 
-**Result: BLOCKED with native FAIL.** P3/P4 established the continuous collidable seabed, separate P1 fixture and complete prepared model/material placement. The [c2-depth P4 native review](tasks/c2-depth/qualification/native-depth.md) found both depth lanes' shallow/deep markers beyond the fish's ±24.9 m bound, while the several-band view still reads as terraces and exposed rim. Reachable proxy, alternate, tunnel and shelter routes completed; full V18 traversal and owner comfort did not. [P8 criterion review](tasks/p2/closeout.md#g21--natural-habitat-and-traversal--v18) remains historical baseline evidence.
+**Result: PASS for the R1 observed candidate.** P3/P4 established the continuous collidable seabed, separate P1 fixture and complete prepared model/material placement. The [c2-depth P4 native review](tasks/c2-depth/qualification/native-depth.md) historically failed because both lanes' shallow/deep markers were beyond the ±24.9 m fish bound and the visible terrain read as terraces/rim. The later [R1 native run](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) reached every repaired authored marker, returned on both lanes, and crossed tunnel/shelter using normal key events. The owner confirmed direct hand-play of those routes and accepted naturalness, perimeter, collision and camera comfort. Focused containment/route checks passed. V18 passes; the [P8 criterion review](tasks/p2/closeout.md#g21--natural-habitat-and-traversal--v18) remains historical baseline evidence.
 
 - Normal play no longer exposes the P1 flat-floor/ceiling/test-course presentation, colored target spheres, camera-check post or other obvious developer geometry.
 - Build a continuous natural seabed with varied elevation, coral/reef areas, rock walls/formations, arches or tunnels/caves, overhangs, open swimming pockets and recognizable landmarks at multiple depths.
@@ -107,9 +107,9 @@ P2 turns the movement laboratory into a place that already feels like a game whe
 
 ### G2.2 — Convincing underwater atmosphere and renderer
 
-**Result: BLOCKED.**
+**Result: PASS for the R1 observed candidate.**
 
-P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water/light correction](tasks/c2-watet-light-fx/closeout.md) added the animated overhead surface, organic moving caustics, caustic-aligned shafts and GFX presets. c2-depth now shows a cooler/dimmer native depth direction, but the [P4 record](tasks/c2-depth/qualification/native-depth.md) does not prove the full visible distance fade and finds no distinct bright overhead surface from deep water. Natural GFX remained legible, and same-revision performance was measured with limits. Owner judgment remains unobserved; prior P7/P8 observations are historical, not proof of this depth contract.
+P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water/light correction](tasks/c2-watet-light-fx/closeout.md) added the animated overhead surface, organic moving caustics, caustic-aligned shafts and GFX presets. The [P4 record](tasks/c2-depth/qualification/native-depth.md) historically found no distinct bright deep overhead surface. The [R1 native addendum](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) captures cooler/dimmer shallow-to-deep views, a bright region in two fixed deep upward angles and warmed same-source performance counters. The owner directly accepted horizontal range progression, several-band world-depth read, deep upward orientation in motion, caustic/shaft attenuation, GFX/preset comfort and smoothness. Focused water-column and unchanged-movement checks passed. V19 passes for this candidate; the 60 Hz cap and prior varied samples remain measurement limits.
 
 - P2/P1 provides the Compatibility/Forward+ comparison. The owner ran Forward+ on the real desktop, observed smooth performance and selected it for P2. P2/P2 locked the tracked project to Forward+ and recorded that evidence; another native Compatibility run is not required unless Forward+ later develops a concrete blocker.
 - With **Forward+**, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.

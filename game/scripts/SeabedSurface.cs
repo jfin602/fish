@@ -9,8 +9,8 @@ public partial class SeabedSurface : StaticBody3D
     public const float HalfExtent = 42.0f;
     public const float CellSize = 1.5f;
     public const int CellsPerSide = 56;
-    // Center of the authored deep traversal shelf, away from the rising rim.
-    public const float DeepShelfReferenceZ = -28.0f;
+    // Center of the reachable authored deep shelf, away from the outer rise.
+    public const float DeepShelfReferenceZ = -21.0f;
     private ShaderMaterial? _waterMaterial;
 
     public void SetWaterColumn(float surfaceY, float deepY)
@@ -69,27 +69,31 @@ public partial class SeabedSurface : StaticBody3D
 
     public float GetHeightAt(float x, float z)
     {
-        // Unequal, wandering contours expose five broad depth bands along the basin.
-        // Each transition is a slope that remains part of the same triangulated mesh.
-        var deepToLower = z - 2.0f * Mathf.Sin(0.14f * x + 0.3f);
-        var lowerToMiddle = z + 2.5f * Mathf.Sin(0.11f * x - 0.7f);
-        var middleToUpper = z - 2.1f * Mathf.Sin(0.17f * x + 1.4f);
-        var upperToShallow = z + 2.8f * Mathf.Sin(0.10f * x + 0.6f);
+        // Oblique, unequal transitions overlap in perspective instead of forming
+        // four long parallel steps. They remain slopes on one collidable surface.
+        var deepToLower = z - 0.05f * x - 3.1f * Mathf.Sin(0.16f * x + 0.3f);
+        var lowerToMiddle = z - 0.20f * x + 2.8f * Mathf.Sin(0.12f * x - 0.7f);
+        var middleToUpper = z + 0.08f * x - 2.5f * Mathf.Sin(0.17f * x + 1.4f);
+        var upperToShallow = z - 0.12f * x + 3.0f * Mathf.Sin(0.11f * x + 0.6f);
         var shelves = -9.4f
-            + 3.3f * Smooth(-25.0f, -18.0f, deepToLower)
-            + 3.2f * Smooth(-11.0f, -4.0f, lowerToMiddle)
-            + 3.1f * Smooth(3.0f, 10.0f, middleToUpper)
-            + 3.2f * Smooth(17.0f, 24.0f, upperToShallow);
-        var folds = 0.30f * Mathf.Sin(0.19f * x + 0.13f * z) * Mathf.Sin(0.23f * z)
-            + 0.18f * Mathf.Sin(0.37f * x - 0.16f * z);
-        // Local shoulders and a channel break the contour continuity without holes.
-        var westernShoulder = 1.0f * Ellipse(x, z, -23.0f, -3.0f, 12.0f, 17.0f);
-        var easternChannel = -0.9f * Ellipse(x, z, 23.0f, 7.0f, 10.0f, 20.0f);
-        // The irregular outer rise meets the collision-only side limits above play.
-        var edge = Mathf.Max(Mathf.Abs(x + 1.5f * Mathf.Sin(0.11f * z)),
-            Mathf.Abs(z + 1.2f * Mathf.Sin(0.13f * x)));
-        var rim = 19.0f * Smooth(31.0f, 39.0f, edge);
-        return shelves + folds + westernShoulder + easternChannel + rim;
+            + 3.3f * Smooth(-21.5f, -14.0f, deepToLower)
+            + 3.2f * Smooth(-10.5f, -3.0f, lowerToMiddle)
+            + 3.1f * Smooth(2.0f, 9.5f, middleToUpper)
+            + 3.2f * Smooth(12.0f, 19.0f, upperToShallow);
+        var folds = 0.52f * Mathf.Sin(0.17f * x + 0.11f * z) * Mathf.Sin(0.20f * z)
+            + 0.30f * Mathf.Sin(0.34f * x - 0.13f * z);
+        var westernShoulder = 1.5f * Ellipse(x, z, -22.0f, -2.0f, 11.0f, 15.0f);
+        var easternChannel = -1.5f * Ellipse(x, z, 23.0f, 7.0f, 8.0f, 20.0f);
+        var cut = -1.0f * Ellipse(x, z, -12.0f, 18.0f, 7.0f, 12.0f);
+        var ridge = 2.1f * Ellipse(x, z, 29.0f, -8.0f, 8.0f, 13.0f)
+            + 1.8f * Ellipse(x, z, -30.0f, 19.0f, 7.0f, 10.0f);
+        // The collision-only limits contain play; a low broken outer rise avoids
+        // advertising one continuous basin wall across the horizon.
+        var edge = Mathf.Max(Mathf.Abs(x + 2.3f * Mathf.Sin(0.10f * z)),
+            Mathf.Abs(z + 2.0f * Mathf.Sin(0.12f * x)));
+        var outerRise = (4.0f + 2.0f * Mathf.Sin(0.12f * x + 0.09f * z)
+            * Mathf.Sin(0.08f * z - 0.05f * x)) * Smooth(31.0f, 40.0f, edge);
+        return shelves + folds + westernShoulder + easternChannel + cut + ridge + outerRise;
     }
 
     private static float Ellipse(float x, float z, float cx, float cz, float rx, float rz)
