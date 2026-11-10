@@ -1,0 +1,313 @@
+{
+  "source": "assets/faf/terrain/terrain_001_family.blend",
+  "modularity": "irregular zero-height overlap apron",
+  "assets": [
+    {
+      "faf_id": "FAF-TERRAIN-001A",
+      "category": "TERRAIN",
+      "species_or_type": "open_sand",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        11.30207,
+        9.66536,
+        0.115
+      ],
+      "triangles": 128,
+      "materials": 1,
+      "material_names": [
+        "mat__terrain_sand_warm_light"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "open_sand",
+        "footprint": [
+          10.8,
+          8.6
+        ],
+        "elevation": 0.22,
+        "slope_direction": 0.0,
+        "roughness": 0.16,
+        "edge_profile": 0.95,
+        "reef_coverage": 0.0,
+        "seed": 6101
+      },
+      "seed": 6101,
+      "glb": "game/assets/faf/terrain/terrain_001a_open_sand.glb"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-001B",
+      "category": "TERRAIN",
+      "species_or_type": "rolling",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        5.58059,
+        4.8535,
+        0.28586
+      ],
+      "triangles": 128,
+      "materials": 1,
+      "material_names": [
+        "mat__terrain_sand_warm_light"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "rolling",
+        "footprint": [
+          5.2,
+          4.4
+        ],
+        "elevation": 0.53,
+        "slope_direction": 0.4,
+        "roughness": 0.42,
+        "edge_profile": 0.75,
+        "reef_coverage": 0.0,
+        "seed": 6102
+      },
+      "seed": 6102,
+      "glb": "game/assets/faf/terrain/terrain_001b_rolling.glb"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-001C",
+      "category": "TERRAIN",
+      "species_or_type": "reef_shelf",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        5.43793,
+        4.8413,
+        1.01357
+      ],
+      "triangles": 128,
+      "materials": 3,
+      "material_names": [
+        "mat__terrain_sand_warm_light",
+        "mat__terrain_sand_rock_transition",
+        "mat__terrain_reef_cool_slate"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "reef_shelf",
+        "footprint": [
+          5.0,
+          4.7
+        ],
+        "elevation": 0.89,
+        "slope_direction": 0.2,
+        "roughness": 0.3,
+        "edge_profile": 0.83,
+        "reef_coverage": 0.83,
+        "seed": 6103
+      },
+      "seed": 6103,
+      "glb": "game/assets/faf/terrain/terrain_001c_reef_shelf.glb"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-001D",
+      "category": "TERRAIN",
+      "species_or_type": "slope",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        5.80388,
+        4.44369,
+        0.59733
+      ],
+      "triangles": 128,
+      "materials": 2,
+      "material_names": [
+        "mat__terrain_sand_warm_light",
+        "mat__terrain_sand_rock_transition"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "slope",
+        "footprint": [
+          5.6,
+          4.2
+        ],
+        "elevation": 0.7,
+        "slope_direction": 0.65,
+        "roughness": 0.22,
+        "edge_profile": 0.75,
+        "reef_coverage": 0.42,
+        "seed": 6104
+      },
+      "seed": 6104,
+      "glb": "game/assets/faf/terrain/terrain_001d_slope.glb"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-001E",
+      "category": "TERRAIN",
+      "species_or_type": "drop_off",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        4.8058,
+        5.14451,
+        1.10088
+      ],
+      "triangles": 128,
+      "materials": 3,
+      "material_names": [
+        "mat__terrain_sand_warm_light",
+        "mat__terrain_sand_rock_transition",
+        "mat__terrain_reef_cool_slate"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "drop_off",
+        "footprint": [
+          5.1,
+          4.8
+        ],
+        "elevation": 1.02,
+        "slope_direction": 0.0,
+        "roughness": 0.18,
+        "edge_profile": 0.9,
+        "reef_coverage": 0.78,
+        "seed": 6105
+      },
+      "seed": 6105,
+      "glb": "game/assets/faf/terrain/terrain_001e_drop_off.glb"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-001F",
+      "category": "TERRAIN",
+      "species_or_type": "rocky_floor",
+      "generator": "terrain.patch.v1",
+      "dimensions_m": [
+        5.09786,
+        5.316,
+        0.47823
+      ],
+      "triangles": 128,
+      "materials": 3,
+      "material_names": [
+        "mat__terrain_sand_warm_light",
+        "mat__terrain_sand_rock_transition",
+        "mat__terrain_reef_cool_slate"
+      ],
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_edge_height_m": 0.0,
+      "skirt_depth_m": 0.09,
+      "spec": {
+        "profile": "rocky_floor",
+        "footprint": [
+          5.3,
+          4.9
+        ],
+        "elevation": 0.62,
+        "slope_direction": 1.1,
+        "roughness": 0.63,
+        "edge_profile": 0.91,
+        "reef_coverage": 0.72,
+        "seed": 6106
+      },
+      "seed": 6106,
+      "glb": "game/assets/faf/terrain/terrain_001f_rocky_floor.glb"
+    }
+  ]
+}

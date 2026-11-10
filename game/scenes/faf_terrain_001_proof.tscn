@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_terrain_001_proof.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="Sand"]
+albedo_color = Color(0.66, 0.64, 0.50, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(24, 18)
+material = SubResource("Sand")
+
+[node name="FAFTerrain001Proof" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="FixtureFloor" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.15, 0)
+mesh = SubResource("Ground")
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0, 6.7, 13.8)
+current = true
+fov = 53.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.72, 0.7, 0)
+light_energy = 0.86
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
