@@ -34,6 +34,9 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "4,30,0.5")] public float MoteLifetime { get; set; } = 18.0f;
 
     private Godot.Environment? _environment;
+    private ShaderMaterial? _skyMaterial;
+    private ShaderMaterial? _surfaceMaterial;
+    private MeshInstance3D? _surface;
     private DirectionalLight3D? _sun;
     private Node3D? _effects;
     private CanvasLayer? _screenLayer;
@@ -91,11 +94,13 @@ public partial class UnderwaterAtmosphere : Node3D
 
         _effects = new Node3D { Name = "WaterEffects" };
         AddChild(_effects);
+        AddSky();
+        AddSurface(main);
         AddCaustics();
         AddMotes();
         AddScreenTreatment();
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
-        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
+        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
 
     public void SetEnabled(bool enabled)
@@ -105,6 +110,8 @@ public partial class UnderwaterAtmosphere : Node3D
         {
             _environment.FogEnabled = enabled;
             _environment.VolumetricFogEnabled = enabled;
+            _environment.BackgroundMode = enabled && _skyMaterial is not null
+                ? Godot.Environment.BGMode.Sky : Godot.Environment.BGMode.Color;
             _environment.BackgroundColor = enabled ? BackgroundWater : new Color(0.025f, 0.19f, 0.24f);
             _environment.AmbientLightSource = enabled
                 ? Godot.Environment.AmbientSource.Color : Godot.Environment.AmbientSource.Bg;
@@ -126,6 +133,7 @@ public partial class UnderwaterAtmosphere : Node3D
     {
         if (!_enabled || _effects is null) return;
         _presentationSeconds += delta;
+        _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
         for (var index = 0; index < _caustics.Length; index++)
         {
@@ -135,6 +143,59 @@ public partial class UnderwaterAtmosphere : Node3D
                 0.45f * Mathf.Cos(phase * 0.8f));
             decal.Rotation = new Vector3(0, 0.035f * Mathf.Sin(phase * 0.6f), 0);
         }
+    }
+
+    private void AddSky()
+    {
+        const string path = "res://shaders/underwater_sky.gdshader";
+        var shader = ResourceLoader.Load<Shader>(path);
+        if (shader is null)
+        {
+            GD.PushError("FISH_ATMOSPHERE_MISSING_SKY");
+            return;
+        }
+        _skyMaterial = new ShaderMaterial { Shader = shader };
+        _skyMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
+        _environment!.Sky = new Sky { SkyMaterial = _skyMaterial };
+        _environment.BackgroundMode = Godot.Environment.BGMode.Sky;
+    }
+
+    private void AddSurface(Node3D main)
+    {
+        // The saved upper collision owns the boundary; this mesh has no physics shape.
+        var upper = main.GetNode<CollisionShape3D>("Habitat/HiddenLimits/Upper");
+        if (upper.Shape is not BoxShape3D box)
+        {
+            GD.PushError("FISH_ATMOSPHERE_MISSING_UPPER_LIMIT");
+            return;
+        }
+        const string path = "res://shaders/water_surface.gdshader";
+        var shader = ResourceLoader.Load<Shader>(path);
+        if (shader is null)
+        {
+            GD.PushError("FISH_ATMOSPHERE_MISSING_SURFACE_SHADER");
+            return;
+        }
+        var extent = box.Size;
+        var plane = new PlaneMesh
+        {
+            Size = new Vector2(extent.X, extent.Z),
+            SubdivideWidth = 32,
+            SubdivideDepth = 32,
+        };
+        _surfaceMaterial = new ShaderMaterial { Shader = shader };
+        _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
+        _surfaceMaterial.SetShaderParameter("surface_time", 0.0f);
+        _surface = new MeshInstance3D
+        {
+            Name = "OverheadSurface",
+            Mesh = plane,
+            MaterialOverride = _surfaceMaterial,
+            CustomAabb = new Aabb(new Vector3(-extent.X * 0.5f, -0.2f, -extent.Z * 0.5f),
+                new Vector3(extent.X, 0.4f, extent.Z)),
+            Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0, extent.Y * 0.5f + 0.22f, 0),
+        };
+        _effects!.AddChild(_surface);
     }
 
     private void AddCaustics()
