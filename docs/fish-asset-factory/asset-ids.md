@@ -19,3 +19,5 @@ The owner's **FAF-001 Yellow Tang** prototype alias is preserved in its history.
 The first rock family has canonical ID **FAF-ROCK-001**. Its four reviewed variants use stable A/B/C/D suffix labels (FAF-ROCK-001A through D) and file stems `rock_001a_reef_boulder` through `rock_001d_reef_boulder`. The suffix denotes a member of the family; the family ID remains the registry identity. See the [rock candidate record](rock-001/README.md).
 
 The first four coral families have canonical IDs **FAF-CORAL-001–004**. Each has A/B/C variants and stems such as `coral_001a_branching`, `coral_002a_rounded`, `coral_003a_tube`, and `coral_004a_fan`. The suffix is a stable family-member label; see the [coral pack record](coral-pack-001/README.md) for all twelve IDs and seeds.
+
+The first vegetation families have canonical IDs **FAF-PLANT-001–003**. Sea grass and broad seaweed use A/B/C; reef algae uses A/B. Stems include `plant_001a_sea_grass`, `plant_002a_broad_seaweed`, and `plant_003a_reef_algae`. The [vegetation pack record](plant-pack-001/README.md) lists all eight variants and seeds.

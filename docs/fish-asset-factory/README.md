@@ -15,3 +15,5 @@ The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fis
 The first original rock family is [FAF-ROCK-001](rock-001/README.md): four deterministic boulder variants with a shared generator, Blender review collection, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
 
 The first original coral pack is [FAF-CORAL-001–004](coral-pack-001/README.md): twelve deterministic assets in branching, rounded, tube and fan families, with Blender family review, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
+
+The first original vegetation pack is [FAF-PLANT-001–003](plant-pack-001/README.md): eight deterministic grass, broad seaweed and reef algae assets with sway-ready height coordinates, family/density review, separate GLBs and isolated Godot proof. It has not been placed into the live P2 habitat.

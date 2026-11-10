@@ -14,3 +14,5 @@ The [art-style contract](art-style.md) owns overall balance. These names guide g
 Use a restrained neutral field with vivid living accents. Shared names help variants remain coherent; species anatomy and readable contrast govern the final choice. Do not infer that every reef object should use every family.
 
 The [first coral pack](coral-pack-001/README.md) adds a warm yellow and muted purple swatch to the code seeds, with limited cyan/blue accents. Its individual records name the selected family and swatch; these remain editable starting colors rather than a scene-wide color lock.
+
+The [first vegetation pack](plant-pack-001/README.md) adds yellow-green and muted teal beside existing reef and deep greens. These remain starting swatches; repeated placements should be judged under actual water-column lighting and beside adjacent coral/rock colors.
