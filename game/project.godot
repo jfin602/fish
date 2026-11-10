@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Fish"
 run/main_scene="res://scenes/main.tscn"
-config/features=PackedStringArray("4.7", "C#", "GL Compatibility")
+config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
 [autoload]
 
@@ -69,5 +69,4 @@ swim_pitch_down={
 
 [rendering]
 
-renderer/rendering_method="gl_compatibility"
-renderer/rendering_method.mobile="gl_compatibility"
+renderer/rendering_method="forward_plus"

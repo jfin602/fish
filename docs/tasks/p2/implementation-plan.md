@@ -10,11 +10,11 @@ Before continuation inspect branch/HEAD/dirty state, `package.json`, final P1/c1
 
 P1 is historical input for the remaining stack; **do not rerun it**. At root `0.2.1`, it added the reversible `tools/dev compare compatibility|forward-plus [--effects=off]` path, `RendererComparison.cs`, `renderer_comparison.tscn` and comparison shaders without changing normal play or `project.godot`. Import/build/scene/prepared-asset/effect-isolation checks passed; automated renderer starts used Xvfb/software rendering. The owner's subsequent real-desktop Forward+ trial supplies the native selection input for P2.
 
-## P2 — Native Forward+ lock
+## P2 — Native Forward+ lock — COMPLETE
 
-The renderer choice is no longer open. The owner ran `./tools/dev compare forward-plus` on the real desktop, reported smooth performance and slightly improved appearance, and explicitly chose Forward+ because its additional rendering capabilities are worthwhile for P2.
+The renderer choice is no longer open. The owner ran `./tools/dev compare forward-plus` on the real desktop, reported smooth performance and slightly improved appearance, and explicitly chose Forward+ because its additional rendering capabilities are worthwhile for P2. The tracked lock and post-lock checks are in [the decision record](qualification/renderer-decision.md).
 
-Treat that owner observation plus P1's reproducible comparison tooling as the decision input. Do **not** require another native Compatibility run. Switch the tracked project/default normal-play renderer to the exact Forward+ method proven by the comparison path, then run/confirm a bounded Forward+ normal-play smoke on representative Fish3, seabed, rock/coral, camera, pause/UI and display behavior. Record source/platform/errors and any available frame timing; if Forward+ materially fails after the tracked lock, stop with the concrete blocker and return to the owner rather than silently falling back.
+The lock uses the exact `forward_plus` method proven by the comparison path. The decision record covers the normal-play Fish3, seabed, rock/coral, camera, pause/UI and display checks, source/platform identity, runtime errors and a bounded idle frame sample. No native Compatibility rerun was needed. If Forward+ materially fails later, record the concrete blocker and return to the owner rather than silently falling back.
 
 Keep `tools/dev compare compatibility` only as a development diagnostic if it remains useful; production/main should have one renderer: Forward+. Update the technical record and write `qualification/renderer-decision.md` with the P1 automated comparison boundary, the owner's real desktop Forward+ selection, the tracked lock, validation results and limitations. Assigned P2 version: `0.2.2`.
 
