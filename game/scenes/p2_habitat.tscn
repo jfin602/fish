@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/SeabedSurface.cs" id="1_seabed"]
+[ext_resource type="PackedScene" path="res://scenes/p2_reef_composition.tscn" id="2_reef"]
 
 [sub_resource type="BoxShape3D" id="east_west_limit"]
 size = Vector3(0.8, 31, 77)
@@ -49,3 +50,5 @@ position = Vector3(0, 9.75, 0)
 shape = SubResource("upper_limit")
 
 [node name="Composition" type="Node3D" parent="."]
+
+[node name="ReefComposition" parent="Composition" instance=ExtResource("2_reef")]

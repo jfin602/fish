@@ -14,7 +14,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p0/` | Executed foundation briefs and evidence. |
 | `docs/tasks/p1/` | Completed core-swimming implementation and [closeout](docs/tasks/p1/closeout.md), with accepted source tuning and evidence limits. |
 | `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
-| `docs/tasks/p2/` | Underwater-world Phase stack; P1 comparison, P2 renderer lock and P3 habitat foundation implemented, P4 composition next. |
+| `docs/tasks/p2/` | Underwater-world Phase stack; P1–P4 implemented, P5 atmosphere next; P7 native world qualification pending. |
 
 ## Implemented Godot/P1 and P2 foundation source boundaries
 
@@ -23,14 +23,14 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/project.godot` | Godot project, owner-selected Forward+ renderer, main scene, display/input defaults, enabled MCP addon/runtime probe. |
 | `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET target and .NET SDK pins. |
 | `game/scenes/main.tscn` | Normal-play root: instances `p2_habitat.tscn`, retains accepted Fish3 controller/camera/input and world light/environment hook. |
-| `game/scenes/p2_habitat.tscn` | Reusable P2 spawn, continuous seabed body, collision-only hidden limits and empty P4 `Composition` entry point. |
+| `game/scenes/p2_habitat.tscn`, `p2_reef_composition.tscn` | Reusable P2 spawn, continuous seabed/hidden limits and authored rock/coral anchors with open, tunnel, shelter and vertical route markers. |
 | `game/scenes/p1_course_fixture.tscn`, `movement_course.tscn` | Byte-preserved P1 main scene and its movement/obstruction course for regression and renderer comparison. |
 | `game/scenes/renderer_comparison.tscn` | P1 diagnostic comparison now instances the dedicated P1 fixture, keeping normal play free of the course. |
 | `game/scripts/Main.cs` | Main-scene initialization, shell setup and smoke integration. |
 | `game/scripts/StarterWorld.cs` | P1 fixture-only local asset readiness and sand/rock/coral/ambient-fish dressing. |
 | `game/scripts/PlayerArt.cs` | Shared checked Fish3 import, rig/clip verification and visual attachment. |
-| `game/scripts/P2HabitatWorld.cs` | Normal P2 readiness, safe spawn and simple environment setup; no movement authority. |
-| `game/scripts/HabitatPalette.cs`, `SeabedSurface.cs` | Checked local four-set terrain palette and one authored basin mesh with matching two-sided collision. P4 can reuse the palette for placed terrain pieces. |
+| `game/scripts/P2HabitatWorld.cs`, `ReefComposition.cs` | Normal P2 readiness, safe spawn, simple environment setup and checked local model installation at authored anchors; no movement authority. |
+| `game/scripts/HabitatPalette.cs`, `SeabedSurface.cs` | Checked local four-set terrain palette and one authored basin mesh with matching two-sided collision. |
 | `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration and tuning. P2 presentation must not take ownership of these. |
 | `game/scripts/ControlPreset.cs`, `ControlPresetStore.cs`, `KeyboardSwimInput.cs`, `MouseSwimInput.cs`, `ControlPresetsPanel.cs` | Implemented built-in/custom control profiles, persistence, intent resolution and pause editor. The accepted baseline has Keyboard Only, Mouse Only and Hybrid Swim. |
 | `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior. P2 geometry must support it without making camera state authoritative. |
@@ -38,7 +38,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
-| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat` and the preserved P1 fixture checks. |
+| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat`, `inspect-reef` and preserved P1 fixture checks. |
 | `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |
 
 ## P2 composition/effects boundaries to introduce only when needed

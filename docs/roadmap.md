@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 IN PROGRESS after the P3 habitat foundation.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 IN PROGRESS after P4 reef composition.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -12,7 +12,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1 comparison, P2 Forward+ lock and P3 habitat foundation implemented; P4 reef composition next; [stack](tasks/p2/README.md). |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1–P4 implemented, P5 atmosphere next; [stack](tasks/p2/README.md). |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -90,13 +90,13 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS; P1 comparison, owner-selected P2 Forward+ lock and P3 habitat foundation implemented; P4 composition and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+**Status: IN PROGRESS; P1 comparison through P4 reef composition implemented; P5 atmosphere, P7 native qualification and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
 ### G2.1 — Natural reef habitat and traversal
 
-**Result: NOT OBSERVED.** P3 established the collidable varied seabed, safe spawn, hidden limits and separate P1 fixture. P4 composition and P7 native traversal/appearance are still required.
+**Result: NOT OBSERVED.** P3 established the collidable varied seabed, safe spawn, hidden limits and separate P1 fixture. P4 now instances all prepared rocks/coral and checks open, tunnel, shelter and vertical geometry; P7 native traversal/appearance and owner judgment are still required.
 
 - Normal play no longer exposes the P1 flat-floor/ceiling/test-course presentation, colored target spheres, camera-check post or other obvious developer geometry.
 - Build a continuous natural seabed with varied elevation, coral/reef areas, rock walls/formations, arches or tunnels/caves, overhangs, open swimming pockets and recognizable landmarks at multiple depths.

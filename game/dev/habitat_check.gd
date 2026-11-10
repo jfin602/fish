@@ -82,8 +82,8 @@ func _run() -> void:
 		if material == null or material.albedo_texture == null or material.normal_texture == null or material.roughness_texture == null:
 			fail("prepared material channel missing on surface " + str(index))
 			return
-	if composition.get_child_count() != 0 or limits.get_child_count() != 5:
-		fail("P4 composition hook or hidden limit set changed")
+	if composition.get_child_count() != 1 or composition.get_node_or_null("ReefComposition") == null or limits.get_child_count() != 5:
+		fail("P4 composition instance or hidden limit set changed")
 		return
 	for child in limits.get_children():
 		if child is not CollisionShape3D or child.shape == null:

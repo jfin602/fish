@@ -30,7 +30,7 @@ Move normal play away from the visible P1 movement-course box while preserving t
 
 Use reusable scene/resource pieces rather than growing `StarterWorld.cs` into a giant world-construction method. Keep static visual and collision responsibilities explicit. Add scene/collision checks for spawn clearance, underside/edge containment and fixture separation. Assigned P3 version: `0.2.3`.
 
-## P4 — Reef tunnels and world composition
+## P4 — Reef tunnels and world composition — COMPLETE
 
 Build the actual exploration space from the prepared palette. Use Coast Sand 01, Ground060, Gravel041 and Rock063 for seabed/material variation; Rock Face 01, Rock Face 02, Coastal Cliff 01 and Boulder 01 for terrain structure; and Heliopora coerulea, Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae for distinct coral silhouettes. The final normal-play habitat **must** visibly use every prepared model at least once and visibly use every prepared terrain material set. Performance is handled through placement, reusable scenes, instancing, LODs or derived lower-cost runtime resources—not by silently omitting an asset. If a prepared asset proves unusable, P4 stops with that blocker unless the owner explicitly changes this requirement. Compose:
 - coral/reef coverage that reads as a floor/ecosystem base rather than two props;

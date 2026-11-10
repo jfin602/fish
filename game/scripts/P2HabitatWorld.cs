@@ -10,7 +10,7 @@ public static class P2HabitatWorld
         var habitat = main.GetNodeOrNull<Node3D>("Habitat");
         var seabed = habitat?.GetNodeOrNull<SeabedSurface>("Seabed");
         var spawn = habitat?.GetNodeOrNull<Marker3D>("Spawn");
-        var composition = habitat?.GetNodeOrNull<Node3D>("Composition");
+        var composition = habitat?.GetNodeOrNull<ReefComposition>("Composition/ReefComposition");
         if (habitat is null || seabed is null || spawn is null || composition is null)
         {
             diagnostic = "FISH_HABITAT_INVALID action=check-p2-habitat-scene-structure";
@@ -23,6 +23,7 @@ public static class P2HabitatWorld
             diagnostic = "FISH_HABITAT_INVALID action=build-continuous-seabed-and-collision";
             return false;
         }
+        if (!composition.TryBuild(seabed, out diagnostic)) return false;
 
         fish.Position = spawn.Position;
         main.GetNode<WorldEnvironment>("WorldEnvironment").Environment = new Godot.Environment
