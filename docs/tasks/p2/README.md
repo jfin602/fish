@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: authored, NOT STARTED, READY TO RUN from root version `0.2.0`.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS. P1 comparison slice implemented from root version `0.2.0`; P2 native renderer selection remains pending.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -17,7 +17,7 @@ P2 does **not** implement feeding, prey/predator AI, growth, persistence/death/h
 
 ## Entry and version
 
-At authoring on 2026-11-09, main was at documentation commit `7c428c403cb9bafdcad1491a9cc404d0f6da171e`; root was `0.1.9`. The current accepted gameplay source is clean `main` `27c4debf0ac04f9cb2eff927c1e31c6b604c0b60` before this documentation-only closeout. P1 is COMPLETE, c1 is reconciled, and root `package.json` is deliberately **`0.2.0`**. [Accepted P1 tuning](../p1/qualification/accepted-tuning.md) is the P2 inheritance record. No P2 implementation has begun.
+At authoring on 2026-11-09, main was at documentation commit `7c428c403cb9bafdcad1491a9cc404d0f6da171e`; root was `0.1.9`. The accepted gameplay source was clean `main` `27c4debf0ac04f9cb2eff927c1e31c6b604c0b60` before the documentation-only closeout. P1 is COMPLETE, c1 is reconciled, and root `package.json` was deliberately **`0.2.0`** at P2 entry. [Accepted P1 tuning](../p1/qualification/accepted-tuning.md) is the P2 inheritance record. P2 implementation had not begun at that authoring point; the P1 comparison slice is now implemented.
 
 P2 entry is satisfied as follows:
 
@@ -34,7 +34,7 @@ The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `READ
 
 | Step | Prompt | Outcome | Assigned version | Tier / handoff |
 | --- | --- | --- | --- | --- |
-| P1 | [Renderer comparison vertical slice](P1-renderer-comparison-vertical-slice.txt) | Reversible Compatibility/Forward+ comparison harness and underwater feature slice | `0.2.1` | T1/T2, no native pause |
+| P1 | [Renderer comparison vertical slice](P1-renderer-comparison-vertical-slice.txt) | Reversible Compatibility/Forward+ comparison harness and underwater feature slice; [implementation evidence](qualification/implementation.md) | `0.2.1` | T1/T2 complete; native selection pending |
 | P2 | [Native renderer lock](P2-native-renderer-lock.txt) | Same-candidate native comparison; one renderer selected/recorded | `0.2.2` | T3, mandatory manual handoff |
 | P3 | [Natural habitat foundation](P3-natural-habitat-foundation.txt) | Continuous seabed, natural limits, new normal-play habitat, P1 course preserved | `0.2.3` | T2 |
 | P4 | [Reef tunnels and world composition](P4-reef-tunnels-and-world-composition.txt) | Coral floor, rock tunnels/arches/overhangs, open/vertical routes, prototype cleanup | `0.2.4` | T2 |
@@ -63,7 +63,7 @@ Do not prefill these as PASS. A shader compiling, a headless scene tree, or a st
 
 ## Execute
 
-From the reviewed P1 close and deliberate `0.2.0` baseline:
+The phase started from the reviewed P1 close and deliberate `0.2.0` baseline. The original stack commands were:
 
 ```bash
 npm run fish:phase:validate -- p2

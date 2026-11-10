@@ -57,6 +57,7 @@ From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `
 | `./tools/dev check` | Compose import, build, a bounded real-main-scene C# smoke, and isolated scene-automation smoke once. |
 | `./tools/dev editor` | Open the Fish editor, forwarding the Fish bridge environment after P2. |
 | `./tools/dev run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]` | Build and launch the real Fish main scene. The optional, validated game-owned argument follows Godot's `--` separator and does not save a preference. |
+| `./tools/dev compare compatibility` or `./tools/dev compare forward-plus` | Build and launch the same P1 main scene inside the bounded P2 rendering slice. Godot 4.7.2 uses `--rendering-method gl_compatibility` / `forward_plus` for one process; `project.godot` stays on Compatibility. Add `--effects=off` to either command to hide comparison effects and fog. Close the game, then launch the other command for native A/B testing. |
 | `./tools/dev inspect-scene <path>` | Inspect a real saved scene; missing paths fail nonzero. |
 | `./tools/dev automation-smoke` | Create/edit/save/reload/assert/remove a disposable scene using Godot APIs. |
 

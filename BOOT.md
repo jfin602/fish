@@ -10,10 +10,10 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Foundation | P0 is complete on the observed Linux/X11 desktop; the Godot .NET project, developer CLI, and isolated Godot Editor MCP path are implemented and qualified for the foundation scope. |
 | Current gameplay | **P1 COMPLETE.** The owner accepted the current post-c1 controls, swimming, third-person camera/body and starter course as sufficient for progression. [P1 closeout](docs/tasks/p1/closeout.md) maps G1.1–G1.4 and evidence limits; [accepted tuning](docs/tasks/p1/qualification/accepted-tuning.md) is P2's exact baseline. |
 | Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
-| Next Phase | **P2 — Build the underwater world** is NOT STARTED and READY TO RUN. It replaces the prototype-course presentation with a natural reef habitat, locks the renderer from measured testing, adds underwater atmosphere, and adds movement-reactive water presentation. |
+| Next Phase | **P2 — Build the underwater world** is IN PROGRESS; its P1 renderer comparison slice is implemented and P2 native renderer selection is next. It replaces the prototype-course presentation with a natural reef habitat, locks the renderer from measured testing, adds underwater atmosphere, and adds movement-reactive water presentation. |
 | Renderer | The current implementation uses Godot Compatibility. P2 does **not** preselect Forward+; its first tasks compare the actual P1 candidate under Compatibility and Forward+ on the target desktop, then record one renderer for the phase. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
-| Root version | `package.json` is deliberately `0.2.0`, the P2 phase-entry baseline. Its existing prompts begin at `0.2.1`; no `0.1.10`/`0.1.11` checkpoints were fabricated. |
+| Root version | `package.json` is `0.2.1` after P2 task P1 focused checks. The P2 phase-entry baseline was `0.2.0`; its prompts begin at `0.2.1`; no `0.1.10`/`0.1.11` checkpoints were fabricated. |
 | Later gameplay | Feeding/predators/growth move to P3. Persistence/death becomes P4, life recounting/history P5, and integrated qualification P6. [Movement abilities](docs/planning/p1/movement-abilities.md) remain accepted future work but are no longer the immediate post-P1 roadmap step. |
 
 ## Product contract to preserve
@@ -33,7 +33,7 @@ The P1 movement course remains useful as a development/qualification fixture. P2
 At the P2 handoff:
 
 1. Inspect branch/HEAD, local changes, [final P1 tuning](docs/tasks/p1/qualification/accepted-tuning.md), current renderer and actual native evidence. Preserve compatible work.
-2. Run [the P2 stack](docs/tasks/p2/README.md) from root **`0.2.0`**: renderer trial/lock, natural habitat, reef/tunnels, underwater atmosphere, fish-reactive water, native tuning, and closeout. Next command: `npm run fish:phase -- p2`.
+2. Run native A/B using `./tools/dev compare compatibility` and `./tools/dev compare forward-plus`, then complete [P2 native renderer selection](docs/tasks/p2/P2-native-renderer-lock.txt) with actual desktop observations. The tracked project still uses Compatibility.
 4. Keep rendering/world presentation read-only with respect to authoritative fish movement. A particle wake, post effect, fog change or camera effect must not change the motor, fish identity or simulation time.
 5. Do not implement feeding, predators, growth, saves, death/history, controller, first person, or Movement abilities as hidden P2 scope.
 
