@@ -37,7 +37,7 @@ The current candidate blends the four prepared seabed material sets on one visua
 
 The active living run and completed-life archive have separate lifecycles. New Life creates a new identity without clearing prior stories. A durable terminal outcome prevents normal Continue from reviving a dead fish. Recovery of a pending death/archive operation must be idempotent by run/event identity.
 
-Use a small versioned save format with explicit validation and recovery once P3 is implemented. Avoid silently treating corrupt files as death or discarding records. Resolve atomic-write and recovery mechanics with the real storage implementation rather than creating a save framework in p0. [Survival and runs](systems/survival-and-runs.md) owns this contract.
+Use a small versioned save format with explicit validation and recovery once P5 persistence is implemented. Avoid silently treating corrupt files as death or discarding records. Resolve atomic-write and recovery mechanics with the real storage implementation rather than creating a save framework in p0. [Survival and runs](systems/survival-and-runs.md) owns this contract.
 
 Generate brief recountings from actual saved events. A deterministic local template/selection system is the initial working design; no remote LLM dependency, API key, voice service, or network connection is required by the confirmed feature. Preserve the saved final narrative for repeat visits. [Life stories and history](systems/life-stories-and-history.md) owns the details.
 
@@ -62,6 +62,10 @@ After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selec
 ## P2 implementation boundary
 
 After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) implemented the renderer comparison, **Forward+ lock**, natural habitat composition, underwater atmosphere and fish-reactive water presentation. The later [c2 water/light correction](tasks/c2-watet-light-fx/README.md) is owner-green. [c2-depth](tasks/c2-depth/README.md) implemented five depth bands and water-column extinction/light; P4's failed native observation is preserved, while R1 repaired the authored routes and visual concerns and passed direct owner review. G2.1/G2.2 qualify on that source; G2.3 fish-reactive water remains for P2 owner qualification. None of these P2 corrections add ecology, growth, persistence, first person or Movement abilities.
+
+## P3 world-art boundary
+
+After P2 is fully closed and root `0.3.0` is deliberately prepared, [P3](planning/p3/reef-world-rebuild.md) rebuilds the accepted varying-depth world's **visible** terrain and dressing with the completed FAF terrain/rock/coral/plant/detail library. It adds authored caves, tunnels, arches, geological landmarks, a shallow-lush to deep-sparse density gradient, and optional presentation-only ambient FAF reef fish while preserving P2 collision/depth/water and P1 movement/camera authority. P3 is art/world composition, not ecology; feeding/predators/growth begin in P4.
 
 ## Source references
 

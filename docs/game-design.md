@@ -54,7 +54,7 @@ The central early proof is a visible change in food-chain position. A species th
 
 The core control direction is owner-approved in the [swimming contract](systems/swimming-and-camera.md), with the conversation preserved in the [completed worksheet](planning/p1/swim-controls-worksheet.md). First establish natural, nimble swimming that remains easy to control, using mouse steering and keyboard fallback. Controller support follows later. P10 owner feedback added a limited, self-returning camera pan in mouse mode and wheel zoom in either mode; a broader free-look system remains later work.
 
-After actual playtesting and owner acceptance of the core, [P2 worldbuilding](planning/p2/underwater-world.md) is the next roadmap focus: turn the movement laboratory into a natural underwater reef space and establish the water presentation. [Movement abilities](planning/p1/movement-abilities.md) remain accepted future movement work. Feeding belongs to P3; tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
+After actual playtesting and owner acceptance of the core, [P2 worldbuilding](planning/p2/underwater-world.md) establishes the technical underwater habitat/depth system. [P3 reef world rebuilding](planning/p3/reef-world-rebuild.md) then turns that varying-depth world into the first style-proving FAF reef. [Movement abilities](planning/p1/movement-abilities.md) remain accepted future movement work. Feeding belongs to P4; tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
 
 Threats must remain legible above, below, and outside the camera's immediate view. Candidate predator behavior is approach, a readable attack commitment, pursuit, and disengagement. Small fish can use cover and turning; larger fish gain useful hunting capability. Numeric advantages and handling changes are tuning decisions.
 
@@ -70,7 +70,7 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 [P2](tasks/p2/README.md) then replaces the visible test-course presentation with a natural reef-like habitat, locks a renderer from measured Compatibility/Forward+ testing, makes the world read convincingly underwater, and adds movement-reactive water presentation. The P1 course remains a regression fixture. [Art and assets](art-and-assets.md) owns source/provenance boundaries; the P2 slice does not settle the final species or production biome.
 
-The later P3 feeding-and-growth prototype uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
+After the P3 reef-art rebuild, the P4 feeding-and-growth prototype uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 

@@ -49,7 +49,7 @@ Implement and tune normal swimming, turning, vertical travel, and slowing first,
 
 The core is locked for progression by the owner's direct 2026-11-09 acceptance together with the bounded native observations and source checks in [P1 closeout](../tasks/p1/closeout.md). The authored exhaustive per-mode matrix remains incomplete; the closeout does not present absent observations as results.
 
-After that core acceptance, the owner now routes the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**. The previously selected [Movement abilities](../planning/p1/movement-abilities.md)—short speed burst, precision mode and quick evasive turn—remain approved future work, but their immediate scheduling is superseded. Feeding/predators/growth begin in P3.
+After that core acceptance, the owner routed the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**, followed by the [P3 FAF reef-world rebuild](../planning/p3/reef-world-rebuild.md). The previously selected [Movement abilities](../planning/p1/movement-abilities.md)—short speed burst, precision mode and quick evasive turn—remain approved future work, but their immediate scheduling is superseded. Feeding/predators/growth begin in P4.
 
 ## P1 delivery requirement
 
