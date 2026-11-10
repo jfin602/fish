@@ -51,9 +51,11 @@ public partial class CharacterSelect : Control
     {
         if (_invalidDisplay) return;
         Name = "CharacterSelect";
-        SetAnchorsPreset(LayoutPreset.FullRect);
+        SetAnchorsPreset(LayoutPreset.TopLeft);
         MouseFilter = MouseFilterEnum.Pass;
+        UpdateScreenSize();
         BuildInterface();
+        GetViewport().SizeChanged += UpdateScreenSize;
         for (var i = 0; i < CharacterCatalog.All.Count; i++)
         {
             var entry = CharacterCatalog.All[i];
@@ -73,6 +75,11 @@ public partial class CharacterSelect : Control
         }
     }
 
+    public override void _ExitTree()
+    {
+        GetViewport().SizeChanged -= UpdateScreenSize;
+    }
+
     public override void _Input(InputEvent @event)
     {
         if (@event is not InputEventKey { Pressed: true, Echo: false } key) return;
@@ -86,12 +93,17 @@ public partial class CharacterSelect : Control
             Select((_selected + 1) % CharacterCatalog.All.Count);
             GetViewport().SetInputAsHandled();
         }
-        else if (key.Keycode == Key.Enter && !_enter.Disabled &&
-            (GetViewport().GuiGetFocusOwner() is not Button focus ||
-                focus == _enter || Array.IndexOf(_tiles, focus) >= 0))
+        else if (key.Keycode == Key.Enter && GetViewport().GuiGetFocusOwner() is Button focus &&
+            Array.IndexOf(_tiles, focus) is var tileIndex && tileIndex >= 0)
         {
-            EnterWorld();
+            Select(tileIndex);
             GetViewport().SetInputAsHandled();
+        }
+        else if (key.Keycode == Key.Enter && !_enter.Disabled &&
+            (GetViewport().GuiGetFocusOwner() is null || GetViewport().GuiGetFocusOwner() == _enter))
+        {
+            GetViewport().SetInputAsHandled();
+            EnterWorld();
         }
     }
 
@@ -106,14 +118,21 @@ public partial class CharacterSelect : Control
             _animation.Seek(0, true);
     }
 
+    private void UpdateScreenSize()
+    {
+        // Changing the window mode in _EnterTree can leave the root Control at
+        // its content minimum until the next viewport resize.
+        Size = GetViewport().GetVisibleRect().Size;
+    }
+
     private void BuildInterface()
     {
         var background = new ColorRect { Color = new Color(.015f, .105f, .145f), MouseFilter = MouseFilterEnum.Ignore };
         AddChild(background);
-        background.SetAnchorsPreset(LayoutPreset.FullRect);
+        Fill(background);
         var margin = new MarginContainer();
         AddChild(margin);
-        margin.SetAnchorsPreset(LayoutPreset.FullRect);
+        Fill(margin);
         foreach (var side in new[] { "left", "right" }) margin.AddThemeConstantOverride("margin_" + side, 24);
         margin.AddThemeConstantOverride("margin_top", 18);
         margin.AddThemeConstantOverride("margin_bottom", 18);
@@ -162,7 +181,7 @@ public partial class CharacterSelect : Control
         previewPanel.SizeFlagsStretchRatio = 1.65f;
         hero.AddChild(previewPanel);
         var previewContainer = new SubViewportContainer { Stretch = true, MouseFilter = MouseFilterEnum.Stop };
-        previewContainer.SetAnchorsPreset(LayoutPreset.FullRect);
+        Fill(previewContainer);
         previewPanel.AddChild(previewContainer);
         previewContainer.GuiInput += PreviewInput;
         _preview = new SubViewport { Name = "LivePreview", OwnWorld3D = true, TransparentBg = false,
@@ -203,8 +222,7 @@ public partial class CharacterSelect : Control
             var button = new Button { Name = "Character_" + i, CustomMinimumSize = new Vector2(164, 68),
                 FocusMode = FocusModeEnum.All };
             button.Pressed += () => Select(index);
-            button.FocusEntered += () => Select(index);
-            button.MouseEntered += () => Select(index);
+            ApplyFocusStyle(button);
             strip.AddChild(button);
             _tiles[i] = button;
         }
@@ -298,7 +316,29 @@ public partial class CharacterSelect : Control
     private static Button Action(string title, Action action)
     {
         var button = new Button { Text = title, CustomMinimumSize = new Vector2(108, 48) };
+        ApplyFocusStyle(button);
         button.Pressed += action;
         return button;
+    }
+
+    private static void ApplyFocusStyle(Button button)
+    {
+        var focus = new StyleBoxFlat { BgColor = Colors.Transparent,
+            BorderColor = new Color(.99f, .83f, .46f) };
+        focus.SetBorderWidthAll(3);
+        focus.SetCornerRadiusAll(5);
+        button.AddThemeStyleboxOverride("focus", focus);
+    }
+
+    private static void Fill(Control control)
+    {
+        control.AnchorLeft = 0;
+        control.AnchorTop = 0;
+        control.AnchorRight = 1;
+        control.AnchorBottom = 1;
+        control.OffsetLeft = 0;
+        control.OffsetTop = 0;
+        control.OffsetRight = 0;
+        control.OffsetBottom = 0;
     }
 }

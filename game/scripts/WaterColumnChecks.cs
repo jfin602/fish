@@ -48,6 +48,10 @@ public static class WaterColumnChecks
         {
             var store = new LightingPresetStore(file);
             var shallow = At(surfaceY, atmosphere, camera, env, sun);
+            Require(env.FogMode == Godot.Environment.FogModeEnum.Depth &&
+                Mathf.Abs(env.FogDepthBegin - 5f) < 0.001f &&
+                Mathf.Abs(env.FogDepthCurve - 1.2f) < 0.001f &&
+                env.FogSkyAffect == 0f, "camera-distance fog configuration drifted");
             Require(Mathf.Abs((float)surfaceMaterial.GetShaderParameter("camera_depth")) < 0.001f,
                 "shallow surface changed from its base treatment");
             var middle = At((surfaceY + deepY) * 0.5f, atmosphere, camera, env, sun);
@@ -56,15 +60,34 @@ public static class WaterColumnChecks
                 "deep overhead surface did not receive camera depth");
             Require(shallow.Depth < 0.001f && Mathf.Abs(middle.Depth - 0.5f) < 0.001f &&
                 deep.Depth > 0.999f, "depth normalization/easing failed");
-            Require(shallow.Fog < middle.Fog && middle.Fog < deep.Fog &&
-                shallow.Volume < middle.Volume && middle.Volume < deep.Volume &&
+            Require(shallow.Volume < middle.Volume && middle.Volume < deep.Volume &&
                 shallow.Range > middle.Range && middle.Range > deep.Range &&
                 shallow.Sun > middle.Sun && middle.Sun > deep.Sun &&
                 shallow.Ambient > middle.Ambient && middle.Ambient > deep.Ambient,
                 "extinction not monotonic");
-            Require(Mathf.Abs(shallow.Fog - baseSettings.DistanceFogDensity) < 0.00001f &&
+            Require(Mathf.Abs(shallow.Fog - 0.96f) < 0.00001f &&
+                Mathf.Abs(shallow.Range - 35f) < 0.01f &&
+                Mathf.Abs(middle.Range - 27.5f) < 0.01f &&
+                Mathf.Abs(deep.Range - 20f) < 0.01f &&
+                Mathf.Abs(atmosphere.CaptureLighting().DistanceFogDensity - baseSettings.DistanceFogDensity) < 0.00001f &&
                 Mathf.Abs(shallow.Sun - baseSettings.SunEnergy) < 0.0001f,
                 "shallow lighting changed from c2 base");
+            foreach (var sample in new[] { shallow, middle, deep })
+            {
+                var near = UnderwaterAtmosphere.EstimateDistanceRetention(8f, sample.Range);
+                var mid = UnderwaterAtmosphere.EstimateDistanceRetention(15f, sample.Range);
+                var far = UnderwaterAtmosphere.EstimateDistanceRetention(25f, sample.Range);
+                Require(near > mid && mid > far && near > 0.7f && far < 0.5f,
+                    "distance retention lost progressive near-to-far extinction");
+            }
+            Require(UnderwaterAtmosphere.EstimateDistanceRetention(25f, middle.Range) < 0.3f &&
+                UnderwaterAtmosphere.EstimateDistanceRetention(25f, deep.Range) < 0.1f,
+                "middle/deep distant terrain retained too much contrast");
+            Require(UnderwaterAtmosphere.EstimateDistanceRetention(15f, shallow.Range) >
+                UnderwaterAtmosphere.EstimateDistanceRetention(15f, middle.Range) &&
+                UnderwaterAtmosphere.EstimateDistanceRetention(15f, middle.Range) >
+                UnderwaterAtmosphere.EstimateDistanceRetention(15f, deep.Range),
+                "deeper camera failed to shorten useful distance");
             Bounded(shallow); Bounded(middle); Bounded(deep);
             var sky = (ShaderMaterial)env.Sky.SkyMaterial;
             Require(Mathf.Abs((float)sky.GetShaderParameter("water_depth") - 1f) < 0.001f,
@@ -77,8 +100,12 @@ public static class WaterColumnChecks
                 At(deepY - 5f, atmosphere, camera, env, sun).Depth == 1f,
                 "depth escaped column bounds");
             atmosphere.SetEnabled(false);
+            Require(!env.FogEnabled && !env.VolumetricFogEnabled &&
+                atmosphere.ScreenLayer is { Visible: false }, "atmosphere toggle did not disable fog/screen");
             atmosphere.SetEnabled(true);
-            Require(Mathf.Abs(env.FogDensity - deep.Fog) < 0.00001f &&
+            Require(env.FogEnabled && env.VolumetricFogEnabled &&
+                atmosphere.ScreenLayer is { Visible: true } &&
+                Mathf.Abs(env.FogDepthEnd - deep.Range) < 0.0001f &&
                 Mathf.Abs(sun.LightEnergy - deep.Sun) < 0.0001f,
                 "toggle did not restore deep effective lighting");
 
@@ -90,12 +117,12 @@ public static class WaterColumnChecks
             main.GetTree().Paused = true;
             atmosphere.ApplyLighting(preset.Settings);
             main.GetTree().Paused = false;
-            Require(env.FogDensity > customBase.DistanceFogDensity && sun.LightEnergy < customBase.SunEnergy &&
+            Require(atmosphere.EffectiveUsefulRange < deep.Range && sun.LightEnergy < customBase.SunEnergy &&
                 Mathf.Abs(atmosphere.CaptureLighting().SunEnergy - customBase.SunEnergy) < 0.0001f,
                 "deep preset application wrote effective values into base");
             store.Choose(LightingPresetStore.DefaultId);
             atmosphere.ApplyLighting(store.Current.Settings);
-            Require(Mathf.Abs(env.FogDensity - deep.Fog) < 0.00001f &&
+            Require(Mathf.Abs(env.FogDepthEnd - deep.Range) < 0.0001f &&
                 Mathf.Abs(sun.LightEnergy - deep.Sun) < 0.0001f,
                 "preset switch at depth did not recompute effective values");
             store.Choose(preset.Id);
@@ -105,6 +132,16 @@ public static class WaterColumnChecks
                 Mathf.Abs(reloaded.Current.Settings.AmbientEnergy - customBase.AmbientEnergy) < 0.0001f &&
                 Mathf.Abs(reloaded.Current.Settings.DistanceFogDensity - customBase.DistanceFogDensity) < 0.00001f,
                 "saved preset contains depth modulation");
+            atmosphere.DistanceFogDensity = 0f;
+            atmosphere.RefreshDepth(true);
+            var clearRange = atmosphere.EffectiveUsefulRange;
+            atmosphere.DistanceFogDensity = 0.02f;
+            atmosphere.RefreshDepth(true);
+            var murkyRange = atmosphere.EffectiveUsefulRange;
+            Require(float.IsFinite(clearRange) && float.IsFinite(murkyRange) &&
+                clearRange > deep.Range && deep.Range > murkyRange && murkyRange > env.FogDepthBegin &&
+                Mathf.Abs(env.FogDepthEnd - murkyRange) < 0.001f,
+                "legacy density no longer maps monotonically to bounded visibility");
             atmosphere.ApplyLighting(baseSettings);
             camera.GlobalTransform = cameraTransform;
             atmosphere.RefreshDepth(true);
@@ -112,10 +149,10 @@ public static class WaterColumnChecks
                 ReferenceEquals(fish.Tuning, tuning) && fish.GlobalPosition == fishPosition &&
                 fish.Velocity == fishVelocity && camera.GlobalTransform == cameraTransform,
                 "depth presentation changed fish or camera identity/state");
-            GD.Print($"DEPTH_CHECK_OK surface={surfaceY:F2} deep={deepY:F2} " +
-                $"shallow=({shallow.Fog:F4},{shallow.Volume:F3},{shallow.Range:F1},{shallow.Sun:F2},{shallow.Ambient:F2}) " +
-                $"middle=({middle.Fog:F4},{middle.Volume:F3},{middle.Range:F1},{middle.Sun:F2},{middle.Ambient:F2}) " +
-                $"deep=({deep.Fog:F4},{deep.Volume:F3},{deep.Range:F1},{deep.Sun:F2},{deep.Ambient:F2}) presets=isolated state=unchanged");
+            GD.Print($"DEPTH_CHECK_OK surface={surfaceY:F2} deep={deepY:F2} base_visibility={atmosphere.EffectiveBaseVisibilityRange:F1} " +
+                $"shallow=(end:{shallow.Range:F1},volume:{shallow.Volume:F3},t8:{UnderwaterAtmosphere.EstimateDistanceRetention(8f, shallow.Range):F2},t15:{UnderwaterAtmosphere.EstimateDistanceRetention(15f, shallow.Range):F2},t25:{UnderwaterAtmosphere.EstimateDistanceRetention(25f, shallow.Range):F2}) " +
+                $"middle=(end:{middle.Range:F1},volume:{middle.Volume:F3},t8:{UnderwaterAtmosphere.EstimateDistanceRetention(8f, middle.Range):F2},t15:{UnderwaterAtmosphere.EstimateDistanceRetention(15f, middle.Range):F2},t25:{UnderwaterAtmosphere.EstimateDistanceRetention(25f, middle.Range):F2}) " +
+                $"deep=(end:{deep.Range:F1},volume:{deep.Volume:F3},t8:{UnderwaterAtmosphere.EstimateDistanceRetention(8f, deep.Range):F2},t15:{UnderwaterAtmosphere.EstimateDistanceRetention(15f, deep.Range):F2},t25:{UnderwaterAtmosphere.EstimateDistanceRetention(25f, deep.Range):F2}) presets=isolated state=unchanged");
         }
         finally { if (File.Exists(file)) File.Delete(file); }
     }
@@ -126,6 +163,8 @@ public static class WaterColumnChecks
         var position = camera.GlobalPosition;
         camera.GlobalPosition = new Vector3(position.X, y, position.Z);
         atmosphere.RefreshDepth(true);
+        Require(Mathf.Abs(env.FogDepthEnd - atmosphere.EffectiveUsefulRange) < 0.001f,
+            "reported useful range diverged from engine fog end");
         return new Sample(atmosphere.EffectiveDepth01, env.FogDensity, env.VolumetricFogDensity,
             atmosphere.EffectiveUsefulRange, sun.LightEnergy, env.AmbientLightEnergy,
             env.FogLightColor, env.BackgroundColor, env.AmbientLightColor);
@@ -133,6 +172,11 @@ public static class WaterColumnChecks
 
     private static void Bounded(Sample sample)
     {
+        Require(float.IsFinite(sample.Depth) && sample.Depth is >= 0 and <= 1 &&
+            float.IsFinite(sample.Fog) && sample.Fog is >= 0 and <= 1 &&
+            float.IsFinite(sample.Volume) && sample.Volume is >= 0 and <= 0.06f &&
+            float.IsFinite(sample.Range) && sample.Range is > 5 and <= 60,
+            "effective distance fog left finite bounds");
         foreach (var color in new[] { sample.FogColor, sample.Background, sample.AmbientColor })
             Require(color.R is >= 0 and <= 1 && color.G is >= 0 and <= 1 &&
                 color.B is >= 0 and <= 1, "effective water color left gamut");

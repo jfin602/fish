@@ -89,13 +89,17 @@ ambient_check() {
   grep -Fq 'FAF_AMBIENT_OK schools=9 fish=31' "$LOGS/ambient-check.log" || { echo 'FAF ambient marker missing' >&2; return 1; }
 }
 atmosphere_check() {
-  logged atmosphere-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_check.gd
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/atmosphere-check.XXXXXX")
+  logged atmosphere-check 45 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_check.gd
   grep -Fq 'ATMOSPHERE_CHECK_OK' "$LOGS/atmosphere-check.log" || { echo 'Atmosphere assertion marker missing' >&2; return 1; }
-  logged atmosphere-movement 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_movement_check.gd
+  logged atmosphere-movement 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_movement_check.gd
   grep -Fq 'ATMOSPHERE_MOVEMENT_OK' "$LOGS/atmosphere-movement.log" || { echo 'Atmosphere movement marker missing' >&2; return 1; }
 }
 depth_check() {
-  logged depth-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --depth-check
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/depth-check.XXXXXX")
+  logged depth-check 45 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --depth-check
   grep -Fq 'DEPTH_CHECK_OK' "$LOGS/depth-check.log" || { echo 'Depth assertion marker missing' >&2; return 1; }
 }
 water_reaction_check() {

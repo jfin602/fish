@@ -109,7 +109,9 @@ func _run() -> void:
 		return
 	var lights := 0
 	for node in main.find_children("*", "Light3D", true, false):
-		lights += 1
+		# Character Select preview lights belong to separate P3 SubViewports.
+		if node.get_viewport() == main.get_viewport():
+			lights += 1
 	if lights != 1 or atmosphere.get("ScreenWarpPixels") > 0.2:
 		fail("extra real light or excessive screen warp")
 		return
