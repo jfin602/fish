@@ -74,6 +74,13 @@ public partial class UnderwaterAtmosphere : Node3D
     public float EffectiveUsefulRange { get; private set; }
     public float EffectiveBaseVisibilityRange => VisibilityRangeMeters;
 
+    /// <summary>Native diagnostic: bypass only the new distance extinction, retaining height/volume fog and every other effect.</summary>
+    public void SetVisibilityDiagnosticBypass(bool bypass)
+    {
+        if (_environment is null) throw new InvalidOperationException("Atmosphere is not initialized");
+        _environment.FogDensity = bypass ? 0f : FogExtinction;
+    }
+
     /// <summary>Approximate engine depth-fog scene retention before height/volumetric fog.</summary>
     public static float EstimateDistanceRetention(float distanceMeters, float usefulRangeMeters)
     {

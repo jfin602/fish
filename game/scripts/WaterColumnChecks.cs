@@ -91,6 +91,22 @@ public static class WaterColumnChecks
                 UnderwaterAtmosphere.EstimateDistanceRetention(15f, deep.Range),
                 "deeper camera failed to shorten useful distance");
             Bounded(shallow); Bounded(middle); Bounded(deep);
+            // The eased response must join both clamped endpoints without a visible numerical step.
+            foreach (var boundary in new[] { surfaceY, deepY })
+            {
+                var above = At(boundary + 0.001f, atmosphere, camera, env, sun);
+                var below = At(boundary - 0.001f, atmosphere, camera, env, sun);
+                Require(Mathf.Abs(above.Range - below.Range) < 0.01f &&
+                    Mathf.Abs(above.Volume - below.Volume) < 0.001f, "water-column endpoint has a numerical jump");
+            }
+            At(deepY, atmosphere, camera, env, sun);
+            atmosphere.SetVisibilityDiagnosticBypass(true);
+            Require(env.FogEnabled && env.VolumetricFogEnabled && env.FogDensity == 0f &&
+                Mathf.Abs(env.FogHeightDensity - atmosphere.LowerWaterFog) < 0.0001f,
+                "visibility diagnostic changed non-distance fog");
+            atmosphere.SetVisibilityDiagnosticBypass(false);
+            Require(Mathf.Abs(env.FogDensity - deep.Fog) < 0.0001f,
+                "visibility diagnostic failed to restore depth fog");
             var sky = (ShaderMaterial)env.Sky.SkyMaterial;
             Require(Mathf.Abs((float)sky.GetShaderParameter("water_depth") - 1f) < 0.001f,
                 "visible sky background did not receive deep water value");
@@ -118,6 +134,9 @@ public static class WaterColumnChecks
             var preset = store.SaveAs("Depth isolation", customBase);
             main.GetTree().Paused = true;
             atmosphere.ApplyLighting(preset.Settings);
+            Require(main.GetTree().Paused && Mathf.Abs(env.FogDepthEnd -
+                customBase.VisibilityDistanceMeters * 4f / 7f) < 0.001f,
+                "paused deep preset preview lost effective visibility");
             main.GetTree().Paused = false;
             Require(atmosphere.EffectiveUsefulRange < deep.Range && sun.LightEnergy < customBase.SunEnergy &&
                 Mathf.Abs(atmosphere.CaptureLighting().SunEnergy - customBase.SunEnergy) < 0.0001f,
@@ -248,6 +267,8 @@ public static class WaterColumnChecks
         var invalid = changed.Copy();
         invalid.VisibilityDistanceMeters = 61f;
         Require(!invalid.IsValid(), "out-of-range meter setting accepted");
+        invalid.VisibilityDistanceMeters = float.NaN;
+        Require(!invalid.IsValid(), "nonfinite meter setting accepted");
         var raw = JsonNode.Parse(File.ReadAllText(file))!;
         raw["presets"]![0]!["settings"]!["visibilityDistanceMeters"] = 61;
         File.WriteAllText(file, raw.ToJsonString());

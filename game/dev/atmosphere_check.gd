@@ -26,6 +26,14 @@ func _run() -> void:
 	current_scene = main
 	await process_frame
 	var atmosphere: Node3D = main.get_node("UnderwaterAtmosphere")
+	if main.find_children("*", "WorldEnvironment", true, false).size() != 1 or main.find_children("UnderwaterAtmosphere", "Node3D", true, false).size() != 1:
+		fail("normal play has duplicate environment or atmosphere")
+		return
+	for shader_path in ["res://shaders/seabed_blend.gdshader", "res://shaders/sun_shafts.gdshader", "res://shaders/comparison_caustics.gdshader"]:
+		var shader: Shader = load(shader_path)
+		if shader == null or shader.code.contains("fog_disabled"):
+			fail("underwater geometry shader bypasses distance fog: " + shader_path)
+			return
 	var env: Environment = main.get_node("WorldEnvironment").environment
 	var fish: CharacterBody3D = main.get_node("Fish")
 	var camera: Camera3D = main.get_node("Fish/CameraRig/Camera3D")
