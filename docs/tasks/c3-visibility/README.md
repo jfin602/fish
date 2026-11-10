@@ -2,7 +2,7 @@
 
 **State:** AUTHORED / NOT EXECUTED / NOT QUALIFIED.  
 **Type:** Correction 3; initial authoring baseline: main at 9e858110a6ec571e964d72e26ef1de57bfdad36b (before this folder) and root 0.3.0.  
-**Version:** Every prompt requires **unchanged 0.3.0**. This is a strict runner preflight, not an instruction to reset a newer local checkout.
+**Version:** Every prompt requires **unchanged 0.3.6**, as explicitly selected by the owner. This is a strict runner preflight, not an instruction to change or reset a local checkout. This is a strict runner preflight, not an instruction to reset a newer local checkout.
 
 ## Purpose
 
@@ -14,7 +14,7 @@ Read [assessment](prompt-assessment.md), [implementation plan](implementation-pl
 
 ## Conflict-safe entry with P3
 
-**P3 owns versions 0.3.1–0.3.8.** GitHub currently advertises 0.3.0, but the owner's local worktree and any in-progress runner are not observable from GitHub. Do not execute this correction concurrently with P3 or alter prompt files while the P3 runner is active. If actual package.json differs from 0.3.0, the correction **must stop** at runner preflight. Reconcile the verified P3 checkpoint/version and then revise c3's unchanged-version metadata across the stack under an explicit reviewed workflow. Never downgrade package.json, fake P3 checkpoints, reset local work or force a dirty continuation.
+**P3 owns versions 0.3.1–0.3.8.** The owner changed this correction's execution version to **0.3.6** (P3's P6 checkpoint). The original GitHub authoring baseline was 0.3.0, and the owner's local P3 implementation/checkpoint state is not verifiable through GitHub alone. Run c3 only after confirming P3 P1–P6 are actually completed and the local root package version is 0.3.6; do not treat the version number alone as evidence that P6 is complete. Do not execute this correction concurrently with P3 or edit prompts beneath a running runner. If package.json differs from 0.3.6, **stop** and reconcile the actual completed P3 prefix before execution. Never downgrade package.json, fake P3 checkpoints, reset local work or force a dirty continuation.
 
 Use a separate clean checkpoint/worktree or an owner-accepted safe pause. Existing P2 owner-green Forward+ water/light/depth results are preserved. P2 V18/V19 PASS stays historical; P2 V20/G2.3 remains OPEN. Correction V25 is not yet implemented/qualified.
 
