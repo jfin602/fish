@@ -1,0 +1,28 @@
+TASK: Correction 3 / P2 — Visibility GFX and preset compatibility
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.3.0`.
+
+GOAL
+Expose understandable live Visibility Distance (m) tuning and preserve existing custom lighting presets across the fog-model change.
+
+READ / PREFLIGHT
+Read c3 README/assessment/implementation-plan.md P2, P1 implementation/evidence and actual source, docs/systems/underwater-visibility.md, game/scripts/LightingSettings.cs, LightingPresetStore.cs, GraphicsPanel.cs, UnderwaterAtmosphere.cs, WaterColumnChecks.cs, PlayShell.cs and relevant GFX checks. Confirm clean completed P1 checkpoint, root 0.3.0 and any P3 changes. If unsafe/dirty, stop rather than overwrite.
+
+IMPLEMENT
+1. Give the paused GFX panel a bounded Visibility Distance (m) slider: lower values mean murkier water, higher values clearer water. Preserve Volumetric haze separately, all existing controls, readable focus, and real-time preview without player input bleed.
+2. Wire one stable, validated base visibility setting through LightingSettings, capture/apply and the depth-derived runtime environment. No saved value should change simply because the camera dives, ascends or switches visual fish. Ensure preset-switch-at-depth recomputes only runtime effective fog.
+3. Inspect schema v1 persisted user://lighting-presets.json behavior and implement deterministic legacy compatibility/migration. Preserve valid custom IDs, names, active choice and all unrelated settings; map legacy DistanceFogDensity to the new model deliberately or retain backwards-readable metadata. If lossy, document and test exact conversion. No silent fallback that discards valid presets. Keep corrupt-file handling/atomic writes.
+4. Preserve Natural/Soft built-ins and Save As, Save, Rename, Delete, Choose, restart and pause/resume behavior. Test old valid custom JSON and new round-trip from isolated profiles; test malformed/out-of-range inputs separately. Avoid modifying real user files.
+5. Update targeted checks and UI labels, including any old tests that incorrectly equate VolumetricFogLength with useful visual range. No new control-settings framework.
+
+VALIDATE
+T2: run ./tools/dev build, ./tools/dev inspect-depth, ./tools/dev inspect-atmosphere and focused preset/UI checks via current project check commands; use ./tools/dev check only if its existing complete composition is necessary. Run git diff --check and confirm package.json stays 0.3.0.
+
+DONE WHEN
+Visibility is adjustable in understandable meters, saved and restored, valid schema-v1 custom presets survive loading, and camera-depth modulation never writes base settings.
+
+REPORT
+Describe slider mapping/range, schema strategy, old/new fixture results, actual checks and gaps in c3 qualification/implementation.md. Native visual quality is still pending P4.
+Do not commit or push; the runner owns implementation checkpoints. Keep root version 0.3.0 unchanged.
