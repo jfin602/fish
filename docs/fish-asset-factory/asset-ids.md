@@ -12,6 +12,6 @@ Assign a stable ID when an original asset is registered for production: `FAF-<CA
 
 The [Python naming helpers](../../tools/asset-factory/blender/common/naming.py) validate canonical IDs and build stems, object names and Action names. They do not allocate numbers or operate a registry. Record assigned IDs in a future manifest alongside the actual source and output paths.
 
-## Current experiment
+## First registered fish
 
-The owner's **FAF-001 Yellow Tang** label is already attached to local ignored experimental Blender filenames. Preserve that label as an experiment alias; the current checkout contains no committed production ID assignment or source `.blend`. It is a modeling prototype only. Register a canonical category ID after source/provenance and review are ready, without silently renaming the local experiment or confusing it with the separate Sea life Yellow Tang candidate.
+The owner's **FAF-001 Yellow Tang** prototype alias is preserved in its history. The first original fish has canonical ID **FAF-FISH-001** and stem `fish_001_yellow_tang`. Its [candidate record](fish-001/README.md) identifies the source, runtime GLB, evidence and review state. It is separate from the third-party Sea life Yellow Tang candidate.

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_001_yellow_tang.glb" id="1_faf"]
+[ext_resource type="Script" path="res://dev/faf_fish_001_proof.gd" id="2_proof"]
+
+[node name="FAFFish001Proof" type="Node3D"]
+script = ExtResource("2_proof")
+
+[node name="YellowTang" parent="." instance=ExtResource("1_faf")]
+rotation = Vector3(0, 3.141593, 0)
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0.38, 0.06, 0.06)
+current = true
+fov = 40.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.35, 1.57, 0.0)
+light_energy = 0.65
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

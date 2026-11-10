@@ -10,4 +10,4 @@ Each candidate carries a small [manifest/check record](blender-godot-contract.md
 
 ## Current boundary
 
-**FAF-001 Yellow Tang** is a local modeling experiment, not accepted production art. Local ignored `.blend` files were observed under `artifacts/assets/source/`; none is tracked in this checkout. Rig, actions, export, triangle count and material count have not been qualified here. The older [Sea life Yellow Tang](../assets/p1-starter-manifest.md) is a separate third-party candidate and must not be conflated with this original experiment. See [asset IDs](asset-ids.md#current-experiment) before assigning a permanent production ID.
+The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fish-001/README.md). Its editable Blender source, GLB, rig, three Actions, technical checks and isolated native Godot proof are recorded there. It is a technical reference candidate; reef-context style approval remains open. The older [Sea life Yellow Tang](../assets/p1-starter-manifest.md) remains a separate third-party candidate. The current player and movement are unchanged.

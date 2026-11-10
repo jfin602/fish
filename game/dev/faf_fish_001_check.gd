@@ -44,6 +44,29 @@ func _initialize() -> void:
 		if animation.length <= 0.0:
 			_fail("empty Action: " + expected)
 			return
+		if animation.loop_mode != Animation.LOOP_LINEAR:
+			_fail("Action does not loop: " + expected)
+			return
+	var head_index: int = skeleton.find_bone("spine_01")
+	var tail_index: int = skeleton.find_bone("tail_fin")
+	if head_index < 0 or tail_index < 0:
+		_fail("head/tail bones missing")
+		return
+	var head_position: Vector3 = skeleton.get_bone_global_rest(head_index).origin
+	var tail_position: Vector3 = skeleton.get_bone_global_rest(tail_index).origin
+	print("FAF_REST head=", head_position, " tail=", tail_position, " head_minus_tail=", head_position - tail_position)
+	if head_position.z <= tail_position.z:
+		_fail("unexpected imported facing axis")
+		return
+	var bounds: AABB = meshes[0].get_aabb()
+	var material_names: Dictionary = {}
+	for mesh_instance in meshes:
+		bounds = bounds.merge(mesh_instance.get_aabb())
+		for surface in mesh_instance.mesh.get_surface_count():
+			var material: Material = mesh_instance.mesh.surface_get_material(surface)
+			if material != null:
+				material_names[material.resource_name] = true
+	print("FAF_BOUNDS ", bounds, " MATERIALS ", material_names.keys())
 	var rest_tail: Transform3D = skeleton.get_bone_pose(skeleton.find_bone("tail_02"))
 	player.play("fish_001_yellow_tang__Swim")
 	player.seek(0.25, true)
