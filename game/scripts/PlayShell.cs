@@ -21,6 +21,8 @@ public partial class PlayShell : Node
     private CheckButton _legacyInvert = null!;
     private OptionButton _mode = null!;
     private ControlPresetsPanel _presetEditor = null!;
+    private GraphicsPanel _graphicsPanel = null!;
+    private readonly LightingPresetStore _lightingPresets = new();
     private Label? _quickPresetLabel;
     private double _quickPresetSeconds;
     private readonly ControlPresetStore _presets = new();
@@ -37,6 +39,7 @@ public partial class PlayShell : Node
     public override void _Ready()
     {
         _presets.Load();
+        _lightingPresets.Load();
         _fish.ConfigureMouse(_preferences.MouseSensitivity, _preferences.InvertMouseY);
         _fish.SetActivePreset(_presets.Current);
         Input.MouseMode = _fish.UsesMouseInput
@@ -133,6 +136,15 @@ public partial class PlayShell : Node
             _fish.ClearAndDisarmInput();
         };
         items.AddChild(presetsButton);
+        var graphicsButton = new Button { Name = "GfxButton", Text = "GFX…", FocusMode = Control.FocusModeEnum.All };
+        ApplyFocusStyle(graphicsButton);
+        graphicsButton.Pressed += () =>
+        {
+            _panel.Visible = false;
+            _graphicsPanel.Open();
+            _fish.ClearAndDisarmInput();
+        };
+        items.AddChild(graphicsButton);
 
         _sensitivityLabel = new Label();
         items.AddChild(_sensitivityLabel);
@@ -202,6 +214,13 @@ public partial class PlayShell : Node
             _resume.GrabFocus();
         });
         center.AddChild(_presetEditor);
+        _graphicsPanel = new GraphicsPanel(_lightingPresets,
+            () => GetParent()?.GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere"), () =>
+            {
+                _panel.Visible = true;
+                _resume.GrabFocus();
+            });
+        center.AddChild(_graphicsPanel);
 
         GetViewport().SizeChanged += UpdateLayout;
         UpdateLegacyMouseControls();
@@ -210,6 +229,15 @@ public partial class PlayShell : Node
 
     public override void _Input(InputEvent @event)
     {
+        if (_overlay.Visible && _graphicsPanel.Visible)
+        {
+            if (@event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.Escape })
+            {
+                _graphicsPanel.RequestClose();
+                GetViewport().SetInputAsHandled();
+            }
+            return;
+        }
         if (_overlay.Visible && _presetEditor.Visible)
         {
             if (_presetEditor.HandleModalInput(@event))
@@ -276,6 +304,11 @@ public partial class PlayShell : Node
 
     private void Resume()
     {
+        if (_graphicsPanel.Visible)
+        {
+            _graphicsPanel.Hide();
+            _panel.Visible = true;
+        }
         if (_presetEditor.Visible)
         {
             _presetEditor.CancelModal();
@@ -310,6 +343,8 @@ public partial class PlayShell : Node
         }
         _presetEditor.CustomMinimumSize = new Vector2(Mathf.Min(760, Mathf.Max(310, viewport.X - 24)),
             Mathf.Min(650, Mathf.Max(300, viewport.Y - 24)));
+        _graphicsPanel.CustomMinimumSize = new Vector2(Mathf.Min(660, Mathf.Max(310, viewport.X - 24)),
+            Mathf.Min(720, Mathf.Max(300, viewport.Y - 24)));
         UpdateHelp();
     }
 
@@ -354,6 +389,9 @@ public partial class PlayShell : Node
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         _help.AddThemeFontSizeOverride("font_size", viewport.Y < 700 ? 16 : 19);
     }
+
+    public void ApplySavedLighting() =>
+        GetParent()?.GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere")?.ApplyLighting(_lightingPresets.Current.Settings);
 
     private void UpdateSensitivityLabel() =>
         _sensitivityLabel.Text = _presets.Current.IsBuiltin

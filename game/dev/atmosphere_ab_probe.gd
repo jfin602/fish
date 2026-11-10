@@ -70,7 +70,8 @@ func _run() -> void:
 	var routes: Node3D = main.get_node("Habitat/Composition/ReefComposition/Routes")
 	var open: Vector3 = routes.get_node("OpenFar").global_position
 	var upper: Vector3 = routes.get_node("UpperLandmark").global_position
-	print("ATMOSPHERE_AB_DEVICE renderer=%s adapter=%s viewport=%s shafts=%d shaft_surfaces=%d surface_subdivisions=32x32 caustics=1 motes=%d screen=1" % [RenderingServer.get_current_rendering_method(), RenderingServer.get_video_adapter_name(), root.size, 3, shafts.mesh.get_surface_count(), effects.get_node("SuspendedMotes").amount])
+	var plane: PlaneMesh = surface.mesh
+	print("ATMOSPHERE_AB_DEVICE renderer=%s adapter=%s viewport=%s shafts=%d shaft_surfaces=%d surface_subdivisions=%dx%d caustics=1 motes=%d screen=1" % [RenderingServer.get_current_rendering_method(), RenderingServer.get_video_adapter_name(), root.size, atmosphere.get("ShaftCount"), shafts.mesh.get_surface_count(), plane.subdivide_width, plane.subdivide_depth, effects.get_node("SuspendedMotes").amount])
 	var open_on: Dictionary = await _sample("open", true, atmosphere, camera, open + Vector3(0, 0.4, 3), open + Vector3(0, 0, -16))
 	var open_off: Dictionary = await _sample("open", false, atmosphere, camera, open + Vector3(0, 0.4, 3), open + Vector3(0, 0, -16))
 	var upper_on: Dictionary = await _sample("upper", true, atmosphere, camera, upper + Vector3(0, 0.3, 2), upper + Vector3(0, 5, -13))

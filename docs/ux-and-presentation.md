@@ -42,7 +42,7 @@ Water should visibly react to movement. Ordinary swimming has a subtle wake/dist
 
 Pause/settings/HUD are interface elements, not submerged geometry. Keep their text and focus state crisp and usable even if the 3D view receives screen-space distortion or color treatment. [P2 validation V18–V20](validation.md) owns native acceptance.
 
-The current Forward+ candidate renders distance/height/volumetric fog, top light, moving caustics, suspended motes and a restrained screen pass below the pause UI. It adds a tail-space ribbon/bubble response for movement. P7 real-window frames and counters establish integration, while [P8 review](tasks/p2/closeout.md) keeps naturalness, visual clarity, motion comfort and effect benefit open for the owner.
+The current Forward+ candidate renders distance/height/volumetric fog, a moving overhead surface, top light, drifting broken caustics, caustic-aligned ribbon shafts, suspended motes and a restrained screen pass below the pause UI. It adds a tail-space ribbon/bubble response for movement. Pause settings include a GFX panel for live water/light sliders and locally saved lighting presets. [Correction 2 evidence](tasks/c2-watet-light-fx/qualification/native-water-light.md) records the revised native candidate and remaining owner/performance judgment; [P8 review](tasks/p2/closeout.md) retains the broader world acceptance boundary.
 
 ## Fullscreen presentation
 

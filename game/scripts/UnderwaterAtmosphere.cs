@@ -26,7 +26,13 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "-1.57,-0.2,0.01")] public float SunPitch { get; set; } = -1.05f;
     [Export(PropertyHint.Range, "-3.14,3.14,0.01")] public float SunYaw { get; set; } = -0.48f;
     [Export(PropertyHint.Range, "0,0.8,0.01")] public float CausticEnergy { get; set; } = 0.32f;
-    [Export(PropertyHint.Range, "0,0.5,0.01")] public float CausticDrift { get; set; } = 0.10f;
+    [Export(PropertyHint.Range, "0,0.5,0.01")] public float CausticDrift { get; set; } = 0.22f;
+    [Export(PropertyHint.Range, "0,1.5,0.01")] public float CausticTravel { get; set; } = 0.8f;
+    [Export(PropertyHint.Range, "0.25,1.2,0.01")] public float SurfaceWaveHeight { get; set; } = 1.0f;
+    [Export(PropertyHint.Range, "0.25,2,0.01")] public float SurfaceWaveSpeed { get; set; } = 1.0f;
+    [Export(PropertyHint.Range, "0,1,0.01")] public float SurfaceWaveDetail { get; set; } = 0.8f;
+    [Export(PropertyHint.Range, "0,8,1")] public int ShaftCount { get; set; } = 6;
+    [Export(PropertyHint.Range, "0,2,0.01")] public float ShaftBrightness { get; set; } = 1.0f;
     [Export(PropertyHint.Range, "0,0.2,0.01")] public float ScreenWarpPixels { get; set; } = 0.10f;
     [Export(PropertyHint.Range, "0,0.04,0.001")] public float ScreenColorVariation { get; set; } = 0.007f;
     [Export(PropertyHint.File, "*.gdshader")] public string ScreenShaderPath { get; set; } = "res://shaders/underwater_screen.gdshader";
@@ -54,6 +60,53 @@ public partial class UnderwaterAtmosphere : Node3D
     public GpuParticles3D? Motes => _motes;
     public CanvasLayer? ScreenLayer => _screenLayer;
     public Godot.Environment? WaterEnvironment => _environment;
+
+    public LightingSettings CaptureLighting() => new()
+    {
+        SurfaceWaveHeight = SurfaceWaveHeight, SurfaceWaveSpeed = SurfaceWaveSpeed,
+        SurfaceWaveDetail = SurfaceWaveDetail, CausticEnergy = CausticEnergy,
+        CausticDrift = CausticDrift, CausticTravel = CausticTravel,
+        ShaftCount = ShaftCount, ShaftBrightness = ShaftBrightness,
+        SunEnergy = SunEnergy, AmbientEnergy = AmbientEnergy,
+        VolumetricDensity = VolumetricDensity, DistanceFogDensity = DistanceFogDensity,
+        MoteCount = MoteCount, ScreenWarpPixels = ScreenWarpPixels,
+    };
+
+    public void ApplyLighting(LightingSettings settings)
+    {
+        if (!settings.IsValid()) throw new ArgumentException("Lighting values are out of range", nameof(settings));
+        SurfaceWaveHeight = settings.SurfaceWaveHeight;
+        SurfaceWaveSpeed = settings.SurfaceWaveSpeed;
+        SurfaceWaveDetail = settings.SurfaceWaveDetail;
+        CausticEnergy = settings.CausticEnergy;
+        CausticDrift = settings.CausticDrift;
+        CausticTravel = settings.CausticTravel;
+        ShaftCount = settings.ShaftCount;
+        ShaftBrightness = settings.ShaftBrightness;
+        SunEnergy = settings.SunEnergy;
+        AmbientEnergy = settings.AmbientEnergy;
+        VolumetricDensity = settings.VolumetricDensity;
+        DistanceFogDensity = settings.DistanceFogDensity;
+        MoteCount = settings.MoteCount;
+        ScreenWarpPixels = settings.ScreenWarpPixels;
+        _surfaceMaterial?.SetShaderParameter("wave_height", SurfaceWaveHeight);
+        _surfaceMaterial?.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
+        _surfaceMaterial?.SetShaderParameter("wave_detail", SurfaceWaveDetail);
+        _shaftMaterial?.SetShaderParameter("shaft_count", ShaftCount);
+        _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness);
+        _screenMaterial?.SetShaderParameter("warp_pixels", ScreenWarpPixels);
+        if (_environment is not null)
+        {
+            _environment.VolumetricFogDensity = VolumetricDensity;
+            _environment.FogDensity = DistanceFogDensity;
+            if (_enabled) _environment.AmbientLightEnergy = AmbientEnergy;
+        }
+        if (_sun is not null && _enabled) _sun.LightEnergy = SunEnergy;
+        foreach (var decal in _caustics)
+            if (decal is not null) decal.EmissionEnergy = CausticEnergy;
+        if (_motes is not null) _motes.Amount = Mathf.Max(1, MoteCount);
+        if (_motes is not null) _motes.Visible = MoteCount > 0;
+    }
 
     public void Initialize(Node3D main)
     {
@@ -100,12 +153,12 @@ public partial class UnderwaterAtmosphere : Node3D
         AddChild(_effects);
         AddSky();
         AddSurface(main);
-        AddShafts();
         AddCaustics();
+        AddShafts(main);
         AddMotes();
         AddScreenTreatment();
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
-        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} shafts={(_shafts is null ? 0 : 3)} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
+        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
 
     public void SetEnabled(bool enabled)
@@ -146,9 +199,9 @@ public partial class UnderwaterAtmosphere : Node3D
         {
             if (_caustics[index] is not { } decal) continue;
             var phase = (float)_presentationSeconds * CausticDrift;
-            decal.Position = new Vector3(0.34f * (Mathf.Sin(phase) + 0.22f * Mathf.Sin(phase * 1.71f)), 2,
-                0.34f * (Mathf.Cos(phase * 0.73f) + 0.19f * Mathf.Sin(phase * 1.37f)));
-            decal.Rotation = new Vector3(0, 0.12f + 0.018f * Mathf.Sin(phase * 0.61f), 0);
+            decal.Position = new Vector3(CausticTravel * (Mathf.Sin(phase) + 0.18f * Mathf.Sin(phase * 1.71f)), 2,
+                CausticTravel * (Mathf.Cos(phase * 0.73f) + 0.15f * Mathf.Sin(phase * 1.37f)));
+            if (_shafts is not null) _shafts.Position = new Vector3(decal.Position.X, 0, decal.Position.Z);
         }
     }
 
@@ -186,29 +239,36 @@ public partial class UnderwaterAtmosphere : Node3D
         var extent = box.Size;
         var plane = new PlaneMesh
         {
-            Size = new Vector2(extent.X, extent.Z),
-            SubdivideWidth = 32,
-            SubdivideDepth = 32,
+            Size = new Vector2(extent.X + 14.0f, extent.Z + 14.0f),
+            SubdivideWidth = 48,
+            SubdivideDepth = 48,
         };
         _surfaceMaterial = new ShaderMaterial { Shader = shader };
         _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
         _surfaceMaterial.SetShaderParameter("surface_time", 0.0f);
+        _surfaceMaterial.SetShaderParameter("wave_height", SurfaceWaveHeight);
+        _surfaceMaterial.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
+        _surfaceMaterial.SetShaderParameter("wave_detail", SurfaceWaveDetail);
         _surface = new MeshInstance3D
         {
             Name = "OverheadSurface",
             Mesh = plane,
             MaterialOverride = _surfaceMaterial,
-            CustomAabb = new Aabb(new Vector3(-extent.X * 0.5f, -0.2f, -extent.Z * 0.5f),
-                new Vector3(extent.X, 0.4f, extent.Z)),
-            Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0, extent.Y * 0.5f + 0.22f, 0),
+            CustomAabb = new Aabb(new Vector3(-(extent.X + 14.0f) * 0.5f, -0.35f, -(extent.Z + 14.0f) * 0.5f),
+                new Vector3(extent.X + 14.0f, 0.7f, extent.Z + 14.0f)),
+            Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0, extent.Y * 0.5f + 0.34f, 0),
         };
         _effects!.AddChild(_surface);
         _surfaceHeight = _surface.GlobalPosition.Y;
     }
 
-    private void AddShafts()
+    private void AddShafts(Node3D main)
     {
         if (_surface is null || _sun is null || _effects is null) return;
+        var seabed = main.GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
+        var decal = _caustics[0];
+        var image = decal?.TextureEmission?.GetImage();
+        if (seabed is null || decal is null || image is null) return;
         var shader = ResourceLoader.Load<Shader>("res://shaders/sun_shafts.gdshader");
         if (shader is null)
         {
@@ -216,36 +276,54 @@ public partial class UnderwaterAtmosphere : Node3D
             return;
         }
 
-        // Three sparse accents, each made from two crossing quads in one surface/draw.
-        // The sun's +Z basis points toward the source; rays travel in the opposite direction.
+        // Each ribbon lands on a sampled bright caustic ridge. Translation of the
+        // decal and mesh together preserves that contact as the projection drifts.
         var sunUp = _sun.GlobalTransform.Basis.Z.Normalized();
         if (sunUp.Y < 0.15f) return;
-        var ray = -sunUp * (14.0f / sunUp.Y);
-        Vector2[] centers = [new(-13, -10), new(10, 13), new(19, -8)];
-        float[] widths = [3.2f, 4.1f, 3.5f];
-        float[] phases = [0.11f, 0.49f, 0.83f];
-        var vertices = new Vector3[centers.Length * 2 * 6];
+        Vector2[] centers = [new(-17, -14), new(-10, 9), new(4, -12), new(11, 12),
+            new(21, -5), new(-22, 19), new(18, 21), new(-3, 22)];
+        var vertices = new Vector3[centers.Length * 6];
         var uvs = new Vector2[vertices.Length];
         var colors = new Color[vertices.Length];
-        var directions = new[] { Vector3.Right, Vector3.Forward };
         var triangles = new[] { 0, 1, 2, 0, 2, 3 };
         for (var shaft = 0; shaft < centers.Length; shaft++)
         {
-            var top = new Vector3(centers[shaft].X, _surfaceHeight - 0.03f, centers[shaft].Y);
-            for (var plane = 0; plane < 2; plane++)
+            var seed = decal.ToLocal(new Vector3(centers[shaft].X, 0, centers[shaft].Y));
+            var pixelX = Mathf.Clamp(Mathf.RoundToInt((seed.X / 100f + 0.5f) * 255f), 10, 245);
+            var pixelY = Mathf.Clamp(Mathf.RoundToInt((seed.Z / 100f + 0.5f) * 255f), 10, 245);
+            var strongest = -1f;
+            var bestX = pixelX;
+            var bestY = pixelY;
+            for (var dy = -8; dy <= 8; dy++)
+            for (var dx = -8; dx <= 8; dx++)
             {
-                var half = widths[shaft] * 0.5f;
-                var across = directions[plane] * half;
-                var corners = new[] { top - across, top + across, top + ray + across, top + ray - across };
-                var coordinates = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
-                for (var corner = 0; corner < 6; corner++)
-                {
-                    var index = (shaft * 2 + plane) * 6 + corner;
-                    var source = triangles[corner];
-                    vertices[index] = _effects.ToLocal(corners[source]);
-                    uvs[index] = coordinates[source];
-                    colors[index] = new Color(phases[shaft] + plane * 0.07f, 1, 1, 1);
-                }
+                var sample = image.GetPixel(pixelX + dx, pixelY + dy).A;
+                if (sample <= strongest) continue;
+                strongest = sample;
+                bestX = pixelX + dx;
+                bestY = pixelY + dy;
+            }
+            var gx = image.GetPixel(bestX + 2, bestY).A - image.GetPixel(bestX - 2, bestY).A;
+            var gy = image.GetPixel(bestX, bestY + 2).A - image.GetPixel(bestX, bestY - 2).A;
+            var tangentLocal = new Vector3(-gy, 0, gx).Normalized();
+            if (tangentLocal.LengthSquared() < 0.01f) tangentLocal = Vector3.Right;
+            var tangent = (decal.GlobalTransform.Basis * tangentLocal).Normalized();
+            var localFloor = new Vector3(((bestX + 0.5f) / 256f - 0.5f) * 100f, 0,
+                ((bestY + 0.5f) / 256f - 0.5f) * 100f);
+            var worldFloor = decal.ToGlobal(localFloor);
+            var bottom = new Vector3(worldFloor.X, seabed.GetHeightAt(worldFloor.X, worldFloor.Z) + 0.3f, worldFloor.Z);
+            var top = bottom + sunUp * ((_surfaceHeight - 0.08f - bottom.Y) / sunUp.Y);
+            var half = (1.1f + shaft % 3 * 0.22f) * 0.5f;
+            var across = tangent * half;
+            var corners = new[] { top - across, top + across, bottom + across, bottom - across };
+            var coordinates = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
+            for (var corner = 0; corner < 6; corner++)
+            {
+                var index = shaft * 6 + corner;
+                var source = triangles[corner];
+                vertices[index] = _effects.ToLocal(corners[source]);
+                uvs[index] = coordinates[source];
+                colors[index] = new Color(0.11f + shaft * 0.103f, (shaft + 0.5f) / 8f, 1, 1);
             }
         }
         var arrays = new Godot.Collections.Array();
@@ -257,6 +335,8 @@ public partial class UnderwaterAtmosphere : Node3D
         mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
         _shaftMaterial = new ShaderMaterial { Shader = shader };
         _shaftMaterial.SetShaderParameter("shaft_time", 0.0f);
+        _shaftMaterial.SetShaderParameter("shaft_count", ShaftCount);
+        _shaftMaterial.SetShaderParameter("shaft_brightness", ShaftBrightness);
         _shafts = new MeshInstance3D
         {
             Name = "SunShafts",
@@ -396,7 +476,11 @@ public partial class UnderwaterAtmosphere : Node3D
             Amount = MoteCount,
             Lifetime = MoteLifetime,
             ProcessMaterial = process,
-            DrawPass1 = new SphereMesh { Radius = 0.025f, Height = 0.05f, Material = material },
+            DrawPass1 = new SphereMesh
+            {
+                Radius = 0.025f, Height = 0.05f, RadialSegments = 6, Rings = 3,
+                Material = material
+            },
             VisibilityAabb = new Aabb(new Vector3(-28, -7, -28), new Vector3(56, 14, 56)),
             Emitting = true,
         };
@@ -463,6 +547,11 @@ public partial class UnderwaterAtmosphere : Node3D
         float.IsFinite(CausticDrift) && CausticDrift is >= 0 and <= 0.5f &&
         float.IsFinite(ScreenWarpPixels) && ScreenWarpPixels is >= 0 and <= 0.2f &&
         float.IsFinite(ScreenColorVariation) && ScreenColorVariation is >= 0 and <= 0.04f &&
+        float.IsFinite(CausticTravel) && CausticTravel is >= 0 and <= 1.5f &&
+        float.IsFinite(SurfaceWaveHeight) && SurfaceWaveHeight is >= 0.25f and <= 1.2f &&
+        float.IsFinite(SurfaceWaveSpeed) && SurfaceWaveSpeed is >= 0.25f and <= 2f &&
+        float.IsFinite(SurfaceWaveDetail) && SurfaceWaveDetail is >= 0 and <= 1f &&
+        ShaftCount is >= 0 and <= 8 && float.IsFinite(ShaftBrightness) && ShaftBrightness is >= 0 and <= 2f &&
         MoteCount is >= 0 and <= 160 && float.IsFinite(MoteLifetime) &&
         MoteLifetime is >= 4 and <= 30;
 

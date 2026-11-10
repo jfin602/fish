@@ -87,6 +87,7 @@ public partial class Main : Node3D
         if (populated && !isCourseFixture && GetParent() is not RendererComparison)
         {
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
+            GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish));
         }
 

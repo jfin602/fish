@@ -67,11 +67,11 @@ func _run() -> void:
 	if (surface_material.get_shader_parameter("sun_direction") as Vector3).distance_to(sun_direction) > 0.001 or (sky_material.get_shader_parameter("sun_direction") as Vector3).distance_to(sun_direction) > 0.001:
 		fail("surface/sky sun cue diverged from the directional light")
 		return
-	if plane.subdivide_width > 32 or plane.subdivide_depth > 32 or plane.size != Vector2(upper_box.size.x, upper_box.size.z):
-		fail("surface mesh exceeds subdivision/upper-limit footprint")
+	if plane.subdivide_width != 48 or plane.subdivide_depth != 48 or plane.size != Vector2(upper_box.size.x + 14.0, upper_box.size.z + 14.0):
+		fail("surface mesh does not cover the shoreline with bounded wave detail")
 		return
 	var upper_top: float = upper.global_position.y + upper_box.size.y * 0.5
-	if surface.global_position.y - 0.165 <= upper_top or surface.global_position.y > upper_top + 0.3 or surface.global_position.y < 9.0:
+	if surface.global_position.y - 0.242 <= upper_top or surface.global_position.y > upper_top + 0.45 or surface.global_position.y < 9.0:
 		fail("surface is not just above the saved upper collision")
 		return
 	if surface.get_child_count() != 0 or effects.get_child_count() != 4:
@@ -85,11 +85,11 @@ func _run() -> void:
 		fail("shaft shader did not load")
 		return
 	var shaft_vertices: PackedVector3Array = shafts.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
-	if shaft_vertices.size() != 36:
-		fail("shaft geometry exceeds three crossed-quad accents")
+	if shaft_vertices.size() != 48 or atmosphere.get("ShaftCount") != 6:
+		fail("shaft geometry is not eight bounded ribbons with six visible by default")
 		return
 	var ray: Vector3 = shaft_vertices[2] - shaft_vertices[1]
-	if ray.normalized().dot(-sun_direction) < 0.999 or absf(shafts.to_global(shaft_vertices[0]).y - surface.global_position.y) > 0.1:
+	if ray.normalized().dot(-sun_direction) < 0.999 or absf(shafts.to_global(shaft_vertices[0]).y - surface.global_position.y) > 0.15:
 		fail("shaft rays diverge from sun/surface")
 		return
 	var lights := 0
@@ -98,8 +98,11 @@ func _run() -> void:
 	if lights != 1 or atmosphere.get("ScreenWarpPixels") > 0.2:
 		fail("extra real light or excessive screen warp")
 		return
-	if motes.amount != 128 or motes.lifetime > 30.0 or motes.process_material == null or motes.draw_pass_1 == null or not motes.emitting:
+	if motes.amount != 128 or motes.lifetime > 30.0 or motes.process_material == null or not motes.draw_pass_1 is SphereMesh or not motes.emitting:
 		fail("GPU motes are absent or unbounded")
+		return
+	if motes.draw_pass_1.radial_segments > 6 or motes.draw_pass_1.rings > 3:
+		fail("mote geometry exceeds low-detail budget")
 		return
 	var projections := 0
 	var caustic: Decal = null
@@ -107,7 +110,7 @@ func _run() -> void:
 		if child is Decal:
 			projections += 1
 			caustic = child
-			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.4 or child.size != Vector3(100, 24, 100) or absf(child.rotation.y) < 0.05:
+			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.8 or child.size != Vector3(100, 24, 100) or absf(child.rotation.y) < 0.05:
 				fail("caustic projection missing or unbounded")
 				return
 	if projections != 1 or caustic == null or shell_canvas == null:
@@ -121,6 +124,14 @@ func _run() -> void:
 		fail("generated caustic resource is absent or inconsistent")
 		return
 	var caustic_bytes: PackedByteArray = caustic_image.get_data()
+	for ribbon in range(6):
+		var floor_center: Vector3 = shafts.to_global((shaft_vertices[ribbon * 6 + 2] + shaft_vertices[ribbon * 6 + 5]) * 0.5)
+		var decal_floor: Vector3 = caustic.to_local(floor_center)
+		var sample_x := clampi(roundi((decal_floor.x / 100.0 + 0.5) * 256.0), 0, 255)
+		var sample_y := clampi(roundi((decal_floor.z / 100.0 + 0.5) * 256.0), 0, 255)
+		if caustic_image.get_pixel(sample_x, sample_y).a < 0.02:
+			fail("shaft ribbon does not land on a lit caustic ridge")
+			return
 	var dark_samples := 0
 	var lit_samples := 0
 	for sample_y in range(0, 256, 8):
@@ -170,14 +181,14 @@ func _run() -> void:
 		fail("screen treatment did not resize with viewport")
 		return
 	var caustic_before: Vector3 = caustic.position
-	var caustic_rotation_before: Vector3 = caustic.rotation
+	var shaft_position_before: Vector3 = shafts.position
 	var surface_time_before: float = surface_material.get_shader_parameter("surface_time")
 	var shaft_time_before: float = shaft_material.get_shader_parameter("shaft_time")
 	var screen_material: ShaderMaterial = rect.material
 	var screen_time_before: float = screen_material.get_shader_parameter("screen_time")
 	paused = true
 	await create_timer(0.15).timeout
-	if caustic.position != caustic_before or caustic.rotation != caustic_rotation_before or surface_material.get_shader_parameter("surface_time") != surface_time_before or shaft_material.get_shader_parameter("shaft_time") != shaft_time_before or screen_material.get_shader_parameter("screen_time") != screen_time_before:
+	if caustic.position != caustic_before or shafts.position != shaft_position_before or surface_material.get_shader_parameter("surface_time") != surface_time_before or shaft_material.get_shader_parameter("shaft_time") != shaft_time_before or screen_material.get_shader_parameter("screen_time") != screen_time_before:
 		fail("presentation time advanced while paused")
 		return
 	paused = false
@@ -190,7 +201,7 @@ func _run() -> void:
 		return
 	atmosphere.SetEnabled(true)
 	await process_frame
-	if caustic.position == caustic_before or not is_finite(caustic.position.x) or not is_finite(caustic.position.z) or absf(caustic.position.x) > 0.42 or absf(caustic.position.z) > 0.42:
+	if caustic.position == caustic_before or shafts.position.x != caustic.position.x or shafts.position.z != caustic.position.z or not is_finite(caustic.position.x) or not is_finite(caustic.position.z) or absf(caustic.position.x) > 1.8 or absf(caustic.position.z) > 1.8:
 		fail("enabled caustic drift did not resume within bounds")
 		return
 	current_scene = null
@@ -209,5 +220,5 @@ func _run() -> void:
 	if regenerated.texture_emission == null or regenerated.texture_emission.get_image().get_data() != caustic_bytes:
 		fail("generated caustic texture changed between scene instances")
 		return
-	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=upper-limit sky=sunlit shafts=3 mesh_surfaces=1 shadowless caustics=1 deterministic=gaps drift=paused-toggle motes=gpu ui=above-screen warp=0.1px resize=responsive motor=unchanged")
+	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=shoreline sky=sunlit shafts=6 ribbon_mesh_surfaces=1 shadowless caustics=1 deterministic=gaps drift=paired-pause-toggle motes=low-poly ui=above-screen warp=0.1px resize=responsive motor=unchanged")
 	quit()
