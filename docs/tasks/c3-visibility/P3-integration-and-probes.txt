@@ -1,0 +1,28 @@
+TASK: Correction 3 / P3 — Visibility integration and diagnostics
+
+- Recommended configuration: `GPT-6 Sol Medium`.
+- Browser required: no.
+- Required unchanged project version: `0.3.0`.
+
+GOAL
+Integrate fog/GFX behavior with the actual normal P3/P2 world and prepare honest reproducible evidence for native owner review, without expanding scope into world art.
+
+READ / PREFLIGHT
+Read AGENTS.md, BOOT.md, c3 README/assessment/implementation-plan.md P3, P1/P2 outputs/evidence, V25 in docs/validation.md, game/scripts/UnderwaterAtmosphere.cs, relevant P3 player/world entry, existing game/dev/atmosphere_ab_probe.gd, tools/dev and scene checks. Inspect local HEAD/dirty/version and ensure prior runner checkpoints match. Preserve P3 route/Character Select source and unchanged 0.3.0 metadata.
+
+IMPLEMENT
+1. Verify current main play and any P3 changes still install one Forward+ underwater atmosphere, surface, caustics, shafts, particles and UI in correct layer order. No fog-visible seam from shaders opting out of engine fog; document intentional water-surface exceptions.
+2. Add bounded focused regression cases for shallow/middle/deep effective visibility, monotonic attenuation/continuity, preset restore while deep, pause/disable/re-enable, selected player visual identity, motor/camera/route isolation and no nonfinite settings. Update stale expectations carefully; don't change gameplay to satisfy tests.
+3. Introduce or adapt a compact performance/visibility diagnostic using existing game/dev tooling. Measure or instruct matched **visibility treatment old/bypass versus new** on the same scene and viewpoint; the existing whole-atmosphere on/off probe alone cannot measure incremental fog cost. Ensure warmup, sample count, median frame ms, draw/primitives, preset/depth/adapter/resolution and errors are captured. It is acceptable to prepare the probe and defer real native results to P4.
+4. Record a short reproducible near/landmark/far view sequence at reachable fish coordinates; avoid historical c2-depth unreachable Z ±27/28 markers and assumptions about surviving P3 scene names. Prepare native screenshot comparison points rather than claiming headless pixels prove the experience.
+5. Keep resource/draw overhead bounded; do not add new procedural geography, shaders/passes without measured necessity, fog-volume arrays, new physics, new fish species behavior or frame-by-frame allocations.
+
+VALIDATE
+T2: inspect tools/dev check composition; run targeted import if resources changed, ./tools/dev build, ./tools/dev inspect-atmosphere, ./tools/dev inspect-depth, relevant current main/selected-player smoke, git diff --check and confirm no package-lock/vendor source injection. Native performance or visual claims remain NOT OBSERVED if unavailable.
+
+DONE WHEN
+The integrated source and regression checks are reliable, probe steps reproducible, version unchanged, and manual native owner checkpoint can judge the same source without inventing evidence.
+
+REPORT
+Append actual focused results and limitations to docs/tasks/c3-visibility/qualification/implementation.md. State explicitly what still needs native proof; route to P4.
+Do not commit or push; the runner owns implementation checkpoints. Keep root version 0.3.0 unchanged.
