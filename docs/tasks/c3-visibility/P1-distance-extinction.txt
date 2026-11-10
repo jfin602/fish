@@ -2,13 +2,13 @@ TASK: Correction 3 / P1 — Depth-aware visibility extinction
 
 - Recommended configuration: `GPT-6 Sol High`.
 - Browser required: no.
-- Required unchanged project version: `0.3.0`.
+- Required unchanged project version: `0.3.6`.
 
 GOAL
 Implement the approved stronger underwater distance extinction and progressive reveal using the existing Forward+ atmosphere, keeping near objects readable and depth response smooth.
 
 PREFLIGHT / READ
-Read AGENTS.md, BOOT.md, docs/tasks/c3-visibility/{README.md,prompt-assessment.md,implementation-plan.md} (P1), docs/systems/underwater-visibility.md, docs/tasks/c2-depth/closeout.md, and only affected current source: game/scripts/UnderwaterAtmosphere.cs, LightingSettings.cs, WaterColumnChecks.cs, relevant shaders and tools/dev. Inspect HEAD, local dirty changes, package.json, actual P3 source and Forward+ renderer. Do not execute while P3 runner edits the same worktree. If root is not exactly 0.3.0, STOP and report version reconciliation; never downgrade P3. Verify active Fish project before MCP edits.
+Read AGENTS.md, BOOT.md, docs/tasks/c3-visibility/{README.md,prompt-assessment.md,implementation-plan.md} (P1), docs/systems/underwater-visibility.md, docs/tasks/c2-depth/closeout.md, and only affected current source: game/scripts/UnderwaterAtmosphere.cs, LightingSettings.cs, WaterColumnChecks.cs, relevant shaders and tools/dev. Inspect HEAD, local dirty changes, package.json, actual P3 source and Forward+ renderer. Do not execute while P3 runner edits the same worktree. If root is not exactly 0.3.6, STOP and report version reconciliation; never downgrade P3. Verify active Fish project before MCP edits.
 
 IMPLEMENT
 1. Trace camera depth, world-depth shading, environment fog, volumetric light, sky/background and fog-disabled water surfaces. Confirm actual Godot 4.7.2 .NET API rather than assuming old fog-depth properties.
@@ -26,4 +26,4 @@ A reproducible implementation gives stronger coherent far-water attenuation and 
 
 REPORT
 Changed source, parameter/range mapping, sampled shallow/middle/deep values, checks and evidence/limitations. Retain relevant notes in docs/tasks/c3-visibility/qualification/implementation.md only for checks actually performed; route remaining GFX/preset work to P2.
-Do not commit or push; the runner owns implementation checkpoints. Keep root version 0.3.0 unchanged.
+Do not commit or push; the runner owns implementation checkpoints. Keep root version 0.3.6 unchanged.
