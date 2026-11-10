@@ -1,0 +1,29 @@
+TASK: Correction 3 / P1 — Depth-aware visibility extinction
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.3.0`.
+
+GOAL
+Implement the approved stronger underwater distance extinction and progressive reveal using the existing Forward+ atmosphere, keeping near objects readable and depth response smooth.
+
+PREFLIGHT / READ
+Read AGENTS.md, BOOT.md, docs/tasks/c3-visibility/{README.md,prompt-assessment.md,implementation-plan.md} (P1), docs/systems/underwater-visibility.md, docs/tasks/c2-depth/closeout.md, and only affected current source: game/scripts/UnderwaterAtmosphere.cs, LightingSettings.cs, WaterColumnChecks.cs, relevant shaders and tools/dev. Inspect HEAD, local dirty changes, package.json, actual P3 source and Forward+ renderer. Do not execute while P3 runner edits the same worktree. If root is not exactly 0.3.0, STOP and report version reconciliation; never downgrade P3. Verify active Fish project before MCP edits.
+
+IMPLEMENT
+1. Trace camera depth, world-depth shading, environment fog, volumetric light, sky/background and fog-disabled water surfaces. Confirm actual Godot 4.7.2 .NET API rather than assuming old fog-depth properties.
+2. Introduce one bounded artistic visibility-range model in UnderwaterAtmosphere; map its base meters to effective camera-distance extinction. The target is 0–8 m legible, 8–15 m softened, 15–25 m low-contrast silhouettes, ~25–35 m largely concealed at mid-depth, with continuous response. Exact distance ranges require native tuning, not hard clipping.
+3. Tie the effective range to the existing real surface/deep reference and eased camera depth. At shallow, middle, deep use provisional ~30–40, ~25–30, ~18–22 m useful visibility. Preserve existing world-height lighting/colors/caustics/sun and do not multiply unrelated effects until clarity is lost.
+4. Keep volumetric fog for shaft/scatter identity. VolumetricFogLength is a renderer extent; do not claim it is measured optical visibility. Correct misleading diagnostics (EffectiveUsefulRange semantics). Favor engine fog/scalar updates; only adapt existing screen shader if necessary and justified, not a second full-screen pass.
+5. Preserve base settings compatibility with existing LightingSettings until P2 migrates its GFX/store model. Keep GetViewport camera sampling presentation-only; no writes to fish/collision/input/camera owner, simulation, selected creature or game clock.
+6. Extend focused checks for monotonic distance attenuation, deeper shorter range, bounded finite values, atmosphere toggle restoration, surface/sky consistency and unchanged fish/preset base identity. Do not fabricate a visually accepted result.
+
+VALIDATE
+T2: inspect tools/dev command composition, then run ./tools/dev build, ./tools/dev inspect-atmosphere, ./tools/dev inspect-depth and git diff --check (plus import only if changed resources demand it). Preserve exact outputs and failures.
+
+DONE WHEN
+A reproducible implementation gives stronger coherent far-water attenuation and depth-dependent useful range without breaking the existing water/light identity at the source/runtime level; native look remains pending P4.
+
+REPORT
+Changed source, parameter/range mapping, sampled shallow/middle/deep values, checks and evidence/limitations. Retain relevant notes in docs/tasks/c3-visibility/qualification/implementation.md only for checks actually performed; route remaining GFX/preset work to P2.
+Do not commit or push; the runner owns implementation checkpoints. Keep root version 0.3.0 unchanged.
