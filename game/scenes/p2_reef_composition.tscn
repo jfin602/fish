@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://scripts/ReefComposition.cs" id="1_reef"]
+[ext_resource type="Script" path="res://scripts/FafTerrainWorld.cs" id="2_terrain"]
 
 [sub_resource type="BoxShape3D" id="tunnel_west"]
 size = Vector3(5.8, 5.3, 7.0)
@@ -34,6 +35,29 @@ size = Vector3(2.8, 2.2, 4.1)
 
 [node name="ReefComposition" type="Node3D"]
 script = ExtResource("1_reef")
+
+[node name="Terrain" type="Node3D" parent="."]
+script = ExtResource("2_terrain")
+
+[node name="Visuals" type="Node3D" parent="Terrain"]
+
+[node name="SeamZones" type="Node3D" parent="Terrain"]
+
+[node name="WestShelf" type="Marker3D" parent="Terrain/SeamZones"]
+position = Vector3(-23, 0, 12)
+metadata/next_phase = "P3 shelf and P4 contact dressing"
+
+[node name="EastChannel" type="Marker3D" parent="Terrain/SeamZones"]
+position = Vector3(26, 0, -4)
+metadata/next_phase = "P3 corridor and P4 contact dressing"
+
+[node name="DeepBreak" type="Marker3D" parent="Terrain/SeamZones"]
+position = Vector3(-20, 0, -23)
+metadata/next_phase = "P3 geology transition and P4 sparse details"
+
+[node name="UpperReturn" type="Marker3D" parent="Terrain/SeamZones"]
+position = Vector3(18, 0, 18)
+metadata/next_phase = "P3 return landmark and P4 living edge"
 
 [node name="Rocks" type="Node3D" parent="."]
 

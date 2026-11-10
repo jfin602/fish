@@ -25,6 +25,13 @@ public partial class ReefComposition : Node3D
 
     public bool TryBuild(SeabedSurface seabed, out string diagnostic)
     {
+        var terrain = GetNodeOrNull<FafTerrainWorld>("Terrain");
+        if (terrain is null)
+        {
+            diagnostic = "FAF_TERRAIN_INVALID action=missing-terrain-node";
+            return false;
+        }
+        if (!terrain.TryBuild(seabed, out diagnostic)) return false;
         var loaded = new Dictionary<string, PackedScene>();
         foreach (var (id, source) in Sources)
         {

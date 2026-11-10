@@ -12,6 +12,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
 | Adaptive Follow | A fifth built-in control preset combines mouse fish steering and W/S depth control with independent camera look while Left Shift is held, then returns smoothly. It is implemented with focused headless checks; native feel remains for owner observation. See [swimming and camera](docs/systems/swimming-and-camera.md). |
 <<<<<<< HEAD
+<<<<<<< HEAD
 | Next Phase | **P3 continues through the owner-selected `0.3.6` correction checkpoint.** If the local Git-proven P3 prefix is actually complete through P6 and root is `0.3.6`, run [c3-world-gen](docs/tasks/c3-world-gen/README.md) next, then [c3-visibility](docs/tasks/c3-visibility/README.md), then resume P3 native closeout. GitHub main's root may lag local runner checkpoints; never fake/downgrade versions. |
 | Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
@@ -24,6 +25,13 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Root version | **`0.3.1`** — P3/P1 implementation version in the uncommitted runner working tree. P2 ended at implementation version `0.2.6`; `0.2.7`/`0.2.8` were never fabricated. |
 | Later gameplay | **P3 targets `0.3.1–0.3.8`; P2 is the next P3 task.** Feeding/predators/growth move to P4, persistence/death P5, life recounting/history P6, and integrated qualification P7. |
 >>>>>>> de27d4e (0.3.1)
+=======
+| Next Phase | **P3 is in progress.** P1's FAF runtime catalog and P2's six-variant depth-world terrain are implemented; P3 caves/tunnels/geology is next. Native terrain appearance remains for P7. P2 G2.3/V20 remains an accepted open gap. |
+| Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
+| Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
+| Root version | **`0.3.2`** — P3/P2 implementation version in the uncommitted runner working tree. P2 ended at implementation version `0.2.6`; `0.2.7`/`0.2.8` were never fabricated. |
+| Later gameplay | **P3 targets `0.3.1–0.3.8`; P3 geology is the next task.** Feeding/predators/growth move to P4, persistence/death P5, life recounting/history P6, and integrated qualification P7. |
+>>>>>>> ab193a1 (0.3.2)
 
 ## Product contract to preserve
 

@@ -29,3 +29,29 @@ Tracked source records: `assets/faf/terrain/terrain_001_manifest.json`, `assets/
 | `git diff --check`; tracked vendor-local/package-lock inspection | PASS at P1 final review; no tracked vendor-local payload or `package-lock.json` was introduced. |
 
 P2 can consume the six terrain entries through `GetEnvironment(id).CreateVisual()` while retaining its own seabed collision/depth authority. P3 geology can add the four rock visuals with independently authored simplified collision. P4 can place coral/plant/detail visuals without physics and later use the reserved plant UV.y mask. P5 can consume `FafRuntimeCatalog.Fish` for preview/player descriptors, with all gameplay tuning shared. These are entry points, not evidence that P2–P5 placement or UI has been accepted.
+
+## P2 — Depth-world visual rebuild (2026-11-10)
+
+**Working-tree result:** implemented at root version `0.3.2` for the runner-owned checkpoint. Pre-task `main` HEAD was `58ca667fecc078826b45c1e1fe13d9e5f6affbf6`, with a clean tree. This task made no commit. P2 G2.3/V20 stays an accepted open gap, and P3 world-art Gate evidence still requires the later native review.
+
+### Placement and seam architecture
+
+`ReefComposition` now builds `FafTerrainWorld` under the saved normal-play composition. It places **51** visual-only FAF terrain chunks: A 25 broad sand fields, B 5 rolls, C 5 shelves, D 5 slopes, E 5 breaks, and F 6 rocky-floor areas. Each instance comes from its exact P1 catalog scene path and retains its imported material regions. Authored centers, unequal X/Z scales and varied yaw spread the fields beyond the reachable ±24.9 m fish area; B–F concentrate on unequal west/east shoulders and depth transitions, leaving the center and depth lanes open. The layout does not add procedural terrain generation or physics.
+
+At build time, each imported face is subdivided three times per edge and its vertices are draped onto the unchanged `SeabedSurface.GetHeightAt()` surface. Positive FAF relief is bounded; the zero-height apron/skirt is sunk slightly below the P2 underlay. This follows the accepted collision curvature between the original broad GLB vertices and avoids perched patches and exposed apron contours in the authored geometry. The original P2 continuous two-sided mesh remains the sole terrain collider and water-depth query; its visible blend shader now favors quiet warm FAF sand, with its four prepared textures retained as subtle variation and the existing world-height water attenuation intact. This keeps gaps and the region beyond the chunk field continuous instead of showing a finite diorama cutout. These are geometric/material design measures; rendered seam quality is still for native P7 judgment.
+
+The saved `Terrain/SeamZones` markers provide floor-anchored handoffs: **WestShelf** for a structural shelf and contact seam, **EastChannel** for a deep corridor, **DeepBreak** for a sparse geological transition, and **UpperReturn** for a return landmark/living edge. Chunk metadata names more local contact zones for P4 dressing. P3 should build its second swim-through, cave/shelter and deep corridor around these zones while retaining the P2 open/tunnel/shelter/vertical and two five-band lanes. P4 can dress contact seams without filling route centerlines.
+
+### T2 checks actually run
+
+| Check | Result |
+| --- | --- |
+| `tools/dev doctor`; `tools/dev build` | Fish project, Godot 4.7.2 .NET, .NET 10.0.403; build PASS with zero warnings/errors. Editor MCP `2026.11.04` reported its bridge disconnected, so saved files were edited on disk. |
+| `tools/dev inspect-terrain` | PASS: exact six FAF IDs/scene paths and 1/1/3/2/3/3 material-region counts, 51 live noncolliding chunks, 38 named contact zones, four floor-anchored P3/P4 markers and rotated placements. Across **96 samples** on primary, alternate, open, tunnel, shelter and vertical routes, **60** showed FAF geometry above the collider; maximum visible/collision delta was **0.139 m**, below the 0.45 m route limit. Fish radius/camera and P2 limits/water anchors remained valid. |
+| `tools/dev inspect-habitat` | PASS: 202 collision/height samples, five ordered depth bands, clear spawn, blocked underside/rim/upper escape and preserved P1 fixture. |
+| `tools/dev inspect-reef` | PASS: both five-band lanes traversed forward and back by the accepted fish collision body within the measured ±24.9 m bounds; open/tunnel/shelter/vertical fish and camera probes, nine prepared P2 source IDs and roof/wall collision passed. |
+| `tools/dev inspect-depth`; `tools/dev inspect-atmosphere` | PASS: surface/deep anchors `10.39/-7.61 m`, depth fog/range and preset isolation, Forward+ atmosphere/surface/caustics/motes, equal-intent movement on/off. The atmosphere check's intentional missing-optional-screen fixture emitted a warning and passed. |
+| `tools/dev import`; native capture attempt | Import was blocked by the sandbox's TCP listener permission during Godot editor startup; it still generated the new script UID sidecars. Xvfb could not open a display, so no native render or visual-quality/performance acceptance is claimed. Runtime checks loaded the already imported GLBs successfully. |
+| Source/diff inspection | `FishController.cs`, `FollowCamera.cs`, `swim_tuning.tres`, `SeabedSurface.cs`, `UnderwaterAtmosphere.cs`, normal main/habitat scenes and `project.godot` were not edited. `git diff --check` passed. |
+
+`0.3.2` establishes implemented terrain placement and structural route agreement. It does not qualify the final P3 reef look, seam readability from the hand-controlled camera, or native performance; those remain in the P7 review.

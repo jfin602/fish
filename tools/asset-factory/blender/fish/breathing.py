@@ -2,7 +2,8 @@
 
 The ordinary bony-fish implementation reassigns a small part of the existing
 front-body skin to two child bones. Rest geometry and existing swim weights are
-otherwise untouched. Exposed gill slits require a different future mechanism.
+otherwise untouched. New shark developmental stages use paired localized
+surface controls and visible slit marks; the canonical adult remains pending.
 """
 
 from __future__ import annotations

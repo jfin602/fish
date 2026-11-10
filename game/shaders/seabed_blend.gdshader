@@ -44,6 +44,11 @@ void fragment() {
     if (weights.w > 0.001) {
         albedo += texture(rock_color, uv).rgb * weights.w;
     }
+    // The original P2 maps remain bound for low-frequency variation, while the
+    // collidable underlay becomes quiet FAF sand beneath draped terrain pieces.
+    float grain = 0.025 * sin(0.19 * world_position.x + 0.11 * world_position.z)
+        * sin(0.13 * world_position.z - 0.07 * world_position.x);
+    albedo = mix(albedo, vec3(0.78, 0.75, 0.61) + vec3(grain), 0.86);
     // World height lets shelves in the same frame keep distinct water-column color.
     float depth = smoothstep(0.25, 1.0, clamp((water_surface_y - world_position.y) / max(water_surface_y - water_deep_y, 0.01), 0.0, 1.0));
     ALBEDO = albedo * mix(vec3(1.0), vec3(0.67, 0.80, 0.88), depth);
@@ -60,5 +65,6 @@ void fragment() {
         NORMAL_MAP = texture(coast_normal, uv).rgb;
         ROUGHNESS = texture(coast_roughness, uv).r;
     }
-    NORMAL_MAP_DEPTH = 1.0;
+    NORMAL_MAP_DEPTH = 0.08;
+    ROUGHNESS = mix(ROUGHNESS, 0.94, 0.85);
 }
