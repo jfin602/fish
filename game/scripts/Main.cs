@@ -44,8 +44,10 @@ public partial class Main : Node3D
         }
         var fish = GetNodeOrNull<FishController>("Fish");
         var camera = GetNodeOrNull<Camera3D>("Fish/CameraRig/Camera3D");
-        var habitat = GetNodeOrNull<StaticBody3D>("Habitat/WestWall");
-        if (fish is null || camera is null || habitat is null || !camera.Current)
+        var habitat = GetNodeOrNull<Node3D>("Habitat");
+        var isCourseFixture = habitat?.GetNodeOrNull<Node3D>("MovementCourse") is not null;
+        if (fish is null || camera is null || habitat is null || !camera.Current ||
+            (!isCourseFixture && habitat.GetNodeOrNull<SeabedSurface>("Seabed") is null))
         {
             GD.PushError("FISH_SMOKE_FAILED required 3D scene nodes missing");
             if (OS.GetCmdlineUserArgs().Contains("--smoke")) GetTree().Quit(1);
@@ -59,7 +61,10 @@ public partial class Main : Node3D
             Name = "PlayShell",
         });
 
-        if (!StarterWorld.TryPopulate(this, fish, out var assetDiagnostic))
+        var populated = isCourseFixture
+            ? StarterWorld.TryPopulate(this, fish, out var assetDiagnostic)
+            : P2HabitatWorld.TryPopulate(this, fish, out assetDiagnostic);
+        if (!populated)
         {
             GD.PushError(assetDiagnostic);
             var label = new Label
@@ -94,20 +99,32 @@ public partial class Main : Node3D
         }
         var skeleton = GetNodeOrNull<Skeleton3D>("Fish/PlayerVisual/Armature/Skeleton3D");
         var animation = GetNodeOrNull<AnimationPlayer>("Fish/PlayerVisual/AnimationPlayer");
-        var ambient = GetNodeOrNull<Node3D>("Habitat/AmbientFish");
-        var decor = GetNodeOrNull<Node3D>("Habitat/StarterDecor");
         var course = GetNodeOrNull<Node3D>("Habitat/MovementCourse");
-        var floor = GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
+        var seabed = GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
         if (fish.Tuning.ResourcePath != "res://resources/swim_tuning.tres" ||
             skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
-            ambient is null || ambient.GetChildCount() < 3 ||
-            decor is null || decor.GetChildCount() != 4 || course is null ||
-            floor.MaterialOverride is not StandardMaterial3D sand || sand.AlbedoTexture is null)
+            (course is null && (seabed?.GetNodeOrNull<MeshInstance3D>("Mesh")?.Mesh is null ||
+                seabed.GetNodeOrNull<CollisionShape3D>("Collision")?.Shape is null ||
+                GetNodeOrNull<StaticBody3D>("Habitat/HiddenLimits") is null ||
+                GetNodeOrNull<Node3D>("Habitat/Composition") is null)))
         {
-            GD.PushError("FISH_SMOKE_FAILED starter resources did not instantiate fully");
+            GD.PushError("FISH_SMOKE_FAILED world resources did not instantiate fully");
             GetTree().Quit(1);
             return;
+        }
+        if (course is not null)
+        {
+            var ambient = GetNodeOrNull<Node3D>("Habitat/AmbientFish");
+            var decor = GetNodeOrNull<Node3D>("Habitat/StarterDecor");
+            var floor = GetNodeOrNull<MeshInstance3D>("Habitat/Floor/Mesh");
+            if (ambient?.GetChildCount() != 7 || decor?.GetChildCount() != 4 ||
+                floor?.MaterialOverride is not StandardMaterial3D { AlbedoTexture: not null })
+            {
+                GD.PushError("FISH_SMOKE_FAILED P1 course resources did not instantiate fully");
+                GetTree().Quit(1);
+                return;
+            }
         }
         try { MotorChecks.Run(fish.Tuning); }
         catch (Exception error)

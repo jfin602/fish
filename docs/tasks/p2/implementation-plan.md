@@ -18,7 +18,7 @@ The lock uses the exact `forward_plus` method proven by the comparison path. The
 
 Keep `tools/dev compare compatibility` only as a development diagnostic if it remains useful; production/main should have one renderer: Forward+. Update the technical record and write `qualification/renderer-decision.md` with the P1 automated comparison boundary, the owner's real desktop Forward+ selection, the tracked lock, validation results and limitations. Assigned P2 version: `0.2.2`.
 
-## P3 — Natural habitat foundation
+## P3 — Natural habitat foundation — COMPLETE
 
 Move normal play away from the visible P1 movement-course box while preserving that course as a dedicated development/qualification fixture. Create a P2 habitat root/scene with:
 - continuous collidable seabed with varied elevation;

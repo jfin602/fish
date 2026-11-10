@@ -1,0 +1,178 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/Main.cs" id="1_main"]
+[ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
+[ext_resource type="PackedScene" path="res://scenes/movement_course.tscn" id="3_course"]
+[ext_resource type="Resource" path="res://resources/swim_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" path="res://scripts/FollowCamera.cs" id="5_camera"]
+
+[sub_resource type="StandardMaterial3D" id="water"]
+albedo_color = Color(0.07, 0.3, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="fish_mat"]
+albedo_color = Color(0.98, 0.61, 0.15, 1)
+
+[sub_resource type="StandardMaterial3D" id="fin_mat"]
+albedo_color = Color(0.93, 0.3, 0.12, 1)
+
+[sub_resource type="StandardMaterial3D" id="marker_mat"]
+albedo_color = Color(0.64, 0.83, 0.27, 1)
+
+[sub_resource type="BoxMesh" id="floor_mesh"]
+size = Vector3(57, 0.2, 57)
+
+[sub_resource type="BoxShape3D" id="floor_shape"]
+size = Vector3(57, 0.2, 57)
+
+[sub_resource type="BoxMesh" id="shelf_mesh"]
+size = Vector3(19, 0.2, 19)
+
+[sub_resource type="BoxShape3D" id="shelf_shape"]
+size = Vector3(19, 0.2, 19)
+
+[sub_resource type="BoxMesh" id="wall_mesh"]
+size = Vector3(0.2, 25.2, 57)
+
+[sub_resource type="BoxShape3D" id="wall_shape"]
+size = Vector3(0.2, 25.2, 57)
+
+[sub_resource type="SphereMesh" id="fish_body"]
+radius = 0.55
+height = 1.3
+
+[sub_resource type="SphereShape3D" id="fish_shape"]
+radius = 0.48
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_main")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = null
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.7, -0.5, 0)
+light_energy = 1.4
+
+[node name="Habitat" type="Node3D" parent="."]
+
+[node name="MovementCourse" parent="Habitat" instance=ExtResource("3_course")]
+
+[node name="Floor" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, -12.6, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Habitat/Floor"]
+mesh = SubResource("floor_mesh")
+surface_material_override/0 = SubResource("water")
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/Floor"]
+shape = SubResource("floor_shape")
+
+[node name="CourseShelf" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, -4.2, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Habitat/CourseShelf"]
+mesh = SubResource("shelf_mesh")
+surface_material_override/0 = SubResource("water")
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/CourseShelf"]
+shape = SubResource("shelf_shape")
+
+[node name="Ceiling" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, 12.6, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/Ceiling"]
+shape = SubResource("floor_shape")
+
+[node name="WestWall" type="StaticBody3D" parent="Habitat"]
+position = Vector3(-28.5, 0, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Habitat/WestWall"]
+mesh = SubResource("wall_mesh")
+surface_material_override/0 = SubResource("water")
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/WestWall"]
+shape = SubResource("wall_shape")
+
+[node name="EastWall" type="StaticBody3D" parent="Habitat"]
+position = Vector3(28.5, 0, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/EastWall"]
+shape = SubResource("wall_shape")
+
+[node name="NorthWall" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, 0, -28.5)
+rotation = Vector3(0, 1.5707964, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/NorthWall"]
+shape = SubResource("wall_shape")
+
+[node name="SouthWall" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, 0, 28.5)
+rotation = Vector3(0, 1.5707964, 0)
+
+[node name="Collision" type="CollisionShape3D" parent="Habitat/SouthWall"]
+shape = SubResource("wall_shape")
+
+[node name="Landmarks" type="Node3D" parent="Habitat"]
+
+[node name="CoralNear" type="MeshInstance3D" parent="Habitat/Landmarks"]
+position = Vector3(-3, -2.4, -4)
+mesh = SubResource("fish_body")
+surface_material_override/0 = SubResource("marker_mat")
+
+[node name="CoralFar" type="MeshInstance3D" parent="Habitat/Landmarks"]
+position = Vector3(4, -1.5, -7)
+scale = Vector3(1.4, 2, 1.4)
+mesh = SubResource("fish_body")
+surface_material_override/0 = SubResource("marker_mat")
+
+[node name="Fish" type="CharacterBody3D" parent="."]
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("2_fish")
+Tuning = ExtResource("4_tuning")
+
+[node name="Collision" type="CollisionShape3D" parent="Fish"]
+shape = SubResource("fish_shape")
+
+[node name="Body" type="MeshInstance3D" parent="Fish"]
+rotation = Vector3(1.5707964, 0, 0)
+mesh = SubResource("fish_body")
+surface_material_override/0 = SubResource("fish_mat")
+
+[node name="Tail" type="MeshInstance3D" parent="Fish"]
+position = Vector3(0, 0, 0.65)
+scale = Vector3(0.15, 0.65, 0.5)
+mesh = SubResource("fish_body")
+surface_material_override/0 = SubResource("fin_mat")
+
+[node name="TopFin" type="MeshInstance3D" parent="Fish"]
+position = Vector3(0, 0.52, 0.12)
+scale = Vector3(0.45, 0.35, 0.2)
+mesh = SubResource("fish_body")
+surface_material_override/0 = SubResource("fin_mat")
+
+[node name="LeftEye" type="MeshInstance3D" parent="Fish"]
+position = Vector3(-0.34, 0.18, -0.38)
+scale = Vector3(0.12, 0.12, 0.12)
+mesh = SubResource("fish_body")
+
+[node name="RightEye" type="MeshInstance3D" parent="Fish"]
+position = Vector3(0.34, 0.18, -0.38)
+scale = Vector3(0.12, 0.12, 0.12)
+mesh = SubResource("fish_body")
+
+[node name="CameraRig" type="Node3D" parent="Fish"]
+script = ExtResource("5_camera")
+
+[node name="Camera3D" type="Camera3D" parent="Fish/CameraRig"]
+current = true
+
+[node name="PrototypeHelp" type="CanvasLayer" parent="."]
+
+[node name="Help" type="Label" parent="PrototypeHelp"]
+offset_left = 18.0
+offset_top = 16.0
+offset_right = 700.0
+offset_bottom = 72.0
+text = "W: thrust   S: slow   A/D: turn   Up/Down: pitch   Esc: pause/options"

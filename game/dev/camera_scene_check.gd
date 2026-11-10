@@ -27,7 +27,7 @@ func _set_fish(fish: CharacterBody3D, place: Vector3, yaw: float, pitch: float) 
 	fish.global_transform = Transform3D(orientation, place)
 
 func _run() -> void:
-	var scene: Node3D = load("res://scenes/main.tscn").instantiate()
+	var scene: Node3D = load("res://scenes/p1_course_fixture.tscn").instantiate()
 	root.add_child(scene)
 	current_scene = scene
 	var fish: CharacterBody3D = scene.get_node("Fish")

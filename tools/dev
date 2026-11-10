@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|inspect-scene <path>|inspect-course|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|inspect-scene <path>|inspect-course|inspect-habitat|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -64,6 +64,10 @@ animation_scene_check() {
   logged animation-scene 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/animation_scene_check.gd
   grep -Fq 'ANIMATION_SCENE_OK' "$LOGS/animation-scene.log" || { echo 'Animation scene marker missing' >&2; return 1; }
 }
+habitat_check() {
+  logged habitat-check 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/habitat_check.gd
+  grep -Fq 'HABITAT_CHECK_OK' "$LOGS/habitat-check.log" || { echo 'Habitat assertion marker missing' >&2; return 1; }
+}
 case "${1:-help}" in
   doctor)
     need_tools
@@ -82,7 +86,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
@@ -126,6 +130,7 @@ case "${1:-help}" in
     logged course-check 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/course_check.gd
     grep -Fq 'COURSE_CHECK_OK' "$LOGS/course-check.log" || { echo 'Course assertion marker missing' >&2; exit 1; }
     ;;
+  inspect-habitat) need_tools; habitat_check ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;

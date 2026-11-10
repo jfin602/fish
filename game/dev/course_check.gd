@@ -30,7 +30,7 @@ func mesh_bounds(mesh: MeshInstance3D) -> AABB:
 	return AABB(low, high - low)
 
 func verify_course() -> void:
-	var packed: PackedScene = load("res://scenes/main.tscn")
+	var packed: PackedScene = load("res://scenes/p1_course_fixture.tscn")
 	if packed == null:
 		fail("main scene did not load")
 		return

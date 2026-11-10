@@ -5,7 +5,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _new_course() -> Node3D:
-	var packed: PackedScene = load("res://scenes/main.tscn")
+	var packed: PackedScene = load("res://scenes/p1_course_fixture.tscn")
 	var scene: Node3D = packed.instantiate()
 	root.add_child(scene)
 	current_scene = scene

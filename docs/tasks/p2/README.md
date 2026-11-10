@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: IN PROGRESS. P1 comparison and P2 native Forward+ lock are complete at root `0.2.2`; P3 natural habitat foundation is next.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS. P1 comparison, P2 native Forward+ lock and P3 habitat foundation are complete at root `0.2.3`; P4 reef composition is next.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -36,7 +36,7 @@ The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `READ
 | --- | --- | --- | --- | --- |
 | P1 | [Renderer comparison vertical slice](P1-renderer-comparison-vertical-slice.txt) | Reversible Compatibility/Forward+ comparison harness and underwater feature slice; [implementation evidence](qualification/implementation.md) | `0.2.1` | T1/T2 complete; native selection recorded in P2 |
 | P2 | [Native renderer lock](P2-native-renderer-lock.txt) | Owner decision and tracked Forward+ lock; [decision evidence](qualification/renderer-decision.md) | `0.2.2` | T3 complete; editor-panel limit recorded |
-| P3 | [Natural habitat foundation](P3-natural-habitat-foundation.txt) | Continuous seabed, natural limits, new normal-play habitat, P1 course preserved | `0.2.3` | T2 |
+| P3 | [Natural habitat foundation](P3-natural-habitat-foundation.txt) | Continuous seabed, hidden limits, new normal-play habitat, P1 course preserved; [implementation evidence](qualification/implementation.md#p2-p3--natural-habitat-foundation) | `0.2.3` | T2 complete; P7 native appearance/traversal ahead |
 | P4 | [Reef tunnels and world composition](P4-reef-tunnels-and-world-composition.txt) | Coral floor, rock tunnels/arches/overhangs, open/vertical routes, prototype cleanup | `0.2.4` | T2 |
 | P5 | [Underwater atmosphere](P5-underwater-atmosphere.txt) | Forward+ underwater fog/depth/color/light/caustics/motes/screen treatment | `0.2.5` | T2 |
 | P6 | [Fish-reactive water](P6-fish-reactive-water.txt) | Forward+ GPU particle/trail/turbulence response driven read-only by actual movement | `0.2.6` | T2 |

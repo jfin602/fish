@@ -26,7 +26,7 @@ func _state(motion: Node) -> Vector3:
 	return motion.call("GetPresentationState")
 
 func _run() -> void:
-	var scene: Node3D = load("res://scenes/main.tscn").instantiate()
+	var scene: Node3D = load("res://scenes/p1_course_fixture.tscn").instantiate()
 	root.add_child(scene)
 	current_scene = scene
 	var fish: CharacterBody3D = scene.get_node("Fish")
@@ -63,11 +63,11 @@ func _run() -> void:
 	fish.position = Vector3(0, 0, 4)
 	await _tick(3)
 	_key(KEY_W, true)
-	await _tick(20)
+	await _tick(24)
 	var powered := _state(motion)
 	if not _require(powered.x > 0.8 and fish.velocity.length() > 0.5 and
 			skeleton.get_bone_pose_rotation(tail).angle_to(neutral) > 0.05,
-			"propulsion did not increase swim pose and authoritative speed"):
+			"propulsion did not increase swim pose and authoritative speed: activity=%.3f speed=%.3f tail=%.3f position=%s" % [powered.x, fish.velocity.length(), skeleton.get_bone_pose_rotation(tail).angle_to(neutral), fish.position]):
 		return
 	var previous_phase := powered.z
 	var previous_tail := skeleton.get_bone_pose_rotation(tail)

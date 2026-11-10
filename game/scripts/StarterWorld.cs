@@ -45,75 +45,23 @@ public static class StarterWorld
         if (!TryLoad(4, out Texture2D roughness, out diagnostic)) return false;
         if (!TryLoad(5, out PackedScene coralScene, out diagnostic)) return false;
 
-        var playerVisual = playerScene.Instantiate<Node3D>();
-        var playerSkeleton = playerVisual.GetNodeOrNull<Skeleton3D>("Armature/Skeleton3D");
-        var playerMesh = playerVisual.GetNodeOrNull<MeshInstance3D>("Armature/Skeleton3D/ClownFish");
-        var playerAnimation = playerVisual.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
-        if (playerSkeleton is null || playerSkeleton.GetBoneCount() < 8 ||
-            playerMesh?.Mesh is null || playerMesh.Skin is null || playerMesh.Skin.GetBindCount() < 6 ||
-            playerMesh.Mesh.GetSurfaceCount() < 3 ||
-            playerAnimation is null || !playerAnimation.HasAnimation("Armature|Swim"))
-        {
-            playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-FBX-mesh-skin-and-swim-import";
-            return false;
-        }
-        var swimClip = playerAnimation.GetAnimation("Armature|Swim");
-        if (swimClip is null || swimClip.GetTrackCount() == 0 || swimClip.Length <= 0)
-        {
-            playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-swim-clip";
-            return false;
-        }
-        for (var track = 0; track < swimClip.GetTrackCount(); track++)
-        {
-            if (swimClip.TrackGetType(track) == Animation.TrackType.Rotation3D) continue;
-            playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=remove-imported-translation-or-scale-track";
-            return false;
-        }
-        if (!HasMaterialSurfaces(playerMesh.Mesh, 3))
-        {
-            playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-imported-body-stripes-outline-materials";
-            return false;
-        }
-        var motion = FishVisualMotion.CreateVerified(fish, playerVisual, playerSkeleton,
-            playerAnimation, swimClip);
-        if (motion is null)
-        {
-            playerVisual.Free();
-            diagnostic = "FISH_ASSET_INVALID item=Quaternius-Fish3 action=check-Root-Spine3-Tail-swim-tracks";
-            return false;
-        }
         if (!HasPreparedStaticMaterial(rockScene, "rock_face_01", true, true, true))
         {
-            playerVisual.Free();
             diagnostic = "FISH_ASSET_INVALID item=Rock-Face-01 action=check-gltf-binary-and-texture-dependencies";
             return false;
         }
         if (!HasPreparedStaticMaterial(coralScene, "Mesh", true, true, false))
         {
-            playerVisual.Free();
             diagnostic = "FISH_ASSET_INVALID item=Heliopora-coral action=check-GLB-mesh-and-material";
             return false;
         }
         if (!IsTwoKilopixelTexture(diffuse) || !IsTwoKilopixelTexture(normal) ||
             !IsTwoKilopixelTexture(roughness))
         {
-            playerVisual.Free();
             diagnostic = "FISH_ASSET_INVALID item=Coast-Sand-01 action=check-2K-diffuse-normal-roughness-maps";
             return false;
         }
-
-        fish.AddChild(playerVisual);
-        playerVisual.Name = "PlayerVisual";
-        playerVisual.Scale = Vector3.One * 0.12f;
-        // Fish3's Face-to-Tail axis imports toward +Z; align its nose with motor forward (-Z).
-        playerVisual.RotationDegrees = new Vector3(0, 180, 0);
-        playerVisual.AddChild(motion);
-        foreach (var oldPart in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
-            if (fish.GetNodeOrNull<MeshInstance3D>(oldPart) is { } oldMesh) oldMesh.Visible = false;
+        if (!PlayerArt.TryAttach(fish, playerScene, out diagnostic)) return false;
 
         var floor = main.GetNode<MeshInstance3D>("Habitat/Floor/Mesh");
         var sandMaterial = new StandardMaterial3D
@@ -177,14 +125,6 @@ public static class StarterWorld
             return false;
         }
         diagnostic = "";
-        return true;
-    }
-
-    private static bool HasMaterialSurfaces(Mesh mesh, int minimumSurfaces)
-    {
-        if (mesh.GetSurfaceCount() < minimumSurfaces) return false;
-        for (var i = 0; i < mesh.GetSurfaceCount(); i++)
-            if (mesh.SurfaceGetMaterial(i) is not BaseMaterial3D) return false;
         return true;
     }
 
