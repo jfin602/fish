@@ -67,7 +67,8 @@ The paths above are the current source owners. Keep renderer-specific code behin
 | FAF world catalog / wrappers | Canonical tracked FAF environment IDs, runtime resource paths and reusable placement roots for terrain, rocks, coral, plants and details. | Re-exporting Blender sources or inventing gameplay state. |
 | P3 terrain/geology composition | Visible FAF terrain skin, rock clusters, caves/tunnels/overhangs and authored deterministic placement over the accepted P2 navigation/depth skeleton. | Replacing fish movement/camera/depth authority to make art fit. |
 | P3 reef dressing | Coral/plant/detail clusters, depth-density rules, optional visual sway, seam dressing and open-route exclusions. | Ecology simulation or collision-heavy decorative dressing. |
-| P3 ambient life | Bounded presentation-only FAF-FISH-001–004 schools/loops when used. | Feeding, prey/predator state, damage, persistence or shark gameplay. |
+| P3 character select / player visual | Five-fish selectable visual catalog, animated preview, session-local selected FAF ID, shared-player visual attachment and Return to Character Select routing. | Species stats, alternate colliders/motors, persistence, death/history or predator behavior. |
+| P3 ambient life | Bounded presentation-only FAF-FISH-001–004 schools/loops when used. | Feeding, prey/predator state, damage, persistence or ambient shark predator gameplay. |
 
 Exact source paths should follow the smallest implementation that fits the accepted P2 world; do not create empty frameworks before P3 execution.
 

@@ -1,28 +1,29 @@
-TASK: Phase 3 / P7 — FAF reef world closeout
+TASK: Phase 3 / P8 — FAF reef world closeout
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
 - Browser required: yes.
-- This prompt's assigned project version is `0.3.7`.
+- This prompt's assigned project version is `0.3.8`.
 
 MANUAL FINAL BOUNDARY
-This is p3's ONE FINAL CLOSEOUT. Execute after reviewed P6 native evidence. Reuse unchanged native observations; repeat only invalidated gaps.
+This is p3's ONE FINAL CLOSEOUT. Execute after reviewed P7 native evidence. Reuse unchanged native observations; repeat only invalidated gaps.
 
 GOAL
 Close P3 only when the accepted P2 varying-depth world is rebuilt with the complete core FAF environment library, usable caves/tunnels, shallow-lush → deep-sparse composition, direct owner target-style acceptance and representative performance evidence.
 
 READ
-AGENTS.md, BOOT.md, P3 README/plan, roadmap G3.1–G3.3, validation V21–V23, qualification/implementation.md, native-world-art.md and accepted-world-art.md. Inspect current scene/resources and compare to P6 accepted candidate. Require P2 GREEN and P1–P6 P3 results.
+AGENTS.md, BOOT.md, P3 README/plan, roadmap G3.1–G3.4, validation V21–V24, qualification/implementation.md, native-world-art.md and accepted-world-art.md. Inspect current scene/resources and compare to P6 accepted candidate. Require P2 GREEN and P1–P7 P3 results.
 
 A — VERIFY
 Record current revision and identities for P2 collision/depth/water owners, P3 FAF catalog, terrain/geology/dressing placements, ambience and visual shaders. Reuse P6 only when source applies. Preserve failures and do not infer style from isolated FAF proofs.
 
-B — MAP G3.1–G3.3
+B — MAP G3.1–G3.4
 Create `docs/tasks/p3/closeout.md`:
 
 - **G3.1:** accepted P2 depth/navigation remains valid; all 6 terrain and 4 rock variants participate; visible world no longer reads as terraces/test basin; two swim-throughs, cave chamber and deep corridor work with honest collision/camera.
 - **G3.2:** all 12 coral, 8 plant and 8 detail variants participate; shallow/high is visibly lushest and lower/deep progressively sparse; seams/repetition acceptably hidden; routes remain readable.
 - **G3.3:** gameplay-camera views belong beside the FAF target and improve materially on style-proof 001; owner explicitly accepts world-art direction; optional FAF-FISH-001–004 ambience remains presentation-only; representative dense/cave/deep performance is acceptable for progression.
+- **G3.4:** Character Select exposes all five animated FAF fish including the Blacktip Reef Shark; each can start play as the player visual while sharing identical authoritative movement/collision/camera/tuning; Pause/Game Menu → Return to Character Select clears input/unloads gameplay and returns without death/save/history semantics; selecting a different fish after return works.
 
 Every Gate requires actual applicable evidence.
 
@@ -32,7 +33,7 @@ Update roadmap, P3 README, BOOT, MODULES, planning/art docs and changed source o
 Run `npm run fish:phase:validate -- p3`, documentation checks and `git diff --check`. Verify no package-lock/secrets/caches/unintended vendor data.
 
 VERSION / GIT
-Use normal closeout policy for assigned `0.3.7`. If a Gate is incomplete, retain last valid version and P3 NOT GREEN with exact repair. Do not self-commit/push; leave final closeout reviewable.
+Use normal closeout policy for assigned `0.3.8`. If a Gate is incomplete, retain last valid version and P3 NOT GREEN with exact repair. Do not self-commit/push; leave final closeout reviewable.
 
 REPORT
-Report accepted scene/art identity, asset coverage, density gradient, cave/tunnel results, owner style decision, performance scope, G3.1–G3.3 dispositions and next action.
+Report accepted scene/art identity, asset coverage, density gradient, cave/tunnel results, owner style decision, performance scope, G3.1–G3.4 dispositions and next action.

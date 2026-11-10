@@ -1,30 +1,30 @@
-TASK: Phase 3 / P5 — Ambient reef life and finish
+TASK: Phase 3 / P6 — Ambient reef life and finish
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
 - Browser required: no.
-- This prompt's assigned project version is `0.3.5`.
+- This prompt's assigned project version is `0.3.6`.
 
 GOAL
 Add bounded non-gameplay reef-fish ambience and perform the final authored repetition/color/intersection cleanup before native review.
 
 READ
-AGENTS.md, BOOT.md, P3 plan P5, FAF art style, fish candidate records, style-proof 001 fish/density findings, current `0.3.4` world, P2 atmosphere/depth contract and player identity. Inspect animation names/orientation and current instance architecture.
+AGENTS.md, BOOT.md, P3 plan P5, FAF art style, fish candidate records, style-proof 001 fish/density findings, current `0.3.5` world, P2 atmosphere/depth contract and player identity. Inspect animation names/orientation and current instance architecture.
 
 IMPLEMENT
-1. Integrate FAF-FISH-001 Yellow Tang plus 002 Clownfish, 003 Chromis and 004 Butterflyfish as ambient presentation only; do not replace player.
+1. Integrate FAF-FISH-001 Yellow Tang plus 002 Clownfish, 003 Chromis and 004 Butterflyfish as ambient presentation only; do not replace the currently selected player visual.
 2. Use deterministic bounded schools/local loops with existing Glide/Swim/SwimFast clips.
 3. Bias activity toward shallow/upper; occasional middle groups; quiet lower/deep.
 4. No collision, feeding, health, prey/predator, event or save state.
-5. Keep FAF-FISH-005 shark out of normal P3 population by default.
+5. Keep FAF-FISH-005 shark out of normal ambient population by default. It is selectable as the player from P5, but that does not make it ambient predator AI.
 6. Perform world-wide cleanup: break repeated clusters, tune rotations/scales/colors under depth lighting, fix floating/buried/intersecting assets, reinforce foreground/midground/background layering, preserve landmarks/routes, and remove visible transitional third-party art where FAF now covers the same role.
 7. Add focused checks for bounded deterministic ambient population and no gameplay state ownership.
 
 SCOPE
-No ecology/schooling AI, predator behavior, growth, player replacement, new fish generation or topology changes.
+No ecology/schooling AI, predator behavior, growth, character-select redesign, new fish generation or topology changes.
 
 VALIDATE
 T2. Build and run focused ambient/presentation checks plus affected route checks. Prove FAF-FISH-001–004 resolve/animate, remain presentation-only, shallow activity exceeds deep by authored design, required environment variants remain, and `git diff --check`.
 
 DONE
-World feels authored/alive rather than static or stamped. Set `0.3.5` only after checks. Report ambient population/loops and P6 native checkpoints. Do not self-commit or push.
+World feels authored/alive rather than static or stamped. Set `0.3.6` only after checks. Report ambient population/loops and P7 native checkpoints. Do not self-commit or push.

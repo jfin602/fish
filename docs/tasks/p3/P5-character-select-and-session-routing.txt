@@ -1,0 +1,58 @@
+TASK: Phase 3 / P5 — Character select and session routing
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.3.5`.
+
+GOAL
+Add the first Character Select page and session-routing flow using **all five FAF fish models**. Choosing a fish changes the player visual/animation only; every choice keeps the same authoritative movement, collision, camera, controls and tuning. Add Pause/Game Menu → Return to Character Select without implementing death or persistence.
+
+READ
+AGENTS.md, BOOT.md, P3 README/assessment/plan P5, UX/presentation, swimming/camera, MODULES.md, FAF fish candidate records, current PlayerArt/FishController/PlayShell/Main scene ownership, and current `0.3.4` source. Inspect the actual startup scene, pause/menu code, player visual attachment path, fish animation names/import transforms and focused input lifecycle checks.
+
+CHARACTERS
+Character Select must offer exactly these five current FAF candidates:
+1. FAF-FISH-001 — Yellow Tang
+2. FAF-FISH-002 — Ocellaris Clownfish
+3. FAF-FISH-003 — Blue-Green Chromis
+4. FAF-FISH-004 — Reef Butterflyfish
+5. FAF-FISH-005 — Blacktip Reef Shark
+
+All five are selectable player visuals. Shark selection does **not** imply predator behavior, larger collision, damage, different speed or species stats.
+
+IMPLEMENT
+1. Add a dedicated Character Select scene/page that becomes the normal P3 session entry before gameplay.
+2. Show the selected fish as a real animated 3D preview using its tracked FAF model/rig. Prefer a calm Glide/Swim loop; preview animation must not translate the model through the scene. Display the fish's readable name and selection state.
+3. Provide clear mouse + keyboard browsing/selection and a Start/Play action. All five choices must be reachable; focus/hover/selected state must not rely on color alone. Keep layout readable at the current fullscreen/windowed-fullscreen targets.
+4. Add one small **session-local character selection owner** (or equivalent existing app/session boundary) storing only the selected FAF fish ID while the app is running. Do not write it to disk or call future run-save code.
+5. Refactor the player visual attachment only as needed so normal play instantiates the selected FAF model under the existing authoritative FishController. Preserve the one CharacterBody3D, collider, SwimMotor, swim tuning, controls, FollowCamera and WaterReaction.
+6. Give each selectable fish an explicit presentation normalization transform (scale/orientation/visual offset as needed) so Yellow Tang, Clownfish, Chromis, Butterflyfish and Blacktip Shark fit the existing shared player presentation envelope. Do **not** resize the authoritative collider or retune movement/camera per species in P3.
+7. Map each selected rig to its existing Glide/Swim/SwimFast clips through one player-visual/animation boundary. Preserve animation-only root behavior; the rig cannot move the gameplay root.
+8. Add **Return to Character Select** to the in-game Pause/Game Menu. When activated:
+   - clear/disarm held/queued gameplay input;
+   - release mouse capture/show pointer;
+   - unload/reset the current ephemeral gameplay scene/session;
+   - return to Character Select;
+   - optionally keep the last selected fish highlighted in memory.
+   It must **not** mark death, write a life-history entry, save/resume a run, invoke New Life/abandon-life semantics, or advance gameplay time while on the selection page.
+9. Starting again after return creates a fresh P3 tech-demo play scene with the newly selected visual. This is session routing only; later persistence will define real living-life replacement rules.
+10. Add focused checks for:
+   - stable catalog of five selectable IDs/names;
+   - all five preview scenes/animations load;
+   - each selection starts play with the corresponding player visual;
+   - FishController/collision/tuning/control/camera identities remain identical across all five choices;
+   - shark visual normalization cannot change collision or speed;
+   - Return to Character Select clears input/capture and removes gameplay-session nodes;
+   - no death/save/history path fires;
+   - selection page can start a second different fish after return.
+11. Record implementation/check results in `docs/tasks/p3/qualification/implementation.md` and create/update `qualification/character-select.md` only for evidence actually observed.
+
+SCOPE / DEFERRALS
+No species stats, size mechanics, growth, feeding, predator behavior, save persistence, life identity, history/archive, final main-menu architecture, first person, controller work, new fish art or gameplay balance. Do not make the shark a predator in this task.
+
+VALIDATE
+T2. Run focused character-select/session/input checks plus build/main smoke and relevant existing input lifecycle tests. Verify all five player visuals, shared-authority invariants, clean select→play→return→select→different-play routing, no stale input/mouse capture, and `git diff --check`.
+
+DONE / VERSION
+Character Select works for all five FAF fish through one shared gameplay contract, and Pause → Return to Character Select cleanly returns without terminal/persistence semantics. Set root package.json to `0.3.5` only after checks pass. Report scene/source owners, player normalization transforms, shared-state invariants and P6 entry. Do not self-commit or push; runner owns checkpoint.

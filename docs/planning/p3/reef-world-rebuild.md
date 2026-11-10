@@ -20,7 +20,7 @@ Before P3 execution:
 
 1. P2 G2.1–G2.3 must be closed with the final accepted source/evidence. Current authoring-time root remains `0.2.6`; P3 does not waive V20.
 2. Preserve Forward+, the owner-green water/light/depth identity, water reaction, accepted P1 movement/camera/controls and the P1 fixture.
-3. Deliberately transition root `package.json` to **`0.3.0`**. P3 prompts then target `0.3.1` through `0.3.7`.
+3. Deliberately transition root `package.json` to **`0.3.0`**. P3 prompts then target `0.3.1` through `0.3.8`.
 4. Inspect current source before assuming the authoring-time `SeabedSurface` / reef-composition layout survived P2 closeout.
 
 ## Core FAF library
@@ -37,9 +37,23 @@ P3 consumes the completed tracked original outputs. It does not generate replace
 
 That is **38 required environment variants**. Every one must participate meaningfully in normal play by P3 closeout. This is not permission to hide checklist instances off-route.
 
-### Ambient fish
+### Selectable player fish and ambient fish
 
-FAF-FISH-001–004 may provide presentation-only reef life. FAF-FISH-005 Blacktip Reef Shark remains reserved for later ecology/predator work unless the owner explicitly changes that boundary.
+P3 adds a **Character Select** page using all five finished FAF fish as selectable player visuals:
+
+- FAF-FISH-001 Yellow Tang;
+- FAF-FISH-002 Ocellaris Clownfish;
+- FAF-FISH-003 Blue-Green Chromis;
+- FAF-FISH-004 Reef Butterflyfish;
+- FAF-FISH-005 Blacktip Reef Shark.
+
+This is a visual/player-body choice only for P3. All five use the same existing authoritative `FishController`, collision footprint, SwimMotor, controls, camera, tuning and water-reaction semantics. Per-character presentation transforms may normalize source scale/orientation into one shared player envelope; selecting the shark does **not** make the gameplay collider larger or add predator stats/behavior.
+
+Fresh launch enters Character Select before normal play. The page shows an animated 3D preview and the fish name, lets mouse/keyboard users browse all five choices, and starts the reef session with the selected visual. Selection is session-local for P3; it is not a saved-life or species-stat system.
+
+Pause/Game Menu adds **Return to Character Select**. It clears held/captured input, unloads the current ephemeral play session and returns to the selection page with a visible pointer. It does not count as death, archive a life, save/resume a run, or establish the later abandonment policy. The most recently selected fish may remain highlighted in memory for convenience, but no disk persistence is required yet.
+
+FAF-FISH-001–004 may additionally provide presentation-only ambient reef life. FAF-FISH-005 remains excluded from ambient predator presentation by default even though it is selectable as the player visual; later ecology will decide shark threat behavior.
 
 ## Preserve the depth skeleton, rebuild the visible world
 
@@ -131,7 +145,7 @@ Richness comes from curated clusters and layered composition.
 
 ## Ambient life
 
-If used, FAF-FISH-001–004 remain presentation only:
+Character selection is separate from ambient population. If used, FAF-FISH-001–004 remain presentation only:
 
 - deterministic local loops/schools;
 - more visible in shallow/upper zones;
@@ -163,10 +177,11 @@ P3 is complete when the owner can swim the full accepted five-depth world and ju
 - the live Forward+ view improves materially on style-proof 001 and belongs beside the FAF reef target;
 - seams/repetition are not immediately obvious;
 - representative dense scenes remain acceptably smooth;
-- P2 movement/depth/water authority remains unchanged.
+- P2 movement/depth/water authority remains unchanged;
+- Character Select presents all five FAF fish with animated previews, starts play with the selected visual, and Pause → Return to Character Select cleanly returns without death/save/history semantics.
 
 ## Deferrals
 
-No feeding, prey/predator AI, growth, save/resume, death/history, first-person implementation, new movement physics, procedural world generation, new core FAF family production, production audio pass or final whole-game biome/content scale.
+No feeding, prey/predator AI, species stats, growth, save/resume, death/history, first-person implementation, new movement physics, procedural world generation, new core FAF family production, production audio pass or final whole-game biome/content scale. Character Select is session routing/presentation only.
 
 The next gameplay phase after successful P3 closeout is feeding/predators/growth.

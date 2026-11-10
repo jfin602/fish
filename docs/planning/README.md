@@ -11,6 +11,6 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | [P1 — Swim controls worksheet](p1/swim-controls-worksheet.md) | Complete historical design record; implementation/native acceptance remain separate. |
 | [Movement abilities](p1/movement-abilities.md) | Approved future feature group; its original "next after core" sequencing is superseded by the P2 decision. |
 | [P2 — Build the underwater world](p2/underwater-world.md) | In progress; technical depth world and atmosphere exist, with G2.3/V20 still open. |
-| [P3 — FAF reef world rebuild](p3/reef-world-rebuild.md) | Owner-selected and fully authored; blocked on P2 closeout, then consumes the accepted varying-depth world and completed FAF library. |
+| [P3 — FAF reef world rebuild](p3/reef-world-rebuild.md) | Owner-selected and fully authored; blocked on P2 closeout, then rebuilds the accepted varying-depth world with the completed FAF library and adds the five-fish Character Select/session-return flow. |
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md).

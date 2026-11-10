@@ -10,6 +10,18 @@ Third person is the main experience in a realistic 3D ocean world. The player se
 
 A living fish can be continued across sessions. Death ends that life permanently. The main menu contains a history section for all completed fish stories, and death presents a brief recounting of the life that just ended.
 
+## P3 Character Select
+
+**Owner-selected for P3 — 2026-11-10:** before normal P3 play, show a dedicated Character Select page using the five existing FAF fish candidates: Yellow Tang, Ocellaris Clownfish, Blue-Green Chromis, Reef Butterflyfish and Blacktip Reef Shark.
+
+The page should show a real animated 3D preview of the highlighted fish, its readable name, clear selection/focus state, and a Start/Play action. Mouse and keyboard users must be able to browse all five choices. The preview is presentation only and must not mutate gameplay state.
+
+For P3, fish choice changes **visual body/animation only**. Every choice uses the same movement motor, collision footprint, camera, controls, tuning and water-reaction behavior. Per-character presentation scaling/orientation may normalize the models into one shared player envelope; selecting the Blacktip Reef Shark does not grant larger collision, speed, predator behavior or species stats.
+
+Character choice is session-local. It is not yet a saved fish identity, New Life policy, growth/species system or persistence feature. Fresh P3 entry goes to Character Select; Start enters the reef with the selected visual.
+
+The Pause/Game Menu includes **Return to Character Select**. That action clears gameplay input and mouse capture, exits the current ephemeral P3 play scene and returns to the selection page. It must not be represented as death, archive a story, save/abandon a living run or invoke later persistence rules. After return, the last selected fish may remain highlighted in memory, and the player can choose another fish and start a clean session.
+
 ## Main menu
 
 | Action | Intended behavior |
@@ -54,7 +66,7 @@ Pause and clear input on focus loss; resume deliberately with fresh input after 
 
 ## Pause, saving, and recovery
 
-Provide a clear way to pause and leave a session. Saving should communicate whether the operation succeeded. If it fails, retain the current life and explain the problem; do not falsely claim the player can safely resume a state that was not saved.
+Provide a clear way to pause and leave a session. During P3, **Return to Character Select** is an explicit ephemeral-session routing action and is separate from future save/death/abandonment behavior. Saving should communicate whether the operation succeeded. If it fails, retain the current life and explain the problem; do not falsely claim the player can safely resume a state that was not saved.
 
 The game is paused while closed. Resume should restore the relevant danger state without surprise input carried from the menu. See [survival and runs](systems/survival-and-runs.md) for persistence rules.
 
@@ -77,5 +89,6 @@ The archive should remain reachable whether the player starts another life immed
 - In the P2 habitat, normal swimming clearly reads as underwater at near/far/deep viewpoints without relying only on a flat tint.
 - The P2 environment provides natural seabed/reef routes, rock passage/cover and vertical navigation without visible developer-course presentation.
 - Movement-reactive water is visible but restrained, tracks the fish coherently, and does not change authoritative movement.
+- P3 Character Select exposes all five animated FAF fish, starts play with the chosen visual under the shared gameplay contract, and Return to Character Select works without death/save/history side effects.
 
 These targets require native observation where presentation or input is claimed. Headless checks and MCP connectivity alone are not proof of a usable interface.

@@ -8,7 +8,7 @@ At execution inspect branch/HEAD/dirty state, root version, accepted P2 normal-p
 
 ## P1 — FAF runtime integration
 
-Verify and expose all 38 environment variants through the smallest stable normal-play catalog/wrapper boundary:
+Verify and expose all 38 environment variants **plus the five FAF fish player candidates** through the smallest stable normal-play catalog/wrapper boundary:
 
 - terrain A–F;
 - rock A–D;
@@ -16,9 +16,9 @@ Verify and expose all 38 environment variants through the smallest stable normal
 - plant 001–003 variants;
 - detail 001–004 A/B.
 
-Do not rename/re-export valid GLBs or create a generic asset framework. Preserve canonical FAF IDs, source paths and import orientation/pivots. Static decorative assets get no gameplay collision by default.
+Do not rename/re-export valid GLBs or create a generic asset framework. Preserve canonical FAF IDs, source paths and import orientation/pivots. Add selectable-fish descriptor metadata for FAF-FISH-001–005: display name, PackedScene path, preview/player animation names and presentation normalization transform. Static decorative assets get no gameplay collision by default.
 
-Prepare optional plant UV.y sway material hooks, but no physics. Add/extend one focused runtime-load check proving all 38 IDs resolve through the P3 path.
+Prepare optional plant UV.y sway material hooks, but no physics. Add/extend one focused runtime-load check proving all 38 environment IDs **and all five fish IDs** resolve through the P3 path.
 
 Assigned version `0.3.1`.
 
@@ -77,7 +77,24 @@ Use shared instances/MultiMesh where it materially reduces cost without making p
 
 Assigned version `0.3.4`.
 
-## P5 — Ambient reef life and finish
+## P5 — Character select and session routing
+
+Add the first real Character Select entry flow.
+
+- Fresh app/session entry shows Character Select before normal play.
+- Present all five FAF fish: Yellow Tang, Ocellaris Clownfish, Blue-Green Chromis, Reef Butterflyfish and Blacktip Reef Shark.
+- Show one animated 3D preview at a time (or equivalent selectable gallery with animated focus preview), the fish name, selection state and a clear Start/Play action.
+- Mouse and keyboard can browse/confirm/back/quit as appropriate; UI focus is visible and does not leak into gameplay.
+- Selecting a fish sets one **session-local player visual ID**. No disk persistence, species stats, growth model or run identity is introduced.
+- All candidates attach to the same authoritative FishController and share the same collision, SwimMotor, tuning, controls, camera and water-reaction behavior. Per-character presentation transform normalizes source orientation/scale into the existing player envelope. Shark selection is visual only.
+- Refactor hard-coded player art attachment only as much as needed to instantiate the selected FAF rig/mesh and choose its Glide/Swim/SwimFast clips through one player-visual boundary.
+- Add **Return to Character Select** to Pause/Game Menu. Activation clears held/queued input and mouse capture, unloads/resets the current ephemeral gameplay scene, returns to Character Select with a visible pointer, and may keep the last fish highlighted in memory.
+- Return to Character Select must not call death, archive, save/resume, New Life, abandon-life, or any later persistence semantics.
+- Add focused checks that all five IDs preview/start correctly, selected model identity reaches PlayerArt/player visual, authoritative movement/collider/tuning hashes remain identical, and the return flow clears input/session nodes without death/save side effects.
+
+Assigned version `0.3.5`.
+
+## P6 — Ambient reef life and finish
 
 Use FAF-FISH-001–004 for bounded presentation-only schools/local loops when practical:
 
@@ -85,46 +102,42 @@ Use FAF-FISH-001–004 for bounded presentation-only schools/local loops when pr
 - occasional middle groups;
 - quieter deep zones;
 - no collision/ecology/event/persistence state;
-- current player unchanged.
+- selected player remains independent of ambient population.
 
-Reserve FAF-FISH-005 shark for later ecology.
+The Blacktip Reef Shark is selectable as the player visual from P5, but remains excluded from ambient predator presentation by default until later ecology.
 
 Perform a full repetition/intersection/color cleanup: break identical clusters, fix floating/buried assets, improve foreground/midground/background layering, preserve landmarks/routes, remove visible transitional third-party art where FAF now replaces its role, and tune colors under actual P2 depth lighting.
 
-Assigned version `0.3.5`.
+Assigned version `0.3.6`.
 
-## P6 — Native style and performance tuning
+## P7 — Native style, character select and performance tuning
 
 Mandatory native owner checkpoint.
 
-Swim shallow→upper→middle→lower→deep→return, alternate route, both tunnel routes, cave chamber and deep corridor.
+First qualify Character Select:
+- launch into the page;
+- browse all five animated previews and names;
+- start normal play with each of the five choices long enough to verify the selected model is the player while collider/movement/camera behavior remains shared;
+- from gameplay, use Pause/Game Menu → Return to Character Select, verify clean return/input release/no death or save/history side effect, select a different fish and re-enter play.
 
-Compare actual gameplay views against the FAF reef target and style-proof 001. The live world should materially improve on the proof's weak arch, visible seams, sparse layering and finite-diorama read.
+Then swim shallow→upper→middle→lower→deep→return, alternate route, both tunnel routes, cave chamber and deep corridor.
 
-Review:
+Compare actual gameplay views against the FAF reef target and style-proof 001. Review all 38 environment variants, shallow→deep density gradient, route/cave readability, faceting/palette/layering, plant sway/ambient fish if implemented, P2 water/depth identity, and dense shallow/cave/middle/deep performance.
 
-- all 38 environment variants as real composition;
-- shallow→deep density gradient;
-- route/cave readability;
-- faceting/palette/layering;
-- plant sway/ambient fish if implemented;
-- P2 water/depth identity;
-- dense shallow, cave/middle and deep-sparse performance.
+Write `qualification/character-select.md`, `qualification/native-world-art.md` and `qualification/accepted-world-art.md`. Owner must explicitly accept both Character Select flow and world-art direction.
 
-Write `qualification/native-world-art.md` and `qualification/accepted-world-art.md`. Owner must explicitly accept the world-art direction.
+Assigned version `0.3.7`.
 
-Assigned version `0.3.6`.
+## P8 — Final closeout
 
-## P7 — Final closeout
+Map G3.1–G3.4 against P1–P7 evidence. Confirm P2 remains valid, all required environment variants participate, caves/tunnels work, shallow/high density visibly exceeds lower/deep, target style is owner-accepted, all five Character Select choices work through the shared gameplay contract, Return to Character Select is clean/non-terminal, and representative performance applies to the accepted candidate.
 
-Map G3.1–G3.3 against P1–P6 evidence. Confirm P2 remains valid, all required variants participate, caves/tunnels work, shallow/high density visibly exceeds lower/deep, target style is owner-accepted and representative performance applies to the accepted candidate.
+Reconcile roadmap/BOOT/task/UX/art/module docs once. Route successful P3 to feeding/escape/growth.
 
-Reconcile roadmap/BOOT/task/art/module docs once. Route successful P3 to feeding/escape/growth.
-
-Assigned closeout version `0.3.7`.
+Assigned closeout version `0.3.8`.
 
 ## Hard boundaries
 
-No new core FAF family generation by default; no third-party asset hunting; no ecology/feeding/predator/growth behavior; no save/death/history; no renderer change; no motor/camera authority change; no procedural world generation.
+No new core FAF family generation by default; no third-party asset hunting; no ecology/feeding/predator/growth behavior; no species stats; no save/death/history persistence; no renderer change; no motor/camera/collision authority change; no procedural world generation. Character Select/session routing is explicitly allowed.
 
 Preserve the P1 fixture, accepted controls/presets, Forward+, final P2 water/light/depth and water-reaction identity.

@@ -13,7 +13,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; [c2-depth R1 closeout](tasks/c2-depth/closeout.md#r1-native-closeout--2026-11-10) qualifies G2.1/G2.2, while G2.3/V20 still needs owner/native evidence. |
-| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density until normal play approaches the target reef style. | **AUTHORED / NOT STARTED**; [design](planning/p3/reef-world-rebuild.md) and [stack](tasks/p3/README.md); blocked on P2 closeout. |
+| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **AUTHORED / NOT STARTED**; [design](planning/p3/reef-world-rebuild.md) and [stack](tasks/p3/README.md); blocked on P2 closeout. |
 | P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
 | P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -163,6 +163,17 @@ P3 is the first style-proving world-art phase. It consumes the completed FAF lib
 - Where used, FAF-FISH-001–004 provide bounded non-gameplay ambient reef life; FAF-FISH-005 shark remains deferred to ecology by default.
 - The rebuilt world remains readable and comfortable through full depth traversal, caves and tunnels under the accepted Forward+ atmosphere.
 - Representative dense-shallow, cave/middle and deep-sparse views have recorded native performance on the target desktop, with owner acceptance of the final visual direction.
+
+### G3.4 — Character select and session routing
+
+**Result: NOT OBSERVED.**
+
+- Fresh session entry shows a usable Character Select page before normal play.
+- Animated 3D previews and readable names expose all five FAF fish: Yellow Tang, Ocellaris Clownfish, Blue-Green Chromis, Reef Butterflyfish and Blacktip Reef Shark.
+- Any of the five can start normal play as the player visual while the authoritative FishController, collider, movement tuning, controls, camera and water-reaction behavior remain identical across choices.
+- Per-character presentation normalization keeps source scale/orientation usable without turning the shark or other fish into different gameplay sizes/stats.
+- Pause/Game Menu → Return to Character Select clears held/queued input and pointer capture, unloads/resets the current ephemeral session and returns to selection without death, save/resume, abandonment or Life History side effects.
+- After returning, selecting a different fish starts a clean new P3 session with the newly selected visual and no stale player/input state.
 
 ## P4 — Feed, escape and grow
 

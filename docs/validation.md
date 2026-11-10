@@ -46,6 +46,7 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 | V21 | Traverse the accepted five-depth world after the FAF terrain/geology rebuild. Verify all six terrain roles and four rock variants participate in normal play; the world no longer reads as parallel terraces/test basin; two distinct swim-through routes, a cave/shelter chamber and deep corridor are usable with honest collision/camera clearance; P2 depth routes/water remain intact. | G3.1 |
 | V22 | Compare shallow/high, upper, middle, lower and deep reef zones while swimming. Verify all twelve coral, eight plant and eight detail variants participate in coherent clusters; shallow/high areas are visibly the lushest, middle bands balance living reef/geology, and lower/deep bands become progressively sparser; open lanes, cave mouths and landmarks remain readable; modular seams/repetition are acceptably hidden. | G3.2 |
 | V23 | From the actual gameplay camera, inspect dense shallow near/wide views, a tunnel/cave view, a mid-depth layered view, a deep sparse view and one swim-through beside the FAF reef target and style-proof 001. Record owner style judgment, optional ambient FAF-FISH-001–004 behavior, and representative dense/cave/deep performance. Confirm P2 movement/depth/water authority is unchanged. | G3.3 |
+| V24 | Launch the P3 build into Character Select. Browse all five animated previews/names, start play with each fish long enough to verify the selected player visual, and confirm authoritative movement/collider/camera/tuning identity is unchanged across choices. From gameplay use Pause/Game Menu → Return to Character Select; verify input/capture clears, no death/save/history behavior fires, the selection page returns cleanly, and a different fish can then start a fresh session without stale state. | G3.4 |
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
@@ -85,7 +86,7 @@ Headless scene checks can prove saved nodes, collision topology, shader/resource
 
 ## P3 FAF reef-world acceptance
 
-P3 is an art/world-composition qualification, not an isolated asset-import check. V21 proves the finished original terrain/rock kit forms usable geology over the accepted P2 navigation skeleton. V22 proves the completed coral/plant/detail library creates a deliberate depth-based density gradient instead of uniform scatter. V23 proves the running Forward+ world belongs beside the owner target from the gameplay camera, improves materially on style-proof 001, and remains performant enough for progression.
+P3 is an art/world-composition qualification, not an isolated asset-import check. V21 proves the finished original terrain/rock kit forms usable geology over the accepted P2 navigation skeleton. V22 proves the completed coral/plant/detail library creates a deliberate depth-based density gradient instead of uniform scatter. V23 proves the running Forward+ world belongs beside the owner target from the gameplay camera, improves materially on style-proof 001, and remains performant enough for progression. V24 proves the five-fish Character Select and return-to-selection session routing without changing gameplay authority or inventing persistence.
 
 Headless checks can prove asset identity, placement counts, collision routes and deterministic density metrics. They cannot establish that the world looks natural, that caves feel good to swim through, that repetition/seams are visually hidden, or that the target style is achieved. Those require P3 P6 owner/native review.
 
@@ -102,7 +103,7 @@ Headless checks can prove asset identity, placement counts, collision routes and
 | C18–C26: desktop controls, swimming feel, camera/body presentation, free-look deferral and owner acceptance | V01/V02 in both desktop modes; inspect initial scope and record the owner's actual play judgment. Later controller support needs separate qualification. |
 | C27–C29: P1 selected assets, settled dynamics and fullscreen-first delivery | V01/V02 with the final accepted tuning record; V16/V17 on the accepted candidate; all G1.1–G1.4 required for P1 completion. |
 | C32–C39: P2 worldbuilding, natural reef, renderer lock, reactive water, visual style, actual water-column extinction and five-level basin | V18–V20 plus the P2 renderer comparison/decision record and c2/c2-depth evidence; G2.1–G2.3 all required for P2 completion. |
-| C41–C44: P3 FAF reef rebuild, caves/tunnels, depth-density gradient and complete core environment asset integration | V21–V23 plus P3 implementation/native world-art evidence; G3.1–G3.3 all required for P3 completion. |
+| C41–C44: P3 FAF reef rebuild, caves/tunnels, depth-density gradient and complete core environment asset integration | V21–V24 plus P3 implementation/native world-art/character-select evidence; G3.1–G3.4 all required for P3 completion. |
 
 IDs refer to [the decision register](decisions-and-questions.md). A coverage mapping is not a passed result.
 

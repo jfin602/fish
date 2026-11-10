@@ -42,21 +42,24 @@ The integrated [style proof 001](../../fish-asset-factory/style-proof-001/README
 5. Establish a strong vertical density gradient: shallow/high lushest; upper/middle rich; lower/deep sparse/geological.
 6. Use details to enrich close/midground bases and hide contacts without clutter.
 7. Preserve negative/open swimming lanes and camera readability.
-8. Optionally integrate FAF-FISH-001–004 as presentation-only ambient schools; reserve shark for later ecology.
-9. Beat the style-proof 001 composition from the actual gameplay camera and obtain direct owner acceptance.
-10. Measure representative dense/cave/deep performance.
+8. Add Character Select using **all five FAF fish**, including the Blacktip Reef Shark, as selectable player visuals. All choices share the current motor/collision/camera/tuning; normalize only presentation scale/orientation.
+9. Fresh launch enters Character Select; selection starts normal play; Pause/Game Menu provides Return to Character Select that resets/unloads the current P3 session without death/save/history semantics.
+10. Optionally integrate FAF-FISH-001–004 as presentation-only ambient schools; shark remains excluded from ambient predator behavior.
+11. Beat style-proof 001 from the actual gameplay camera and obtain direct owner acceptance.
+12. Measure representative dense/cave/deep performance.
 
 ## Decomposition
 
 | Task | Responsibility | Evidence |
 | --- | --- | --- |
-| P1 | Runtime catalog/wrappers for complete 38-variant environment library | T1/T2 |
+| P1 | Runtime catalog/wrappers for 38 environment variants + five selectable fish descriptors | T1/T2 |
 | P2 | Visible terrain rebuild over accepted five-band P2 route/depth skeleton | T2 |
 | P3 | Geological caves/tunnels/arches/chambers/landmarks | T2 |
 | P4 | Full coral/plant/detail dressing with depth-density gradient and optional sway | T2 |
-| P5 | Ambient small reef fish and world-wide repetition/intersection cleanup | T2 |
-| P6 | Native owner target-style, traversal and performance tuning | T3 |
-| P7 | Evidence/Gate closeout | T1 review of T3 |
+| P5 | Character Select, selected player visual, session-local routing and Return to Character Select | T2 |
+| P6 | Ambient reef life and world-wide repetition/intersection cleanup | T2 |
+| P7 | Native owner world-art + character-select/return-flow + performance tuning | T3 |
+| P8 | Evidence/Gate closeout | T1 review of T3 |
 
 ## Risks and mitigations
 
@@ -70,11 +73,14 @@ The integrated [style proof 001](../../fish-asset-factory/style-proof-001/README
 - **Dense dressing hurts performance:** shared resources/MultiMesh where useful, no decorative collision, native measurement.
 - **Caves break camera:** route checks use accepted fish radius and camera obstruction/recovery.
 - **Details become confetti:** keep sparse base/foreground placement and quiet sand.
+- **Character choice accidentally changes gameplay:** every candidate uses one shared authoritative FishController/collision/motor/tuning; only visual scene, animation, presentation transform and display name vary.
+- **Shark raw size breaks the camera/collider contract:** give each character an explicit presentation normalization transform into the shared player envelope; never resize collision/tuning in P3.
+- **Return to Character Select becomes hidden persistence/death:** make it an explicit session-routing action that clears input/unloads play and never calls death, save, archive or later run-lifecycle APIs.
 - **Ambient fish become gameplay AI:** no collision, feeding, detection, health, predator or event state.
-- **Target is only a screenshot:** P6 requires real swimming through depths/caves with owner judgment.
+- **Target is only a screenshot:** P7 requires real swimming through depths/caves plus the actual Character Select/return flow with owner judgment.
 
 ## Success boundary
 
-P3 remains NOT GREEN if the world still reads as terraces/patchwork, caves/tunnels are unusable, required variants look like checklist clutter, shallow/deep density is visually flat, seams/repetition dominate, routes become unreadable, the gameplay-camera view does not approach the target, or representative density performs poorly.
+P3 remains NOT GREEN if the world still reads as terraces/patchwork, caves/tunnels are unusable, required variants look like checklist clutter, shallow/deep density is visually flat, seams/repetition dominate, routes become unreadable, the gameplay-camera view does not approach the target, representative density performs poorly, any of the five FAF fish is unavailable in Character Select, the selected visual changes authoritative gameplay, or Return to Character Select triggers death/save/history behavior.
 
 Authoring changes no current package version or P2 Gate.
