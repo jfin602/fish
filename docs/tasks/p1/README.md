@@ -1,20 +1,20 @@
 # P1 — Settle core swimming
 
-**State: P1–P9 implemented and checked by direct execution through root version `0.1.9`; P10 native tuning is next.** The four selected assets and provisional display shell were observed in a native Linux/X11 game window in [P5 evidence](qualification/native-display-and-assets.md); P6–P9 motor, input, camera and Fish3 pose have headless source-bound checks in [implementation evidence](qualification/implementation.md). Native two-mode comfort, camera feel, rendered body motion, tuning and all Phase 1 Gates remain open. The planned `0.1.0` Phase-entry checkpoint is absent from Git history; direct execution has not fabricated it.
+**State: Phase 1 COMPLETE by direct owner acceptance on 2026-11-09; G1.1–G1.4 PASS within recorded evidence limits.** [Closeout](closeout.md), [swimming acceptance](qualification/swimming-acceptance.md), and [accepted tuning](qualification/accepted-tuning.md) define the final source-bound baseline. P1–P9 were directly implemented; c1 controls were then implemented and observed in a bounded native session. The authored P10 iterative session was superseded by explicit owner acceptance of the current post-c1 candidate, and P11 evidence review/reconciliation was performed directly. Neither prompt is represented as an executed runner task. No `0.1.10` or `0.1.11` checkpoint was fabricated; root `0.2.0` is the deliberate P2 entry version.
 
 ## Scope and finish line
 
 Deliver natural, nimble, easy-to-control swimming in mouse-only mode and keyboard fallback, with curved turning, pitch-based depth travel, quick acceleration, gradual slowing, the approved follow camera, and visible fish motion. The revised starter slots are Quaternius `Fish3` / `ClownFish` from the owner-provided Animated Fish Pack, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea*. The low-poly fish is a P1 test choice, not the final art/species decision. Establish fullscreen and windowed fullscreen in the first implementation task and use them throughout development.
 
-By the end, the actual swimming dynamics must be settled: final bindings and tuning recorded, all seven owner-approved checks observed in both desktop modes, display/asset integration qualified, and the owner accepting the implemented feel. A prototype with unfinished core tuning cannot close P1. [Phase design](../../planning/p1/core-swimming.md), [swimming contract](../../systems/swimming-and-camera.md), [assets](../../art-and-assets.md), [validation](../../validation.md), and [G1.1–G1.4](../../roadmap.md#p1--swim-through-a-habitat) own the contracts.
+The owner accepted the current core as sufficient for progression and deferred additional control/movement refinement until later gameplay work informs it. The authored seven-by-two and four-cell matrices were not retrospectively filled; [the closeout](closeout.md) distinguishes observed native paths from source checks and the owner decision. [Phase design](../../planning/p1/core-swimming.md), [swimming contract](../../systems/swimming-and-camera.md), [assets](../../art-and-assets.md), [validation](../../validation.md), and [G1.1–G1.4](../../roadmap.md#p1--swim-through-a-habitat) retain the development context.
 
 The owner later selected **P2 underwater world** as the next roadmap Phase after accepted core swimming. Movement abilities remain approved future work but are no longer the immediate follow-up. Controller, free look, first person, survival systems, growth and production-world rendering remain outside this P1 stack. Local display/input preferences and a minimal pause/settings interface are included.
 
-## Entry prerequisites and version plan
+## Historical entry prerequisites and version plan
 
-The inspected published source is `5dc1c7c73b4f1f0b61579a76ea7e8cce86303613`, with root version **`0.0.0`**, no `game/` and no `tools/dev`. The owner reports a local demo. Inspect and preserve the actual checkout and reconcile P0's implementation and native evidence before execution. These authoring changes do not update the root version or invent completed P0 work.
+At original P1 authoring, the inspected published source was `5dc1c7c73b4f1f0b61579a76ea7e8cce86303613`, root **`0.0.0`**, without `game/` or `tools/dev`. This paragraph preserves the old entry context; [closeout](closeout.md) describes the actual current source.
 
-After actual P0 readiness is established, deliberately prepare the **`0.1.0`** baseline before invoking the runner. P1 cannot make that baseline change from inside its first child prompt because preflight happens first. Follow [entry and resume](manual/entry-and-resume.md), including dirty-work review and the exact manual-checkpoint procedure.
+The authored runner plan called for a **`0.1.0`** baseline before invocation. Direct P1 execution instead began from the recorded P0 state and did not invent that checkpoint. [Entry and resume](manual/entry-and-resume.md) retains the original procedure as historical task material.
 
 | Order | Prompt | Assigned version | Validation / execution boundary |
 | --- | --- | --- | --- |
@@ -27,12 +27,14 @@ After actual P0 readiness is established, deliberately prepare the **`0.1.0`** b
 | P7 | [Mouse mode and input lifecycle](P7-mouse-mode-and-input-lifecycle.txt) | `0.1.7` | T2 saved-scene input/mode/pause checks passed by direct execution; native comfort remains P10. |
 | P8 | [Follow camera](P8-follow-camera.txt) | `0.1.8` | T1 saved-scene follow, obstruction, pause and resize checks passed by direct execution; native comfort remains P10. |
 | P9 | [Fish body motion](P9-fish-body-motion.txt) | `0.1.9` | T1 real-scene Fish3 swim/glide/turn pose, loop, pause and isolation checks passed by direct execution; native deformation/feel remains P10. |
-| P10 | [Owner tuning and dynamics lock](P10-owner-tuning-and-dynamics-lock.txt) | `0.1.10` | T3; mandatory owner/native handoff and iterative acceptance. |
-| P11 | [Swimming closeout](P11-swimming-closeout.txt) | `0.1.11` | Manual final evidence review; leave changes reviewable. |
+| P10 | [Owner tuning and dynamics lock](P10-owner-tuning-and-dynamics-lock.txt) | `0.1.10` planned only | Iterative requirement superseded by direct acceptance of the post-c1 candidate; no prompt execution or checkpoint claimed. |
+| P11 | [Swimming closeout](P11-swimming-closeout.txt) | `0.1.11` planned only | Evidence-review/reconciliation responsibilities completed directly in [closeout](closeout.md); no runner checkpoint claimed. |
 
-The numbered prompts are tasks within roadmap Phase 1. All are unexecuted at authoring. P5 checks initial asset/display integration using the current provisional controls; P10 settles the completed control modes and feel. P11 is the only final closeout.
+The numbered prompts are preserved as authored task history. P1–P9 have direct-execution records; P10/P11 were not run through the stack. P5 checked initial asset/display integration, later c1 added presets/rebinding, and the owner then accepted the current candidate for progression. The single final P1 disposition is [closeout](closeout.md).
 
-## Execution and handoffs
+## Historical execution and handoffs
+
+The following commands describe the authored P1 stack and its original runner workflow. P1 is now closed through direct execution and owner acceptance; the next executable stack is [P2](../p2/README.md), starting at root `0.2.0`. Do not rerun P10/P11 merely to manufacture old checkpoints.
 
 Validate the authored stack from the repository root:
 
@@ -60,7 +62,7 @@ P2's original named asset instructions are superseded by [decisions C30–C31](.
 | `docs/assets/p1-starter-manifest.md` | Public-safe identity, provenance, license/credit and acquisition/preparation/import/observation status for each selected asset. |
 | `game/assets/README.md` | Verified installation and resource mapping, including ignored restricted files and missing-asset diagnostics. |
 | `qualification/native-display-and-assets.md` | P5 native display, focus, layout, asset appearance and scene evidence. |
-| `qualification/swimming-acceptance.md` | P10 course, mode/display matrix, tuning iterations, actual owner feedback and final seven-criterion results. |
+| `qualification/swimming-acceptance.md` | Historical P10 observations and direct final owner acceptance, with unobserved matrix cells explicit. |
 | `qualification/accepted-tuning.md` | Final reproducible bindings/model/parameter/camera/animation profile bound to source, config and asset identity. |
 | `closeout.md` | One final mapping of G1.1–G1.4 to source-bound evidence and the progression decision. |
 
@@ -68,4 +70,4 @@ These records are not prefilled as observations. Retain required evidence durabl
 
 ## Completion
 
-Every P1 Gate requires its actual evidence. If the owner still finds turning, slowing, depth control, camera or body motion unfinished, continue the scoped tuning/repair work and keep P1 incomplete. On success, the final docs identify the accepted dynamics and route the next Phase to [P2 underwater world](../p2/README.md). Movement abilities stay separately open. They do not treat controller support or survival mechanics as already implemented.
+The [final closeout](closeout.md) records all four Gate results, actual supporting evidence and qualification limits. [P2 underwater world](../p2/README.md) is READY TO RUN and replaces the course's normal-play presentation while retaining it as a regression fixture. Movement abilities, controller support and survival mechanics remain future work.

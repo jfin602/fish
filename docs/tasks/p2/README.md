@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: authored, NOT EXECUTED.** This Phase follows actual P1 close. It replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: authored, NOT STARTED, READY TO RUN from root version `0.2.0`.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -17,17 +17,17 @@ P2 does **not** implement feeding, prey/predator AI, growth, persistence/death/h
 
 ## Entry and version
 
-At authoring on 2026-11-09, main is at documentation commit `7c428c403cb9bafdcad1491a9cc404d0f6da171e`; gameplay source is still the P1 direct-P9 candidate and root `package.json` is **`0.1.9`**. P1 P10/P11 and the separate c1-bindings correction remain open. This stack must **not** be run merely because it exists.
+At authoring on 2026-11-09, main was at documentation commit `7c428c403cb9bafdcad1491a9cc404d0f6da171e`; root was `0.1.9`. The current accepted gameplay source is clean `main` `27c4debf0ac04f9cb2eff927c1e31c6b604c0b60` before this documentation-only closeout. P1 is COMPLETE, c1 is reconciled, and root `package.json` is deliberately **`0.2.0`**. [Accepted P1 tuning](../p1/qualification/accepted-tuning.md) is the P2 inheritance record. No P2 implementation has begun.
 
-Before P2 execution:
+P2 entry is satisfied as follows:
 
-1. P1 must be actually closed with G1.1–G1.4 evidence and accepted final movement/camera/input tuning.
-2. Reconcile any c1-bindings work and current main/working tree; do not downgrade or overwrite later P1 changes.
-3. Deliberately prepare root version **`0.2.0`** as the Phase 2 entry baseline before invoking the runner. The runner will not create that baseline for you.
-4. Confirm the real Godot project/toolchain and Fish MCP identity. Inspect current `tools/dev` composition and actual renderer.
+1. [P1 closeout](../p1/closeout.md) records G1.1–G1.4 PASS under the owner's accepted progression criteria and names evidence limits.
+2. [c1 closeout](../c1-bindings/closeout.md) reconciles controls into that candidate while retaining advanced native gaps.
+3. Root version **`0.2.0`** is the Phase 2 entry baseline; P2 prompts retain their authored `0.2.1`–`0.2.8` assignments.
+4. At execution, confirm the real Godot project/toolchain and Fish MCP identity and inspect `tools/dev` composition and actual Compatibility renderer.
 5. Preserve the P1 movement course as a regression/qualification fixture even though it should no longer be normal-play scenery.
 
-The inspected repository still contains unrelated pre-existing conflict-marker text in root `AGENTS.md` and `README.md`. This P2 stack does not authorize a sweeping cleanup. Follow unambiguous current source/evidence and surface any conflict that materially blocks execution.
+The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `README.md` where the current checkout made the correct state unambiguous; no broader cleanup was performed.
 
 ## Prompt order
 
@@ -62,7 +62,7 @@ Do not prefill these as PASS. A shader compiling, a headless scene tree, or a st
 
 ## Execute
 
-After the reviewed P1 close and deliberate `0.2.0` baseline:
+From the reviewed P1 close and deliberate `0.2.0` baseline:
 
 ```bash
 npm run fish:phase:validate -- p2

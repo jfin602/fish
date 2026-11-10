@@ -1,6 +1,6 @@
 # C1 P5 — Native controls observation
 
-**Disposition: PARTIAL / NOT GREEN (2026-11-09).** A real Fish window ran on Linux/X11 and received XTest-generated native key, pointer-motion and button events. These were software-generated OS events, not a human comfort playtest. The remaining P5 observations below must be completed before this correction is fully qualified. P1 P10 separately requires the owner's swimming-feel acceptance.
+**Native session disposition: PARTIAL / NOT GREEN when recorded (2026-11-09).** A real Fish window ran on Linux/X11 and received XTest-generated native key, pointer-motion and button events. These were software-generated OS events, not a human comfort playtest. The advanced P5 observations below were not completed. The owner subsequently accepted the current post-c1 controls as sufficient for P1 progression; [c1 closeout](../closeout.md) reconciles that decision without relabeling this partial native session as a full matrix PASS.
 
 ## Identity and setup
 
@@ -34,4 +34,4 @@ The screenshots are context for the actions recorded above. They do not prove no
 
 ## Follow-up qualification task
 
-On the Fish Linux desktop, use physical keyboard/mouse input or an owner-reported session to finish P5: run the three built-ins in both display modes, complete the exact saved obstacle route with at least two distinct hybrid presets from separate fresh spawns, inspect switching during held-input release and first resumed frames, delete a custom preset, exercise editor keyboard focus and F6 binding priority, and record precise expected/observed outcomes and owner feedback. Keep P1 P10's final binding, camera and swimming-feel approval separate. Do not advance the root version or G1.1–G1.4 from this partial record.
+Historical follow-up plan, now deferred by the owner progression decision: on the Fish Linux desktop, use physical keyboard/mouse input or an owner-reported session to further qualify P5: run the three built-ins in both display modes, complete the exact saved obstacle route with at least two distinct hybrid presets from separate fresh spawns, inspect switching during held-input release and first resumed frames, delete a custom preset, exercise editor keyboard focus and F6 binding priority, and record precise expected/observed outcomes and owner feedback. This partial native record alone never advances a Gate; [P1 closeout](../../p1/closeout.md) owns the later combined disposition.

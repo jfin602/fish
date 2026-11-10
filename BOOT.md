@@ -8,12 +8,12 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | --- | --- |
 | Product | Owner-approved 3D fish survival: one living fish across sessions, permanent death, a brief factual life recounting, and a main-menu Life History archive. |
 | Foundation | P0 is complete on the observed Linux/X11 desktop; the Godot .NET project, developer CLI, and isolated Godot Editor MCP path are implemented and qualified for the foundation scope. |
-| Current gameplay | P1 is in progress through direct P9 implementation. The shared motor, desktop inputs, follow camera, Fish3 animation, selected starter assets, fullscreen shell, and movement course exist. Final native two-mode tuning/owner acceptance is still required. |
-| Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) P1–P4 are implemented. P5 has [partial native evidence](docs/tasks/c1-bindings/qualification/native-controls.md) and a [NOT GREEN closeout](docs/tasks/c1-bindings/closeout.md): basic controls, editor actions and restart worked, while the full comparison and owner checkpoint remain. Root version stays `0.1.9`. |
-| Next Phase | **P2 — Build the underwater world** is the selected next roadmap Phase after P1 closes. It replaces the prototype-course presentation with a natural reef habitat, locks the renderer from measured testing, adds underwater atmosphere, and adds movement-reactive water presentation. |
+| Current gameplay | **P1 COMPLETE.** The owner accepted the current post-c1 controls, swimming, third-person camera/body and starter course as sufficient for progression. [P1 closeout](docs/tasks/p1/closeout.md) maps G1.1–G1.4 and evidence limits; [accepted tuning](docs/tasks/p1/qualification/accepted-tuning.md) is P2's exact baseline. |
+| Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
+| Next Phase | **P2 — Build the underwater world** is NOT STARTED and READY TO RUN. It replaces the prototype-course presentation with a natural reef habitat, locks the renderer from measured testing, adds underwater atmosphere, and adds movement-reactive water presentation. |
 | Renderer | The current implementation uses Godot Compatibility. P2 does **not** preselect Forward+; its first tasks compare the actual P1 candidate under Compatibility and Forward+ on the target desktop, then record one renderer for the phase. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
-| Root version | Published root `package.json` is `0.1.9` at this handoff. P2 authoring does not change it. After P1 is actually closed, deliberately prepare the `0.2.0` phase-entry baseline before running [p2](docs/tasks/p2/README.md). |
+| Root version | `package.json` is deliberately `0.2.0`, the P2 phase-entry baseline. Its existing prompts begin at `0.2.1`; no `0.1.10`/`0.1.11` checkpoints were fabricated. |
 | Later gameplay | Feeding/predators/growth move to P3. Persistence/death becomes P4, life recounting/history P5, and integrated qualification P6. [Movement abilities](docs/planning/p1/movement-abilities.md) remain accepted future work but are no longer the immediate post-P1 roadmap step. |
 
 ## Product contract to preserve
@@ -24,17 +24,16 @@ The [decision register](docs/decisions-and-questions.md) separates confirmed beh
 
 ## P1 completion boundary
 
-P1 remains the movement-quality gate. Finish the active control correction when applicable, then complete [P10 owner tuning](docs/tasks/p1/P10-owner-tuning-and-dynamics-lock.txt) and [P11 closeout](docs/tasks/p1/P11-swimming-closeout.txt). P1 is complete only when G1.1–G1.4 have source-bound evidence and the owner accepts the actual implemented swimming feel. Do not use P2 authoring to waive an unfinished P1 requirement.
+P1 is complete under the owner's 2026-11-09 decision: the current controls are good enough to progress, and further control/movement refinement waits for later world/gameplay context. The authored [P10 iterative tuning](docs/tasks/p1/P10-owner-tuning-and-dynamics-lock.txt) was superseded at closeout; [P11 evidence review](docs/tasks/p1/closeout.md) was completed directly. The evidence record distinguishes actual native observations, saved-scene checks and unobserved advanced matrix cells. P0 and P1 are COMPLETE; c1 is reconciled. No old prompt execution or intermediate versions were invented.
 
 The P1 movement course remains useful as a development/qualification fixture. P2 should stop presenting that course as the normal game world rather than deleting evidence needed to understand P1.
 
 ## P2 entry and boundary
 
-After P1 closes:
+At the P2 handoff:
 
-1. Inspect branch/HEAD, local changes, package version, final P1 tuning, current renderer and actual native evidence. Preserve compatible work.
-2. Deliberately prepare root version **`0.2.0`** before invoking the runner; P2 prompts then target `0.2.1` onward.
-3. Execute [the P2 stack](docs/tasks/p2/README.md): renderer trial/lock, natural habitat, reef/tunnels, underwater atmosphere, fish-reactive water, native tuning, and closeout.
+1. Inspect branch/HEAD, local changes, [final P1 tuning](docs/tasks/p1/qualification/accepted-tuning.md), current renderer and actual native evidence. Preserve compatible work.
+2. Run [the P2 stack](docs/tasks/p2/README.md) from root **`0.2.0`**: renderer trial/lock, natural habitat, reef/tunnels, underwater atmosphere, fish-reactive water, native tuning, and closeout. Next command: `npm run fish:phase -- p2`.
 4. Keep rendering/world presentation read-only with respect to authoritative fish movement. A particle wake, post effect, fog change or camera effect must not change the motor, fish identity or simulation time.
 5. Do not implement feeding, predators, growth, saves, death/history, controller, first person, or Movement abilities as hidden P2 scope.
 

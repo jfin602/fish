@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 IN PROGRESS through direct P9 implementation with final native tuning/closeout still open; P2 underwater-world design selected and planned but NOT STARTED.** This is the single Phase/Gate progress authority.
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 underwater-world stack NOT STARTED and READY TO RUN.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -11,8 +11,8 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | Phase | Observable outcome | State |
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
-| P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | IN PROGRESS through direct P9; final native tuning and Gate review open. |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **NOT STARTED; [design](planning/p2/underwater-world.md) and [stack](tasks/p2/README.md) authored.** |
+| P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **NOT STARTED; READY TO RUN** from root `0.2.0`; [stack](tasks/p2/README.md). |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -48,49 +48,49 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 
 ## P1 — Swim through a habitat
 
-**Status: IN PROGRESS through direct P9 fish-motion implementation; all G1 Gates remain open pending the final native candidate and evidence review.** [P1 design](planning/p1/core-swimming.md); [p1 stack](tasks/p1/README.md); [implementation evidence](tasks/p1/qualification/implementation.md); [P5 native evidence](tasks/p1/qualification/native-display-and-assets.md).
+**Status: COMPLETE; G1.1–G1.4 PASS for the owner-accepted progression baseline.** [P1 closeout](tasks/p1/closeout.md) owns the disposition, [accepted tuning](tasks/p1/qualification/accepted-tuning.md) owns the actual inherited values, and the [P1 stack](tasks/p1/README.md) preserves authored history. P1–P9 were directly implemented; c1 controls were reconciled; the owner directly accepted the current candidate on 2026-11-09. The originally authored P10 iterative tuning session was superseded, and P11 evidence review was performed directly. No `0.1.10`/`0.1.11` runner checkpoints are claimed.
 
-The completed controls worksheet establishes the qualitative core and seven owner-play criteria. P1 closes only when the actual bindings/tuning, camera/body motion, selected assets and display/input lifecycle are validated together and the owner accepts the swimming feel. P2 planning does not waive that boundary.
+The completed controls worksheet established the qualitative core. Existing source-bound checks, bounded Linux/X11 native observations and the owner's explicit acceptance establish the baseline for progression. The authored full per-mode route/duration and display/input matrix was not completed; its gaps remain explicit in the closeout and later refinement is deliberately deferred. P2 preserves this baseline while testing the fish in a natural world.
 
 ### G1.1 — Swimming and physical space
 
-**Result: NOT OBSERVED as complete.**
+**Result: PASS for the accepted P1 baseline.** [Gate evidence and limits](tasks/p1/closeout.md#candidate-and-review-boundary).
 
-- The accepted desktop control paths complete the same core movement course comfortably.
-- Observe quick acceleration, gradual release slowdown, explicit slowing behavior, curved turns/turnarounds, gap navigation and pitch-based upper/lower travel.
-- Observe clean release and pause/resume with coherent collision/bounds; intended coasting is distinguishable from stuck input.
-- Rendering/view changes do not change equivalent authoritative movement/time outcomes.
+- Source-bound motor/scene checks establish acceleration, coast, active brake, curved yaw, pitched travel, rock collision, gap clearance, bounds and pause behavior.
+- Bounded native c1 observations show keyboard, mouse and Hybrid input responses; one Hybrid route passed the gap.
+- Owner acceptance closes the progression decision. A completed same-course native route in every profile was not recorded; later refinement remains open.
+- Camera and rendering remain read-only with respect to the authoritative fish; source-bound checks cover that isolation.
 
 ### G1.2 — Third-person readability
 
-**Result: NOT OBSERVED as complete.**
+**Result: PASS for the accepted P1 baseline.** [Gate evidence and limits](tasks/p1/closeout.md#candidate-and-review-boundary).
 
-- Observe behind/slightly-above framing at moderate distance with the whole fish and useful route ahead visible.
-- Observe smooth direction/depth follow, obstacle adjustment, visible swimming/glide motion and turning bend/lean with a steady horizon.
-- Record the owner's judgment after several minutes of ordinary swimming that the implemented core is natural, nimble, comfortable and easy to control.
+- Native P10 captures and owner feedback rejected the sideways and shoulder candidates and favored the centered elevated view.
+- Saved-scene camera and animation checks establish follow/obstruction, horizon and Fish3 swim/glide/turn motion without root movement.
+- The owner directly accepted the current camera/body candidate for progression; per-mode several-minute durations were not recorded.
 
 ### G1.3 — Selected ocean assets in the running course
 
-**Result: NOT OBSERVED as complete.**
+**Result: PASS for the accepted P1 baseline.** [Gate evidence and limits](tasks/p1/closeout.md#candidate-and-review-boundary).
 
 - Quaternius `Fish3` / `ClownFish`, Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea* are the required P1 set.
 - Provenance/preparation/local installation/public-source boundaries remain recorded.
-- Scale, materials/deformation, collision agreement, representative scene performance and missing-resource diagnostics must apply to the final P1 candidate.
+- P5 native observation established visual integration, missing-resource diagnostics, collision paths and a representative local performance sample; later source checks retained readiness. The sample predates the final c1 controls and expanded box.
 - These starter assets are inputs to P2 composition; they do not by themselves make a finished world.
 
 ### G1.4 — Fullscreen presentation and input lifecycle
 
-**Result: NOT OBSERVED as complete.**
+**Result: PASS for the accepted P1 baseline.** [Gate evidence and limits](tasks/p1/closeout.md#candidate-and-review-boundary).
 
-- Fresh-profile fullscreen and windowed-fullscreen testing behavior work as documented for the observed backend.
-- Both accepted desktop input paths survive pause, mode/profile changes, focus loss/refocus and display changes without leaked propulsion or trapped UI focus.
-- Camera/UI framing remains readable at tested viewport dimensions.
+- Fresh-profile fullscreen and windowed-fullscreen requests were observed as borderless full-display windows on the tested X11 backend; exclusive monitor ownership was not proven.
+- Native P5/c1 sessions observed menu, focus, display and basic profile input paths; saved-scene checks cover disarm/rearm, first-frame neutral input and switching.
+- Advanced c1 native switching/editor and exhaustive four-cell comfort checks remain unobserved and intentionally deferred.
 
 P1 completion records the final accepted tuning/profile. [Movement abilities](planning/p1/movement-abilities.md) remain approved future movement work, but the owner has superseded their immediate scheduling: **P2 worldbuilding is the next roadmap Phase after P1**.
 
 ## P2 — Build the underwater world
 
-**Status: NOT STARTED.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+**Status: NOT STARTED, READY TO RUN from root `0.2.0`.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 

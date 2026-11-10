@@ -4,7 +4,7 @@
 
 **Design approved — 2026-11-09.** The completed [ten-question worksheet](../planning/p1/swim-controls-worksheet.md) preserves the owner's answers and final review. This document owns the accepted core movement and camera contract. [Validation](../validation.md#core-movement-acceptance) owns the accepted playtest scenarios, and [the roadmap](../roadmap.md) owns actual Phase/Gate results.
 
-The owner reported playing a tech demo. The reviewed GitHub snapshot contains the starter and documentation; this review does not establish the local demo's implementation or qualify its feel. Design approval is complete. The implemented core still needs native playtesting and owner acceptance.
+The [P1 closeout](../tasks/p1/closeout.md) records the actual implemented baseline and the owner's 2026-11-09 acceptance for progression. Its native and source-check limits remain explicit. Further movement/control refinement is deferred until later world/gameplay work provides context.
 
 Third person is the primary view. Optional first person remains part of the wider game for the same fish. [Ecology and growth](ecology-and-growth.md) owns size and feeding; [UX](../ux-and-presentation.md) owns presentation beyond swimming.
 
@@ -23,7 +23,7 @@ Keyboard/mouse development and qualification come first. Both desktop modes must
 | Mouse-only | Mouse movement steers the fish; vertical mouse movement pitches it up/down. Holding a mouse button controls swimming speed or thrust. Releasing propulsion produces the selected gradual slowdown. The mode is playable using the mouse alone. |
 | Keyboard fallback | Provides control without an external mouse. Left/right input steers through curved paths; backward input slows the fish. Up/down steering inputs pitch the fish for vertical travel. Exact propulsion and steering keys remain to be assigned. |
 
-Backward keyboard input is a slowing command. A turnaround is performed through a curved steering turn. The specific mouse button, speed-demand versus thrust implementation, and any active slowing input for mouse mode remain open.
+Backward keyboard input is a slowing command. A turnaround is performed through a curved steering turn. The accepted built-ins use W/left mouse for thrust, S/right mouse for active slowing, and passive coasting on release; [accepted tuning](../tasks/p1/qualification/accepted-tuning.md) records exact bindings and values.
 
 Controller support follows later, with eventual support for controller as well as desktop controls. The owner's expectation that a controller may feel especially natural does not replace qualification of either desktop mode. During P10, the owner revised the camera scope: in mouse mode, W/S move the camera up/down and A/D orbit it around the fish, returning to center after release; holding Shift retains that offset until Shift is released. The fish remains steerable and pausable using only the mouse. A broader independent free-look system remains later work.
 
@@ -35,25 +35,25 @@ Show visible tail and body motion during swimming, easing during a glide. The bo
 
 Camera offsets, smoothing, animation strength, and obstacle transitions need actual playtesting. A still image or headless position assertion cannot establish comfortable control or camera feel.
 
-P10 owner feedback rejects a side-offset follow camera. The current direction is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. In keyboard mode, Left/Right arrows pan the camera; holding Shift makes all four arrow keys control and hold the camera, and releasing Shift returns it. Without Shift, Up/Down still pitch the fish. These are implemented candidate controls, pending final native qualification and owner acceptance.
+P10 owner feedback rejected a side-offset follow camera. The accepted progression baseline is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. In keyboard mode, Left/Right arrows pan the camera; holding Shift makes all four arrow keys control and hold the camera, and releasing Shift returns it. Without Shift, Up/Down still pitch the fish. Further comfort and polish checks remain deferred, as recorded in the closeout.
 
-The C1 correction adds built-in Keyboard Only, Mouse Only and Hybrid Swim profiles plus saved custom bindings in the pause editor. Debug playtests can cycle them with F6 when no preset assigns F6; retail builds use the visible pause selector. The active profile appears briefly after debug switching. The [same-course comparison routine](../tasks/c1-bindings/README.md#development-comparison-on-one-course) requires an explicit relaunch between measured trials. These are provisional controls for P5 native inspection and P1 P10 acceptance; the shared motor tuning is unchanged.
+The C1 correction adds built-in Keyboard Only, Mouse Only and Hybrid Swim profiles plus saved custom bindings in the pause editor. Debug playtests can cycle them with F6 when no preset assigns F6; retail builds use the visible pause selector. The active profile appears briefly after debug switching. The [same-course comparison routine](../tasks/c1-bindings/README.md#development-comparison-on-one-course) remains available for later refinement. The owner accepted the current profile set for P1 progression; the shared motor tuning is unchanged.
 
 ## Core acceptance and work order
 
 Implement and tune normal swimming, turning, vertical travel, and slowing first, with the selected camera and body motion. The owner-approved [core acceptance criteria](../validation.md#core-movement-acceptance) cover predictable starting/slowing, curved navigation, depth control, camera comfort, pause/resume, both desktop modes, and enjoyable free swimming.
 
-The core is locked for progression when the required native observations and the owner's acceptance of the implemented feel are recorded. Completing the worksheet or approving this design does not establish that result.
+The core is locked for progression by the owner's direct 2026-11-09 acceptance together with the bounded native observations and source checks in [P1 closeout](../tasks/p1/closeout.md). The authored exhaustive per-mode matrix remains incomplete; the closeout does not present absent observations as results.
 
 After that core acceptance, the owner now routes the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**. The previously selected [Movement abilities](../planning/p1/movement-abilities.md)—short speed burst, precision mode and quick evasive turn—remain approved future work, but their immediate scheduling is superseded. Feeding/predators/growth begin in P3.
 
 ## P1 delivery requirement
 
-The owner requires swimming dynamics to be set by the end of P1. The [P1 plan](../planning/p1/core-swimming.md) and [execution stack](../tasks/p1/README.md) include the four selected ocean starter assets, fullscreen development from the first task, windowed fullscreen for testing, and a dedicated owner tuning loop. Finish with the implemented motor, bindings, camera and body-motion settings recorded against the accepted candidate. The current review has not run that work.
+The owner accepted the current dynamics as the P1 baseline and deferred additional tuning. The [P1 plan](../planning/p1/core-swimming.md) and [execution stack](../tasks/p1/README.md) retain the original owner tuning brief; [accepted tuning](../tasks/p1/qualification/accepted-tuning.md) records actual motor, bindings, camera and body-motion settings against the final source.
 
-Exact choices below remain open at authoring and must be resolved as needed for the core before P1 passes. Future controller and Movement abilities details stay separate; P2 must consume the accepted P1 movement/camera behavior rather than silently retuning it to make the environment work. Fullscreen/layout/focus behavior is owned by [UX](../ux-and-presentation.md#fullscreen-presentation); runtime evidence is owned by validation V16/V17 and the roadmap's G1.3/G1.4.
+The table below is the original tuning agenda, now retained for later gameplay-informed refinement. Future controller and Movement abilities details stay separate; P2 consumes the accepted P1 movement/camera behavior. Fullscreen/layout/focus behavior is owned by [UX](../ux-and-presentation.md#fullscreen-presentation); runtime evidence is owned by validation V16/V17 and the roadmap's G1.3/G1.4.
 
-## Remaining tuning and bindings
+## Deferred tuning and bindings
 
 | Area | Still to determine |
 | --- | --- |

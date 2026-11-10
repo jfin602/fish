@@ -12,9 +12,9 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `test/unit/` | Runner and prompt-grammar regression coverage; these are not gameplay tests. |
 | `package.json` | Private Node tooling commands and Phase/checkpoint version metadata. |
 | `docs/tasks/p0/` | Executed foundation briefs and evidence. |
-| `docs/tasks/p1/` | Core-swimming implementation/evidence through direct P9, with native P10/P11 still ahead. |
-| `docs/tasks/c1-bindings/` | Authored correction for hybrid presets/rebinding; separate from Phase progression. |
-| `docs/tasks/p2/` | Authored underwater-world Phase stack; do not execute before actual P1 close and deliberate `0.2.0` entry. |
+| `docs/tasks/p1/` | Completed core-swimming implementation and [closeout](docs/tasks/p1/closeout.md), with accepted source tuning and evidence limits. |
+| `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
+| `docs/tasks/p2/` | Authored, unexecuted underwater-world Phase stack; ready from root `0.2.0`. |
 
 ## Implemented Godot/P1 source boundaries
 
@@ -27,11 +27,11 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scripts/Main.cs` | Main-scene initialization, shell setup and smoke integration. |
 | `game/scripts/StarterWorld.cs` | P1 local asset readiness, Fish3 visual, sand/rock/coral placement and stationary ambient fish. P2 should split/retire its world-dressing responsibility deliberately rather than growing it into a monolith. |
 | `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration and tuning. P2 presentation must not take ownership of these. |
-| `game/scripts/KeyboardSwimInput.cs`, `MouseSwimInput.cs` | Current desktop intent adapters; c1-bindings may revise this boundary before P1 closes. |
+| `game/scripts/ControlPreset.cs`, `ControlPresetStore.cs`, `KeyboardSwimInput.cs`, `MouseSwimInput.cs`, `ControlPresetsPanel.cs` | Implemented built-in/custom control profiles, persistence, intent resolution and pause editor. The accepted baseline has Keyboard Only, Mouse Only and Hybrid Swim. |
 | `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior. P2 geometry must support it without making camera state authoritative. |
 | `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
 | `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
-| `game/resources/swim_tuning.tres` | Tracked P1 movement/camera/animation tuning candidate. |
+| `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
 | `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands. |
 | `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |

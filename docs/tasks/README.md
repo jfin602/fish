@@ -7,9 +7,9 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | Folder | Purpose and state |
 | --- | --- |
 | [p0](p0/README.md) | Godot/C#/MCP foundation: directly executed and qualified on the recorded Linux/X11 scope; see P0 closeout. |
-| [p1](p1/README.md) | Core swimming/assets/display: direct implementation through P9 at the authoring snapshot; final native tuning/closeout remain open. |
-| [c1-bindings](c1-bindings/README.md) | P1–P4 implemented; P5 native evidence is partial and its closeout is NOT GREEN. Finish the listed native/owner checkpoint at unchanged `0.1.9`. |
-| [p2](p2/README.md) | **Authored, unexecuted** underwater-world Phase: renderer lock, natural reef habitat, underwater atmosphere and fish-reactive water; requires actual P1 close plus deliberate `0.2.0` entry. |
+| [p1](p1/README.md) | Core swimming/assets/display: **COMPLETE** under direct owner acceptance; [closeout](p1/closeout.md) records four Gate dispositions and limits. |
+| [c1-bindings](c1-bindings/README.md) | Implemented and reconciled into P1; [closeout](c1-bindings/closeout.md) retains advanced native qualification gaps. |
+| [p2](p2/README.md) | **Authored, NOT STARTED, READY TO RUN** underwater-world Phase; root entry version `0.2.0`. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
 
 ## Stack layout

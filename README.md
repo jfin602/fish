@@ -6,11 +6,7 @@ Play primarily in third person, with an optional first-person view. Continue the
 
 ## Current state
 
-<<<<<<< Updated upstream
-This published starter includes documentation, the ported Space Factory phase runner, and authored Godot/MCP foundation and core-swimming stacks. It has no Godot project or developer CLI yet. The owner's reported local tech demo has not been inspected by this documentation work.
-=======
-P0's development foundation is implemented: a small runnable 3D Godot .NET scene, a C# placeholder fish with prototype movement, a developer CLI, and an isolated Godot Editor MCP setup. The [P0 closeout](docs/tasks/p0/closeout.md) qualifies this foundation on Linux/X11. Survival gameplay, saves, death and Life History remain planned.
->>>>>>> Stashed changes
+P0's Godot .NET foundation and P1's core swimming, desktop controls, follow camera, provisional Fish3 art and starter course are implemented. The owner accepted the current post-c1 candidate for P1 progression; [P1 closeout](docs/tasks/p1/closeout.md) records its evidence and limits. Root version `0.2.0` is ready for the authored [P2 underwater-world stack](docs/tasks/p2/README.md), which has not started. Survival gameplay, saves, death and Life History remain planned.
 
 The chosen technical direction is Godot 4 .NET with C# and Godot Editor MCP, following Space Factory's development approach and adapting the game to 3D. Exact reference versions and the limits of their verification are in [development setup](docs/development.md).
 
@@ -24,7 +20,8 @@ The chosen technical direction is Godot 4 .NET with C# and Godot Editor MCP, fol
 - [Development workflow](docs/workflow.md)
 - [Godot and MCP setup contract](docs/development.md)
 - [P0 bootstrap stack](docs/tasks/p0/README.md)
-- [P1 core swimming, selected assets and fullscreen stack](docs/tasks/p1/README.md)
+- [P1 core swimming closeout](docs/tasks/p1/closeout.md)
+- [P2 underwater-world stack](docs/tasks/p2/README.md)
 - [Decisions and open questions](docs/decisions-and-questions.md)
 
 ## Development runner
@@ -47,7 +44,7 @@ P0 was executed directly in an interactive session; no recursive runner or runne
 
 Open the Fish editor with `./tools/dev editor` or build and run the prototype with `./tools/dev run`. Run `./tools/dev doctor` to inspect local tool readiness and `./tools/dev check` for the bounded import/build/C# scene and save/reload checks. The CLI works from any working directory.
 
-P1 is assessed and authored to settle both desktop swimming modes using the four starter assets, fullscreen and windowed fullscreen. Its [entry procedure](docs/tasks/p1/manual/entry-and-resume.md) requires actual P0 completion and a deliberate `0.1.0` baseline before `npm run fish:phase -- p1`. Authoring leaves the current root version unchanged. P1 includes native/manual checks and actual owner acceptance of the dynamics.
+P1 was completed by direct implementation, bounded native qualification and the owner's explicit acceptance of the current post-c1 candidate. Its authored `0.1.10`/`0.1.11` prompts remain historical; the direct closeout did not invent those checkpoints. The next executable stack is P2: `npm run fish:phase -- p2` from root version `0.2.0`. The P1 movement course remains a regression fixture; P2 replaces its normal-play presentation.
 
 ## Repository layout
 

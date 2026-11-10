@@ -18,11 +18,7 @@ The repository contains documentation, a Node.js development phase runner, and t
 | Execute an explicitly selected task stack | `npm run fish:phase -- <folder>` |
 | Check runner behavior and prompt grammar | `npm run test:runner` |
 
-<<<<<<< Updated upstream
-The authored stacks are [p0 foundation](docs/tasks/p0/README.md) and [p1 core swimming](docs/tasks/p1/README.md). P1 execution requires actual P0 readiness and its documented Phase-entry baseline; authoring is not execution. Node.js 24 is required; no npm dependencies or install step are needed. `tools/dev` commands are planned in p0 and become available only after that implementation. Check the actual files before invoking them.
-=======
-The first stack `p0` was directly executed. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` now provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and `automation-smoke`.
->>>>>>> Stashed changes
+P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c1-bindings/README.md) is reconciled into the accepted P1 baseline. [P2 underwater world](docs/tasks/p2/README.md) is authored, not started, and ready to run from root `0.2.0`. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and `automation-smoke`. Check actual command composition before invoking it.
 
 ## Documentation routing
 
