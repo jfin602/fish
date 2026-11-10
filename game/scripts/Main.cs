@@ -93,6 +93,14 @@ public partial class Main : Node3D
 
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
             CallDeferred(MethodName.VerifySmoke);
+        if (OS.GetCmdlineUserArgs().Contains("--depth-check"))
+            CallDeferred(MethodName.VerifyDepth);
+    }
+
+    private void VerifyDepth()
+    {
+        try { WaterColumnChecks.Run(this); GetTree().Quit(); }
+        catch (Exception error) { GD.PushError($"DEPTH_CHECK_FAILED {error}"); GetTree().Quit(1); }
     }
 
     private void VerifySmoke()

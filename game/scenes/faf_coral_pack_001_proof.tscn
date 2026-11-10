@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_001a_branching.glb" id="1_branch"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_002a_rounded.glb" id="2_round"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_003a_tube.glb" id="3_tube"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_004a_fan.glb" id="4_fan"]
+[ext_resource type="Script" path="res://dev/faf_coral_pack_001_proof.gd" id="5_script"]
+
+[sub_resource type="StandardMaterial3D" id="Sand"]
+albedo_color = Color(0.65, 0.63, 0.47, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(11, 4)
+material = SubResource("Sand")
+
+[node name="FAFCoralPack001Proof" type="Node3D"]
+script = ExtResource("5_script")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Ground")
+
+[node name="BranchingA" parent="." instance=ExtResource("1_branch")]
+position = Vector3(-3.6, 0, 0)
+
+[node name="RoundedA" parent="." instance=ExtResource("2_round")]
+position = Vector3(-1.2, 0, 0)
+
+[node name="TubeA" parent="." instance=ExtResource("3_tube")]
+position = Vector3(1.2, 0, 0)
+
+[node name="FanA" parent="." instance=ExtResource("4_fan")]
+position = Vector3(3.6, 0, 0)
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0, 2.9, 9)
+current = true
+fov = 45.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.65, 0.85, 0)
+light_energy = 1.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

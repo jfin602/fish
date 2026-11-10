@@ -28,3 +28,21 @@ The primary route marks these five bands near X 3; an alternate east route near 
 `tools/dev import` was attempted but its editor process could not create local sockets inside this sandbox (Godot IDE messaging and the MCP bridge reported permission denied). Direct scene loading, build and the focused checks above succeeded using writable XDG paths. Import remains a validation gap for an unrestricted environment.
 
 Headless collision and route checks do not establish that the ledges look natural from a real camera. P2/P3 add water-column response; P4 owns real-window traversal, visual composition, and comfort review before correction closeout.
+
+## P2 — water-column extinction
+
+**Status:** Implemented against pre-task HEAD `131f8c372f4a5446b5d3dfaad80be880a1452e3e`; runner owns the implementation commit. Root version remains `0.2.6`. The Editor MCP bridge was offline, so evidence below is headless T2, not a native visual judgment.
+
+`UnderwaterAtmosphere` uses its existing visual surface, derived from the upper collision, as depth zero (Y `10.39` in the current habitat). It samples the authored deep traversal shelf at `(0, -28)` through `SeabedSurface.GetHeightAt()` and adds 2 m camera clearance, giving a deep reference near Y `-7.60`. The active viewport camera is read only; normalized depth is clamped to `[0, 1]` and eased with smoothstep. Height fog now anchors to this same column, near Y `-1.40` with the current base offset.
+
+Base `LightingSettings` values and preset JSON remain unchanged. Effective distance and volumetric density, volumetric range, sun/ambient energy, and fog/background/ambient colors are recomputed from base plus depth. The existing procedural sky also receives one depth scalar so its visible horizon cools with the environment; its upward sun cue remains. Shallow depth reproduces the owner-green c2 base values. The calculation runs in the existing atmosphere process, uses scalar/struct operations, and skips depth changes below `0.001`. Applying or switching a preset calls the same calculation immediately, including while the game is paused.
+
+The focused `tools/dev inspect-depth` check creates shallow/middle/deep camera samples and checks monotonic extinction, bounded and cooler colors, clamping beyond both anchors, base-value preservation, paused deep preset application/switching, JSON reload, deep toggle restoration, and unchanged fish/tuning/camera identity and physical state. Effective samples below list distance fog, volumetric density, volumetric range, sun energy and ambient energy:
+
+| Camera Y | Depth | Distance fog | Volumetric density | Range | Sun | Ambient |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `10.39` | 0 | `0.0035` | `0.024` | `64.0` | `1.25` | `0.42` |
+| `1.39` | 0.5 | `0.0081` | `0.039` | `53.8` | `0.84` | `0.31` |
+| `-7.60` | 1 | `0.0126` | `0.054` | `43.5` | `0.44` | `0.20` |
+
+T2: `tools/dev build` passed with zero warnings/errors; headless main `--smoke`, `tools/dev inspect-habitat`, `tools/dev inspect-atmosphere` (including movement parity, pause, toggle), and `tools/dev inspect-depth` passed. Each Godot run used isolated writable XDG data/config paths. `git diff --check` passed. There is no real-window evidence yet for fog comfort, view range or light balance. P3 must add within-frame world-depth cues and attenuate c2 surface-light effects before P4 native review.

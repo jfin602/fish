@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-water|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-depth|inspect-water|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -77,6 +77,10 @@ atmosphere_check() {
   grep -Fq 'ATMOSPHERE_CHECK_OK' "$LOGS/atmosphere-check.log" || { echo 'Atmosphere assertion marker missing' >&2; return 1; }
   logged atmosphere-movement 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_movement_check.gd
   grep -Fq 'ATMOSPHERE_MOVEMENT_OK' "$LOGS/atmosphere-movement.log" || { echo 'Atmosphere movement marker missing' >&2; return 1; }
+}
+depth_check() {
+  logged depth-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" -- --depth-check
+  grep -Fq 'DEPTH_CHECK_OK' "$LOGS/depth-check.log" || { echo 'Depth assertion marker missing' >&2; return 1; }
 }
 water_reaction_check() {
   logged water-reaction 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/water_reaction_check.gd
@@ -152,6 +156,7 @@ case "${1:-help}" in
   inspect-habitat) need_tools; habitat_check ;;
   inspect-reef) need_tools; reef_check ;;
   inspect-atmosphere) need_tools; atmosphere_check ;;
+  inspect-depth) need_tools; depth_check ;;
   inspect-water) need_tools; water_reaction_check ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;

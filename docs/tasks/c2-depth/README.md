@@ -1,8 +1,8 @@
 # c2-depth — depth-structured basin and water-column correction
 
-**State:** P1 IMPLEMENTED / P2 NEXT; correction not closed. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
+**State:** P1–P2 IMPLEMENTED / P3 NEXT; correction not closed. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
 
-[P1 implementation evidence](qualification/implementation.md) records the depth basin, focused T2 checks and the remaining native visual limit. P2 water-column extinction is the next runner step.
+[P1–P2 implementation evidence](qualification/implementation.md) records the depth basin, camera-depth extinction, focused T2 checks and the remaining native visual limit. P3 world-depth lighting is the next runner step.
 
 ## Purpose
 
@@ -36,7 +36,7 @@ The owner pushed the accepted lighting candidate at `d292aebd` on 2026-11-10. Do
 | Step | Prompt | Outcome | Tier / handoff |
 | --- | --- | --- | --- |
 | P1 | [Depth-structured basin](P1-depth-structured-basin.txt) | Implemented: five ordered bands, continuous collision, updated routes/checks | T2 headless pass; import blocked by sandbox sockets |
-| P2 | [Water-column extinction](P2-water-column-extinction.txt) | One real-surface depth model with camera-depth visibility/light modulation and preset-safe base values | T2, no native pause |
+| P2 | [Water-column extinction](P2-water-column-extinction.txt) | Implemented: real-surface camera-depth extinction and preset-safe base values | T2 headless pass; native visual review remains P4 |
 | P3 | [Depth-integrated lighting](P3-depth-integrated-lighting.txt) | World-depth color/light treatment, depth-faded c2 caustics/shafts, integrated performance tuning | T2, no native pause |
 | P4 | [Native depth closeout](P4-native-depth-closeout.txt) | Real-window five-level traversal, shallow/mid/deep comparison and correction closeout | T3 manual closeout |
 

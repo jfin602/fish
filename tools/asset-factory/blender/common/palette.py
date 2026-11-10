@@ -1,8 +1,8 @@
 """Small editable sRGB palette seeds; Blender material conversion remains explicit."""
 
 FAMILIES = {
-    "reef_warm": {"red": "#DB6354", "orange": "#F29449", "pink": "#E85D86"},
-    "reef_cool": {"blue": "#248FC0", "cyan": "#38B8C2", "teal": "#268D91"},
+    "reef_warm": {"red": "#DB6354", "orange": "#F29449", "pink": "#E85D86", "yellow": "#E6B85C"},
+    "reef_cool": {"blue": "#248FC0", "cyan": "#38B8C2", "teal": "#268D91", "violet": "#9169C9", "muted_purple": "#9B75A9"},
     "vegetation": {"green": "#46A967", "deep_green": "#287B66"},
     "sand": {"warm_light": "#D8D4AD"},
     "rock": {"cool_slate": "#7798A9", "warm_stone": "#A29B89"},

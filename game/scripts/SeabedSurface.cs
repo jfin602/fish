@@ -8,6 +8,8 @@ public partial class SeabedSurface : StaticBody3D
     public const float HalfExtent = 42.0f;
     public const float CellSize = 1.5f;
     public const int CellsPerSide = 56;
+    // Center of the authored deep traversal shelf, away from the rising rim.
+    public const float DeepShelfReferenceZ = -28.0f;
 
     public bool Build(StandardMaterial3D[] materials)
     {

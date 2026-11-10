@@ -1,0 +1,473 @@
+{
+  "source": "assets/faf/coral/coral_001_to_004_family.blend",
+  "assets": [
+    {
+      "faf_id": "FAF-CORAL-001A",
+      "stem": "coral_001a_branching",
+      "family": "branching",
+      "generator": "coral.branching.v1",
+      "dimensions_m": [
+        0.90817,
+        0.94779,
+        0.83144
+      ],
+      "triangles": 508,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.red",
+      "spec": {
+        "size": 0.85,
+        "branch_count": 5,
+        "spread": 0.7,
+        "verticality": 0.95,
+        "taper": 0.48,
+        "asymmetry": 0.42,
+        "seed": 1101
+      },
+      "glb": "game/assets/faf/coral/coral_001a_branching.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-001B",
+      "stem": "coral_001b_branching",
+      "family": "branching",
+      "generator": "coral.branching.v1",
+      "dimensions_m": [
+        1.37414,
+        1.57959,
+        1.03839
+      ],
+      "triangles": 604,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.pink",
+      "spec": {
+        "size": 1.04,
+        "branch_count": 6,
+        "spread": 0.92,
+        "verticality": 0.88,
+        "taper": 0.56,
+        "asymmetry": 0.62,
+        "seed": 1102
+      },
+      "glb": "game/assets/faf/coral/coral_001b_branching.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-001C",
+      "stem": "coral_001c_branching",
+      "family": "branching",
+      "generator": "coral.branching.v1",
+      "dimensions_m": [
+        0.75898,
+        0.70483,
+        1.07156
+      ],
+      "triangles": 412,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.orange",
+      "spec": {
+        "size": 0.76,
+        "branch_count": 4,
+        "spread": 0.6,
+        "verticality": 1.18,
+        "taper": 0.42,
+        "asymmetry": 0.55,
+        "seed": 1103
+      },
+      "glb": "game/assets/faf/coral/coral_001c_branching.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-002A",
+      "stem": "coral_002a_rounded",
+      "family": "rounded",
+      "generator": "coral.rounded.v1",
+      "dimensions_m": [
+        0.8486,
+        0.82633,
+        0.47825
+      ],
+      "triangles": 640,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.orange",
+      "spec": {
+        "size": 0.89,
+        "lobe_count": 6,
+        "spread": 0.72,
+        "verticality": 0.52,
+        "asymmetry": 0.36,
+        "seed": 2201
+      },
+      "glb": "game/assets/faf/coral/coral_002a_rounded.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-002B",
+      "stem": "coral_002b_rounded",
+      "family": "rounded",
+      "generator": "coral.rounded.v1",
+      "dimensions_m": [
+        1.1775,
+        1.24173,
+        0.44964
+      ],
+      "triangles": 730,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.yellow",
+      "spec": {
+        "size": 1.1,
+        "lobe_count": 7,
+        "spread": 0.92,
+        "verticality": 0.45,
+        "asymmetry": 0.54,
+        "seed": 2202
+      },
+      "glb": "game/assets/faf/coral/coral_002b_rounded.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-002C",
+      "stem": "coral_002c_rounded",
+      "family": "rounded",
+      "generator": "coral.rounded.v1",
+      "dimensions_m": [
+        0.68018,
+        0.6354,
+        0.47799
+      ],
+      "triangles": 550,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_cool.muted_purple",
+      "spec": {
+        "size": 0.78,
+        "lobe_count": 5,
+        "spread": 0.61,
+        "verticality": 0.67,
+        "asymmetry": 0.42,
+        "seed": 2203
+      },
+      "glb": "game/assets/faf/coral/coral_002c_rounded.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-003A",
+      "stem": "coral_003a_tube",
+      "family": "tube",
+      "generator": "coral.tube.v1",
+      "dimensions_m": [
+        0.6501,
+        0.61906,
+        0.66632
+      ],
+      "triangles": 536,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.pink",
+      "spec": {
+        "size": 0.8,
+        "tube_count": 7,
+        "spread": 0.71,
+        "verticality": 0.87,
+        "taper": 0.3,
+        "asymmetry": 0.43,
+        "lean": 0.16,
+        "seed": 3301
+      },
+      "glb": "game/assets/faf/coral/coral_003a_tube.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-003B",
+      "stem": "coral_003b_tube",
+      "family": "tube",
+      "generator": "coral.tube.v1",
+      "dimensions_m": [
+        0.91061,
+        0.88923,
+        0.80363
+      ],
+      "triangles": 672,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_cool.cyan",
+      "spec": {
+        "size": 0.97,
+        "tube_count": 9,
+        "spread": 0.84,
+        "verticality": 0.78,
+        "taper": 0.4,
+        "asymmetry": 0.6,
+        "lean": 0.23,
+        "seed": 3302
+      },
+      "glb": "game/assets/faf/coral/coral_003b_tube.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-003C",
+      "stem": "coral_003c_tube",
+      "family": "tube",
+      "generator": "coral.tube.v1",
+      "dimensions_m": [
+        0.60234,
+        0.51155,
+        0.79691
+      ],
+      "triangles": 468,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.yellow",
+      "spec": {
+        "size": 0.72,
+        "tube_count": 6,
+        "spread": 0.62,
+        "verticality": 1.15,
+        "taper": 0.25,
+        "asymmetry": 0.5,
+        "lean": 0.19,
+        "seed": 3303
+      },
+      "glb": "game/assets/faf/coral/coral_003c_tube.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-004A",
+      "stem": "coral_004a_fan",
+      "family": "fan",
+      "generator": "coral.fan.v1",
+      "dimensions_m": [
+        1.04707,
+        0.29322,
+        0.76215
+      ],
+      "triangles": 344,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_cool.muted_purple",
+      "spec": {
+        "size": 0.96,
+        "rib_count": 6,
+        "spread": 0.98,
+        "verticality": 0.82,
+        "curvature": 0.18,
+        "asymmetry": 0.38,
+        "seed": 4401
+      },
+      "glb": "game/assets/faf/coral/coral_004a_fan.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-004B",
+      "stem": "coral_004b_fan",
+      "family": "fan",
+      "generator": "coral.fan.v1",
+      "dimensions_m": [
+        1.43247,
+        0.31981,
+        0.80608
+      ],
+      "triangles": 400,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_warm.red",
+      "spec": {
+        "size": 1.12,
+        "rib_count": 7,
+        "spread": 1.16,
+        "verticality": 0.71,
+        "curvature": 0.3,
+        "asymmetry": 0.58,
+        "seed": 4402
+      },
+      "glb": "game/assets/faf/coral/coral_004b_fan.glb"
+    },
+    {
+      "faf_id": "FAF-CORAL-004C",
+      "stem": "coral_004c_fan",
+      "family": "fan",
+      "generator": "coral.fan.v1",
+      "dimensions_m": [
+        0.76271,
+        0.23798,
+        0.90268
+      ],
+      "triangles": 288,
+      "materials": 1,
+      "origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "palette": "reef_cool.blue",
+      "spec": {
+        "size": 0.82,
+        "rib_count": 5,
+        "spread": 0.84,
+        "verticality": 1.05,
+        "curvature": 0.1,
+        "asymmetry": 0.45,
+        "seed": 4403
+      },
+      "glb": "game/assets/faf/coral/coral_004c_fan.glb"
+    }
+  ]
+}

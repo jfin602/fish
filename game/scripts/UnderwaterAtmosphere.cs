@@ -47,6 +47,8 @@ public partial class UnderwaterAtmosphere : Node3D
     private MeshInstance3D? _surface;
     private MeshInstance3D? _shafts;
     private float _surfaceHeight;
+    private float _deepReferenceHeight;
+    private float _lastDepth = -1f;
     private DirectionalLight3D? _sun;
     private Node3D? _effects;
     private CanvasLayer? _screenLayer;
@@ -60,6 +62,10 @@ public partial class UnderwaterAtmosphere : Node3D
     public GpuParticles3D? Motes => _motes;
     public CanvasLayer? ScreenLayer => _screenLayer;
     public Godot.Environment? WaterEnvironment => _environment;
+    public float SurfaceHeight => _surfaceHeight;
+    public float DeepReferenceHeight => _deepReferenceHeight;
+    public float EffectiveDepth01 { get; private set; }
+    public float EffectiveUsefulRange { get; private set; }
 
     public LightingSettings CaptureLighting() => new()
     {
@@ -95,13 +101,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _shaftMaterial?.SetShaderParameter("shaft_count", ShaftCount);
         _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness);
         _screenMaterial?.SetShaderParameter("warp_pixels", ScreenWarpPixels);
-        if (_environment is not null)
-        {
-            _environment.VolumetricFogDensity = VolumetricDensity;
-            _environment.FogDensity = DistanceFogDensity;
-            if (_enabled) _environment.AmbientLightEnergy = AmbientEnergy;
-        }
-        if (_sun is not null && _enabled) _sun.LightEnergy = SunEnergy;
+        RefreshDepth(true);
         foreach (var decal in _caustics)
             if (decal is not null) decal.EmissionEnergy = CausticEnergy;
         if (_motes is not null) _motes.Amount = Mathf.Max(1, MoteCount);
@@ -153,10 +153,23 @@ public partial class UnderwaterAtmosphere : Node3D
         AddChild(_effects);
         AddSky();
         AddSurface(main);
+        var seabed = main.GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
+        if (seabed is null || _surface is null)
+        {
+            GD.PushError("FISH_ATMOSPHERE_MISSING_DEPTH_ANCHOR");
+            return;
+        }
+        // A camera two metres above the authored deep shelf reaches full extinction.
+        _deepReferenceHeight = seabed.ToGlobal(new Vector3(0,
+            seabed.GetHeightAt(0, SeabedSurface.DeepShelfReferenceZ) + 2f,
+            SeabedSurface.DeepShelfReferenceZ)).Y;
+        _environment.FogHeight = _surfaceHeight - 0.60f * (_surfaceHeight - _deepReferenceHeight)
+            + LowerFogStartHeight;
         AddCaustics();
         AddShafts(main);
         AddMotes();
         AddScreenTreatment();
+        RefreshDepth(true);
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
         GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
@@ -170,26 +183,31 @@ public partial class UnderwaterAtmosphere : Node3D
             _environment.VolumetricFogEnabled = enabled;
             _environment.BackgroundMode = enabled && _skyMaterial is not null
                 ? Godot.Environment.BGMode.Sky : Godot.Environment.BGMode.Color;
-            _environment.BackgroundColor = enabled ? BackgroundWater : new Color(0.025f, 0.19f, 0.24f);
+            if (!enabled) _environment.BackgroundColor = new Color(0.025f, 0.19f, 0.24f);
             _environment.AmbientLightSource = enabled
                 ? Godot.Environment.AmbientSource.Color : Godot.Environment.AmbientSource.Bg;
-            _environment.AmbientLightColor = enabled ? AmbientWater : Colors.White;
-            _environment.AmbientLightEnergy = enabled ? AmbientEnergy : 1.0f;
+            if (!enabled)
+            {
+                _environment.AmbientLightColor = Colors.White;
+                _environment.AmbientLightEnergy = 1.0f;
+            }
         }
         if (_sun is not null)
         {
             _sun.LightColor = enabled ? SunColor : Colors.White;
-            _sun.LightEnergy = enabled ? SunEnergy : 1.4f;
+            if (!enabled) _sun.LightEnergy = 1.4f;
             _sun.LightVolumetricFogEnergy = enabled ? 0.8f : 0;
         }
         if (_effects is not null) _effects.Visible = enabled;
         if (_motes is not null) _motes.Emitting = enabled;
         if (_screenLayer is not null) _screenLayer.Visible = enabled;
+        if (enabled) RefreshDepth(true);
     }
 
     public override void _Process(double delta)
     {
         if (!_enabled || _effects is null) return;
+        RefreshDepth();
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
@@ -203,6 +221,32 @@ public partial class UnderwaterAtmosphere : Node3D
                 CausticTravel * (Mathf.Cos(phase * 0.73f) + 0.15f * Mathf.Sin(phase * 1.37f)));
             if (_shafts is not null) _shafts.Position = new Vector3(decal.Position.X, 0, decal.Position.Z);
         }
+    }
+
+    /// <summary>Presentation-only read of the active viewport camera. Base settings never change here.</summary>
+    public void RefreshDepth(bool force = false)
+    {
+        if (!_enabled || _environment is null || _sun is null || _deepReferenceHeight >= _surfaceHeight)
+            return;
+        var camera = GetViewport().GetCamera3D();
+        if (camera is null) return;
+        var raw = Mathf.Clamp((_surfaceHeight - camera.GlobalPosition.Y) /
+            (_surfaceHeight - _deepReferenceHeight), 0f, 1f);
+        var depth = raw * raw * (3f - 2f * raw);
+        if (!force && Mathf.Abs(depth - _lastDepth) < 0.001f) return;
+        _lastDepth = depth;
+        EffectiveDepth01 = depth;
+        _environment.FogDensity = Mathf.Min(0.02f, DistanceFogDensity * (1f + 2.6f * depth));
+        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * (1f + 1.25f * depth));
+        _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * (1f - 0.32f * depth));
+        EffectiveUsefulRange = _environment.VolumetricFogLength;
+        _environment.FogLightColor = DistanceFogColor.Lerp(new Color(0.055f, 0.18f, 0.30f), depth);
+        _environment.VolumetricFogAlbedo = VolumetricWaterColor.Lerp(new Color(0.22f, 0.43f, 0.59f), depth);
+        _environment.BackgroundColor = BackgroundWater.Lerp(new Color(0.025f, 0.095f, 0.18f), depth);
+        _environment.AmbientLightColor = AmbientWater.Lerp(new Color(0.32f, 0.52f, 0.65f), depth);
+        _environment.AmbientLightEnergy = AmbientEnergy * (1f - 0.52f * depth);
+        _sun.LightEnergy = SunEnergy * (1f - 0.65f * depth);
+        _skyMaterial?.SetShaderParameter("water_depth", depth);
     }
 
     private void AddSky()
