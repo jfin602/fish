@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN. P1 comparison through P6 fish-reactive water are implemented at root `0.2.6`; [P8 closeout review](closeout.md) is BLOCKED because the P7 candidate lacks direct owner judgment and some native observations.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS / NOT GREEN.** P1–P6 remain the historical base implementation at root `0.2.6`; the post-stack [c2 water/light correction](../c2-watet-light-fx/README.md) is owner-green, and [c2-depth](../c2-depth/README.md) is the next authored correction before returning to final P2 owner/native qualification. [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -60,6 +60,10 @@ Execution should create evidence only when checks occur:
 | `closeout.md` | P8 evidence mapping and final G2.1–G2.3 / Phase 2 disposition. |
 
 Do not prefill these as PASS. A shader compiling, a headless scene tree, or a static screenshot does not establish a convincing underwater world.
+
+## Current continuation
+
+Do not rerun the historical P1–P8 stack as a substitute for the selected follow-up. Preserve its evidence, execute [c2-depth](../c2-depth/README.md) against the current post-c2 source, then reconcile V18–V20 and G2.1–G2.3 from the resulting normal-play candidate.
 
 ## Execute
 

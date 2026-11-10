@@ -1,8 +1,8 @@
 # P2 — Build the underwater world
 
 **Decision date:** 2026-11-09  
-**State:** Owner-selected and planned; implementation/evidence NOT STARTED.  
-**Execution:** [docs/tasks/p2](../../tasks/p2/README.md) after P1 closes and the deliberate root `0.2.0` entry baseline is prepared.
+**State:** IN PROGRESS. The base P2 habitat/effects exist; the post-P2 water/light correction is owner-green and `c2-depth` is the selected next correction before final P2 qualification.  
+**Execution:** Historical implementation lives in [docs/tasks/p2](../../tasks/p2/README.md); the next bounded stack is [c2-depth](../../tasks/c2-depth/README.md) at unchanged root `0.2.6`.
 
 ## Outcome
 
@@ -14,8 +14,9 @@ This Phase is worldbuilding/presentation. It intentionally comes before ecology 
 
 - Replace the visible flat/test-course presentation in normal play. Do not leave a second walkable/swimmable ground layer, exposed developer shapes, colored target spheres, camera-check posts or obvious box-room boundaries as the finished environment.
 - Build a natural coral/reef floor with varied elevation and usable 3D space.
-- Include rock formations that create at least one tunnel/tight passage plus broader open routes, overhang/cover and landmarks at different depths.
-- Make the scene look submerged through a layered water presentation, not only a uniform blue tint.
+- The default basin exposes **at least five natural traversable ledges/shelves at distinct elevations**. They are irregular reef shelves connected by slopes, cliffs, channels, drop-offs and alternate ascent/descent routes—not five clean staircase platforms.
+- Include rock formations that create at least one tunnel/tight passage plus broader open routes, overhang/cover and landmarks at different depths. Compose sightlines so several depth bands can be visible together from useful viewpoints.
+- Make the scene look submerged through a layered water presentation, not only a uniform blue tint. Actual water depth and view distance are separate inputs: world depth changes light/color and view depth/distance changes extinction.
 - Add movement-reactive water effects around the fish so ordinary swimming, acceleration, gliding and stronger turning have visibly different disturbance.
 - Keep rendering and water reaction presentation separate from authoritative movement. Effects read fish state; they do not push the fish or own velocity.
 - P2/P1 provides the Compatibility/Forward+ comparison. After running Forward+ on the real desktop and observing smooth performance, the owner selected **Forward+** for P2. P2/P2 records/locks that choice; Compatibility is not a parallel production target.
@@ -24,9 +25,11 @@ This Phase is worldbuilding/presentation. It intentionally comes before ecology 
 
 ## Current starting point
 
-At planning time, `game/project.godot` explicitly selects `gl_compatibility`. `main.tscn` contains a flat floor and ceiling at roughly Y ±4.2, retaining walls around a 19 m square space, a sun and a `WorldEnvironment` whose resource is populated at runtime. `movement_course.tscn` adds target/landmark spheres, two rock collision bodies and a camera-check cylinder. `StarterWorld.cs` applies Coast Sand to the flat floor, places two Rock Face 01 instances, two Heliopora coral instances and seven stationary Quaternius fish, and sets a simple background color.
+The original P2 implementation has already replaced the P1 test room. Normal play is `main.tscn -> p2_habitat.tscn -> p2_reef_composition.tscn` on Forward+. `SeabedSurface.cs` builds one continuous 84 × 84 m visual/collision mesh, but its current analytic height is still fundamentally one broad bowl around Y -5.6 with gentle rolling variation plus a raised rim. That shape does not expose distinct water-depth zones.
 
-That composition was appropriate for P1 movement qualification. It is not the P2 target. The executor must inspect the actual post-P1 checkout because P10/c1-bindings or owner fixes may change source before P2 begins.
+The completed water/light correction adds the real overhead visual surface derived from the saved upper collision, procedural sky/sun cue, organic moving caustic projection, caustic-aligned ribbon shafts, restrained screen treatment, GPU motes and a paused GFX panel with bounded saved lighting presets. Preserve that accepted stack. The next correction changes **depth structure and depth response**, not the renderer or the core c2 visual identity.
+
+At the pushed lighting baseline `d292aebd`, the saved upper collision is centered around Y 9.75 and the c2 surface is placed just above its top. `UnderwaterAtmosphere` already owns distance/height/volumetric fog, ambient/sun energy and the c2 effect materials. `seabed_blend.gdshader` already has world position available. These are the intended integration points for c2-depth.
 
 ## World structure
 
@@ -34,6 +37,12 @@ Prefer a **small authored modular habitat** for this first worldbuilding Phase. 
 
 The habitat should provide:
 
+- one continuous collidable seabed with **at least five clearly distinct traversable elevation bands** spanning most of the usable water column;
+- a shallow sun shelf, upper reef, middle shelf, lower reef and deep shelf as composition roles, with exact Y values tuned to the real surface/limits rather than treated as magic product constants;
+- optional deeper trenches/drop-offs between shelves when they remain inside the bounded habitat;
+- smooth/irregular transitions, unequal shelf footprints and natural channels so the result reads as geology rather than stairs;
+- a primary route that can be swum shallow -> upper -> middle -> lower -> deep and back, plus alternate transitions where practical;
+- sightlines that can show foreground/midground/background shelves simultaneously, making water-depth differences visible without a HUD;
 - a continuous seabed with visible height/shape variation;
 - coral/reef coverage that reads as a living ocean floor rather than isolated props;
 - broad open water for comfortable cruising;
@@ -63,17 +72,19 @@ The owner then ran `./tools/dev compare forward-plus` on the real desktop. Forwa
 
 ## Underwater atmosphere
 
-Forward+ should provide the layered treatment:
+Forward+ should provide one coordinated water-column treatment:
 
-1. **Depth/distance:** fog or equivalent distance attenuation so far geometry loses contrast and color.
-2. **Lighting:** directional/top light that suggests light entering from the surface.
-3. **Color:** restrained blue-green water absorption/grade while retaining useful local color.
-4. **Caustic-style motion:** animated light pattern on seabed/rocks/coral, implemented by a bounded Forward+ material/decal/projected/fullscreen technique.
-5. **Suspended matter:** sparse motes/plankton-like particles that provide depth/motion cues without visual noise.
-6. **Whole-view water treatment:** subtle screen-space distortion/noise/grade where useful, depth-aware when supported. Do not make the image wobble constantly or distort HUD/menu text.
-7. **Performance/tuning:** centralize parameters enough to tune the look without scattering magic values through unrelated gameplay code.
+1. **Real surface reference:** use the actual c2 water-surface/upper-boundary relationship as the top of the water column. Do not invent an unrelated depth origin.
+2. **World-space depth:** geometry lower in the water column receives progressively cooler/dimmer presentation even when viewed from a shallower camera. Height fog and existing world-position-aware materials are preferred cheap tools; do not add a stack of real lights or expensive fog volumes to fake this.
+3. **View-distance extinction:** far geometry loses contrast and color smoothly. Useful horizontal visibility becomes shorter as the camera descends. Avoid a hard fog wall; the intended transition is detail -> silhouette -> water.
+4. **Lighting/color:** bright tropical shallows retain useful local color. With depth, overall illumination falls and warm/red-orange contribution diminishes before blue/green, while gameplay silhouettes remain readable.
+5. **Surface light effects:** preserve the owner-green c2 sunlight, organic caustics and ribbon shafts. Caustics are strongest in shallow water and visually fade with depth; shafts weaken/broaden/fade as they descend rather than illuminating the deepest shelf like the surface.
+6. **Suspended matter and screen treatment:** keep motes and restrained screen treatment subordinate. UI remains outside world distortion.
+7. **Camera-depth modulation:** presentation may read the active camera's Y/depth to derive effective fog/ambient/sun values, but it remains read-only. Camera position never becomes simulation authority.
+8. **GFX presets:** saved lighting presets remain **base artistic settings**. Depth modulation derives runtime effective values from those bases; moving through the water column must not rewrite the user's preset or save depth-modulated values.
+9. **Performance/tuning:** centralize depth parameters in the existing atmosphere boundary and reuse existing fog/material/effect paths. Prefer one shared depth model and a few scalar updates over extra lights, many decals or broad transparent layers.
 
-The target is "obviously underwater while swimming," not photorealism.
+The target is "obviously underwater while swimming," not photorealism. A shallow and deep shelf seen in one frame should not look as if they occupy identical water.
 
 ## Fish-reactive water
 
@@ -96,7 +107,9 @@ Use [V18–V20](../../validation.md) and roadmap G2.1–G2.3. P2 requires native
 The owner should be able to spend several minutes swimming through open water, coral floor, elevation changes and rock passages and judge that:
 
 - the prototype-course look is gone from normal play;
-- the space feels natural/coherent and supports vertical exploration;
+- the space feels natural/coherent and supports vertical exploration through at least five distinct ledges;
+- a shallow-to-deep-to-shallow traverse produces a continuous, reversible change in brightness, warmth, caustic/shaft presence and useful visual range;
+- comparable horizontal views at different elevations show progressively stronger distance extinction, and several ledges visible in one frame do not all read as if they receive the same water-column light;
 - it clearly looks underwater at multiple distances/depths;
 - the fish's movement visibly disturbs the water without becoming distracting;
 - camera/collisions remain comfortable through tunnels/overhangs;

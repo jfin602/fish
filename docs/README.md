@@ -12,7 +12,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Swim controls worksheet](planning/p1/swim-controls-worksheet.md) | Historical owner discussion/provenance for the ten P1 control questions. |
 | [P1 core swimming plan](planning/p1/core-swimming.md) | Selected-asset/fullscreen delivery, implementation starting points, tuning loop and P1 finish line. |
 | [Movement abilities](planning/p1/movement-abilities.md) | Approved future burst/precision/evasive-turn group; immediate sequencing superseded by P2 worldbuilding. |
-| [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, renderer comparison/lock, underwater atmosphere and movement-reactive water presentation. |
+| [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, depth-structured traversal, renderer lock, water-column atmosphere and movement-reactive presentation. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
@@ -36,7 +36,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## Current sequence
 
-P1 is complete. [P2 worldbuilding](tasks/p2/README.md) has a candidate habitat and awaits its owner/native qualification; P3 ecology follows P2 completion. FAF is a parallel art tooling foundation and does not change that Gate sequence. The previously selected Movement abilities remain a future enhancement.
+P1 is complete. [P2 worldbuilding](tasks/p2/README.md) remains open. The post-P2 [water/light correction](tasks/c2-watet-light-fx/README.md) is owner-green, and [c2-depth](tasks/c2-depth/README.md) is the next bounded implementation before P2 owner/native qualification resumes. P3 ecology follows P2 completion. FAF is a parallel art tooling foundation and does not change that Gate sequence. The previously selected Movement abilities remain a future enhancement.
 
 ## Status language
 

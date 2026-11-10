@@ -1,0 +1,47 @@
+TASK: Correction 2 / P4 — Native depth closeout
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Qualify c2-depth in the real Forward+ game window, record owner judgment of the five-level basin and water-column effect, preserve measured limits, and reconcile this correction without overstating broader P2 completion.
+
+READ
+AGENTS.md, BOOT.md, c2-depth README/assessment/plan P4, P1–P3 resulting evidence/source, roadmap G2.1/G2.2, validation V18/V19, owner-green c2 evidence, FAF art style and current P2 evidence. Inspect branch/HEAD, dirty state, package version, renderer, active GFX preset and Fish Godot identity.
+
+NATIVE OWNER CHECKPOINT
+Use normal play in a real Forward+ window. Use Natural/default lighting unless the owner deliberately chooses another and records it.
+
+Traverse shallow, upper, middle, lower and deep shelves; return deep -> shallow; use an alternate transition; pass the existing tunnel/shelter route; and inspect one viewpoint showing several depth bands together. At shallow/middle/deep elevations, stop and look horizontally across comparable basin distances. Look upward from shallow and deep.
+
+Record separately:
+- five+ clearly distinct but natural ledges;
+- geology rather than stairs/terraces;
+- traversal/camera clearance;
+- lower ledges cooler/dimmer when visible with upper ones;
+- progressively shorter horizontal range as camera descends;
+- detail -> silhouette -> water fade without obvious fog wall;
+- warm colors diminish while blue/green silhouette readability remains;
+- caustics/shafts weaken with depth;
+- bright overhead surface remains coherent from deep water;
+- UI/GFX/presets and movement/camera feel remain unchanged.
+
+PERFORMANCE
+Same revision/display: record representative shallow/deep FPS or frame time plus available draw/primitives counters with completed depth presentation, then compare with the implementation's same-revision depth-off/bypass diagnostic if available. Investigate an obvious new repeatable regression; do not use old c2 numbers as the only baseline.
+
+CLOSEOUT
+Create/update only actual evidence:
+- docs/tasks/c2-depth/qualification/implementation.md
+- docs/tasks/c2-depth/qualification/native-depth.md
+- docs/tasks/c2-depth/closeout.md
+
+Use PASS/FAIL/NOT OBSERVED/BLOCKED honestly. Reconcile BOOT, MODULES, technical direction, P2 plan/task routing, roadmap G2.1/G2.2 and validation once. Do not mark G2.3 or P2 GREEN unless separate evidence supports it.
+
+VALIDATE
+T3 native + T1 documentation. Run only focused regression/content/link/diff checks needed for claims and `git diff --check`. Keep root `0.2.6`.
+
+REPORT
+Report exact revision, renderer/device/resolution/preset, route, owner decisions, shallow/mid/deep findings, performance comparison, remaining P2 gaps and next action.
+
+Leave closeout changes uncommitted for human review.

@@ -14,7 +14,9 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p0/` | Executed foundation briefs and evidence. |
 | `docs/tasks/p1/` | Completed core-swimming implementation and [closeout](docs/tasks/p1/closeout.md), with accepted source tuning and evidence limits. |
 | `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
-| `docs/tasks/p2/` | Underwater-world Phase stack; P1–P6 implemented, P7 native candidate recorded, P8 review BLOCKED pending owner/native qualification. |
+| `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
+| `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
+| `docs/tasks/c2-depth/` | Authored next correction for five-level basin structure plus actual water-column extinction/light; not implemented yet. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
@@ -37,7 +39,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scripts/ControlPreset.cs`, `ControlPresetStore.cs`, `KeyboardSwimInput.cs`, `MouseSwimInput.cs`, `ControlPresetsPanel.cs` | Built-in/custom profiles, versioned persistence, intent resolution and pause editor. Keyboard Only, Mouse Only and Hybrid Swim form the accepted baseline; Hybrid 2 is newly implemented and awaits owner feel testing. |
 | `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior and the Hybrid 2 presentation-only 360 mouse orbit. P2 geometry must support it without making camera state authoritative. |
 | `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
-| `game/scripts/UnderwaterAtmosphere.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ fog and top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched sun-shaft mesh, moving caustic projection, GPU motes and restrained screen treatment below UI; no fish authority. |
+| `game/scripts/UnderwaterAtmosphere.cs`, `LightingSettings.cs`, `LightingPresetStore.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ distance/height/volumetric fog and top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched caustic-aligned shaft mesh, one moving organic caustic projection, GPU motes, restrained screen treatment and bounded saved GFX presets; no fish authority. |
 | `game/scripts/WaterReaction.cs` | Forward+ tail-space GPU ribbons and spherical bubbles driven by read-only motor presentation values; 44 live slots maximum, no forces or collision. |
 | `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |

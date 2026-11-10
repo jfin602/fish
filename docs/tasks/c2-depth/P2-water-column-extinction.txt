@@ -1,0 +1,32 @@
+TASK: Correction 2 / P2 — Add water-column extinction
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Add one shared depth model tied to the real c2 water surface so useful visibility and available light progressively change as the camera descends, without corrupting saved GFX preset base values or giving presentation authority over gameplay.
+
+READ
+AGENTS.md, BOOT.md, docs/tasks/c2-depth/README.md, prompt-assessment.md, implementation-plan.md P2, P1 resulting source/evidence, c2 closeout/evidence, UnderwaterAtmosphere.cs, LightingSettings.cs, LightingPresetStore.cs, PlayShell.cs, main/p2 habitat scenes and atmosphere/GFX focused checks. Inspect actual current source first.
+
+IMPLEMENT
+1. Use actual c2 surface height as depth zero and derive one deep reference from the authored habitat/source.
+2. Read active camera Y for presentation only; compute bounded/eased normalized depth. Never write fish/camera/simulation state.
+3. Keep LightingSettings/preset JSON as base artistic values. Separate base from effective runtime values.
+4. From base + depth derive effective distance/volumetric fog, useful range, sun/ambient energy and cooler deep fog/background/ambient color. Keep shallow values close to owner-green c2.
+5. Re-anchor/tune height fog to the real water column where appropriate.
+6. Applying/switching a preset while deep must recompute effective values without persisting depth modulation.
+7. Keep updates allocation-free and scalar; skip negligible repeated writes if useful.
+8. Add focused shallow/middle/deep checks proving monotonic fog up, sun/ambient down, bounded colors, stable base presets and unchanged fish/tuning/camera identity.
+9. Preserve c2 pause/toggle behavior.
+
+VALIDATE
+T2. Run the smallest build/main/atmosphere/GFX/depth checks plus `git diff --check`; avoid duplicate wrapper work.
+
+DONE WHEN
+Camera depth smoothly changes effective visibility/light from the real surface while base presets stay stable and gameplay state/version remain unchanged.
+
+REPORT
+Report depth anchors/curve, shallow/mid/deep effective samples, preset-isolation proof, commands/results and next routing to P3.
+Do not commit; the runner owns the implementation checkpoint.

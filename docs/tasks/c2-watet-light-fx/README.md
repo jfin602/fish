@@ -1,6 +1,6 @@
 # c2-watet-light-fx — water surface and sunlight presentation correction
 
-**State:** P1–P3 IMPLEMENTED; P4 native candidate and owner refinements implemented, closeout **NOT GREEN** pending revised visual judgment and a decision on measured uncapped cost. **Type:** Correction 2. **Root version:** `0.2.6` unchanged.
+**State:** **OWNER GREEN / COMPLETE FOR THIS CORRECTION SCOPE.** P1–P4 and the owner's requested native refinements are implemented and accepted for progression. **Type:** Correction 2. **Root version:** `0.2.6` unchanged.
 
 The folder name intentionally preserves the owner-requested `c2-watet-light-fx` spelling so the runner command matches the authored stack.
 
@@ -38,7 +38,7 @@ The upper habitat collision currently sits at about Y 9.75. A visual surface mus
 
 Only P4 is this correction's final closeout. Its `Browser required: yes.` metadata means the runner pauses for an actual native Godot/owner checkpoint; it does not mean a web browser can qualify the effect.
 
-The owner played the first native candidate on 2026-11-10 and said it looked good, then requested more detailed/moving shore waves, moving ground lines, caustic-aligned ribbon shafts at twice the prior presence, and a GFX panel with saved lighting presets. The revised implementation and actual native findings are in [P4 native evidence](qualification/native-water-light.md) and [closeout](closeout.md). The earlier favorable reaction does not approve the revised build or its measured cost.
+The owner played the first native candidate on 2026-11-10, requested more detailed/moving shore waves, moving ground lines, caustic-aligned ribbon shafts at twice the prior presence, and a GFX panel with saved lighting presets, then completed the revised native review and pushed the accepted lighting baseline as `d292aebd` (`lighting closeout owner green`). The revised implementation and measured native findings remain in [P4 native evidence](qualification/native-water-light.md) and [closeout](closeout.md). The recorded uncapped cost remains useful optimization evidence, but it is no longer a blocker for this correction's progression decision.
 
 ## Acceptance boundary
 

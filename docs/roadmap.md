@@ -90,7 +90,7 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN; P1 comparison through P6 reaction implemented. [P8 review](tasks/p2/closeout.md) found P7 native source-bound checks reusable but owner judgment and missing V18–V20 observations still BLOCKED; G2 Gates remain open.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
+**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained, but the owner identified missing water-column depth as a required follow-up. [c2-depth](tasks/c2-depth/README.md) is AUTHORED / NOT EXECUTED; G2 Gates remain open until the new basin/depth candidate and remaining native criteria are observed. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
@@ -100,20 +100,24 @@ P2 turns the movement laboratory into a place that already feels like a game whe
 
 - Normal play no longer exposes the P1 flat-floor/ceiling/test-course presentation, colored target spheres, camera-check post or other obvious developer geometry.
 - Build a continuous natural seabed with varied elevation, coral/reef areas, rock walls/formations, arches or tunnels/caves, overhangs, open swimming pockets and recognizable landmarks at multiple depths.
-- The player cannot escape beneath the seabed or through intended world limits. Visual geometry and simplified collision agree well enough that tunnels, cover and camera clearance are understandable.
-- At least one broad route, one tighter rock passage/tunnel and one meaningful vertical route can be traversed comfortably with the accepted P1 fish/camera.
+- The default basin contains **at least five natural traversable reef ledges/shelves at distinct elevations**, with irregular slopes, cliffs, channels/drop-offs and alternate transitions rather than a visible staircase. Useful viewpoints can read several depth bands together.
+- The player cannot escape beneath the seabed or through intended world limits. Visual geometry and simplified collision agree well enough that tunnels, cover, shelf transitions and camera clearance are understandable.
+- At least one broad route, one tighter rock passage/tunnel and a continuous shallow-to-deep-to-shallow vertical route can be traversed comfortably with the accepted P1 fish/camera.
 - Preserve the P1 movement course as a dedicated qualification/development fixture or equivalent; removing it from normal presentation must not erase historical evidence.
 
 ### G2.2 — Convincing underwater atmosphere and renderer
 
 **Result: BLOCKED.**
 
-P5 installs [one tunable Forward+ atmosphere stack](tasks/p2/qualification/implementation.md#p2-p5--underwater-atmosphere) with volumetric/distance/height fog, top light, moving projected caustics, GPU motes and a screen pass below the UI. P7 recorded real-window upper/lower and near/far frames plus representative Radeon 880M counters. [P8 review](tasks/p2/closeout.md#g22--forward-underwater-atmosphere--v19) retains missing owner underwater/motion/performance judgment.
+P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water/light correction](tasks/c2-watet-light-fx/closeout.md) added the animated overhead surface, organic moving caustics, caustic-aligned shafts and GFX presets. The remaining G2.2 gap is now explicit: the world still needs convincing **actual water-column depth**, with light/color and useful visibility changing as the player descends. [c2-depth](tasks/c2-depth/README.md) owns that follow-up; prior P7/P8 observations remain historical evidence, not proof of the new depth contract.
 
 - P2/P1 provides the Compatibility/Forward+ comparison. The owner ran Forward+ on the real desktop, observed smooth performance and selected it for P2. P2/P2 locked the tracked project to Forward+ and recorded that evidence; another native Compatibility run is not required unless Forward+ later develops a concrete blocker.
 - With **Forward+**, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.
+- Actual world depth below the real water surface changes the presentation: shallows stay brighter/warmer with strong caustic/shaft cues; lower ledges become progressively cooler/dimmer and those surface-light effects weaken.
+- View-distance extinction is separately depth-sensitive: comparable horizontal views lose contrast/range progressively as the camera descends, with far reef masses transitioning detail -> silhouette -> water instead of meeting a visible fog wall.
+- Several ledges visible in the same frame can read as different depth bands; camera-depth changes alone must not make every world elevation share identical lighting/color.
 - The effect stack remains comfortable in motion and preserves readable fish/world silhouettes. HUD/pause/settings remain crisp and are not accidentally treated as geometry inside the water.
-- Renderer/presentation changes do not change authoritative swimming, time, input semantics or fish identity. Representative native performance is recorded on the P2 habitat.
+- Renderer/presentation changes do not change authoritative swimming, time, input semantics or fish identity. Representative native performance is recorded on the depth-structured P2 habitat.
 
 ### G2.3 — Movement-reactive water presentation
 

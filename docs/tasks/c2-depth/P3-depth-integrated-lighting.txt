@@ -1,0 +1,32 @@
+TASK: Correction 2 / P3 — Integrate world-depth lighting and surface effects
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Make separate ledges at different world depths visibly receive different water-column treatment in the same frame, and make owner-green c2 caustics/shafts weaken with depth, without replacing that stack or adding expensive lighting machinery.
+
+READ
+AGENTS.md, BOOT.md, c2-depth README/assessment/plan P3, P1/P2 resulting source/evidence, FAF art style, c2 evidence, seabed_blend.gdshader, sun_shafts.gdshader, water_surface.gdshader, underwater_screen.gdshader, UnderwaterAtmosphere.cs, SeabedSurface.cs, ReefComposition.cs and current A/B/focused checks.
+
+IMPLEMENT
+1. Add restrained world-position water-depth attenuation to seabed_blend using surface/deep uniforms; preserve four material identities and shallow color.
+2. Use existing Environment height fog as common world-space depth cue for imported reef geometry; avoid horizontal bands.
+3. Add world-depth attenuation to the one batched shaft shader/mesh; preserve sun/caustic alignment and GFX controls.
+4. Keep one organic caustic projection if practical; tune vertical extent/fades plus water-column fog so deep shelves do not read with surface-strength caustics. Do not create many depth-layer decals.
+5. Preserve bright overhead surface/upward read, motes, screen treatment, UI layering and movement-reactive water.
+6. No extra shadow-casting lights, SDFGI, fog-volume stack or fullscreen raymarch.
+7. Extend checks for finite depth uniforms, correct anchors, shallow > deep shaft contribution, bounded single caustic/single shaft mesh/one light and unchanged fish/camera/tuning.
+8. Extend/reuse A/B probe for same-revision shallow/deep depth-on/off samples with available frame time/FPS and draw/primitives counters.
+9. Tune any clear new repeatable regression rather than hiding it.
+
+VALIDATE
+T2. Run smallest build/habitat/atmosphere/movement/GFX checks, depth A/B probe and `git diff --check`. Confirm no package-lock/vendor payload and root remains `0.2.6`.
+
+DONE WHEN
+Upper/lower ledges can look different in one frame, camera descent shortens visibility, caustics/shafts weaken with depth, c2/presets/UI/movement remain intact, and performance evidence is ready for P4.
+
+REPORT
+Report depth-shader/environment method, imported-asset treatment, caustic/shaft attenuation, probe results, regressions/tuning and remaining native observations.
+Do not commit; the runner owns the implementation checkpoint.

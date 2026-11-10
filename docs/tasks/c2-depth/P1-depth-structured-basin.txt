@@ -1,0 +1,32 @@
+TASK: Correction 2 / P1 — Build the depth-structured basin
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Replace the current one-bowl normal-play seabed with one continuous, natural-looking basin that exposes at least five distinct traversable depth ledges/shelves and gives later water-column work stable shallow/upper/middle/lower/deep targets.
+
+READ
+AGENTS.md, BOOT.md, docs/tasks/c2-depth/README.md, prompt-assessment.md, implementation-plan.md P1, docs/planning/p2/underwater-world.md, docs/fish-asset-factory/art-style.md, MODULES.md, docs/tasks/p2/qualification/accepted-environment.md, game/scenes/p2_habitat.tscn, game/scenes/p2_reef_composition.tscn, game/scripts/SeabedSurface.cs, ReefComposition.cs, P2HabitatWorld.cs and focused habitat/reef checks. Inspect branch/HEAD, dirty state, root `0.2.6`, tools/dev composition and Fish Godot identity first.
+
+IMPLEMENT
+1. Keep one SeabedSurface visual/collision mesh; replace the broad bowl with at least five meaningful elevation bands.
+2. Use the plan's approximate bands only as a starting guide; fit the real surface/limits/camera.
+3. Use irregular footprints, slopes, cliffs, channels and drop-offs; no concentric rings or staircase terraces.
+4. Provide a continuous shallow -> upper -> middle -> lower -> deep route and at least one alternate transition.
+5. Reconcile prepared rock/coral anchors and route markers while preserving every prepared asset identity and tunnel/shelter readability.
+6. Keep a safe spawn/camera clearance and collision-only hidden limits; do not change motor/camera tuning to fit bad geometry.
+7. Update focused habitat/reef checks for five ordered bands, continuous collision/no holes, transitions, spawn clearance, assets/routes, underside/edge containment, P1 fixture and unchanged fish/tuning.
+8. Replace old hard-coded `-5.x` floor assumptions with actual GetHeightAt-based expectations.
+9. Do not duplicate production terrain code merely to preserve a pre-depth runtime fixture; Git/evidence preserves that baseline.
+
+VALIDATE
+T2. Run the smallest tools/dev import/build/habitat/reef/main checks that actually cover this change, direct focused checks only if not already composed, and `git diff --check`. Headless checks do not prove natural appearance; P4 owns that.
+
+DONE WHEN
+Normal play has one continuous collidable five+ band basin with reconciled assets/routes, safe traversal structure and unchanged accepted movement/camera/tuning/version.
+
+REPORT
+Report actual shelf sample coordinates/heights, route/asset changes, commands/results, known visual limits and next routing to P2.
+Do not commit; the runner owns the implementation checkpoint.

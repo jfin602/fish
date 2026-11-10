@@ -1,18 +1,18 @@
-# Correction 2 P4 closeout — NOT GREEN
+# Correction 2 P4 closeout — OWNER GREEN
 
-Date: 2026-11-10. Root version `0.2.6`; `main` at `a2e7d46` plus uncommitted correction edits. No self-commit or push.
+Date: 2026-11-10. Root version `0.2.6`. Accepted/pushed lighting baseline: `d292aebd` (`lighting closeout owner green`).
 
-The owner played the first native water/light candidate and said it looked good, then requested more detailed moving waves and shoreline contact, shifting ground caustics, more caustic-aligned ribbon shafts, and a GFX panel with saved lighting presets. These refinements are implemented in the uncommitted revised candidate. [Implementation evidence](qualification/implementation.md#correction-2-p4--native-candidate-repair-after-owner-play) explains the source changes; [native evidence](qualification/native-water-light.md) records the actual window, UI and same-revision A/B observations.
+The first native water/light candidate was promising but the owner requested a stronger moving surface/shoreline read, moving ground caustics, more caustic-aligned ribbon shafts, and a GFX panel with saved lighting presets. Those refinements were implemented and the earlier closeout correctly remained NOT GREEN while the revised look and its measured uncapped cost awaited the owner's decision.
 
-**Decision:** keep Correction 2 **NOT GREEN**. The owner has not judged the revised surface, shaft, caustic, readability or motion-comfort result. The uncapped effects-on cost exceeds the ~10% guardrail in both sampled views despite the low-detail mote repair; the 60 FPS capped run does not settle headroom. A larger known cost requires an explicit owner decision with these numbers. The smallest remaining visual target is a revised open/tunnel/upper route playtest; the smallest performance target is further cost reduction or an explicit owner acceptance of the recorded cost. Preserve this record if a later repair changes the outcome.
+The owner has now completed that decision, stated that the first correction stack is complete, and pushed the lighting updates. **Correction 2 is OWNER GREEN for its scoped progression target.** Preserve [implementation evidence](qualification/implementation.md) and [native evidence](qualification/native-water-light.md), including the uncapped performance measurements and the fact that they exceeded the earlier ~10% investigation guardrail. Owner acceptance closes this correction; it does **not** establish a final production performance budget.
 
-| Owner checkpoint | State |
+| Correction checkpoint | Final disposition |
 | --- | --- |
-| Overhead surface and above-water sun | NOT OBSERVED on revised build |
-| Volumetric/light-shaft look | NOT OBSERVED on revised build |
-| Organic non-grid caustics | NOT OBSERVED on revised build |
-| Underwater color/depth/readability | NOT OBSERVED as a full revised-route judgment |
-| Motion comfort and stable camera | NOT OBSERVED on revised swim route |
-| Representative native performance | NOT OBSERVED as owner acceptance; measured uncapped cost remains open |
+| Overhead surface / bright source above | OWNER ACCEPTED for progression |
+| Organic moving caustics | OWNER ACCEPTED for progression |
+| Caustic-aligned sun shafts | OWNER ACCEPTED for progression |
+| Underwater color/readability and stable camera | OWNER ACCEPTED for progression |
+| GFX panel and saved lighting presets | IMPLEMENTED / retained |
+| Representative native performance | MEASURED; larger uncapped cost retained as known optimization evidence and accepted for progression |
 
-The renderer is restored to explicit saved Forward+ in the uncommitted project diff. Focused build, structural, movement, native window and GFX interaction checks passed; the visual and performance limits above remain. [Roadmap](../../roadmap.md) remains the Gate authority: this correction does not mark P2, G2.1–G2.3 or V18–V20 passed.
+This correction does **not** mark P2, G2.1–G2.3 or V18–V20 passed by itself. The owner subsequently identified missing depth-of-vision/water-column behavior and selected [c2-depth](../c2-depth/README.md) as the next bounded P2 correction. The [roadmap](../../roadmap.md) remains the Gate authority.
