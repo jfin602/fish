@@ -12,13 +12,13 @@ GOAL AND PREREQUISITES
 Close Phase 2 only when the implemented habitat, selected renderer/atmosphere and fish-reactive water have source-bound evidence for every G2 criterion. Read AGENTS.md, BOOT.md, stack README/plan, roadmap G2.1–G2.3, validation V18–V20, qualification/implementation.md, renderer-decision.md, native-world.md and accepted-environment.md. Inspect current source/config/assets and compare their identity with the native accepted candidate. Require actual P1 close and P1–P7 results; authored prompts are not evidence.
 
 A — VERIFY EVIDENCE APPLIES
-1. Record current revision, local changes and fingerprints/identities for main habitat, renderer project settings, environment resources/shaders, reactive-water source/config, accepted P1 tuning and relevant assets.
+1. Record current revision, local changes and fingerprints/identities for main habitat, renderer project settings, environment resources/shaders, reactive-water source/config, accepted P1 tuning and the prepared P2 asset inventory/vendor-local mapping.
 2. Reuse P7 native observations when gameplay/presentation source is unchanged. Documentation/version-only edits do not require owner replay. If an intervening change affects a criterion, repeat only that native observation and update evidence.
 3. Confirm native evidence references real game-window observations, not only editor/headless screenshots. Preserve failed iterations and repairs; missing owner judgment or untraceable source remains NOT OBSERVED/BLOCKED.
 
 B — MAP G2.1–G2.3
 Create `docs/tasks/p2/closeout.md` with criterion-level PASS/FAIL/NOT OBSERVED/BLOCKED:
-- **G2.1:** normal play uses the natural habitat; continuous varied seabed, coral/reef areas, open route, rock tunnel/tight passage, overhang/cover and vertical route are usable; no visible P1 course/test-room presentation; no underside/edge escape; collision/camera are understandable; P1 fixture preserved.
+- **G2.1:** normal play uses the natural habitat; continuous varied seabed, coral/reef areas, open route, rock tunnel/tight passage, overhang/cover and vertical route are usable; the prepared seabed palette (Coast Sand 01, Ground060, Gravel041, Rock063), rock set (Rock Face 01/02, Coastal Cliff 01, Boulder 01) and coral set (Heliopora coerulea, Acropora cervicornis, Acropora palmata, Meandrina meandrites, Montipora danae) are represented in the accepted world or any explicit technical/performance exception is documented; no visible P1 course/test-room presentation; no underside/edge escape; collision/camera are understandable; P1 fixture preserved.
 - **G2.2:** renderer was selected from same-candidate native comparison; final world visibly combines underwater depth/distance treatment, color/light, caustic motion, suspended matter and restrained screen treatment; UI is crisp; movement state is unaffected; representative native performance recorded.
 - **G2.3:** glide/cruise/acceleration/hard-turn water reaction is visibly distinct, spatially coherent and bounded; pause/focus/reset cleanup works; presentation never becomes movement/collision authority; representative performance recorded.
 
