@@ -12,6 +12,8 @@ Each candidate carries a small [manifest/check record](blender-godot-contract.md
 
 The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fish-001/README.md). Its editable Blender source, GLB, rig, three Actions, technical checks and isolated native Godot proof are recorded there. It is a technical reference candidate; reef-context style approval remains open. The older [Sea life Yellow Tang](../assets/p1-starter-manifest.md) remains a separate third-party candidate. The current player and movement are unchanged.
 
+The first varied original reef-fish library is [FAF-FISH-001–005](reef-fish-pack-001/README.md): the preserved Yellow Tang plus four new compact, schooling, highly compressed, and shark body-family candidates. Four separate GLBs, a reusable multi-scene Blender source/recipe, deformation evidence, and individual Godot proofs are recorded there. Reef-context style approval remains open; no fish replaced the player.
+
 The first original rock family is [FAF-ROCK-001](rock-001/README.md): four deterministic boulder variants with a shared generator, Blender review collection, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
 
 The first original coral pack is [FAF-CORAL-001–004](coral-pack-001/README.md): twelve deterministic assets in branching, rounded, tube and fan families, with Blender family review, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.

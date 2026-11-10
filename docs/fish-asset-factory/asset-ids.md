@@ -16,6 +16,8 @@ The [Python naming helpers](../../tools/asset-factory/blender/common/naming.py) 
 
 The owner's **FAF-001 Yellow Tang** prototype alias is preserved in its history. The first original fish has canonical ID **FAF-FISH-001** and stem `fish_001_yellow_tang`. Its [candidate record](fish-001/README.md) identifies the source, runtime GLB, evidence and review state. It is separate from the third-party Sea life Yellow Tang candidate.
 
+The first varied fish pack registers **FAF-FISH-002–005** as Ocellaris Clownfish (`fish_002_ocellaris_clownfish`), Blue-Green Chromis (`fish_003_blue_green_chromis`), Reef Butterflyfish (`fish_004_reef_butterflyfish`), and Blacktip Reef Shark (`fish_005_blacktip_reef_shark`). Their [pack record](reef-fish-pack-001/README.md) and [manifest](../../assets/faf/fish/reef_fish_002_to_005_manifest.json) own source/output paths and technical identity. FAF-FISH-001 remains separately authored and preserved.
+
 The first rock family has canonical ID **FAF-ROCK-001**. Its four reviewed variants use stable A/B/C/D suffix labels (FAF-ROCK-001A through D) and file stems `rock_001a_reef_boulder` through `rock_001d_reef_boulder`. The suffix denotes a member of the family; the family ID remains the registry identity. See the [rock candidate record](rock-001/README.md).
 
 The first four coral families have canonical IDs **FAF-CORAL-001–004**. Each has A/B/C variants and stems such as `coral_001a_branching`, `coral_002a_rounded`, `coral_003a_tube`, and `coral_004a_fan`. The suffix is a stable family-member label; see the [coral pack record](coral-pack-001/README.md) for all twelve IDs and seeds.

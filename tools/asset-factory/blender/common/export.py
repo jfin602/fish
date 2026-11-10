@@ -6,7 +6,8 @@ from .validation import inspect_objects
 
 
 def export_selected_glb(
-    output_path: str, *, include_animations: bool = True, overwrite: bool = False
+    output_path: str, *, include_animations: bool = True, overwrite: bool = False,
+    animation_mode: str = "ACTIONS",
 ) -> dict:
     """Validate selection and export GLB; caller must save/review the .blend separately."""
     import bpy
@@ -18,6 +19,8 @@ def export_selected_glb(
         raise ValueError(f"output directory does not exist: {destination.parent}")
     if destination.exists() and not overwrite:
         raise FileExistsError(f"GLB already exists: {destination}")
+    if animation_mode not in ("ACTIONS", "NLA_TRACKS"):
+        raise ValueError(f"unsupported FAF animation export mode: {animation_mode}")
     report = inspect_objects(bpy.context.selected_objects)
     if report["problems"]:
         raise ValueError("selected objects failed FAF checks: " + "; ".join(report["problems"]))
@@ -27,7 +30,7 @@ def export_selected_glb(
         use_selection=True,
         use_active_scene=True,
         export_animations=include_animations,
-        export_animation_mode="ACTIONS",
+        export_animation_mode=animation_mode,
         export_rest_position_armature=True,
     )
     if "FINISHED" not in result:
