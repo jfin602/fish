@@ -37,6 +37,8 @@ Camera offsets, smoothing, animation strength, and obstacle transitions need act
 
 P10 owner feedback rejects a side-offset follow camera. The current direction is centered slightly above, looking down, with modest lag during turns so the fish's sides become visible. Right mouse hold actively slows the fish; middle click or Escape pauses. The scroll wheel zooms the third-person camera in either input mode. In keyboard mode, Left/Right arrows pan the camera; holding Shift makes all four arrow keys control and hold the camera, and releasing Shift returns it. Without Shift, Up/Down still pitch the fish. These are implemented candidate controls, pending final native qualification and owner acceptance.
 
+The C1 correction adds built-in Keyboard Only, Mouse Only and Hybrid Swim profiles plus saved custom bindings in the pause editor. Debug playtests can cycle them with F6 when no preset assigns F6; retail builds use the visible pause selector. The active profile appears briefly after debug switching. The [same-course comparison routine](../tasks/c1-bindings/README.md#development-comparison-on-one-course) requires an explicit relaunch between measured trials. These are provisional controls for P5 native inspection and P1 P10 acceptance; the shared motor tuning is unchanged.
+
 ## Core acceptance and work order
 
 Implement and tune normal swimming, turning, vertical travel, and slowing first, with the selected camera and body motion. The owner-approved [core acceptance criteria](../validation.md#core-movement-acceptance) cover predictable starting/slowing, curved navigation, depth control, camera comfort, pause/resume, both desktop modes, and enjoyable free swimming.

@@ -64,10 +64,35 @@ public static class ControlPresetChecks
                 "axis target collision");
             Reject(() => copy.WithBindings(ControlAction.Thrust,
                 new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.WheelUp)), "wheel cannot be captured");
+            Reject(() => copy.WithBindings(ControlAction.Thrust), "unbound swim");
+            Reject(() => copy.WithBindings(ControlAction.Slow), "unbound slow");
+            var missingActions = Enum.GetValues<ControlAction>().ToDictionary(action => action,
+                action => copy.Bindings(action).ToArray());
+            missingActions.Remove(ControlAction.Slow);
+            Reject(() => new ControlPreset(copy.Id, copy.Name, missingActions,
+                copy.MouseX, copy.MouseY, copy.MouseSensitivity), "missing action");
             Reject(() => copy.WithName(new string('x', ControlPreset.MaxNameLength + 1)), "bounded name");
             Require(ControlPreset.RecoveryMouseButton == (int)MouseButton.Middle &&
                 copy.Bindings(ControlAction.PauseOptions).Any(b => b.Code == ControlPreset.RecoveryKey),
                 "keyboard and mouse recovery policy");
+            foreach (var builtIn in builtins)
+            {
+                var resolver = new ProfileSwimInput();
+                resolver.Select(builtIn);
+                if (builtIn.Id == ControlPreset.MouseId)
+                    resolver.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true }, true);
+                else
+                    resolver.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true }, true);
+                var intent = resolver.Consume(1f / 60f, new SwimTuning(), true,
+                    builtIn.MouseSensitivity, builtIn.MouseY.Inverted);
+                Require(intent == new SwimIntent(1, 0, 0, 0), "equivalent thrust intent: " + builtIn.Id);
+                var state = SwimMotor.Step(new SwimState(), intent, 1f / 60f, new SwimTuning());
+                var reference = SwimMotor.Step(new SwimState(), new SwimIntent(1, 0, 0, 0),
+                    1f / 60f, new SwimTuning());
+                Require(state.Speed == reference.Speed && state.Velocity == reference.Velocity &&
+                    state.Yaw == reference.Yaw && state.Pitch == reference.Pitch,
+                    "shared motor result parity: " + builtIn.Id);
+            }
             copy = copy.WithMouse(new(SteeringAxis.Pitch), new(SteeringAxis.Yaw, true), 0.21f)
                 .WithBindings(ControlAction.Thrust,
                     new ControlBinding(BindingDevice.PhysicalKey, (int)Key.W),
@@ -158,7 +183,7 @@ public static class ControlPresetChecks
             var unknown = new ControlPresetStore(path, legacy);
             unknown.Load();
             Require(unknown.CurrentId.StartsWith("custom:"), "unsupported schema safely falls back");
-            GD.Print("CONTROL_PRESET_CHECK_OK schema=1 templates=3 migration roundtrip corrupt recovery conflicts display intact");
+            GD.Print("CONTROL_PRESET_CHECK_OK schema=1 templates=3 migration roundtrip corrupt recovery missing-unbound-conflict parity display intact");
         }
         finally { Directory.Delete(directory, recursive: true); }
     }

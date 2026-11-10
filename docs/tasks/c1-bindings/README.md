@@ -1,6 +1,6 @@
 # c1-bindings — Hybrid control presets and live rebinding
 
-**Status: P1 model/store, P2 runtime resolver, and P3 preset editor implemented; P4–P5 remain.** [Implementation evidence](qualification/implementation.md) records focused checks and the current P10 candidate of right mouse slow / middle mouse pause. Native comparison and final binding acceptance remain open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
+**Status: P1–P4 implemented; P5 native handoff remains.** [Implementation evidence](qualification/implementation.md) records focused checks and the current P10 candidate of right mouse slow / middle mouse pause. Native comparison and final binding acceptance remain open. This is a separate correction to P1 swimming input, not a new Phase or a declaration that P1 is GREEN. Read [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and the [runner contract](../../phase-runner.md).
 
 ## Goal and boundary
 
@@ -33,6 +33,12 @@ Only P5 is classified as this stack's final closeout. The runner pauses on its e
 A user can create a preset, bind physical keys/mouse buttons, use mouse yaw/pitch and keyboard thrust/braking concurrently, save/reload the preset, switch profiles in-game without a scene restart, and safely get back to Pause/Options even with an invalid binding. No key-press/mouse-motion leaks on capture, menu focus, resume, focus loss or switching. Existing Keyboard Only and Mouse Only remain playable; quick switching allows testing the same course without modifying tuning or fish identity. Persist settings locally, never inside a living-fish save.
 
 The correction does not pass P1's G1.1–G1.4, V01/V02, or owner swimming-feel acceptance. P1 P10 still owns final movement/camera feel, the chosen accepted bindings, and its test matrix. Controller, free look, Movement abilities, survival, networking, broad menu redesign and engine upgrades are out of scope.
+
+## Development comparison on one course
+
+In a debug playtest, **F6** cycles Keyboard Only → Mouse Only → Hybrid Swim → saved custom presets, showing the active name briefly. It is disabled if any available preset binds F6, so that binding remains gameplay input; choose profiles from Pause → Swim controls in that case. Release held keys and mouse buttons after each switch before pressing again. The visible pause selector works in every build; the F6 shortcut and its help text are debug-only. Switching does not reset the fish, collision, velocity, position, camera, or tuning.
+
+For measured trials, start at the saved `(0, 0, 0)` spawn, approach the yellow target at `(0, -1.5, -2.1)`, pass the rock gap via the markers at Z `-2.8`, `-4.45`, `-6.1`, then turn toward the upper and lower depth landmarks. Record route/time and observations for each preset. **Manually reset between trials** by quitting from Pause and relaunching `./tools/dev run --display-mode=windowed-fullscreen`; select the next preset before moving. F6 is for live comparison while swimming and never teleports to the start. Keep `game/resources/swim_tuning.tres` and course scene unchanged across comparisons. P5 observes the native game window; P1 P10 decides feel and final bindings.
 
 ## Execute and record
 

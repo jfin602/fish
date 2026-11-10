@@ -68,6 +68,8 @@ public sealed class ControlPreset
             }
             _bindings[action] = (ControlBinding[])entries.Clone();
         }
+        if (_bindings[ControlAction.Thrust].Length == 0 || _bindings[ControlAction.Slow].Length == 0)
+            throw new ArgumentException("Swim and Slow each need a binding");
         // Escape is a fixed recovery input, independent of user capture and editable bindings.
         // The visible Options button is the second recovery path in PlayShell.
         Id = id;

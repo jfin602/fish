@@ -289,8 +289,15 @@ public partial class ControlPresetsPanel : PanelContainer
     {
         var entries = _draft.Bindings(action).ToList();
         entries.RemoveAt(index);
-        _draft = _draft.WithBindings(action, entries.ToArray());
-        Refresh();
+        try
+        {
+            _draft = _draft.WithBindings(action, entries.ToArray());
+            Refresh();
+        }
+        catch (ArgumentException error)
+        {
+            _state.Text += " | " + error.Message;
+        }
     }
     private void BeginCapture(ControlAction action, int index)
     {

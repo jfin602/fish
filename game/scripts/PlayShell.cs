@@ -1,3 +1,4 @@
+#nullable enable
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,8 @@ public partial class PlayShell : Node
     private CheckButton _legacyInvert = null!;
     private OptionButton _mode = null!;
     private ControlPresetsPanel _presetEditor = null!;
+    private Label? _quickPresetLabel;
+    private double _quickPresetSeconds;
     private readonly ControlPresetStore _presets = new();
     private readonly List<ControlPreset> _profileChoices = [];
 
@@ -51,6 +54,16 @@ public partial class PlayShell : Node
         ApplyFocusStyle(_options);
         _options.Pressed += Pause;
         canvas.AddChild(_options);
+        if (OS.IsDebugBuild())
+        {
+            _quickPresetLabel = new Label
+            {
+                Name = "QuickPresetLabel", Visible = false,
+                MouseFilter = Control.MouseFilterEnum.Ignore
+            };
+            _quickPresetLabel.AddThemeFontSizeOverride("font_size", 18);
+            canvas.AddChild(_quickPresetLabel);
+        }
         _overlay = new Control { Visible = false, MouseFilter = Control.MouseFilterEnum.Ignore };
         canvas.AddChild(_overlay);
 
@@ -108,21 +121,7 @@ public partial class PlayShell : Node
         _mode.ItemSelected += index =>
         {
             if (index < 0 || index >= _profileChoices.Count) return;
-            var profile = _profileChoices[(int)index];
-            var previous = _presets.CurrentId;
-            try
-            {
-                _presets.Choose(profile.Id);
-                _presets.Save();
-            }
-            catch (Exception error) when (error is ArgumentException or System.IO.IOException or UnauthorizedAccessException)
-            {
-                _presets.Choose(previous);
-                RefreshModeChoices();
-                _sensitivityLabel.Text = "Control selection could not be saved: " + error.Message;
-                return;
-            }
-            ActivateProfile(profile);
+            TryChooseProfile(_profileChoices[(int)index]);
         };
         items.AddChild(_mode);
         var presetsButton = new Button { Name = "ControlPresetsButton", Text = "Control Presets…", FocusMode = Control.FocusModeEnum.All };
@@ -199,6 +198,7 @@ public partial class PlayShell : Node
         }, () =>
         {
             _panel.Visible = true;
+            RefreshModeChoices();
             _resume.GrabFocus();
         });
         center.AddChild(_presetEditor);
@@ -225,6 +225,15 @@ public partial class PlayShell : Node
             }
             return;
         }
+        if (CanQuickCycle() && !_overlay.Visible &&
+            @event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.F6 })
+        {
+            RefreshModeChoices();
+            var current = _profileChoices.FindIndex(profile => profile.Id == _presets.CurrentId);
+            TryChooseProfile(_profileChoices[(current + 1) % _profileChoices.Count]);
+            GetViewport().SetInputAsHandled();
+            return;
+        }
         if (_fish.IsPauseEvent(@event))
         {
             // Mouse clicks in an open menu belong to Controls, even if the active
@@ -234,6 +243,13 @@ public partial class PlayShell : Node
             else if (!_overlay.Visible) Pause();
             GetViewport().SetInputAsHandled();
         }
+    }
+
+    public override void _Process(double delta)
+    {
+        if (_quickPresetLabel is null || !_quickPresetLabel.Visible) return;
+        _quickPresetSeconds -= delta;
+        if (_quickPresetSeconds <= 0) _quickPresetLabel.Visible = false;
     }
 
     public override void _Notification(int what)
@@ -286,6 +302,11 @@ public partial class PlayShell : Node
         _options.Position = new Vector2(Mathf.Max(0, viewport.X - 164), 12);
         _options.Size = new Vector2(148, 34);
         _panel.CustomMinimumSize = new Vector2(Mathf.Min(480, Mathf.Max(240, viewport.X - 32)), 0);
+        if (_quickPresetLabel is not null)
+        {
+            _quickPresetLabel.Position = new Vector2(20, Mathf.Max(12, viewport.Y - 48));
+            _quickPresetLabel.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 32);
+        }
         _presetEditor.CustomMinimumSize = new Vector2(Mathf.Min(760, Mathf.Max(310, viewport.X - 24)),
             Mathf.Min(650, Mathf.Max(300, viewport.Y - 24)));
         UpdateHelp();
@@ -306,7 +327,8 @@ public partial class PlayShell : Node
         _help.Text = $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
             $"Turn: {Keys(ControlAction.YawLeft)}/{Keys(ControlAction.YawRight)} {Axis(SteeringAxis.Yaw)}  " +
             $"Pitch: {Keys(ControlAction.PitchUp)}/{Keys(ControlAction.PitchDown)} {Axis(SteeringAxis.Pitch)}  " +
-            $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}";
+            $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
+            (CanQuickCycle() ? "  Debug: F6 cycles presets" : "");
         _help.Position = new Vector2(20, 16);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
@@ -317,6 +339,15 @@ public partial class PlayShell : Node
         _sensitivityLabel.Text = _presets.Current.IsBuiltin
             ? $"Mouse sensitivity: {_preferences.MouseSensitivity:F2}° per pixel"
             : "Custom mouse settings: edit in Control Presets";
+
+    private bool CanQuickCycle()
+    {
+        if (!OS.IsDebugBuild()) return false;
+        // A user binding wins throughout the cycle, including in a profile not yet active.
+        var f6 = new ControlBinding(BindingDevice.PhysicalKey, (int)Key.F6);
+        return !_presets.List().Any(profile => Enum.GetValues<ControlAction>()
+            .Any(action => profile.Bindings(action).Contains(f6)));
+    }
 
     private void UpdateLegacyMouseControls()
     {
@@ -331,6 +362,32 @@ public partial class PlayShell : Node
         _preferences.ChooseInputMode(_fish.ActiveInputMode);
         UpdateLegacyMouseControls();
         UpdateHelp();
+    }
+
+    private bool TryChooseProfile(ControlPreset profile)
+    {
+        var previous = _presets.CurrentId;
+        try
+        {
+            _presets.Choose(profile.Id);
+            _presets.Save();
+        }
+        catch (Exception error) when (error is ArgumentException or System.IO.IOException or UnauthorizedAccessException)
+        {
+            _presets.Choose(previous);
+            RefreshModeChoices();
+            _sensitivityLabel.Text = "Control selection could not be saved: " + error.Message;
+            return false;
+        }
+        ActivateProfile(profile);
+        RefreshModeChoices();
+        if (_quickPresetLabel is not null && !_overlay.Visible)
+        {
+            _quickPresetLabel.Text = $"Active controls: {profile.Name}";
+            _quickPresetLabel.Visible = true;
+            _quickPresetSeconds = 2.5;
+        }
+        return true;
     }
 
     private void RefreshModeChoices()
