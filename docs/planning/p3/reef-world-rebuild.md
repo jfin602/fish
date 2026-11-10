@@ -129,6 +129,12 @@ Living density is deliberately non-uniform.
 
 This is a stylized visual-density gradient, not a biological depth simulation.
 
+## Underwater visibility and discovery refinement
+
+**Owner-selected 2026-11-10; not yet implemented or qualified.** The [visibility contract](../../systems/underwater-visibility.md) requires distant reef geometry and opposite playable map boundaries to disappear smoothly into water rather than exposing the whole world at spawn. Keep nearby coral, fish, terrain, hazards, cave mouths and swim lanes recognizable. Midground forms soften and distant geology becomes a silhouette before merging with water as the fish moves; avoid a sharp fog wall or sudden object pop-in.
+
+Preserve the accepted P2 Forward+ depth response, water surface, shafts, caustics, movement-reactive effects and colorful FAF art. Tune visibility shorter at deeper camera elevations, with an initial **middle-depth useful range around 25–30 m** and separate shallow/deep targets (not fixed or validated cutoffs). Shared distance extinction should be calibrated before considering small local cave/tunnel fog regions. The existing P3 execution prompts were authored before this refinement; coordinate it as a separate bounded visibility correction at a safe runner checkpoint rather than silently rewriting an in-flight P3 stack.
+
 ## Dressing and repetition rules
 
 Richness comes from curated clusters and layered composition.
@@ -173,7 +179,7 @@ P3 is complete when the owner can swim the full accepted five-depth world and ju
 - shallow/high areas visibly carry more vegetation and living density than lower/deep areas;
 - all 38 core environment variants are coherently integrated;
 - details make close/midground reef bases richer without noise;
-- open swim routes remain obvious;
+- open swim routes remain obvious at nearby playable distances while distant map bounds and landmarks remain concealed until approached (visibility refinement pending native qualification);
 - the live Forward+ view improves materially on style-proof 001 and belongs beside the FAF reef target;
 - seams/repetition are not immediately obvious;
 - representative dense scenes remain acceptably smooth;
