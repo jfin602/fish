@@ -1,6 +1,6 @@
 # c3-visibility implementation plan
 
-**Mode:** Correction 3; root version 0.3.0 unchanged in the inspected GitHub authoring baseline.
+**Mode:** Correction 3; owner-selected execution version **0.3.6 unchanged** (P3 P6 checkpoint). The inspected historical GitHub authoring baseline was 0.3.0; local completion of P3 P6 must be verified before running.
 **Existing decision:** [Underwater visibility and discovery](../../systems/underwater-visibility.md), S17/C50, validation V25.
 **Execution order:** P1 -> P2 -> P3 -> P4 native/manual closeout.
 
@@ -36,7 +36,7 @@ At authoring, the main presentation path is main.tscn -> UnderwaterAtmosphere ->
 - Recheck actual P3 world/character-select scene identities, preserving the selected player fish, shared authoritative motor and camera, routes, and all accepted water effects. Do not create new world geometry or alter P3 art in order to pass fog tests.
 - Add or extend focused tests/instrumentation for shallow/middle/deep effective values, lighting preset load/selection, toggling from disabled to enabled, pause/reopen, state isolation, finite values and no abrupt numerical changes at depth endpoints.
 - Reuse existing game/dev atmosphere_ab_probe.gd and tools/dev measure-atmosphere where useful, but differentiate **new visibility on/off** from **whole atmosphere on/off**. An atmosphere-off comparison cannot isolate the incremental visibility cost. Use the same-source scene/preset/view and deterministic settings, warmed frame samples and display/backend information; produce recordable output/optional image-capture instructions. Do not promise an actual native measurement from headless checks.
-- Check near and distant water surface/terrain composition for shader flags bypassing fog, screen treatment ordering and UI placement. Inspect performance cost: avoid added draw calls/full-screen passes where possible and check 0.3.0 root version unchanged.
+- Check near and distant water surface/terrain composition for shader flags bypassing fog, screen treatment ordering and UI placement. Inspect performance cost: avoid added draw calls/full-screen passes where possible and check 0.3.6 root version unchanged.
 - Run targeted import/build/depth/atmosphere and relevant main/selected fish smoke checks; inspect tools/dev check composition and avoid duplicate whole-suite runs. Retain exact commands and results in qualification/implementation.md when performed.
 
 **Gate:** T2 integrated source/runtime checks; native judgments still P4.
