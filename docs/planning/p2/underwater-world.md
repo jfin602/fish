@@ -47,9 +47,11 @@ Do not delete the P1 course merely to remove its visuals. Move normal play to th
 
 ## Asset strategy
 
-Reuse Rock Face 01, Coast Sand 01 and Heliopora where suitable. Do not densely duplicate the ~100k-triangle Smithsonian coral without measuring cost; prepare efficient variants, sparse hero placement, lower-cost derived geometry, instancing/LOD, or additional provenance-safe free content as needed.
+Before execution, the owner prepared an expanded local P2 environment library. `artifacts/assets/source/p2-environment/inventory.json` is the local source/provenance inventory and `game/assets/vendor-local/p2-environment/` contains the Godot-ready working assets. The intended palette is Coast Sand 01 + ambientCG Ground060, Gravel041 and Rock063 for seabed variation; Rock Face 01 + Poly Haven Rock Face 02, Coastal Cliff 01 and Boulder 01 for terrain structure; and Smithsonian Heliopora coerulea + Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae for coral silhouettes.
 
-Any new third-party environment source must be free, legally suitable for the project direction, and documented with the same provenance/license/public-repository rules as existing assets. No paid/account-gated download becomes a hidden P2 dependency. P2 does not require sourcing new assets if the approved environment can be built convincingly from existing/prepared content.
+**Owner requirement:** the P2 normal-play habitat must visibly use every prepared model at least once and visibly use every prepared terrain material set. Performance work should optimize placement, instance counts, LODs or derived runtime resources rather than omit an asset. If a prepared asset proves technically unusable, the affected P2 task is blocked until repaired or the owner explicitly changes this requirement.
+
+Do not densely duplicate high-detail Smithsonian coral or heavy hero rock/cliff geometry without measuring cost. Prefer sparse hero placement, reusable scenes, instancing/LOD or lower-cost derived runtime resources as justified by measured performance. The prepared library is intended to be sufficient; additional third-party environment content should only be sourced for a concrete blocking gap and must remain free, legally suitable and fully provenance-documented.
 
 ## Renderer decision
 
