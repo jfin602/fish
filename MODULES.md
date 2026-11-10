@@ -17,7 +17,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
 | `docs/tasks/c2-depth/` | Five-band basin/depth-light correction with preserved historical failure and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
-| `docs/tasks/p3/` | FAF reef-world rebuild stack, with P1 runtime integration, P2 terrain and P3 geology implemented at `0.3.3`; P4 reef dressing is next. |
+| `docs/tasks/p3/` | FAF reef-world rebuild stack; P1–P5 are implemented through `0.3.5`, with P6 ambient life/finish next. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
@@ -25,7 +25,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 
 | Path | Responsibility |
 | --- | --- |
-| `game/project.godot` | Godot project, owner-selected Forward+ renderer, main scene, display/input defaults, enabled MCP addon/runtime probe. |
+| `game/project.godot` | Godot project, owner-selected Forward+ renderer, Character Select startup scene, display/input defaults, enabled MCP addon/runtime probe. |
 | `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET target and .NET SDK pins. |
 | `game/scenes/main.tscn` | Normal-play root: instances `p2_habitat.tscn`, retains accepted Fish3 controller/camera/input and world light/environment hook. |
 | `game/scenes/p2_habitat.tscn`, `p2_reef_composition.tscn` | Reusable P2 spawn, continuous seabed/hidden limits, authored rock/coral anchors, P3 FAF terrain/geology/seam nodes, and open, tunnel, cave, canyon, return, vertical and five-level depth route markers. R1's endpoints remain within the ±24.9 m fish bound. |
@@ -33,7 +33,8 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scenes/renderer_comparison.tscn` | P1 diagnostic comparison now instances the dedicated P1 fixture, keeping normal play free of the course. |
 | `game/scripts/Main.cs` | Main-scene initialization, shell setup and smoke integration. |
 | `game/scripts/StarterWorld.cs` | P1 fixture-only local asset readiness and sand/rock/coral/ambient-fish dressing. |
-| `game/scripts/PlayerArt.cs` | Shared checked Fish3 import, rig/clip verification and visual attachment. |
+| `game/scripts/PlayerArt.cs`, `CharacterCatalog.cs`, `CatalogFishVisualMotion.cs` | Shared Fish3 fixture path and five checked FAF player visuals, presentation normalization and rig-local clip playback. `DemoSelection` holds only the selected FAF ID in process memory. |
+| `game/scenes/character_select.tscn`, `game/scripts/CharacterSelect.cs` | Normal P3 entry with live 3D animated FAF preview, five named choices and session-local start. |
 | `game/scripts/P2HabitatWorld.cs`, `ReefComposition.cs`, `FafTerrainWorld.cs`, `FafGeologyWorld.cs` | Normal habitat readiness and checked local model installation. P3 terrain uses 51 authored FAF A–F visual chunks draped over the unchanged P2 collision/depth query; geology adds 12 structural C/E/F pieces and 26 A–D rocks around two covered routes, cave and deep corridor, with only three new simplified route solids. No movement authority. |
 | `game/scripts/HabitatPalette.cs`, `SeabedSurface.cs`, `game/shaders/seabed_blend.gdshader` | Checked P2 palette, one continuous five-band collision/depth surface and world-height cool/dim shading. P3 quieted its visible texture/normal contribution to serve as FAF sand underlay; its geometry, collision and water anchors remain unchanged. |
 | `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration, ±24.9 m horizontal bound and tuning. P2 route markers must fit reachable player space; presentation must not take ownership of these. |
@@ -42,7 +43,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
 | `game/scripts/UnderwaterAtmosphere.cs`, `LightingSettings.cs`, `LightingPresetStore.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ camera-depth extinction and world-height fog/shaft treatment, top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched caustic-aligned shaft mesh, one moving organic caustic projection, GPU motes, restrained screen treatment and bounded saved GFX presets; no fish authority. R1 preserves deep upward brightness; the owner accepted depth visibility, effects and GFX behavior in native play. |
 | `game/scripts/WaterReaction.cs` | Forward+ tail-space GPU ribbons and spherical bubbles driven by read-only motor presentation values; 44 live slots maximum, no forces or collision. |
-| `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
+| `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle, including nonterminal Return to Character Select. Water post effects must not distort or capture this UI unintentionally. |
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
 | `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-terrain` for six live FAF variants and route-floor agreement, `inspect-geology` for rock coverage, route/cave/corridor and camera recovery, plus P2 habitat/reef/depth/atmosphere and preserved P1 fixture checks. R1's reef check measures the actual fish clamp and authored-marker margin; native physical-key evidence verifies traversal. |

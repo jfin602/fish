@@ -1,0 +1,11 @@
+# P3 Character Select — P5 implementation evidence
+
+**State, 2026-11-10:** Headless T2 checks pass at `0.3.5`; native presentation and owner acceptance remain for P7. Pre-task HEAD: `897c4d35e1ed5efe3c4c225eac253ff771a758fd`. The runner owns the checkpoint commit.
+
+The saved startup scene is `res://scenes/character_select.tscn`. Its live 3D preview loads each tracked FAF fish GLB, plays the species Glide clip, and leaves the preview root transform fixed during sampled playback. Exact selectable IDs and names are FAF-FISH-001 Yellow Tang, 002 Ocellaris Clownfish, 003 Blue-Green Chromis, 004 Reef Butterflyfish and 005 Blacktip Reef Shark. Buttons expose the chosen fish with text `SELECTED`; arrows, button focus, hover and pointer presses update selection. Enter World starts the chosen fish. The root scene uses responsive containers and a horizontal gallery, but fullscreen readability has not been observed natively.
+
+The focused headless check loaded each choice under the one normal `FishController`, played its clip, and exercised thrust, turn, pitch and slow. Every choice retained the `0.48 m` sphere collider, `swim_tuning.tres`, keyboard control path and camera; the same normal world creates `WaterReaction`. The catalog normalizes model scale to `4.3 / 6.2 / 6.4 / 5.0 / 0.64`, with `180°` Y facing and zero offset for fish 001–005. The shark changes visual scale only.
+
+The route check started Yellow Tang, switched to the mouse profile, opened Pause, confirmed input disarmed/cleared and pointer visible, returned to Character Select, confirmed the previous `Main` scene was freed and the selected ID cleared, then started a fresh Shark scene. The new scene had the same sphere collider. Source inspection found no death, save, history or New Life invocation in that route; those systems are outside P3.
+
+Observed markers: `CHARACTER_OK` for all five, `CHARACTER_ROUTE_OK first=FAF-FISH-001 second=FAF-FISH-005`, `CHARACTER_CHECK_OK count=5`; `FAF_RUNTIME_CHECK_OK ... fish=5`, `FISH_SMOKE_OK`, `INPUT_LIFECYCLE_OK`, and clean build. Headless Godot reported a minimized window, and the editor MCP bridge was disconnected. P7 still needs native review of preview framing/animation, selection readability/focus in fullscreen and windowed fullscreen, actual mouse capture/return feel, and fish appearance in the reef.

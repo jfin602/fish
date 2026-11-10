@@ -198,7 +198,7 @@ public partial class PlayShell : Node
         ApplyFocusStyle(_resume);
         _resume.Pressed += Resume;
         items.AddChild(_resume);
-        var select = new Button { Name = "CharacterSelectButton", Text = "Character Select", FocusMode = Control.FocusModeEnum.All };
+        var select = new Button { Name = "CharacterSelectButton", Text = "Return to Character Select", FocusMode = Control.FocusModeEnum.All };
         ApplyFocusStyle(select);
         select.Pressed += ReturnToCharacterSelect;
         items.AddChild(select);

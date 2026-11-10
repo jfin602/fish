@@ -7,6 +7,7 @@ namespace Fish;
 /// <summary>Lightweight, isolated art preview and tech-demo launch screen.</summary>
 public partial class CharacterSelect : Control
 {
+    private static bool _checkStarted;
     private readonly DisplayPreferences _preferences = new();
     private readonly string[] _diagnostics = new string[CharacterCatalog.All.Count];
     private readonly Button[] _tiles = new Button[CharacterCatalog.All.Count];
@@ -60,12 +61,16 @@ public partial class CharacterSelect : Control
             if (CharacterCatalog.TryInstantiate(entry, out var model, out _, out var diagnostic))
                 model!.Free();
             else _diagnostics[i] = diagnostic;
-            _tiles[i].Text = entry.Name + (_diagnostics[i].Length > 0 ? "  • UNAVAILABLE" : "");
+            _tiles[i].Disabled = _diagnostics[i].Length > 0;
         }
         Select(_selected);
+        _enter.GrabFocus();
         GD.Print($"FISH_CHARACTER_SELECT_READY entries={CharacterCatalog.All.Count}");
-        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--character-check"))
+        if (!_checkStarted && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--character-check"))
+        {
+            _checkStarted = true;
             CharacterChecks.Run(this);
+        }
     }
 
     public override void _Input(InputEvent @event)
@@ -81,7 +86,9 @@ public partial class CharacterSelect : Control
             Select((_selected + 1) % CharacterCatalog.All.Count);
             GetViewport().SetInputAsHandled();
         }
-        else if (key.Keycode == Key.Enter && !_enter.Disabled)
+        else if (key.Keycode == Key.Enter && !_enter.Disabled &&
+            (GetViewport().GuiGetFocusOwner() is not Button focus ||
+                focus == _enter || Array.IndexOf(_tiles, focus) >= 0))
         {
             EnterWorld();
             GetViewport().SetInputAsHandled();
@@ -196,6 +203,8 @@ public partial class CharacterSelect : Control
             var button = new Button { Name = "Character_" + i, CustomMinimumSize = new Vector2(164, 68),
                 FocusMode = FocusModeEnum.All };
             button.Pressed += () => Select(index);
+            button.FocusEntered += () => Select(index);
+            button.MouseEntered += () => Select(index);
             strip.AddChild(button);
             _tiles[i] = button;
         }
@@ -209,6 +218,7 @@ public partial class CharacterSelect : Control
         actions.AddChild(next);
         actions.AddChild(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill, MouseFilter = MouseFilterEnum.Ignore });
         _enter = Action("Enter World", EnterWorld);
+        _enter.Name = "EnterWorldButton";
         _enter.CustomMinimumSize = new Vector2(190, 48);
         actions.AddChild(_enter);
         actions.AddChild(Action("Quit", () => GetTree().Quit()));
@@ -224,9 +234,13 @@ public partial class CharacterSelect : Control
         _status.Text = _diagnostics[index].Length == 0 ? "READY TO SWIM" : _diagnostics[index];
         _enter.Disabled = _diagnostics[index].Length > 0;
         for (var i = 0; i < _tiles.Length; i++)
+        {
+            _tiles[i].Text = (i == index ? "✓ SELECTED\n" : $"{i + 1:00}  ") +
+                CharacterCatalog.All[i].Name + (_diagnostics[i].Length > 0 ? "  • UNAVAILABLE" : "");
             _tiles[i].Modulate = i == index ? new Color(1, .9f, .62f) : Colors.White;
+        }
         _gallery.ScrollHorizontal = Math.Max(0, index * 172 - 344);
-        if (_model is not null) { _model.QueueFree(); _model = null; }
+        if (_model is not null) { _turntable.RemoveChild(_model); _model.Free(); _model = null; }
         _animation = null;
         if (_diagnostics[index].Length > 0) return;
         if (!CharacterCatalog.TryInstantiate(entry, out _model, out _animation, out var diagnostic))

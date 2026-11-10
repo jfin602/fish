@@ -59,7 +59,8 @@ public static class CharacterCatalog
             if (node is MeshInstance3D { Mesh: not null }) { player = FindPlayer(model); break; }
         if (player is null || !player.HasAnimation(entry.SwimClip) ||
             (entry.GlideClip.Length > 0 && !player.HasAnimation(entry.GlideClip)) ||
-            (entry.FastClip.Length > 0 && !player.HasAnimation(entry.FastClip)))
+            (entry.FastClip.Length > 0 && !player.HasAnimation(entry.FastClip)) ||
+            !AnimationStaysOnRig(player, entry))
         {
             model.Free();
             model = null;
@@ -75,6 +76,19 @@ public static class CharacterCatalog
         foreach (var node in model.FindChildren("*", "AnimationPlayer", true, false))
             if (node is AnimationPlayer player) return player;
         return null;
+    }
+
+    private static bool AnimationStaysOnRig(AnimationPlayer player, CharacterEntry entry)
+    {
+        foreach (var name in new[] { entry.GlideClip, entry.SwimClip, entry.FastClip })
+        {
+            if (name.Length == 0) continue;
+            var clip = player.GetAnimation(name);
+            if (clip is null || clip.Length <= 0 || clip.GetTrackCount() == 0) return false;
+            for (var track = 0; track < clip.GetTrackCount(); track++)
+                if (clip.TrackGetType(track) != Animation.TrackType.Rotation3D) return false;
+        }
+        return true;
     }
 }
 

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fish;
@@ -9,26 +10,57 @@ public static class CharacterChecks
 {
     public static async void Run(CharacterSelect selection)
     {
+        var tree = selection.GetTree();
         try
         {
-            var root = selection.GetTree().Root;
+            var root = tree.Root;
             var originalCount = root.GetChildCount();
-            await Frame(selection);
-            foreach (var entry in CharacterCatalog.All)
+            await Frame(tree);
+            var expectedNames = new[] { "Yellow Tang", "Ocellaris Clownfish", "Blue-Green Chromis",
+                "Reef Butterflyfish", "Blacktip Reef Shark" };
+            Require(CharacterCatalog.All.Count == 5 &&
+                CharacterCatalog.All.Select(entry => entry.Id)
+                    .SequenceEqual(Enumerable.Range(1, 5).Select(index => $"FAF-FISH-{index:000}")) &&
+                CharacterCatalog.All.Select(entry => entry.Name).SequenceEqual(expectedNames),
+                "selection catalog identity");
+            selection._Input(new InputEventKey { Keycode = Key.Right, Pressed = true });
+            Require((selection.FindChild("Character_1", true, false) as Button)?.Text.Contains("SELECTED") == true,
+                "keyboard next did not change selection");
+            selection._Input(new InputEventKey { Keycode = Key.Left, Pressed = true });
+            Require((selection.FindChild("Character_0", true, false) as Button)?.Text.Contains("SELECTED") == true,
+                "keyboard previous did not change selection");
+            for (var index = 0; index < CharacterCatalog.All.Count; index++)
             {
+                var entry = CharacterCatalog.All[index];
+                var tile = selection.FindChild("Character_" + index, true, false) as Button;
+                Require(tile is not null, $"{entry.Id} tile missing");
+                tile!.EmitSignal(Button.SignalName.Pressed);
+                var preview = selection.FindChild("PreviewModel", true, false) as Node3D;
+                var previewPlayer = preview?.FindChildren("*", "AnimationPlayer", true, false)
+                    .OfType<AnimationPlayer>().FirstOrDefault();
+                Require(preview is not null && previewPlayer is not null &&
+                    tile.Text.Contains("SELECTED") && previewPlayer.IsPlaying() &&
+                    previewPlayer.CurrentAnimation == entry.GlideClip,
+                    $"{entry.Id} animated selection preview");
+                var previewTransform = preview!.Transform;
+                await Frames(tree, 3);
+                Require(preview.Transform.IsEqualApprox(previewTransform),
+                    $"{entry.Id} preview clip translated model root");
                 Require(CharacterCatalog.TryInstantiate(entry, out var probe, out _, out var diagnostic),
                     $"{entry.Id} unavailable: {diagnostic}");
                 probe!.Free();
                 DemoSelection.CharacterId = entry.Id;
                 var world = GD.Load<PackedScene>("res://scenes/main.tscn").Instantiate<Main>();
                 root.AddChild(world);
-                await Frame(selection);
+                await Frame(tree);
                 var fish = world.GetNode<FishController>("Fish");
                 fish.SetActivePreset(ControlPreset.Builtins()[0]);
                 var visual = fish.GetNodeOrNull<Node3D>("PlayerVisual");
                 var camera = fish.GetNodeOrNull<Camera3D>("CameraRig/Camera3D");
                 var collider = fish.GetNode<CollisionShape3D>("Collision");
                 Require(visual is not null && camera is not null && camera.Current &&
+                    fish.Tuning.ResourcePath == "res://resources/swim_tuning.tres" &&
+                    fish.ActivePresetId == ControlPreset.KeyboardId &&
                     collider.Shape is SphereShape3D shape &&
                     Mathf.Abs(shape.Radius - .48f) < .001f &&
                     visual.Scale.DistanceTo(Vector3.One * entry.WorldScale) < .001f,
@@ -40,29 +72,29 @@ public static class CharacterChecks
                 Require(anim is not null && anim.HasAnimation(entry.SwimClip) &&
                     visual.GetNodeOrNull<Node>("SwimPresentation") is not null,
                     $"{entry.Id} animation not attached");
-                await Frames(selection, 8);
+                await Frames(tree, 8);
                 Require(anim!.IsPlaying(), $"{entry.Id} animation stopped at rest");
                 SendKey(fish, Key.W, true);
-                await Frames(selection, 12);
+                await Frames(tree, 12);
                 Require(fish.PresentationEffort > .8f && fish.PresentationSpeed > .05f,
                     $"{entry.Id} could not swim effort={fish.PresentationEffort} speed={fish.PresentationSpeed} armed={fish.GetInputArmed()} held={fish.GetHeldInputCount()} preset={fish.ActivePresetId} paused={selection.GetTree().Paused}");
                 SendKey(fish, Key.A, true);
                 SendKey(fish, Key.Up, true);
-                await Frames(selection, 6);
+                await Frames(tree, 6);
                 Require(fish.LastYaw < 0 && fish.LastPitch > 0,
                     $"{entry.Id} could not turn/climb");
                 SendKey(fish, Key.A, false);
                 SendKey(fish, Key.Up, false);
                 SendKey(fish, Key.D, true);
                 SendKey(fish, Key.Down, true);
-                await Frames(selection, 6);
+                await Frames(tree, 6);
                 Require(fish.LastYaw > 0 && fish.LastPitch < 0,
                     $"{entry.Id} could not turn/dive");
                 SendKey(fish, Key.W, false);
                 SendKey(fish, Key.D, false);
                 SendKey(fish, Key.Down, false);
                 SendKey(fish, Key.S, true);
-                await Frames(selection, 6);
+                await Frames(tree, 6);
                 Require(fish.LastSlow > 0 && fish.PresentationEffort == 0,
                     $"{entry.Id} could not slow");
                 SendKey(fish, Key.S, false);
@@ -72,20 +104,72 @@ public static class CharacterChecks
             }
             DemoSelection.Clear();
             Input.MouseMode = Input.MouseModeEnum.Visible;
-            GD.Print($"CHARACTER_CHECK_OK count={CharacterCatalog.All.Count}");
-            selection.GetTree().Quit();
+            await CheckRouting(selection, root);
+            GD.Print($"CHARACTER_CHECK_OK count={CharacterCatalog.All.Count} route=select-play-return-select-play");
+            tree.Quit();
         }
         catch (Exception error)
         {
             GD.PushError($"CHARACTER_CHECK_FAILED {error}");
-            selection.GetTree().Quit(1);
+            tree.Quit(1);
         }
     }
 
-    private static async Task Frame(Node node) => await node.ToSignal(node.GetTree(), SceneTree.SignalName.PhysicsFrame);
-    private static async Task Frames(Node node, int count)
+    private static async Task CheckRouting(CharacterSelect selection, Window root)
     {
-        for (var i = 0; i < count; i++) await Frame(node);
+        var tree = selection.GetTree();
+        var first = selection.FindChild("Character_0", true, false) as Button;
+        var enter = selection.FindChild("EnterWorldButton", true, false) as Button;
+        Require(first is not null && enter is not null, "route entry controls missing");
+        first!.EmitSignal(Button.SignalName.Pressed);
+        enter!.EmitSignal(Button.SignalName.Pressed);
+        await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
+        var world = tree.CurrentScene as Main;
+        Require(world is not null && DemoSelection.CharacterId == "FAF-FISH-001",
+            "first start did not enter selected world");
+        var fish = world!.GetNode<FishController>("Fish");
+        Require(fish.GetNodeOrNull<Node3D>("PlayerVisual")?.Scale.IsEqualApprox(
+            Vector3.One * CharacterCatalog.All[0].WorldScale) == true, "first player visual");
+        fish.SetActivePreset(ControlPreset.Builtins()[1]);
+        await Frames(tree, 2);
+        Require(fish.UsesMouseInput && fish.CanUseMouseCamera,
+            "logical mouse capture was not active before return probe");
+        fish._Input(new InputEventMouseMotion { Relative = new Vector2(20, 8) });
+        var shell = world.GetNode<PlayShell>("PlayShell");
+        var options = shell.FindChild("OptionsButton", true, false) as Button;
+        var leave = shell.FindChild("CharacterSelectButton", true, false) as Button;
+        Require(options is not null && leave is not null, "route pause controls missing");
+        options!.EmitSignal(Button.SignalName.Pressed);
+        Require(tree.Paused && !fish.GetInputArmed() && fish.GetHeldInputCount() == 0 &&
+            Input.MouseMode == Input.MouseModeEnum.Visible, "pause did not clear input/capture");
+        leave!.EmitSignal(Button.SignalName.Pressed);
+        await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
+        var returned = tree.CurrentScene as CharacterSelect;
+        Require(returned is not null && !tree.Paused &&
+            Input.MouseMode == Input.MouseModeEnum.Visible &&
+            DemoSelection.CharacterId is null && !GodotObject.IsInstanceValid(world) &&
+            root.GetChildren().OfType<Main>().Count() == 0,
+            "return retained gameplay session, selection or capture");
+        var second = returned!.FindChild("Character_4", true, false) as Button;
+        var start = returned.FindChild("EnterWorldButton", true, false) as Button;
+        Require(second is not null && start is not null, "second start controls missing");
+        second!.EmitSignal(Button.SignalName.Pressed);
+        start!.EmitSignal(Button.SignalName.Pressed);
+        await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
+        var next = tree.CurrentScene as Main;
+        Require(next is not null && DemoSelection.CharacterId == "FAF-FISH-005" &&
+            next.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual")?.Scale
+                .IsEqualApprox(Vector3.One * CharacterCatalog.All[4].WorldScale) == true &&
+            next.GetNode<FishController>("Fish").GetNode<CollisionShape3D>("Collision").Shape
+                is SphereShape3D { Radius: 0.48f },
+            "second start did not create fresh shared-authority shark world");
+        GD.Print("CHARACTER_ROUTE_OK first=FAF-FISH-001 second=FAF-FISH-005 input=cleared session=replaced persistence=untouched");
+    }
+
+    private static async Task Frame(SceneTree tree) => await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+    private static async Task Frames(SceneTree tree, int count)
+    {
+        for (var i = 0; i < count; i++) await Frame(tree);
     }
     private static void SendKey(FishController fish, Key key, bool pressed) =>
         fish._Input(new InputEventKey { Keycode = key, PhysicalKeycode = key, Pressed = pressed });
