@@ -4,13 +4,13 @@
 
 Read AGENTS.md, BOOT.md, this stack README/assessment, [P2 design](../../planning/p2/underwater-world.md), [roadmap G2](../../roadmap.md#p2--build-the-underwater-world), [validation V18–V20](../../validation.md), [technical direction](../../technical-direction.md), [UX](../../ux-and-presentation.md), [art/assets](../../art-and-assets.md), final P1 accepted tuning/evidence, and affected source only.
 
-Before implementation inspect branch/HEAD/dirty state, `package.json`, final P1/c1 state, `game/project.godot`, main/course scenes, `StarterWorld.cs`, fish/camera/display source, asset install mapping and `tools/dev` composition. Require actual P1 close and deliberate root `0.2.0` baseline. Confirm Godot MCP targets Fish before editor mutations.
+Before implementation inspect branch/HEAD/dirty state, `package.json`, final P1/c1 state, `game/project.godot`, main/course scenes, `StarterWorld.cs`, fish/camera/display source, `artifacts/assets/source/p2-environment/inventory.json` plus the local vendor asset mapping when present, and `tools/dev` composition. Require actual P1 close and deliberate root `0.2.0` baseline. Confirm Godot MCP targets Fish before editor mutations.
 
 ## P1 — Renderer comparison vertical slice
 
 Keep Compatibility as the current production setting until the native decision. Add the smallest reversible development path that can launch/inspect the same candidate under Compatibility and Forward+ using the actual Godot 4.7.2 capabilities. Inspect the engine CLI/project override rather than inventing unsupported flags. Do not create two permanent gameplay projects.
 
-Create a bounded underwater rendering vertical slice using the existing P1 fish, sand/rock/coral assets and camera. It should make the renderer comparison meaningful by exercising:
+Create a bounded underwater rendering vertical slice using the existing P1 fish/camera and representative assets from the prepared P2 palette. Verify the full prepared set imports, while keeping the comparison scene small enough for a fair renderer A/B. It should make the renderer comparison meaningful by exercising:
 - distance/depth fog or renderer-appropriate equivalent;
 - top directional light and basic underwater color treatment;
 - one caustic-style animated light/material treatment;
@@ -29,6 +29,7 @@ Choose Compatibility or Forward+ from evidence and explain the tradeoff. Apply t
 
 Move normal play away from the visible P1 movement-course box while preserving that course as a dedicated development/qualification fixture. Create a P2 habitat root/scene with:
 - continuous collidable seabed with varied elevation;
+- a reusable seabed palette using Coast Sand 01, Ground060, Gravel041 and Rock063;
 - spawn and enough open water for normal swimming;
 - natural-looking enclosing terrain/rock boundaries instead of exposed box walls;
 - no route under the seabed or outside intended limits;
@@ -38,7 +39,7 @@ Use reusable scene/resource pieces rather than growing `StarterWorld.cs` into a 
 
 ## P4 — Reef tunnels and world composition
 
-Build the actual exploration space. Reuse Coast Sand/Rock Face/Heliopora deliberately and prepare efficient variants/instancing as needed. Compose:
+Build the actual exploration space from the prepared palette. Use Coast Sand 01, Ground060, Gravel041 and Rock063 for seabed/material variation; Rock Face 01, Rock Face 02, Coastal Cliff 01 and Boulder 01 for terrain structure; and Heliopora coerulea, Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae for distinct coral silhouettes. The final normal-play habitat should visibly use each prepared asset at least once unless a concrete technical/performance exception is recorded. Prepare efficient variants/instancing/LOD only as justified by measured cost. Compose:
 - coral/reef coverage that reads as a floor/ecosystem base rather than two props;
 - multiple rock formations;
 - at least one rock tunnel/arch/cave-like passage;
@@ -48,7 +49,7 @@ Build the actual exploration space. Reuse Coast Sand/Rock Face/Heliopora deliber
 - upper/lower landmarks and a vertical route;
 - visual variety/orientation/scale that avoids obvious copy-paste repetition.
 
-Remove P1 target spheres/camera-check post/test-course presentation from normal play; preserve them only in the fixture if still useful. Simplified collision may differ from visual mesh but must not mislead tunnel clearance. Do not carpet the scene with raw ~100k-triangle coral. Add new free/provenance-safe environment assets only when necessary and document them. Assigned P4 version: `0.2.4`.
+Remove P1 target spheres/camera-check post/test-course presentation from normal play; preserve them only in the fixture if still useful. Simplified collision may differ from visual mesh but must not mislead tunnel clearance. Do not carpet the scene with raw ~100k–150k-triangle coral or densely duplicate heavy hero rock meshes. The prepared set is intended to be sufficient; add another free/provenance-safe environment asset only for a concrete blocking gap and document it. Assigned P4 version: `0.2.4`.
 
 ## P5 — Underwater atmosphere
 
@@ -56,7 +57,7 @@ On the locked renderer, implement a coherent environment stack owned by a small 
 - distance/depth attenuation/fog;
 - underwater color/contrast;
 - top-biased sunlight;
-- animated caustic-style illumination on world surfaces;
+- animated caustic-style illumination across representative sand/gravel/rock/coral surfaces from the actual prepared palette;
 - sparse suspended motes;
 - restrained whole-view water distortion/noise/grade, depth-aware where the selected renderer supports it;
 - tunable parameters for native iteration.
@@ -73,7 +74,7 @@ Tune four observable states: near-rest/glide minimal, normal cruise subtle stead
 
 Mandatory native handoff on the final combined P2 candidate. Traverse V18 broad/tight/vertical routes, including rock tunnel/overhang and seabed/edge containment. Tune composition/collision/camera clearance rather than changing accepted motor semantics to fit the world.
 
-Observe V19 at near/far and upper/lower viewpoints in fullscreen and windowed-fullscreen: water depth, color/light, caustic motion, motes, post effect, UI readability, motion comfort and representative performance. Confirm the locked renderer still matches its decision record after full scene load.
+Observe V19 at near/far and upper/lower viewpoints in fullscreen and windowed-fullscreen: water depth, color/light, caustic motion, motes, post effect, UI readability, motion comfort and representative performance. Confirm the accepted normal-play world visibly uses the prepared seabed, four-piece rock set and five-species coral set, or records a specific accepted technical/performance exception. Confirm the locked renderer still matches its decision record after full scene load.
 
 Observe V20 at rest/glide, cruise, acceleration/high effort and hard turn. Tune intensity/origin/lifetime so reaction is visible but not distracting. Exercise pause/focus/resume to catch backlog/burst issues. Record owner judgment that the prototype-course look is gone, the world feels natural/coherent and clearly underwater, and movement reaction improves the sense of swimming. Write `qualification/native-world.md` and `qualification/accepted-environment.md`. Assigned P7 version: `0.2.7`.
 
