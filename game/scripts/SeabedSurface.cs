@@ -12,13 +12,21 @@ public partial class SeabedSurface : StaticBody3D
     public bool Build(StandardMaterial3D[] materials)
     {
         if (materials.Length != HabitatPalette.Names.Length) return false;
-        var builders = new SurfaceTool[materials.Length];
-        for (var index = 0; index < builders.Length; index++)
+        var shader = ResourceLoader.Load<Shader>("res://shaders/seabed_blend.gdshader");
+        if (shader is null) return false;
+        var material = new ShaderMaterial { Shader = shader, ResourceName = "P2 Blended Seabed" };
+        for (var index = 0; index < materials.Length; index++)
         {
-            builders[index] = new SurfaceTool();
-            builders[index].Begin(Mesh.PrimitiveType.Triangles);
-            builders[index].SetMaterial(materials[index]);
+            var prefix = new[] { "coast", "shell", "gravel", "rock" }[index];
+            if (materials[index].AlbedoTexture is null || materials[index].NormalTexture is null ||
+                materials[index].RoughnessTexture is null) return false;
+            material.SetShaderParameter(prefix + "_color", materials[index].AlbedoTexture);
+            material.SetShaderParameter(prefix + "_normal", materials[index].NormalTexture);
+            material.SetShaderParameter(prefix + "_roughness", materials[index].RoughnessTexture);
         }
+        using var builder = new SurfaceTool();
+        builder.Begin(Mesh.PrimitiveType.Triangles);
+        builder.SetMaterial(material);
 
         for (var z = 0; z < CellsPerSide; z++)
         for (var x = 0; x < CellsPerSide; x++)
@@ -27,7 +35,6 @@ public partial class SeabedSurface : StaticBody3D
             var near = -HalfExtent + z * CellSize;
             var right = left + CellSize;
             var far = near + CellSize;
-            var builder = builders[MaterialAt((left + right) * 0.5f, (near + far) * 0.5f)];
             var a = Point(left, near);
             var b = Point(left, far);
             var c = Point(right, near);
@@ -38,11 +45,7 @@ public partial class SeabedSurface : StaticBody3D
         }
 
         var mesh = new ArrayMesh();
-        foreach (var builder in builders)
-        {
-            builder.Commit(mesh);
-            builder.Dispose();
-        }
+        builder.Commit(mesh);
         var shape = mesh.CreateTrimeshShape() as ConcavePolygonShape3D;
         if (shape is null) return false;
         shape.BackfaceCollision = true;
@@ -80,18 +83,6 @@ public partial class SeabedSurface : StaticBody3D
         builder.SetNormal(new Vector3(-xSlope, 1, -zSlope).Normalized());
         builder.SetUV(new Vector2(point.X, point.Z) * 0.24f);
         builder.AddVertex(point);
-    }
-
-    private static int MaterialAt(float x, float z)
-    {
-        var radius = Mathf.Sqrt(x * x + z * z);
-        if (radius > 21.2f + 1.4f * Mathf.Sin(0.31f * x + 0.19f * z))
-            return HabitatPalette.ExposedRock;
-        if (z > 3.5f + 1.8f * Mathf.Sin(0.35f * x))
-            return HabitatPalette.Gravel;
-        if (x > 2.8f + 1.3f * Mathf.Sin(0.4f * z))
-            return HabitatPalette.ShellSand;
-        return HabitatPalette.CoastSand;
     }
 
     private static float Smooth(float start, float end, float value)

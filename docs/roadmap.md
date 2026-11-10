@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 IN PROGRESS after P4 reef composition.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-09. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 NOT GREEN after P8 evidence review because the P7 native candidate awaits direct owner judgment and missing observations.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -12,7 +12,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1–P6 implemented, P7 native world tuning next; [stack](tasks/p2/README.md). |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; P1–P6 implemented, [P7 native candidate](tasks/p2/qualification/native-world.md) and [P8 review](tasks/p2/closeout.md) BLOCKED; G2.1–G2.3 open. |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -90,13 +90,13 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS; P1 comparison through P6 reaction implemented; P7 native qualification and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+**Status: IN PROGRESS / NOT GREEN; P1 comparison through P6 reaction implemented. [P8 review](tasks/p2/closeout.md) found P7 native source-bound checks reusable but owner judgment and missing V18–V20 observations still BLOCKED; G2 Gates remain open.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
 ### G2.1 — Natural reef habitat and traversal
 
-**Result: NOT OBSERVED.** P3 established the collidable varied seabed, safe spawn, hidden limits and separate P1 fixture. P4 now instances all prepared rocks/coral and checks open, tunnel, shelter and vertical geometry; P7 native traversal/appearance and owner judgment are still required.
+**Result: BLOCKED.** P3/P4 established the continuous collidable seabed, separate P1 fixture and complete prepared model/material placement. P7 reached open, tunnel, shelter and vertical markers in a real window and repaired square seabed transitions. [P8 criterion review](tasks/p2/closeout.md#g21--natural-habitat-and-traversal--v18) retains missing owner visibility/comfort judgment and native perimeter use.
 
 - Normal play no longer exposes the P1 flat-floor/ceiling/test-course presentation, colored target spheres, camera-check post or other obvious developer geometry.
 - Build a continuous natural seabed with varied elevation, coral/reef areas, rock walls/formations, arches or tunnels/caves, overhangs, open swimming pockets and recognizable landmarks at multiple depths.
@@ -106,9 +106,9 @@ P2 turns the movement laboratory into a place that already feels like a game whe
 
 ### G2.2 — Convincing underwater atmosphere and renderer
 
-**Result: NOT OBSERVED.**
+**Result: BLOCKED.**
 
-P5 now installs [one tunable Forward+ atmosphere stack](tasks/p2/qualification/implementation.md#p2-p5--underwater-atmosphere) with volumetric/distance/height fog, top light, moving projected caustics, GPU motes and a screen pass below the UI. Import/build/scene checks and a rendered software Vulkan launch passed. V19’s native upper/lower and near/far observation, motion comfort and representative hardware performance remain for P7.
+P5 installs [one tunable Forward+ atmosphere stack](tasks/p2/qualification/implementation.md#p2-p5--underwater-atmosphere) with volumetric/distance/height fog, top light, moving projected caustics, GPU motes and a screen pass below the UI. P7 recorded real-window upper/lower and near/far frames plus representative Radeon 880M counters. [P8 review](tasks/p2/closeout.md#g22--forward-underwater-atmosphere--v19) retains missing owner underwater/motion/performance judgment.
 
 - P2/P1 provides the Compatibility/Forward+ comparison. The owner ran Forward+ on the real desktop, observed smooth performance and selected it for P2. P2/P2 locked the tracked project to Forward+ and recorded that evidence; another native Compatibility run is not required unless Forward+ later develops a concrete blocker.
 - With **Forward+**, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.
@@ -117,7 +117,7 @@ P5 now installs [one tunable Forward+ atmosphere stack](tasks/p2/qualification/i
 
 ### G2.3 — Movement-reactive water presentation
 
-**Result: NOT OBSERVED.** [P6 implementation and T2 evidence](tasks/p2/qualification/implementation.md#p2-p6--fish-reactive-water) covers bounded GPU wake/bubbles, pause/focus cleanup and equal-intent movement traces. V20 still needs native appearance, camera readability and representative hardware performance judgment in P7.
+**Result: BLOCKED.** [P6 implementation and T2 evidence](tasks/p2/qualification/implementation.md#p2-p6--fish-reactive-water) covers bounded GPU wake/bubbles, pause/focus cleanup and equal-intent movement traces. P7 recorded native response ratios and round-bubble captures. [P8 review](tasks/p2/closeout.md#g23--fish-reactive-water--v20) retains missing owner effect judgment, combined pitch/turn geometry view and actual desktop focus/refocus.
 
 - Water visibly reacts to the fish using bounded presentation effects: ordinary swimming has a readable but restrained disturbance, acceleration increases it, gliding reduces it, and hard turning produces a directional change/turbulence cue.
 - Effects originate from believable body/tail space, remain coherent through pitch/yaw, do not obscure the camera, and clear/freeze appropriately across pause/reset/focus lifecycle.

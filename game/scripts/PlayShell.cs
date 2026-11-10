@@ -331,11 +331,24 @@ public partial class PlayShell : Node
         var otherPause = string.Join("/", profile.Bindings(ControlAction.PauseOptions)
             .Where(binding => binding != new ControlBinding(BindingDevice.PhysicalKey, ControlPreset.RecoveryKey))
             .Select(ControlPresetsPanel.BindingName));
-        _help.Text = $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
-            $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
-            $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
-            $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
-            (CanQuickCycle() ? "  Debug: F6 cycles presets" : "");
+        _help.Text = profile.CameraControl == CameraControlPolicy.AdaptiveFollow
+            ? $"{profile.Name}  Hold C + mouse: 360 free-look  " +
+              $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
+              $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
+              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+              $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
+              (CanQuickCycle() ? "  Debug: F6 cycles presets" : "")
+            : profile.CameraControl == CameraControlPolicy.MouseOrbit360
+            ? $"{profile.Name}  Mouse: 360 camera  Pitch up/down: {Keys(ControlAction.PitchUp)}/{Keys(ControlAction.PitchDown)}  " +
+              $"Turn left/right: {Keys(ControlAction.YawLeft)}/{Keys(ControlAction.YawRight)}  " +
+              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+              $"Wheel: zoom  Options: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
+              (CanQuickCycle() ? "  Debug: F6 cycles presets" : "")
+            : $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+              $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
+              $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
+              $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
+              (CanQuickCycle() ? "  Debug: F6 cycles presets" : "");
         _help.Position = new Vector2(20, 60);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 120);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
@@ -401,7 +414,8 @@ public partial class PlayShell : Node
     {
         _profileChoices.Clear();
         var all = _presets.List();
-        foreach (var id in new[] { ControlPreset.KeyboardId, ControlPreset.MouseId, ControlPreset.HybridId })
+        foreach (var id in new[] { ControlPreset.KeyboardId, ControlPreset.MouseId,
+                     ControlPreset.HybridId, ControlPreset.Hybrid2Id, ControlPreset.AdaptiveFollowId })
             _profileChoices.Add(all.First(profile => profile.Id == id));
         _profileChoices.AddRange(all.Where(profile => !profile.IsBuiltin));
         _mode.Clear();

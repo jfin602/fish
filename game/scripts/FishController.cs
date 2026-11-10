@@ -21,6 +21,9 @@ public partial class FishController : CharacterBody3D
     public string ActivePresetId => _input.Profile.Id;
     public ControlPreset ActivePreset => _input.Profile;
     public bool UsesMouseInput => _input.UsesMouse;
+    public CameraControlPolicy CameraControl => _input.Profile.CameraControl;
+    public float ActiveMouseSensitivity => _legacyMouseSettings ? _mouseSensitivity : _input.Profile.MouseSensitivity;
+    public bool ActiveMouseInvertY => _legacyMouseSettings ? _invertMouseY : _input.Profile.MouseY.Inverted;
     public bool IsPauseEvent(InputEvent @event)
     {
         if (@event is InputEventKey { Pressed: true, Echo: false } key)
@@ -42,6 +45,10 @@ public partial class FishController : CharacterBody3D
         return false;
     }
     public bool CanUseMouseCamera => !_input.UsesKeyboardSteering && _input.UsesMouse &&
+        _mouseCaptureActive && _inputArmed && !GetTree().Paused;
+    public bool CanOrbitCamera => CameraControl == CameraControlPolicy.MouseOrbit360 &&
+        _mouseCaptureActive && _inputArmed && !GetTree().Paused;
+    public bool AdaptiveFreeLookHeld => _input.AdaptiveFreeLookHeld &&
         _mouseCaptureActive && _inputArmed && !GetTree().Paused;
     public bool CanZoomCamera => _inputArmed && !GetTree().Paused &&
         (!_input.UsesMouse || _mouseCaptureActive);
@@ -79,10 +86,8 @@ public partial class FishController : CharacterBody3D
         }
         else
         {
-            var sensitivity = _legacyMouseSettings ? _mouseSensitivity : _input.Profile.MouseSensitivity;
-            var invertY = _legacyMouseSettings ? _invertMouseY : _input.Profile.MouseY.Inverted;
             intent = _input.Consume((float)delta, Tuning, _mouseCaptureActive,
-                sensitivity, invertY);
+                ActiveMouseSensitivity, ActiveMouseInvertY);
         }
         LastThrust = intent.Thrust;
         LastSlow = intent.Slow;
@@ -131,7 +136,9 @@ public partial class FishController : CharacterBody3D
             _state.Velocity = Vector3.Zero;
             Velocity = Vector3.Zero;
         }
-        if (stopMotion) GetNodeOrNull<FollowCamera>("CameraRig")?.ClearLookOffset();
+        var camera = GetNodeOrNull<FollowCamera>("CameraRig");
+        camera?.ClearQueuedMouseMotion();
+        if (stopMotion) camera?.ClearLookOffset();
     }
 
     public void SetActivePreset(ControlPreset profile)
@@ -139,6 +146,7 @@ public partial class FishController : CharacterBody3D
         ClearAndDisarmInput(stopMotion: false);
         _input.Select(profile);
         _legacyMouseSettings = profile.IsBuiltin;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.OnPresetChanged();
         // Keep live switches usable too; a paused menu retains its visible pointer.
         if (!GetTree().Paused)
         {
@@ -168,6 +176,7 @@ public partial class FishController : CharacterBody3D
     {
         _input.CaptureStarted();
         _mouseCaptureActive = true;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.OnCaptureStarted();
     }
 
     public override void _Notification(int what)

@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: IN PROGRESS. P1 comparison through P6 fish-reactive water are implemented at root `0.2.6`; P7 native world tuning is next.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS / NOT GREEN. P1 comparison through P6 fish-reactive water are implemented at root `0.2.6`; [P8 closeout review](closeout.md) is BLOCKED because the P7 candidate lacks direct owner judgment and some native observations.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -40,8 +40,8 @@ The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `READ
 | P4 | [Reef tunnels and world composition](P4-reef-tunnels-and-world-composition.txt) | Complete prepared rock/coral palette in normal play; open/tunnel/shelter/vertical routes; [implementation evidence](qualification/implementation.md#p2-p4--reef-tunnels-and-world-composition) | `0.2.4` | T2 complete; P7 native appearance/traversal ahead |
 | P5 | [Underwater atmosphere](P5-underwater-atmosphere.txt) | Forward+ underwater fog/depth/color/light/caustics/motes/screen treatment; [implementation evidence](qualification/implementation.md#p2-p5--underwater-atmosphere) | `0.2.5` | T2 complete; P7 native judgment ahead |
 | P6 | [Fish-reactive water](P6-fish-reactive-water.txt) | Forward+ GPU particle/trail/turbulence response driven read-only by actual movement; [implementation evidence](qualification/implementation.md#p2-p6--fish-reactive-water) | `0.2.6` | T2 complete; V20 native appearance ahead |
-| P7 | [Native world tuning](P7-native-world-tuning.txt) | V18–V20 owner/native tuning and performance/readability qualification | `0.2.7` | T3, mandatory manual handoff |
-| P8 | [Underwater world closeout](P8-underwater-world-closeout.txt) | G2.1–G2.3 evidence review, docs reconciliation and Phase disposition | `0.2.8` | T3/T1, final manual closeout |
+| P7 | [Native world tuning](P7-native-world-tuning.txt) | [Native candidate and gaps](qualification/native-world.md); owner acceptance pending | `0.2.7` only after acceptance | T3, BLOCKED at manual handoff |
+| P8 | [Underwater world closeout](P8-underwater-world-closeout.txt) | [Criterion review](closeout.md) finds G2.1–G2.3 BLOCKED; P7 owner handoff remains | `0.2.8` only after all Gates pass | T3/T1 final manual closeout, NOT GREEN |
 
 P8 is the one final closeout. P2 and P7 are intermediate native checkpoints. P2 does **not** reopen the renderer choice unless Forward+ develops a concrete blocker/regression; Compatibility remains a development comparison path, not a parallel production target. The historical runner field `- Browser required: yes.` means native/manual Godot observation; ordinary web browsing does not qualify the game.
 

@@ -60,7 +60,7 @@ func _run() -> void:
 	if not _require(paused and _button(shell, "ResumeButton").has_focus(), "pointer Options failed"):
 		return
 	await _click(_button(shell, "ControlPresetsButton"))
-	if not _require(editor.visible and choice.has_focus() and choice.item_count == 3,
+	if not _require(editor.visible and choice.has_focus() and choice.item_count == 5,
 			"editor entry, focus or built-ins missing"):
 		return
 	var viewport_size := scene.get_viewport().get_visible_rect().size
@@ -95,7 +95,7 @@ func _run() -> void:
 	name_edit.text = "Current Tester"
 	confirm.pressed.emit()
 	await process_frame
-	if not _require(choice.item_count == 4 and state.text.contains("Editing: Current Tester") and
+	if not _require(choice.item_count == 6 and state.text.contains("Editing: Current Tester") and
 			state.text.contains("Active: Keyboard Only"), "create changed active or did not show custom"):
 		return
 	_button(shell, "Add_Thrust").pressed.emit()
@@ -182,13 +182,13 @@ func _run() -> void:
 	_button(shell, "PresetDuplicateButton").pressed.emit()
 	name_edit.text = "Copy Tester"
 	confirm.pressed.emit()
-	if not _require(choice.item_count == 5, "duplicate failed"):
+	if not _require(choice.item_count == 7, "duplicate failed"):
 		return
 	_button(shell, "PresetDeleteButton").pressed.emit()
 	if not _require(modal.visible, "delete lacked confirmation"):
 		return
 	confirm.pressed.emit()
-	if not _require(choice.item_count == 4 and fish.call("GetActivePresetId") == active_id,
+	if not _require(choice.item_count == 6 and fish.call("GetActivePresetId") == active_id,
 			"delete changed active profile"):
 		return
 	_key(KEY_ESCAPE, true)
@@ -225,7 +225,7 @@ func _run() -> void:
 	var second_shell: Node = reopened.get_node("PlayShell")
 	var second_fish: CharacterBody3D = reopened.get_node("Fish")
 	if not _require(second_fish.call("GetActivePresetId") == active_id and
-			(second_shell.find_child("InputModeOption", true, false) as OptionButton).item_count == 4,
+			(second_shell.find_child("InputModeOption", true, false) as OptionButton).item_count == 6,
 			"relaunch did not recover active custom profile"):
 		return
 	await _click(_button(second_shell, "OptionsButton"))
@@ -245,7 +245,7 @@ func _run() -> void:
 	_button(second_shell, "PresetSaveAsButton").pressed.emit()
 	(second_shell.find_child("PresetNameEdit", true, false) as LineEdit).text = "Saved As Tester"
 	_button(second_shell, "PresetConfirmButton").pressed.emit()
-	if not _require((second_shell.find_child("PresetProfileOption", true, false) as OptionButton).item_count == 5 and
+	if not _require((second_shell.find_child("PresetProfileOption", true, false) as OptionButton).item_count == 7 and
 			_button(second_shell, "Binding_Thrust_1").text == "K", "Save As lost draft"):
 		return
 	_button(second_shell, "PresetDeleteButton").pressed.emit()
@@ -301,7 +301,7 @@ func _run() -> void:
 	_button(second_shell, "PresetDeleteButton").pressed.emit()
 	_button(second_shell, "PresetConfirmButton").pressed.emit()
 	if not _require(second_fish.call("GetActivePresetId") == "builtin:keyboard" and
-			(second_shell.find_child("PresetProfileOption", true, false) as OptionButton).item_count == 3,
+			(second_shell.find_child("PresetProfileOption", true, false) as OptionButton).item_count == 5,
 			"deleting active custom did not fall back safely"):
 		return
 	_key(KEY_ESCAPE, true)

@@ -17,6 +17,7 @@ public partial class ControlPresetsPanel : PanelContainer
     private readonly VBoxContainer _bindings = new() { Name = "PresetBindingRows" };
     private readonly OptionButton _mouseX = new() { Name = "MouseXAxisOption" };
     private readonly OptionButton _mouseY = new() { Name = "MouseYAxisOption" };
+    private readonly OptionButton _cameraControl = new() { Name = "CameraControlOption" };
     private readonly CheckButton _invertX = new() { Name = "InvertMouseXToggle", Text = "Invert X" };
     private readonly CheckButton _invertY = new() { Name = "InvertMouseYEditorToggle", Text = "Invert Y" };
     private readonly HSlider _sensitivity = new() { Name = "PresetSensitivitySlider", MinValue = 0.04, MaxValue = 0.4, Step = 0.01 };
@@ -86,8 +87,7 @@ public partial class ControlPresetsPanel : PanelContainer
         AddButton(names, "Save As", "PresetSaveAsButton", () => NameDialog("Save draft as", _draft.Name + " Copy", name =>
         {
             var created = _store.Duplicate(_selectedId, name);
-            _store.Update(new ControlPreset(created.Id, name, Enum.GetValues<ControlAction>().ToDictionary(a => a,
-                a => _draft.Bindings(a).ToArray()), _draft.MouseX, _draft.MouseY, _draft.MouseSensitivity));
+            _store.Update(_draft.Copy(created.Id, name));
             _store.Save();
             Select(created.Id);
         }));
@@ -127,6 +127,13 @@ public partial class ControlPresetsPanel : PanelContainer
         body.AddChild(scroll);
         _bindings.SizeFlagsHorizontal = SizeFlags.ExpandFill;
         scroll.AddChild(_bindings);
+        var cameraRow = Row(body);
+        cameraRow.AddChild(new Label { Text = "Camera control" });
+        cameraRow.AddChild(_cameraControl);
+        _cameraControl.AddItem("Existing pan", (int)CameraControlPolicy.LegacyPan);
+        _cameraControl.AddItem("360 mouse orbit", (int)CameraControlPolicy.MouseOrbit360);
+        _cameraControl.AddItem("Adaptive follow (hold C to look)", (int)CameraControlPolicy.AdaptiveFollow);
+        _cameraControl.ItemSelected += _ => ChangeCameraControl();
         body.AddChild(new Label { Text = "Mouse steering (movement is never captured as a button)" });
         var axis = Row(body);
         axis.AddChild(new Label { Text = "X" });
@@ -189,7 +196,8 @@ public partial class ControlPresetsPanel : PanelContainer
         Enum.GetValues<ControlAction>().Any(a => !_draft.Bindings(a).SequenceEqual(_store.List().First(p => p.Id == _selectedId).Bindings(a))) ||
         _draft.MouseX != _store.List().First(p => p.Id == _selectedId).MouseX ||
         _draft.MouseY != _store.List().First(p => p.Id == _selectedId).MouseY ||
-        _draft.MouseSensitivity != _store.List().First(p => p.Id == _selectedId).MouseSensitivity;
+        _draft.MouseSensitivity != _store.List().First(p => p.Id == _selectedId).MouseSensitivity ||
+        _draft.CameraControl != _store.List().First(p => p.Id == _selectedId).CameraControl;
 
     private static HBoxContainer Row(Node parent)
     {
@@ -261,11 +269,14 @@ public partial class ControlPresetsPanel : PanelContainer
         }
         _mouseX.Select((int)_draft.MouseX.Steering);
         _mouseY.Select((int)_draft.MouseY.Steering);
+        _cameraControl.Select((int)_draft.CameraControl);
         _invertX.ButtonPressed = _draft.MouseX.Inverted;
         _invertY.ButtonPressed = _draft.MouseY.Inverted;
         _sensitivity.Value = _draft.MouseSensitivity;
         _sensitivityText.Text = $"Sensitivity: {_draft.MouseSensitivity:F2}°/px";
-        _mouseX.Disabled = _mouseY.Disabled = _invertX.Disabled = _invertY.Disabled = _draft.IsBuiltin;
+        _cameraControl.Disabled = _draft.IsBuiltin;
+        _mouseX.Disabled = _mouseY.Disabled = _invertX.Disabled = _invertY.Disabled =
+            _draft.IsBuiltin || _draft.CameraControl == CameraControlPolicy.MouseOrbit360;
         _sensitivity.Editable = !_draft.IsBuiltin;
         _refreshing = false;
     }
@@ -283,6 +294,20 @@ public partial class ControlPresetsPanel : PanelContainer
         {
             Refresh();
             _state.Text += " | X and Y cannot steer the same direction.";
+        }
+    }
+    private void ChangeCameraControl()
+    {
+        if (_refreshing || _draft.IsBuiltin) return;
+        try
+        {
+            _draft = _draft.WithCameraControl((CameraControlPolicy)_cameraControl.Selected);
+            Refresh();
+        }
+        catch (ArgumentException)
+        {
+            Refresh();
+            _state.Text += " | C is reserved for Adaptive Follow free-look.";
         }
     }
     private void Remove(ControlAction action, int index)
@@ -445,5 +470,6 @@ public partial class ControlPresetsPanel : PanelContainer
 
     private static bool SameControls(ControlPreset a, ControlPreset b) =>
         a.MouseX == b.MouseX && a.MouseY == b.MouseY && a.MouseSensitivity == b.MouseSensitivity &&
+        a.CameraControl == b.CameraControl &&
         Enum.GetValues<ControlAction>().All(action => a.Bindings(action).SequenceEqual(b.Bindings(action)));
 }

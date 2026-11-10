@@ -10,19 +10,23 @@ namespace Fish;
 public enum ControlAction { Thrust, Slow, YawLeft, YawRight, PitchUp, PitchDown, PauseOptions }
 public enum BindingDevice { PhysicalKey, MouseButton }
 public enum SteeringAxis { None, Yaw, Pitch }
+public enum CameraControlPolicy { LegacyPan, MouseOrbit360, AdaptiveFollow }
 public readonly record struct ControlBinding(BindingDevice Device, int Code);
 public readonly record struct MouseAxisAssignment(SteeringAxis Steering, bool Inverted = false);
 
 /// <summary>Validated snapshot of one desktop control profile. No gameplay state lives here.</summary>
 public sealed class ControlPreset
 {
-    public const int SchemaVersion = 1;
+    public const int SchemaVersion = 2;
     public const int MaxBindingsPerAction = 4;
     public const int MaxNameLength = 32;
     public const float DefaultSensitivity = 0.12f;
     public const string KeyboardId = "builtin:keyboard";
     public const string MouseId = "builtin:mouse";
     public const string HybridId = "builtin:hybrid";
+    public const string Hybrid2Id = "builtin:hybrid2";
+    public const string AdaptiveFollowId = "builtin:adaptive-follow";
+    public const int AdaptiveFreeLookKey = (int)Key.C;
     public const int RecoveryKey = (int)Key.Escape;
     public const int RecoveryMouseButton = (int)MouseButton.Middle;
     private static readonly ControlAction[] AllActions = Enum.GetValues<ControlAction>();
@@ -34,11 +38,13 @@ public sealed class ControlPreset
     public MouseAxisAssignment MouseX { get; }
     public MouseAxisAssignment MouseY { get; }
     public float MouseSensitivity { get; }
+    public CameraControlPolicy CameraControl { get; }
     public IReadOnlyList<ControlBinding> Bindings(ControlAction action) =>
         Array.AsReadOnly(_bindings[action]);
 
     public ControlPreset(string id, string name, IDictionary<ControlAction, ControlBinding[]> bindings,
-        MouseAxisAssignment mouseX, MouseAxisAssignment mouseY, float mouseSensitivity)
+        MouseAxisAssignment mouseX, MouseAxisAssignment mouseY, float mouseSensitivity,
+        CameraControlPolicy cameraControl = CameraControlPolicy.LegacyPan)
     {
         if (!IsValidId(id)) throw new ArgumentException("Invalid profile identity", nameof(id));
         if (string.IsNullOrWhiteSpace(name) || name.Trim() != name || name.Length > MaxNameLength ||
@@ -48,6 +54,9 @@ public sealed class ControlPreset
         if (!Enum.IsDefined(mouseX.Steering) || !Enum.IsDefined(mouseY.Steering) ||
             (mouseX.Steering != SteeringAxis.None && mouseX.Steering == mouseY.Steering))
             throw new ArgumentException("Conflicting mouse steering axes");
+        if (!Enum.IsDefined(cameraControl) || (cameraControl == CameraControlPolicy.MouseOrbit360 &&
+            (mouseX.Steering != SteeringAxis.None || mouseY.Steering != SteeringAxis.None)))
+            throw new ArgumentException("Mouse orbit cannot also steer the fish");
         if (bindings.Count != AllActions.Length || bindings.Keys.Any(action => !Enum.IsDefined(action)))
             throw new ArgumentException("All semantic actions must be present", nameof(bindings));
 
@@ -60,6 +69,8 @@ public sealed class ControlPreset
             foreach (var entry in entries)
             {
                 if (!ValidBinding(entry) ||
+                    (cameraControl == CameraControlPolicy.AdaptiveFollow &&
+                     entry.Device == BindingDevice.PhysicalKey && entry.Code == AdaptiveFreeLookKey) ||
                     ((entry.Device == BindingDevice.PhysicalKey && entry.Code == RecoveryKey) ||
                      (entry.Device == BindingDevice.MouseButton && entry.Code == RecoveryMouseButton)) &&
                     action != ControlAction.PauseOptions)
@@ -77,11 +88,12 @@ public sealed class ControlPreset
         MouseX = mouseX;
         MouseY = mouseY;
         MouseSensitivity = mouseSensitivity;
+        CameraControl = cameraControl;
     }
 
     public static bool IsValidId(string? id)
     {
-        if (id is KeyboardId or MouseId or HybridId) return true;
+        if (id is KeyboardId or MouseId or HybridId or Hybrid2Id or AdaptiveFollowId) return true;
         return id is not null && id.StartsWith("custom:", StringComparison.Ordinal) &&
             Guid.TryParseExact(id[7..], "N", out var value) && value != Guid.Empty &&
             id == "custom:" + value.ToString("N");
@@ -98,16 +110,19 @@ public sealed class ControlPreset
     };
 
     public ControlPreset Copy(string id, string name) =>
-        new(id, name, _bindings, MouseX, MouseY, MouseSensitivity);
+        new(id, name, _bindings, MouseX, MouseY, MouseSensitivity, CameraControl);
     public ControlPreset WithBindings(ControlAction action, params ControlBinding[] entries)
     {
         var copy = _bindings.ToDictionary(pair => pair.Key, pair => pair.Value);
         copy[action] = entries;
-        return new(Id, Name, copy, MouseX, MouseY, MouseSensitivity);
+        return new(Id, Name, copy, MouseX, MouseY, MouseSensitivity, CameraControl);
     }
     public ControlPreset WithMouse(MouseAxisAssignment x, MouseAxisAssignment y, float sensitivity) =>
-        new(Id, Name, _bindings, x, y, sensitivity);
-    public ControlPreset WithName(string name) => new(Id, name, _bindings, MouseX, MouseY, MouseSensitivity);
+        new(Id, Name, _bindings, x, y, sensitivity, CameraControl);
+    public ControlPreset WithCameraControl(CameraControlPolicy policy) =>
+        new(Id, Name, _bindings, policy == CameraControlPolicy.MouseOrbit360 ? default : MouseX,
+            policy == CameraControlPolicy.MouseOrbit360 ? default : MouseY, MouseSensitivity, policy);
+    public ControlPreset WithName(string name) => new(Id, name, _bindings, MouseX, MouseY, MouseSensitivity, CameraControl);
 
     private static ControlBinding KeyBinding(Key key) => new(BindingDevice.PhysicalKey, (int)key);
     private static ControlBinding ButtonBinding(MouseButton button) => new(BindingDevice.MouseButton, (int)button);
@@ -136,11 +151,24 @@ public sealed class ControlPreset
         hybrid[ControlAction.PitchUp] = [KeyBinding(Key.Up)];
         hybrid[ControlAction.PitchDown] = [KeyBinding(Key.Down)];
         hybrid[ControlAction.PauseOptions] = [KeyBinding(Key.Escape), ButtonBinding(MouseButton.Middle)];
+        var hybrid2 = EmptyActions();
+        hybrid2[ControlAction.Thrust] = [ButtonBinding(MouseButton.Left)];
+        hybrid2[ControlAction.Slow] = [ButtonBinding(MouseButton.Right)];
+        hybrid2[ControlAction.YawLeft] = [KeyBinding(Key.A)];
+        hybrid2[ControlAction.YawRight] = [KeyBinding(Key.D)];
+        hybrid2[ControlAction.PitchUp] = [KeyBinding(Key.W)];
+        hybrid2[ControlAction.PitchDown] = [KeyBinding(Key.S)];
+        hybrid2[ControlAction.PauseOptions] = [KeyBinding(Key.Escape), ButtonBinding(MouseButton.Middle)];
         return Array.AsReadOnly(new[]
         {
             new ControlPreset(KeyboardId, "Keyboard Only", keyboard, default, default, DefaultSensitivity),
             new ControlPreset(MouseId, "Mouse Only", mouse, new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity),
-            new ControlPreset(HybridId, "Hybrid Swim", hybrid, new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity)
+            new ControlPreset(HybridId, "Hybrid Swim", hybrid, new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity),
+            new ControlPreset(Hybrid2Id, "Hybrid 2", hybrid2, default, default, DefaultSensitivity,
+                CameraControlPolicy.MouseOrbit360),
+            new ControlPreset(AdaptiveFollowId, "Adaptive Follow", hybrid,
+                new(SteeringAxis.Yaw), new(SteeringAxis.Pitch), DefaultSensitivity,
+                CameraControlPolicy.AdaptiveFollow)
         });
     }
 }

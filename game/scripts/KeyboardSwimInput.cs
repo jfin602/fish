@@ -17,7 +17,10 @@ public sealed class ProfileSwimInput
     public bool AllReleased => _keys.Count == 0 && _buttons.Count == 0 &&
         _blockedKeys.Count == 0 && _blockedButtons.Count == 0;
     public int HeldCount => _keys.Count + _buttons.Count;
-    public bool UsesMouse => _profile.MouseX.Steering != SteeringAxis.None ||
+    public bool AdaptiveFreeLookHeld => _profile.CameraControl == CameraControlPolicy.AdaptiveFollow &&
+        _keys.Contains(ControlPreset.AdaptiveFreeLookKey);
+    public bool UsesMouse => _profile.CameraControl == CameraControlPolicy.MouseOrbit360 ||
+        _profile.MouseX.Steering != SteeringAxis.None ||
         _profile.MouseY.Steering != SteeringAxis.None || HasMouseBinding();
     public bool UsesKeyboardSteering => HasKeyBinding(ControlAction.Thrust) ||
         HasKeyBinding(ControlAction.Slow) || HasKeyBinding(ControlAction.YawLeft) ||
@@ -46,6 +49,9 @@ public sealed class ProfileSwimInput
         {
             var code = (int)key.PhysicalKeycode;
             if (code == 0) code = (int)key.Keycode;
+            if (code == ControlPreset.AdaptiveFreeLookKey &&
+                _profile.CameraControl == CameraControlPolicy.AdaptiveFollow)
+                _mouse.DiscardAdaptiveSteering();
             if (key.Pressed)
             {
                 if (!_blockedKeys.Contains(code)) _keys.Add(code);
@@ -76,10 +82,15 @@ public sealed class ProfileSwimInput
     public SwimIntent Consume(float delta, SwimTuning tuning, bool captured,
         float sensitivity, bool invertY)
     {
-        var steering = captured ? _mouse.ConsumeSteering(delta, tuning, _profile, sensitivity, invertY) : Vector2.Zero;
+        if (AdaptiveFreeLookHeld) _mouse.DiscardAdaptiveSteering();
+        var steering = captured && !AdaptiveFreeLookHeld
+            ? _mouse.ConsumeSteering(delta, tuning, _profile, sensitivity, invertY)
+            : Vector2.Zero;
         var yaw = (IsDown(ControlAction.YawRight, captured) ? 1 : 0) - (IsDown(ControlAction.YawLeft, captured) ? 1 : 0);
         var pitch = (IsDown(ControlAction.PitchUp, captured) ? 1 : 0) - (IsDown(ControlAction.PitchDown, captured) ? 1 : 0);
         if (Input.IsKeyPressed(Key.Shift) && !UsesMouse) pitch = 0; // Legacy keyboard camera hold.
+        if (_profile.CameraControl == CameraControlPolicy.AdaptiveFollow)
+            steering = new Vector2(yaw == 0 ? steering.X : 0, pitch == 0 ? steering.Y : 0);
         return new SwimIntent(IsDown(ControlAction.Thrust, captured) ? 1 : 0,
             IsDown(ControlAction.Slow, captured) ? 1 : 0,
             Mathf.Clamp(yaw + steering.X, -1, 1), Mathf.Clamp(pitch + steering.Y, -1, 1));

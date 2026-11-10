@@ -62,7 +62,7 @@ public sealed class ControlPresetStore
             if (new FileInfo(_path).Length > MaxFileBytes) throw new InvalidDataException("Controls file exceeds size limit");
             var data = JsonSerializer.Deserialize<StoreData>(File.ReadAllText(_path), JsonOptions)
                 ?? throw new InvalidDataException("Empty controls file");
-            if (data.SchemaVersion != ControlPreset.SchemaVersion || data.Profiles is null ||
+            if (data.SchemaVersion is not (1 or ControlPreset.SchemaVersion) || data.Profiles is null ||
                 data.Profiles.Count > MaxCustomProfiles || data.CurrentId is null)
                 throw new InvalidDataException("Unsupported or incomplete controls schema");
             foreach (var entry in data.Profiles)
@@ -72,7 +72,8 @@ public sealed class ControlPresetStore
                     entry.Id.StartsWith("builtin:", StringComparison.Ordinal))
                     throw new InvalidDataException("Invalid custom profile entry");
                 var preset = new ControlPreset(entry.Id, entry.Name, entry.Bindings,
-                    entry.MouseX, entry.MouseY, entry.MouseSensitivity);
+                    entry.MouseX, entry.MouseY, entry.MouseSensitivity,
+                    data.SchemaVersion == 1 ? CameraControlPolicy.LegacyPan : entry.CameraControl);
                 if (preset.IsBuiltin || !_profiles.TryAdd(preset.Id, preset) ||
                     _profiles.Values.Count(p => p.Name.Equals(preset.Name, StringComparison.OrdinalIgnoreCase)) != 1)
                     throw new InvalidDataException("Duplicate profile identity or name");
@@ -192,7 +193,8 @@ public sealed class ControlPresetStore
                     Bindings = Enum.GetValues<ControlAction>().ToDictionary(action => action,
                         action => profile.Bindings(action).ToArray()),
                     MouseX = profile.MouseX, MouseY = profile.MouseY,
-                    MouseSensitivity = profile.MouseSensitivity
+                    MouseSensitivity = profile.MouseSensitivity,
+                    CameraControl = profile.CameraControl
                 };
             }).ToList()
         };
@@ -222,5 +224,6 @@ public sealed class ControlPresetStore
         public MouseAxisAssignment MouseX { get; set; }
         public MouseAxisAssignment MouseY { get; set; }
         public float MouseSensitivity { get; set; }
+        public CameraControlPolicy CameraControl { get; set; }
     }
 }

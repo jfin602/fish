@@ -54,7 +54,7 @@ public partial class WaterReaction : Node3D
     {
         var material = new StandardMaterial3D
         {
-            AlbedoColor = new Color(0.54f, 0.85f, 0.88f, 0.24f),
+            AlbedoColor = new Color(0.54f, 0.85f, 0.88f, 0.30f),
             Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
             ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
             CullMode = BaseMaterial3D.CullModeEnum.Disabled,
@@ -63,7 +63,7 @@ public partial class WaterReaction : Node3D
         };
         var ribbon = new RibbonTrailMesh
         {
-            Size = 0.045f,
+            Size = 0.06f,
             Sections = 3,
             SectionLength = 0.12f,
             SectionSegments = 1,
@@ -135,7 +135,7 @@ public partial class WaterReaction : Node3D
             LocalCoords = false,
             VisibilityAabb = new Aabb(new Vector3(-1, -1, -0.3f), new Vector3(2, 2, 2)),
             ProcessMaterial = process,
-            DrawPass1 = new QuadMesh { Size = new Vector2(0.05f, 0.05f), Material = material },
+            DrawPass1 = new SphereMesh { Radius = 0.025f, Height = 0.05f, Material = material },
             Emitting = false,
         };
         AddChild(particles);

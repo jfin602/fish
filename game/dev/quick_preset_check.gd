@@ -42,7 +42,7 @@ func _run() -> void:
 	_button(shell, "ResumeButton").pressed.emit()
 	await physics_frame
 	var choice: OptionButton = shell.find_child("InputModeOption", true, false)
-	if not _require(choice.item_count == 4, "saved custom was absent from cycle"):
+	if not _require(choice.item_count == 6, "saved custom was absent from cycle"):
 		return
 	_key(KEY_W, true)
 	for i in range(18):
@@ -73,8 +73,9 @@ func _run() -> void:
 		return
 	_key(KEY_W, false)
 	await physics_frame
-	var expected := ["builtin:hybrid", "custom:", "builtin:keyboard", "builtin:mouse",
-		"builtin:hybrid", "custom:", "builtin:keyboard"]
+	var expected := ["builtin:hybrid", "builtin:hybrid2", "builtin:adaptive-follow", "custom:",
+		"builtin:keyboard", "builtin:mouse", "builtin:hybrid", "builtin:hybrid2",
+		"builtin:adaptive-follow", "custom:", "builtin:keyboard"]
 	for target in expected:
 		_key(KEY_F6, true)
 		var active: String = fish.call("GetActivePresetId")
@@ -119,8 +120,8 @@ func _run() -> void:
 		return
 	_button(shell, "ControlPresetsButton").pressed.emit()
 	var profiles: OptionButton = shell.find_child("PresetProfileOption", true, false)
-	profiles.select(3)
-	profiles.item_selected.emit(3)
+	profiles.select(5)
+	profiles.item_selected.emit(5)
 	_button(shell, "Add_Thrust").pressed.emit()
 	_key(KEY_F6, true)
 	await process_frame
@@ -141,5 +142,5 @@ func _run() -> void:
 			"F6 stole a custom gameplay binding"):
 		return
 	_key(KEY_F6, false)
-	print("QUICK_PRESET_OK cycle=4 repeated=8 state-preserved motor-once pause-resume display focus conflict")
+	print("QUICK_PRESET_OK cycle=6 repeated=12 state-preserved motor-once pause-resume display focus conflict")
 	quit()

@@ -72,15 +72,18 @@ func _run() -> void:
 	var corals: Node3D = reef.get_node("Corals")
 	var routes: Node3D = reef.get_node("Routes")
 	var seabed_mesh: MeshInstance3D = habitat.get_node("Seabed/Mesh")
-	var expected_materials := ["Coast Sand 01", "Ground060", "Gravel041", "Rock063"]
-	if seabed_mesh.mesh.get_surface_count() != 4:
-		fail("normal habitat lost four material zones")
+	if seabed_mesh.mesh.get_surface_count() != 1 or seabed_mesh.mesh.surface_get_array_len(0) < 3:
+		fail("normal habitat lost its continuous seabed surface")
 		return
-	for index in range(4):
-		var material: StandardMaterial3D = seabed_mesh.mesh.surface_get_material(index)
-		if material == null or material.resource_name != expected_materials[index] or seabed_mesh.mesh.surface_get_array_len(index) < 3:
-			fail("prepared seabed material has no visible surface: " + str(index))
-			return
+	var seabed_material: ShaderMaterial = seabed_mesh.mesh.surface_get_material(0)
+	if seabed_material == null or seabed_material.shader == null or seabed_material.shader.resource_path != "res://shaders/seabed_blend.gdshader":
+		fail("normal habitat lost the blended prepared palette")
+		return
+	for prefix in ["coast", "shell", "gravel", "rock"]:
+		for map_name in ["color", "normal", "roughness"]:
+			if seabed_material.get_shader_parameter(prefix + "_" + map_name) == null:
+				fail("prepared seabed map missing: " + prefix + " " + map_name)
+				return
 	if rocks.get_child_count() != 10 or corals.get_child_count() != 8 or habitat.get_node_or_null("MovementCourse") != null or habitat.get_node_or_null("CourseShelf") != null or habitat.get_node_or_null("Landmarks") != null:
 		fail("normal reef counts or P1 course separation changed")
 		return

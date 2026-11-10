@@ -51,7 +51,7 @@ func _configuration(fish: CharacterBody3D, water: Node3D) -> bool:
 	var bubbles: GPUParticles3D = water.get_node("TailBubbles")
 	if not _require(left.amount == 16 and right.amount == 16 and bubbles.amount == 12 and left.lifetime <= 0.55 and right.lifetime <= 0.55 and bubbles.lifetime <= 0.42, "emitter budget"):
 		return false
-	if not _require(left.trail_enabled and right.trail_enabled and left.draw_pass_1 is RibbonTrailMesh and right.draw_pass_1 is RibbonTrailMesh and bubbles.draw_pass_1 is QuadMesh, "Forward+ draw passes"):
+	if not _require(left.trail_enabled and right.trail_enabled and left.draw_pass_1 is RibbonTrailMesh and right.draw_pass_1 is RibbonTrailMesh and bubbles.draw_pass_1 is SphereMesh, "Forward+ draw passes"):
 		return false
 	for emitter in [left, right, bubbles]:
 		if not _require(not emitter.local_coords and emitter.process_material is ParticleProcessMaterial and emitter.amount_ratio == 0.0 and not emitter.emitting and emitter.preprocess == 0.0 and emitter.explosiveness == 0.0, "world-space/no-prewarm config"):

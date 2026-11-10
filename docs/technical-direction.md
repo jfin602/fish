@@ -15,7 +15,7 @@
 | Development orchestration | Existing Node.js 24 phase runner; a thin repository-relative `tools/dev` created by p0. |
 | P1 display contract | Fullscreen development from the first task, with windowed fullscreen for testing; [P1 design](planning/p1/core-swimming.md) and [UX](ux-and-presentation.md#fullscreen-presentation) own mappings, layout and acceptance. |
 
-These pins are source references, not a claim that Fish has installed or run them. P0 must inspect the actual machine and preserve suitable existing installations. If the reference pins cannot be used, record the exact incompatibility and deliberate replacement coherently; never silently change the language, editor edition, SDK, or unrelated Space Factory setup. [Development setup](development.md) owns installation details and verification.
+These pins began as source references; the installed Linux/X11 toolchain was subsequently verified in [P0 closeout](tasks/p0/closeout.md) and the P2 native record. Other platform support still needs its own evidence. [Development setup](development.md) owns installation details and verification.
 
 ## Architecture principles
 
@@ -27,11 +27,11 @@ Use Godot scenes/resources for composition. Keep movement in appropriate physics
 
 ## P2 worldbuilding and rendering boundary
 
-After P1 closes, [P2](planning/p2/underwater-world.md) replaces the visible movement-laboratory presentation with a compact authored reef-like habitat. Preserve the P1 movement course as a development/qualification fixture rather than keeping its targets/posts/box room in normal play.
+After P1 close, [P2](planning/p2/underwater-world.md) replaced the normal-play movement laboratory with `main.tscn` → `p2_habitat.tscn` → `p2_reef_composition.tscn`. The byte-preserved P1 main lives in `p1_course_fixture.tscn` for development/qualification; its targets and posts are absent from normal play.
 
 P2/P1 provides same-candidate Compatibility/Forward+ diagnostic paths. The owner selected **Forward+** after a smooth real-desktop run, and P2/P2 locked the saved desktop project to that method. Normal main play and subsequent P2 world/effect work use Forward+; the Compatibility command remains a bounded diagnostic. The [decision record](tasks/p2/qualification/renderer-decision.md) separates the owner's observation, the saved setting, and post-lock checks. A renderer reversal requires a concrete blocker and explicit owner decision.
 
-Underwater presentation may use environment fog/depth attenuation, top-biased light, color absorption/grade, caustic-style animated illumination, suspended particles and bounded screen-space treatment. HUD/pause/settings must remain readable and outside inappropriate world distortion. Fish-reactive wakes/turbulence/particles read velocity/acceleration/turn state without applying forces or owning simulation state. Renderer changes, particles and shaders must not alter authoritative movement or time.
+The current candidate blends the four prepared seabed material sets on one visual shader surface over the continuous collidable heightfield. `UnderwaterAtmosphere.cs` installs Forward+ distance/height/volumetric fog, top light, moving caustic projection, suspended GPU motes and a restrained `underwater_screen.gdshader` pass below the UI. `WaterReaction.cs` reads fish movement to drive capped tail-space GPU ribbons and spherical bubbles. These presentation components do not apply forces or own simulation state. [P8 review](tasks/p2/closeout.md) records exact identity and the still-open native/owner quality judgment; keep HUD/pause/settings readable outside world distortion.
 
 ## Persistence and narrative boundaries
 
@@ -61,7 +61,7 @@ After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selec
 
 ## P2 implementation boundary
 
-After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) owns the completed renderer comparison, the **Forward+ lock**, natural habitat composition, underwater atmosphere and fish-reactive water presentation. It does not add ecology, growth, persistence, first person or Movement abilities.
+After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) implemented the renderer comparison, **Forward+ lock**, natural habitat composition, underwater atmosphere and fish-reactive water presentation. P7 recorded native observations, but [P8 closeout](tasks/p2/closeout.md) remains BLOCKED, so P2 is not yet qualified. The stack does not add ecology, growth, persistence, first person or Movement abilities.
 
 ## Source references
 

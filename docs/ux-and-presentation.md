@@ -2,7 +2,7 @@
 
 ## Status
 
-This document separates confirmed interface requirements from working presentation ideas. All game interfaces are currently planned and unqualified. [The decision register](decisions-and-questions.md) owns requirement status; [the roadmap](roadmap.md) owns progress.
+This document separates confirmed interface requirements from working presentation ideas. P1's small pause/options and display/input interface is implemented under its accepted baseline; the main menu, survival UI and archive are later work. P2's world presentation is implemented but still awaits owner qualification in [P8 review](tasks/p2/closeout.md). [The decision register](decisions-and-questions.md) owns requirement status; [the roadmap](roadmap.md) owns progress.
 
 ## Confirmed perspective and continuity
 
@@ -41,6 +41,8 @@ The player should be able to read open routes, rock tunnels/arches, overhangs, c
 Water should visibly react to movement. Ordinary swimming has a subtle wake/disturbance; stronger acceleration produces more activity; gliding reduces it; hard turns create a directional change. These are presentation effects driven read-only from actual movement state. They do not add force, change speed/collision or become simulation authority.
 
 Pause/settings/HUD are interface elements, not submerged geometry. Keep their text and focus state crisp and usable even if the 3D view receives screen-space distortion or color treatment. [P2 validation V18–V20](validation.md) owns native acceptance.
+
+The current Forward+ candidate renders distance/height/volumetric fog, top light, moving caustics, suspended motes and a restrained screen pass below the pause UI. It adds a tail-space ribbon/bubble response for movement. P7 real-window frames and counters establish integration, while [P8 review](tasks/p2/closeout.md) keeps naturalness, visual clarity, motion comfort and effect benefit open for the owner.
 
 ## Fullscreen presentation
 

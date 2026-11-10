@@ -43,7 +43,7 @@ func _run() -> void:
 	var display: OptionButton = shell.find_child("DisplayModeOption", true, false)
 	var resume: Button = shell.find_child("ResumeButton", true, false)
 	await _tick(3)
-	if not _require(mode.item_count >= 3 and mode.selected == 0, "three presets unavailable"):
+	if not _require(mode.item_count >= 4 and mode.selected == 0, "four presets unavailable"):
 		return
 	_key(KEY_W, true)
 	await _tick(18)

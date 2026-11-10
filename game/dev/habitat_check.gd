@@ -74,14 +74,18 @@ func _run() -> void:
 	var visual: MeshInstance3D = seabed.get_node("Mesh")
 	var collision: CollisionShape3D = seabed.get_node("Collision")
 	var shape: ConcavePolygonShape3D = collision.shape
-	if visual.mesh == null or visual.mesh.get_surface_count() != 4 or shape == null or not shape.backface_collision or seabed.collision_layer != 1 or limits.collision_layer != 1:
-		fail("continuous four-material mesh or two-sided collision missing")
+	if visual.mesh == null or visual.mesh.get_surface_count() != 1 or shape == null or not shape.backface_collision or seabed.collision_layer != 1 or limits.collision_layer != 1:
+		fail("continuous blended mesh or two-sided collision missing")
 		return
-	for index in range(4):
-		var material: StandardMaterial3D = visual.mesh.surface_get_material(index)
-		if material == null or material.albedo_texture == null or material.normal_texture == null or material.roughness_texture == null:
-			fail("prepared material channel missing on surface " + str(index))
-			return
+	var material: ShaderMaterial = visual.mesh.surface_get_material(0)
+	if material == null or material.shader == null or material.shader.resource_path != "res://shaders/seabed_blend.gdshader":
+		fail("continuous seabed blend shader missing")
+		return
+	for prefix in ["coast", "shell", "gravel", "rock"]:
+		for map_name in ["color", "normal", "roughness"]:
+			if material.get_shader_parameter(prefix + "_" + map_name) == null:
+				fail("prepared material channel missing: " + prefix + " " + map_name)
+				return
 	if composition.get_child_count() != 1 or composition.get_node_or_null("ReefComposition") == null or limits.get_child_count() != 5:
 		fail("P4 composition instance or hidden limit set changed")
 		return

@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Text.Json.Nodes;
 
 namespace Fish;
 
@@ -31,10 +32,11 @@ public static class ControlPresetChecks
         {
             var store = new ControlPresetStore(path, legacy);
             store.Load();
-            Require(store.CurrentId == ControlPreset.KeyboardId && store.List().Count == 3,
+            Require(store.CurrentId == ControlPreset.KeyboardId && store.List().Count == 5,
                 "fresh deterministic keyboard fallback");
             var builtins = ControlPreset.Builtins();
-            Require(builtins.Count == 3 &&
+            Require(builtins.Count == 5 && builtins.Select(p => p.Id).Distinct().Count() == 5 &&
+                builtins.Select(p => p.Name).Distinct().Count() == 5 &&
                 builtins[0].Bindings(ControlAction.Thrust).Single().Code == (int)Key.W &&
                 builtins[0].Bindings(ControlAction.PitchUp).Single().Code == (int)Key.Up &&
                 builtins[1].MouseX.Steering == SteeringAxis.Yaw &&
@@ -44,7 +46,29 @@ public static class ControlPresetChecks
                 builtins[1].Bindings(ControlAction.PauseOptions).Any(b =>
                     b.Device == BindingDevice.MouseButton && b.Code == (int)MouseButton.Middle) &&
                 builtins[2].Bindings(ControlAction.YawLeft).Single().Code == (int)Key.A &&
-                builtins[2].Bindings(ControlAction.PitchDown).Single().Code == (int)Key.Down,
+                builtins[2].Bindings(ControlAction.PitchDown).Single().Code == (int)Key.Down &&
+                builtins[3].Id == ControlPreset.Hybrid2Id &&
+                builtins[3].CameraControl == CameraControlPolicy.MouseOrbit360 &&
+                builtins[3].MouseX.Steering == SteeringAxis.None &&
+                builtins[3].MouseY.Steering == SteeringAxis.None &&
+                builtins[3].Bindings(ControlAction.Thrust).Single() ==
+                    new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.Left) &&
+                builtins[3].Bindings(ControlAction.Slow).Single() ==
+                    new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.Right) &&
+                builtins[3].Bindings(ControlAction.YawLeft).Single().Code == (int)Key.A &&
+                builtins[3].Bindings(ControlAction.YawRight).Single().Code == (int)Key.D &&
+                builtins[3].Bindings(ControlAction.PitchUp).Single().Code == (int)Key.W &&
+                builtins[3].Bindings(ControlAction.PitchDown).Single().Code == (int)Key.S &&
+                builtins[3].Bindings(ControlAction.PauseOptions).Select(b => b.Code)
+                    .OrderBy(code => code).SequenceEqual(new[] { (int)MouseButton.Middle, (int)Key.Escape }.OrderBy(code => code)) &&
+                builtins.Take(3).All(p => p.CameraControl == CameraControlPolicy.LegacyPan) &&
+                builtins[4].Id == ControlPreset.AdaptiveFollowId &&
+                builtins[4].CameraControl == CameraControlPolicy.AdaptiveFollow &&
+                builtins[4].MouseX.Steering == SteeringAxis.Yaw &&
+                builtins[4].MouseY.Steering == SteeringAxis.Pitch &&
+                builtins[4].Bindings(ControlAction.PitchUp).Single().Code == (int)Key.Up &&
+                builtins[4].Bindings(ControlAction.Thrust).Any(b => b.Code == (int)MouseButton.Left) &&
+                builtins[4].Bindings(ControlAction.Slow).Any(b => b.Code == (int)MouseButton.Right),
                 "templates match source control requests");
             Reject(() => store.Rename(ControlPreset.KeyboardId, "Changed"), "builtin rename");
             Reject(() => store.Delete(ControlPreset.MouseId), "builtin delete");
@@ -66,6 +90,9 @@ public static class ControlPresetChecks
                 new ControlBinding(BindingDevice.MouseButton, (int)MouseButton.WheelUp)), "wheel cannot be captured");
             Reject(() => copy.WithBindings(ControlAction.Thrust), "unbound swim");
             Reject(() => copy.WithBindings(ControlAction.Slow), "unbound slow");
+            Reject(() => builtins[4].Copy("custom:" + Guid.NewGuid().ToString("N"), "Reserved C")
+                .WithBindings(ControlAction.YawLeft, new ControlBinding(BindingDevice.PhysicalKey, (int)Key.C)),
+                "Adaptive Follow reserves C");
             var missingActions = Enum.GetValues<ControlAction>().ToDictionary(action => action,
                 action => copy.Bindings(action).ToArray());
             missingActions.Remove(ControlAction.Slow);
@@ -79,7 +106,7 @@ public static class ControlPresetChecks
             {
                 var resolver = new ProfileSwimInput();
                 resolver.Select(builtIn);
-                if (builtIn.Id == ControlPreset.MouseId)
+                if (builtIn.Id is ControlPreset.MouseId or ControlPreset.Hybrid2Id)
                     resolver.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true }, true);
                 else
                     resolver.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true }, true);
@@ -93,6 +120,74 @@ public static class ControlPresetChecks
                     state.Yaw == reference.Yaw && state.Pitch == reference.Pitch,
                     "shared motor result parity: " + builtIn.Id);
             }
+            var hybrid2Input = new ProfileSwimInput();
+            hybrid2Input.Select(builtins[3]);
+            hybrid2Input.CaptureStarted();
+            hybrid2Input.Accept(new InputEventMouseMotion { Relative = new Vector2(20, -15) }, true);
+            hybrid2Input.Accept(new InputEventMouseMotion { Relative = new Vector2(20, -15) }, true);
+            Require(hybrid2Input.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false) ==
+                new SwimIntent(0, 0, 0, 0), "Hybrid 2 mouse motion never steers fish");
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true }, true);
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.A, Pressed = true }, true);
+            hybrid2Input.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = true }, true);
+            Require(hybrid2Input.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false) ==
+                new SwimIntent(1, 0, -1, 1), "Hybrid 2 W/A/left input");
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false }, true);
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.A, Pressed = false }, true);
+            hybrid2Input.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Left, Pressed = false }, true);
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.S, Pressed = true }, true);
+            hybrid2Input.Accept(new InputEventKey { PhysicalKeycode = Key.D, Pressed = true }, true);
+            hybrid2Input.Accept(new InputEventMouseButton { ButtonIndex = MouseButton.Right, Pressed = true }, true);
+            Require(hybrid2Input.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false) ==
+                new SwimIntent(0, 1, 1, -1), "Hybrid 2 S/D/right input");
+            var adaptiveInput = new ProfileSwimInput();
+            adaptiveInput.Select(builtins[4]);
+            adaptiveInput.CaptureStarted();
+            adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(300, 0) }, true);
+            adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false);
+            adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(1, 0) }, true);
+            Require(adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false).Yaw == 0,
+                "Adaptive Follow filters isolated sub-2px movement");
+            adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(20, -15) }, true);
+            var deliberate = adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false);
+            Require(deliberate.Yaw > 0.2f && deliberate.Pitch > 0.2f,
+                "Adaptive Follow preserves fast mouse steering");
+            var filteredMouse = new MouseSwimInput();
+            filteredMouse.OnCaptureStarted();
+            filteredMouse.Accept(new InputEventMouseMotion { Relative = new Vector2(300, 0) });
+            filteredMouse.Accept(new InputEventMouseMotion { Relative = new Vector2(10, 0) });
+            var deliveredYaw = 0f;
+            for (var tick = 0; tick < 120; tick++)
+                deliveredYaw += filteredMouse.ConsumeSteering(1f / 60f, new SwimTuning(),
+                    builtins[4], 0.12f, false).X;
+            Require(Math.Abs(deliveredYaw - 0.48f) < 0.01f,
+                "Adaptive Follow filtering preserves total deliberate turn");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.C, Pressed = true }, true);
+            adaptiveInput.Accept(new InputEventMouseMotion { Relative = new Vector2(80, 80) }, true);
+            Require(adaptiveInput.AdaptiveFreeLookHeld &&
+                adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false).Yaw == 0,
+                "C routes mouse away from fish");
+            adaptiveInput.Accept(new InputEventKey { PhysicalKeycode = Key.C, Pressed = false }, true);
+            Require(!adaptiveInput.AdaptiveFreeLookHeld &&
+                adaptiveInput.Consume(1f / 60f, new SwimTuning(), true, 0.12f, false).Yaw == 0,
+                "C release clears free-look mouse motion");
+            var adaptiveCopy = store.Duplicate(ControlPreset.AdaptiveFollowId, "My Adaptive");
+            store.Choose(adaptiveCopy.Id);
+            store.Save();
+            var adaptiveLoaded = new ControlPresetStore(path, legacy);
+            adaptiveLoaded.Load();
+            Require(adaptiveLoaded.Current.CameraControl == CameraControlPolicy.AdaptiveFollow,
+                "Adaptive Follow custom policy round trip");
+            store.Delete(adaptiveCopy.Id);
+            var orbitCopy = store.Duplicate(ControlPreset.Hybrid2Id, "My Orbit");
+            Require(orbitCopy.CameraControl == CameraControlPolicy.MouseOrbit360, "duplicate preserves orbit policy");
+            store.Choose(orbitCopy.Id);
+            store.Save();
+            var orbitLoaded = new ControlPresetStore(path, legacy);
+            orbitLoaded.Load();
+            Require(orbitLoaded.Current.CameraControl == CameraControlPolicy.MouseOrbit360 &&
+                orbitLoaded.Current.MouseX.Steering == SteeringAxis.None, "orbit policy round trip");
+            store.Delete(orbitCopy.Id);
             copy = copy.WithMouse(new(SteeringAxis.Pitch), new(SteeringAxis.Yaw, true), 0.21f)
                 .WithBindings(ControlAction.Thrust,
                     new ControlBinding(BindingDevice.PhysicalKey, (int)Key.W),
@@ -100,7 +195,18 @@ public static class ControlPresetChecks
             store.Update(copy);
             store.Choose(copy.Id);
             store.Save();
-            Require(File.ReadAllText(path).Contains("\"schemaVersion\": 1"), "explicit schema version");
+            Require(File.ReadAllText(path).Contains("\"schemaVersion\": 2"), "explicit schema version");
+            var oldSchema = JsonNode.Parse(File.ReadAllText(path))!.AsObject();
+            oldSchema["schemaVersion"] = 1;
+            foreach (var profile in oldSchema["profiles"]!.AsArray())
+                profile!.AsObject().Remove("cameraControl");
+            File.WriteAllText(path, oldSchema.ToJsonString());
+            var v1Loaded = new ControlPresetStore(path, legacy);
+            v1Loaded.Load();
+            Require(v1Loaded.CurrentId == copy.Id &&
+                v1Loaded.Current.CameraControl == CameraControlPolicy.LegacyPan,
+                "schema 1 custom profile migrates to existing camera behavior");
+            store.Save();
             var loaded = new ControlPresetStore(path, legacy);
             loaded.Load();
             Require(loaded.CurrentId == copy.Id && loaded.Current.MouseX.Steering == SteeringAxis.Pitch &&
@@ -112,7 +218,7 @@ public static class ControlPresetChecks
                 "custom reset from immutable template");
             loaded.Rename(copy.Id, "Renamed");
             loaded.Delete(copy.Id);
-            Require(loaded.CurrentId == ControlPreset.KeyboardId && loaded.List().Count == 3,
+            Require(loaded.CurrentId == ControlPreset.KeyboardId && loaded.List().Count == 5,
                 "delete current safely falls back");
             loaded.Save();
 
@@ -138,7 +244,7 @@ public static class ControlPresetChecks
             var keyboardMigrated = new ControlPresetStore(path, legacy);
             keyboardMigrated.Load();
             Require(keyboardMigrated.CurrentId == ControlPreset.KeyboardId &&
-                keyboardMigrated.List().Count == 4 &&
+                keyboardMigrated.List().Count == 6 &&
                 keyboardMigrated.List().Any(p => p.Name == "Legacy Mouse Settings" && p.MouseY.Inverted),
                 "keyboard mode stays active while prior mouse settings remain available");
             config.SetValue("input", "mode", DisplayPreferences.MouseMode);
@@ -157,7 +263,7 @@ public static class ControlPresetChecks
             File.WriteAllText(path, invalidBinding);
             var invalid = new ControlPresetStore(path, legacy);
             invalid.Load();
-            Require(invalid.CurrentId.StartsWith("custom:") && invalid.List().Count == 4,
+            Require(invalid.CurrentId.StartsWith("custom:") && invalid.List().Count == 6,
                 "invalid physical binding rejected with legacy fallback");
 
             File.WriteAllText(path, validJson);
@@ -169,7 +275,7 @@ public static class ControlPresetChecks
             File.WriteAllText(path, duplicateJson);
             var duplicateRecovered = new ControlPresetStore(path, legacy);
             duplicateRecovered.Load();
-            Require(duplicateRecovered.List().Count == 4 && duplicateRecovered.CurrentId.StartsWith("custom:"),
+            Require(duplicateRecovered.List().Count == 6 && duplicateRecovered.CurrentId.StartsWith("custom:"),
                 "duplicate identity rejected with legacy fallback");
 
             File.WriteAllText(path, "{ broken json");
@@ -183,7 +289,7 @@ public static class ControlPresetChecks
             var unknown = new ControlPresetStore(path, legacy);
             unknown.Load();
             Require(unknown.CurrentId.StartsWith("custom:"), "unsupported schema safely falls back");
-            GD.Print("CONTROL_PRESET_CHECK_OK schema=1 templates=3 migration roundtrip corrupt recovery missing-unbound-conflict parity display intact");
+            GD.Print("CONTROL_PRESET_CHECK_OK schema=2 templates=5 migration roundtrip corrupt recovery missing-unbound-conflict parity display intact");
         }
         finally { Directory.Delete(directory, recursive: true); }
     }

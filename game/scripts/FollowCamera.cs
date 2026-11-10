@@ -10,6 +10,8 @@ public partial class FollowCamera : Node3D
     private const float MinimumDistance = 0.75f;
     private const float TeleportDistance = 2.5f;
     private const float PitchHeightFraction = 0.35f;
+    private const float AdaptiveFollowResponse = 4.0f; // About 0.25 seconds.
+    private const float AdaptiveHeadingLimit = 35.0f;
 
     private FishController _fish = null!;
     private Camera3D _camera = null!;
@@ -17,6 +19,15 @@ public partial class FollowCamera : Node3D
     private Vector3 _previousFishPosition;
     private Vector3 _lastHorizontalForward = Vector3.Forward;
     private Vector3 _lastCameraRear = Vector3.Forward;
+    private readonly MouseSwimInput _orbitMouse = new();
+    private float _orbitYaw;
+    private float _orbitPitch;
+    private Vector3 _adaptiveRear = Vector3.Forward;
+    private float _adaptiveElevation;
+    private float _adaptiveLookAhead = 1f;
+    private bool _adaptiveInitialized;
+    private bool _adaptiveFreeLookActive;
+    private bool _adaptiveReturning;
     private float _panYaw;
     private float _panPitch;
     private float _zoomDistance;
@@ -41,7 +52,11 @@ public partial class FollowCamera : Node3D
         GetViewport().SizeChanged += ResetFollow;
     }
 
-    public void ResetFollow() => _resetPending = true;
+    public void ResetFollow()
+    {
+        _resetPending = true;
+        _adaptiveInitialized = false;
+    }
 
     public void ResetZoom() => _zoomDistance = _fish.Tuning.CameraDistance;
 
@@ -49,11 +64,27 @@ public partial class FollowCamera : Node3D
     {
         _panYaw = 0;
         _panPitch = 0;
-        _resetPending = true;
+        _orbitMouse.Clear();
+        _adaptiveFreeLookActive = false;
+        if (_fish.CameraControl == CameraControlPolicy.LegacyPan) _resetPending = true;
+    }
+
+    public void ClearQueuedMouseMotion() => _orbitMouse.Clear();
+    public void OnCaptureStarted() => _orbitMouse.OnCaptureStarted();
+    public void OnPresetChanged()
+    {
+        _orbitMouse.Clear();
+        _orbitYaw = _orbitPitch = _panYaw = _panPitch = 0;
+        _adaptiveInitialized = false;
+        _adaptiveFreeLookActive = false;
+        _adaptiveReturning = false;
     }
 
     public override void _Input(InputEvent @event)
     {
+        if (_fish.CanOrbitCamera ||
+            (_fish.CameraControl == CameraControlPolicy.AdaptiveFollow && _fish.CanZoomCamera))
+            _orbitMouse.Accept(@event);
         if (!_fish.CanZoomCamera || @event is not InputEventMouseButton { Pressed: true } wheel)
             return;
         var direction = wheel.ButtonIndex switch
@@ -73,9 +104,11 @@ public partial class FollowCamera : Node3D
     {
         if (GetTree().Paused)
         {
+            _orbitMouse.Clear();
             _panYaw = 0;
             _panPitch = 0;
-            _resetPending = true;
+            _adaptiveFreeLookActive = false;
+            if (_fish.CameraControl == CameraControlPolicy.LegacyPan) _resetPending = true;
             return;
         }
 
@@ -113,6 +146,29 @@ public partial class FollowCamera : Node3D
         if (horizontal.LengthSquared() > 0.0001f) _lastHorizontalForward = horizontal.Normalized();
         var tuning = _fish.Tuning;
         anchor = fishPosition + Vector3.Up * 0.35f;
+        if (_fish.CameraControl == CameraControlPolicy.MouseOrbit360)
+        {
+            var orbitDistance = _zoomDistance;
+            var baseElevation = Mathf.Atan2(tuning.CameraHeight - 0.35f, tuning.CameraDistance);
+            var orbitElevation = baseElevation + _orbitPitch;
+            var rear = new Basis(Vector3.Up, _orbitYaw) * _lastHorizontalForward;
+            _lastCameraRear = rear.Normalized();
+            lookTarget = anchor;
+            return anchor - _lastCameraRear * (orbitDistance * Mathf.Cos(orbitElevation)) +
+                Vector3.Up * (orbitDistance * Mathf.Sin(orbitElevation));
+        }
+        if (_fish.CameraControl == CameraControlPolicy.AdaptiveFollow)
+        {
+            var adaptiveDistance = _zoomDistance;
+            var adaptiveEyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
+                adaptiveDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forward.Y * adaptiveDistance * PitchHeightFraction;
+            var radius = Mathf.Sqrt(adaptiveDistance * adaptiveDistance + Mathf.Pow(adaptiveEyeHeight - 0.35f, 2));
+            _lastCameraRear = _adaptiveRear;
+            var normalTarget = fishPosition + forward * tuning.CameraLookAhead + Vector3.Up * 0.15f;
+            lookTarget = anchor.Lerp(normalTarget, _adaptiveLookAhead);
+            return anchor - _adaptiveRear * (radius * Mathf.Cos(_adaptiveElevation)) +
+                Vector3.Up * (radius * Mathf.Sin(_adaptiveElevation));
+        }
         lookTarget = fishPosition + forward * tuning.CameraLookAhead + Vector3.Up * 0.15f;
         var distance = _zoomDistance;
         var eyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
@@ -128,6 +184,24 @@ public partial class FollowCamera : Node3D
 
     private void UpdateCameraControls(float delta)
     {
+        if (_fish.CameraControl == CameraControlPolicy.AdaptiveFollow)
+        {
+            UpdateAdaptiveFollow(delta);
+            return;
+        }
+        if (_fish.CameraControl == CameraControlPolicy.MouseOrbit360)
+        {
+            var pixels = _orbitMouse.ConsumePixels();
+            if (_fish.CanOrbitCamera)
+            {
+                var sensitivity = Mathf.DegToRad(_fish.ActiveMouseSensitivity);
+                _orbitYaw = Mathf.Wrap(_orbitYaw + pixels.X * sensitivity *
+                    (_fish.ActivePreset.MouseX.Inverted ? -1 : 1), -Mathf.Pi, Mathf.Pi);
+                _orbitPitch = Mathf.Wrap(_orbitPitch + pixels.Y * sensitivity *
+                    (_fish.ActiveMouseInvertY ? -1 : 1), -Mathf.Pi, Mathf.Pi);
+            }
+            return;
+        }
         var mouseMode = _fish.ActiveInputMode == DisplayPreferences.MouseMode;
         if (mouseMode ? !_fish.CanUseMouseCamera : !_fish.CanZoomCamera)
         {
@@ -153,6 +227,74 @@ public partial class FollowCamera : Node3D
             ? Mathf.Clamp(_panPitch + Mathf.DegToRad(tuning.CameraPanPitchRateDegrees) * pitch * delta,
                 -Mathf.DegToRad(tuning.CameraPanPitchLimitDegrees), Mathf.DegToRad(tuning.CameraPanPitchLimitDegrees))
             : hold ? _panPitch : Mathf.Lerp(_panPitch, 0, decay);
+    }
+
+    private void UpdateAdaptiveFollow(float delta)
+    {
+        var anchor = _fish.GlobalPosition + Vector3.Up * 0.35f;
+        var fishForward = new Vector3(-_fish.GlobalBasis.Z.X, 0, -_fish.GlobalBasis.Z.Z);
+        if (fishForward.LengthSquared() > 0.0001f) fishForward = fishForward.Normalized();
+        else fishForward = _lastHorizontalForward;
+        var tuning = _fish.Tuning;
+        var distance = _zoomDistance;
+        var forwardY = (-_fish.GlobalBasis.Z).Y;
+        var eyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
+            distance / Mathf.Max(0.01f, tuning.CameraDistance) - forwardY * distance * PitchHeightFraction;
+        var normalElevation = Mathf.Atan2(eyeHeight - 0.35f, distance);
+        if (!_adaptiveInitialized)
+        {
+            var fromEye = anchor - GlobalPosition;
+            var horizontal = new Vector3(fromEye.X, 0, fromEye.Z);
+            _adaptiveRear = horizontal.LengthSquared() > 0.0001f ? horizontal.Normalized() : fishForward;
+            _adaptiveElevation = Mathf.Atan2(GlobalPosition.Y - anchor.Y, horizontal.Length());
+            _adaptiveInitialized = true;
+        }
+
+        var freeLook = _fish.AdaptiveFreeLookHeld;
+        var pixels = _orbitMouse.ConsumePixels();
+        if (freeLook)
+        {
+            if (!_adaptiveFreeLookActive)
+            {
+                // Begin at the current eye, including any collision compression.
+                var fromEye = anchor - GlobalPosition;
+                var horizontal = new Vector3(fromEye.X, 0, fromEye.Z);
+                if (horizontal.LengthSquared() > 0.0001f) _adaptiveRear = horizontal.Normalized();
+                _adaptiveElevation = Mathf.Atan2(GlobalPosition.Y - anchor.Y, horizontal.Length());
+                pixels = Vector2.Zero; // Discard motion queued before C was held.
+            }
+            else
+            {
+                var sensitivity = Mathf.DegToRad(_fish.ActiveMouseSensitivity);
+                _adaptiveRear = (new Basis(Vector3.Up, pixels.X * sensitivity *
+                    (_fish.ActivePreset.MouseX.Inverted ? -1 : 1)) * _adaptiveRear).Normalized();
+                _adaptiveElevation = Mathf.Wrap(_adaptiveElevation + pixels.Y * sensitivity *
+                    (_fish.ActiveMouseInvertY ? -1 : 1), -Mathf.Pi, Mathf.Pi);
+            }
+            _adaptiveReturning = true;
+        }
+        else
+        {
+            var fraction = 1f - Mathf.Exp(-AdaptiveFollowResponse * delta);
+            var difference = Mathf.Wrap(Mathf.Atan2(fishForward.X, fishForward.Z) -
+                Mathf.Atan2(_adaptiveRear.X, _adaptiveRear.Z), -Mathf.Pi, Mathf.Pi);
+            _adaptiveRear = (new Basis(Vector3.Up, difference * fraction) * _adaptiveRear).Normalized();
+            if (_adaptiveReturning && Mathf.Abs(difference) <= Mathf.DegToRad(AdaptiveHeadingLimit))
+                _adaptiveReturning = false;
+            if (!_adaptiveReturning)
+            {
+                difference = Mathf.Wrap(Mathf.Atan2(fishForward.X, fishForward.Z) -
+                    Mathf.Atan2(_adaptiveRear.X, _adaptiveRear.Z), -Mathf.Pi, Mathf.Pi);
+                var limit = Mathf.DegToRad(AdaptiveHeadingLimit);
+                if (Mathf.Abs(difference) > limit)
+                    _adaptiveRear = (new Basis(Vector3.Up, difference - Mathf.Sign(difference) * limit) *
+                        _adaptiveRear).Normalized();
+            }
+            _adaptiveElevation = Mathf.LerpAngle(_adaptiveElevation, normalElevation, fraction);
+        }
+        _adaptiveLookAhead = Mathf.Lerp(_adaptiveLookAhead, freeLook ? 0f : 1f,
+            1f - Mathf.Exp(-8f * delta));
+        _adaptiveFreeLookActive = freeLook;
     }
 
     private Vector3 UnobstructedPosition(Vector3 anchor, Vector3 target)
@@ -204,6 +346,19 @@ public partial class FollowCamera : Node3D
     {
         var toward = target - GlobalPosition;
         if (toward.LengthSquared() < 0.0001f) return;
+        if (_fish.CameraControl is CameraControlPolicy.MouseOrbit360 or CameraControlPolicy.AdaptiveFollow)
+        {
+            var back = -toward.Normalized();
+            var azimuthRight = _lastCameraRear.Cross(Vector3.Up).Normalized();
+            var right = azimuthRight - back * azimuthRight.Dot(back);
+            if (right.LengthSquared() < 0.0001f)
+                right = back.Cross(Vector3.Up);
+            if (right.LengthSquared() < 0.0001f)
+                right = back.Cross(Vector3.Forward);
+            right = right.Normalized();
+            GlobalBasis = new Basis(right, back.Cross(right).Normalized(), back);
+            return;
+        }
         LookAt(target, Vector3.Up);
     }
 }
