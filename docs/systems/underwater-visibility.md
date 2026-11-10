@@ -1,7 +1,7 @@
 # Underwater Visibility & Discovery
 
 **Decision date:** 2026-11-10  
-**Status:** Owner-selected experience contract; implementation and native qualification pending.  
+**Status:** Owner-selected experience contract; C3/P1–P2 implemented, native qualification pending.
 **Applies to:** Fish's normal-play Forward+ water presentation, including P3's FAF reef.
 
 ## Player experience
@@ -37,9 +37,9 @@ These are starting **art-direction targets**, not physical optical measurements,
 
 ## Implementation boundaries and planned GFX control
 
-Reuse `game/scripts/UnderwaterAtmosphere.cs` and the Forward+ Environment for view-distance extinction and coordinated depth response. Treat basic distance fog separately from volumetric fog used for light scattering; `VolumetricFogLength` is a rendering extent, **not** a measured maximum useful sight distance. The current base `DistanceFogDensity = 0.0035`, runtime `FogDensity` clamp `0.02`, and existing depth behavior are implementation facts to revisit and calibrate, not approved new defaults.
+Reuse `game/scripts/UnderwaterAtmosphere.cs` and the Forward+ Environment for view-distance extinction and coordinated depth response. Treat basic distance fog separately from volumetric fog used for light scattering; `VolumetricFogLength` is a rendering extent, **not** a measured maximum useful sight distance. The C3 implementation uses an artistic 35 m default depth-fog end distance at the surface, with a 5 m clear start and depth-derived shorter end distance. These values need native calibration.
 
-A future correction should expose a meaningful **Visibility Distance (m)** control through the existing paused GFX panel, with intuitive near/far tuning and depth-dependent effective values. Base artistic values are what presets save; derived depth-dependent effective values are never written back into stored presets. Preserve or explicitly migrate existing `user://lighting-presets.json` files and built-in Natural/Soft preset behavior. Keep setting ranges validated and avoid silently discarding an older custom preset.
+C3/P2 exposes **Visibility Distance (m)** in the paused GFX panel from 18–60 m; lower means murkier and higher means clearer. Presets save the base artistic value; camera depth changes only the effective runtime fog end. Schema-v1 custom presets migrate deterministically to schema v2 using `clamp(35 * sqrt(0.0035 / max(legacyDensity, 0.0001)), 18, 60)` meters. The old density remains stored as compatibility metadata. Natural/Soft and custom preset behavior are retained; [implementation evidence](../tasks/c3-visibility/qualification/implementation.md) records the isolated fixture checks.
 
 Fog is presentation-only. It must not change `FishController`, `SwimMotor`, collisions, fish identity, input/camera control, clock, or simulation. Fog does not inherently reduce draw calls: later LOD/culling work is separate and requires its own measurements. Favor bounded scalar environment updates over extra full-screen passes, costly transparent layers, added real lights, or widespread fog volumes.
 
@@ -55,4 +55,4 @@ Use the existing five-depth normal-play world (or the completed P3 FAF rebuild) 
 6. Record native same-scene performance comparisons with the effect changed, noting frame times, settings, renderer, errors, source revision, and hardware. Do not claim a speed gain just because fog hides distant objects.
 7. Capture representative before/after views and owner gameplay judgment. Automated or headless checks can verify parameter bounds and isolation, but not the actual feeling of progressive discovery.
 
-The P3 visibility refinement is pending implementation and native judgment. Existing P2 V18/V19 accepted evidence and unresolved V20/G2.3 are historical facts, not changed by this contract. Reference [P3 plan](../planning/p3/reef-world-rebuild.md), [UX](../ux-and-presentation.md), and [validation V25](../validation.md).
+The C3 visibility correction has implemented P1–P2; integration and native judgment remain pending. Existing P2 V18/V19 accepted evidence and unresolved V20/G2.3 are historical facts, not changed by this contract. Reference [P3 plan](../planning/p3/reef-world-rebuild.md), [UX](../ux-and-presentation.md), and [validation V25](../validation.md).

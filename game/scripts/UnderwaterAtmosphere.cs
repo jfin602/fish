@@ -15,11 +15,8 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export] public Color CausticColor { get; set; } = new(0.68f, 0.88f, 0.78f);
     [Export] public Color MoteColor { get; set; } = new(0.73f, 0.91f, 0.82f, 0.33f);
     [Export(PropertyHint.Range, "0.001,0.06,0.001")] public float VolumetricDensity { get; set; } = 0.024f;
-    [Export(PropertyHint.Range, "0,0.02,0.0005")] public float DistanceFogDensity { get; set; } = 0.0035f;
-    // Artistic depth-fog end distance at the surface. P2 will expose/persist this directly;
-    // until then the existing saved density remains the base clarity control.
+    // Artistic depth-fog end distance at the surface. Actual optical range also depends on scatter.
     [Export(PropertyHint.Range, "18,60,1")] public float VisibilityRangeMeters { get; set; } = 35f;
-    private const float LegacyReferenceDensity = 0.0035f;
     private const float FogNearMeters = 5f;
     private const float FogExtinction = 0.96f;
     private const float FogCurve = 1.2f;
@@ -63,6 +60,7 @@ public partial class UnderwaterAtmosphere : Node3D
     private GpuParticles3D? _motes;
     private readonly Decal[] _caustics = new Decal[1];
     private bool _enabled = true;
+    private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
 
     public bool Enabled => _enabled;
@@ -74,8 +72,7 @@ public partial class UnderwaterAtmosphere : Node3D
     public float EffectiveDepth01 { get; private set; }
     /// <summary>Artistic depth-fog end distance, not a measured optical sight distance.</summary>
     public float EffectiveUsefulRange { get; private set; }
-    public float EffectiveBaseVisibilityRange => Mathf.Clamp(VisibilityRangeMeters *
-        Mathf.Sqrt(LegacyReferenceDensity / Mathf.Max(DistanceFogDensity, 0.0001f)), 18f, 60f);
+    public float EffectiveBaseVisibilityRange => VisibilityRangeMeters;
 
     /// <summary>Approximate engine depth-fog scene retention before height/volumetric fog.</summary>
     public static float EstimateDistanceRetention(float distanceMeters, float usefulRangeMeters)
@@ -92,7 +89,8 @@ public partial class UnderwaterAtmosphere : Node3D
         CausticDrift = CausticDrift, CausticTravel = CausticTravel,
         ShaftCount = ShaftCount, ShaftBrightness = ShaftBrightness,
         SunEnergy = SunEnergy, AmbientEnergy = AmbientEnergy,
-        VolumetricDensity = VolumetricDensity, DistanceFogDensity = DistanceFogDensity,
+        VolumetricDensity = VolumetricDensity, VisibilityDistanceMeters = VisibilityRangeMeters,
+        DistanceFogDensity = _legacyDistanceFogDensity,
         MoteCount = MoteCount, ScreenWarpPixels = ScreenWarpPixels,
     };
 
@@ -110,7 +108,8 @@ public partial class UnderwaterAtmosphere : Node3D
         SunEnergy = settings.SunEnergy;
         AmbientEnergy = settings.AmbientEnergy;
         VolumetricDensity = settings.VolumetricDensity;
-        DistanceFogDensity = settings.DistanceFogDensity;
+        VisibilityRangeMeters = settings.VisibilityDistanceMeters;
+        _legacyDistanceFogDensity = settings.DistanceFogDensity;
         MoteCount = settings.MoteCount;
         ScreenWarpPixels = settings.ScreenWarpPixels;
         _surfaceMaterial?.SetShaderParameter("wave_height", SurfaceWaveHeight);
@@ -200,7 +199,7 @@ public partial class UnderwaterAtmosphere : Node3D
         AddScreenTreatment();
         RefreshDepth(true);
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
-        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} visibility_end={EffectiveUsefulRange:F1} legacy_density={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
+        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} visibility_base={VisibilityRangeMeters:F1} visibility_end={EffectiveUsefulRange:F1} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
 
     public void SetEnabled(bool enabled)
@@ -266,7 +265,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _lastDepth = depth;
         EffectiveDepth01 = depth;
         // The depth mode gives a clear foreground and a continuous camera-distance
-        // reveal. The old saved density still changes the base range monotonically.
+        // reveal. Camera depth never changes the saved surface-distance base.
         EffectiveUsefulRange = EffectiveBaseVisibilityRange * (1f - 3f / 7f * depth);
         _environment.FogDepthEnd = EffectiveUsefulRange;
         _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * (1f + 1.25f * depth));
@@ -613,7 +612,6 @@ public partial class UnderwaterAtmosphere : Node3D
         ColorIsBounded(DistanceFogColor) && ColorIsBounded(VolumetricWaterColor) &&
         ColorIsBounded(SunColor) && ColorIsBounded(CausticColor) && ColorIsBounded(MoteColor) &&
         float.IsFinite(VolumetricDensity) && VolumetricDensity is > 0 and <= 0.06f &&
-        float.IsFinite(DistanceFogDensity) && DistanceFogDensity is >= 0 and <= 0.02f &&
         float.IsFinite(VisibilityRangeMeters) && VisibilityRangeMeters is >= 18 and <= 60 &&
         float.IsFinite(LowerWaterFog) && LowerWaterFog is >= 0 and <= 0.05f &&
         float.IsFinite(LowerFogStartHeight) && LowerFogStartHeight is >= -8 and <= 8 &&

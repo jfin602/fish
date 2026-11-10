@@ -43,3 +43,20 @@ DEPTH_CHECK_OK surface=10.39 deep=-7.61 base_visibility=35.0 shallow=(end:35.0,v
 ```
 
 No `import` was run because no resource or shader file changed. Headless checks establish load and numerical behavior, not whether opposite boundaries disappear or near coral and cave entries read comfortably on a real display. C3/P2 still owns the explicit Visibility Distance GFX control and schema-compatible preset migration; C3/P4 owns native visual/performance acceptance. P2 G2.3/V20 remains open.
+
+## C3/P2 — Visibility GFX and preset compatibility (2026-11-10)
+
+**Working-tree result:** implemented from clean `main` HEAD `0d6ae25d13c302372b5f3fdc684e32d15cd2a784`, the completed C3/P1 runner checkpoint, at unchanged root `0.3.6`. P3 P1–P6 are present; P7 world-art review remains open. No commit was created by this task.
+
+The paused GFX panel now shows **Visibility Distance (m)** from 18 to 60 m in 1 m steps, with lower values described as murkier and higher values as clearer. This is the artistic shallow-water depth-fog end distance, not a measured optical sight range. The existing Volumetric haze slider remains separate. Moving the visibility slider previews immediately through `ApplyLighting`; the panel stays focusable while the game tree is paused. `LightingSettings.VisibilityDistanceMeters` is the validated saved base. `UnderwaterAtmosphere` captures/applies that base, then derives only the runtime end distance from camera depth: `effective = base * (1 - 3/7 * easedDepth)`. The retained `DistanceFogDensity` field is compatibility metadata and does not drive live fog. Diving, ascending and switching presets do not rewrite the base.
+
+New writes use schema **v2** in the existing `user://lighting-presets.json` path and retain atomic replacement and corrupt-file backup. Schema v1 custom records load with their IDs, names, active ID and other settings intact. Their old density maps through the exact P1 response: `clamp(35 * sqrt(0.0035 / max(density, 0.0001)), 18, 60)` meters. This is lossy at the bounds: density 0 maps to 60 m, and 0.02 maps to 18 m. The original density is retained as metadata in v2 for later inspection/round trips. A missing density in an otherwise valid v1 record uses the historical 0.0035 default; v2 requires an explicit meter field. Invalid values and malformed JSON still back up and recover to Natural, separately from valid migration. Natural and Soft keep their other defaults and use a 35 m base.
+
+The focused isolated-profile fixture creates two old custom presets, selects one, converts its saved JSON to schema v1, and removes the legacy density from the second to exercise the old default. It reloads and verifies IDs, names, current choice, caustics, wave speed, shaft count, legacy density and converted meter values. It saves schema v2, renames and updates the selected preset to 44 m, restarts the store, chooses and deletes the other custom preset, then checks a 61 m value and malformed JSON as distinct recovery cases. The paused GFX probe checks 18–60 m slider bounds, both visibility and haze labels, live fog-end response, restoration, and unchanged fish position. Native visual quality, physical input feel and full P4 V25 judgment remain pending.
+
+| Check | Result |
+| --- | --- |
+| `./tools/dev build` | PASS, 0 warnings and 0 errors. |
+| `./tools/dev inspect-depth` | PASS, `LIGHTING_PRESET_CHECK_OK v1=migrated v2=round-trip invalid=recovered` and `DEPTH_CHECK_OK`; expected corrupt-fixture warnings appeared. |
+| `./tools/dev inspect-atmosphere` | PASS, `ATMOSPHERE_CHECK_OK` and `ATMOSPHERE_MOVEMENT_OK`; its optional-missing-screen warning is expected. |
+| `git diff --check`; `package.json` | PASS; root version remains `0.3.6`. |

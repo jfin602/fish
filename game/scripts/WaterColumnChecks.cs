@@ -2,6 +2,8 @@
 using Godot;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text.Json.Nodes;
 
 namespace Fish;
 
@@ -69,7 +71,7 @@ public static class WaterColumnChecks
                 Mathf.Abs(shallow.Range - 35f) < 0.01f &&
                 Mathf.Abs(middle.Range - 27.5f) < 0.01f &&
                 Mathf.Abs(deep.Range - 20f) < 0.01f &&
-                Mathf.Abs(atmosphere.CaptureLighting().DistanceFogDensity - baseSettings.DistanceFogDensity) < 0.00001f &&
+                Mathf.Abs(atmosphere.CaptureLighting().VisibilityDistanceMeters - baseSettings.VisibilityDistanceMeters) < 0.00001f &&
                 Mathf.Abs(shallow.Sun - baseSettings.SunEnergy) < 0.0001f,
                 "shallow lighting changed from c2 base");
             foreach (var sample in new[] { shallow, middle, deep })
@@ -112,7 +114,7 @@ public static class WaterColumnChecks
             var customBase = baseSettings.Copy();
             customBase.SunEnergy = 2f;
             customBase.AmbientEnergy = 0.7f;
-            customBase.DistanceFogDensity = 0.005f;
+            customBase.VisibilityDistanceMeters = 25f;
             var preset = store.SaveAs("Depth isolation", customBase);
             main.GetTree().Paused = true;
             atmosphere.ApplyLighting(preset.Settings);
@@ -130,18 +132,19 @@ public static class WaterColumnChecks
             reloaded.Load();
             Require(Mathf.Abs(reloaded.Current.Settings.SunEnergy - customBase.SunEnergy) < 0.0001f &&
                 Mathf.Abs(reloaded.Current.Settings.AmbientEnergy - customBase.AmbientEnergy) < 0.0001f &&
-                Mathf.Abs(reloaded.Current.Settings.DistanceFogDensity - customBase.DistanceFogDensity) < 0.00001f,
+                Mathf.Abs(reloaded.Current.Settings.VisibilityDistanceMeters - customBase.VisibilityDistanceMeters) < 0.00001f,
                 "saved preset contains depth modulation");
-            atmosphere.DistanceFogDensity = 0f;
+            atmosphere.VisibilityRangeMeters = 60f;
             atmosphere.RefreshDepth(true);
             var clearRange = atmosphere.EffectiveUsefulRange;
-            atmosphere.DistanceFogDensity = 0.02f;
+            atmosphere.VisibilityRangeMeters = 18f;
             atmosphere.RefreshDepth(true);
             var murkyRange = atmosphere.EffectiveUsefulRange;
             Require(float.IsFinite(clearRange) && float.IsFinite(murkyRange) &&
                 clearRange > deep.Range && deep.Range > murkyRange && murkyRange > env.FogDepthBegin &&
                 Mathf.Abs(env.FogDepthEnd - murkyRange) < 0.001f,
-                "legacy density no longer maps monotonically to bounded visibility");
+                "meter visibility no longer maps monotonically to bounded fog");
+            CheckPresetCompatibility(file, baseSettings);
             atmosphere.ApplyLighting(baseSettings);
             camera.GlobalTransform = cameraTransform;
             atmosphere.RefreshDepth(true);
@@ -185,5 +188,78 @@ public static class WaterColumnChecks
     private static void Require(bool condition, string reason)
     {
         if (!condition) throw new Exception(reason);
+    }
+
+    private static void CheckPresetCompatibility(string file, LightingSettings original)
+    {
+        Require(Mathf.Abs(LightingSettings.VisibilityFromLegacyDensity(0.0035f) - 35f) < 0.001f &&
+            LightingSettings.VisibilityFromLegacyDensity(0f) == 60f &&
+            LightingSettings.VisibilityFromLegacyDensity(0.02f) == 18f,
+            "legacy conversion endpoints changed");
+        var seed = new LightingPresetStore(file);
+        var legacy = original.Copy();
+        legacy.DistanceFogDensity = 0.005f;
+        legacy.CausticEnergy = 0.51f;
+        legacy.SurfaceWaveSpeed = 1.42f;
+        legacy.ShaftCount = 3;
+        var first = seed.SaveAs("Old reef", legacy);
+        var second = seed.SaveAs("Old deep", original);
+        seed.Choose(first.Id);
+        var v1 = JsonNode.Parse(File.ReadAllText(file))!;
+        v1["schemaVersion"] = 1;
+        foreach (var item in v1["presets"]!.AsArray())
+            item!["settings"]!.AsObject().Remove("visibilityDistanceMeters");
+        // Older valid records may rely on the former default density.
+        foreach (var item in v1["presets"]!.AsArray())
+            if ((string)item!["id"]! == second.Id)
+                item["settings"]!.AsObject().Remove("distanceFogDensity");
+        File.WriteAllText(file, v1.ToJsonString());
+        var loaded = new LightingPresetStore(file);
+        loaded.Load();
+        Require(loaded.CurrentId == first.Id && loaded.List().Count == 4 &&
+            loaded.Current.Name == "Old reef" &&
+            loaded.List().Any(p => p.Id == second.Id &&
+                Mathf.Abs(p.Settings.VisibilityDistanceMeters - 35f) < 0.001f) &&
+            Mathf.Abs(loaded.Current.Settings.VisibilityDistanceMeters -
+                LightingSettings.VisibilityFromLegacyDensity(0.005f)) < 0.0001f &&
+            Mathf.Abs(loaded.Current.Settings.DistanceFogDensity - 0.005f) < 0.00001f &&
+            Mathf.Abs(loaded.Current.Settings.CausticEnergy - 0.51f) < 0.0001f &&
+            Mathf.Abs(loaded.Current.Settings.SurfaceWaveSpeed - 1.42f) < 0.0001f &&
+            loaded.Current.Settings.ShaftCount == 3, "valid v1 custom presets were not migrated intact");
+        loaded.Save();
+        var migrated = JsonNode.Parse(File.ReadAllText(file))!;
+        Require((int)migrated["schemaVersion"]! == 2 &&
+            migrated["presets"]![0]!["settings"]!["visibilityDistanceMeters"] is not null,
+            "migration did not persist explicit meter visibility");
+        loaded.RenameCurrent("Reef clarity");
+        var changed = loaded.Current.Settings.Copy();
+        changed.VisibilityDistanceMeters = 44f;
+        loaded.UpdateCurrent(changed);
+        var roundTrip = new LightingPresetStore(file);
+        roundTrip.Load();
+        Require(roundTrip.CurrentId == first.Id && roundTrip.Current.Name == "Reef clarity" &&
+            Mathf.Abs(roundTrip.Current.Settings.VisibilityDistanceMeters - 44f) < 0.001f &&
+            Mathf.Abs(roundTrip.Current.Settings.DistanceFogDensity - 0.005f) < 0.00001f,
+            "v2 rename/save/restart lost visibility or legacy metadata");
+        roundTrip.Choose(second.Id);
+        roundTrip.DeleteCurrent();
+        Require(roundTrip.CurrentId == LightingPresetStore.DefaultId && roundTrip.List().Count == 3,
+            "choose/delete lifecycle changed");
+        var invalid = changed.Copy();
+        invalid.VisibilityDistanceMeters = 61f;
+        Require(!invalid.IsValid(), "out-of-range meter setting accepted");
+        var raw = JsonNode.Parse(File.ReadAllText(file))!;
+        raw["presets"]![0]!["settings"]!["visibilityDistanceMeters"] = 61;
+        File.WriteAllText(file, raw.ToJsonString());
+        var rejected = new LightingPresetStore(file);
+        rejected.Load();
+        Require(rejected.CurrentId == LightingPresetStore.DefaultId && rejected.List().Count == 2 &&
+            Directory.GetFiles(Path.GetDirectoryName(file)!, Path.GetFileName(file) + ".corrupt-*.json").Length > 0,
+            "out-of-range fixture did not preserve corrupt file and recover");
+        File.WriteAllText(file, "{malformed");
+        rejected.Load();
+        Require(rejected.List().Count == 2 && rejected.CurrentId == LightingPresetStore.DefaultId,
+            "malformed fixture did not recover");
+        GD.Print("LIGHTING_PRESET_CHECK_OK v1=migrated v2=round-trip invalid=recovered");
     }
 }

@@ -55,12 +55,25 @@ public sealed class LightingPresetStore
         try
         {
             if (new FileInfo(_path).Length > MaxFileBytes) throw new InvalidDataException("Lighting file exceeds size limit");
-            var data = JsonSerializer.Deserialize<StoreData>(File.ReadAllText(_path), JsonOptions)
+            var json = File.ReadAllText(_path);
+            using var document = JsonDocument.Parse(json);
+            var data = JsonSerializer.Deserialize<StoreData>(json, JsonOptions)
                 ?? throw new InvalidDataException("Empty lighting file");
-            if (data.SchemaVersion != 1 || data.Presets is null || data.Presets.Count > MaxCustomPresets)
+            if (data.SchemaVersion is not (1 or 2) || data.Presets is null || data.Presets.Count > MaxCustomPresets ||
+                !TryGetProperty(document.RootElement, "presets", out var rawPresets) ||
+                rawPresets.ValueKind != JsonValueKind.Array || rawPresets.GetArrayLength() != data.Presets.Count)
                 throw new InvalidDataException("Unsupported lighting schema");
-            foreach (var preset in data.Presets)
+            for (var index = 0; index < data.Presets.Count; index++)
             {
+                var preset = data.Presets[index];
+                var raw = rawPresets[index];
+                if (raw.ValueKind != JsonValueKind.Object ||
+                    !TryGetProperty(raw, "settings", out var rawSettings) ||
+                    rawSettings.ValueKind != JsonValueKind.Object ||
+                    (data.SchemaVersion == 2 && !TryGetProperty(rawSettings, "visibilityDistanceMeters", out _)))
+                    throw new InvalidDataException("Lighting visibility value is missing");
+                if (data.SchemaVersion == 1 && preset?.Settings is not null)
+                    preset.Settings.VisibilityDistanceMeters = LightingSettings.VisibilityFromLegacyDensity(preset.Settings.DistanceFogDensity);
                 if (preset is null || preset.Id is null || preset.Name is null || preset.Settings is null ||
                     preset.Id.StartsWith("builtin:", StringComparison.Ordinal) ||
                     !Guid.TryParse(preset.Id, out _) || !ValidName(preset.Name) || !preset.Settings.IsValid() ||
@@ -126,12 +139,24 @@ public sealed class LightingPresetStore
 
     private bool NameExists(string name, string? exceptId) => _presets.Values.Any(p =>
         p.Id != exceptId && p.Name.Equals(name.Trim(), StringComparison.OrdinalIgnoreCase));
+    private static bool TryGetProperty(JsonElement element, string name, out JsonElement value)
+    {
+        if (element.ValueKind == JsonValueKind.Object)
+            foreach (var property in element.EnumerateObject())
+                if (property.Name.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    value = property.Value;
+                    return true;
+                }
+        value = default;
+        return false;
+    }
     private static bool ValidName(string name) => !string.IsNullOrWhiteSpace(name) && name.Trim().Length <= 32 &&
         !name.Any(char.IsControl);
 
     public void Save()
     {
-        var data = new StoreData { SchemaVersion = 1, CurrentId = CurrentId,
+        var data = new StoreData { SchemaVersion = 2, CurrentId = CurrentId,
             Presets = _presets.Values.Where(p => !p.IsBuiltin).OrderBy(p => p.Id, StringComparer.Ordinal)
                 .Select(p => (LightingPreset?)p).ToList() };
         Directory.CreateDirectory(Path.GetDirectoryName(_path)!);

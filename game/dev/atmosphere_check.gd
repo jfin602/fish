@@ -41,6 +41,33 @@ func _run() -> void:
 	if shell.find_child("GfxButton", true, false) == null or shell.find_child("GraphicsPanel", true, false) == null or shell.find_child("LightingPresetChoice", true, false) == null:
 		fail("graphics controls or lighting preset UI missing")
 		return
+	var graphics: Control = shell.find_child("GraphicsPanel", true, false)
+	var visibility_slider: HSlider = graphics.find_child("VisibilityDistanceSlider", true, false)
+	if visibility_slider == null or visibility_slider.min_value != 18.0 or visibility_slider.max_value != 60.0 or visibility_slider.step != 1.0:
+		fail("visibility slider range or identity drifted")
+		return
+	var has_meter_label := false
+	var has_haze_label := false
+	for label in graphics.find_children("*", "Label", true, false):
+		has_meter_label = has_meter_label or label.text == "Visibility Distance (m)"
+		has_haze_label = has_haze_label or label.text == "Volumetric haze"
+	if not has_meter_label or not has_haze_label:
+		fail("meter visibility or distinct volumetric haze label missing")
+		return
+	var original_range: float = atmosphere.EffectiveUsefulRange
+	var original_fish_position: Vector3 = fish.global_position
+	paused = true
+	graphics.call("Open")
+	visibility_slider.value = 18.0
+	if not graphics.visible or absf(atmosphere.VisibilityRangeMeters - 18.0) > 0.001 or env.fog_depth_end >= original_range or fish.global_position != original_fish_position:
+		fail("paused visibility slider failed live preview or changed fish")
+		return
+	visibility_slider.value = 35.0
+	graphics.call("RequestClose")
+	paused = false
+	if absf(atmosphere.VisibilityRangeMeters - 35.0) > 0.001 or absf(env.fog_depth_end - original_range) > 0.001:
+		fail("visibility preview did not restore on close")
+		return
 	var shell_canvas: CanvasLayer = null
 	for child in shell.get_children():
 		if child is CanvasLayer:

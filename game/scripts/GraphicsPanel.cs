@@ -44,7 +44,8 @@ public partial class GraphicsPanel : PanelContainer
         var title = new Label { Text = "GFX · Water & Lighting", HorizontalAlignment = HorizontalAlignment.Center };
         title.AddThemeFontSizeOverride("font_size", 22);
         outer.AddChild(title);
-        var help = new Label { Text = "Changes preview live. Save to keep a custom lighting preset." };
+        var help = new Label { Text = "Changes preview live. Lower visibility is murkier; higher is clearer. Save to keep a custom preset.",
+            AutowrapMode = TextServer.AutowrapMode.WordSmart };
         outer.AddChild(help);
         _choices = new OptionButton { Name = "LightingPresetChoice" };
         _choices.ItemSelected += index =>
@@ -86,7 +87,7 @@ public partial class GraphicsPanel : PanelContainer
         AddSlider(rows, "Sun brightness", 0, 3, 0.01, s => s.SunEnergy, (s, v) => s.SunEnergy = v);
         AddSlider(rows, "Ambient brightness", 0, 1, 0.01, s => s.AmbientEnergy, (s, v) => s.AmbientEnergy = v);
         AddSlider(rows, "Volumetric haze", 0.001, 0.06, 0.001, s => s.VolumetricDensity, (s, v) => s.VolumetricDensity = v);
-        AddSlider(rows, "Distance fog", 0, 0.02, 0.0005, s => s.DistanceFogDensity, (s, v) => s.DistanceFogDensity = v);
+        AddSlider(rows, "Visibility Distance (m)", 18, 60, 1, s => s.VisibilityDistanceMeters, (s, v) => s.VisibilityDistanceMeters = v);
         AddSlider(rows, "Motes", 0, 160, 1, s => s.MoteCount, (s, v) => s.MoteCount = Mathf.RoundToInt(v));
         AddSlider(rows, "Screen shimmer (px)", 0, 0.2, 0.01, s => s.ScreenWarpPixels, (s, v) => s.ScreenWarpPixels = v);
         _status = new Label { Name = "GraphicsStatus", Text = "" };
@@ -118,7 +119,8 @@ public partial class GraphicsPanel : PanelContainer
         rows.AddChild(row);
         var label = new Label { Text = name, CustomMinimumSize = new Vector2(178, 0) };
         row.AddChild(label);
-        var slider = new HSlider { MinValue = min, MaxValue = max, Step = step,
+        var slider = new HSlider { Name = name == "Visibility Distance (m)" ? "VisibilityDistanceSlider" : name.Replace(" ", ""),
+            MinValue = min, MaxValue = max, Step = step,
             SizeFlagsHorizontal = SizeFlags.ExpandFill, CustomMinimumSize = new Vector2(200, 0),
             FocusMode = FocusModeEnum.All };
         row.AddChild(slider);
