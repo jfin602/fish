@@ -38,7 +38,11 @@
         "asymmetry": 0.42,
         "seed": 1101
       },
-      "glb": "game/assets/faf/coral/coral_001a_branching.glb"
+      "glb": "game/assets/faf/coral/coral_001a_branching.glb",
+      "category": "CORAL",
+      "species_or_type": "branching",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-001B",
@@ -77,7 +81,11 @@
         "asymmetry": 0.62,
         "seed": 1102
       },
-      "glb": "game/assets/faf/coral/coral_001b_branching.glb"
+      "glb": "game/assets/faf/coral/coral_001b_branching.glb",
+      "category": "CORAL",
+      "species_or_type": "branching",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-001C",
@@ -116,7 +124,11 @@
         "asymmetry": 0.55,
         "seed": 1103
       },
-      "glb": "game/assets/faf/coral/coral_001c_branching.glb"
+      "glb": "game/assets/faf/coral/coral_001c_branching.glb",
+      "category": "CORAL",
+      "species_or_type": "branching",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-002A",
@@ -154,7 +166,11 @@
         "asymmetry": 0.36,
         "seed": 2201
       },
-      "glb": "game/assets/faf/coral/coral_002a_rounded.glb"
+      "glb": "game/assets/faf/coral/coral_002a_rounded.glb",
+      "category": "CORAL",
+      "species_or_type": "rounded",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-002B",
@@ -192,7 +208,11 @@
         "asymmetry": 0.54,
         "seed": 2202
       },
-      "glb": "game/assets/faf/coral/coral_002b_rounded.glb"
+      "glb": "game/assets/faf/coral/coral_002b_rounded.glb",
+      "category": "CORAL",
+      "species_or_type": "rounded",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-002C",
@@ -230,7 +250,11 @@
         "asymmetry": 0.42,
         "seed": 2203
       },
-      "glb": "game/assets/faf/coral/coral_002c_rounded.glb"
+      "glb": "game/assets/faf/coral/coral_002c_rounded.glb",
+      "category": "CORAL",
+      "species_or_type": "rounded",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-003A",
@@ -240,7 +264,7 @@
       "dimensions_m": [
         0.6501,
         0.61906,
-        0.66632
+        0.65452
       ],
       "triangles": 536,
       "materials": 1,
@@ -270,7 +294,11 @@
         "lean": 0.16,
         "seed": 3301
       },
-      "glb": "game/assets/faf/coral/coral_003a_tube.glb"
+      "glb": "game/assets/faf/coral/coral_003a_tube.glb",
+      "category": "CORAL",
+      "species_or_type": "tube",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-003B",
@@ -280,7 +308,7 @@
       "dimensions_m": [
         0.91061,
         0.88923,
-        0.80363
+        0.77229
       ],
       "triangles": 672,
       "materials": 1,
@@ -310,7 +338,11 @@
         "lean": 0.23,
         "seed": 3302
       },
-      "glb": "game/assets/faf/coral/coral_003b_tube.glb"
+      "glb": "game/assets/faf/coral/coral_003b_tube.glb",
+      "category": "CORAL",
+      "species_or_type": "tube",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-003C",
@@ -320,7 +352,7 @@
       "dimensions_m": [
         0.60234,
         0.51155,
-        0.79691
+        0.79087
       ],
       "triangles": 468,
       "materials": 1,
@@ -350,7 +382,11 @@
         "lean": 0.19,
         "seed": 3303
       },
-      "glb": "game/assets/faf/coral/coral_003c_tube.glb"
+      "glb": "game/assets/faf/coral/coral_003c_tube.glb",
+      "category": "CORAL",
+      "species_or_type": "tube",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-004A",
@@ -389,7 +425,11 @@
         "asymmetry": 0.38,
         "seed": 4401
       },
-      "glb": "game/assets/faf/coral/coral_004a_fan.glb"
+      "glb": "game/assets/faf/coral/coral_004a_fan.glb",
+      "category": "CORAL",
+      "species_or_type": "fan",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-004B",
@@ -428,7 +468,11 @@
         "asymmetry": 0.58,
         "seed": 4402
       },
-      "glb": "game/assets/faf/coral/coral_004b_fan.glb"
+      "glb": "game/assets/faf/coral/coral_004b_fan.glb",
+      "category": "CORAL",
+      "species_or_type": "fan",
+      "armature_bone_count": 0,
+      "animation_actions": []
     },
     {
       "faf_id": "FAF-CORAL-004C",
@@ -467,7 +511,11 @@
         "asymmetry": 0.45,
         "seed": 4403
       },
-      "glb": "game/assets/faf/coral/coral_004c_fan.glb"
+      "glb": "game/assets/faf/coral/coral_004c_fan.glb",
+      "category": "CORAL",
+      "species_or_type": "fan",
+      "armature_bone_count": 0,
+      "animation_actions": []
     }
   ]
 }

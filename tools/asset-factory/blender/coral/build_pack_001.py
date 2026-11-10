@@ -119,11 +119,13 @@ def export_sources(scene, sources, root, overwrite=False):
         export_selected_glb(str(destination), include_animations=False, overwrite=overwrite)
         obj.hide_set(was_hidden)
         reports.append({"faf_id": f"FAF-CORAL-{FAMILY_INDEX[family]}{letter}",
+                        "category": "CORAL", "species_or_type": family,
                         "stem": stem, "family": family,
                         "generator": f"coral.{family}.v1",
                         "dimensions_m": [round(v, 5) for v in obj.dimensions],
                         "triangles": check["triangle_count_source"],
                         "materials": check["material_count"],
+                        "armature_bone_count": 0, "animation_actions": [],
                         "origin_m": [round(v, 5) for v in obj.location],
                         "rotation_rad": [round(v, 5) for v in obj.rotation_euler],
                         "scale": [round(v, 5) for v in obj.scale],

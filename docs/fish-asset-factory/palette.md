@@ -12,3 +12,5 @@ The [art-style contract](art-style.md) owns overall balance. These names guide g
 | Fish yellow, orange, blue, white, black | Species-defining blocks, stripes, eyes and fins; avoid random whole-body saturation. |
 
 Use a restrained neutral field with vivid living accents. Shared names help variants remain coherent; species anatomy and readable contrast govern the final choice. Do not infer that every reef object should use every family.
+
+The [first coral pack](coral-pack-001/README.md) adds a warm yellow and muted purple swatch to the code seeds, with limited cyan/blue accents. Its individual records name the selected family and swatch; these remain editable starting colors rather than a scene-wide color lock.
