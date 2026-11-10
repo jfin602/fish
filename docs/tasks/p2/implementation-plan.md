@@ -8,16 +8,7 @@ Before continuation inspect branch/HEAD/dirty state, `package.json`, final P1/c1
 
 ## P1 — Renderer comparison vertical slice — COMPLETE
 
-P1 established the reversible Compatibility/Forward+ comparison at root `0.2.1`. Compatibility remained the tracked default only to keep the comparison non-destructive until the owner selected a renderer. Add the smallest reversible development path that can launch/inspect the same candidate under Compatibility and Forward+ using the actual Godot 4.7.2 capabilities. Inspect the engine CLI/project override rather than inventing unsupported flags. Do not create two permanent gameplay projects.
-
-Create a bounded underwater rendering vertical slice using the existing P1 fish/camera and representative assets from the prepared P2 palette. Verify the full prepared set imports, while keeping the comparison scene small enough for a fair renderer A/B. It should make the renderer comparison meaningful by exercising:
-- distance/depth fog or renderer-appropriate equivalent;
-- top directional light and basic underwater color treatment;
-- one caustic-style animated light/material treatment;
-- sparse suspended particles;
-- one restrained screen/depth-aware post treatment where supported.
-
-The slice is diagnostic, not the final P2 habitat. Keep the existing main scene runnable. Add focused checks for renderer launch selection/config isolation, material/resource load, finite shader parameters and unchanged movement authority. Record implementation evidence and exact commands. Assigned P1 version: `0.2.1`.
+P1 is historical input for the remaining stack; **do not rerun it**. At root `0.2.1`, it added the reversible `tools/dev compare compatibility|forward-plus [--effects=off]` path, `RendererComparison.cs`, `renderer_comparison.tscn` and comparison shaders without changing normal play or `project.godot`. Import/build/scene/prepared-asset/effect-isolation checks passed; automated renderer starts used Xvfb/software rendering. The owner's subsequent real-desktop Forward+ trial supplies the native selection input for P2.
 
 ## P2 — Native Forward+ lock
 

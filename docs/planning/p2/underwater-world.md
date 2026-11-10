@@ -18,7 +18,7 @@ This Phase is worldbuilding/presentation. It intentionally comes before ecology 
 - Make the scene look submerged through a layered water presentation, not only a uniform blue tint.
 - Add movement-reactive water effects around the fish so ordinary swimming, acceleration, gliding and stronger turning have visibly different disturbance.
 - Keep rendering and water reaction presentation separate from authoritative movement. Effects read fish state; they do not push the fish or own velocity.
-- Evaluate the current Compatibility renderer against Forward+ using the actual P1 candidate and target desktop before locking the P2 renderer. Forward+ is an option, not a foregone conclusion.
+- P2/P1 provides the Compatibility/Forward+ comparison. After running Forward+ on the real desktop and observing smooth performance, the owner selected **Forward+** for P2. P2/P2 records/locks that choice; Compatibility is not a parallel production target.
 - Preserve P1's reproducible movement course as a development/qualification fixture even when it stops being the normal game world.
 - Keep fullscreen/windowed-fullscreen and the accepted P1 camera/input behavior working in the new habitat.
 
@@ -55,25 +55,20 @@ Do not densely duplicate high-detail Smithsonian coral or heavy hero rock/cliff 
 
 ## Renderer decision
 
-P2 begins with a reversible renderer/underwater vertical slice using the actual post-P1 player, materials and camera. Compare Compatibility and Forward+ on the target machine with the same scene/camera where practical. Record:
+P2/P1 created a reversible renderer/underwater comparison slice using the actual P1 player, materials and camera. Its automated import/build/startup checks exercised both Compatibility and Forward+ under Xvfb/software rendering without changing `project.godot`.
 
-- project/runtime startup and errors;
-- imported fish/rock/coral/sand material correctness;
-- camera/display/input behavior;
-- available fog/post/particle features needed for the planned look;
-- representative frame timing/FPS/GPU symptoms in the same bounded view;
-- native captures/owner visual judgment.
+The owner then ran `./tools/dev compare forward-plus` on the real desktop. Forward+ ran smoothly, looked perhaps slightly better at this early stage, and the owner selected it because the additional rendering capabilities are worth using for the underwater world.
 
-Then choose one renderer for the phase and update the technical record. Do not keep two permanent rendering implementations unless a concrete platform requirement justifies it.
+**P2 renderer direction is therefore Forward+.** P2/P2 must switch the tracked normal-play project to the exact Forward+ method used by the comparison tooling and record the source/platform evidence. It does not need another native Compatibility A/B. Keep the Compatibility compare command only as a diagnostic path if useful; do not carry dual production rendering implementations. If the full P2 world later reveals a concrete Forward+ blocker, stop and return to the owner rather than silently switching.
 
 ## Underwater atmosphere
 
-The selected renderer should support a layered treatment:
+Forward+ should provide the layered treatment:
 
 1. **Depth/distance:** fog or equivalent distance attenuation so far geometry loses contrast and color.
 2. **Lighting:** directional/top light that suggests light entering from the surface.
 3. **Color:** restrained blue-green water absorption/grade while retaining useful local color.
-4. **Caustic-style motion:** animated light pattern on seabed/rocks/coral, implemented by a bounded material/decal/projected/fullscreen technique appropriate to the renderer.
+4. **Caustic-style motion:** animated light pattern on seabed/rocks/coral, implemented by a bounded Forward+ material/decal/projected/fullscreen technique.
 5. **Suspended matter:** sparse motes/plankton-like particles that provide depth/motion cues without visual noise.
 6. **Whole-view water treatment:** subtle screen-space distortion/noise/grade where useful, depth-aware when supported. Do not make the image wobble constantly or distort HUD/menu text.
 7. **Performance/tuning:** centralize parameters enough to tune the look without scattering magic values through unrelated gameplay code.
@@ -82,7 +77,7 @@ The target is "obviously underwater while swimming," not photorealism.
 
 ## Fish-reactive water
 
-Use presentation effects rather than a fluid solver. A small component may sample read-only movement data such as velocity magnitude, acceleration/propulsion state, turn rate and glide state. It can drive tail/body wake particles, bubbles, turbulence, ribbons/trails or local distortion according to the chosen renderer.
+Use presentation effects rather than a fluid solver. A small component may sample read-only movement data such as velocity magnitude, acceleration/propulsion state, turn rate and glide state. It can drive tail/body wake particles, bubbles, turbulence, ribbons/trails or local distortion using Forward+ presentation primitives appropriate to Godot 4.7.2.
 
 Required response:
 
@@ -105,7 +100,7 @@ The owner should be able to spend several minutes swimming through open water, c
 - it clearly looks underwater at multiple distances/depths;
 - the fish's movement visibly disturbs the water without becoming distracting;
 - camera/collisions remain comfortable through tunnels/overhangs;
-- the final renderer/effects run acceptably on the observed machine.
+- Forward+ and the final effects run acceptably on the observed machine.
 
 ## Deferrals
 

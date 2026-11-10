@@ -11,7 +11,7 @@
 | Project location | `game/`, with `Fish.csproj`, `Fish.sln`, and `global.json`. |
 | Editor integration | Godot Editor MCP from `hybridindie/godot-mcp`; local Python MCP server plus the matching Godot editor addon. |
 | First verification target | Owner's Linux desktop, following the reference workflow. Other desktop targets require separate evidence. |
-| Renderer | Compatibility is the currently implemented reversible bootstrap/P1 default. **P2 explicitly compares Compatibility and Forward+ on the actual post-P1 candidate/target desktop, then records one renderer for the underwater-world Phase.** No document preselects Forward+. |
+| Renderer | Compatibility was the bootstrap/P1 default. P2/P1 added a non-destructive Compatibility/Forward+ comparison, and the owner then selected **Forward+** after a smooth real-desktop trial. The tracked `0.2.1` project remains Compatibility only until P2/P2 records/locks Forward+; later P2 rendering targets Forward+ directly. |
 | Development orchestration | Existing Node.js 24 phase runner; a thin repository-relative `tools/dev` created by p0. |
 | P1 display contract | Fullscreen development from the first task, with windowed fullscreen for testing; [P1 design](planning/p1/core-swimming.md) and [UX](ux-and-presentation.md#fullscreen-presentation) own mappings, layout and acceptance. |
 
@@ -29,7 +29,7 @@ Use Godot scenes/resources for composition. Keep movement in appropriate physics
 
 After P1 closes, [P2](planning/p2/underwater-world.md) replaces the visible movement-laboratory presentation with a compact authored reef-like habitat. Preserve the P1 movement course as a development/qualification fixture rather than keeping its targets/posts/box room in normal play.
 
-Use a measured renderer decision: prepare the same post-P1 candidate under current Compatibility and Forward+, observe actual material correctness, available underwater effects, errors and representative native performance on the target desktop, then choose one renderer for the phase. Do not maintain two production rendering paths without a concrete platform requirement.
+The measured comparison step is complete: P2/P1 provides the same-candidate Compatibility/Forward+ paths, and the owner selected **Forward+** after a smooth real-desktop Forward+ run. P2/P2 now locks the tracked project to that renderer and records the evidence. Do not maintain dual production rendering paths; Compatibility may remain only as a bounded diagnostic compare mode. A renderer reversal requires a concrete blocker and explicit owner decision.
 
 Underwater presentation may use environment fog/depth attenuation, top-biased light, color absorption/grade, caustic-style animated illumination, suspended particles and bounded screen-space treatment. HUD/pause/settings must remain readable and outside inappropriate world distortion. Fish-reactive wakes/turbulence/particles read velocity/acceleration/turn state without applying forces or owning simulation state. Renderer changes, particles and shaders must not alter authoritative movement or time.
 
@@ -61,7 +61,7 @@ After verified P0 readiness, the [P1 stack](tasks/p1/README.md) builds the selec
 
 ## P2 implementation boundary
 
-After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) owns renderer comparison/lock, natural habitat composition, underwater atmosphere and fish-reactive water presentation. It does not add ecology, growth, persistence, first person or Movement abilities.
+After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2/README.md) owns the completed renderer comparison, the **Forward+ lock**, natural habitat composition, underwater atmosphere and fish-reactive water presentation. It does not add ecology, growth, persistence, first person or Movement abilities.
 
 ## Source references
 

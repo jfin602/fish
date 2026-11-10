@@ -12,7 +12,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1 comparison slice implemented, P2 native renderer selection pending; [stack](tasks/p2/README.md). |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS**; P1 comparison slice implemented at `0.2.1`, owner selected Forward+, tracked Forward+ lock pending in P2; [stack](tasks/p2/README.md). |
 | P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
 | P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -90,7 +90,7 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS; P1 comparison slice implemented, renderer choice and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
+**Status: IN PROGRESS; P1 comparison slice implemented, owner selected Forward+, tracked Forward+ lock and G2 Gates pending.** [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md). Scenarios V18–V20.
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
@@ -108,8 +108,8 @@ P2 turns the movement laboratory into a place that already feels like a game whe
 
 **Result: NOT OBSERVED.**
 
-- Compare the actual post-P1 candidate under the current Compatibility renderer and Forward+ on the target desktop before locking the P2 renderer. Record startup/material correctness, available effects, native visual result, errors and representative performance; do not select Forward+ by assumption.
-- With the selected renderer, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.
+- P2/P1 provides the Compatibility/Forward+ comparison. The owner ran Forward+ on the real desktop, observed smooth performance and selected it for P2. P2/P2 must lock the tracked project to Forward+ and record that evidence; another native Compatibility run is not required unless Forward+ later develops a concrete blocker.
+- With **Forward+**, combine distance/depth haze or fog, underwater color/contrast treatment, directional light from above, moving caustic-style illumination, suspended water matter, and restrained full-view water treatment so near/far/deep views read as submerged rather than merely blue-tinted.
 - The effect stack remains comfortable in motion and preserves readable fish/world silhouettes. HUD/pause/settings remain crisp and are not accidentally treated as geometry inside the water.
 - Renderer/presentation changes do not change authoritative swimming, time, input semantics or fish identity. Representative native performance is recorded on the P2 habitat.
 
