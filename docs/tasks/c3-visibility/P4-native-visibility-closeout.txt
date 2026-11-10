@@ -1,0 +1,27 @@
+TASK: Correction 3 / P4 — Native visibility closeout
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.3.0`.
+
+GOAL
+Qualify the discovery-fog correction through a real playable Fish Forward+ window, owner judgment and same-scene measurements. Close only the evidence-backed correction scope.
+
+NATIVE OWNER HANDOFF / READ
+The runner MUST pause here. Read c3 README/assessment/implementation-plan.md P4, P1–P3 source and evidence, docs/systems/underwater-visibility.md, validation V25, relevant P3 and c2 native records, current tools/dev and accepted source. Check HEAD/dirty state, 0.3.0 root version, selected renderer, actual Fish Godot project, hardware/display and active GFX preset. A web screenshot or headless run cannot substitute for controlling/observing the real Godot game.
+
+PLAYTEST — REGULAR CAMERA AND REACHABLE ROUTES
+1. Use normal play and real control input. From at least two reachable look directions, face the opposite playable boundary across unobstructed water. The boundary should not be recognizable. Record whether fog rather than a blocking rock caused concealment.
+2. Approach a distant cave/reef landmark, turn and retreat. Record whether it emerges smoothly from faint silhouette to readable form, then fades away without hard object pop-in or flat fog wall. Test nearby fish, coral, terrain, cave mouths, obstacle/camera clearance.
+3. Swim shallow -> middle -> deep -> shallow along actual reachable routes and compare approximately matched horizontal views at each depth. Confirm shorter useful range deeper, cooler/dimmer color and reversible transitions.
+4. Look upward and across coral to judge overhead surface, sun source, shafts, organic caustics, motes, water reaction and clean GFX/UI. Test active preset switches and Visibility Distance (m) live changes. Confirm all five fish choices/Return to Character Select only if the current P3 build actually contains them; do not claim absent P3 features were exercised.
+5. Use copied old valid lighting-presets.json data in isolated user storage, not the owner's live file. Load/save/reload custom settings, switch deep/shallow, preserve custom names/IDs/selection and ensure no new save/gameplay/identity effects.
+6. Compare the same Forward+ scene, camera, depth, preset, device and resolution for fog previous/bypass vs new, with warm samples and median frame time, draws, primitives, artifacts and engine errors. Avoid comparing only whole atmosphere off/on or claiming fog culls objects. Investigate repeatable >=10% frame-time regression and record owner decision if accepted.
+
+EVIDENCE / CLOSEOUT
+Record source revision, package version, game/renderer/GFX config, test actions, source-bound screenshots, samples and errors in docs/tasks/c3-visibility/qualification/native-visibility.md. Mark each V25/contract item PASS, FAIL, NOT OBSERVED, or BLOCKED, with owner visual/feel judgment separate from automated checks. If missing real game input, screenshot, matching baseline or preset migration proof, mark the affected criterion NOT OBSERVED/BLOCKED; do not claim GREEN.
+
+Create docs/tasks/c3-visibility/closeout.md with what was actually completed, evidence links, open gaps, measured cost and owner acceptance if available. Reconcile owning docs and roadmap once only for evidenced behavior; preserve the historical P2 V18/V19 PASS and open G2.3/V20. Do not mark P3 complete solely because c3 passes.
+
+VALIDATE
+T3 native owner qualification plus T1 documentation links/diff checks, focused regressions if fixes were needed, git diff --check and preserved root 0.3.0. This is the single final closeout; leave closeout edits uncommitted for human review. Do not commit or push.
