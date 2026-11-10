@@ -55,3 +55,32 @@ The saved `Terrain/SeamZones` markers provide floor-anchored handoffs: **WestShe
 | Source/diff inspection | `FishController.cs`, `FollowCamera.cs`, `swim_tuning.tres`, `SeabedSurface.cs`, `UnderwaterAtmosphere.cs`, normal main/habitat scenes and `project.godot` were not edited. `git diff --check` passed. |
 
 `0.3.2` establishes implemented terrain placement and structural route agreement. It does not qualify the final P3 reef look, seam readability from the hand-controlled camera, or native performance; those remain in the P7 review.
+
+## P3 — Caves, tunnels and geology (2026-11-10)
+
+**Working-tree result:** implemented for assigned version `0.3.3`. Pre-task clean `main` HEAD was `e67bfe66efe11a2c13ec9e8e8de772aa1abb2f96`; this task made no commit. P2 G2.3/V20 remains an accepted gap and native style judgment remains P7 work.
+
+`FafGeologyWorld` adds 38 deterministic visual-only FAF placements to the normal reef: 12 terrain C/E/F structural shelves, breaks and rocky crowns, plus 26 rock A/B/C/D facets. Rock counts are A 6, B 6, C 7, D 7. Six formation groups frame the accepted west tunnel, expand the east shelter into a cave pocket, define a deep corridor, shape two shelf transitions, and provide shallow and deep landmarks. The formations use terrain as broad mass and rocks as irregular edges; none uses a three-boulder lintel as the hero form. The original P2 seabed/depth query, motor, collider, camera and water resources are unchanged. Three simplified boxes belong to the two canyon walls and cave outer lip. Existing P2 tunnel and shelter solids remain their collision owners; decorative FAF instances have no physics.
+
+| Route ID | Authored path and measured clearance |
+| --- | --- |
+| `GEO-WEST` | P2 TunnelEntry → TunnelCenter → TunnelExit, X −7.9, Z −8 → −19; accepted fish/camera sphere probes and real fish collision sweep pass both ways. The side-wall gap is 3.45 m (2.49 m after fish diameter), making this the tighter covered swim-through. |
+| `GEO-CAVE` | P2 ShelterEntry → ShelterCenter → CaveTurn `(6.9, floor+1.9, −14)` → CaveSide `(5.3, floor+1.9, −14)` → CaveTurn → ShelterExit; this broad, open-sided covered swim-through has a 2.50 m diameter clear turning circle around CaveTurn, plus a side excursion, forward/back fish sweeps and camera probes. The opening remains connected to the open middle lane. |
+| `GEO-CANYON` | CanyonEntry `(−8.6, −19.6)` → CanyonCenter `(−8.6, −22.7)` → CanyonExit `(−8.6, −24.8)`, all at floor+2.1 m; 7.75 m between simplified wall inner faces, substantially wider than the 0.96 m fish diameter. |
+| `GEO-RETURN` | CanyonExit → CanyonReturn `(3, −24.8)` → P2 DepthDeep `(3, −21)` reconnects the canyon to the primary depth lane; forward/back fish sweeps pass. The west entry also connects to the existing tunnel exit. |
+
+Across both swim-throughs, cave, corridor/return and the two P2 five-band lanes, a conservative world-space bounding-box check for all new FAF meshes found **0.62 m minimum center-to-visual-envelope distance**, above the 0.48 m fish radius. It is conservative for tilted/faceted meshes, but does not replace a rendered visual review. At TunnelCenter, turning toward the wall compressed the existing follow camera to **1.38 m**; turning back recovered it to **4.25 m** without moving the fish, with its 0.22 m probe outside collision. P2's existing reef check additionally retains its own tunnel roof/wall, shelter roof and depth-lane sweeps.
+
+**P4 exclusion zones:** keep coral/plant/detail silhouettes at least **1.5 m** from the `GEO-WEST`, `GEO-CAVE`, `GEO-CANYON` and `GEO-RETURN` centerlines, and **2.0 m** from CaveTurn for the turn plus fish margin; preserve the clear camera volume above those lines. Dress terrain/rock contact seams on the west shelf, outside the cave lip and east shelf, around the canyon wall outer faces, and at the shallow/deep landmark bases. Keep the accepted primary X=3 and alternate X=21 five-band lanes open. Small contact detail can sit outside these exclusions.
+
+### T2 checks actually run
+
+| Check | Result |
+| --- | --- |
+| `tools/dev build` | PASS, zero warnings/errors. |
+| `tools/dev inspect-geology` | PASS: four repeated rock variants, three structural terrain variants, six formation groups, four forward/back fish route sweeps, cave turn circle, 7.75 m corridor, 0.62 m conservative visual clearance, camera obstruction/recovery and P2 depth-marker containment. |
+| `tools/dev inspect-habitat`, `inspect-reef`, `inspect-terrain`, `inspect-depth` | PASS after updating the seabed-only ray grid to exclude the three new route-defining boxes. Continuous seabed, 202 height samples, hidden limits, five-band routes, original tunnel/shelter, 51 terrain chunks and water-depth preset checks remain valid. |
+| `tools/dev import` | Environment-limited failure: the headless editor could not open its .NET/MCP TCP listeners or save user config/cache in this sandbox. It generated both new script UID sidecars; loaded scene/runtime checks and the C# build passed. |
+| `git diff --check` | PASS after the source, documentation and `0.3.3` version updates; implementation changes remain uncommitted for the runner. |
+
+The Godot MCP server `2026.11.04` reported its editor bridge disconnected, so no MCP scene mutation or native visual claim was made. `0.3.3` records implemented and headless-checked geology; actual look, apparent passage clearance and hand-controlled comfort still require P7 Forward+ review against the reef target.

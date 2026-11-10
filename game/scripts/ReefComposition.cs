@@ -121,6 +121,8 @@ public partial class ReefComposition : Node3D
                 seabed.GetHeightAt(route.Position.X, route.Position.Z) + clearance,
                 route.Position.Z);
         }
+        if (GetNodeOrNull<FafGeologyWorld>("Geology") is not { } geology ||
+            !geology.TryBuild(seabed, out diagnostic)) return false;
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;

@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/ReefComposition.cs" id="1_reef"]
 [ext_resource type="Script" path="res://scripts/FafTerrainWorld.cs" id="2_terrain"]
+[ext_resource type="Script" path="res://scripts/FafGeologyWorld.cs" id="3_geology"]
 
 [sub_resource type="BoxShape3D" id="tunnel_west"]
 size = Vector3(5.8, 5.3, 7.0)
@@ -58,6 +59,39 @@ metadata/next_phase = "P3 geology transition and P4 sparse details"
 [node name="UpperReturn" type="Marker3D" parent="Terrain/SeamZones"]
 position = Vector3(18, 0, 18)
 metadata/next_phase = "P3 return landmark and P4 living edge"
+
+[node name="Geology" type="Node3D" parent="."]
+script = ExtResource("3_geology")
+
+[node name="Visuals" type="Node3D" parent="Geology"]
+
+[node name="Collision" type="Node3D" parent="Geology"]
+
+[node name="Routes" type="Node3D" parent="Geology"]
+
+[node name="CanyonEntry" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(-8.6, 0, -19.6)
+metadata/height_above_floor = 2.1
+
+[node name="CanyonCenter" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(-8.6, 0, -22.7)
+metadata/height_above_floor = 2.1
+
+[node name="CanyonExit" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(-8.6, 0, -24.8)
+metadata/height_above_floor = 2.1
+
+[node name="CanyonReturn" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(3, 0, -24.8)
+metadata/height_above_floor = 2.1
+
+[node name="CaveTurn" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(6.9, 0, -14)
+metadata/height_above_floor = 1.9
+
+[node name="CaveSide" type="Marker3D" parent="Geology/Routes"]
+position = Vector3(5.3, 0, -14)
+metadata/height_above_floor = 1.9
 
 [node name="Rocks" type="Node3D" parent="."]
 

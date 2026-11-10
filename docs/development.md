@@ -54,11 +54,12 @@ From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `
 | `./tools/dev doctor` | Report actual Godot version/.NET capability, SDK, project/config readiness and display availability. |
 | `./tools/dev import` | Import the Fish project and wait for completion; fail on engine errors/timeouts. |
 | `./tools/dev build` | Compile `game/Fish.csproj` with the pinned SDK. |
-| `./tools/dev check` | Compose import, build, bounded main-scene C# smoke, scene automation and focused P1/P2 input, camera, animation, habitat, reef and atmosphere checks. |
+| `./tools/dev check` | Compose import, build, bounded main-scene C# smoke, scene automation and focused input, camera, animation, habitat, reef, FAF terrain/geology and atmosphere checks. |
 | `./tools/dev editor` | Open the Fish editor, forwarding the Fish bridge environment after P2. |
 | `./tools/dev run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]` | Build and launch the real Fish main scene. The optional, validated game-owned argument follows Godot's `--` separator and does not save a preference. |
 | `./tools/dev compare compatibility` or `./tools/dev compare forward-plus` | Build and launch the preserved P1 fixture inside the bounded P2 rendering slice. Godot 4.7.2 uses `--rendering-method gl_compatibility` / `forward_plus` for one process; the saved production method remains Forward+. Add `--effects=off` to either command to hide comparison effects and fog. |
 | `./tools/dev inspect-scene <path>` | Inspect a real saved scene; missing paths fail nonzero. |
+| `./tools/dev inspect-geology` | Check live FAF geology IDs/placement, two covered swim-throughs, cave turn space, deep corridor/return, visual bounds and camera obstruction recovery. |
 | `./tools/dev inspect-atmosphere` | Check tracked Forward+ settings, normal atmosphere resources and bounds, UI ordering, resize/pause safety, optional screen resource behavior and equal fish movement with effects on/off. |
 | `./tools/dev automation-smoke` | Create/edit/save/reload/assert/remove a disposable scene using Godot APIs. |
 

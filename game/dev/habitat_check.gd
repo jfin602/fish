@@ -111,6 +111,9 @@ func _run() -> void:
 	var excluded: Array[RID] = [fish.get_rid(), limits.get_rid()]
 	for rock in main.get_node("Habitat/Composition/ReefComposition/Rocks").get_children():
 		excluded.append(rock.get_rid())
+	# The heightfield-only ray grid must ignore P3 route-defining geology above it.
+	for body in main.get_node("Habitat/Composition/ReefComposition/Geology/Collision").get_children():
+		excluded.append(body.get_rid())
 	for x in range(-30, 31, 6):
 		for z in range(-30, 31, 6):
 			var hit := seabed_hit(space, excluded, x, z)
