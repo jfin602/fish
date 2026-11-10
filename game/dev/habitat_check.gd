@@ -81,6 +81,17 @@ func _run() -> void:
 	if material == null or material.shader == null or material.shader.resource_path != "res://shaders/seabed_blend.gdshader":
 		fail("continuous seabed blend shader missing")
 		return
+	var water_surface_y: float = material.get_shader_parameter("water_surface_y")
+	var water_deep_y: float = material.get_shader_parameter("water_deep_y")
+	var atmosphere: Node3D = main.get_node("UnderwaterAtmosphere")
+	if not is_finite(water_surface_y) or not is_finite(water_deep_y) or absf(water_surface_y - atmosphere.SurfaceHeight) > 0.001 or absf(water_deep_y - atmosphere.DeepReferenceHeight) > 0.001 or water_deep_y >= water_surface_y or not material.shader.code.contains("world_position.y"):
+		fail("seabed water-depth anchors are invalid")
+		return
+	var upper_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, 27.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	var lower_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, -28.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	if lower_depth - upper_depth < 0.5:
+		fail("upper/lower ledges cannot receive distinct world-depth treatment")
+		return
 	for prefix in ["coast", "shell", "gravel", "rock"]:
 		for map_name in ["color", "normal", "roughness"]:
 			if material.get_shader_parameter(prefix + "_" + map_name) == null:

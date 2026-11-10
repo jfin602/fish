@@ -38,6 +38,9 @@ func _run() -> void:
 	var screen: CanvasLayer = atmosphere.get_node("WaterScreen")
 	var rect: ColorRect = screen.get_node("ScreenTreatment")
 	var shell: Node = main.get_node("PlayShell")
+	if shell.find_child("GfxButton", true, false) == null or shell.find_child("GraphicsPanel", true, false) == null or shell.find_child("LightingPresetChoice", true, false) == null:
+		fail("graphics controls or lighting preset UI missing")
+		return
 	var shell_canvas: CanvasLayer = null
 	for child in shell.get_children():
 		if child is CanvasLayer:
@@ -84,6 +87,15 @@ func _run() -> void:
 	if shaft_material.shader == null or shaft_material.shader.resource_path != "res://shaders/sun_shafts.gdshader":
 		fail("shaft shader did not load")
 		return
+	var surface_y: float = shaft_material.get_shader_parameter("water_surface_y")
+	var deep_y: float = shaft_material.get_shader_parameter("water_deep_y")
+	if not is_finite(surface_y) or not is_finite(deep_y) or absf(surface_y - atmosphere.SurfaceHeight) > 0.001 or absf(deep_y - atmosphere.DeepReferenceHeight) > 0.001 or deep_y >= surface_y:
+		fail("shaft depth anchors do not match the water column")
+		return
+	var deep_strength: float = shaft_material.get_shader_parameter("deep_transmission")
+	if not is_finite(deep_strength) or deep_strength <= 0.0 or deep_strength > 0.15 or not shaft_material.shader.code.contains("world_height"):
+		fail("deep shaft contribution is not attenuated")
+		return
 	var shaft_vertices: PackedVector3Array = shafts.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
 	if shaft_vertices.size() != 48 or atmosphere.get("ShaftCount") != 6:
 		fail("shaft geometry is not eight bounded ribbons with six visible by default")
@@ -110,7 +122,7 @@ func _run() -> void:
 		if child is Decal:
 			projections += 1
 			caustic = child
-			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.8 or child.size != Vector3(100, 24, 100) or absf(child.rotation.y) < 0.05:
+			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.8 or child.size != Vector3(100, 22, 100) or absf(child.rotation.y) < 0.05 or child.lower_fade < 0.29:
 				fail("caustic projection missing or unbounded")
 				return
 	if projections != 1 or caustic == null or shell_canvas == null:
@@ -129,7 +141,7 @@ func _run() -> void:
 		var decal_floor: Vector3 = caustic.to_local(floor_center)
 		var sample_x := clampi(roundi((decal_floor.x / 100.0 + 0.5) * 256.0), 0, 255)
 		var sample_y := clampi(roundi((decal_floor.z / 100.0 + 0.5) * 256.0), 0, 255)
-		if caustic_image.get_pixel(sample_x, sample_y).a < 0.02:
+		if caustic_image.get_pixel(sample_x, sample_y).a < 0.02 or decal_floor.y < -caustic.size.y * 0.5:
 			fail("shaft ribbon does not land on a lit caustic ridge")
 			return
 	var dark_samples := 0
@@ -148,9 +160,12 @@ func _run() -> void:
 	for section_name in ["Rocks", "Corals"]:
 		for piece in reef.get_node(section_name).get_children():
 			var position: Vector3 = caustic.to_local(piece.global_position)
-			if absf(position.x) > 49.5 or absf(position.z) > 49.5 or absf(position.y) > 12.0:
-				fail("prepared rock/coral anchor falls outside caustic projection")
+			if absf(position.x) > 49.5 or absf(position.z) > 49.5:
+				fail("prepared rock/coral anchor falls outside caustic footprint")
 				return
+	if caustic.to_local(Vector3(0, main.get_node("Habitat/Seabed").GetHeightAt(0.0, -28.0), -28)).y >= -caustic.size.y * 0.5:
+		fail("deep shelf still receives projected caustics")
+		return
 	if screen.layer >= main.get_node("PrototypeHelp").layer or screen.layer >= shell_canvas.layer or rect.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 		fail("water screen can distort or intercept UI")
 		return

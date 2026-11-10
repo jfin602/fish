@@ -13,6 +13,8 @@ uniform sampler2D coast_roughness : filter_linear_mipmap_anisotropic, repeat_ena
 uniform sampler2D shell_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D gravel_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
 uniform sampler2D rock_roughness : filter_linear_mipmap_anisotropic, repeat_enable;
+uniform float water_surface_y = 10.0;
+uniform float water_deep_y = -8.0;
 
 varying vec3 world_position;
 
@@ -42,7 +44,9 @@ void fragment() {
     if (weights.w > 0.001) {
         albedo += texture(rock_color, uv).rgb * weights.w;
     }
-    ALBEDO = albedo;
+    // World height lets shelves in the same frame keep distinct water-column color.
+    float depth = smoothstep(0.25, 1.0, clamp((water_surface_y - world_position.y) / max(water_surface_y - water_deep_y, 0.01), 0.0, 1.0));
+    ALBEDO = albedo * mix(vec3(1.0), vec3(0.67, 0.80, 0.88), depth);
     if (weights.w > max(max(weights.x, weights.y), weights.z)) {
         NORMAL_MAP = texture(rock_normal, uv).rgb;
         ROUGHNESS = texture(rock_roughness, uv).r;

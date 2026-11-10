@@ -68,17 +68,17 @@ func _run() -> void:
 	main.add_child(camera)
 	camera.make_current()
 	var routes: Node3D = main.get_node("Habitat/Composition/ReefComposition/Routes")
-	var open: Vector3 = routes.get_node("OpenFar").global_position
-	var upper: Vector3 = routes.get_node("UpperLandmark").global_position
+	var shallow: Vector3 = routes.get_node("DepthShallow").global_position
+	var deep: Vector3 = routes.get_node("DepthDeep").global_position
 	var plane: PlaneMesh = surface.mesh
 	print("ATMOSPHERE_AB_DEVICE renderer=%s adapter=%s viewport=%s shafts=%d shaft_surfaces=%d surface_subdivisions=%dx%d caustics=1 motes=%d screen=1" % [RenderingServer.get_current_rendering_method(), RenderingServer.get_video_adapter_name(), root.size, atmosphere.get("ShaftCount"), shafts.mesh.get_surface_count(), plane.subdivide_width, plane.subdivide_depth, effects.get_node("SuspendedMotes").amount])
-	var open_on: Dictionary = await _sample("open", true, atmosphere, camera, open + Vector3(0, 0.4, 3), open + Vector3(0, 0, -16))
-	var open_off: Dictionary = await _sample("open", false, atmosphere, camera, open + Vector3(0, 0.4, 3), open + Vector3(0, 0, -16))
-	var upper_on: Dictionary = await _sample("upper", true, atmosphere, camera, upper + Vector3(0, 0.3, 2), upper + Vector3(0, 5, -13))
-	var upper_off: Dictionary = await _sample("upper", false, atmosphere, camera, upper + Vector3(0, 0.3, 2), upper + Vector3(0, 5, -13))
-	if open_on.is_empty() or open_off.is_empty() or upper_on.is_empty() or upper_off.is_empty():
+	var shallow_on: Dictionary = await _sample("shallow", true, atmosphere, camera, shallow + Vector3(0, 1.5, 3), shallow + Vector3(0, 1.5, -16))
+	var shallow_off: Dictionary = await _sample("shallow", false, atmosphere, camera, shallow + Vector3(0, 1.5, 3), shallow + Vector3(0, 1.5, -16))
+	var deep_on: Dictionary = await _sample("deep", true, atmosphere, camera, deep + Vector3(0, 1.5, 3), deep + Vector3(0, 1.5, -16))
+	var deep_off: Dictionary = await _sample("deep", false, atmosphere, camera, deep + Vector3(0, 1.5, 3), deep + Vector3(0, 1.5, -16))
+	if shallow_on.is_empty() or shallow_off.is_empty() or deep_on.is_empty() or deep_off.is_empty():
 		return
-	_compare("open", open_on, open_off)
-	_compare("upper", upper_on, upper_off)
-	print("ATMOSPHERE_AB_OK same_scene=1 views=2 modes=on,off surface=%s" % surface.name)
+	_compare("shallow", shallow_on, shallow_off)
+	_compare("deep", deep_on, deep_off)
+	print("ATMOSPHERE_AB_OK same_scene=1 views=shallow,deep modes=on,off surface=%s" % surface.name)
 	quit()

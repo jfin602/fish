@@ -163,6 +163,13 @@ public partial class UnderwaterAtmosphere : Node3D
         _deepReferenceHeight = seabed.ToGlobal(new Vector3(0,
             seabed.GetHeightAt(0, SeabedSurface.DeepShelfReferenceZ) + 2f,
             SeabedSurface.DeepShelfReferenceZ)).Y;
+        if (_deepReferenceHeight >= _surfaceHeight || !float.IsFinite(_deepReferenceHeight))
+        {
+            GD.PushError("FISH_ATMOSPHERE_INVALID_DEPTH_ANCHOR");
+            return;
+        }
+        seabed.SetWaterColumn(_surfaceHeight, _deepReferenceHeight);
+        // Continuous height fog affects imported reef meshes without replacing their materials.
         _environment.FogHeight = _surfaceHeight - 0.60f * (_surfaceHeight - _deepReferenceHeight)
             + LowerFogStartHeight;
         AddCaustics();
@@ -217,7 +224,7 @@ public partial class UnderwaterAtmosphere : Node3D
         {
             if (_caustics[index] is not { } decal) continue;
             var phase = (float)_presentationSeconds * CausticDrift;
-            decal.Position = new Vector3(CausticTravel * (Mathf.Sin(phase) + 0.18f * Mathf.Sin(phase * 1.71f)), 2,
+            decal.Position = new Vector3(CausticTravel * (Mathf.Sin(phase) + 0.18f * Mathf.Sin(phase * 1.71f)), 3,
                 CausticTravel * (Mathf.Cos(phase * 0.73f) + 0.15f * Mathf.Sin(phase * 1.37f)));
             if (_shafts is not null) _shafts.Position = new Vector3(decal.Position.X, 0, decal.Position.Z);
         }
@@ -381,6 +388,9 @@ public partial class UnderwaterAtmosphere : Node3D
         _shaftMaterial.SetShaderParameter("shaft_time", 0.0f);
         _shaftMaterial.SetShaderParameter("shaft_count", ShaftCount);
         _shaftMaterial.SetShaderParameter("shaft_brightness", ShaftBrightness);
+        _shaftMaterial.SetShaderParameter("water_surface_y", _surfaceHeight);
+        _shaftMaterial.SetShaderParameter("water_deep_y", _deepReferenceHeight);
+        _shaftMaterial.SetShaderParameter("deep_transmission", 0.12f);
         _shafts = new MeshInstance3D
         {
             Name = "SunShafts",
@@ -399,17 +409,17 @@ public partial class UnderwaterAtmosphere : Node3D
             var decal = new Decal
             {
                 Name = $"CausticProjection{index + 1}",
-                Position = new Vector3(0, 2, 0),
+                Position = new Vector3(0, 3, 0),
                 Rotation = new Vector3(0, 0.12f, 0),
                 // 100 m covers the 84 m habitat after the small off-axis rotation and drift.
-                Size = new Vector3(100, 24, 100),
+                Size = new Vector3(100, 22, 100),
                 TextureAlbedo = texture,
                 AlbedoMix = 0,
                 TextureEmission = texture,
                 EmissionEnergy = CausticEnergy,
                 NormalFade = 0.3f,
                 UpperFade = 0.25f,
-                LowerFade = 0.25f,
+                LowerFade = 0.30f,
             };
             _effects!.AddChild(decal);
             _caustics[index] = decal;

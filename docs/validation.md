@@ -46,6 +46,8 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
+**Current P2 result (2026-11-10):** [c2-depth P4 native evidence](tasks/c2-depth/qualification/native-depth.md) leaves V18 and V19 OPEN. V18 has a demonstrated failure: the authored shallow/deep markers on both lanes lie beyond the fish's ±24.9 m horizontal clamp, despite reachable proxy, alternate, tunnel and shelter swims. V19 shows cooler/dimmer depth direction and measured same-revision counters, but full visible distance fade, bright deep overhead surface and owner judgment are unresolved. V20 remains OPEN under the [P2 P8 review](tasks/p2/closeout.md); no new G2.3 claim follows from c2-depth.
+
 ## Core movement acceptance
 
 **Design and criteria approved — 2026-11-09; execution results remain owned by the roadmap.** The [completed worksheet Q10](planning/p1/swim-controls-worksheet.md#q10--ready-for-gameplay-playtest) accepts these seven criteria for the [core swimming contract](systems/swimming-and-camera.md):

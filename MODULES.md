@@ -1,6 +1,6 @@
 # Module map
 
-This map distinguishes implemented source from planned boundaries. Inspect the checkout before editing; [P2's P8 review](docs/tasks/p2/closeout.md) records the current candidate and open qualification.
+This map distinguishes implemented source from planned boundaries. Inspect the checkout before editing; [P2's P8 review](docs/tasks/p2/closeout.md) records the historical candidate and [c2-depth P4](docs/tasks/c2-depth/closeout.md) records the current native failure.
 
 ## Existing development tooling
 
@@ -16,7 +16,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
 | `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
-| `docs/tasks/c2-depth/` | Authored next correction for five-level basin structure plus actual water-column extinction/light; not implemented yet. |
+| `docs/tasks/c2-depth/` | P1–P3 five-band basin and depth-light implementation, plus P4 native review: authored endpoints unreachable and visual acceptance still open. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
@@ -27,24 +27,24 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/project.godot` | Godot project, owner-selected Forward+ renderer, main scene, display/input defaults, enabled MCP addon/runtime probe. |
 | `game/Fish.csproj`, `game/Fish.sln`, `game/global.json` | Godot .NET target and .NET SDK pins. |
 | `game/scenes/main.tscn` | Normal-play root: instances `p2_habitat.tscn`, retains accepted Fish3 controller/camera/input and world light/environment hook. |
-| `game/scenes/p2_habitat.tscn`, `p2_reef_composition.tscn` | Reusable P2 spawn, continuous seabed/hidden limits and authored rock/coral anchors with open, tunnel, shelter and vertical route markers. |
+| `game/scenes/p2_habitat.tscn`, `p2_reef_composition.tscn` | Reusable P2 spawn, continuous seabed/hidden limits and authored rock/coral anchors with open, tunnel, shelter, vertical and five-level depth route markers. The depth endpoints currently exceed the fish's horizontal bound. |
 | `game/scenes/p1_course_fixture.tscn`, `movement_course.tscn` | Byte-preserved P1 main scene and its movement/obstruction course for regression and renderer comparison. |
 | `game/scenes/renderer_comparison.tscn` | P1 diagnostic comparison now instances the dedicated P1 fixture, keeping normal play free of the course. |
 | `game/scripts/Main.cs` | Main-scene initialization, shell setup and smoke integration. |
 | `game/scripts/StarterWorld.cs` | P1 fixture-only local asset readiness and sand/rock/coral/ambient-fish dressing. |
 | `game/scripts/PlayerArt.cs` | Shared checked Fish3 import, rig/clip verification and visual attachment. |
 | `game/scripts/P2HabitatWorld.cs`, `ReefComposition.cs` | Normal P2 readiness, safe spawn, simple environment setup and checked local model installation at authored anchors; no movement authority. |
-| `game/scripts/HabitatPalette.cs`, `SeabedSurface.cs`, `game/shaders/seabed_blend.gdshader` | Checked local Coast Sand 01/Ground060/Gravel041/Rock063 palette, one visually blended basin surface and matching two-sided collision. |
-| `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration and tuning. P2 presentation must not take ownership of these. |
+| `game/scripts/HabitatPalette.cs`, `SeabedSurface.cs`, `game/shaders/seabed_blend.gdshader` | Checked local Coast Sand 01/Ground060/Gravel041/Rock063 palette, one visually blended five-band basin surface and matching two-sided collision, with world-height cool/dim shading. Native naturalness is not qualified. |
+| `game/scripts/FishController.cs`, `SwimMotor.cs`, `SwimTuning.cs` | Authoritative swimming root, physics integration, ±24.9 m horizontal bound and tuning. P2 route markers must fit reachable player space; presentation must not take ownership of these. |
 | `game/scripts/ControlPreset.cs`, `ControlPresetStore.cs`, `KeyboardSwimInput.cs`, `MouseSwimInput.cs`, `ControlPresetsPanel.cs` | Built-in/custom profiles, versioned persistence, intent resolution and pause editor. Keyboard Only, Mouse Only and Hybrid Swim form the accepted baseline; Hybrid 2 is newly implemented and awaits owner feel testing. |
 | `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior and the Hybrid 2 presentation-only 360 mouse orbit. P2 geometry must support it without making camera state authoritative. |
 | `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
-| `game/scripts/UnderwaterAtmosphere.cs`, `LightingSettings.cs`, `LightingPresetStore.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ distance/height/volumetric fog and top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched caustic-aligned shaft mesh, one moving organic caustic projection, GPU motes, restrained screen treatment and bounded saved GFX presets; no fish authority. |
+| `game/scripts/UnderwaterAtmosphere.cs`, `LightingSettings.cs`, `LightingPresetStore.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ camera-depth extinction and world-height fog/shaft treatment, top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched caustic-aligned shaft mesh, one moving organic caustic projection, GPU motes, restrained screen treatment and bounded saved GFX presets; no fish authority. Deep surface and visible distance fade remain unqualified. |
 | `game/scripts/WaterReaction.cs` | Forward+ tail-space GPU ribbons and spherical bubbles driven by read-only motor presentation values; 44 live slots maximum, no forces or collision. |
 | `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
-| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat`, `inspect-reef`, `inspect-atmosphere`, `measure-atmosphere`, `inspect-water` and preserved P1 fixture checks. |
+| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat`, `inspect-reef`, `inspect-atmosphere`, `inspect-depth`, `measure-atmosphere`, `inspect-water` and preserved P1 fixture checks. Current depth route checks miss the fish's coordinate clamp. |
 | `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |
 
 ## P2 composition/effects boundaries
@@ -57,7 +57,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | Environment assets | Prepared reusable/optimized visual pieces, provenance/license records, local installation mapping and performance-minded instancing. | Treating an asset listing as runtime qualification. |
 | P1 qualification fixture | The preserved movement course and any checks still needed to reproduce P1 evidence. | Becoming the normal P2 world presentation. |
 
-The paths above are the current source owners. Keep renderer-specific code behind the selected P2 presentation boundary; [P8 review](docs/tasks/p2/closeout.md) distinguishes implemented components from qualified visual results.
+The paths above are the current source owners. Keep renderer-specific code behind the selected P2 presentation boundary; [P8 review](docs/tasks/p2/closeout.md) and [c2-depth native review](docs/tasks/c2-depth/qualification/native-depth.md) distinguish implemented components from qualified visual results.
 
 ## Later gameplay boundaries
 

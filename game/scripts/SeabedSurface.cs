@@ -1,3 +1,4 @@
+#nullable enable
 using Godot;
 
 namespace Fish;
@@ -10,6 +11,15 @@ public partial class SeabedSurface : StaticBody3D
     public const int CellsPerSide = 56;
     // Center of the authored deep traversal shelf, away from the rising rim.
     public const float DeepShelfReferenceZ = -28.0f;
+    private ShaderMaterial? _waterMaterial;
+
+    public void SetWaterColumn(float surfaceY, float deepY)
+    {
+        if (!float.IsFinite(surfaceY) || !float.IsFinite(deepY) || deepY >= surfaceY)
+            throw new System.ArgumentOutOfRangeException(nameof(deepY), "Invalid water-column anchors");
+        _waterMaterial?.SetShaderParameter("water_surface_y", surfaceY);
+        _waterMaterial?.SetShaderParameter("water_deep_y", deepY);
+    }
 
     public bool Build(StandardMaterial3D[] materials)
     {
@@ -17,6 +27,7 @@ public partial class SeabedSurface : StaticBody3D
         var shader = ResourceLoader.Load<Shader>("res://shaders/seabed_blend.gdshader");
         if (shader is null) return false;
         var material = new ShaderMaterial { Shader = shader, ResourceName = "P2 Blended Seabed" };
+        _waterMaterial = material;
         for (var index = 0; index < materials.Length; index++)
         {
             var prefix = new[] { "coast", "shell", "gravel", "rock" }[index];

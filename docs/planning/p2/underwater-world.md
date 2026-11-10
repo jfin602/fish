@@ -1,8 +1,8 @@
 # P2 — Build the underwater world
 
 **Decision date:** 2026-11-09  
-**State:** IN PROGRESS. The base P2 habitat/effects exist; the post-P2 water/light correction is owner-green. `c2-depth` P1 now provides the structural depth basin; P2 water-column extinction is next before final P2 qualification.
-**Execution:** Historical implementation lives in [docs/tasks/p2](../../tasks/p2/README.md); the next bounded stack is [c2-depth](../../tasks/c2-depth/README.md) at unchanged root `0.2.6`.
+**State:** IN PROGRESS. The base P2 habitat/effects exist; the post-P2 water/light correction is owner-green. `c2-depth` P1–P3 implemented a depth candidate, but P4 native review failed the authored route and visual acceptance criteria.
+**Execution:** Historical implementation lives in [docs/tasks/p2](../../tasks/p2/README.md); repair and repeat [c2-depth](../../tasks/c2-depth/closeout.md) at unchanged root `0.2.6` before final P2 qualification.
 
 ## Outcome
 
@@ -25,9 +25,9 @@ This Phase is worldbuilding/presentation. It intentionally comes before ecology 
 
 ## Current starting point
 
-The original P2 implementation replaced the P1 test room. Normal play is `main.tscn -> p2_habitat.tscn -> p2_reef_composition.tscn` on Forward+. `SeabedSurface.cs` retains one continuous 84 × 84 m visual/collision mesh. The c2-depth P1 correction reshaped it into five headless-checked ordered elevation bands, with primary and alternate south-to-north routes. Native visual qualification remains for P4.
+The original P2 implementation replaced the P1 test room. Normal play is `main.tscn -> p2_habitat.tscn -> p2_reef_composition.tscn` on Forward+. `SeabedSurface.cs` retains one continuous 84 × 84 m visual/collision mesh. The c2-depth P1 correction reshaped it into five headless-checked ordered elevation bands, with primary and alternate south-to-north routes. [P4 native review](../../tasks/c2-depth/qualification/native-depth.md) found the authored shallow/deep markers outside the accepted fish's horizontal bound; reachable proxies can be swum but do not qualify the authored route. The several-band view still reads as terraces and a visible rim.
 
-The completed water/light correction adds the real overhead visual surface derived from the saved upper collision, procedural sky/sun cue, organic moving caustic projection, caustic-aligned ribbon shafts, restrained screen treatment, GPU motes and a paused GFX panel with bounded saved lighting presets. Preserve that accepted stack. The next correction changes **depth structure and depth response**, not the renderer or the core c2 visual identity.
+The completed water/light correction adds the real overhead visual surface derived from the saved upper collision, procedural sky/sun cue, organic moving caustic projection, caustic-aligned ribbon shafts, restrained screen treatment, GPU motes and a paused GFX panel with bounded saved lighting presets. Preserve that accepted stack. The current correction changes **depth structure and depth response**, not the renderer or the core c2 visual identity; its deep upward native view still lacks a distinct bright surface cue.
 
 At the pushed lighting baseline `d292aebd`, the saved upper collision is centered around Y 9.75 and the c2 surface is placed just above its top. `UnderwaterAtmosphere` already owns distance/height/volumetric fog, ambient/sun energy and the c2 effect materials. `seabed_blend.gdshader` already has world position available. These are the intended integration points for c2-depth.
 

@@ -1,0 +1,51 @@
+# c2-depth P4 — native depth observation
+
+**Result: FAIL for the authored five-level route; correction NOT GREEN.** Observed 2026-11-10 on `main` starting at `fe5a851848345bfdde7bd52cfc48318de13e6223` plus the uncommitted c2-depth P3 source candidate. A concurrent FAF asset commit advanced HEAD to `46efbd5c3757fcadbbef4fb4d74ff368cfc2ba51` during the session; the tested normal-play source hashes below did not change. Root `package.json` stayed `0.2.6`. This is a scripted native-window observation and image review, not an owner's hand-controlled acceptance decision.
+
+## Identity and method
+
+Godot `4.7.2.stable.mono.official.ed1daf0bf`, Linux/X11 `:0`, 1920 × 1200 at 60 Hz, AMD Radeon 880M (RADV GFX1150), Vulkan 1.4.318, **Forward+**. The saved project has `renderer/rendering_method="forward_plus"`; each native probe also requested and reported `forward_plus`. The Fish editor was opened on `/home/jfin/dev/fish/game` and reported the AMD Forward+ device, but its MCP bridge remained disconnected because the local port was already in use. The observations came from the real Vulkan game window with the unchanged normal `main.tscn`, physical-key events sent to the live fish controller, and fixed-view diagnostic cameras in that same scene. No browser renderer or headless screenshot was used.
+
+An isolated ignored XDG profile had no `lighting-presets.json`, so the built-in **Natural** lighting preset loaded. The native GFX panel reported Natural and the base values `Sun 1.25`, `Ambient 0.42`, `Volumetric 0.024`, `Distance fog 0.0035`; [capture](../../../../artifacts/c2-depth-native/gfx-natural.png) and [log](../../../../artifacts/c2-depth-native/ui.log). The captured profile used Keyboard Only input. Authoritative fish source, accepted tuning and P1 fixture were not edited.
+
+Observed source identity (SHA-256): `FishController.cs` `06fb77c2842fff969bf2fc912ee7166ec9c13a6487989c422537d93a5b8c531c`; `SeabedSurface.cs` `0578d0141a2897e359373291a216f5fc3163b0d52b34caaeabceca406cb55b4b`; `UnderwaterAtmosphere.cs` `2c7e00f488b630cae468a4fabe08cbaa79eb53ca771858021c51c5dee478c73f`; `p2_reef_composition.tscn` `335c75b92bc8dee75d6477400c0b1adb6790c90762f11d861cd9c203f605f032`; `project.godot` `0631a97120ec12db639784733e0b1020d298708a3db4c394addfefb8f8dd6957`. Other concurrent FAF asset work in the dirty tree was preserved and did not enter normal play.
+
+## Route and viewpoint results
+
+The first normal-play attempt targeted `DepthShallow` at `(3, 5.43, 27)` and stopped at Z `24.9` despite continued swim input ([log](../../../../artifacts/c2-depth-native/depth.log), [capture](../../../../artifacts/c2-depth-native/depth-0-DepthShallow.png)). A second attempt approached 2 m higher and stopped at the same Z ([log](../../../../artifacts/c2-depth-native/depth-transit.log)). `FishController.HorizontalLimit` is `24.9`, while both authored lanes put shallow markers at Z `27` and deep markers at Z `-28`. These four marker goals are unreachable by the authoritative fish. P1–P3's line/shape route checks did not exercise that clamp.
+
+To inspect the remaining candidate without pretending to reach those markers, a separate native diagnostic used floor-relative **proxy** positions at Z `+24` and `-24`. Physical swim input completed primary shallow → upper → middle → lower → deep → lower → middle → upper → shallow ([log](../../../../artifacts/c2-depth-native/depth-proxy.log)); the east alternate lane completed shallow → upper → middle → lower → deep at reachable proxies ([log](../../../../artifacts/c2-depth-native/alternate.log)). The existing tunnel entry/center/exit and shelter entry/center/exit were also reached ([tunnel log](../../../../artifacts/c2-depth-native/tunnel.log), [shelter log](../../../../artifacts/c2-depth-native/shelter.log)). Each reached point was within the probe's 1.25 m depth or 0.9 m tunnel/shelter tolerance. This supports reachable-path collision clearance, but does not pass the exact V18 marker route or establish hand-controlled camera comfort.
+
+| Required observation | Result | Native evidence and limit |
+| --- | --- | --- |
+| Five or more clearly distinct, natural ledges | **FAIL** | Five ordered sampled elevations exist, and the proxy route crossed them. The [several-band view](../../../../artifacts/c2-depth-native/fixed-multiband.png) shows broad nearly parallel transverse bands and a high perimeter wall; five *natural* ledges are not established. |
+| Geology rather than stairs/terraces | **FAIL** | The multi-band and [shallow horizontal](../../../../artifacts/c2-depth-native/fixed-horizontal-shallow.png) views read as long terraces and an exposed basin rim. The P2 cove/test-room boundary concern remains. |
+| Full traversal and camera clearance | **FAIL** for authored route; **PASS** for proxy/tunnel/shelter marker reachability; owner feel **NOT OBSERVED** | Z ±27/28 goals are outside the fish clamp. The proxy route and tight passages completed, but scripted input and snapshots do not prove pleasant hand-controlled camera movement. |
+| Lower ledges cooler/dimmer beside upper ledges | **PASS** for visible color/brightness direction | The [multi-band](../../../../artifacts/c2-depth-native/fixed-multiband.png) and shallow/middle/deep fixed views show darker, cooler lower terrain. This is a visual snapshot judgment, not owner acceptance. |
+| Progressively shorter horizontal range | **PASS** for runtime parameter; visible range **NOT OBSERVED** conclusively | Comparable +X fixed views at floor +2 m reported effective depth `0.186 / 0.675 / 1.0` and useful range `60.20 / 50.18 / 43.52 m` ([visual log](../../../../artifacts/c2-depth-native/visual.log)). Scene contents differ across those views, and far wall detail remains visible, so the intended player-visible range gradient is not yet proven. |
+| Detail → silhouette → water, without fog wall | **NOT OBSERVED** | [Shallow](../../../../artifacts/c2-depth-native/fixed-horizontal-shallow.png), [middle](../../../../artifacts/c2-depth-native/fixed-horizontal-middle.png), and [deep](../../../../artifacts/c2-depth-native/fixed-horizontal-deep.png) frames show no sharp fog plane, but do not show a convincing complete detail-to-water sequence. |
+| Warm colors diminish; blue/green silhouettes survive | **NOT OBSERVED** for warm-color ordering; **PASS** for local silhouette | These comparison sightlines contain little warm coral; the deep rock/terrain silhouette remains readable. |
+| Caustics and shafts weaken with depth | **PASS** for shaft visibility direction; caustic visual judgment **NOT OBSERVED** | A shallow shaft cue is visible; the deep fixed view is much darker and shows no equivalent strong shaft. The exact same projected patch was not observed at three depths, so caustic fade rests on P3 structural checks. |
+| Bright overhead surface coherent from deep | **FAIL** in captured upward view | [Shallow upward](../../../../artifacts/c2-depth-native/fixed-upward-shallow.png) has a bright top cue. [Deep upward](../../../../artifacts/c2-depth-native/fixed-upward-deep.png) is largely flat dark teal with a diffuse lighter patch; no distinct bright overhead surface reads through the column. |
+| UI/GFX/presets; movement/camera feel unchanged | **PASS** for crisp native GFX/Natural values and scripted movement; feel **NOT OBSERVED** | The [GFX capture](../../../../artifacts/c2-depth-native/gfx-natural.png) is legible and outside world haze. P2/P3 T2 checks cover saved preset base isolation and equal-intent movement. The owner has not hand-played this candidate. |
+
+The fixed camera comparisons use the same normal scene and +X direction from reachable shallow/middle/deep X/Z positions, each 2 m above the sampled floor; the fish remained at spawn. They are diagnostic views; the route captures retain the actual follow camera. The deep fixed view is near large rock geometry, which limits a direct visual distance comparison.
+
+## Same-revision performance
+
+The existing P3 A/B probe ran twice on this display with 120 warmup and 180 sampled frames per view/mode. Its fixed shallow view sits beyond the fish's playable Z clamp and its deep view looks toward the outer rim, so it is retained as a diagnostic, not the representative playable comparison. Its first shallow on/off median frame times were `18.91 / 16.77 ms` (+12.7%); repeat `19.83 / 18.76 ms` (+5.7%). That >10% first result did **not** repeat. Both runs added four shallow draw calls (`27 / 23`); deep was near the 60 FPS cap and mostly empty in that angle. The repeat is in `artifacts/logs/atmosphere-ab.log`; the first values were recorded from the command output before the log was overwritten.
+
+A further ignored diagnostic measured reachable shallow/deep fixed views on the **same source revision, display and Natural preset** ([log](../../../../artifacts/c2-depth-native/reachable-ab.log)). The toggle bypasses the *whole* atmosphere; the depth-aware seabed material stays loaded in both modes. It therefore does not isolate the cost of the new depth calculation.
+
+| Reachable view | Atmosphere | Median FPS | Median frame ms | Median draws | Median primitives |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Shallow, Z +24 | On | 60 | 16.70 | 11 | 95,738 |
+| Shallow, Z +24 | Off | 60 | 16.66 | 7 | 84,774 |
+| Deep, Z -24 | On | 60 | 16.65 | 12 | 187,420 |
+| Deep, Z -24 | Off | 60 | 16.67 | 8 | 176,456 |
+
+At these capped fixed views the median frame-time deltas are +0.2% shallow and -0.1% deep, with four additional draws each. The different original-probe shallow result and display cap limit any broad performance conclusion. There is no demonstrated *repeatable* new >10% frame-time regression here, and there is no production budget acceptance. Native logs reported no Godot script/resource errors.
+
+## Owner decision and next evidence
+
+**Owner judgment: NOT OBSERVED.** No direct owner hand-controlled swim or explicit accept/reject statement for this candidate was supplied. The earlier [c2 water/light owner-green decision](../../c2-watet-light-fx/closeout.md) remains valid for that correction only. Repair the unreachable authored route, naturalness/perimeter read and deep overhead-surface cue, then repeat the affected native views and obtain the owner's feel/visual decision before c2-depth can close. G2.3 and broader P2 owner qualification remain separate.

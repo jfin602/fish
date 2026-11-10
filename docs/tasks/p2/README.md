@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN.** P1–P6 remain the historical base implementation at root `0.2.6`; the post-stack [c2 water/light correction](../c2-watet-light-fx/README.md) is owner-green, and [c2-depth](../c2-depth/README.md) is the next authored correction before returning to final P2 owner/native qualification. [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS / NOT GREEN.** P1–P6 remain the historical base implementation at root `0.2.6`; the post-stack [c2 water/light correction](../c2-watet-light-fx/README.md) is owner-green. [c2-depth P4](../c2-depth/closeout.md) ran natively and failed authored route/visual criteria; repair and reobserve it before final P2 owner qualification. [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -63,7 +63,7 @@ Do not prefill these as PASS. A shader compiling, a headless scene tree, or a st
 
 ## Current continuation
 
-Do not rerun the historical P1–P8 stack as a substitute for the selected follow-up. Preserve its evidence, execute [c2-depth](../c2-depth/README.md) against the current post-c2 source, then reconcile V18–V20 and G2.1–G2.3 from the resulting normal-play candidate.
+Do not rerun the historical P1–P8 stack as a substitute for the selected follow-up. Preserve its evidence, resolve the [c2-depth native failures](../c2-depth/qualification/native-depth.md), repeat affected T2/T3 checks and obtain owner judgment, then reconcile V18–V20 and G2.1–G2.3 from the resulting normal-play candidate.
 
 ## Execute
 

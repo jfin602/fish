@@ -1,8 +1,8 @@
 # c2-depth — depth-structured basin and water-column correction
 
-**State:** P1–P2 IMPLEMENTED / P3 NEXT; correction not closed. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
+**State:** P1–P3 IMPLEMENTED / P4 NATIVE FAIL; correction NOT GREEN. **Type:** Correction 2 follow-up. **Required unchanged root version:** `0.2.6`.
 
-[P1–P2 implementation evidence](qualification/implementation.md) records the depth basin, camera-depth extinction, focused T2 checks and the remaining native visual limit. P3 world-depth lighting is the next runner step.
+[P1–P3 implementation evidence](qualification/implementation.md) records the depth basin, camera-depth extinction, world-depth lighting and focused T2 checks. [P4 native observation](qualification/native-depth.md) found unreachable authored shallow/deep route markers and unresolved visual criteria; [closeout review](closeout.md) keeps the correction open.
 
 ## Purpose
 
@@ -37,10 +37,10 @@ The owner pushed the accepted lighting candidate at `d292aebd` on 2026-11-10. Do
 | --- | --- | --- | --- |
 | P1 | [Depth-structured basin](P1-depth-structured-basin.txt) | Implemented: five ordered bands, continuous collision, updated routes/checks | T2 headless pass; import blocked by sandbox sockets |
 | P2 | [Water-column extinction](P2-water-column-extinction.txt) | Implemented: real-surface camera-depth extinction and preset-safe base values | T2 headless pass; native visual review remains P4 |
-| P3 | [Depth-integrated lighting](P3-depth-integrated-lighting.txt) | World-depth color/light treatment, depth-faded c2 caustics/shafts, integrated performance tuning | T2, no native pause |
-| P4 | [Native depth closeout](P4-native-depth-closeout.txt) | Real-window five-level traversal, shallow/mid/deep comparison and correction closeout | T3 manual closeout |
+| P3 | [Depth-integrated lighting](P3-depth-integrated-lighting.txt) | Implemented: world-depth seabed/shaft attenuation, deep caustic fade and shallow/deep probe; native counters blocked by absent display | T2 headless pass; P4 visual/performance review |
+| P4 | [Native depth closeout](P4-native-depth-closeout.txt) | Native review attempted; authored endpoints failed the fish bound, reachable proxies and visual/performance evidence recorded | T3 FAIL; repair and owner judgment needed |
 
-Only P4 is this correction's final closeout. Its `Browser required: yes.` metadata means an actual native Godot/owner handoff.
+Only P4 is this correction's final closeout. Its `Browser required: yes.` metadata means an actual native Godot/owner handoff. The first P4 attempt did not pass; do not advance to broader P2 acceptance from its proxy route.
 
 ## Acceptance boundary
 
