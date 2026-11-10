@@ -90,7 +90,7 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained, but the owner identified missing water-column depth as a required follow-up. [c2-depth](tasks/c2-depth/README.md) is AUTHORED / NOT EXECUTED; G2 Gates remain open until the new basin/depth candidate and remaining native criteria are observed. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
+**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained. [c2-depth](tasks/c2-depth/README.md) P1 has a headless-checked five-band basin; P2 water-column extinction, P3 integrated lighting and P4 native review remain. G2 Gates stay open until those results and the remaining native criteria are observed. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 

@@ -1,7 +1,7 @@
 # P2 — Build the underwater world
 
 **Decision date:** 2026-11-09  
-**State:** IN PROGRESS. The base P2 habitat/effects exist; the post-P2 water/light correction is owner-green and `c2-depth` is the selected next correction before final P2 qualification.  
+**State:** IN PROGRESS. The base P2 habitat/effects exist; the post-P2 water/light correction is owner-green. `c2-depth` P1 now provides the structural depth basin; P2 water-column extinction is next before final P2 qualification.
 **Execution:** Historical implementation lives in [docs/tasks/p2](../../tasks/p2/README.md); the next bounded stack is [c2-depth](../../tasks/c2-depth/README.md) at unchanged root `0.2.6`.
 
 ## Outcome
@@ -25,7 +25,7 @@ This Phase is worldbuilding/presentation. It intentionally comes before ecology 
 
 ## Current starting point
 
-The original P2 implementation has already replaced the P1 test room. Normal play is `main.tscn -> p2_habitat.tscn -> p2_reef_composition.tscn` on Forward+. `SeabedSurface.cs` builds one continuous 84 × 84 m visual/collision mesh, but its current analytic height is still fundamentally one broad bowl around Y -5.6 with gentle rolling variation plus a raised rim. That shape does not expose distinct water-depth zones.
+The original P2 implementation replaced the P1 test room. Normal play is `main.tscn -> p2_habitat.tscn -> p2_reef_composition.tscn` on Forward+. `SeabedSurface.cs` retains one continuous 84 × 84 m visual/collision mesh. The c2-depth P1 correction reshaped it into five headless-checked ordered elevation bands, with primary and alternate south-to-north routes. Native visual qualification remains for P4.
 
 The completed water/light correction adds the real overhead visual surface derived from the saved upper collision, procedural sky/sun cue, organic moving caustic projection, caustic-aligned ribbon shafts, restrained screen treatment, GPU motes and a paused GFX panel with bounded saved lighting presets. Preserve that accepted stack. The next correction changes **depth structure and depth response**, not the renderer or the core c2 visual identity.
 

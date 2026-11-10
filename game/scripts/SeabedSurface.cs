@@ -56,12 +56,34 @@ public partial class SeabedSurface : StaticBody3D
 
     public float GetHeightAt(float x, float z)
     {
-        var radius = Mathf.Sqrt(x * x + z * z);
-        var gentle = Smooth(2.5f, 7.0f, radius);
-        var rolling = 0.55f * Mathf.Sin(0.27f * x) * Mathf.Sin(0.33f * z) +
-            0.3f * Mathf.Sin(0.63f * x + 0.37f * z);
-        var rim = 18.0f * Smooth(22.0f, 39.0f, radius);
-        return -5.6f + gentle * rolling + rim;
+        // Unequal, wandering contours expose five broad depth bands along the basin.
+        // Each transition is a slope that remains part of the same triangulated mesh.
+        var deepToLower = z - 2.0f * Mathf.Sin(0.14f * x + 0.3f);
+        var lowerToMiddle = z + 2.5f * Mathf.Sin(0.11f * x - 0.7f);
+        var middleToUpper = z - 2.1f * Mathf.Sin(0.17f * x + 1.4f);
+        var upperToShallow = z + 2.8f * Mathf.Sin(0.10f * x + 0.6f);
+        var shelves = -9.4f
+            + 3.3f * Smooth(-25.0f, -18.0f, deepToLower)
+            + 3.2f * Smooth(-11.0f, -4.0f, lowerToMiddle)
+            + 3.1f * Smooth(3.0f, 10.0f, middleToUpper)
+            + 3.2f * Smooth(17.0f, 24.0f, upperToShallow);
+        var folds = 0.30f * Mathf.Sin(0.19f * x + 0.13f * z) * Mathf.Sin(0.23f * z)
+            + 0.18f * Mathf.Sin(0.37f * x - 0.16f * z);
+        // Local shoulders and a channel break the contour continuity without holes.
+        var westernShoulder = 1.0f * Ellipse(x, z, -23.0f, -3.0f, 12.0f, 17.0f);
+        var easternChannel = -0.9f * Ellipse(x, z, 23.0f, 7.0f, 10.0f, 20.0f);
+        // The irregular outer rise meets the collision-only side limits above play.
+        var edge = Mathf.Max(Mathf.Abs(x + 1.5f * Mathf.Sin(0.11f * z)),
+            Mathf.Abs(z + 1.2f * Mathf.Sin(0.13f * x)));
+        var rim = 19.0f * Smooth(31.0f, 39.0f, edge);
+        return shelves + folds + westernShoulder + easternChannel + rim;
+    }
+
+    private static float Ellipse(float x, float z, float cx, float cz, float rx, float rz)
+    {
+        var dx = (x - cx) / rx;
+        var dz = (z - cz) / rz;
+        return 1.0f - Smooth(0.0f, 1.0f, dx * dx + dz * dz);
     }
 
     private Vector3 Point(float x, float z) => new(x, GetHeightAt(x, z), z);

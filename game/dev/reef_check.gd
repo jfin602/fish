@@ -34,8 +34,9 @@ func route_clear(space: PhysicsDirectSpaceState3D, fish: CharacterBody3D, points
 		var count := ceili(points[segment].distance_to(points[segment + 1]) / 0.75)
 		for step in range(count + 1):
 			var at := points[segment].lerp(points[segment + 1], float(step) / count)
-			if not sphere_hits(space, at, 0.48, fish).is_empty():
-				fail(label + " fish clearance blocked at " + str(at))
+			var fish_hits := sphere_hits(space, at, 0.48, fish)
+			if not fish_hits.is_empty():
+				fail(label + " fish clearance blocked at " + str(at) + " by " + str(fish_hits[0].get("collider").name))
 				return false
 			if not sphere_hits(space, at + Vector3.UP * 2.0, 0.22, fish).is_empty():
 				fail(label + " camera clearance blocked at " + str(at))
@@ -56,7 +57,11 @@ func collect_meshes(node: Node, found: Array[MeshInstance3D]) -> void:
 		collect_meshes(child, found)
 
 func marker(routes: Node3D, name: String) -> Vector3:
-	return routes.get_node(name).global_position
+	var found: Marker3D = routes.get_node_or_null(name)
+	if found == null:
+		fail("missing route marker " + name + " among " + str(routes.get_children().map(func(child: Node) -> String: return child.name)))
+		return Vector3.ZERO
+	return found.global_position
 
 func _run() -> void:
 	var packed: PackedScene = load("res://scenes/main.tscn")
@@ -71,6 +76,7 @@ func _run() -> void:
 	var rocks: Node3D = reef.get_node("Rocks")
 	var corals: Node3D = reef.get_node("Corals")
 	var routes: Node3D = reef.get_node("Routes")
+	var seabed: StaticBody3D = habitat.get_node("Seabed")
 	var seabed_mesh: MeshInstance3D = habitat.get_node("Seabed/Mesh")
 	if seabed_mesh.mesh.get_surface_count() != 1 or seabed_mesh.mesh.surface_get_array_len(0) < 3:
 		fail("normal habitat lost its continuous seabed surface")
@@ -148,6 +154,24 @@ func _run() -> void:
 		return
 	if not route_clear(space, fish, [marker(routes, "LowerLandmark"), marker(routes, "VerticalMid"), marker(routes, "UpperLandmark")], "vertical"):
 		return
+	for lane in [["DepthShallow", "DepthUpper", "DepthMiddle", "DepthLower", "DepthDeep"], ["AltShallow", "AltUpper", "AltMiddle", "AltLower", "AltDeep"]]:
+		var points: Array[Vector3] = []
+		var floors: Array[float] = []
+		for name in lane:
+			var at := marker(routes, name)
+			var floor_y: float = seabed.call("GetHeightAt", at.x, at.z)
+			var clearance: float = routes.get_node(name).get_meta("height_above_floor", 2.0)
+			if absf(at.y - floor_y - clearance) > 0.01:
+				fail("depth route marker lost floor-relative clearance: " + name)
+				return
+			points.append(at)
+			floors.append(floor_y)
+		for i in range(4):
+			if floors[i] - floors[i + 1] < 1.8:
+				fail("depth route bands are not ordered: " + str(floors))
+				return
+		if not route_clear(space, fish, points, str(lane[0])):
+			return
 	var tunnel := marker(routes, "TunnelCenter")
 	var shelter := marker(routes, "ShelterCenter")
 	if ray_hit(space, tunnel, tunnel + Vector3.UP * 5.0, fish).get("collider") != rocks.get_node("TunnelRoof"):
@@ -164,7 +188,7 @@ func _run() -> void:
 	var upper_coral_top := -INF
 	for mesh in upper_coral_meshes:
 		upper_coral_top = maxf(upper_coral_top, (mesh.global_transform * mesh.mesh.get_aabb()).end.y)
-	if marker(routes, "UpperLandmark").y - marker(routes, "LowerLandmark").y < 6.0 or upper_coral_top < 4.0:
+	if marker(routes, "UpperLandmark").y - marker(routes, "LowerLandmark").y < 4.0 or upper_coral_top < 4.0:
 		fail("upper/lower landmark height separation or upper coral missing")
 		return
 	fish.set_physics_process(false)
@@ -173,5 +197,5 @@ func _run() -> void:
 	if fish.move_and_collide(tunnel_motion) != null or fish.global_position.distance_to(marker(routes, "TunnelExit")) > 0.05:
 		fail("accepted fish root could not traverse saved tunnel centerline")
 		return
-	print("REEF_CHECK_OK rocks=10 corals=8 sources=9 seabed_materials=4 triangles=%d routes=open,tunnel,shelter,vertical camera_probe=clear" % triangles)
+	print("REEF_CHECK_OK rocks=10 corals=8 sources=9 seabed_materials=4 triangles=%d routes=open,tunnel,shelter,vertical,depth,alternate camera_probe=clear" % triangles)
 	quit()

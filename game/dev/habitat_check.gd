@@ -22,12 +22,12 @@ func sphere_hits(space: PhysicsDirectSpaceState3D, at: Vector3, radius: float, f
 	query.exclude = [fish.get_rid()]
 	return space.intersect_shape(query, 16)
 
-func seabed_hit(space: PhysicsDirectSpaceState3D, fish: CharacterBody3D, limits: StaticBody3D, x: float, z: float) -> Dictionary:
+func seabed_hit(space: PhysicsDirectSpaceState3D, excluded: Array[RID], x: float, z: float) -> Dictionary:
 	var query := PhysicsRayQueryParameters3D.new()
 	query.from = Vector3(x, 14, z)
-	query.to = Vector3(x, -12, z)
+	query.to = Vector3(x, -16, z)
 	query.collision_mask = 1
-	query.exclude = [fish.get_rid(), limits.get_rid()]
+	query.exclude = excluded
 	query.hit_back_faces = true
 	return space.intersect_ray(query)
 
@@ -97,16 +97,39 @@ func _run() -> void:
 	if not sphere_hits(space, spawn.global_position, 0.48, fish).is_empty() or not sphere_hits(space, Vector3(0, 2, 3.8), 0.22, fish).is_empty():
 		fail("fish or camera spawn volume blocked")
 		return
-	var heights: Array[float] = []
-	for point in [Vector2(0, 0), Vector2(8, 6), Vector2(-10, -8), Vector2(30, 0), Vector2(0, -30)]:
-		var hit := seabed_hit(space, fish, limits, point.x, point.y)
-		if hit.is_empty() or hit["collider"] != seabed:
-			fail("seabed collision hole at " + str(point) + " hit=" + str(hit))
+	var excluded: Array[RID] = [fish.get_rid(), limits.get_rid()]
+	for rock in main.get_node("Habitat/Composition/ReefComposition/Rocks").get_children():
+		excluded.append(rock.get_rid())
+	for x in range(-30, 31, 6):
+		for z in range(-30, 31, 6):
+			var hit := seabed_hit(space, excluded, x, z)
+			var expected: float = seabed.call("GetHeightAt", float(x), float(z))
+			if hit.is_empty() or hit["collider"] != seabed or absf(hit["position"].y - expected) > 0.15:
+				fail("seabed collision hole or height mismatch at %s,%s expected=%s hit=%s" % [x, z, expected, hit])
+				return
+	for x in range(-29, 30, 7):
+		for z in range(-29, 30, 7):
+			var sample_x := float(x) + 0.37
+			var sample_z := float(z) + 0.61
+			var hit := seabed_hit(space, excluded, sample_x, sample_z)
+			var expected: float = seabed.call("GetHeightAt", sample_x, sample_z)
+			if hit.is_empty() or hit["collider"] != seabed or absf(hit["position"].y - expected) > 0.5:
+				fail("off-grid seabed collision hole or height mismatch at %s,%s expected=%s hit=%s" % [sample_x, sample_z, expected, hit])
+				return
+	var bands: Array[float] = []
+	for z in [27, 14, 0, -14, -28]:
+		bands.append(seabed.call("GetHeightAt", 0.0, float(z)))
+	for i in range(4):
+		if bands[i] - bands[i + 1] < 2.2:
+			fail("five ordered depth bands collapsed: " + str(bands))
 			return
-		heights.append(hit["position"].y)
-	if maxf(heights[3], heights[4]) - heights[0] < 3.0 or absf(heights[1] - heights[2]) < 0.15:
-		fail("seabed has no meaningful continuous height variation: " + str(heights))
-		return
+	for x in [3.0, 24.0]:
+		for z in range(-28, 28):
+			var a: float = seabed.call("GetHeightAt", x, float(z))
+			var b: float = seabed.call("GetHeightAt", x, float(z + 1))
+			if absf(b - a) > 1.0:
+				fail("depth route has an impassable one-meter rise at %s,%s" % [x, z])
+				return
 	key(KEY_W, true)
 	await tick(30)
 	key(KEY_W, false)
@@ -114,14 +137,15 @@ func _run() -> void:
 		fail("accepted fish motor did not move through open P2 spawn water")
 		return
 	fish.set_physics_process(false)
-	fish.global_position = Vector3(0, 0, 0)
+	var floor_y: float = seabed.call("GetHeightAt", 0.0, 0.0)
+	fish.global_position = Vector3(0, floor_y + 5.0, 0)
 	var down := fish.move_and_collide(Vector3(0, -10, 0))
-	if down == null or down.get_collider() != seabed or fish.global_position.y < -5.2:
+	if down == null or down.get_collider() != seabed or fish.global_position.y < floor_y + 0.4:
 		fail("fish escaped through seabed from above")
 		return
-	fish.global_position = Vector3(0, -9, 0)
+	fish.global_position = Vector3(0, floor_y - 5.0, 0)
 	var underside := fish.move_and_collide(Vector3(0, 10, 0))
-	if underside == null or underside.get_collider() != seabed or fish.global_position.y > -5.9:
+	if underside == null or underside.get_collider() != seabed or fish.global_position.y > floor_y - 0.4:
 		fail("seabed underside did not block upward passage")
 		return
 	fish.global_position = Vector3(0, 2, -27)
@@ -139,5 +163,5 @@ func _run() -> void:
 		fail("P1 course fixture lost saved qualification geometry")
 		return
 	fixture.free()
-	print("HABITAT_CHECK_OK scene=p2_habitat palette=4 spawn=clear seabed_samples=5 underside=blocked rim=blocked upper=blocked fixture=preserved")
+	print("HABITAT_CHECK_OK scene=p2_habitat palette=4 spawn=clear seabed_samples=202 bands=" + str(bands) + " underside=blocked rim=blocked upper=blocked fixture=preserved")
 	quit()

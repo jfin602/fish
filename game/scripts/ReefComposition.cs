@@ -104,8 +104,18 @@ public partial class ReefComposition : Node3D
             diagnostic = "FISH_REEF_INVALID action=keep-hero-cliff-and-raw-coral-count-bounded";
             return false;
         }
+        // Route markers are authored in X/Z and follow the same floor as the models.
+        foreach (var child in GetNode<Node3D>("Routes").GetChildren())
+        {
+            if (child is not Marker3D route) continue;
+            var clearance = route.HasMeta("height_above_floor")
+                ? route.GetMeta("height_above_floor").AsSingle() : 2.0f;
+            route.Position = new Vector3(route.Position.X,
+                seabed.GetHeightAt(route.Position.X, route.Position.Z) + clearance,
+                route.Position.Z);
+        }
         diagnostic = "";
-        GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical");
+        GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;
     }
 
