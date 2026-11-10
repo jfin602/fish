@@ -1,0 +1,25 @@
+TASK: Phase 2 / P2 — Native renderer lock
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.2.2`.
+
+GOAL / MANUAL HANDOFF
+Choose and lock the P2 renderer from a real same-candidate native comparison. The runner pauses here. Browser access alone does not control the Godot window; use an actual Fish native desktop/runtime session or exact owner observations. If that is unavailable, record BLOCKED / NOT OBSERVED and do not fabricate a renderer decision.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P2, P1 implementation evidence, docs/technical-direction.md and validation V19. Inspect the real comparison source, package version `0.2.1`, final P1 candidate/assets/tuning, display modes and tools/dev. Confirm Fish editor/MCP identity before mutation. Preserve unrelated work.
+
+NATIVE COMPARISON
+1. Record source revision/dirty identity, OS/display backend, GPU if available, Godot/.NET versions, monitor/viewport, actual asset hashes/install identity and comparison scene/viewpoints.
+2. Launch the same candidate under Compatibility and Forward+ using the P1 implementation path. Use at least the same spawn/near view, a farther rock/coral view and a moving-camera pass. Verify Fish3, sand, rock, coral, camera and pause/UI behavior; inspect runtime/editor errors.
+3. Compare the intended P2 feature slice: distance/fog treatment, top-biased light/color, caustic-style motion, suspended particles and restrained screen effect. Record unsupported/degraded behavior rather than hiding it.
+4. Record representative frame timing/FPS or available runtime performance counters under both renderers using the same bounded scene/view conditions. This is a comparative decision, not a production performance certification.
+5. Choose Compatibility or Forward+ from evidence: visual target support, material correctness, stability and performance on the observed desktop. Document why the rejected renderer was not selected. Owner may prefer one visual result, but do not misreport a broken/slow path as equivalent.
+
+LOCK AND EVIDENCE
+Apply the selected renderer to tracked project/configuration and make the final P2 implementation consume one renderer path. Remove or clearly isolate comparison-only launch scaffolding from normal play while retaining enough documentation to reproduce the decision. Update docs/technical-direction.md only for the actual selected renderer/result and create docs/tasks/p2/qualification/renderer-decision.md with PASS/FAIL/NOT OBSERVED details. Do not claim G2.2 yet; the final environment/effects are still ahead.
+
+VALIDATE / VERSION
+Run only checks invalidated by the renderer lock: import/build/main/comparison scene and representative asset/shader load, plus git diff --check. Confirm P1 movement state/tuning is unchanged. Set root package.json to `0.2.2` only if the native comparison and selected-renderer lock are complete/reproducible. If blocked, retain `0.2.1` and hand back the exact missing observation or repair. Do not self-commit or push; the coordinator/runner owns the manual checkpoint.

@@ -1,0 +1,30 @@
+TASK: Phase 2 / P6 — Fish-reactive water
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.2.6`.
+
+GOAL
+Add bounded presentation effects around the fish that make the water visibly react to actual swimming without adding forces, changing collision or becoming a second movement simulation.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P6, P2 design fish-reactive-water section, swimming/camera state boundaries, roadmap G2.3 and V20. Inspect actual FishController/SwimMotor/FishVisualMotion interfaces, accepted tuning, player visual/tail transforms, pause/focus lifecycle, selected renderer and P5 environment source. Require root `0.2.5`.
+
+IMPLEMENT
+1. Introduce a small presentation-only water-reaction owner attached to or following the accepted player. Prefer read-only values already available from authoritative movement; if a presentation snapshot is needed, expose a narrow immutable/read-only state rather than letting the effect own velocity.
+2. Derive bounded intensity/direction from real movement: near-rest/glide minimal, ordinary cruise steady/subtle, acceleration/high effort stronger, and hard yaw/turn producing directional/asymmetric turbulence. Pitch/yaw must keep emission in believable body/tail space.
+3. Use the selected renderer's appropriate primitives: GPUParticles/CPUParticles, trails/ribbons, bubbles, local distortion or a small combination. Do not require a specific unavailable trail API. Cap emission rates, particle counts, lifetimes, texture sizes and overdraw.
+4. Keep effects behind/around the fish without filling the camera or hiding obstacles. Prevent a camera-space artifact that appears glued to the screen. Account for player visual scale/orientation and imported Fish3 armature transform.
+5. Pause/focus loss/settings/scene restart must not queue a huge effect burst. Freeze/clear/rearm emitters deliberately and avoid using wall-clock delta that runs while simulation is paused.
+6. Add focused tests/assertions proving the presentation component never writes fish transform, velocity, collision, tuning or input state. Exercise deterministic intensity mapping for glide/cruise/effort/turn inputs, bounded values, pause/resume and node cleanup. Extend scene smoke only for actual integration risks.
+7. Record the source/read-only movement contract and actual effect configuration in P2 implementation evidence for P7 tuning.
+
+SCOPE / DEFERRALS
+No fluid solver, buoyancy, water drag changes, motor retuning, screen shake, new movement abilities, stamina, ecology, first person or general VFX framework. Do not turn particles into hitboxes or gameplay data.
+
+VALIDATE
+T2. Run focused C#/scene/effect tests and selected-renderer main-scene checks. Compare fish transform/velocity traces with effect disabled/enabled under equivalent intent where the harness supports it. Verify bounded emitter values, no pause-resume burst/backlog, no runtime errors, no package-lock.json and git diff --check. Headless state proves integration only; P7 determines whether the effect actually looks fluid/readable.
+
+DONE / VERSION / HANDOFF
+All four movement states drive bounded, presentation-only water reaction through the locked renderer and focused integration checks pass without movement drift. Set root package.json to `0.2.6` only then. Report changed source, mapping parameters, checks/limitations and P7 tuning controls. Do not commit or push.

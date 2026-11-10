@@ -1,0 +1,30 @@
+TASK: Phase 2 / P4 — Reef tunnels and world composition
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.2.4`.
+
+GOAL
+Turn the structural P2 habitat into a deliberate reef exploration space with coral floor, varied rock formations, a tunnel/tight passage, cover/overhang, open cruising space and meaningful vertical routes. Remove obvious developer-course visuals from normal play.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P4, P2 design asset/world sections, art-and-assets P2 boundary, roadmap G2.1 and V18. Inspect actual P3 habitat, final P1 fish/camera dimensions/tuning, Rock Face/Coast Sand/Heliopora prepared resources, current ambient fish and asset provenance. Require root `0.2.3`.
+
+IMPLEMENT
+1. Compose at least three readable traversal categories: broad/open cruising, a tighter rock tunnel/arch/cave-like passage, and a vertical route between lower/upper landmarks. Add one overhang or sheltered pocket that demonstrates cover without trapping the camera.
+2. Use rock instances with varied transform/scale/orientation and compatible simplified collision to form natural walls, tunnel edges and landmarks. Collision may be simpler than visual geometry, but the fish/camera clearance must not promise space that physics rejects.
+3. Build coral/reef coverage across parts of the seabed so it reads as a coral floor/reef zone rather than two isolated specimens. Treat the high-detail Heliopora as a measured resource: use sparse hero instances, optimized derivatives, lower-cost authored pieces, LOD/instancing or additional approved free assets as needed. Do not densely clone the raw specimen by default.
+4. Keep areas of visual rest/open sand so the scene is not uniformly cluttered. Retain recognizable depth landmarks and sightlines for the third-person camera.
+5. Ensure normal play has no visible P1 target spheres, camera-check cylinder, flat second-ground illusion or exposed test-wall look. Development-only fixtures can retain diagnostic shapes outside normal play.
+6. If new third-party environment assets are truly required, use only free legally suitable sources with complete provenance/license/dependency records and public-repo-safe installation. Do not add paid/account-gated dependencies or unresolved third-party textures.
+7. Extend scene/resource/collision checks to cover tunnel centerline/clearance, overhang route, broad route, vertical landmarks, no spawn overlaps, bounded representative instance counts and source identities. Record implementation evidence and any preparation changes.
+
+SCOPE / DEFERRALS
+Do not add underwater shaders/fog beyond what is needed to view composition; P5 owns atmosphere. No reactive wake, ecology, AI, growth, procedural generation, first person or abilities. Keep accepted motor/camera semantics unchanged.
+
+VALIDATE
+T2. Use actual import/build/scene inspection and focused traversal geometry queries. Check tunnel/route clearances against accepted fish collision/camera requirements, visual/collision bounds for representative rock pieces, no hidden P1 course nodes in normal scene, asset/license/ignore boundaries, bounded high-detail coral usage, no package-lock.json and git diff --check. Native beauty/camera comfort remains P7.
+
+DONE / VERSION / HANDOFF
+The normal habitat contains a coherent coral/reef floor, rock tunnel/tight passage, cover, open and vertical routes with obvious test presentation removed; checks/resource records pass. Set root package.json to `0.2.4` only then. Report layout/clearance/asset decisions and P5 atmosphere anchors. Do not commit or push.

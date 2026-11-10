@@ -1,0 +1,35 @@
+TASK: Phase 2 / P8 — Underwater world closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.2.8`.
+
+MANUAL FINAL BOUNDARY
+This is p2's ONE FINAL CLOSEOUT. Execute after the reviewed P7 native checkpoint. The runner pauses here even with --closeout. Review evidence and reconcile documentation; do not repeat a native playtest unless an observation is missing or invalidated by later source changes.
+
+GOAL AND PREREQUISITES
+Close Phase 2 only when the implemented habitat, selected renderer/atmosphere and fish-reactive water have source-bound evidence for every G2 criterion. Read AGENTS.md, BOOT.md, stack README/plan, roadmap G2.1–G2.3, validation V18–V20, qualification/implementation.md, renderer-decision.md, native-world.md and accepted-environment.md. Inspect current source/config/assets and compare their identity with the native accepted candidate. Require actual P1 close and P1–P7 results; authored prompts are not evidence.
+
+A — VERIFY EVIDENCE APPLIES
+1. Record current revision, local changes and fingerprints/identities for main habitat, renderer project settings, environment resources/shaders, reactive-water source/config, accepted P1 tuning and relevant assets.
+2. Reuse P7 native observations when gameplay/presentation source is unchanged. Documentation/version-only edits do not require owner replay. If an intervening change affects a criterion, repeat only that native observation and update evidence.
+3. Confirm native evidence references real game-window observations, not only editor/headless screenshots. Preserve failed iterations and repairs; missing owner judgment or untraceable source remains NOT OBSERVED/BLOCKED.
+
+B — MAP G2.1–G2.3
+Create `docs/tasks/p2/closeout.md` with criterion-level PASS/FAIL/NOT OBSERVED/BLOCKED:
+- **G2.1:** normal play uses the natural habitat; continuous varied seabed, coral/reef areas, open route, rock tunnel/tight passage, overhang/cover and vertical route are usable; no visible P1 course/test-room presentation; no underside/edge escape; collision/camera are understandable; P1 fixture preserved.
+- **G2.2:** renderer was selected from same-candidate native comparison; final world visibly combines underwater depth/distance treatment, color/light, caustic motion, suspended matter and restrained screen treatment; UI is crisp; movement state is unaffected; representative native performance recorded.
+- **G2.3:** glide/cruise/acceleration/hard-turn water reaction is visibly distinct, spatially coherent and bounded; pause/focus/reset cleanup works; presentation never becomes movement/collision authority; representative performance recorded.
+
+Every required Gate must pass before Phase 2 passes. A green build, shader compile, screenshot, or owner approval of the plan is insufficient.
+
+C — RECONCILE
+Update roadmap, P2 task README, BOOT, MODULES, technical direction, UX/art docs and any changed source ownership descriptions once, reflecting actual selected renderer/scene/effect identity and evidence. Do not rewrite P1 history. Route the next roadmap Phase to **P3 — Feed, escape and grow** only on successful P2 closeout. Movement abilities remain approved future work, unscheduled by this closeout.
+
+Run `npm run fish:phase:validate -- p2`, documentation link/content checks available in the repo, and `git diff --check`. Review no package-lock.json, local secrets, generated caches or restricted vendor payloads became tracked.
+
+VERSION / GIT / REPORT
+If all three Gates pass and reconciliation is complete, use the runner's allowed Phase-closeout policy for the assigned `0.2.8` checkpoint/version; do not treat the number itself as evidence. If any Gate remains incomplete, retain the last valid implementation version and keep P2 NOT GREEN with a precise repair/handoff. Do not self-commit or push. Leave final closeout changes reviewable for human approval.
+
+Report selected renderer, accepted habitat/effect identity, reused/rerun checks, V18–V20 outcomes, G2.1–G2.3 dispositions, limitations and exact next action.
