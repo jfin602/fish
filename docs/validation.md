@@ -25,24 +25,27 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 | --- | --- | --- |
 | V01 | Complete the accepted core movement course in mouse-only mode and the keyboard fallback. Observe quick acceleration, gradual release slowdown, keyboard backward-input slowing, curved turns/turnarounds, gaps, pitch-based travel to upper/lower landmarks, release, pause/resume, collisions and boundaries. Equivalent simulation conditions remain independent of render/view changes. | G1.1 |
 | V02 | Observe the same course and several minutes of free swimming in both desktop modes. Verify accepted third-person framing, smooth follow, obstacle visibility, swimming/gliding body motion, turning lean and a steady camera horizon. Record focus/viewport behavior and the owner's judgment of comfort, natural feel, nimbleness and ease of control. | G1.2 |
-| V03 | Consume food/prey, repeat callbacks or competing contacts, reject ineligible prey, and account for one removal/reward per entity. | G3.1 |
-| V04 | Cross growth thresholds while near geometry; verify continuous identity, visible/body changes, usable shelter changes and a food-chain reversal. | G3.1 |
-| V05 | Observe a predator's detection/attack, a legitimate escape and a lethal encounter; each event's cause agrees with authoritative state. | G3.2 |
-| V06 | Save during ordinary play and active danger; close/reopen; compare run ID, resources, consumed prey, position, time and pursuit state. Advance wall-clock time while closed without simulation progress. | G4.1 |
-| V07 | Record terminal death, close/reopen and use supported recovery; dead run remains unavailable for Continue. Start new life with fresh identity and preserved history. | G4.2 |
-| V08 | Inject interruption at each material death/archive persistence boundary and retry finalization; converge to one terminal outcome and one completed-life record with no resurrection. | G4.2 |
-| V09 | Exercise unreadable/unsupported/partial active save and archive separately; report actual storage failure, preserve recoverable data, and do not invent an in-world death. | G4.1, G4.2 |
-| V10 | Produce accounts for a brief life, eventful life and incomplete optional metadata; trace every claim to events/final state and keep supported species versus individual identity distinct. | G5.1 |
-| V11 | Skip death presentation; open Life History from main menu; read same complete account, return, start another life, restart application and revisit without count/text changes. | G5.1, G5.2 |
-| V12 | Use empty and representative large archives; reach every saved story, preserve navigation and prevent silent truncation or fictional filler entries. | G5.2 |
-| V13 | Toggle first/third person at different sizes and near cover; state/identity/time remain unchanged by viewpoint and controls/readability remain usable. | G6.1 |
-| V14 | Play feeding, escape and growth; suspend/resume across sessions; die; read true recap; revisit archive and begin a new hatchling with prior story intact. | G6.2 |
-| V15 | Build/export/run each explicitly claimed desktop target; verify the complete named scope in that target environment and record configuration-only targets separately. | G6.2 |
+| V03 | Consume food/prey, repeat callbacks or competing contacts, reject ineligible prey, and account for one removal/reward per entity. | G4.1 |
+| V04 | Cross growth thresholds while near geometry; verify continuous identity, visible/body changes, usable shelter changes and a food-chain reversal. | G4.1 |
+| V05 | Observe a predator's detection/attack, a legitimate escape and a lethal encounter; each event's cause agrees with authoritative state. | G4.2 |
+| V06 | Save during ordinary play and active danger; close/reopen; compare run ID, resources, consumed prey, position, time and pursuit state. Advance wall-clock time while closed without simulation progress. | G5.1 |
+| V07 | Record terminal death, close/reopen and use supported recovery; dead run remains unavailable for Continue. Start new life with fresh identity and preserved history. | G5.2 |
+| V08 | Inject interruption at each material death/archive persistence boundary and retry finalization; converge to one terminal outcome and one completed-life record with no resurrection. | G5.2 |
+| V09 | Exercise unreadable/unsupported/partial active save and archive separately; report actual storage failure, preserve recoverable data, and do not invent an in-world death. | G5.1, G5.2 |
+| V10 | Produce accounts for a brief life, eventful life and incomplete optional metadata; trace every claim to events/final state and keep supported species versus individual identity distinct. | G6.1 |
+| V11 | Skip death presentation; open Life History from main menu; read same complete account, return, start another life, restart application and revisit without count/text changes. | G6.1, G6.2 |
+| V12 | Use empty and representative large archives; reach every saved story, preserve navigation and prevent silent truncation or fictional filler entries. | G6.2 |
+| V13 | Toggle first/third person at different sizes and near cover; state/identity/time remain unchanged by viewpoint and controls/readability remain usable. | G7.1 |
+| V14 | Play feeding, escape and growth; suspend/resume across sessions; die; read true recap; revisit archive and begin a new hatchling with prior story intact. | G7.2 |
+| V15 | Build/export/run each explicitly claimed desktop target; verify the complete named scope in that target environment and record configuration-only targets separately. | G7.2 |
 | V16 | In the real P1 course, observe Quaternius `Fish3` / `ClownFish` as the controlled provisional fish plus Rock Face 01, Coast Sand 01 and Smithsonian *Heliopora coerulea*. Check any additional Quaternius fish placed as non-gameplay population. Verify actual provenance/preparation, materials/deformation, scale, collision agreement, representative performance, public-source boundaries and explicit missing-resource behavior. | G1.3 |
 | V17 | Observe fullscreen startup and windowed fullscreen in a native game window. Verify saved choice/temporary override, readable viewport layout and camera, then both input modes across both display options with pause, transitions, Alt-Tab/refocus, capture/rearm and independent menu access. Record effective backend behavior and tested display sizes. | G1.4 |
 | V18 | Traverse the P2 normal-play habitat through all **five or more primary depth ledges** from shallow -> deep -> shallow, including the broad route and a rock tunnel/tight passage. Verify irregular natural shelf transitions rather than staircase geometry, at least one alternate ascent/descent transition, collision/camera clearance, no escape below the seabed/intended limits, useful simultaneous foreground/midground/background depth composition, and absence of visible P1 test-course presentation. Preserve the separate P1 course fixture. | G2.1 |
 | V19 | Preserve the P2/P1 renderer record and owner-green c2 water/light result, then observe the **tracked Forward+** depth-structured habitat from comparable shallow/middle/deep horizontal views and during a continuous shallow -> deep -> shallow swim. Verify: actual world depth progressively cools/dims lower ledges; warm color, caustics and shafts reduce with depth; useful horizontal visibility shortens as the camera descends; far geometry transitions smoothly detail -> silhouette -> water; multiple ledges visible in one frame do not all receive identical water-column treatment; the bright overhead surface remains legible when looking up; HUD/GFX/menu stay crisp; movement outcomes and saved lighting preset bases remain unchanged. Record representative native performance/errors and active preset. A native Compatibility rerun is unnecessary unless Forward+ is challenged by a concrete blocker. | G2.2 |
 | V20 | From rest/glide, ordinary cruise, acceleration/high effort and hard turns, observe the fish-reactive water effect. Disturbance scales coherently, stays near believable body/tail space, does not obscure the camera or burst after pause/focus/reset, and cannot alter authoritative movement/collision. Record representative effect counts/performance. | G2.3 |
+| V21 | Traverse the accepted five-depth world after the FAF terrain/geology rebuild. Verify all six terrain roles and four rock variants participate in normal play; the world no longer reads as parallel terraces/test basin; two distinct swim-through routes, a cave/shelter chamber and deep corridor are usable with honest collision/camera clearance; P2 depth routes/water remain intact. | G3.1 |
+| V22 | Compare shallow/high, upper, middle, lower and deep reef zones while swimming. Verify all twelve coral, eight plant and eight detail variants participate in coherent clusters; shallow/high areas are visibly the lushest, middle bands balance living reef/geology, and lower/deep bands become progressively sparser; open lanes, cave mouths and landmarks remain readable; modular seams/repetition are acceptably hidden. | G3.2 |
+| V23 | From the actual gameplay camera, inspect dense shallow near/wide views, a tunnel/cave view, a mid-depth layered view, a deep sparse view and one swim-through beside the FAF reef target and style-proof 001. Record owner style judgment, optional ambient FAF-FISH-001–004 behavior, and representative dense/cave/deep performance. Confirm P2 movement/depth/water authority is unchanged. | G3.3 |
 
 These IDs are scenario references, not installed test commands. Write executable checks when the actual source exists and a concrete risk merits them. Avoid large suites that repeat the implementation.
 
@@ -80,6 +83,12 @@ P2 qualification is native and integrated. V18 proves the space is a usable natu
 
 Headless scene checks can prove saved nodes, collision topology, shader/resource validity and bounded emitter configuration. They cannot establish natural composition, comfortable distortion, convincing underwater depth or the visual quality of a wake. Record owner/native judgment for those claims.
 
+## P3 FAF reef-world acceptance
+
+P3 is an art/world-composition qualification, not an isolated asset-import check. V21 proves the finished original terrain/rock kit forms usable geology over the accepted P2 navigation skeleton. V22 proves the completed coral/plant/detail library creates a deliberate depth-based density gradient instead of uniform scatter. V23 proves the running Forward+ world belongs beside the owner target from the gameplay camera, improves materially on style-proof 001, and remains performant enough for progression.
+
+Headless checks can prove asset identity, placement counts, collision routes and deterministic density metrics. They cannot establish that the world looks natural, that caves feel good to swim through, that repetition/seams are visually hidden, or that the target style is achieved. Those require P3 P6 owner/native review.
+
 ## Requirement coverage
 
 | Confirmed requirement | Planned evidence |
@@ -93,6 +102,7 @@ Headless scene checks can prove saved nodes, collision topology, shader/resource
 | C18–C26: desktop controls, swimming feel, camera/body presentation, free-look deferral and owner acceptance | V01/V02 in both desktop modes; inspect initial scope and record the owner's actual play judgment. Later controller support needs separate qualification. |
 | C27–C29: P1 selected assets, settled dynamics and fullscreen-first delivery | V01/V02 with the final accepted tuning record; V16/V17 on the accepted candidate; all G1.1–G1.4 required for P1 completion. |
 | C32–C39: P2 worldbuilding, natural reef, renderer lock, reactive water, visual style, actual water-column extinction and five-level basin | V18–V20 plus the P2 renderer comparison/decision record and c2/c2-depth evidence; G2.1–G2.3 all required for P2 completion. |
+| C41–C44: P3 FAF reef rebuild, caves/tunnels, depth-density gradient and complete core environment asset integration | V21–V23 plus P3 implementation/native world-art evidence; G3.1–G3.3 all required for P3 completion. |
 
 IDs refer to [the decision register](decisions-and-questions.md). A coverage mapping is not a passed result.
 

@@ -1,0 +1,30 @@
+TASK: Phase 3 / P1 — FAF runtime integration
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.3.1`.
+
+GOAL
+Make all 38 core FAF environment variants placement-ready through one small runtime boundary. Do not rebuild the world and do not generate new art.
+
+READ
+AGENTS.md, BOOT.md, P3 README/assessment/plan P1, FAF art style/index/asset IDs/budgets/Blender-Godot contract, terrain/rock/coral/plant/detail candidate records, final P2 closeout and affected asset-loading source. Inspect HEAD/dirty state, root `0.3.0`, `game/assets/faf/`, manifests, normal-play scene and tools/dev.
+
+IMPLEMENT
+1. Verify canonical runtime outputs for 6 terrain, 4 rock, 12 coral, 8 plant and 8 detail variants against their tracked manifests/check records.
+2. Add the smallest typed catalog/wrapper/resource boundary needed for P2–P5 placement. Preserve canonical FAF ID, path, family/variant and placement-relevant metadata.
+3. Reuse imported PackedScenes/materials; do not copy GLBs or build a generic asset manager.
+4. Decorative static assets get no gameplay collision by default. Terrain collision remains separately owned.
+5. Expose plant UV.y height-mask hooks if needed later; no physics sway yet.
+6. Add/extend a focused developer check loading all 38 variants through the P3 path and verifying canonical identity/resource readiness/basic mesh-material sanity.
+7. Record actual source/checks in `docs/tasks/p3/qualification/implementation.md`.
+
+SCOPE
+No terrain replacement, caves, dressing, ambient fish, new art, third-party downloads or gameplay changes.
+
+VALIDATE
+T1/T2. Run focused FAF runtime-load check plus build/import/main smoke only as required. Verify all 38 required variants resolve, no vendor/local payload is introduced, no package-lock appears and `git diff --check` passes.
+
+DONE
+Set root version to `0.3.1` only after checks pass. Report owners/IDs/paths and P2 entry points. Do not self-commit or push; runner owns checkpoint.

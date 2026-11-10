@@ -1,0 +1,32 @@
+TASK: Phase 3 / P3 — Caves tunnels and geology
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.3.3`.
+
+GOAL
+Use FAF terrain structural pieces and FAF-ROCK-001A–D to create natural caves, tunnels, arches, overhangs, deep corridors and landmarks without altering accepted movement/camera semantics.
+
+READ
+AGENTS.md, BOOT.md, P3 plan P3, FAF art style, rock/terrain records, style-proof 001 rock findings, final P2 route/camera evidence and current `0.3.2` habitat. Inspect fish collision radius, FollowCamera obstruction/recovery and rock dimensions.
+
+IMPLEMENT
+1. Use all four rock variants repeatedly but non-uniformly.
+2. Build at least two distinct swim-through routes: one broad/easy, one tighter but comfortable.
+3. Build one cave/shelter chamber large enough to enter, turn and exit.
+4. Build one deeper canyon/rock corridor and multiple overhang/shelf transitions.
+5. Create major landmark formations readable from several approaches.
+6. Use terrain shelves/drop-offs as structural mass; rocks form edges/facets/filler. Do **not** recreate style-proof 001's weak simple three-boulder lintel hero arch.
+7. Reconnect alternate routes; avoid accidental dead-end traps.
+8. Author simplified collision only for route-defining geology.
+9. Add route/camera checks for tunnel centerlines, cave turn space, deep corridor, obstruction recovery and containment.
+
+SCOPE
+No coral/plant/detail fill, ambient fish, ecology, motor/camera retuning or new rock generation.
+
+VALIDATE
+T2. Run build, focused geology/route checks and invalidated habitat/depth checks. Prove all four rock variants participate, all intended swim-throughs/chamber/corridor are passable with honest visible clearance and `git diff --check`.
+
+DONE
+Natural geology replaces stacked-prop structure and P2 depth routes remain intact. Set `0.3.3` only after checks. Report route IDs/clearances and P4 exclusion zones. Do not self-commit or push.

@@ -11,7 +11,8 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [c1-bindings](c1-bindings/README.md) | Implemented and reconciled into P1; [closeout](c1-bindings/closeout.md) retains advanced native qualification gaps. |
 | [c2-watet-light-fx](c2-watet-light-fx/README.md) | **OWNER GREEN / COMPLETE FOR CORRECTION SCOPE**: overhead water, organic moving caustics, caustic-aligned shafts, GFX presets and native owner acceptance; root remains `0.2.6`. |
 | [c2-depth](c2-depth/README.md) | **AUTHORED / NOT EXECUTED** Correction 2 follow-up for a five-ledged default basin plus actual water-column depth/extinction; root remains `0.2.6`. |
-| [p2](p2/README.md) | **IN PROGRESS / NOT GREEN** underwater-world Phase; original P1–P6 plus owner-green c2 lighting exist, with c2-depth and remaining native/owner acceptance still ahead. |
+| [p2](p2/README.md) | **IN PROGRESS / NOT GREEN** underwater-world Phase; G2.1/G2.2 are owner-green on the repaired depth candidate, while G2.3/V20 still blocks closeout. |
+| [p3](p3/README.md) | **AUTHORED / BLOCKED ON P2** FAF reef-world rebuild using the completed terrain/rock/coral/plant/detail library; requires P2 GREEN and deliberate `0.3.0` entry before execution. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
 
 ## Stack layout

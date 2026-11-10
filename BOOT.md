@@ -15,7 +15,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
 | Root version | `package.json` remains `0.2.6` while P7 acceptance and P8 closeout are blocked; `0.2.7`/`0.2.8` were not applied. The P2 phase-entry baseline was `0.2.0`; no `0.1.10`/`0.1.11` checkpoints were fabricated. |
-| Later gameplay | Feeding/predators/growth move to P3. Persistence/death becomes P4, life recounting/history P5, and integrated qualification P6. [Movement abilities](docs/planning/p1/movement-abilities.md) remain accepted future work but are no longer the immediate post-P1 roadmap step. |
+| Later gameplay | **P3 is now the authored FAF reef-world rebuild** and is blocked until P2 closes; [P3 stack](docs/tasks/p3/README.md) targets `0.3.1–0.3.7` after a deliberate `0.3.0` baseline. Feeding/predators/growth move to P4, persistence/death P5, life recounting/history P6, and integrated qualification P7. |
 
 ## Product contract to preserve
 

@@ -13,10 +13,11 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; [c2-depth R1 closeout](tasks/c2-depth/closeout.md#r1-native-closeout--2026-11-10) qualifies G2.1/G2.2, while G2.3/V20 still needs owner/native evidence. |
-| P3 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the usable habitat. | NOT STARTED. |
-| P4 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
-| P5 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
-| P6 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation. | NOT STARTED. |
+| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density until normal play approaches the target reef style. | **AUTHORED / NOT STARTED**; [design](planning/p3/reef-world-rebuild.md) and [stack](tasks/p3/README.md); blocked on P2 closeout. |
+| P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
+| P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
+| P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
+| P7 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation. | NOT STARTED. |
 
 ## P0 — Godot and MCP foundation
 
@@ -128,11 +129,46 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - The effect reads movement state without applying forces, modifying collision or becoming the source of speed/turn state.
 - Particle/trail counts and materials are bounded and representative native performance remains acceptable for the chosen P2 scene.
 
-## P3 — Feed, escape and grow
+## P3 — Rebuild and dress the reef
+
+**Status: AUTHORED / NOT STARTED; execution blocked until P2 is GREEN and root `0.3.0` is prepared.** [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md). Scenarios V21–V23.
+
+P3 is the first style-proving world-art phase. It consumes the completed FAF library and the accepted P2 five-depth navigation/water system. It does not generate a new navigation topology or implement ecology.
+
+### G3.1 — FAF terrain and geology integration
+
+**Result: NOT OBSERVED.**
+
+- Preserve the accepted P2 shallow/upper/middle/lower/deep route skeleton, Forward+ water/depth treatment, movement/camera authority and P1 fixture.
+- Rebuild the visible seabed using all six FAF-TERRAIN-001 variants so the world no longer reads as analytic terraces, rings or a test basin.
+- Integrate all four FAF-ROCK-001 variants into natural shelves, walls, overhangs and landmarks.
+- Provide at least two distinct swim-through tunnel/arch routes, one cave/shelter chamber and one deeper canyon/corridor with collision/camera clearance that agrees with visible geometry.
+- Path-critical visible terrain and hidden/simplified collision remain coherent; no underside/edge escape is introduced.
+
+### G3.2 — Depth-based reef composition
+
+**Result: NOT OBSERVED.**
+
+- All twelve FAF coral variants, eight FAF plant variants and eight FAF detail variants participate meaningfully in normal-play composition.
+- Shallow/high areas are visibly the lushest and most colorful; upper/middle bands remain rich but readable; lower/deep areas become progressively sparser and more geological.
+- Terrain/rock seams are dressed without obscuring broad routes, cave mouths, tunnel entrances or major landmarks.
+- Repeated assets are varied through scale, rotation, grouping and cluster composition; the world avoids grid/random-stamp repetition.
+- Optional plant sway remains presentation-only with fixed roots and no movement/collision authority.
+
+### G3.3 — Target style, ambient life and performance
+
+**Result: NOT OBSERVED.**
+
+- Near, mid and distant gameplay-camera views belong beside the owner-approved FAF reef target and materially improve on style-proof 001: intentional faceting, warm sand/cool stone base, vivid controlled coral colors, green vegetation, layered blue-water composition and readable negative swim space.
+- Where used, FAF-FISH-001–004 provide bounded non-gameplay ambient reef life; FAF-FISH-005 shark remains deferred to ecology by default.
+- The rebuilt world remains readable and comfortable through full depth traversal, caves and tunnels under the accepted Forward+ atmosphere.
+- Representative dense-shallow, cave/middle and deep-sparse views have recorded native performance on the target desktop, with owner acceptance of the final visual direction.
+
+## P4 — Feed, escape and grow
 
 **Status: NOT STARTED.** Scenarios V03–V05. [Ecology contract](systems/ecology-and-growth.md).
 
-### G3.1 — Feeding and visible growth
+### G4.1 — Feeding and visible growth
 
 **Result: NOT OBSERVED.**
 
@@ -141,7 +177,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Growth visibly updates the same fish and relevant body/collision/camera behavior without clipping, invalid spawning or new identity.
 - Demonstrate a meaningful food-chain reversal using a documented species/size rule; growth changes habitat use and hunting opportunity.
 
-### G3.2 — Readable predation and meaningful events
+### G4.2 — Readable predation and meaningful events
 
 **Result: NOT OBSERVED.**
 
@@ -150,11 +186,11 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Death and key growth/hunt/escape events have authoritative causes/stable identities for later persistence/story use.
 - New test lives reset intended prototype state; durable multi-session behavior is not claimed yet.
 
-## P4 — A life across sessions
+## P5 — A life across sessions
 
 **Status: NOT STARTED.** Scenarios V06–V09. [Run/persistence contract](systems/survival-and-runs.md).
 
-### G4.1 — Suspend and resume one living fish
+### G5.1 — Suspend and resume one living fish
 
 **Result: NOT OBSERVED.**
 
@@ -163,7 +199,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Continue/New Life follows an explicitly chosen active-slot/checkpoint policy; replacing a living save cannot silently erase it.
 - Storage incompatibility/corruption is reported with recoverable data preserved, separately from in-world death.
 
-### G4.2 — Durable death and independent history records
+### G5.2 — Durable death and independent history records
 
 **Result: NOT OBSERVED.**
 
@@ -172,11 +208,11 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Interruption/retry at material death/archive boundaries converges to one terminal outcome and one completed-life record.
 - A new hatchling receives a new run identity without clearing prior completed-life records.
 
-## P5 — Remember every life
+## P6 — Remember every life
 
 **Status: NOT STARTED.** Scenarios V10–V12. [Story/archive contract](systems/life-stories-and-history.md).
 
-### G5.1 — Brief, factual recounting
+### G6.1 — Brief, factual recounting
 
 **Result: NOT OBSERVED.**
 
@@ -184,7 +220,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Short and eventful lives produce appropriate accounts without fabricated achievements, intent or attacker identity.
 - Skipping presentation preserves the final saved narrative; presentation failure cannot reverse death.
 
-### G5.2 — Main-menu Life History
+### G6.2 — Main-menu Life History
 
 **Result: NOT OBSERVED.**
 
@@ -192,11 +228,11 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Open/read/return/start another life/restart: prior entries and text remain intact and dead fish remain unplayable.
 - A representative larger archive preserves reachability/readability with no silent truncation or duplicate lives.
 
-## P6 — Qualify the complete experience
+## P7 — Qualify the complete experience
 
 **Status: NOT STARTED.** Scenarios V13–V15.
 
-### G6.1 — Optional first person and presentation
+### G7.1 — Optional first person and presentation
 
 **Result: NOT OBSERVED.**
 
@@ -204,7 +240,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 - Observe camera clipping, input/focus, threat feedback, text readability and recap navigation across the implemented size range.
 - Keep the primary third-person experience readable and record the selected visual/performance scope from measured play.
 
-### G6.2 — Full life and platform qualification
+### G7.2 — Full life and platform qualification
 
 **Result: NOT OBSERVED.**
 
@@ -215,4 +251,4 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 ## After this slice
 
-Use observed play to choose the final species/biome, larger habitat strategy, additional species/vegetation, long-life pacing, art/audio depth, discovery/cosmetic carryover and production performance budgets. Do not turn the first reef slice into an obligation to solve world generation or every future visual effect.
+Use observed play to choose the final species/biome, larger habitat strategy, additional species/vegetation, long-life pacing, art/audio depth, discovery/cosmetic carryover and production performance budgets. Do not turn the first style-proving reef into an obligation to solve procedural world generation or every future content family.

@@ -1,0 +1,36 @@
+TASK: Phase 3 / P4 — Depth-based reef dressing
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.3.4`.
+
+GOAL
+Fill the FAF terrain/geology with all coral, plant and small-detail variants using a deliberate lush-shallow → sparse-deep gradient while preserving open routes and hiding modular contacts.
+
+READ
+AGENTS.md, BOOT.md, P3 plan P4, FAF art style/palette/budgets, coral/plant/detail candidate records, style-proof 001 density findings, accepted P2 depth-light contract and current `0.3.3` world. Inspect route/cave/landmark exclusions and actual asset dimensions.
+
+IMPLEMENT
+1. Integrate all **12 coral + 8 plant + 8 detail = 28 dressing variants** meaningfully in normal play.
+2. Depth density:
+   - shallow/high: densest plants/coral/details, strongest warm accents;
+   - upper: lush reef clusters with open lanes;
+   - middle: moderate living density balanced with geology;
+   - lower: sparse plants, isolated coral/detail groups;
+   - deep: minimal tall vegetation, broad exposed geology and small accents.
+3. Use deterministic authored clusters, varied silhouettes/rotation/scale and quiet negative areas; no uniform random scatter.
+4. Use shells/rubble/pebbles/sponges around authored bases, seam contacts and close foreground pockets. Do not carpet open sand.
+5. Dress terrain/rock seams without blocking cave mouths, tunnels, routes or landmarks.
+6. Add subtle UV.y-based plant sway only if useful: fixed roots, small amplitude, stable phase, no physics.
+7. Use shared scenes/MultiMesh where it materially improves repeated cost without changing layout.
+8. Add focused checks for all 28 variants, per-depth density ordering, route exclusions, floating/buried outliers and bounded counts.
+
+SCOPE
+No ambient fish until P5, ecology, new asset generation, terrain/camera redesign or depth-light retuning.
+
+VALIDATE
+T2. Build and run reef-dressing plus affected route/atmosphere checks. Prove complete 28-variant coverage, authored shallow/high density exceeds lower/deep, routes remain clear, optional sway is presentation-only and `git diff --check`.
+
+DONE
+World is richly dressed, high areas are clearly lushest, deep areas remain sparse/geological, details enrich bases without noise, and seams are substantially hidden. Set `0.3.4` only after checks. Report zone counts/densities and P5 finish gaps. Do not self-commit or push.

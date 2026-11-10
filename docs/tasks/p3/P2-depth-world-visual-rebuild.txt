@@ -1,0 +1,30 @@
+TASK: Phase 3 / P2 — Depth-world visual rebuild
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.3.2`.
+
+GOAL
+Rebuild the visible accepted five-depth P2 world with FAF-TERRAIN-001A–F while preserving final P2 routes, collision/depth authority and Forward+ presentation.
+
+READ
+AGENTS.md, BOOT.md, P3 README/plan P2, final P2/c2-depth closeout, FAF terrain record/art style, style-proof 001 terrain findings, MODULES.md and affected habitat source. Inspect `0.3.1` main/habitat scenes, SeabedSurface/GetHeightAt ownership, route markers, collision limits, water depth anchors and terrain wrappers.
+
+IMPLEMENT
+1. Preserve accepted shallow/upper/middle/lower/deep and alternate routes inside authoritative fish bounds.
+2. Use all six terrain variants meaningfully: A open sand, B rolling, C shelf, D slope, E drop-off, F rocky floor.
+3. Retain accepted P2 collision/depth query underlay if safest, but visually subordinate it. Align path-critical visible terrain closely enough that collision does not contradict what the player sees.
+4. Rotate/offset/overlap chunks to eliminate long parallel terraces, rings and visible modular repetition.
+5. Improve specifically on style-proof 001: no obvious apron edges, perched patches or finite-diorama perimeter. Create seam-dressing zones for P3/P4.
+6. Preserve hidden limits, water surface/deep reference and P2 atmosphere.
+7. Extend focused checks for six-variant live coverage, route reachability, visual/collision agreement on routes, containment and unchanged fish/camera/depth identity.
+
+SCOPE
+No caves yet, coral/plant/detail dressing, ambient fish, ecology or terrain-family generation.
+
+VALIDATE
+T2. Build plus affected habitat/depth/route checks. Confirm all six terrain IDs, five-band routes/alternate, spawn/camera clearance, P2 source identity and `git diff --check`.
+
+DONE
+World keeps P2 navigation/depth but visibly reads as irregular FAF seabed rather than terraces/patches. Set `0.3.2` only after checks. Report placement/seam architecture and P3 geology zones. Do not self-commit or push.

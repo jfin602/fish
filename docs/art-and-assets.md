@@ -60,6 +60,14 @@ The Smithsonian coral is a high-detail specimen; do not duplicate it densely wit
 
 Keep the normal public-repository boundary: permission to ship an asset in a game does not automatically permit raw source redistribution. The P2 renderer/habitat task may change materials, meshes, LODs or scene wrappers; record those transformations without replacing the original provenance.
 
+## P3 original-art world rebuild
+
+The completed first FAF environment library is now the selected P3 live-world kit: [terrain](fish-asset-factory/terrain-001/README.md), [rocks](fish-asset-factory/rock-001/README.md), [coral](fish-asset-factory/coral-pack-001/README.md), [plants](fish-asset-factory/plant-pack-001/README.md), and [small details](fish-asset-factory/detail-pack-001/README.md). P3 is the first phase that intentionally integrates these original assets at full normal-play density against the [FAF art-style contract](fish-asset-factory/art-style.md). It preserves the accepted P2 depth/navigation/water system and rebuilds the visible world rather than sourcing another third-party environment pack.
+
+All six terrain variants, four rock variants, twelve coral variants, eight plant variants and eight detail variants must participate meaningfully in the accepted P3 normal-play composition. The [reef-fish pack](fish-asset-factory/reef-fish-pack-001/README.md) may supply presentation-only FAF-FISH-001–004; the Blacktip Reef Shark remains reserved for later ecology by default. The isolated [style proof 001](fish-asset-factory/style-proof-001/README.md) is a composition reference and warning record—not production acceptance. P3 must materially improve its weak stacked-boulder arch, visible terrain seams/perimeter and sparse layering from the actual gameplay camera.
+
+P3 evidence must judge full-route composition, depth-based density, caves/tunnels, seams/repetition, target-style match and representative performance. Isolated FAF proof scenes remain candidate evidence only.
+
 ## License and provenance handling
 
 Fish's repository is public. Permission to include an asset in a finished game is distinct from permission to distribute its source model and textures through GitHub.

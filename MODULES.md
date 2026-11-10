@@ -16,7 +16,8 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/c1-bindings/` | Implemented hybrid presets/rebinding, reconciled into P1 with advanced native gaps retained. |
 | `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
-| `docs/tasks/c2-depth/` | P1–P3 five-band basin/depth-light implementation, preserved P4 native failure, and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
+| `docs/tasks/c2-depth/` | Five-band basin/depth-light correction with preserved historical failure and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
+| `docs/tasks/p3/` | Authored, unexecuted FAF reef-world rebuild stack; blocked until P2 GREEN and deliberate `0.3.0` entry. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
@@ -58,6 +59,17 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | P1 qualification fixture | The preserved movement course and any checks still needed to reproduce P1 evidence. | Becoming the normal P2 world presentation. |
 
 The paths above are the current source owners. Keep renderer-specific code behind the selected P2 presentation boundary; [P8 review](docs/tasks/p2/closeout.md) and [c2-depth R1 native closeout](docs/tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) distinguish historical implementation evidence from the later owner-qualified depth result. G2.3 fish-reactive water still needs separate P2 qualification.
+
+## Planned P3 world-art boundaries
+
+| Boundary | Owns | Does not own |
+| --- | --- | --- |
+| FAF world catalog / wrappers | Canonical tracked FAF environment IDs, runtime resource paths and reusable placement roots for terrain, rocks, coral, plants and details. | Re-exporting Blender sources or inventing gameplay state. |
+| P3 terrain/geology composition | Visible FAF terrain skin, rock clusters, caves/tunnels/overhangs and authored deterministic placement over the accepted P2 navigation/depth skeleton. | Replacing fish movement/camera/depth authority to make art fit. |
+| P3 reef dressing | Coral/plant/detail clusters, depth-density rules, optional visual sway, seam dressing and open-route exclusions. | Ecology simulation or collision-heavy decorative dressing. |
+| P3 ambient life | Bounded presentation-only FAF-FISH-001–004 schools/loops when used. | Feeding, prey/predator state, damage, persistence or shark gameplay. |
+
+Exact source paths should follow the smallest implementation that fits the accepted P2 world; do not create empty frameworks before P3 execution.
 
 ## Later gameplay boundaries
 
