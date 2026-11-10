@@ -25,7 +25,7 @@ The inspected normal-play Forward+ source already has an atmosphere owner and a 
 - Do not modify the accepted P1 fish motor, SwimTuning, camera-control semantics, collision, input profiles, P1 fixture or Forward+ selection.
 - Do not modify P3's separate terrain/FAF integration, caves, Character Select, five-fish catalog, return-to-select flow, or assigned 0.3.x checkpoints.
 - Do not add predators, feeding, growth, saves, death/history, species stats, new renderer, fluid simulation, large fog-volume collections, multiple lights or new graphics frameworks.
-- Correction 3 keeps an unchanged root version, **0.3.0 at GitHub authoring**. If local P3 has already advanced package.json, do not downgrade it, run an incompatible runner, or edit a currently active P3 prompt snapshot. Reconcile/re-author c3's unchanged-version metadata to the reviewed, actually completed P3 checkpoint before execution.
+- Correction 3 now requires **unchanged 0.3.6**, per the owner's subsequent version selection. The historical GitHub authoring baseline was 0.3.0; 0.3.6 corresponds to the P3 P6 checkpoint but P6 completion and local dirty state are not proven by this documentation edit. Check the local package version and actual Git-proven P3 prefix first; do not downgrade, run an incompatible runner, or edit an active P3 prompt snapshot.
 - Use a clean, paused runner boundary; never run c3 and p3 simultaneously in the same worktree. Preserve unrelated local work and existing source/evidence.
 - P2 V18/V19 remain historical PASS, G2.3/V20 remains OPEN; c3 contributes pending P3 V25 evidence, not retroactive P2 or automatic P3 GREEN.
 
