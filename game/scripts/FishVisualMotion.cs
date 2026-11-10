@@ -3,11 +3,26 @@ using Godot;
 
 namespace Fish;
 
-/// <summary>Samples the imported Fish3 swim clip and adds bounded visual-only turning.</summary>
+/// <summary>Samples the imported Fish3 swim clip and adds visual-only turning and idle hover.</summary>
 public partial class FishVisualMotion : Node
 {
     private const string SwimClip = "Armature|Swim";
     private const float SeamBlendStart = 0.88f;
+
+    [Export(PropertyHint.Range, "0.01,0.5,0.01,or_greater")]
+    public float IdleEnterSpeed { get; set; } = 0.10f;
+    [Export(PropertyHint.Range, "0.01,0.5,0.01,or_greater")]
+    public float IdleExitSpeed { get; set; } = 0.20f;
+    [Export(PropertyHint.Range, "0.1,2,0.01,or_greater")]
+    public float IdleFrequencyHz { get; set; } = 0.42f;
+    [Export(PropertyHint.Range, "0,6,0.1,or_greater")]
+    public float IdleTailDegrees { get; set; } = 2.8f;
+    [Export(PropertyHint.Range, "0,4,0.1,or_greater")]
+    public float IdleBodyDegrees { get; set; } = 1.1f;
+    [Export(PropertyHint.Range, "0,0.05,0.001,or_greater")]
+    public float IdleHoverMeters { get; set; } = 0.012f;
+    [Export(PropertyHint.Range, "0.1,10,0.1,or_greater")]
+    public float IdleTransitionResponse { get; set; } = 3.0f;
 
     private readonly FishController _fish;
     private readonly Node3D _visual;
@@ -17,12 +32,18 @@ public partial class FishVisualMotion : Node
     private readonly int[] _bones;
     private readonly int[] _tracks;
     private readonly Quaternion[] _neutral;
+    private Vector3 _visualBasePosition;
     private Quaternion _visualBaseRotation;
     private double _phaseSeconds;
+    private double _idleSeconds;
     private float _activity;
+    private float _idleBlend;
+    private bool _idleRequested;
     private float _turn;
 
     public float Activity => _activity;
+    public float IdleBlend => _idleBlend;
+    public float GetIdleBlend() => _idleBlend;
     public float TurnBlend => _turn;
     public double PhaseSeconds => _phaseSeconds;
     public Vector3 GetPresentationState() => new(_activity, _turn, (float)_phaseSeconds);
@@ -69,6 +90,7 @@ public partial class FishVisualMotion : Node
 
     public override void _Ready()
     {
+        _visualBasePosition = _visual.Position;
         _visualBaseRotation = _visual.Quaternion;
         _player.CallbackModeProcess = AnimationMixer.AnimationCallbackModeProcess.Manual;
         _player.Play(SwimClip);
@@ -78,7 +100,10 @@ public partial class FishVisualMotion : Node
     public void ResetPresentation()
     {
         _phaseSeconds = 0;
+        _idleSeconds = 0;
         _activity = 0;
+        _idleBlend = 0;
+        _idleRequested = false;
         _turn = 0;
         ApplyPose();
     }
@@ -89,6 +114,15 @@ public partial class FishVisualMotion : Node
         var tuning = _fish.Tuning;
         var speed = Mathf.Clamp(_fish.PresentationSpeed / Mathf.Max(0.001f, tuning.MaxSpeed), 0, 1);
         var effort = Mathf.Clamp(_fish.PresentationEffort, 0, 1);
+        // Hysteresis is based on motor presentation only. A new thrust exits idle at once;
+        // coasting must actually settle before the idle pose takes over.
+        _idleRequested = _idleRequested
+            ? _fish.PresentationSpeed < Mathf.Max(IdleEnterSpeed, IdleExitSpeed) && effort < 0.04f
+            : _fish.PresentationSpeed < Mathf.Max(0, IdleEnterSpeed) && effort < 0.02f;
+        _idleBlend = Mathf.Lerp(_idleBlend, _idleRequested ? 1f : 0f,
+            1 - Mathf.Exp(-Mathf.Max(0.01f, IdleTransitionResponse) * (float)delta));
+        var idleFrequency = Mathf.Max(0.01f, IdleFrequencyHz);
+        _idleSeconds = (_idleSeconds + delta) % (2.0 / idleFrequency);
         var desiredActivity = effort > 0
             ? Mathf.Clamp(tuning.SwimIntensity * effort, 0, 1)
             : Mathf.Clamp(tuning.GlideIntensity * speed, 0, 1);
@@ -108,6 +142,7 @@ public partial class FishVisualMotion : Node
     private void ApplyPose()
     {
         _player.Seek(_phaseSeconds, true, true);
+        var idleWave = Mathf.Tau * Mathf.Max(0, IdleFrequencyHz) * (float)_idleSeconds;
         for (var i = 0; i < _bones.Length; i++)
         {
             var sampled = _clip.RotationTrackInterpolate(_tracks[i], _phaseSeconds).Normalized();
@@ -119,6 +154,16 @@ public partial class FishVisualMotion : Node
                 sampled = sampled.Slerp(_neutral[i], blend);
             }
             var pose = _neutral[i].Slerp(sampled, _activity);
+            if (_idleBlend > 0.0001f)
+            {
+                var degrees = i switch
+                {
+                    0 => IdleBodyDegrees * 0.25f * Mathf.Sin(idleWave),
+                    1 => IdleBodyDegrees * Mathf.Sin(idleWave - 0.55f),
+                    _ => IdleTailDegrees * Mathf.Sin(idleWave - 1.1f)
+                };
+                pose *= new Quaternion(Vector3.Forward, Mathf.DegToRad(degrees * _idleBlend));
+            }
             if (i == 1 || i == 2)
             {
                 var bend = Mathf.DegToRad(_fish.Tuning.TurnBendDegrees) * _turn *
@@ -128,6 +173,10 @@ public partial class FishVisualMotion : Node
             _skeleton.SetBonePoseRotation(_bones[i], pose.Normalized());
         }
         var lean = Mathf.DegToRad(_fish.Tuning.TurnLeanDegrees) * _turn;
-        _visual.Quaternion = _visualBaseRotation * new Quaternion(Vector3.Right, lean);
+        var sway = Mathf.DegToRad(IdleBodyDegrees * 0.4f * _idleBlend * Mathf.Sin(idleWave - 0.3f));
+        _visual.Quaternion = _visualBaseRotation * new Quaternion(Vector3.Right, lean) *
+            new Quaternion(Vector3.Up, sway);
+        _visual.Position = _visualBasePosition + Vector3.Up *
+            (IdleHoverMeters * _idleBlend * Mathf.Sin(idleWave * 0.5f));
     }
 }

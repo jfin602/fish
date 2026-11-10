@@ -15,6 +15,9 @@ from mathutils import Vector
 
 from fish.rig import skin_body_at_stations, skin_report
 from fish.animation import make_wave_action, reset_pose
+from fish.breathing import (OPERCULATE, EXPOSED_SLITS, OperculumSpec,
+                            add_operculum_rig, classify_breathing,
+                            weight_operculum_region, validate_breathing_rig)
 
 
 @dataclass(frozen=True)
@@ -33,6 +36,7 @@ class Blueprint:
     colors: tuple[tuple[str, str], ...]
     frames: tuple[int, int, int]
     wave: tuple[tuple[str, float, float], ...]
+    breathing_anatomy: str
 
     @property
     def stem(self):
@@ -54,7 +58,7 @@ BLUEPRINTS = (
         (48,24,16),
         (("spine_02",.023,.32),("spine_03",.055,.25),("spine_04",.09,.17),
          ("tail_01",.18,.10),("tail_02",.27,.04),("tail_fin",.15,-.02),
-         ("pectoral_l",.035,.22),("pectoral_r",-.035,.22),("dorsal",.015,.20),("anal",-.015,.20))),
+         ("pectoral_l",.035,.22),("pectoral_r",-.035,.22),("dorsal",.015,.20),("anal",-.015,.20)), OPERCULATE),
     Blueprint(3, "blue_green_chromis", "schooling",
         ((-.049,.002,.003,0),(-.039,.010,.014,0),(-.020,.016,.022,0),
          (.006,.017,.023,0),(.029,.012,.017,0),(.047,.004,.006,0),(.055,.003,.004,0)),
@@ -65,7 +69,7 @@ BLUEPRINTS = (
         (42,20,14),
         (("spine_02",.032,.30),("spine_03",.08,.20),("tail_01",.19,.11),
          ("tail_02",.29,.03),("tail_fin",.17,-.02),("pectoral_l",.025,.2),
-         ("pectoral_r",-.025,.2),("dorsal",.012,.2),("anal",-.012,.2))),
+         ("pectoral_r",-.025,.2),("dorsal",.012,.2),("anal",-.012,.2)), OPERCULATE),
     Blueprint(4, "reef_butterflyfish", "highly_compressed",
         ((-.090,.002,.004,0),(-.071,.006,.011,-.002),(-.051,.011,.034,0),
          (-.027,.016,.053,0),(.004,.019,.062,0),(.031,.017,.052,0),
@@ -78,7 +82,7 @@ BLUEPRINTS = (
         (("spine_02",.012,.31),("spine_03",.032,.23),("spine_04",.064,.15),
          ("tail_01",.13,.09),("tail_02",.20,.02),("tail_fin",.11,-.02),
          ("pectoral_l",.045,.23),("pectoral_r",-.045,.23),
-         ("dorsal",.014,.18),("anal",-.014,.18))),
+         ("dorsal",.014,.18),("anal",-.014,.18)), OPERCULATE),
     Blueprint(5, "blacktip_reef_shark", "fusiform_shark",
         ((-.66,.014,.020,0),(-.58,.055,.054,0),(-.40,.105,.092,0),
          (-.20,.122,.105,0),(.02,.111,.099,0),(.25,.077,.076,0),
@@ -92,8 +96,22 @@ BLUEPRINTS = (
         (("spine_02",.003,.40),("spine_03",.009,.32),("spine_04",.024,.24),
          ("spine_05",.048,.17),("tail_01",.090,.11),("tail_02",.145,.06),
          ("tail_03",.205,.02),("tail_fin",.16,-.02),
-         ("pectoral_l",.012,.2),("pectoral_r",-.012,.2))),
+         ("pectoral_l",.012,.2),("pectoral_r",-.012,.2)), EXPOSED_SLITS),
 )
+
+
+def breathing_spec(bp: Blueprint) -> OperculumSpec | None:
+    """Derive local cover dimensions from a species' own head and loft profile."""
+    if bp.breathing_anatomy == EXPOSED_SLITS:
+        return None
+    if bp.breathing_anatomy != OPERCULATE:
+        raise ValueError(f"{bp.faf_id} missing valid breathing anatomy")
+    length = bp.shape[-1][0] - bp.shape[0][0]
+    center_y = bp.eye_y + length * .12
+    width, height, z = _shape_at(bp.shape, center_y)
+    return OperculumSpec(center_y=center_y, center_z=z,
+                         half_width=width, region_y=length * .16,
+                         region_z=height * .90, parent_bone="spine_02")
 
 
 def _material(name, hex_color):
@@ -317,6 +335,8 @@ def _bind(obj, armature, bone=None, stations=None):
 
 def create_fish(bp: Blueprint, scene):
     """Build one species in an empty scene; return runtime objects and report."""
+    if bp.breathing_anatomy not in (OPERCULATE, EXPOSED_SLITS):
+        raise ValueError(f"{bp.faf_id} missing valid breathing anatomy")
     collection=bpy.data.collections.new(bp.faf_id+' Source')
     scene.collection.children.link(collection)
     scene.unit_settings.system='METRIC'
@@ -330,11 +350,18 @@ def create_fish(bp: Blueprint, scene):
         center=(sign*(width+bp.eye_radius*.12),bp.eye_y,bp.eye_z)
         eyes[label]=_eye(bp.stem+'__eye_'+label,center,bp.eye_radius,materials[-1],collection)
     armature=_armature(bp,collection)
+    breathing=breathing_spec(bp)
+    if breathing is not None:
+        add_operculum_rig(armature,breathing)
+    else:
+        classify_breathing(armature,EXPOSED_SLITS)
     # Mid-bone stations preserve a rigid head and blend each adjacent body
     # segment. The shark has more rear segments and a longer stable forebody.
     stations=[(-(a+b)*.5,{name:1.0}) for name,a,b in
               zip(bp.chain_names,bp.chain,bp.chain[1:])]
     _bind(body,armature,stations=stations)
+    if breathing is not None:
+        weight_operculum_region(body,breathing)
     for name,obj in fins.items():
         if name.startswith('pectoral_l'): bone='pectoral_l'
         elif name.startswith('pectoral_r'): bone='pectoral_r'
@@ -356,10 +383,12 @@ def create_fish(bp: Blueprint, scene):
     bpy.context.scene.frame_set(1)
     reset_pose(armature)
     bpy.context.view_layer.update()
-    return armature,meshes,inspect_fish(bp,armature,meshes)
+    breathing_check=validate_breathing_rig(armature,meshes,breathing,
+        require_complete=bp.breathing_anatomy==OPERCULATE)
+    return armature,meshes,inspect_fish(bp,armature,meshes,breathing_check)
 
 
-def inspect_fish(bp: Blueprint, armature, meshes):
+def inspect_fish(bp: Blueprint, armature, meshes, breathing_check=None):
     """Recompute source statistics without rebuilding or changing a fish."""
     coordinates=[tuple(vertex.co) for obj in meshes for vertex in obj.data.vertices]
     bounds=[(min(v[i] for v in coordinates),max(v[i] for v in coordinates)) for i in range(3)]
@@ -376,11 +405,14 @@ def inspect_fish(bp: Blueprint, armature, meshes):
         'origin_m':[0,0,0],'rotation_rad':[0,0,0],'scale':[1,1,1],
         'front_blender':'-Y','up_blender':'+Z',
         'root_translation_animated':False,'source_generator':'fish.reef_families.v1',
+        'breathing_anatomy':bp.breathing_anatomy,
+        'breathing_validation':breathing_check,
         'generator_config':{
             'shape_stations':bp.shape,'radial_sides':bp.radial_sides,
             'body_steps':bp.body_steps,'chain_stations':bp.chain,
             'wave_profile':bp.wave,'frames':bp.frames,
             'colors':bp.colors,'deterministic':True,
+            'breathing_anatomy':bp.breathing_anatomy,
         },
     }
     return report

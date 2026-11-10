@@ -11,6 +11,8 @@ import bpy
 from common.naming import action_name, asset_stem, object_name
 from fish.animation import make_wave_action, reset_pose
 from fish.rig import rename_deform_bones, rotate_asset_data, skin_body_at_stations, skin_report
+from fish.breathing import (OperculumSpec, add_operculum_rig,
+                            weight_operculum_region, validate_breathing_rig)
 
 
 FAF_ID = "FAF-FISH-001"
@@ -65,6 +67,28 @@ WAVE = {
     "anal": (-0.012, 0.17),
 }
 
+# Tang-specific head placement. Left is -X in the original sculpt; the shared
+# reef-family loft uses +X for left. All dimensions are source metres.
+BREATHING = OperculumSpec(center_y=-0.038, center_z=0.0,
+                         half_width=0.014, region_y=0.025, region_z=0.042,
+                         parent_bone="spine_02", left_x_sign=-1)
+
+
+def add_breathing_to_existing() -> dict:
+    """Upgrade the approved Tang source without recreating geometry or Actions."""
+    armature = bpy.data.objects.get(object_name(FAF_ID, SLUG, "armature"))
+    body = bpy.data.objects.get(object_name(FAF_ID, SLUG, "body"))
+    if armature is None or body is None:
+        raise ValueError("open the canonical FAF-FISH-001 source")
+    meshes = [obj for obj in bpy.data.objects if obj.type == "MESH" and obj.parent == armature]
+    add_operculum_rig(armature, BREATHING)
+    weight_operculum_region(body, BREATHING)
+    result = validate_breathing_rig(armature, meshes, BREATHING)
+    problems = skin_report(meshes, armature)["problems"]
+    if problems:
+        raise ValueError(f"Tang skin invalid: {problems[:8]}")
+    return result
+
 
 def build() -> dict:
     armature = bpy.data.objects.get("FAF-001 Yellow Tang Rig")
@@ -76,6 +100,8 @@ def build() -> dict:
     rotate_asset_data(meshes, armature, -math.pi / 2)
     rename_deform_bones(armature, meshes, BONE_NAMES)
     skin_body_at_stations(bpy.data.objects["01 Body"], BODY_STATIONS)
+    add_operculum_rig(armature, BREATHING)
+    weight_operculum_region(bpy.data.objects["01 Body"], BREATHING)
     for old, part in MESH_PARTS.items():
         bpy.data.objects[old].name = object_name(FAF_ID, SLUG, part)
     armature.name = object_name(FAF_ID, SLUG, "armature")
@@ -95,6 +121,7 @@ def build() -> dict:
     report = skin_report(meshes, armature)
     if report["problems"]:
         raise ValueError(f"skin validation failed: {report['problems'][:10]}")
+    validate_breathing_rig(armature, meshes, BREATHING)
     for role, frames, scale in (("Glide", 48, 0.32), ("Swim", 30, 1.0), ("SwimFast", 18, 1.35)):
         profile = {name: (amplitude * scale, phase) for name, (amplitude, phase) in WAVE.items()}
         make_wave_action(armature, action_name(FAF_ID, SLUG, role), frames, profile)

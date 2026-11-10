@@ -61,13 +61,35 @@ func _run() -> void:
 		clip.find_track(NodePath("Armature/Skeleton3D:Tail"), Animation.TYPE_ROTATION_3D), 0.0)
 	# Give the motor room to coast without meeting the north course boundary.
 	fish.position = Vector3(0, 0, 4)
-	await _tick(3)
+	await _tick(70)
+	var idle_tail_start := skeleton.get_bone_pose_rotation(tail)
+	var idle_visual_start := visual.position
+	await _tick(25)
+	if not _require(motion.call("GetIdleBlend") > 0.9 and
+			skeleton.get_bone_pose_rotation(tail).angle_to(idle_tail_start) > 0.01 and
+			visual.position.distance_to(idle_visual_start) > 0.001 and
+			fish.velocity.length() < 0.001,
+			"stationary fish did not continue a bounded visual idle hover"):
+		return
 	_key(KEY_W, true)
-	await _tick(24)
+	var transition_jump := 0.0
+	var transition_tail := skeleton.get_bone_pose_rotation(tail)
+	for i in range(24):
+		await _tick(1)
+		var next_tail := skeleton.get_bone_pose_rotation(tail)
+		transition_jump = maxf(transition_jump, next_tail.angle_to(transition_tail))
+		transition_tail = next_tail
 	var powered := _state(motion)
-	if not _require(powered.x > 0.8 and fish.velocity.length() > 0.5 and
-			skeleton.get_bone_pose_rotation(tail).angle_to(neutral) > 0.05,
-			"propulsion did not increase swim pose and authoritative speed: activity=%.3f speed=%.3f tail=%.3f position=%s" % [powered.x, fish.velocity.length(), skeleton.get_bone_pose_rotation(tail).angle_to(neutral), fish.position]):
+	var powered_tail_excursion := 0.0
+	for i in range(12):
+		await _tick(1)
+		powered_tail_excursion = maxf(powered_tail_excursion,
+			skeleton.get_bone_pose_rotation(tail).angle_to(neutral))
+	if not _require(powered.x > 0.8 and motion.call("GetIdleBlend") < 0.35 and
+			transition_jump < 0.2 and
+			fish.velocity.length() > 0.5 and
+			powered_tail_excursion > 0.05,
+			"propulsion did not increase swim pose and authoritative speed: activity=%.3f speed=%.3f tail=%.3f position=%s" % [powered.x, fish.velocity.length(), powered_tail_excursion, fish.position]):
 		return
 	var previous_phase := powered.z
 	var previous_tail := skeleton.get_bone_pose_rotation(tail)
@@ -116,13 +138,23 @@ func _run() -> void:
 			visual.quaternion.angle_to(base_visual_rotation) < 0.01,
 			"released turn did not restore base visual orientation"):
 		return
+	var settle_frames := 0
+	while fish.velocity.length() > 0.09 and settle_frames < 240:
+		await _tick(1)
+		settle_frames += 1
+	await _tick(60)
+	if not _require(fish.velocity.length() < 0.1 and motion.call("GetIdleBlend") > 0.9,
+			"coasting did not return through glide into idle"):
+		return
 	paused = true
 	var paused_phase := _state(motion).z
 	var paused_pose := skeleton.get_bone_pose_rotation(tail)
+	var paused_visual_position := visual.position
 	var paused_eye := camera.global_transform
 	await create_timer(0.15).timeout
 	if not _require(absf(_state(motion).z - paused_phase) < 0.00001 and
 			skeleton.get_bone_pose_rotation(tail).angle_to(paused_pose) < 0.00001 and
+			visual.position.is_equal_approx(paused_visual_position) and
 			camera.global_transform.is_equal_approx(paused_eye),
 			"pause advanced animation or camera"):
 		return
