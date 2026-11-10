@@ -2,11 +2,11 @@ TASK: Phase 2 / P4 — Reef tunnels and world composition
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
-- Browser required: no.
+- Browser required: yes.
 - This prompt's assigned project version is `0.2.4`.
 
 GOAL
-Turn the structural P2 habitat into a deliberate reef exploration space with coral floor, varied rock formations, a tunnel/tight passage, cover/overhang, open cruising space and meaningful vertical routes. Remove obvious developer-course visuals from normal play.
+Turn the structural P2 habitat into a deliberate reef exploration space with coral floor, varied rock formations, a tunnel/tight passage, cover/overhang, open cruising space and meaningful vertical routes. Remove obvious developer-course visuals from normal play. This task includes an owner/native visual checkpoint before the composition is accepted.
 
 PREREQUISITES AND NARROW READING
 Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P4, P2 design asset/world sections, art-and-assets P2 boundary, roadmap G2.1 and V18. Inspect actual P3 habitat, final P1 fish/camera dimensions/tuning, Rock Face/Coast Sand/Heliopora prepared resources, current ambient fish and asset provenance. Require root `0.2.3`.
@@ -20,11 +20,32 @@ IMPLEMENT
 6. If new third-party environment assets are truly required, use only free legally suitable sources with complete provenance/license/dependency records and public-repo-safe installation. Do not add paid/account-gated dependencies or unresolved third-party textures.
 7. Extend scene/resource/collision checks to cover tunnel centerline/clearance, overhang route, broad route, vertical landmarks, no spawn overlaps, bounded representative instance counts and source identities. Record implementation evidence and any preparation changes.
 
+OWNER VISUAL CHECKPOINT
+After the implementation and focused checks are green, launch the actual normal Fish game in a native Godot window and hand control to the owner before accepting this task. Do not use a still editor viewport as the substitute.
+
+The owner should swim:
+- one broad/open route;
+- the intended rock tunnel/tight passage;
+- the overhang/sheltered pocket;
+- the lower-to-upper vertical route;
+- enough ordinary free swimming to see the habitat from several angles.
+
+Ask for feedback on the actual composition, especially:
+- whether the world already feels like terrain rather than arranged test props;
+- whether the coral floor/reef coverage feels natural or repetitive;
+- whether rock scale/orientation/spacing feels believable;
+- whether the tunnel and overhang are visually inviting and physically readable;
+- whether the third-person camera has enough room;
+- whether obvious flat/test-course geometry is still visible;
+- whether any area feels too empty, too cluttered or copy-pasted.
+
+Use that feedback to make bounded P4 composition/collision adjustments and replay only the affected route(s). This checkpoint judges layout, scale, traversal and visual composition; it does not require final underwater color/fog/caustics, which P5 owns. Record the owner's accepted composition or exact remaining complaint in the P2 implementation evidence. Do not proceed to P5 on a composition the owner explicitly rejects.
+
 SCOPE / DEFERRALS
 Do not add underwater shaders/fog beyond what is needed to view composition; P5 owns atmosphere. No reactive wake, ecology, AI, growth, procedural generation, first person or abilities. Keep accepted motor/camera semantics unchanged.
 
 VALIDATE
-T2. Use actual import/build/scene inspection and focused traversal geometry queries. Check tunnel/route clearances against accepted fish collision/camera requirements, visual/collision bounds for representative rock pieces, no hidden P1 course nodes in normal scene, asset/license/ignore boundaries, bounded high-detail coral usage, no package-lock.json and git diff --check. Native beauty/camera comfort remains P7.
+T2 plus the native owner visual checkpoint above. Use actual import/build/scene inspection and focused traversal geometry queries. Check tunnel/route clearances against accepted fish collision/camera requirements, visual/collision bounds for representative rock pieces, no hidden P1 course nodes in normal scene, asset/license/ignore boundaries, bounded high-detail coral usage, no package-lock.json and git diff --check. Automated geometry success does not replace the owner/native composition review.
 
 DONE / VERSION / HANDOFF
-The normal habitat contains a coherent coral/reef floor, rock tunnel/tight passage, cover, open and vertical routes with obvious test presentation removed; checks/resource records pass. Set root package.json to `0.2.4` only then. Report layout/clearance/asset decisions and P5 atmosphere anchors. Do not commit or push.
+The normal habitat contains an owner-accepted coral/reef floor, rock tunnel/tight passage, cover, open and vertical routes with obvious test presentation removed; focused checks pass and the visual checkpoint has no unresolved P4 blocker. Set root package.json to `0.2.4` only then. Report layout/clearance/asset decisions, owner feedback and resulting adjustments, plus P5 atmosphere anchors. If running manually, stop here for review before starting P5. Do not commit or push unless the surrounding manual workflow explicitly asks for it.
