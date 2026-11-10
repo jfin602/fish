@@ -2,14 +2,14 @@ TASK: Phase 2 / P6 — Fish-reactive water
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
-- Browser required: no.
+- Browser required: yes.
 - This prompt's assigned project version is `0.2.6`.
 
 GOAL
-Add bounded presentation effects around the fish that make the water visibly react to actual swimming without adding forces, changing collision or becoming a second movement simulation.
+Add bounded presentation effects around the fish that make the water visibly react to actual swimming without adding forces, changing collision or becoming a second movement simulation. This task includes a native owner visual checkpoint because the effect must be judged in motion around the actual fish.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P6, P2 design fish-reactive-water section, swimming/camera state boundaries, roadmap G2.3 and V20. Inspect actual FishController/SwimMotor/FishVisualMotion interfaces, accepted tuning, player visual/tail transforms, pause/focus lifecycle, selected renderer and P5 environment source. Require root `0.2.5`.
+Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P6, P2 design fish-reactive-water section, swimming/camera state boundaries, roadmap G2.3 and V20. Inspect actual FishController/SwimMotor/FishVisualMotion interfaces, accepted tuning, player visual/tail transforms, pause/focus lifecycle, selected renderer and the owner-accepted P5 environment source. Require root `0.2.5`.
 
 IMPLEMENT
 1. Introduce a small presentation-only water-reaction owner attached to or following the accepted player. Prefer read-only values already available from authoritative movement; if a presentation snapshot is needed, expose a narrow immutable/read-only state rather than letting the effect own velocity.
@@ -20,11 +20,36 @@ IMPLEMENT
 6. Add focused tests/assertions proving the presentation component never writes fish transform, velocity, collision, tuning or input state. Exercise deterministic intensity mapping for glide/cruise/effort/turn inputs, bounded values, pause/resume and node cleanup. Extend scene smoke only for actual integration risks.
 7. Record the source/read-only movement contract and actual effect configuration in P2 implementation evidence for P7 tuning.
 
+OWNER VISUAL CHECKPOINT
+After the effect is integrated and automated checks pass, run the actual P2 habitat in a native Godot game window and hand control to the owner.
+
+The owner should deliberately compare:
+- near-rest / gentle glide;
+- ordinary cruise;
+- acceleration / high effort;
+- hard left and right turns;
+- climb/dive while moving;
+- turning through the rock tunnel or near geometry;
+- pause, focus loss/refocus and resume.
+
+Tune from owner feedback until:
+- glide/rest has little or no distracting reaction;
+- cruise has a subtle continuous sense of water displacement;
+- acceleration visibly increases the response;
+- hard turns redirect or asymmetrically disturb the effect in a way that matches motion;
+- origin stays believable around body/tail through yaw and pitch;
+- particles/trails do not fill the camera or obscure tunnel/obstacle readability;
+- the effect feels attached to fish motion, not the screen;
+- pause/focus/resume does not dump a queued burst or leave stale effects;
+- the effect improves movement readability without becoming permanent visual clutter.
+
+Use the existing presentation controls to tune intensity, spread, lifetime, count, turn response and similar VFX parameters. Do not change authoritative P1 movement just to make the effect look better. Record the accepted effect settings and owner feedback in P2 implementation evidence. Do not proceed to the final integrated P7 checkpoint while the owner says the reaction is materially distracting or unreadable.
+
 SCOPE / DEFERRALS
 No fluid solver, buoyancy, water drag changes, motor retuning, screen shake, new movement abilities, stamina, ecology, first person or general VFX framework. Do not turn particles into hitboxes or gameplay data.
 
 VALIDATE
-T2. Run focused C#/scene/effect tests and selected-renderer main-scene checks. Compare fish transform/velocity traces with effect disabled/enabled under equivalent intent where the harness supports it. Verify bounded emitter values, no pause-resume burst/backlog, no runtime errors, no package-lock.json and git diff --check. Headless state proves integration only; P7 determines whether the effect actually looks fluid/readable.
+T2 plus the native owner visual checkpoint above. Run focused C#/scene/effect tests and selected-renderer main-scene checks. Compare fish transform/velocity traces with effect disabled/enabled under equivalent intent where the harness supports it. Verify bounded emitter values, no pause-resume burst/backlog, no runtime errors, no package-lock.json and git diff --check. Headless state proves integration only; the native checkpoint determines whether the effect actually looks fluid/readable around the moving fish.
 
 DONE / VERSION / HANDOFF
-All four movement states drive bounded, presentation-only water reaction through the locked renderer and focused integration checks pass without movement drift. Set root package.json to `0.2.6` only then. Report changed source, mapping parameters, checks/limitations and P7 tuning controls. Do not commit or push.
+All four movement states drive bounded, owner-accepted presentation-only water reaction through the locked renderer and focused integration checks pass without movement drift. Set root package.json to `0.2.6` only then. Report changed source, mapping parameters, checks/limitations, owner feedback/adjustments and the accepted P7 tuning controls. If running manually, stop here for review before starting P7. Do not commit or push unless the surrounding manual workflow explicitly asks for it.
