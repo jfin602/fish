@@ -23,3 +23,5 @@ The first original vegetation pack is [FAF-PLANT-001–003](plant-pack-001/READM
 The first original modular seabed pack is [FAF-TERRAIN-001](terrain-001/README.md): six deterministic broad-polygon sand/reef chunks with overlap-friendly irregular aprons, separate GLBs, Blender composition review, and isolated Godot proof. Visible close-view seams need authored dressing before use in a style-proving scene. It has not been placed into the live P2 habitat.
 
 The first small reef-floor detail pack is [FAF-DETAIL-001–004](detail-pack-001/README.md): eight inexpensive shell, rubble, pebble and sponge A/B assets with deterministic family generators, separate GLBs, Blender pair review and one isolated Godot cluster proof. It has not been placed into the live P2 habitat.
+
+The first [integrated FAF style proof](style-proof-001/README.md) places the six completed base packs together in an isolated Godot Forward+ scene using Fish's current water presentation. Native gameplay-scale and overview views make the remaining arch, terrain seam, lighting and fish-scale gaps concrete for owner review. It does not replace or approve the live P2 habitat.

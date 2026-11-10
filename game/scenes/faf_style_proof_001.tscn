@@ -1,0 +1,802 @@
+[gd_scene load_steps=48 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_style_proof_001.gd" id="proof"]
+[ext_resource type="Script" path="res://scripts/UnderwaterAtmosphere.cs" id="atmosphere"]
+[ext_resource type="Script" path="res://scripts/SeabedSurface.cs" id="seabed"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_001a_branching.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_001b_branching.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_001c_branching.glb" id="6"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_002a_rounded.glb" id="7"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_002b_rounded.glb" id="8"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_002c_rounded.glb" id="9"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_003a_tube.glb" id="10"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_003b_tube.glb" id="11"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_003c_tube.glb" id="12"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_004a_fan.glb" id="13"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_004b_fan.glb" id="14"]
+[ext_resource type="PackedScene" path="res://assets/faf/coral/coral_004c_fan.glb" id="15"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_001a_fan_shell.glb" id="16"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_001b_ridge_shell.glb" id="17"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_002a_coral_rubble.glb" id="18"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_002b_reef_rubble.glb" id="19"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_003a_slate_pebbles.glb" id="20"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_003b_warm_pebbles.glb" id="21"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_004a_encrusting_sponge.glb" id="22"]
+[ext_resource type="PackedScene" path="res://assets/faf/details/detail_004b_cup_sponge.glb" id="23"]
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_001_yellow_tang.glb" id="24"]
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_002_ocellaris_clownfish.glb" id="25"]
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_003_blue_green_chromis.glb" id="26"]
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_004_reef_butterflyfish.glb" id="27"]
+[ext_resource type="PackedScene" path="res://assets/faf/fish/fish_005_blacktip_reef_shark.glb" id="28"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_001a_sea_grass.glb" id="29"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_001b_sea_grass.glb" id="30"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_001c_sea_grass.glb" id="31"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_002a_broad_seaweed.glb" id="32"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_002b_broad_seaweed.glb" id="33"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_002c_broad_seaweed.glb" id="34"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_003a_reef_algae.glb" id="35"]
+[ext_resource type="PackedScene" path="res://assets/faf/plants/plant_003b_reef_algae.glb" id="36"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001a_reef_boulder.glb" id="37"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001b_reef_boulder.glb" id="38"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001c_reef_boulder.glb" id="39"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001d_reef_boulder.glb" id="40"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001a_open_sand.glb" id="41"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001b_rolling.glb" id="42"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001c_reef_shelf.glb" id="43"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001d_slope.glb" id="44"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001e_drop_off.glb" id="45"]
+[ext_resource type="PackedScene" path="res://assets/faf/terrain/terrain_001f_rocky_floor.glb" id="46"]
+
+[sub_resource type="BoxShape3D" id="proof_upper"]
+size = Vector3(84, 0.6, 84)
+
+[node name="FAFStyleProof001" type="Node3D"]
+script = ExtResource("proof")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+
+[node name="UnderwaterAtmosphere" type="Node3D" parent="."]
+script = ExtResource("atmosphere")
+
+[node name="Habitat" type="Node3D" parent="."]
+
+[node name="Seabed" type="StaticBody3D" parent="Habitat"]
+position = Vector3(0, -11, 0)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("seabed")
+
+[node name="HiddenLimits" type="StaticBody3D" parent="Habitat"]
+collision_layer = 0
+collision_mask = 0
+
+[node name="Upper" type="CollisionShape3D" parent="Habitat/HiddenLimits"]
+position = Vector3(0, 6, 0)
+disabled = true
+shape = SubResource("proof_upper")
+
+[node name="ReviewCamera" type="Camera3D" parent="."]
+position = Vector3(0, 2.8, 4.6)
+current = true
+fov = 75.0
+
+[node name="FAFAssets" type="Node3D" parent="."]
+
+[node name="Terrain" type="Node3D" parent="FAFAssets"]
+
+[node name="01_terrain_001a_open_sand" parent="FAFAssets/Terrain" instance=ExtResource("41")]
+position = Vector3(0, -0.08, 0)
+rotation = Vector3(0, 0.08, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="02_terrain_001a_open_sand" parent="FAFAssets/Terrain" instance=ExtResource("41")]
+position = Vector3(-8.2, -0.11, -2.4)
+rotation = Vector3(0, -0.18, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="03_terrain_001a_open_sand" parent="FAFAssets/Terrain" instance=ExtResource("41")]
+position = Vector3(8, -0.1, -2.9)
+rotation = Vector3(0, 0.22, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="04_terrain_001a_open_sand" parent="FAFAssets/Terrain" instance=ExtResource("41")]
+position = Vector3(0.2, -0.12, -7.3)
+rotation = Vector3(0, -0.28, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="05_terrain_001b_rolling" parent="FAFAssets/Terrain" instance=ExtResource("42")]
+position = Vector3(-0.5, -0.05, 3.8)
+rotation = Vector3(0, 0.43, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="06_terrain_001b_rolling" parent="FAFAssets/Terrain" instance=ExtResource("42")]
+position = Vector3(-6.55, -0.08, 2.66)
+rotation = Vector3(0, -0.37, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="07_terrain_001b_rolling" parent="FAFAssets/Terrain" instance=ExtResource("42")]
+position = Vector3(6.38, -0.09, 2.74)
+rotation = Vector3(0, 0.51, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="08_terrain_001b_rolling" parent="FAFAssets/Terrain" instance=ExtResource("42")]
+position = Vector3(-7.79, -0.1, -7.14)
+rotation = Vector3(0, 0.87, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="09_terrain_001c_reef_shelf" parent="FAFAssets/Terrain" instance=ExtResource("43")]
+position = Vector3(-6.5, 0, -4.2)
+rotation = Vector3(0, -0.36, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="10_terrain_001d_slope" parent="FAFAssets/Terrain" instance=ExtResource("44")]
+position = Vector3(-3.8, 0, -2.6)
+rotation = Vector3(0, 0.48, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="11_terrain_001e_drop_off" parent="FAFAssets/Terrain" instance=ExtResource("45")]
+position = Vector3(6.2, 0, -4.6)
+rotation = Vector3(0, -0.3, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="12_terrain_001f_rocky_floor" parent="FAFAssets/Terrain" instance=ExtResource("46")]
+position = Vector3(4.7, 0, -1.6)
+rotation = Vector3(0, 0.41, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="13_terrain_001c_reef_shelf" parent="FAFAssets/Terrain" instance=ExtResource("43")]
+position = Vector3(9.3, -0.07, -7.9)
+rotation = Vector3(0, 0.83, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="Rocks" type="Node3D" parent="FAFAssets"]
+
+[node name="01_rock_001c_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("39")]
+position = Vector3(-1.56, 0.21019, -2.83)
+rotation = Vector3(0, -0.4, 0)
+scale = Vector3(1.53, 1.53, 1.53)
+
+[node name="02_rock_001a_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("37")]
+position = Vector3(1.54, -0.07067, -2.72)
+rotation = Vector3(0, 0.29, 0)
+scale = Vector3(1.63, 1.63, 1.63)
+
+[node name="03_rock_001b_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("38")]
+position = Vector3(-0.02, 1.43214, -2.78)
+rotation = Vector3(-0.11, 0.23, 0.08)
+scale = Vector3(2.1, 2.1, 2.1)
+
+[node name="04_rock_001d_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("40")]
+position = Vector3(-2.46, 0.50604, -3.1)
+rotation = Vector3(0, 0.88, 0)
+scale = Vector3(1.03, 1.03, 1.03)
+
+[node name="05_rock_001d_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("40")]
+position = Vector3(2.48, 0.00361, -2.55)
+rotation = Vector3(0, -0.65, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="06_rock_001a_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("37")]
+position = Vector3(-6.45, 1.16741, -4.65)
+rotation = Vector3(0, -0.74, 0)
+scale = Vector3(1.34, 1.34, 1.34)
+
+[node name="07_rock_001b_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("38")]
+position = Vector3(-5.22, 0.79412, -3.32)
+rotation = Vector3(0, 0.31, 0)
+scale = Vector3(1.4, 1.4, 1.4)
+
+[node name="08_rock_001d_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("40")]
+position = Vector3(-8.4, 0.76265, -5.39)
+rotation = Vector3(0, 1.12, 0)
+scale = Vector3(1.36, 1.36, 1.36)
+
+[node name="09_rock_001c_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("39")]
+position = Vector3(-9.65, 0.42953, -6.55)
+rotation = Vector3(0, -0.49, 0)
+scale = Vector3(1.22, 1.22, 1.22)
+
+[node name="10_rock_001c_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("39")]
+position = Vector3(6.82, 0.35099, -4.2)
+rotation = Vector3(0, -0.27, 0)
+scale = Vector3(1.85, 1.85, 1.85)
+
+[node name="11_rock_001a_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("37")]
+position = Vector3(8.78, 0.1141, -5.32)
+rotation = Vector3(0, 0.76, 0)
+scale = Vector3(1.95, 1.95, 1.95)
+
+[node name="12_rock_001d_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("40")]
+position = Vector3(9.66, 1.26263, -6.74)
+rotation = Vector3(0, -0.96, 0)
+scale = Vector3(1.79, 1.79, 1.79)
+
+[node name="13_rock_001b_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("38")]
+position = Vector3(5.74, 0.98438, -3.12)
+rotation = Vector3(0, -0.18, -0.18)
+scale = Vector3(1.62, 1.62, 1.62)
+
+[node name="14_rock_001c_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("39")]
+position = Vector3(10.15, 1.8957, -8.54)
+rotation = Vector3(0, 0.51, 0)
+scale = Vector3(1.57, 1.57, 1.57)
+
+[node name="15_rock_001a_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("37")]
+position = Vector3(-4.68, -0.07418, 1.6)
+rotation = Vector3(0, 0.46, 0)
+scale = Vector3(1.25, 1.25, 1.25)
+
+[node name="16_rock_001d_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("40")]
+position = Vector3(4.82, -0.03753, 2.04)
+rotation = Vector3(0, -0.52, 0)
+scale = Vector3(1.2, 1.2, 1.2)
+
+[node name="17_rock_001b_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("38")]
+position = Vector3(-7.38, 0.09302, 3.15)
+rotation = Vector3(0, 1.01, 0)
+scale = Vector3(1.13, 1.13, 1.13)
+
+[node name="18_rock_001a_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("37")]
+position = Vector3(7.84, 0.02269, 2.21)
+rotation = Vector3(0, -0.91, 0)
+scale = Vector3(1.08, 1.08, 1.08)
+
+[node name="19_rock_001c_reef_boulder" parent="FAFAssets/Rocks" instance=ExtResource("39")]
+position = Vector3(-10.17, -0.08515, -2.31)
+rotation = Vector3(0, 0.67, 0)
+scale = Vector3(1.46, 1.46, 1.46)
+
+[node name="Coral" type="Node3D" parent="FAFAssets"]
+
+[node name="01_coral_002a_rounded" parent="FAFAssets/Coral" instance=ExtResource("7")]
+position = Vector3(-2.78, -0.05773, 1.44)
+rotation = Vector3(0, 0.33, 0)
+scale = Vector3(0.83, 0.83, 0.83)
+
+[node name="02_coral_003a_tube" parent="FAFAssets/Coral" instance=ExtResource("10")]
+position = Vector3(2.72, -0.06687, 1.35)
+rotation = Vector3(0, -0.49, 0)
+scale = Vector3(0.79, 0.79, 0.79)
+
+[node name="03_coral_001a_branching" parent="FAFAssets/Coral" instance=ExtResource("4")]
+position = Vector3(-2.95, -0.05651, 0.22)
+rotation = Vector3(0, -0.72, 0)
+scale = Vector3(0.77, 0.77, 0.77)
+
+[node name="04_coral_003c_tube" parent="FAFAssets/Coral" instance=ExtResource("12")]
+position = Vector3(3.04, 0.04774, 0.12)
+rotation = Vector3(0, 0.37, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="05_coral_001b_branching" parent="FAFAssets/Coral" instance=ExtResource("5")]
+position = Vector3(-4.94, -0.06161, 1.96)
+rotation = Vector3(0, 0.26, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="06_coral_003a_tube" parent="FAFAssets/Coral" instance=ExtResource("10")]
+position = Vector3(-5.5, -0.06254, 1.13)
+rotation = Vector3(0, 0.66, 0)
+scale = Vector3(0.76, 0.76, 0.76)
+
+[node name="07_coral_002a_rounded" parent="FAFAssets/Coral" instance=ExtResource("7")]
+position = Vector3(-4.22, -0.07083, 1.46)
+rotation = Vector3(0, -0.55, 0)
+scale = Vector3(0.81, 0.81, 0.81)
+
+[node name="08_coral_003c_tube" parent="FAFAssets/Coral" instance=ExtResource("12")]
+position = Vector3(-5.76, -0.02722, 2.28)
+rotation = Vector3(0, -0.37, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="09_coral_002c_rounded" parent="FAFAssets/Coral" instance=ExtResource("9")]
+position = Vector3(-3.98, -0.07254, 2.49)
+rotation = Vector3(0, 0.84, 0)
+scale = Vector3(0.99, 0.99, 0.99)
+
+[node name="10_coral_001a_branching" parent="FAFAssets/Coral" instance=ExtResource("4")]
+position = Vector3(-6.34, 0.02101, 2.83)
+rotation = Vector3(0, -0.8, 0)
+scale = Vector3(0.76, 0.76, 0.76)
+
+[node name="11_coral_004b_fan" parent="FAFAssets/Coral" instance=ExtResource("14")]
+position = Vector3(-5.37, -0.07518, 0.68)
+rotation = Vector3(0, -0.38, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="12_coral_001a_branching" parent="FAFAssets/Coral" instance=ExtResource("4")]
+position = Vector3(-3.15, -0.0599, 1.18)
+rotation = Vector3(0, -0.19, 0)
+scale = Vector3(0.85, 0.85, 0.85)
+
+[node name="13_coral_002a_rounded" parent="FAFAssets/Coral" instance=ExtResource("7")]
+position = Vector3(-6.1, -0.07221, 0.62)
+rotation = Vector3(0, 0.63, 0)
+scale = Vector3(1.04, 1.04, 1.04)
+
+[node name="14_coral_003b_tube" parent="FAFAssets/Coral" instance=ExtResource("11")]
+position = Vector3(-7.25, -0.0284, 0.86)
+rotation = Vector3(0, -0.72, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="15_coral_004a_fan" parent="FAFAssets/Coral" instance=ExtResource("13")]
+position = Vector3(-7.58, 0.01679, 1.48)
+rotation = Vector3(0, 0.52, 0)
+scale = Vector3(0.8, 0.8, 0.8)
+
+[node name="16_coral_004a_fan" parent="FAFAssets/Coral" instance=ExtResource("13")]
+position = Vector3(-4.48, -0.07149, -0.55)
+rotation = Vector3(0, 1.25, 0)
+scale = Vector3(1.08, 1.08, 1.08)
+
+[node name="17_coral_001c_branching" parent="FAFAssets/Coral" instance=ExtResource("6")]
+position = Vector3(-2.7, 0.20906, -1.74)
+rotation = Vector3(0, 0.38, 0)
+scale = Vector3(0.82, 0.82, 0.82)
+
+[node name="18_coral_004b_fan" parent="FAFAssets/Coral" instance=ExtResource("14")]
+position = Vector3(-2.48, 0.43158, -2.68)
+rotation = Vector3(0, 0.88, 0)
+scale = Vector3(0.73, 0.73, 0.73)
+
+[node name="19_coral_003c_tube" parent="FAFAssets/Coral" instance=ExtResource("12")]
+position = Vector3(-2.24, 0.22654, -3.65)
+rotation = Vector3(0, -0.49, 0)
+scale = Vector3(0.74, 0.74, 0.74)
+
+[node name="20_coral_002b_rounded" parent="FAFAssets/Coral" instance=ExtResource("8")]
+position = Vector3(-3.52, 0.46068, -3.4)
+rotation = Vector3(0, -0.65, 0)
+scale = Vector3(0.9, 0.9, 0.9)
+
+[node name="21_coral_003a_tube" parent="FAFAssets/Coral" instance=ExtResource("10")]
+position = Vector3(-5.22, 0.53463, -3.67)
+rotation = Vector3(0, 0.72, 0)
+scale = Vector3(0.98, 0.98, 0.98)
+
+[node name="22_coral_004c_fan" parent="FAFAssets/Coral" instance=ExtResource("15")]
+position = Vector3(-7.17, 0.85754, -3.38)
+rotation = Vector3(0, -0.26, 0)
+scale = Vector3(1.07, 1.07, 1.07)
+
+[node name="23_coral_001b_branching" parent="FAFAssets/Coral" instance=ExtResource("5")]
+position = Vector3(-7.91, 0.52292, -5.45)
+rotation = Vector3(0, 0.9, 0)
+scale = Vector3(0.77, 0.77, 0.77)
+
+[node name="24_coral_002c_rounded" parent="FAFAssets/Coral" instance=ExtResource("9")]
+position = Vector3(-9.09, -0.08867, -4.12)
+rotation = Vector3(0, 0.33, 0)
+scale = Vector3(1.03, 1.03, 1.03)
+
+[node name="25_coral_003c_tube" parent="FAFAssets/Coral" instance=ExtResource("12")]
+position = Vector3(-5.93, 0.18915, -6.14)
+rotation = Vector3(0, -0.14, 0)
+scale = Vector3(0.95, 0.95, 0.95)
+
+[node name="26_coral_004b_fan" parent="FAFAssets/Coral" instance=ExtResource("14")]
+position = Vector3(-7.65, 0.01819, -6.92)
+rotation = Vector3(0, 0.74, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="27_coral_001a_branching" parent="FAFAssets/Coral" instance=ExtResource("4")]
+position = Vector3(2.92, 0.17411, -1.44)
+rotation = Vector3(0, -0.5, 0)
+scale = Vector3(0.98, 0.98, 0.98)
+
+[node name="28_coral_004c_fan" parent="FAFAssets/Coral" instance=ExtResource("15")]
+position = Vector3(2.42, -0.07411, -2.8)
+rotation = Vector3(0, -0.57, 0)
+scale = Vector3(0.8, 0.8, 0.8)
+
+[node name="29_coral_004c_fan" parent="FAFAssets/Coral" instance=ExtResource("15")]
+position = Vector3(3.11, -0.06643, 0.87)
+rotation = Vector3(0, 0.42, 0)
+scale = Vector3(0.76, 0.76, 0.76)
+
+[node name="30_coral_002b_rounded" parent="FAFAssets/Coral" instance=ExtResource("8")]
+position = Vector3(3.73, 0.22205, 0.2)
+rotation = Vector3(0, 0.28, 0)
+scale = Vector3(0.89, 0.89, 0.89)
+
+[node name="31_coral_001b_branching" parent="FAFAssets/Coral" instance=ExtResource("5")]
+position = Vector3(4.64, -0.04026, 2.05)
+rotation = Vector3(0, -0.22, 0)
+scale = Vector3(0.79, 0.79, 0.79)
+
+[node name="32_coral_003b_tube" parent="FAFAssets/Coral" instance=ExtResource("11")]
+position = Vector3(5.05, 0.33807, -0.45)
+rotation = Vector3(0, -0.68, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="33_coral_004a_fan" parent="FAFAssets/Coral" instance=ExtResource("13")]
+position = Vector3(4.02, -0.07432, 1.36)
+rotation = Vector3(0, 1.15, 0)
+scale = Vector3(0.95, 0.95, 0.95)
+
+[node name="34_coral_001c_branching" parent="FAFAssets/Coral" instance=ExtResource("6")]
+position = Vector3(5.88, -0.06402, 1.34)
+rotation = Vector3(0, 0.42, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="35_coral_003a_tube" parent="FAFAssets/Coral" instance=ExtResource("10")]
+position = Vector3(6.68, -0.03538, 1.83)
+rotation = Vector3(0, -0.82, 0)
+scale = Vector3(0.74, 0.74, 0.74)
+
+[node name="36_coral_002a_rounded" parent="FAFAssets/Coral" instance=ExtResource("7")]
+position = Vector3(6.47, 0.05796, -0.55)
+rotation = Vector3(0, -0.41, 0)
+scale = Vector3(1.01, 1.01, 1.01)
+
+[node name="37_coral_003a_tube" parent="FAFAssets/Coral" instance=ExtResource("10")]
+position = Vector3(6.97, 0.04512, -1.53)
+rotation = Vector3(0, 0.51, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="38_coral_004c_fan" parent="FAFAssets/Coral" instance=ExtResource("15")]
+position = Vector3(8.15, -0.07765, -1.2)
+rotation = Vector3(0, -0.79, 0)
+scale = Vector3(0.99, 0.99, 0.99)
+
+[node name="39_coral_002c_rounded" parent="FAFAssets/Coral" instance=ExtResource("9")]
+position = Vector3(7.61, -0.08649, 0.37)
+rotation = Vector3(0, 0.38, 0)
+scale = Vector3(0.76, 0.76, 0.76)
+
+[node name="40_coral_001b_branching" parent="FAFAssets/Coral" instance=ExtResource("5")]
+position = Vector3(7.83, 0.00961, -3.23)
+rotation = Vector3(0, 0.21, 0)
+scale = Vector3(0.85, 0.85, 0.85)
+
+[node name="41_coral_002c_rounded" parent="FAFAssets/Coral" instance=ExtResource("9")]
+position = Vector3(9.21, -0.07999, -2.84)
+rotation = Vector3(0, -0.92, 0)
+scale = Vector3(1.05, 1.05, 1.05)
+
+[node name="42_coral_003c_tube" parent="FAFAssets/Coral" instance=ExtResource("12")]
+position = Vector3(9.49, -0.08348, -4.32)
+rotation = Vector3(0, 0.87, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="43_coral_004a_fan" parent="FAFAssets/Coral" instance=ExtResource("13")]
+position = Vector3(8.59, -0.08264, -4.61)
+rotation = Vector3(0, -0.5, 0)
+scale = Vector3(0.72, 0.72, 0.72)
+
+[node name="44_coral_004b_fan" parent="FAFAssets/Coral" instance=ExtResource("14")]
+position = Vector3(6.02, 0.93355, -5.27)
+rotation = Vector3(0, -0.46, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="45_coral_001a_branching" parent="FAFAssets/Coral" instance=ExtResource("4")]
+position = Vector3(2.35, -0.07858, -3.95)
+rotation = Vector3(0, 0.71, 0)
+scale = Vector3(0.78, 0.78, 0.78)
+
+[node name="46_coral_003b_tube" parent="FAFAssets/Coral" instance=ExtResource("11")]
+position = Vector3(3.34, -0.1102, -5.83)
+rotation = Vector3(0, -0.22, 0)
+scale = Vector3(0.84, 0.84, 0.84)
+
+[node name="47_coral_002b_rounded" parent="FAFAssets/Coral" instance=ExtResource("8")]
+position = Vector3(-2.92, -0.09824, -6.62)
+rotation = Vector3(0, 0.58, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="48_coral_004a_fan" parent="FAFAssets/Coral" instance=ExtResource("13")]
+position = Vector3(-4.29, -0.11104, -7.36)
+rotation = Vector3(0, -0.94, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="49_coral_001c_branching" parent="FAFAssets/Coral" instance=ExtResource("6")]
+position = Vector3(1.48, -0.10101, -7.58)
+rotation = Vector3(0, 0.37, 0)
+scale = Vector3(0.77, 0.77, 0.77)
+
+[node name="50_coral_002a_rounded" parent="FAFAssets/Coral" instance=ExtResource("7")]
+position = Vector3(9.66, 0.82441, -7.77)
+rotation = Vector3(0, -0.26, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="Plants" type="Node3D" parent="FAFAssets"]
+
+[node name="01_plant_002b_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("33")]
+position = Vector3(-6.81, 0.00354, 1.91)
+rotation = Vector3(0, 0.44, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="02_plant_001a_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("29")]
+position = Vector3(-3.55, -0.07193, 2.95)
+rotation = Vector3(0, -0.51, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="03_plant_001c_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("31")]
+position = Vector3(-4.08, -0.06846, 0.64)
+rotation = Vector3(0, 0.71, 0)
+scale = Vector3(1.04, 1.04, 1.04)
+
+[node name="04_plant_003a_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("35")]
+position = Vector3(-5.18, 0.02937, 3.02)
+rotation = Vector3(0, -0.87, 0)
+scale = Vector3(0.84, 0.84, 0.84)
+
+[node name="05_plant_002a_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("32")]
+position = Vector3(-7.56, 0.07684, 2.25)
+rotation = Vector3(0, -0.13, 0)
+scale = Vector3(0.92, 0.92, 0.92)
+
+[node name="06_plant_001b_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("30")]
+position = Vector3(-6.47, -0.10052, 0.12)
+rotation = Vector3(0, 0.63, 0)
+scale = Vector3(0.78, 0.78, 0.78)
+
+[node name="07_plant_003b_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("36")]
+position = Vector3(-2.87, -0.05577, 0.72)
+rotation = Vector3(0, -0.24, 0)
+scale = Vector3(1.02, 1.02, 1.02)
+
+[node name="08_plant_002c_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("34")]
+position = Vector3(-3.2, 0.44145, -3.04)
+rotation = Vector3(0, 0.38, 0)
+scale = Vector3(0.86, 0.86, 0.86)
+
+[node name="09_plant_001a_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("29")]
+position = Vector3(-4.52, 0.36832, -2.7)
+rotation = Vector3(0, -0.92, 0)
+scale = Vector3(0.87, 0.87, 0.87)
+
+[node name="10_plant_003a_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("35")]
+position = Vector3(-6.88, 0.05439, -2.17)
+rotation = Vector3(0, 0.24, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="11_plant_002b_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("33")]
+position = Vector3(-8.34, 0.27475, -4.34)
+rotation = Vector3(0, -0.48, 0)
+scale = Vector3(0.82, 0.82, 0.82)
+
+[node name="12_plant_001c_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("31")]
+position = Vector3(-5.01, 0.15583, -5.82)
+rotation = Vector3(0, 0.75, 0)
+scale = Vector3(0.96, 0.96, 0.96)
+
+[node name="13_plant_003b_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("36")]
+position = Vector3(-9.53, -0.0976, -5.28)
+rotation = Vector3(0, -0.7, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="14_plant_001b_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("30")]
+position = Vector3(-7.36, 0.00106, -7.48)
+rotation = Vector3(0, 0.19, 0)
+scale = Vector3(0.84, 0.84, 0.84)
+
+[node name="15_plant_002a_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("32")]
+position = Vector3(3.23, -0.07744, 2.39)
+rotation = Vector3(0, -0.74, 0)
+scale = Vector3(0.87, 0.87, 0.87)
+
+[node name="16_plant_001b_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("30")]
+position = Vector3(5.77, -0.01205, 2.44)
+rotation = Vector3(0, 0.35, 0)
+scale = Vector3(0.92, 0.92, 0.92)
+
+[node name="17_plant_003a_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("35")]
+position = Vector3(4.84, 0.1112, 0.79)
+rotation = Vector3(0, -0.23, 0)
+scale = Vector3(0.83, 0.83, 0.83)
+
+[node name="18_plant_002c_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("34")]
+position = Vector3(6.49, -0.08653, 0.73)
+rotation = Vector3(0, 0.91, 0)
+scale = Vector3(1.01, 1.01, 1.01)
+
+[node name="19_plant_001a_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("29")]
+position = Vector3(7.56, -0.0154, 1.54)
+rotation = Vector3(0, -0.56, 0)
+scale = Vector3(0.89, 0.89, 0.89)
+
+[node name="20_plant_003b_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("36")]
+position = Vector3(4.18, 0.30048, -0.99)
+rotation = Vector3(0, 0.43, 0)
+scale = Vector3(0.96, 0.96, 0.96)
+
+[node name="21_plant_002b_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("33")]
+position = Vector3(5.54, 0.24911, -2.2)
+rotation = Vector3(0, -0.82, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="22_plant_001c_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("31")]
+position = Vector3(7.44, 0.02331, -2.65)
+rotation = Vector3(0, 0.18, 0)
+scale = Vector3(0.94, 0.94, 0.94)
+
+[node name="23_plant_003a_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("35")]
+position = Vector3(8.65, -0.09127, -0.15)
+rotation = Vector3(0, -0.49, 0)
+scale = Vector3(0.92, 0.92, 0.92)
+
+[node name="24_plant_001b_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("30")]
+position = Vector3(8.95, -0.08028, -3.42)
+rotation = Vector3(0, 0.67, 0)
+scale = Vector3(0.8, 0.8, 0.8)
+
+[node name="25_plant_002a_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("32")]
+position = Vector3(9.83, -0.08785, -5.23)
+rotation = Vector3(0, -0.31, 0)
+scale = Vector3(0.95, 0.95, 0.95)
+
+[node name="26_plant_003b_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("36")]
+position = Vector3(6.45, 0.79922, -5.67)
+rotation = Vector3(0, 0.81, 0)
+scale = Vector3(0.85, 0.85, 0.85)
+
+[node name="27_plant_001a_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("29")]
+position = Vector3(3.14, -0.1114, -4.84)
+rotation = Vector3(0, -0.08, 0)
+scale = Vector3(0.77, 0.77, 0.77)
+
+[node name="28_plant_002c_broad_seaweed" parent="FAFAssets/Plants" instance=ExtResource("34")]
+position = Vector3(-2.57, -0.09746, -6.1)
+rotation = Vector3(0, 0.46, 0)
+scale = Vector3(0.9, 0.9, 0.9)
+
+[node name="29_plant_003a_reef_algae" parent="FAFAssets/Plants" instance=ExtResource("35")]
+position = Vector3(1.56, -0.10104, -6.12)
+rotation = Vector3(0, -0.43, 0)
+scale = Vector3(0.83, 0.83, 0.83)
+
+[node name="30_plant_001c_sea_grass" parent="FAFAssets/Plants" instance=ExtResource("31")]
+position = Vector3(0.47, -0.09921, -8.41)
+rotation = Vector3(0, 0.27, 0)
+scale = Vector3(0.84, 0.84, 0.84)
+
+[node name="Details" type="Node3D" parent="FAFAssets"]
+
+[node name="01_detail_001a_fan_shell" parent="FAFAssets/Details" instance=ExtResource("16")]
+position = Vector3(-3.42, -0.06566, 1.86)
+rotation = Vector3(0, 0.42, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="02_detail_003a_slate_pebbles" parent="FAFAssets/Details" instance=ExtResource("20")]
+position = Vector3(-4.24, -0.07239, 1.95)
+rotation = Vector3(0, -0.72, 0)
+scale = Vector3(1.08, 1.08, 1.08)
+
+[node name="03_detail_002a_coral_rubble" parent="FAFAssets/Details" instance=ExtResource("18")]
+position = Vector3(-5.77, -0.05058, 1.54)
+rotation = Vector3(0, 0.23, 0)
+scale = Vector3(0.87, 0.87, 0.87)
+
+[node name="04_detail_004a_encrusting_sponge" parent="FAFAssets/Details" instance=ExtResource("22")]
+position = Vector3(-4.91, -0.07491, 0.31)
+rotation = Vector3(0, -0.39, 0)
+scale = Vector3(1.04, 1.04, 1.04)
+
+[node name="05_detail_001b_ridge_shell" parent="FAFAssets/Details" instance=ExtResource("17")]
+position = Vector3(-2.89, -0.05591, 0.4)
+rotation = Vector3(0, -0.23, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="06_detail_003b_warm_pebbles" parent="FAFAssets/Details" instance=ExtResource("21")]
+position = Vector3(-6.02, 0.03049, -1.3)
+rotation = Vector3(0, 0.73, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="07_detail_002b_reef_rubble" parent="FAFAssets/Details" instance=ExtResource("19")]
+position = Vector3(-5.04, 0.37865, -3.05)
+rotation = Vector3(0, -0.67, 0)
+scale = Vector3(0.87, 0.87, 0.87)
+
+[node name="08_detail_004b_cup_sponge" parent="FAFAssets/Details" instance=ExtResource("23")]
+position = Vector3(-6.61, 0.90073, -4.9)
+rotation = Vector3(0, 0.86, 0)
+scale = Vector3(0.92, 0.92, 0.92)
+
+[node name="09_detail_001a_fan_shell" parent="FAFAssets/Details" instance=ExtResource("16")]
+position = Vector3(3.13, -0.06743, 1.07)
+rotation = Vector3(0, -0.58, 0)
+scale = Vector3(0.87, 0.87, 0.87)
+
+[node name="10_detail_003b_warm_pebbles" parent="FAFAssets/Details" instance=ExtResource("21")]
+position = Vector3(4.04, -0.07587, 1.62)
+rotation = Vector3(0, 0.32, 0)
+scale = Vector3(1.06, 1.06, 1.06)
+
+[node name="11_detail_002a_coral_rubble" parent="FAFAssets/Details" instance=ExtResource("18")]
+position = Vector3(5.04, 0.16931, 0.33)
+rotation = Vector3(0, -0.91, 0)
+scale = Vector3(0.95, 0.95, 0.95)
+
+[node name="12_detail_004a_encrusting_sponge" parent="FAFAssets/Details" instance=ExtResource("22")]
+position = Vector3(6.87, -0.06794, 1.14)
+rotation = Vector3(0, 0.58, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="13_detail_001b_ridge_shell" parent="FAFAssets/Details" instance=ExtResource("17")]
+position = Vector3(7.59, -0.07764, -0.36)
+rotation = Vector3(0, -0.31, 0)
+scale = Vector3(1.06, 1.06, 1.06)
+
+[node name="14_detail_003a_slate_pebbles" parent="FAFAssets/Details" instance=ExtResource("20")]
+position = Vector3(4.35, 0.12677, -2.67)
+rotation = Vector3(0, 0.79, 0)
+scale = Vector3(0.89, 0.89, 0.89)
+
+[node name="15_detail_002b_reef_rubble" parent="FAFAssets/Details" instance=ExtResource("19")]
+position = Vector3(8.48, -0.07877, -3.13)
+rotation = Vector3(0, -0.73, 0)
+scale = Vector3(1.03, 1.03, 1.03)
+
+[node name="16_detail_004b_cup_sponge" parent="FAFAssets/Details" instance=ExtResource("23")]
+position = Vector3(9.66, -0.09146, -5.77)
+rotation = Vector3(0, 0.25, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="17_detail_003a_slate_pebbles" parent="FAFAssets/Details" instance=ExtResource("20")]
+position = Vector3(-1.88, -0.09613, -6.14)
+rotation = Vector3(0, 0.34, 0)
+scale = Vector3(0.96, 0.96, 0.96)
+
+[node name="18_detail_001a_fan_shell" parent="FAFAssets/Details" instance=ExtResource("16")]
+position = Vector3(1.75, -0.10307, -5.36)
+rotation = Vector3(0, -0.47, 0)
+scale = Vector3(1.03, 1.03, 1.03)
+
+[node name="Fish" type="Node3D" parent="FAFAssets"]
+
+[node name="01_fish_001_yellow_tang" parent="FAFAssets/Fish" instance=ExtResource("24")]
+position = Vector3(0, 1.1, 0.68)
+rotation = Vector3(0, 3.14159, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="02_fish_002_ocellaris_clownfish" parent="FAFAssets/Fish" instance=ExtResource("25")]
+position = Vector3(-2.32, 1.23, -1.16)
+rotation = Vector3(0, 2.25, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="03_fish_002_ocellaris_clownfish" parent="FAFAssets/Fish" instance=ExtResource("25")]
+position = Vector3(-2.82, 1.38, -1.82)
+rotation = Vector3(0, 2.6, 0)
+scale = Vector3(0.88, 0.88, 0.88)
+
+[node name="04_fish_003_blue_green_chromis" parent="FAFAssets/Fish" instance=ExtResource("26")]
+position = Vector3(-0.7, 2, -3.57)
+rotation = Vector3(0, 3.45, 0)
+scale = Vector3(0.94, 0.94, 0.94)
+
+[node name="05_fish_003_blue_green_chromis" parent="FAFAssets/Fish" instance=ExtResource("26")]
+position = Vector3(-0.31, 1.82, -3.86)
+rotation = Vector3(0, 3.58, 0)
+scale = Vector3(1.05, 1.05, 1.05)
+
+[node name="06_fish_003_blue_green_chromis" parent="FAFAssets/Fish" instance=ExtResource("26")]
+position = Vector3(0.15, 2.12, -4.13)
+rotation = Vector3(0, 3.29, 0)
+scale = Vector3(0.89, 0.89, 0.89)
+
+[node name="07_fish_003_blue_green_chromis" parent="FAFAssets/Fish" instance=ExtResource("26")]
+position = Vector3(0.56, 1.94, -3.72)
+rotation = Vector3(0, 3.88, 0)
+scale = Vector3(0.98, 0.98, 0.98)
+
+[node name="08_fish_003_blue_green_chromis" parent="FAFAssets/Fish" instance=ExtResource("26")]
+position = Vector3(0.87, 2.26, -4.35)
+rotation = Vector3(0, 3.12, 0)
+scale = Vector3(0.91, 0.91, 0.91)
+
+[node name="09_fish_004_reef_butterflyfish" parent="FAFAssets/Fish" instance=ExtResource("27")]
+position = Vector3(3.46, 1.18, -1.06)
+rotation = Vector3(0, 3.86, 0)
+scale = Vector3(1, 1, 1)
+
+[node name="10_fish_004_reef_butterflyfish" parent="FAFAssets/Fish" instance=ExtResource("27")]
+position = Vector3(-4.24, 1.35, -3.29)
+rotation = Vector3(0, 2.42, 0)
+scale = Vector3(0.93, 0.93, 0.93)
+
+[node name="11_fish_005_blacktip_reef_shark" parent="FAFAssets/Fish" instance=ExtResource("28")]
+position = Vector3(6.1, 2.5, -7.8)
+rotation = Vector3(0, 2.83, 0)
+scale = Vector3(0.83, 0.83, 0.83)

@@ -1,0 +1,2318 @@
+{
+  "scene": "game/scenes/faf_style_proof_001.tscn",
+  "composition": "authored open central lane, unequal arch, west shelf, east drop-off/cliff, foreground color clusters",
+  "atmosphere": "existing UnderwaterAtmosphere; non-rendering depth/upper anchors only",
+  "counts": {
+    "Terrain": 13,
+    "Rocks": 19,
+    "Coral": 50,
+    "Plants": 30,
+    "Details": 18,
+    "Fish": 11
+  },
+  "unique_glbs": 43,
+  "authored_source_triangles": 45922,
+  "source_triangles": {
+    "detail_003b_warm_pebbles": 72,
+    "detail_001b_ridge_shell": 80,
+    "detail_004b_cup_sponge": 92,
+    "detail_002a_coral_rubble": 48,
+    "detail_003a_slate_pebbles": 90,
+    "detail_004a_encrusting_sponge": 46,
+    "detail_002b_reef_rubble": 32,
+    "detail_001a_fan_shell": 80,
+    "plant_001b_sea_grass": 224,
+    "plant_002a_broad_seaweed": 208,
+    "plant_003b_reef_algae": 192,
+    "plant_001c_sea_grass": 168,
+    "plant_002c_broad_seaweed": 156,
+    "plant_003a_reef_algae": 164,
+    "plant_002b_broad_seaweed": 260,
+    "plant_001a_sea_grass": 196,
+    "rock_001b_reef_boulder": 186,
+    "rock_001d_reef_boulder": 222,
+    "rock_001a_reef_boulder": 240,
+    "rock_001c_reef_boulder": 248,
+    "coral_004a_fan": 344,
+    "coral_001a_branching": 508,
+    "coral_002b_rounded": 730,
+    "coral_001c_branching": 412,
+    "coral_003b_tube": 672,
+    "coral_002c_rounded": 550,
+    "coral_003c_tube": 468,
+    "coral_004c_fan": 288,
+    "coral_003a_tube": 536,
+    "coral_001b_branching": 604,
+    "coral_004b_fan": 400,
+    "coral_002a_rounded": 640,
+    "fish_001_yellow_tang": 1100,
+    "fish_002_ocellaris_clownfish": 912,
+    "fish_003_blue_green_chromis": 404,
+    "fish_005_blacktip_reef_shark": 876,
+    "fish_004_reef_butterflyfish": 896,
+    "terrain_001c_reef_shelf": 128,
+    "terrain_001b_rolling": 128,
+    "terrain_001e_drop_off": 128,
+    "terrain_001f_rocky_floor": 128,
+    "terrain_001a_open_sand": 128,
+    "terrain_001d_slope": 128
+  },
+  "placements": [
+    {
+      "name": "01_terrain_001a_open_sand",
+      "group": "Terrain",
+      "stem": "terrain_001a_open_sand",
+      "position_m": [
+        0,
+        -0.08,
+        0
+      ],
+      "rotation_rad": [
+        0.0,
+        0.08,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "02_terrain_001a_open_sand",
+      "group": "Terrain",
+      "stem": "terrain_001a_open_sand",
+      "position_m": [
+        -8.2,
+        -0.11,
+        -2.4
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.18,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "03_terrain_001a_open_sand",
+      "group": "Terrain",
+      "stem": "terrain_001a_open_sand",
+      "position_m": [
+        8.0,
+        -0.1,
+        -2.9
+      ],
+      "rotation_rad": [
+        0.0,
+        0.22,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "04_terrain_001a_open_sand",
+      "group": "Terrain",
+      "stem": "terrain_001a_open_sand",
+      "position_m": [
+        0.2,
+        -0.12,
+        -7.3
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.28,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "05_terrain_001b_rolling",
+      "group": "Terrain",
+      "stem": "terrain_001b_rolling",
+      "position_m": [
+        -0.5,
+        -0.05,
+        3.8
+      ],
+      "rotation_rad": [
+        0.0,
+        0.43,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "06_terrain_001b_rolling",
+      "group": "Terrain",
+      "stem": "terrain_001b_rolling",
+      "position_m": [
+        -6.55,
+        -0.08,
+        2.66
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.37,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "07_terrain_001b_rolling",
+      "group": "Terrain",
+      "stem": "terrain_001b_rolling",
+      "position_m": [
+        6.38,
+        -0.09,
+        2.74
+      ],
+      "rotation_rad": [
+        0.0,
+        0.51,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "08_terrain_001b_rolling",
+      "group": "Terrain",
+      "stem": "terrain_001b_rolling",
+      "position_m": [
+        -7.79,
+        -0.1,
+        -7.14
+      ],
+      "rotation_rad": [
+        0.0,
+        0.87,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "09_terrain_001c_reef_shelf",
+      "group": "Terrain",
+      "stem": "terrain_001c_reef_shelf",
+      "position_m": [
+        -6.5,
+        0.0,
+        -4.2
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.36,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "10_terrain_001d_slope",
+      "group": "Terrain",
+      "stem": "terrain_001d_slope",
+      "position_m": [
+        -3.8,
+        0.0,
+        -2.6
+      ],
+      "rotation_rad": [
+        0.0,
+        0.48,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "11_terrain_001e_drop_off",
+      "group": "Terrain",
+      "stem": "terrain_001e_drop_off",
+      "position_m": [
+        6.2,
+        0.0,
+        -4.6
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.3,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "12_terrain_001f_rocky_floor",
+      "group": "Terrain",
+      "stem": "terrain_001f_rocky_floor",
+      "position_m": [
+        4.7,
+        0.0,
+        -1.6
+      ],
+      "rotation_rad": [
+        0.0,
+        0.41,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "13_terrain_001c_reef_shelf",
+      "group": "Terrain",
+      "stem": "terrain_001c_reef_shelf",
+      "position_m": [
+        9.3,
+        -0.07,
+        -7.9
+      ],
+      "rotation_rad": [
+        0.0,
+        0.83,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "01_rock_001c_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001c_reef_boulder",
+      "position_m": [
+        -1.56,
+        0.21019,
+        -2.83
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.4,
+        0.0
+      ],
+      "uniform_scale": 1.53
+    },
+    {
+      "name": "02_rock_001a_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001a_reef_boulder",
+      "position_m": [
+        1.54,
+        -0.07067,
+        -2.72
+      ],
+      "rotation_rad": [
+        0.0,
+        0.29,
+        0.0
+      ],
+      "uniform_scale": 1.63
+    },
+    {
+      "name": "03_rock_001b_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001b_reef_boulder",
+      "position_m": [
+        -0.02,
+        1.43214,
+        -2.78
+      ],
+      "rotation_rad": [
+        -0.11,
+        0.23,
+        0.08
+      ],
+      "uniform_scale": 2.1
+    },
+    {
+      "name": "04_rock_001d_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001d_reef_boulder",
+      "position_m": [
+        -2.46,
+        0.50604,
+        -3.1
+      ],
+      "rotation_rad": [
+        0.0,
+        0.88,
+        0.0
+      ],
+      "uniform_scale": 1.03
+    },
+    {
+      "name": "05_rock_001d_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001d_reef_boulder",
+      "position_m": [
+        2.48,
+        0.00361,
+        -2.55
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.65,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "06_rock_001a_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001a_reef_boulder",
+      "position_m": [
+        -6.45,
+        1.16741,
+        -4.65
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.74,
+        0.0
+      ],
+      "uniform_scale": 1.34
+    },
+    {
+      "name": "07_rock_001b_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001b_reef_boulder",
+      "position_m": [
+        -5.22,
+        0.79412,
+        -3.32
+      ],
+      "rotation_rad": [
+        0.0,
+        0.31,
+        0.0
+      ],
+      "uniform_scale": 1.4
+    },
+    {
+      "name": "08_rock_001d_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001d_reef_boulder",
+      "position_m": [
+        -8.4,
+        0.76265,
+        -5.39
+      ],
+      "rotation_rad": [
+        0.0,
+        1.12,
+        0.0
+      ],
+      "uniform_scale": 1.36
+    },
+    {
+      "name": "09_rock_001c_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001c_reef_boulder",
+      "position_m": [
+        -9.65,
+        0.42953,
+        -6.55
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.49,
+        0.0
+      ],
+      "uniform_scale": 1.22
+    },
+    {
+      "name": "10_rock_001c_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001c_reef_boulder",
+      "position_m": [
+        6.82,
+        0.35099,
+        -4.2
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.27,
+        0.0
+      ],
+      "uniform_scale": 1.85
+    },
+    {
+      "name": "11_rock_001a_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001a_reef_boulder",
+      "position_m": [
+        8.78,
+        0.1141,
+        -5.32
+      ],
+      "rotation_rad": [
+        0.0,
+        0.76,
+        0.0
+      ],
+      "uniform_scale": 1.95
+    },
+    {
+      "name": "12_rock_001d_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001d_reef_boulder",
+      "position_m": [
+        9.66,
+        1.26263,
+        -6.74
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.96,
+        0.0
+      ],
+      "uniform_scale": 1.79
+    },
+    {
+      "name": "13_rock_001b_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001b_reef_boulder",
+      "position_m": [
+        5.74,
+        0.98438,
+        -3.12
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.18,
+        -0.18
+      ],
+      "uniform_scale": 1.62
+    },
+    {
+      "name": "14_rock_001c_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001c_reef_boulder",
+      "position_m": [
+        10.15,
+        1.8957,
+        -8.54
+      ],
+      "rotation_rad": [
+        0.0,
+        0.51,
+        0.0
+      ],
+      "uniform_scale": 1.57
+    },
+    {
+      "name": "15_rock_001a_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001a_reef_boulder",
+      "position_m": [
+        -4.68,
+        -0.07418,
+        1.6
+      ],
+      "rotation_rad": [
+        0.0,
+        0.46,
+        0.0
+      ],
+      "uniform_scale": 1.25
+    },
+    {
+      "name": "16_rock_001d_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001d_reef_boulder",
+      "position_m": [
+        4.82,
+        -0.03753,
+        2.04
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.52,
+        0.0
+      ],
+      "uniform_scale": 1.2
+    },
+    {
+      "name": "17_rock_001b_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001b_reef_boulder",
+      "position_m": [
+        -7.38,
+        0.09302,
+        3.15
+      ],
+      "rotation_rad": [
+        0.0,
+        1.01,
+        0.0
+      ],
+      "uniform_scale": 1.13
+    },
+    {
+      "name": "18_rock_001a_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001a_reef_boulder",
+      "position_m": [
+        7.84,
+        0.02269,
+        2.21
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.91,
+        0.0
+      ],
+      "uniform_scale": 1.08
+    },
+    {
+      "name": "19_rock_001c_reef_boulder",
+      "group": "Rocks",
+      "stem": "rock_001c_reef_boulder",
+      "position_m": [
+        -10.17,
+        -0.08515,
+        -2.31
+      ],
+      "rotation_rad": [
+        0.0,
+        0.67,
+        0.0
+      ],
+      "uniform_scale": 1.46
+    },
+    {
+      "name": "01_coral_002a_rounded",
+      "group": "Coral",
+      "stem": "coral_002a_rounded",
+      "position_m": [
+        -2.78,
+        -0.05773,
+        1.44
+      ],
+      "rotation_rad": [
+        0.0,
+        0.33,
+        0.0
+      ],
+      "uniform_scale": 0.83
+    },
+    {
+      "name": "02_coral_003a_tube",
+      "group": "Coral",
+      "stem": "coral_003a_tube",
+      "position_m": [
+        2.72,
+        -0.06687,
+        1.35
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.49,
+        0.0
+      ],
+      "uniform_scale": 0.79
+    },
+    {
+      "name": "03_coral_001a_branching",
+      "group": "Coral",
+      "stem": "coral_001a_branching",
+      "position_m": [
+        -2.95,
+        -0.05651,
+        0.22
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.72,
+        0.0
+      ],
+      "uniform_scale": 0.77
+    },
+    {
+      "name": "04_coral_003c_tube",
+      "group": "Coral",
+      "stem": "coral_003c_tube",
+      "position_m": [
+        3.04,
+        0.04774,
+        0.12
+      ],
+      "rotation_rad": [
+        0.0,
+        0.37,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "05_coral_001b_branching",
+      "group": "Coral",
+      "stem": "coral_001b_branching",
+      "position_m": [
+        -4.94,
+        -0.06161,
+        1.96
+      ],
+      "rotation_rad": [
+        0.0,
+        0.26,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "06_coral_003a_tube",
+      "group": "Coral",
+      "stem": "coral_003a_tube",
+      "position_m": [
+        -5.5,
+        -0.06254,
+        1.13
+      ],
+      "rotation_rad": [
+        0.0,
+        0.66,
+        0.0
+      ],
+      "uniform_scale": 0.76
+    },
+    {
+      "name": "07_coral_002a_rounded",
+      "group": "Coral",
+      "stem": "coral_002a_rounded",
+      "position_m": [
+        -4.22,
+        -0.07083,
+        1.46
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.55,
+        0.0
+      ],
+      "uniform_scale": 0.81
+    },
+    {
+      "name": "08_coral_003c_tube",
+      "group": "Coral",
+      "stem": "coral_003c_tube",
+      "position_m": [
+        -5.76,
+        -0.02722,
+        2.28
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.37,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "09_coral_002c_rounded",
+      "group": "Coral",
+      "stem": "coral_002c_rounded",
+      "position_m": [
+        -3.98,
+        -0.07254,
+        2.49
+      ],
+      "rotation_rad": [
+        0.0,
+        0.84,
+        0.0
+      ],
+      "uniform_scale": 0.99
+    },
+    {
+      "name": "10_coral_001a_branching",
+      "group": "Coral",
+      "stem": "coral_001a_branching",
+      "position_m": [
+        -6.34,
+        0.02101,
+        2.83
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.8,
+        0.0
+      ],
+      "uniform_scale": 0.76
+    },
+    {
+      "name": "11_coral_004b_fan",
+      "group": "Coral",
+      "stem": "coral_004b_fan",
+      "position_m": [
+        -5.37,
+        -0.07518,
+        0.68
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.38,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "12_coral_001a_branching",
+      "group": "Coral",
+      "stem": "coral_001a_branching",
+      "position_m": [
+        -3.15,
+        -0.0599,
+        1.18
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.19,
+        0.0
+      ],
+      "uniform_scale": 0.85
+    },
+    {
+      "name": "13_coral_002a_rounded",
+      "group": "Coral",
+      "stem": "coral_002a_rounded",
+      "position_m": [
+        -6.1,
+        -0.07221,
+        0.62
+      ],
+      "rotation_rad": [
+        0.0,
+        0.63,
+        0.0
+      ],
+      "uniform_scale": 1.04
+    },
+    {
+      "name": "14_coral_003b_tube",
+      "group": "Coral",
+      "stem": "coral_003b_tube",
+      "position_m": [
+        -7.25,
+        -0.0284,
+        0.86
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.72,
+        0.0
+      ],
+      "uniform_scale": 0.86
+    },
+    {
+      "name": "15_coral_004a_fan",
+      "group": "Coral",
+      "stem": "coral_004a_fan",
+      "position_m": [
+        -7.58,
+        0.01679,
+        1.48
+      ],
+      "rotation_rad": [
+        0.0,
+        0.52,
+        0.0
+      ],
+      "uniform_scale": 0.8
+    },
+    {
+      "name": "16_coral_004a_fan",
+      "group": "Coral",
+      "stem": "coral_004a_fan",
+      "position_m": [
+        -4.48,
+        -0.07149,
+        -0.55
+      ],
+      "rotation_rad": [
+        0.0,
+        1.25,
+        0.0
+      ],
+      "uniform_scale": 1.08
+    },
+    {
+      "name": "17_coral_001c_branching",
+      "group": "Coral",
+      "stem": "coral_001c_branching",
+      "position_m": [
+        -2.7,
+        0.20906,
+        -1.74
+      ],
+      "rotation_rad": [
+        0.0,
+        0.38,
+        0.0
+      ],
+      "uniform_scale": 0.82
+    },
+    {
+      "name": "18_coral_004b_fan",
+      "group": "Coral",
+      "stem": "coral_004b_fan",
+      "position_m": [
+        -2.48,
+        0.43158,
+        -2.68
+      ],
+      "rotation_rad": [
+        0.0,
+        0.88,
+        0.0
+      ],
+      "uniform_scale": 0.73
+    },
+    {
+      "name": "19_coral_003c_tube",
+      "group": "Coral",
+      "stem": "coral_003c_tube",
+      "position_m": [
+        -2.24,
+        0.22654,
+        -3.65
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.49,
+        0.0
+      ],
+      "uniform_scale": 0.74
+    },
+    {
+      "name": "20_coral_002b_rounded",
+      "group": "Coral",
+      "stem": "coral_002b_rounded",
+      "position_m": [
+        -3.52,
+        0.46068,
+        -3.4
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.65,
+        0.0
+      ],
+      "uniform_scale": 0.9
+    },
+    {
+      "name": "21_coral_003a_tube",
+      "group": "Coral",
+      "stem": "coral_003a_tube",
+      "position_m": [
+        -5.22,
+        0.53463,
+        -3.67
+      ],
+      "rotation_rad": [
+        0.0,
+        0.72,
+        0.0
+      ],
+      "uniform_scale": 0.98
+    },
+    {
+      "name": "22_coral_004c_fan",
+      "group": "Coral",
+      "stem": "coral_004c_fan",
+      "position_m": [
+        -7.17,
+        0.85754,
+        -3.38
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.26,
+        0.0
+      ],
+      "uniform_scale": 1.07
+    },
+    {
+      "name": "23_coral_001b_branching",
+      "group": "Coral",
+      "stem": "coral_001b_branching",
+      "position_m": [
+        -7.91,
+        0.52292,
+        -5.45
+      ],
+      "rotation_rad": [
+        0.0,
+        0.9,
+        0.0
+      ],
+      "uniform_scale": 0.77
+    },
+    {
+      "name": "24_coral_002c_rounded",
+      "group": "Coral",
+      "stem": "coral_002c_rounded",
+      "position_m": [
+        -9.09,
+        -0.08867,
+        -4.12
+      ],
+      "rotation_rad": [
+        0.0,
+        0.33,
+        0.0
+      ],
+      "uniform_scale": 1.03
+    },
+    {
+      "name": "25_coral_003c_tube",
+      "group": "Coral",
+      "stem": "coral_003c_tube",
+      "position_m": [
+        -5.93,
+        0.18915,
+        -6.14
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.14,
+        0.0
+      ],
+      "uniform_scale": 0.95
+    },
+    {
+      "name": "26_coral_004b_fan",
+      "group": "Coral",
+      "stem": "coral_004b_fan",
+      "position_m": [
+        -7.65,
+        0.01819,
+        -6.92
+      ],
+      "rotation_rad": [
+        0.0,
+        0.74,
+        0.0
+      ],
+      "uniform_scale": 0.86
+    },
+    {
+      "name": "27_coral_001a_branching",
+      "group": "Coral",
+      "stem": "coral_001a_branching",
+      "position_m": [
+        2.92,
+        0.17411,
+        -1.44
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.5,
+        0.0
+      ],
+      "uniform_scale": 0.98
+    },
+    {
+      "name": "28_coral_004c_fan",
+      "group": "Coral",
+      "stem": "coral_004c_fan",
+      "position_m": [
+        2.42,
+        -0.07411,
+        -2.8
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.57,
+        0.0
+      ],
+      "uniform_scale": 0.8
+    },
+    {
+      "name": "29_coral_004c_fan",
+      "group": "Coral",
+      "stem": "coral_004c_fan",
+      "position_m": [
+        3.11,
+        -0.06643,
+        0.87
+      ],
+      "rotation_rad": [
+        0.0,
+        0.42,
+        0.0
+      ],
+      "uniform_scale": 0.76
+    },
+    {
+      "name": "30_coral_002b_rounded",
+      "group": "Coral",
+      "stem": "coral_002b_rounded",
+      "position_m": [
+        3.73,
+        0.22205,
+        0.2
+      ],
+      "rotation_rad": [
+        0.0,
+        0.28,
+        0.0
+      ],
+      "uniform_scale": 0.89
+    },
+    {
+      "name": "31_coral_001b_branching",
+      "group": "Coral",
+      "stem": "coral_001b_branching",
+      "position_m": [
+        4.64,
+        -0.04026,
+        2.05
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.22,
+        0.0
+      ],
+      "uniform_scale": 0.79
+    },
+    {
+      "name": "32_coral_003b_tube",
+      "group": "Coral",
+      "stem": "coral_003b_tube",
+      "position_m": [
+        5.05,
+        0.33807,
+        -0.45
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.68,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "33_coral_004a_fan",
+      "group": "Coral",
+      "stem": "coral_004a_fan",
+      "position_m": [
+        4.02,
+        -0.07432,
+        1.36
+      ],
+      "rotation_rad": [
+        0.0,
+        1.15,
+        0.0
+      ],
+      "uniform_scale": 0.95
+    },
+    {
+      "name": "34_coral_001c_branching",
+      "group": "Coral",
+      "stem": "coral_001c_branching",
+      "position_m": [
+        5.88,
+        -0.06402,
+        1.34
+      ],
+      "rotation_rad": [
+        0.0,
+        0.42,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "35_coral_003a_tube",
+      "group": "Coral",
+      "stem": "coral_003a_tube",
+      "position_m": [
+        6.68,
+        -0.03538,
+        1.83
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.82,
+        0.0
+      ],
+      "uniform_scale": 0.74
+    },
+    {
+      "name": "36_coral_002a_rounded",
+      "group": "Coral",
+      "stem": "coral_002a_rounded",
+      "position_m": [
+        6.47,
+        0.05796,
+        -0.55
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.41,
+        0.0
+      ],
+      "uniform_scale": 1.01
+    },
+    {
+      "name": "37_coral_003a_tube",
+      "group": "Coral",
+      "stem": "coral_003a_tube",
+      "position_m": [
+        6.97,
+        0.04512,
+        -1.53
+      ],
+      "rotation_rad": [
+        0.0,
+        0.51,
+        0.0
+      ],
+      "uniform_scale": 0.86
+    },
+    {
+      "name": "38_coral_004c_fan",
+      "group": "Coral",
+      "stem": "coral_004c_fan",
+      "position_m": [
+        8.15,
+        -0.07765,
+        -1.2
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.79,
+        0.0
+      ],
+      "uniform_scale": 0.99
+    },
+    {
+      "name": "39_coral_002c_rounded",
+      "group": "Coral",
+      "stem": "coral_002c_rounded",
+      "position_m": [
+        7.61,
+        -0.08649,
+        0.37
+      ],
+      "rotation_rad": [
+        0.0,
+        0.38,
+        0.0
+      ],
+      "uniform_scale": 0.76
+    },
+    {
+      "name": "40_coral_001b_branching",
+      "group": "Coral",
+      "stem": "coral_001b_branching",
+      "position_m": [
+        7.83,
+        0.00961,
+        -3.23
+      ],
+      "rotation_rad": [
+        0.0,
+        0.21,
+        0.0
+      ],
+      "uniform_scale": 0.85
+    },
+    {
+      "name": "41_coral_002c_rounded",
+      "group": "Coral",
+      "stem": "coral_002c_rounded",
+      "position_m": [
+        9.21,
+        -0.07999,
+        -2.84
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.92,
+        0.0
+      ],
+      "uniform_scale": 1.05
+    },
+    {
+      "name": "42_coral_003c_tube",
+      "group": "Coral",
+      "stem": "coral_003c_tube",
+      "position_m": [
+        9.49,
+        -0.08348,
+        -4.32
+      ],
+      "rotation_rad": [
+        0.0,
+        0.87,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "43_coral_004a_fan",
+      "group": "Coral",
+      "stem": "coral_004a_fan",
+      "position_m": [
+        8.59,
+        -0.08264,
+        -4.61
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.5,
+        0.0
+      ],
+      "uniform_scale": 0.72
+    },
+    {
+      "name": "44_coral_004b_fan",
+      "group": "Coral",
+      "stem": "coral_004b_fan",
+      "position_m": [
+        6.02,
+        0.93355,
+        -5.27
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.46,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "45_coral_001a_branching",
+      "group": "Coral",
+      "stem": "coral_001a_branching",
+      "position_m": [
+        2.35,
+        -0.07858,
+        -3.95
+      ],
+      "rotation_rad": [
+        0.0,
+        0.71,
+        0.0
+      ],
+      "uniform_scale": 0.78
+    },
+    {
+      "name": "46_coral_003b_tube",
+      "group": "Coral",
+      "stem": "coral_003b_tube",
+      "position_m": [
+        3.34,
+        -0.1102,
+        -5.83
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.22,
+        0.0
+      ],
+      "uniform_scale": 0.84
+    },
+    {
+      "name": "47_coral_002b_rounded",
+      "group": "Coral",
+      "stem": "coral_002b_rounded",
+      "position_m": [
+        -2.92,
+        -0.09824,
+        -6.62
+      ],
+      "rotation_rad": [
+        0.0,
+        0.58,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "48_coral_004a_fan",
+      "group": "Coral",
+      "stem": "coral_004a_fan",
+      "position_m": [
+        -4.29,
+        -0.11104,
+        -7.36
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.94,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "49_coral_001c_branching",
+      "group": "Coral",
+      "stem": "coral_001c_branching",
+      "position_m": [
+        1.48,
+        -0.10101,
+        -7.58
+      ],
+      "rotation_rad": [
+        0.0,
+        0.37,
+        0.0
+      ],
+      "uniform_scale": 0.77
+    },
+    {
+      "name": "50_coral_002a_rounded",
+      "group": "Coral",
+      "stem": "coral_002a_rounded",
+      "position_m": [
+        9.66,
+        0.82441,
+        -7.77
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.26,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "01_plant_002b_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002b_broad_seaweed",
+      "position_m": [
+        -6.81,
+        0.00354,
+        1.91
+      ],
+      "rotation_rad": [
+        0.0,
+        0.44,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "02_plant_001a_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001a_sea_grass",
+      "position_m": [
+        -3.55,
+        -0.07193,
+        2.95
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.51,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "03_plant_001c_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001c_sea_grass",
+      "position_m": [
+        -4.08,
+        -0.06846,
+        0.64
+      ],
+      "rotation_rad": [
+        0.0,
+        0.71,
+        0.0
+      ],
+      "uniform_scale": 1.04
+    },
+    {
+      "name": "04_plant_003a_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003a_reef_algae",
+      "position_m": [
+        -5.18,
+        0.02937,
+        3.02
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.87,
+        0.0
+      ],
+      "uniform_scale": 0.84
+    },
+    {
+      "name": "05_plant_002a_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002a_broad_seaweed",
+      "position_m": [
+        -7.56,
+        0.07684,
+        2.25
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.13,
+        0.0
+      ],
+      "uniform_scale": 0.92
+    },
+    {
+      "name": "06_plant_001b_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001b_sea_grass",
+      "position_m": [
+        -6.47,
+        -0.10052,
+        0.12
+      ],
+      "rotation_rad": [
+        0.0,
+        0.63,
+        0.0
+      ],
+      "uniform_scale": 0.78
+    },
+    {
+      "name": "07_plant_003b_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003b_reef_algae",
+      "position_m": [
+        -2.87,
+        -0.05577,
+        0.72
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.24,
+        0.0
+      ],
+      "uniform_scale": 1.02
+    },
+    {
+      "name": "08_plant_002c_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002c_broad_seaweed",
+      "position_m": [
+        -3.2,
+        0.44145,
+        -3.04
+      ],
+      "rotation_rad": [
+        0.0,
+        0.38,
+        0.0
+      ],
+      "uniform_scale": 0.86
+    },
+    {
+      "name": "09_plant_001a_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001a_sea_grass",
+      "position_m": [
+        -4.52,
+        0.36832,
+        -2.7
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.92,
+        0.0
+      ],
+      "uniform_scale": 0.87
+    },
+    {
+      "name": "10_plant_003a_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003a_reef_algae",
+      "position_m": [
+        -6.88,
+        0.05439,
+        -2.17
+      ],
+      "rotation_rad": [
+        0.0,
+        0.24,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "11_plant_002b_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002b_broad_seaweed",
+      "position_m": [
+        -8.34,
+        0.27475,
+        -4.34
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.48,
+        0.0
+      ],
+      "uniform_scale": 0.82
+    },
+    {
+      "name": "12_plant_001c_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001c_sea_grass",
+      "position_m": [
+        -5.01,
+        0.15583,
+        -5.82
+      ],
+      "rotation_rad": [
+        0.0,
+        0.75,
+        0.0
+      ],
+      "uniform_scale": 0.96
+    },
+    {
+      "name": "13_plant_003b_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003b_reef_algae",
+      "position_m": [
+        -9.53,
+        -0.0976,
+        -5.28
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.7,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "14_plant_001b_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001b_sea_grass",
+      "position_m": [
+        -7.36,
+        0.00106,
+        -7.48
+      ],
+      "rotation_rad": [
+        0.0,
+        0.19,
+        0.0
+      ],
+      "uniform_scale": 0.84
+    },
+    {
+      "name": "15_plant_002a_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002a_broad_seaweed",
+      "position_m": [
+        3.23,
+        -0.07744,
+        2.39
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.74,
+        0.0
+      ],
+      "uniform_scale": 0.87
+    },
+    {
+      "name": "16_plant_001b_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001b_sea_grass",
+      "position_m": [
+        5.77,
+        -0.01205,
+        2.44
+      ],
+      "rotation_rad": [
+        0.0,
+        0.35,
+        0.0
+      ],
+      "uniform_scale": 0.92
+    },
+    {
+      "name": "17_plant_003a_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003a_reef_algae",
+      "position_m": [
+        4.84,
+        0.1112,
+        0.79
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.23,
+        0.0
+      ],
+      "uniform_scale": 0.83
+    },
+    {
+      "name": "18_plant_002c_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002c_broad_seaweed",
+      "position_m": [
+        6.49,
+        -0.08653,
+        0.73
+      ],
+      "rotation_rad": [
+        0.0,
+        0.91,
+        0.0
+      ],
+      "uniform_scale": 1.01
+    },
+    {
+      "name": "19_plant_001a_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001a_sea_grass",
+      "position_m": [
+        7.56,
+        -0.0154,
+        1.54
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.56,
+        0.0
+      ],
+      "uniform_scale": 0.89
+    },
+    {
+      "name": "20_plant_003b_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003b_reef_algae",
+      "position_m": [
+        4.18,
+        0.30048,
+        -0.99
+      ],
+      "rotation_rad": [
+        0.0,
+        0.43,
+        0.0
+      ],
+      "uniform_scale": 0.96
+    },
+    {
+      "name": "21_plant_002b_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002b_broad_seaweed",
+      "position_m": [
+        5.54,
+        0.24911,
+        -2.2
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.82,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "22_plant_001c_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001c_sea_grass",
+      "position_m": [
+        7.44,
+        0.02331,
+        -2.65
+      ],
+      "rotation_rad": [
+        0.0,
+        0.18,
+        0.0
+      ],
+      "uniform_scale": 0.94
+    },
+    {
+      "name": "23_plant_003a_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003a_reef_algae",
+      "position_m": [
+        8.65,
+        -0.09127,
+        -0.15
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.49,
+        0.0
+      ],
+      "uniform_scale": 0.92
+    },
+    {
+      "name": "24_plant_001b_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001b_sea_grass",
+      "position_m": [
+        8.95,
+        -0.08028,
+        -3.42
+      ],
+      "rotation_rad": [
+        0.0,
+        0.67,
+        0.0
+      ],
+      "uniform_scale": 0.8
+    },
+    {
+      "name": "25_plant_002a_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002a_broad_seaweed",
+      "position_m": [
+        9.83,
+        -0.08785,
+        -5.23
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.31,
+        0.0
+      ],
+      "uniform_scale": 0.95
+    },
+    {
+      "name": "26_plant_003b_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003b_reef_algae",
+      "position_m": [
+        6.45,
+        0.79922,
+        -5.67
+      ],
+      "rotation_rad": [
+        0.0,
+        0.81,
+        0.0
+      ],
+      "uniform_scale": 0.85
+    },
+    {
+      "name": "27_plant_001a_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001a_sea_grass",
+      "position_m": [
+        3.14,
+        -0.1114,
+        -4.84
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.08,
+        0.0
+      ],
+      "uniform_scale": 0.77
+    },
+    {
+      "name": "28_plant_002c_broad_seaweed",
+      "group": "Plants",
+      "stem": "plant_002c_broad_seaweed",
+      "position_m": [
+        -2.57,
+        -0.09746,
+        -6.1
+      ],
+      "rotation_rad": [
+        0.0,
+        0.46,
+        0.0
+      ],
+      "uniform_scale": 0.9
+    },
+    {
+      "name": "29_plant_003a_reef_algae",
+      "group": "Plants",
+      "stem": "plant_003a_reef_algae",
+      "position_m": [
+        1.56,
+        -0.10104,
+        -6.12
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.43,
+        0.0
+      ],
+      "uniform_scale": 0.83
+    },
+    {
+      "name": "30_plant_001c_sea_grass",
+      "group": "Plants",
+      "stem": "plant_001c_sea_grass",
+      "position_m": [
+        0.47,
+        -0.09921,
+        -8.41
+      ],
+      "rotation_rad": [
+        0.0,
+        0.27,
+        0.0
+      ],
+      "uniform_scale": 0.84
+    },
+    {
+      "name": "01_detail_001a_fan_shell",
+      "group": "Details",
+      "stem": "detail_001a_fan_shell",
+      "position_m": [
+        -3.42,
+        -0.06566,
+        1.86
+      ],
+      "rotation_rad": [
+        0.0,
+        0.42,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "02_detail_003a_slate_pebbles",
+      "group": "Details",
+      "stem": "detail_003a_slate_pebbles",
+      "position_m": [
+        -4.24,
+        -0.07239,
+        1.95
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.72,
+        0.0
+      ],
+      "uniform_scale": 1.08
+    },
+    {
+      "name": "03_detail_002a_coral_rubble",
+      "group": "Details",
+      "stem": "detail_002a_coral_rubble",
+      "position_m": [
+        -5.77,
+        -0.05058,
+        1.54
+      ],
+      "rotation_rad": [
+        0.0,
+        0.23,
+        0.0
+      ],
+      "uniform_scale": 0.87
+    },
+    {
+      "name": "04_detail_004a_encrusting_sponge",
+      "group": "Details",
+      "stem": "detail_004a_encrusting_sponge",
+      "position_m": [
+        -4.91,
+        -0.07491,
+        0.31
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.39,
+        0.0
+      ],
+      "uniform_scale": 1.04
+    },
+    {
+      "name": "05_detail_001b_ridge_shell",
+      "group": "Details",
+      "stem": "detail_001b_ridge_shell",
+      "position_m": [
+        -2.89,
+        -0.05591,
+        0.4
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.23,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "06_detail_003b_warm_pebbles",
+      "group": "Details",
+      "stem": "detail_003b_warm_pebbles",
+      "position_m": [
+        -6.02,
+        0.03049,
+        -1.3
+      ],
+      "rotation_rad": [
+        0.0,
+        0.73,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "07_detail_002b_reef_rubble",
+      "group": "Details",
+      "stem": "detail_002b_reef_rubble",
+      "position_m": [
+        -5.04,
+        0.37865,
+        -3.05
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.67,
+        0.0
+      ],
+      "uniform_scale": 0.87
+    },
+    {
+      "name": "08_detail_004b_cup_sponge",
+      "group": "Details",
+      "stem": "detail_004b_cup_sponge",
+      "position_m": [
+        -6.61,
+        0.90073,
+        -4.9
+      ],
+      "rotation_rad": [
+        0.0,
+        0.86,
+        0.0
+      ],
+      "uniform_scale": 0.92
+    },
+    {
+      "name": "09_detail_001a_fan_shell",
+      "group": "Details",
+      "stem": "detail_001a_fan_shell",
+      "position_m": [
+        3.13,
+        -0.06743,
+        1.07
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.58,
+        0.0
+      ],
+      "uniform_scale": 0.87
+    },
+    {
+      "name": "10_detail_003b_warm_pebbles",
+      "group": "Details",
+      "stem": "detail_003b_warm_pebbles",
+      "position_m": [
+        4.04,
+        -0.07587,
+        1.62
+      ],
+      "rotation_rad": [
+        0.0,
+        0.32,
+        0.0
+      ],
+      "uniform_scale": 1.06
+    },
+    {
+      "name": "11_detail_002a_coral_rubble",
+      "group": "Details",
+      "stem": "detail_002a_coral_rubble",
+      "position_m": [
+        5.04,
+        0.16931,
+        0.33
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.91,
+        0.0
+      ],
+      "uniform_scale": 0.95
+    },
+    {
+      "name": "12_detail_004a_encrusting_sponge",
+      "group": "Details",
+      "stem": "detail_004a_encrusting_sponge",
+      "position_m": [
+        6.87,
+        -0.06794,
+        1.14
+      ],
+      "rotation_rad": [
+        0.0,
+        0.58,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "13_detail_001b_ridge_shell",
+      "group": "Details",
+      "stem": "detail_001b_ridge_shell",
+      "position_m": [
+        7.59,
+        -0.07764,
+        -0.36
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.31,
+        0.0
+      ],
+      "uniform_scale": 1.06
+    },
+    {
+      "name": "14_detail_003a_slate_pebbles",
+      "group": "Details",
+      "stem": "detail_003a_slate_pebbles",
+      "position_m": [
+        4.35,
+        0.12677,
+        -2.67
+      ],
+      "rotation_rad": [
+        0.0,
+        0.79,
+        0.0
+      ],
+      "uniform_scale": 0.89
+    },
+    {
+      "name": "15_detail_002b_reef_rubble",
+      "group": "Details",
+      "stem": "detail_002b_reef_rubble",
+      "position_m": [
+        8.48,
+        -0.07877,
+        -3.13
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.73,
+        0.0
+      ],
+      "uniform_scale": 1.03
+    },
+    {
+      "name": "16_detail_004b_cup_sponge",
+      "group": "Details",
+      "stem": "detail_004b_cup_sponge",
+      "position_m": [
+        9.66,
+        -0.09146,
+        -5.77
+      ],
+      "rotation_rad": [
+        0.0,
+        0.25,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "17_detail_003a_slate_pebbles",
+      "group": "Details",
+      "stem": "detail_003a_slate_pebbles",
+      "position_m": [
+        -1.88,
+        -0.09613,
+        -6.14
+      ],
+      "rotation_rad": [
+        0.0,
+        0.34,
+        0.0
+      ],
+      "uniform_scale": 0.96
+    },
+    {
+      "name": "18_detail_001a_fan_shell",
+      "group": "Details",
+      "stem": "detail_001a_fan_shell",
+      "position_m": [
+        1.75,
+        -0.10307,
+        -5.36
+      ],
+      "rotation_rad": [
+        0.0,
+        -0.47,
+        0.0
+      ],
+      "uniform_scale": 1.03
+    },
+    {
+      "name": "01_fish_001_yellow_tang",
+      "group": "Fish",
+      "stem": "fish_001_yellow_tang",
+      "position_m": [
+        0.0,
+        1.1,
+        0.68
+      ],
+      "rotation_rad": [
+        0.0,
+        3.141592653589793,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "02_fish_002_ocellaris_clownfish",
+      "group": "Fish",
+      "stem": "fish_002_ocellaris_clownfish",
+      "position_m": [
+        -2.32,
+        1.23,
+        -1.16
+      ],
+      "rotation_rad": [
+        0.0,
+        2.25,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "03_fish_002_ocellaris_clownfish",
+      "group": "Fish",
+      "stem": "fish_002_ocellaris_clownfish",
+      "position_m": [
+        -2.82,
+        1.38,
+        -1.82
+      ],
+      "rotation_rad": [
+        0.0,
+        2.6,
+        0.0
+      ],
+      "uniform_scale": 0.88
+    },
+    {
+      "name": "04_fish_003_blue_green_chromis",
+      "group": "Fish",
+      "stem": "fish_003_blue_green_chromis",
+      "position_m": [
+        -0.7,
+        2.0,
+        -3.57
+      ],
+      "rotation_rad": [
+        0.0,
+        3.45,
+        0.0
+      ],
+      "uniform_scale": 0.94
+    },
+    {
+      "name": "05_fish_003_blue_green_chromis",
+      "group": "Fish",
+      "stem": "fish_003_blue_green_chromis",
+      "position_m": [
+        -0.31,
+        1.82,
+        -3.86
+      ],
+      "rotation_rad": [
+        0.0,
+        3.58,
+        0.0
+      ],
+      "uniform_scale": 1.05
+    },
+    {
+      "name": "06_fish_003_blue_green_chromis",
+      "group": "Fish",
+      "stem": "fish_003_blue_green_chromis",
+      "position_m": [
+        0.15,
+        2.12,
+        -4.13
+      ],
+      "rotation_rad": [
+        0.0,
+        3.29,
+        0.0
+      ],
+      "uniform_scale": 0.89
+    },
+    {
+      "name": "07_fish_003_blue_green_chromis",
+      "group": "Fish",
+      "stem": "fish_003_blue_green_chromis",
+      "position_m": [
+        0.56,
+        1.94,
+        -3.72
+      ],
+      "rotation_rad": [
+        0.0,
+        3.88,
+        0.0
+      ],
+      "uniform_scale": 0.98
+    },
+    {
+      "name": "08_fish_003_blue_green_chromis",
+      "group": "Fish",
+      "stem": "fish_003_blue_green_chromis",
+      "position_m": [
+        0.87,
+        2.26,
+        -4.35
+      ],
+      "rotation_rad": [
+        0.0,
+        3.12,
+        0.0
+      ],
+      "uniform_scale": 0.91
+    },
+    {
+      "name": "09_fish_004_reef_butterflyfish",
+      "group": "Fish",
+      "stem": "fish_004_reef_butterflyfish",
+      "position_m": [
+        3.46,
+        1.18,
+        -1.06
+      ],
+      "rotation_rad": [
+        0.0,
+        3.86,
+        0.0
+      ],
+      "uniform_scale": 1.0
+    },
+    {
+      "name": "10_fish_004_reef_butterflyfish",
+      "group": "Fish",
+      "stem": "fish_004_reef_butterflyfish",
+      "position_m": [
+        -4.24,
+        1.35,
+        -3.29
+      ],
+      "rotation_rad": [
+        0.0,
+        2.42,
+        0.0
+      ],
+      "uniform_scale": 0.93
+    },
+    {
+      "name": "11_fish_005_blacktip_reef_shark",
+      "group": "Fish",
+      "stem": "fish_005_blacktip_reef_shark",
+      "position_m": [
+        6.1,
+        2.5,
+        -7.8
+      ],
+      "rotation_rad": [
+        0.0,
+        2.83,
+        0.0
+      ],
+      "uniform_scale": 0.83
+    }
+  ]
+}
