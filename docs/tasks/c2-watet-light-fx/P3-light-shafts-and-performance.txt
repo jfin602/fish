@@ -1,0 +1,30 @@
+TASK: Correction 2 / P3 — Light shafts and performance integration
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Add a small, soft, sun-aligned shaft treatment and finish the water/light stack with stable camera presentation plus reproducible performance A/B instrumentation before native owner review.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c2-watet-light-fx/README.md, implementation-plan.md P3, actual P1–P2 changes/evidence, docs/art-style.md, current UnderwaterAtmosphere/surface/caustic shaders, underwater_screen.gdshader, atmosphere check and relevant P2 native-performance evidence. Inspect current source, tools/dev commands, branch/HEAD/dirty state, root 0.2.6 and Fish Forward+ identity first.
+
+IMPLEMENT
+1. Add a **small** set of broad sunlight shafts descending from the overhead surface and aligned with the existing directional sun. Use cheap transparent/unshaded/additive geometry or an equivalent bounded local technique; prefer one batched mesh/material if practical, otherwise keep the number of surfaces/draws intentionally small. Do not use multiple real spotlights and do not enable shadows on shaft helpers.
+2. Give shafts soft edge/end fades, low alpha, gentle noise breakup and slightly varied width/offset/phase. They should appear as atmospheric accents through the existing fog, not solid cones/cards or an opaque curtain. Keep primary routes and the player fish readable.
+3. Centralize/reuse sun direction, surface height and atmosphere parameters enough that surface highlights, shafts and DirectionalLight3D do not visibly disagree. Keep all state under presentation ownership and pause/toggle it with the existing atmosphere path.
+4. Reduce whole-screen UV wobble. Start from the target principle that the world stays stable while motion lives in the water surface, caustics and rays. Lower ScreenWarpPixels into a nearly imperceptible range (roughly 0–0.2 px) or remove UV displacement if the new stack already reads underwater; retain only restrained color variation if useful. Keep the screen layer below help/pause UI and non-interactive.
+5. Preserve a reproducible effects-off path and add the smallest instrumentation/probe needed to compare the **same** normal P2 open/upper route or representative fixed views with atmosphere effects enabled and disabled on one source revision. Record FPS or frame-time plus draw calls/primitives and effect counts after startup/shader warmup; do not use the historical P7 medians as if they were the same-run baseline.
+6. Treat a repeatable median regression around 10% or greater, obvious upper-view collapse, or materially increased transparent overdraw/draw count as a tuning trigger. First reduce shaft coverage/count, water subdivision, volumetric range/density, caustic layering or screen work before accepting the cost. Do not silently remove the target features just to make a synthetic counter pass.
+7. Extend focused checks to prove shaft count/resources are bounded, no extra real light authority was added, UI remains above the water screen, presentation toggles cleanly and fish/camera/tuning/collision remain unchanged.
+
+SCOPE / DEFERRALS
+No renderer switch, SDFGI, fluid simulation, dynamic weather, general graphics-menu work, new gameplay, world rebuild, movement/camera/control tuning or broad asset optimization. Performance fixes stay inside the water/light presentation unless a concrete blocker requires owner escalation.
+
+VALIDATE
+T2. Inspect and run the smallest real build/import/scene/atmosphere checks and the new same-revision effects on/off measurement path. Run git diff --check; review diff/status and relevant shader/resource counts. Confirm root 0.2.6, no package-lock/vendor payload and no movement-state difference. Record exact command/platform/counter results in qualification/implementation.md; do not call subjective target appearance PASS before P4.
+
+DONE / VERSION / HANDOFF
+The integrated candidate has an overhead surface, organic caustics, a bounded sun-shaft treatment, minimal screen wobble and reproducible performance A/B evidence with no simulation authority. P4 is the mandatory native/owner visual closeout. No package version change, self-commit or push.
