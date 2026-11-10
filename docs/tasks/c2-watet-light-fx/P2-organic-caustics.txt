@@ -1,0 +1,28 @@
+TASK: Correction 2 / P2 — Organic caustics
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Replace the current obvious periodic/grid-like caustic projection with restrained, irregular moving underwater light that breaks naturally across sand, rocks and coral while staying cheap.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c2-watet-light-fx/README.md, implementation-plan.md P2, actual P1 implementation/evidence, docs/art-style.md, game/scripts/UnderwaterAtmosphere.cs and game/dev/atmosphere_check.gd. Inspect the current caustic path after P1 rather than assuming authoring source is unchanged. Confirm branch/HEAD/dirty state, root 0.2.6, Forward+ and Fish project identity.
+
+IMPLEMENT
+1. Remove the regular sine-lattice visual from the production caustic generation/projection. Use a deterministic irregular/cellular/Worley-like ridge field, distorted broken-loop construction, or an equivalently cheap non-periodic method generated once at initialization. Favor broad unequal cells/veins, gaps and varying brightness over repeated diamonds/checkers/net lines.
+2. Keep the effect world-anchored and bounded to the real habitat. One decal/projection is preferred; at most two are allowed if a weak second layer with clearly different scale/rotation/phase materially removes visible repetition. Do not create a grid of projectors or many local lights.
+3. If using two layers, keep combined energy restrained and use different slow drift/rotation so patterns do not synchronize. Avoid exact alignment with the habitat X/Z axes. Preserve readable low-poly surfaces and do not wash out coral/fish silhouettes.
+4. Keep animation presentation-only and pause-aware. Do not modify seabed geometry/material ownership merely to make the light move, unless source inspection proves a single shared shader is materially cheaper and preserves all four prepared terrain sets; if architecture changes, document why.
+5. Update focused checks for finite energy/drift, deterministic texture/resource creation, projection count/bounds, pause/toggle behavior and unchanged fish/camera/tuning. Structural checks must not claim the pattern is visually organic; reserve that judgment for P4.
+
+SCOPE / DEFERRALS
+No additional gameplay lights, shadowed spotlights, SDFGI, habitat redesign, terrain simplification, camera/filter redesign, surface overhaul beyond integration fixes, or asset restyling. Preserve current prepared palette and collision.
+
+VALIDATE
+T2. Run the smallest relevant build/import/inspect-atmosphere checks after inspecting their composition. Run git diff --check and review status. Confirm package.json remains 0.2.6, Forward+ stays selected, projection count remains tightly bounded, and atmosphere enable/disable cannot affect authoritative movement. Append actual implementation evidence only after commands run; mark organic appearance/motion NOT OBSERVED until the native closeout.
+
+DONE / VERSION / HANDOFF
+Normal play uses bounded irregular caustics with no code path intentionally producing the old periodic grid/net look; focused integration checks pass honestly. P3 adds art-directed shafts and integrated performance tuning. No package version change, self-commit or push.
