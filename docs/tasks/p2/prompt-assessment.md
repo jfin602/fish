@@ -15,7 +15,8 @@ The accepted roadmap change intentionally moves feeding/predators/growth to P3. 
 - `game/scenes/main.tscn` has a box floor centered around Y -4.2, a box ceiling around Y +4.2, retaining walls around a roughly 19 m square space, a directional light and a `WorldEnvironment` populated at runtime.
 - `game/scenes/movement_course.tscn` contains colored target/landmark spheres, two rock collision bodies and a visible camera-check cylinder.
 - `StarterWorld.cs` applies Coast Sand to the flat floor, places two Rock Face 01 instances, two Smithsonian Heliopora instances and seven stationary Quaternius fish; it sets a simple background color.
-- The Smithsonian coral is a high-detail specimen (~100k triangles) and should not be naively carpeted across the seabed.
+- The existing Smithsonian Heliopora coral is a high-detail specimen (~100k triangles) and should not be naively carpeted across the seabed.
+- Before P2 execution, the owner prepared an expanded local environment palette under the repository's ignored asset convention: ambientCG Ground060, Gravel041 and Rock063; Poly Haven Rock Face 02, Coastal Cliff 01 and Boulder 01 alongside existing Rock Face 01; and Smithsonian Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae alongside Heliopora coerulea. The Smithsonian additions import at roughly 100k–150k triangles each and should be treated as measured hero/instanced sources rather than dense raw coverage. Execution must verify the local inventory/vendor mapping rather than assume an ignored payload exists in every checkout.
 - The authoritative P1 boundaries already exist: `FishController`/one `SwimMotor`, `FollowCamera`, `FishVisualMotion`, the display/pause shell and selected assets. P2 must consume those rather than create a second movement/camera authority.
 - The user-reported local checkout may advance beyond this snapshot during P1 tuning/c1-bindings. Every prompt must inspect actual source and preserve compatible changes.
 
@@ -46,7 +47,7 @@ The accepted roadmap change intentionally moves feeding/predators/growth to P3. 
 - **Pretty scene but bad traversal:** define broad/tight/vertical routes and collision clearances relative to the accepted fish/camera, then test real traversal. Worldbuilding is gameplay space, not backdrop.
 - **Player can escape under/through the world:** use continuous collidable seabed and deliberate natural boundaries; test underside/edge routes rather than relying only on a controller clamp.
 - **Camera becomes unusable in tunnels:** tune geometry/collision and use accepted camera obstruction behavior; do not silently redesign P1 camera semantics.
-- **Coral/transparent particles destroy performance:** avoid dense raw Heliopora duplication, bound particles/overdraw, measure representative native frame timing and tune.
+- **Coral/heavy rock/transparent particles destroy performance:** avoid dense raw Smithsonian duplication, treat Coastal Cliff and other heavy meshes as measured hero geometry, bound particles/overdraw, measure representative native frame timing with the real mixed asset palette and tune.
 - **Underwater effect becomes a blue filter:** require layered depth/light/caustics/motes and multiple-distance/depth observation.
 - **Post effect distorts menus/HUD:** order presentation so interface remains crisp and input/focus ownership stays in the existing shell.
 - **Reactive water changes physics:** presentation samples movement state read-only; tests assert no transform/velocity/collision writes from the effect component.
