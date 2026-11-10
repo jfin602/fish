@@ -37,7 +37,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## Current sequence
 
-P1 is complete. [P2 worldbuilding](tasks/p2/README.md) remains open at G2.3/V20 after the owner-green depth repair. **[P3 FAF reef rebuild](tasks/p3/README.md) is authored but blocked until P2 closes; it uses the completed FAF library to rebuild/dress that varying-depth world.** Feeding/predators/growth now follow as P4. The previously selected Movement abilities remain a future enhancement.
+P1 is complete. P2 is **owner-closed for progression / NOT GREEN**: G2.1/G2.2 pass and G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition. **[P3 FAF reef rebuild](tasks/p3/README.md) is now READY TO EXECUTE**, including the five-fish Character Select/session-return flow. Feeding/predators/growth follow as P4. The previously selected Movement abilities remain a future enhancement.
 
 ## Status language
 

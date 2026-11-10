@@ -1,8 +1,8 @@
 # P3 — Rebuild and dress the reef with FAF assets
 
 **Decision date:** 2026-11-10  
-**State:** Owner-selected and planned; implementation/evidence NOT STARTED.  
-**Execution:** [docs/tasks/p3](../../tasks/p3/README.md) only after P2 is actually closed and the deliberate root `0.3.0` Phase-entry baseline is prepared.
+**State:** Owner-selected and READY TO EXECUTE at root `0.3.0`; implementation/evidence NOT STARTED.  
+**Execution:** [docs/tasks/p3](../../tasks/p3/README.md) under owner transition S16. P2 G2.3/V20 remains an accepted evidence gap rather than a fabricated PASS.
 
 ## Outcome
 
@@ -14,13 +14,13 @@ The target is the authoritative [FAF art style](../../fish-asset-factory/art-sty
 
 ## Entry boundary
 
-P3 may be authored while P2 remains open, but **must not execute until P2 is GREEN**.
+P3 is now explicitly authorized to execute. The owner accepted the remaining P2 G2.3/V20 evidence gap for progression; P2 is not relabeled GREEN.
 
 Before P3 execution:
 
-1. P2 G2.1–G2.3 must be closed with the final accepted source/evidence. Current authoring-time root remains `0.2.6`; P3 does not waive V20.
+1. P2 G2.1/G2.2 are accepted; owner decision S16 waives G2.3/V20 **only as a progression blocker**, while preserving it as OPEN/NOT GREEN evidence.
 2. Preserve Forward+, the owner-green water/light/depth identity, water reaction, accepted P1 movement/camera/controls and the P1 fixture.
-3. Deliberately transition root `package.json` to **`0.3.0`**. P3 prompts then target `0.3.1` through `0.3.8`.
+3. Root `package.json` is deliberately **`0.3.0`**. P3 prompts target `0.3.1` through `0.3.8`.
 4. Inspect current source before assuming the authoring-time `SeabedSurface` / reef-composition layout survived P2 closeout.
 
 ## Core FAF library

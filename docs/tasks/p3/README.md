@@ -1,6 +1,6 @@
 # P3 — FAF reef world rebuild
 
-**Status: AUTHORED / BLOCKED ON P2.** P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library. It must not execute until P2 is actually GREEN and root is deliberately moved to `0.3.0`.
+**Status: READY TO EXECUTE at root `0.3.0`.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
 
 Read the [phase design](../../planning/p3/reef-world-rebuild.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), [FAF art style](../../fish-asset-factory/art-style.md), [style proof 001](../../fish-asset-factory/style-proof-001/README.md) and [runner contract](../../phase-runner.md).
 
@@ -21,12 +21,12 @@ Turn the accepted technical depth world into the first fully dressed Fish reef:
 
 ## Entry and version
 
-At authoring, root remains **`0.2.6`** and P2 is not yet closed because G2.3/V20 remains open. This stack changes no current version.
+Root is now deliberately **`0.3.0`** under owner transition S16. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.
 
 Before execution:
 
-1. P2 G2.1–G2.3 must be GREEN with final accepted source.
-2. Prepare deliberate root baseline **`0.3.0`**.
+1. P2 G2.1/G2.2 are accepted and owner transition S16 explicitly authorizes progression with G2.3/V20 retained as an open gap. **Satisfied.**
+2. Deliberate root baseline **`0.3.0`** is prepared. **Satisfied.**
 3. Inspect current HEAD/dirty state, normal-play scene, depth/collision authority, FAF manifests/GLBs and `tools/dev` composition.
 4. Verify Fish MCP identity before editor mutation.
 5. Preserve Forward+, P2 water/light/depth and water-reaction behavior, accepted movement/camera/controls and the P1 fixture.
@@ -76,7 +76,7 @@ Isolated FAF proofs and style-proof 001 are design/candidate evidence, not P3 Ga
 
 ## Execute
 
-Only after P2 closeout and deliberate `0.3.0` entry:
+From the owner-approved deliberate `0.3.0` entry:
 
 ```bash
 npm run fish:phase:validate -- p3

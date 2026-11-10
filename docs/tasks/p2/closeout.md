@@ -63,3 +63,16 @@ The owner needs to swim this exact saved candidate in the normal game window and
 The P8 table above is the historical review of its earlier source candidate. The subsequent [c2-depth R1 native closeout](../c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) tested `main` HEAD `1ca8c4f123646dbe472fd18198f9a13c5d7b0019` plus the uncommitted R1 repair at root `0.2.6`. Real Forward+ normal input reached all repaired authored depth markers in both directions, alternate lane, tunnel and shelter. The owner separately confirmed direct hand-play and accepted natural terrain/perimeter, depth visibility, deep upward surface, c2 effects, movement/camera/UI/GFX and smoothness. Five focused checks passed with an isolated default input profile. The original P4 failure and the P8 baseline above remain historical evidence.
 
 For this later candidate, **G2.1/V18 and G2.2/V19 PASS** as recorded in the [roadmap](../../roadmap.md). **G2.3/V20 remains OPEN:** the owner has not yet qualified fish-reactive wake/bubble state changes, combined pitch/turn near close geometry, and actual desktop focus/refocus as a separate water-reaction review. P2 remains IN PROGRESS / NOT GREEN; no version bump or P3 entry follows from c2-depth. The next bounded work is only that G2.3 native qualification and subsequent P2 Gate reconciliation.
+
+
+## Owner progression override — 2026-11-10
+
+**Disposition for progression: OWNER CLOSED / NOT GREEN.** After the runner refused P3 because root was still `0.2.6`, the owner explicitly authorized the deliberate `0.3.0` phase-entry transition.
+
+This override does **not** change the evidence table above:
+
+- G2.1 / V18 remains PASS on the repaired depth candidate.
+- G2.2 / V19 remains PASS on the repaired depth candidate.
+- G2.3 / V20 remains OPEN / NOT GREEN: direct owner wake/bubble quality judgment, combined pitch/turn near geometry, and actual desktop focus/refocus were not fully qualified.
+
+The owner accepts that G2.3 evidence gap for progression. P2 is therefore closed **for roadmap execution only**, not reclassified as fully GREEN. Future work may revisit V20 without invalidating the P3 transition. Root `0.3.0` is authorized as the P3 baseline.

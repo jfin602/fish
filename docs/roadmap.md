@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-10. P0 foundation COMPLETE on Linux/X11; P1 COMPLETE under the owner's accepted progression baseline; P2 IN PROGRESS / NOT GREEN. c2-depth R1 is owner-green, qualifying G2.1/V18 and G2.2/V19 on the observed candidate; G2.3/V20 remains open.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-10. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass, while G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition; P3 is READY TO START.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -12,8 +12,8 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | --- | --- | --- |
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
-| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **IN PROGRESS / NOT GREEN**; [c2-depth R1 closeout](tasks/c2-depth/closeout.md#r1-native-closeout--2026-11-10) qualifies G2.1/G2.2, while G2.3/V20 still needs owner/native evidence. |
-| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **AUTHORED / NOT STARTED**; [design](planning/p3/reef-world-rebuild.md) and [stack](tasks/p3/README.md); blocked on P2 closeout. |
+| **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
+| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **READY TO START** at deliberate root `0.3.0`; [design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md). |
 | P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
 | P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -91,7 +91,7 @@ P1 completion records the final accepted tuning/profile. [Movement abilities](pl
 
 ## P2 — Build the underwater world
 
-**Status: IN PROGRESS / NOT GREEN.** The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained. [c2-depth](tasks/c2-depth/README.md) P1–P3 implemented the five-band candidate and depth lighting; [P4 native review](tasks/c2-depth/qualification/native-depth.md) historically failed unreachable endpoints and visual criteria. [R1](tasks/c2-depth/qualification/r1-repair.md) repaired the candidate; its [native closeout](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) passed actual authored routes and received the owner's direct acceptance of terrain, depth presentation, effects, controls/UI and smoothness. G2.1 and G2.2 pass for this source; G2.3 remains open. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
+**Status: OWNER CLOSED FOR PROGRESSION / NOT GREEN.** The owner explicitly authorized moving to P3 at root `0.3.0` while preserving G2.3/V20 as an accepted evidence gap. No missing V20 observation is converted to PASS. The original P2 implementation and owner-green [water/light correction](tasks/c2-watet-light-fx/closeout.md) are retained. [c2-depth](tasks/c2-depth/README.md) P1–P3 implemented the five-band candidate and depth lighting; [P4 native review](tasks/c2-depth/qualification/native-depth.md) historically failed unreachable endpoints and visual criteria. [R1](tasks/c2-depth/qualification/r1-repair.md) repaired the candidate; its [native closeout](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) passed actual authored routes and received the owner's direct acceptance of terrain, depth presentation, effects, controls/UI and smoothness. G2.1 and G2.2 pass for this source; G2.3 remains open. [P2 design](planning/p2/underwater-world.md); [execution stack](tasks/p2/README.md).
 
 P2 turns the movement laboratory into a place that already feels like a game when the player simply swims around. The target is a compact authored reef-like habitat; it does not settle the final production biome or larger procedural-world strategy.
 
@@ -122,7 +122,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 ### G2.3 — Movement-reactive water presentation
 
-**Result: BLOCKED.** [P6 implementation and T2 evidence](tasks/p2/qualification/implementation.md#p2-p6--fish-reactive-water) covers bounded GPU wake/bubbles, pause/focus cleanup and equal-intent movement traces. P7 recorded native response ratios and round-bubble captures. [P8 review](tasks/p2/closeout.md#g23--fish-reactive-water--v20) retains missing owner effect judgment, combined pitch/turn geometry view and actual desktop focus/refocus.
+**Result: ACCEPTED GAP / NOT GREEN.** [P6 implementation and T2 evidence](tasks/p2/qualification/implementation.md#p2-p6--fish-reactive-water) covers bounded GPU wake/bubbles, pause/focus cleanup and equal-intent movement traces. P7 recorded native response ratios and round-bubble captures. [P8 review](tasks/p2/closeout.md#g23--fish-reactive-water--v20) retains missing owner effect judgment, combined pitch/turn geometry view and actual desktop focus/refocus. On 2026-11-10 the owner accepted this gap for progression and authorized the `0.3.0` P3 entry.
 
 - Water visibly reacts to the fish using bounded presentation effects: ordinary swimming has a readable but restrained disturbance, acceleration increases it, gliding reduces it, and hard turning produces a directional change/turbulence cue.
 - Effects originate from believable body/tail space, remain coherent through pitch/yaw, do not obscure the camera, and clear/freeze appropriately across pause/reset/focus lifecycle.
@@ -131,7 +131,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 ## P3 — Rebuild and dress the reef
 
-**Status: AUTHORED / NOT STARTED; execution blocked until P2 is GREEN and root `0.3.0` is prepared.** [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md). Scenarios V21–V23.
+**Status: READY TO START at root `0.3.0` under owner transition S16.** P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md). Scenarios V21–V23.
 
 P3 is the first style-proving world-art phase. It consumes the completed FAF library and the accepted P2 five-depth navigation/water system. It does not generate a new navigation topology or implement ecology.
 
