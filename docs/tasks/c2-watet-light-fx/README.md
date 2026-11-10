@@ -1,6 +1,6 @@
 # c2-watet-light-fx — water surface and sunlight presentation correction
 
-**State:** AUTHORED / NOT EXECUTED. **Type:** Correction 2. **Root version:** `0.2.6` unchanged for every prompt.
+**State:** P1–P3 IMPLEMENTED; P4 native/owner closeout PENDING. **Type:** Correction 2. **Root version:** `0.2.6` unchanged for every prompt.
 
 The folder name intentionally preserves the owner-requested `c2-watet-light-fx` spelling so the runner command matches the authored stack.
 

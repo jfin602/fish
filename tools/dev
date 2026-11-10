@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-water|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-water|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -130,6 +130,11 @@ case "${1:-help}" in
     need_tools
     do_build
     exec "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method "$renderer" --scene res://scenes/renderer_comparison.tscn "${effect_arg[@]}"
+    ;;
+  measure-atmosphere)
+    need_tools
+    logged atmosphere-ab 180 "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --script res://dev/atmosphere_ab_probe.gd
+    grep -Fq 'ATMOSPHERE_AB_OK' "$LOGS/atmosphere-ab.log" || { echo 'Atmosphere A/B marker missing' >&2; exit 1; }
     ;;
   inspect-scene)
     need_tools

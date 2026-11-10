@@ -31,6 +31,7 @@ func _run() -> void:
 	var camera: Camera3D = main.get_node("Fish/CameraRig/Camera3D")
 	var effects: Node3D = atmosphere.get_node("WaterEffects")
 	var surface: MeshInstance3D = effects.get_node("OverheadSurface")
+	var shafts: MeshInstance3D = effects.get_node("SunShafts")
 	var upper: CollisionShape3D = main.get_node("Habitat/HiddenLimits/Upper")
 	var upper_box: BoxShape3D = upper.shape
 	var motes: GPUParticles3D = effects.get_node("SuspendedMotes")
@@ -73,8 +74,29 @@ func _run() -> void:
 	if surface.global_position.y - 0.165 <= upper_top or surface.global_position.y > upper_top + 0.3 or surface.global_position.y < 9.0:
 		fail("surface is not just above the saved upper collision")
 		return
-	if surface.get_child_count() != 0 or effects.get_child_count() != 3:
+	if surface.get_child_count() != 0 or effects.get_child_count() != 4:
 		fail("surface added physics or extra presentation geometry")
+		return
+	if not shafts.mesh is ArrayMesh or shafts.mesh.get_surface_count() != 1 or not shafts.material_override is ShaderMaterial or shafts.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF:
+		fail("sun shafts must be one shadowless mesh/material")
+		return
+	var shaft_material: ShaderMaterial = shafts.material_override
+	if shaft_material.shader == null or shaft_material.shader.resource_path != "res://shaders/sun_shafts.gdshader":
+		fail("shaft shader did not load")
+		return
+	var shaft_vertices: PackedVector3Array = shafts.mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+	if shaft_vertices.size() != 36:
+		fail("shaft geometry exceeds three crossed-quad accents")
+		return
+	var ray: Vector3 = shaft_vertices[2] - shaft_vertices[1]
+	if ray.normalized().dot(-sun_direction) < 0.999 or absf(shafts.to_global(shaft_vertices[0]).y - surface.global_position.y) > 0.1:
+		fail("shaft rays diverge from sun/surface")
+		return
+	var lights := 0
+	for node in main.find_children("*", "Light3D", true, false):
+		lights += 1
+	if lights != 1 or atmosphere.get("ScreenWarpPixels") > 0.2:
+		fail("extra real light or excessive screen warp")
 		return
 	if motes.amount != 128 or motes.lifetime > 30.0 or motes.process_material == null or motes.draw_pass_1 == null or not motes.emitting:
 		fail("GPU motes are absent or unbounded")
@@ -132,6 +154,9 @@ func _run() -> void:
 	if effects.visible or env.background_mode != Environment.BG_COLOR:
 		fail("surface/sky remained visible with atmosphere off")
 		return
+	if screen.visible:
+		fail("screen layer remained visible with atmosphere off")
+		return
 	atmosphere.SetEnabled(true)
 	if not effects.visible or env.background_mode != Environment.BG_SKY:
 		fail("surface/sky did not return with atmosphere on")
@@ -147,9 +172,12 @@ func _run() -> void:
 	var caustic_before: Vector3 = caustic.position
 	var caustic_rotation_before: Vector3 = caustic.rotation
 	var surface_time_before: float = surface_material.get_shader_parameter("surface_time")
+	var shaft_time_before: float = shaft_material.get_shader_parameter("shaft_time")
+	var screen_material: ShaderMaterial = rect.material
+	var screen_time_before: float = screen_material.get_shader_parameter("screen_time")
 	paused = true
 	await create_timer(0.15).timeout
-	if caustic.position != caustic_before or caustic.rotation != caustic_rotation_before or surface_material.get_shader_parameter("surface_time") != surface_time_before:
+	if caustic.position != caustic_before or caustic.rotation != caustic_rotation_before or surface_material.get_shader_parameter("surface_time") != surface_time_before or shaft_material.get_shader_parameter("shaft_time") != shaft_time_before or screen_material.get_shader_parameter("screen_time") != screen_time_before:
 		fail("presentation time advanced while paused")
 		return
 	paused = false
@@ -181,5 +209,5 @@ func _run() -> void:
 	if regenerated.texture_emission == null or regenerated.texture_emission.get_image().get_data() != caustic_bytes:
 		fail("generated caustic texture changed between scene instances")
 		return
-	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=upper-limit sky=sunlit caustics=1 deterministic=gaps drift=paused-toggle motes=gpu ui=above-screen resize=responsive motor=unchanged")
+	print("ATMOSPHERE_CHECK_OK forward_plus=required fog=bounded surface=upper-limit sky=sunlit shafts=3 mesh_surfaces=1 shadowless caustics=1 deterministic=gaps drift=paused-toggle motes=gpu ui=above-screen warp=0.1px resize=responsive motor=unchanged")
 	quit()

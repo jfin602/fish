@@ -27,7 +27,7 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "-3.14,3.14,0.01")] public float SunYaw { get; set; } = -0.48f;
     [Export(PropertyHint.Range, "0,0.8,0.01")] public float CausticEnergy { get; set; } = 0.32f;
     [Export(PropertyHint.Range, "0,0.5,0.01")] public float CausticDrift { get; set; } = 0.10f;
-    [Export(PropertyHint.Range, "0,2,0.1")] public float ScreenWarpPixels { get; set; } = 0.55f;
+    [Export(PropertyHint.Range, "0,0.2,0.01")] public float ScreenWarpPixels { get; set; } = 0.10f;
     [Export(PropertyHint.Range, "0,0.04,0.001")] public float ScreenColorVariation { get; set; } = 0.007f;
     [Export(PropertyHint.File, "*.gdshader")] public string ScreenShaderPath { get; set; } = "res://shaders/underwater_screen.gdshader";
     [Export(PropertyHint.Range, "0,160,1")] public int MoteCount { get; set; } = 128;
@@ -36,7 +36,11 @@ public partial class UnderwaterAtmosphere : Node3D
     private Godot.Environment? _environment;
     private ShaderMaterial? _skyMaterial;
     private ShaderMaterial? _surfaceMaterial;
+    private ShaderMaterial? _shaftMaterial;
+    private ShaderMaterial? _screenMaterial;
     private MeshInstance3D? _surface;
+    private MeshInstance3D? _shafts;
+    private float _surfaceHeight;
     private DirectionalLight3D? _sun;
     private Node3D? _effects;
     private CanvasLayer? _screenLayer;
@@ -96,11 +100,12 @@ public partial class UnderwaterAtmosphere : Node3D
         AddChild(_effects);
         AddSky();
         AddSurface(main);
+        AddShafts();
         AddCaustics();
         AddMotes();
         AddScreenTreatment();
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
-        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
+        GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} fog={DistanceFogDensity:F4} surface={(_surface is null ? "missing" : "ready")} shafts={(_shafts is null ? 0 : 3)} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
 
     public void SetEnabled(bool enabled)
@@ -134,6 +139,8 @@ public partial class UnderwaterAtmosphere : Node3D
         if (!_enabled || _effects is null) return;
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
+        _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
+        _screenMaterial?.SetShaderParameter("screen_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
         for (var index = 0; index < _caustics.Length; index++)
         {
@@ -196,6 +203,68 @@ public partial class UnderwaterAtmosphere : Node3D
             Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0, extent.Y * 0.5f + 0.22f, 0),
         };
         _effects!.AddChild(_surface);
+        _surfaceHeight = _surface.GlobalPosition.Y;
+    }
+
+    private void AddShafts()
+    {
+        if (_surface is null || _sun is null || _effects is null) return;
+        var shader = ResourceLoader.Load<Shader>("res://shaders/sun_shafts.gdshader");
+        if (shader is null)
+        {
+            GD.PushError("FISH_ATMOSPHERE_MISSING_SHAFT_SHADER");
+            return;
+        }
+
+        // Three sparse accents, each made from two crossing quads in one surface/draw.
+        // The sun's +Z basis points toward the source; rays travel in the opposite direction.
+        var sunUp = _sun.GlobalTransform.Basis.Z.Normalized();
+        if (sunUp.Y < 0.15f) return;
+        var ray = -sunUp * (14.0f / sunUp.Y);
+        Vector2[] centers = [new(-13, -10), new(10, 13), new(19, -8)];
+        float[] widths = [3.2f, 4.1f, 3.5f];
+        float[] phases = [0.11f, 0.49f, 0.83f];
+        var vertices = new Vector3[centers.Length * 2 * 6];
+        var uvs = new Vector2[vertices.Length];
+        var colors = new Color[vertices.Length];
+        var directions = new[] { Vector3.Right, Vector3.Forward };
+        var triangles = new[] { 0, 1, 2, 0, 2, 3 };
+        for (var shaft = 0; shaft < centers.Length; shaft++)
+        {
+            var top = new Vector3(centers[shaft].X, _surfaceHeight - 0.03f, centers[shaft].Y);
+            for (var plane = 0; plane < 2; plane++)
+            {
+                var half = widths[shaft] * 0.5f;
+                var across = directions[plane] * half;
+                var corners = new[] { top - across, top + across, top + ray + across, top + ray - across };
+                var coordinates = new[] { new Vector2(0, 0), new Vector2(1, 0), new Vector2(1, 1), new Vector2(0, 1) };
+                for (var corner = 0; corner < 6; corner++)
+                {
+                    var index = (shaft * 2 + plane) * 6 + corner;
+                    var source = triangles[corner];
+                    vertices[index] = _effects.ToLocal(corners[source]);
+                    uvs[index] = coordinates[source];
+                    colors[index] = new Color(phases[shaft] + plane * 0.07f, 1, 1, 1);
+                }
+            }
+        }
+        var arrays = new Godot.Collections.Array();
+        arrays.Resize((int)Mesh.ArrayType.Max);
+        arrays[(int)Mesh.ArrayType.Vertex] = vertices;
+        arrays[(int)Mesh.ArrayType.TexUV] = uvs;
+        arrays[(int)Mesh.ArrayType.Color] = colors;
+        var mesh = new ArrayMesh();
+        mesh.AddSurfaceFromArrays(Mesh.PrimitiveType.Triangles, arrays);
+        _shaftMaterial = new ShaderMaterial { Shader = shader };
+        _shaftMaterial.SetShaderParameter("shaft_time", 0.0f);
+        _shafts = new MeshInstance3D
+        {
+            Name = "SunShafts",
+            Mesh = mesh,
+            MaterialOverride = _shaftMaterial,
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+        };
+        _effects.AddChild(_shafts);
     }
 
     private void AddCaustics()
@@ -347,9 +416,10 @@ public partial class UnderwaterAtmosphere : Node3D
             GD.PushWarning("FISH_ATMOSPHERE_OPTIONAL_MISSING underwater_screen.gdshader");
             return;
         }
-        var material = new ShaderMaterial { Shader = shader };
-        material.SetShaderParameter("warp_pixels", ScreenWarpPixels);
-        material.SetShaderParameter("color_variation", ScreenColorVariation);
+        _screenMaterial = new ShaderMaterial { Shader = shader };
+        _screenMaterial.SetShaderParameter("warp_pixels", ScreenWarpPixels);
+        _screenMaterial.SetShaderParameter("color_variation", ScreenColorVariation);
+        _screenMaterial.SetShaderParameter("screen_time", 0.0f);
         _screenLayer = new CanvasLayer { Name = "WaterScreen", Layer = 0 };
         AddChild(_screenLayer);
         _screenRect = new ColorRect
@@ -357,7 +427,7 @@ public partial class UnderwaterAtmosphere : Node3D
             Name = "ScreenTreatment",
             Color = Colors.White,
             MouseFilter = Control.MouseFilterEnum.Ignore,
-            Material = material,
+            Material = _screenMaterial,
         };
         _screenLayer.AddChild(_screenRect);
         ResizeScreen();
@@ -391,7 +461,7 @@ public partial class UnderwaterAtmosphere : Node3D
         float.IsFinite(SunYaw) && SunYaw is >= -3.14f and <= 3.14f &&
         float.IsFinite(CausticEnergy) && CausticEnergy is >= 0 and <= 0.8f &&
         float.IsFinite(CausticDrift) && CausticDrift is >= 0 and <= 0.5f &&
-        float.IsFinite(ScreenWarpPixels) && ScreenWarpPixels is >= 0 and <= 2 &&
+        float.IsFinite(ScreenWarpPixels) && ScreenWarpPixels is >= 0 and <= 0.2f &&
         float.IsFinite(ScreenColorVariation) && ScreenColorVariation is >= 0 and <= 0.04f &&
         MoteCount is >= 0 and <= 160 && float.IsFinite(MoteLifetime) &&
         MoteLifetime is >= 4 and <= 30;

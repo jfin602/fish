@@ -37,12 +37,12 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/scripts/ControlPreset.cs`, `ControlPresetStore.cs`, `KeyboardSwimInput.cs`, `MouseSwimInput.cs`, `ControlPresetsPanel.cs` | Built-in/custom profiles, versioned persistence, intent resolution and pause editor. Keyboard Only, Mouse Only and Hybrid Swim form the accepted baseline; Hybrid 2 is newly implemented and awaits owner feel testing. |
 | `game/scripts/FollowCamera.cs` | Third-person follow/obstruction behavior and the Hybrid 2 presentation-only 360 mouse orbit. P2 geometry must support it without making camera state authoritative. |
 | `game/scripts/FishVisualMotion.cs` | Player visual swim/glide/turn deformation driven from movement state. |
-| `game/scripts/UnderwaterAtmosphere.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `underwater_screen.gdshader` | Forward+ fog and top light, bounded overhead surface derived from the habitat upper limit, procedural sky, moving caustic projection, GPU motes and screen treatment below UI; no fish authority. |
+| `game/scripts/UnderwaterAtmosphere.cs`, `game/shaders/water_surface.gdshader`, `underwater_sky.gdshader`, `sun_shafts.gdshader`, `underwater_screen.gdshader` | Forward+ fog and top light, bounded overhead surface derived from the habitat upper limit, procedural sky, one batched sun-shaft mesh, moving caustic projection, GPU motes and restrained screen treatment below UI; no fish authority. |
 | `game/scripts/WaterReaction.cs` | Forward+ tail-space GPU ribbons and spherical bubbles driven by read-only motor presentation values; 44 live slots maximum, no forces or collision. |
 | `game/scripts/DisplayPreferences.cs`, `PlayShell.cs` | Local display/input preferences and pause/options/focus lifecycle. Water post effects must not distort or capture this UI unintentionally. |
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
-| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat`, `inspect-reef`, `inspect-atmosphere`, `inspect-water` and preserved P1 fixture checks. |
+| `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-habitat`, `inspect-reef`, `inspect-atmosphere`, `measure-atmosphere`, `inspect-water` and preserved P1 fixture checks. |
 | `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |
 
 ## P2 composition/effects boundaries
