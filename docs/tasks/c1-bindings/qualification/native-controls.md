@@ -6,7 +6,7 @@
 
 | Item | Observed configuration |
 | --- | --- |
-| Repository/source | `jfin602/fish`, `main`; initial native run at `f6524a77b0dc1b77b7dce2a03b2508e2a4bc615a` with a clean tree. The help repair was built and observed before the branch was rebased; equivalent post-rebase source is `0238a4b` (the P5 help-layout commit). The rebase resolved BOOT.md conflicts and preserved the P2 documentation branch. |
+| Repository/source | `jfin602/fish`, `main`; initial native run at `f6524a77b0dc1b77b7dce2a03b2508e2a4bc615a` with a clean tree. The help repair was built and observed before the branch was rebased; equivalent post-rebase source is `7278041` (the P5 help-layout commit). The rebase resolved BOOT.md conflicts and preserved the P2 documentation branch. |
 | Root version | `package.json` `0.1.9` throughout; no lockfile. |
 | Platform | Linux 7.3.0-10-generic x86_64, X11 `:0`, 1920×1200 at 60 Hz; AMD Radeon 880M, Mesa 25.2.8, Compatibility renderer. |
 | Runtime | Godot `4.7.2.stable.mono.official.ed1daf0bf`, .NET SDK `10.0.403`, debug C# build. Native log reported `effective=Fullscreen` for requested windowed fullscreen and `effective=ExclusiveFullscreen` for requested fullscreen. |
