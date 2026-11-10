@@ -56,7 +56,7 @@ F — PERFORMANCE
 Record representative native performance/counters for dense shallow, cave/tunnel, mixed middle and deep sparse zones. Tune repeated density, visibility, grouping, ambient counts and decorative collision as needed. Do not drop required variants; reduce repeated density/cost instead.
 
 EVIDENCE
-Write/update `qualification/character-select.md`, `qualification/native-world-art.md` and `qualification/accepted-world-art.md`. Separate PASS/FAIL/NOT OBSERVED/BLOCKED for traversal, density gradient, target style and performance.
+Write/update `qualification/character-select.md`, `qualification/native-world-art.md` and `qualification/accepted-world-art.md`. Separate PASS/FAIL/NOT OBSERVED/BLOCKED for Character Select/session routing, traversal, density gradient, target style and performance.
 
 VALIDATE / VERSION
 Run targeted checks only for source changed during tuning, then `git diff --check`. Confirm P2 movement/water/depth authority unchanged. Set `0.3.7` only if candidate is reproducible and owner accepts both Character Select/session-return flow and world-art direction; otherwise retain `0.3.6` with repair notes.

@@ -9,13 +9,13 @@ MANUAL FINAL BOUNDARY
 This is p3's ONE FINAL CLOSEOUT. Execute after reviewed P7 native evidence. Reuse unchanged native observations; repeat only invalidated gaps.
 
 GOAL
-Close P3 only when the accepted P2 varying-depth world is rebuilt with the complete core FAF environment library, usable caves/tunnels, shallow-lush → deep-sparse composition, direct owner target-style acceptance and representative performance evidence.
+Close P3 only when the accepted P2 varying-depth world is rebuilt with the complete core FAF environment library, usable caves/tunnels, shallow-lush → deep-sparse composition, a qualified five-fish Character Select/return flow, direct owner target-style acceptance and representative performance evidence.
 
 READ
-AGENTS.md, BOOT.md, P3 README/plan, roadmap G3.1–G3.4, validation V21–V24, qualification/implementation.md, native-world-art.md and accepted-world-art.md. Inspect current scene/resources and compare to P6 accepted candidate. Require P2 GREEN and P1–P7 P3 results.
+AGENTS.md, BOOT.md, P3 README/plan, roadmap G3.1–G3.4, validation V21–V24, qualification/implementation.md, character-select.md, native-world-art.md and accepted-world-art.md. Inspect current scene/resources and compare to the P7 accepted candidate. Require P2 GREEN and P1–P7 P3 results.
 
 A — VERIFY
-Record current revision and identities for P2 collision/depth/water owners, P3 FAF catalog, terrain/geology/dressing placements, ambience and visual shaders. Reuse P6 only when source applies. Preserve failures and do not infer style from isolated FAF proofs.
+Record current revision and identities for P2 collision/depth/water owners, P3 FAF catalog, character-select/session-routing owner, selected-player visual boundary, terrain/geology/dressing placements, ambience and visual shaders. Reuse P7 only when source applies. Preserve failures and do not infer style from isolated FAF proofs.
 
 B — MAP G3.1–G3.4
 Create `docs/tasks/p3/closeout.md`:
