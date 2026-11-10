@@ -26,6 +26,7 @@ P2 entry is satisfied as follows:
 3. Root version **`0.2.0`** is the Phase 2 entry baseline; P2 prompts retain their authored `0.2.1`–`0.2.8` assignments.
 4. At execution, confirm the real Godot project/toolchain and Fish MCP identity and inspect `tools/dev` composition and actual Compatibility renderer.
 5. Preserve the P1 movement course as a regression/qualification fixture even though it should no longer be normal-play scenery.
+6. Verify the locally prepared P2 environment inventory at `artifacts/assets/source/p2-environment/inventory.json` and its `game/assets/vendor-local/p2-environment/` working assets before world-building. The intended palette is Coast Sand 01 + Ground060 + Gravel041 + Rock063; Rock Face 01 + Rock Face 02 + Coastal Cliff 01 + Boulder 01; and Heliopora coerulea + Acropora cervicornis + Acropora palmata + Meandrina meandrites + Montipora danae. Do not silently replace a missing prepared asset with a new download.
 
 The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `README.md` where the current checkout made the correct state unambiguous; no broader cleanup was performed.
 
