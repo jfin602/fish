@@ -25,6 +25,7 @@ def export_selected_glb(
         filepath=str(destination),
         export_format="GLB",
         use_selection=True,
+        use_active_scene=True,
         export_animations=include_animations,
         export_animation_mode="ACTIONS",
         export_rest_position_armature=True,

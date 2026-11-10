@@ -15,3 +15,5 @@ The [Python naming helpers](../../tools/asset-factory/blender/common/naming.py) 
 ## First registered fish
 
 The owner's **FAF-001 Yellow Tang** prototype alias is preserved in its history. The first original fish has canonical ID **FAF-FISH-001** and stem `fish_001_yellow_tang`. Its [candidate record](fish-001/README.md) identifies the source, runtime GLB, evidence and review state. It is separate from the third-party Sea life Yellow Tang candidate.
+
+The first rock family has canonical ID **FAF-ROCK-001**. Its four reviewed variants use stable A/B/C/D suffix labels (FAF-ROCK-001A through D) and file stems `rock_001a_reef_boulder` through `rock_001d_reef_boulder`. The suffix denotes a member of the family; the family ID remains the registry identity. See the [rock candidate record](rock-001/README.md).

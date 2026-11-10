@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001a_reef_boulder.glb" id="1_a"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001b_reef_boulder.glb" id="2_b"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001c_reef_boulder.glb" id="3_c"]
+[ext_resource type="PackedScene" path="res://assets/faf/rocks/rock_001d_reef_boulder.glb" id="4_d"]
+[ext_resource type="Script" path="res://dev/faf_rock_001_proof.gd" id="5_script"]
+
+[sub_resource type="StandardMaterial3D" id="Sand"]
+albedo_color = Color(0.65, 0.63, 0.47, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(12, 4)
+material = SubResource("Sand")
+
+[node name="FAFRock001Proof" type="Node3D"]
+script = ExtResource("5_script")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Ground")
+
+[node name="RockA" parent="." instance=ExtResource("1_a")]
+position = Vector3(-3.2, 0, 0)
+
+[node name="RockB" parent="." instance=ExtResource("2_b")]
+position = Vector3(-1.1, 0, 0)
+
+[node name="RockC" parent="." instance=ExtResource("3_c")]
+position = Vector3(1.2, 0, 0)
+
+[node name="RockD" parent="." instance=ExtResource("4_d")]
+position = Vector3(3.2, 0, 0)
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0, 3.2, 9)
+current = true
+fov = 45.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.65, 0.85, 0)
+light_energy = 1.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

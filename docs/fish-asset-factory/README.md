@@ -11,3 +11,5 @@ Each candidate carries a small [manifest/check record](blender-godot-contract.md
 ## Current boundary
 
 The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fish-001/README.md). Its editable Blender source, GLB, rig, three Actions, technical checks and isolated native Godot proof are recorded there. It is a technical reference candidate; reef-context style approval remains open. The older [Sea life Yellow Tang](../assets/p1-starter-manifest.md) remains a separate third-party candidate. The current player and movement are unchanged.
+
+The first original rock family is [FAF-ROCK-001](rock-001/README.md): four deterministic boulder variants with a shared generator, Blender review collection, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.

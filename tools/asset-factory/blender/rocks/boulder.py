@@ -78,7 +78,7 @@ def boulder_geometry(spec: BoulderSpec) -> tuple[list[tuple[float, float, float]
     contact_height = height_m * (0.06 + 0.30 * (spec.base_width - 0.62))
     cut_and_cap((0, 0, contact_height), (0, 0, 1), remove_inside=True)
     roof_angle = rng.uniform(-math.pi, math.pi)
-    cut_and_cap((0, 0, height_m * (0.86 + 0.06 * spec.facet_scale)),
+    cut_and_cap((0, 0, height_m * (0.94 + 0.03 * spec.facet_scale)),
                 (0.16 * spec.asymmetry * math.cos(roof_angle),
                  0.16 * spec.asymmetry * math.sin(roof_angle), 1))
     first_cut = rng.uniform(-math.pi, math.pi)
@@ -86,9 +86,9 @@ def boulder_geometry(spec: BoulderSpec) -> tuple[list[tuple[float, float, float]
     for index in range(cut_count):
         angle = first_cut + index * 2.18
         nx, ny = math.cos(angle), math.sin(angle)
-        distance = 0.5 * spec.size * (0.80 + 0.10 * (1.0 - spec.asymmetry))
+        distance = 0.5 * spec.size * (0.96 + 0.06 * (1.0 - spec.asymmetry))
         cut_and_cap((distance * nx, distance * ny, height_m * 0.45),
-                    (nx, ny, 0.12 * (-1 if index % 2 else 1)))
+                    (nx, ny, 0.55 * (-1 if index % 2 else 1)))
     for vertex in bm.verts:
         vertex.co.z -= contact_height
     # Merge shallow triangle fans into uneven, legible planes. The angular
@@ -111,7 +111,7 @@ def boulder_geometry(spec: BoulderSpec) -> tuple[list[tuple[float, float, float]
 def create_reef_boulder(name: str, spec: BoulderSpec, material: bpy.types.Material, collection: bpy.types.Collection) -> bpy.types.Object:
     """Create one closed, flat-shaded mesh with identity object transforms."""
     vertices, faces = boulder_geometry(spec)
-    mesh = bpy.data.meshes.new(name + "__geometry")
+    mesh = bpy.data.meshes.new(name)
     mesh.from_pydata(vertices, [], faces)
     mesh.update(calc_edges=True)
     mesh.materials.append(material)

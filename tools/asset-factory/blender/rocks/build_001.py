@@ -77,7 +77,7 @@ def add_review_instances(scene: bpy.types.Scene, sources: dict[str, bpy.types.Ob
         source.hide_set(True)
 
 
-def build(reference_only: bool, root: Path) -> list[dict]:
+def build(reference_only: bool, root: Path, overwrite: bool = False) -> list[dict]:
     bpy.ops.wm.read_factory_settings(use_empty=True)
     scene = bpy.context.scene
     scene.name = "FAF-ROCK-001 Reef Boulder Family"
@@ -86,6 +86,12 @@ def build(reference_only: bool, root: Path) -> list[dict]:
     output = root / "game/assets/faf/rocks"
     source.parent.mkdir(parents=True, exist_ok=True)
     output.mkdir(parents=True, exist_ok=True)
+    if not overwrite:
+        destinations = [source] + [output / f"rock_001{letter.lower()}_reef_boulder.glb"
+                                   for letter in sources]
+        existing = [path for path in destinations if path.exists()]
+        if existing:
+            raise FileExistsError(f"FAF rock output already exists: {existing[0]}")
     reports = []
     for letter, obj in sources.items():
         spec = SPECS[letter]
@@ -97,13 +103,15 @@ def build(reference_only: bool, root: Path) -> list[dict]:
         if check["problems"] or not 150 <= check["triangle_count_source"] <= 500:
             raise RuntimeError(f"{letter} failed checks: {check}")
         destination = output / (stem + ".glb")
-        export = export_selected_glb(str(destination), include_animations=False, overwrite=True)
+        scene.name = f"FAF-ROCK-001{letter} Reef Boulder"
+        export = export_selected_glb(str(destination), include_animations=False, overwrite=overwrite)
         dimensions = tuple(round(v, 5) for v in obj.dimensions)
         reports.append({"variant": letter, "faf_id": f"FAF-ROCK-001{letter}",
                         "stem": stem, "dimensions_m": dimensions,
                         "triangles": check["triangle_count_source"],
                         "materials": check["material_count"],
                         "spec": spec.__dict__, "export": export["glb_output"]})
+    scene.name = "FAF-ROCK-001 Reef Boulder Family"
     add_review_instances(scene, sources)
     bpy.ops.object.select_all(action="DESELECT")
     for obj in bpy.data.collections["FAF-ROCK-001 Review"].objects:
@@ -117,6 +125,7 @@ if __name__ == "__main__":
     args = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     parser = argparse.ArgumentParser()
     parser.add_argument("--reference-only", action="store_true")
+    parser.add_argument("--overwrite", action="store_true", help="replace existing FAF-ROCK-001 outputs deliberately")
     parser.add_argument("--root", type=Path, required=True)
     options = parser.parse_args(args)
-    print("FAF_ROCK_001_REPORT=" + json.dumps(build(options.reference_only, options.root)))
+    print("FAF_ROCK_001_REPORT=" + json.dumps(build(options.reference_only, options.root, options.overwrite)))
