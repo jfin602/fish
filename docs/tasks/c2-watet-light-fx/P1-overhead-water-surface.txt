@@ -1,0 +1,29 @@
+TASK: Correction 2 / P1 — Overhead water surface
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.2.6`.
+
+GOAL
+Add a convincing, lightweight animated water surface above the P2 habitat so looking upward reads as being beneath a sunlit ocean surface rather than looking into a flat blue background.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c2-watet-light-fx/README.md, prompt-assessment.md, implementation-plan.md P1, docs/art-style.md, MODULES.md, current P2 atmosphere evidence, game/scenes/main.tscn, game/scenes/p2_habitat.tscn, game/scripts/UnderwaterAtmosphere.cs, game/shaders/underwater_screen.gdshader and the focused atmosphere check. Inspect branch/HEAD, dirty state, package.json 0.2.6, actual tools/dev command composition and Fish Godot project identity before editing.
+
+IMPLEMENT
+1. Add one bounded visual water-surface system at the real top of the playable habitat. Derive its height/extent from the current habitat/upper-limit contract or a centralized value checked against that contract. Do not add a second collision ceiling, buoyancy, wave forces or fish/camera authority.
+2. Use one efficient mesh/material path. Prefer a modestly subdivided plane with GPU vertex displacement from two low-frequency wave components; keep the mesh in the low-thousands-of-vertices class or smaller. Render the underside cleanly and avoid duplicate/two-sided depth artifacts.
+3. Add a dedicated lightweight surface shader (for example res://shaders/water_surface.gdshader). From below, it should show slow rippling geometry/normal variation, turquoise-blue transmission, restrained Fresnel edge response and a bright sun/sky cue. Do not use expensive fluid simulation, ray marching, SSR as a requirement, or a large new texture dependency.
+4. Replace or augment the flat environment background with a cheap procedural/simple sky/sun-above treatment that agrees with the existing DirectionalLight3D direction/color. The surface should reveal or convincingly imply bright sky through moving water when viewed upward without turning the whole scene photorealistic.
+5. Keep the surface presentation under UnderwaterAtmosphere ownership. Existing atmosphere enable/disable, pause and UI behavior must remain coherent. The surface must not intercept input or alter fish position, velocity, collision, tuning, camera identity or simulation time.
+6. Extend the smallest focused atmosphere/runtime check to prove the surface resource loads, stays bounded and above the normal swim volume, agrees with the saved upper habitat boundary, adds no collision/physics body, toggles with atmosphere, and does not alter authoritative fish/camera state.
+
+SCOPE / DEFERRALS
+Do not change FishController, SwimMotor, FollowCamera, SwimTuning, input presets, reef composition, habitat collision, renderer choice, water-reaction gameplay mapping or P3 systems. Do not add water-body physics, weather, ocean traversal above the surface, graphics settings UI, HDRI/vendor art or multiple extra lights.
+
+VALIDATE
+T2. Inspect ./tools/dev check/inspect-atmosphere composition and run the smallest build/import/scene checks that actually exercise the new surface. Run git diff --check and review status. Confirm forward_plus remains tracked, package.json stays 0.2.6, no package-lock.json/vendor payload appears, and atmosphere on/off leaves fish/camera/tuning unchanged. Record actual commands/results in docs/tasks/c2-watet-light-fx/qualification/implementation.md only when executed; label native visual quality NOT OBSERVED here.
+
+DONE / VERSION / HANDOFF
+A bounded animated overhead surface and cheap sky/sun-above read are integrated into normal P2 play with focused evidence and no simulation ownership. P2 organic caustics remain for P2. No package version change, self-commit or push; runner owns checkpoint.
