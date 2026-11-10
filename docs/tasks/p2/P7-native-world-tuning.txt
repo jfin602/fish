@@ -5,37 +5,45 @@ MODEL / REASONING / USAGE
 - Browser required: yes.
 - This prompt's assigned project version is `0.2.7`.
 
-GOAL / MANUAL HANDOFF
-Tune and qualify the complete P2 underwater world in a real Fish game window. This is the owner/native quality checkpoint for V18–V20. Browser access alone is insufficient. If the native window/owner observation is unavailable, record BLOCKED / NOT OBSERVED and do not claim G2 Gates.
+GOAL / FINAL INTEGRATED OWNER CHECKPOINT
+Tune and qualify the complete P2 underwater world in a real Fish game window. This is the final integrated owner/native quality checkpoint for V18–V20, not the first visual review: reuse valid owner observations already recorded at P4 composition, P5 atmosphere and P6 reactive-water checkpoints. Revisit those individual judgments only when the combined candidate or later source changes invalidate them. Browser access alone is insufficient. If the native window/owner observation is unavailable, record BLOCKED / NOT OBSERVED and do not claim G2 Gates.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P7, renderer-decision evidence, P1–P6 implementation evidence, validation V18–V20, roadmap G2.1–G2.3 and P2 design. Inspect actual `0.2.6` candidate, final P1 accepted tuning/profile, habitat/environment/effect resources, asset identity and tools/dev. Verify Fish editor/MCP project identity before mutations. Reuse prior unchanged build checks; rebuild only affected source.
+Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P7, renderer-decision evidence, P1–P6 implementation evidence including the P4/P5/P6 owner visual checkpoint notes, validation V18–V20, roadmap G2.1–G2.3 and P2 design. Inspect actual `0.2.6` candidate, final P1 accepted tuning/profile, habitat/environment/effect resources, asset identity and tools/dev. Verify Fish editor/MCP project identity before mutations. Reuse prior unchanged build checks; rebuild only affected source.
 
-A — V18 HABITAT / TRAVERSAL
+A — V18 HABITAT / TRAVERSAL IN THE COMBINED WORLD
 1. Record revision/dirty identity, OS/display backend, selected renderer, Godot/.NET, display mode/resolution and player/camera/tuning identity.
 2. Launch the normal P2 world and spend several minutes swimming rather than inspecting a still scene. Traverse one broad route, the intended rock tunnel/tight passage, the overhang/sheltered pocket and a lower-to-upper vertical route.
 3. Verify the normal world no longer exposes colored P1 target spheres, camera-check cylinder, obvious flat double-ground/test-room boundaries or a second swimmable layer beneath the seabed. Probe edges/underside naturally and confirm the fish stays inside the intended world.
-4. Judge rock/coral placement, repetition, seabed variation, sightlines, collision fairness and camera behavior. Tune environment geometry/collision within P2 scope; do not change accepted motor semantics just to fit a bad tunnel. Preserve the P1 regression fixture separately.
+4. Judge whether P5/P6 presentation changed the readability of the P4-approved layout: rock/coral placement, repetition, seabed variation, sightlines, collision fairness and camera behavior must still work with fog, caustics, particles and wake enabled. Tune environment geometry/collision only when the combined result exposes a real P2 problem; do not change accepted motor semantics just to fit a bad tunnel. Preserve the P1 regression fixture separately.
 
-B — V19 UNDERWATER ATMOSPHERE
-1. Observe near/far and upper/lower/deeper viewpoints while moving. Confirm depth/distance treatment, underwater color/contrast, top light, moving caustic-style illumination and suspended matter work together so the scene reads clearly as submerged.
-2. Observe the screen treatment through yaw, pitch, fast turns and slow glide. Reduce nausea/noise/distortion if needed. Fish, tunnel entrances and collision-relevant shapes must remain readable.
+B — V19 UNDERWATER ATMOSPHERE INTEGRATION
+1. Reuse the P5 owner acceptance when its source/parameters are unchanged, then observe representative near/far and upper/lower/deeper viewpoints in the full combined scene to confirm nothing later degraded the accepted atmosphere.
+2. Observe the screen treatment through yaw, pitch, fast turns and slow glide with the P6 water reaction active. Reduce nausea/noise/distortion only when the combined effects create a new problem. Fish, tunnel entrances and collision-relevant shapes must remain readable.
 3. Open pause/settings and switch fullscreen/windowed-fullscreen as supported. UI text/focus must remain crisp and not be distorted like world geometry. Exercise focus loss/refocus for visual/input cleanup.
 4. Compare the final renderer behavior to `qualification/renderer-decision.md`; if the full habitat materially invalidates that decision, stop and repair/re-evaluate rather than silently switching.
 5. Record representative frame timing/FPS/performance counters in at least open water and the densest reef/effect view on the observed machine. Tune bounded P2 content/effects for obvious regressions; do not invent a production budget.
 
-C — V20 FISH-REACTIVE WATER
-1. From near-rest/glide, ordinary cruise, acceleration/high effort and hard left/right turns, observe the wake/turbulence/bubble/trail behavior. It should scale distinctly and originate believably from the body/tail.
-2. Climb/dive and turn near geometry; the effect should follow fish orientation, remain behind/around it and not obscure the camera/tunnel.
+C — V20 FISH-REACTIVE WATER INTEGRATION
+1. Reuse the P6 owner acceptance when its source/parameters are unchanged, then sample near-rest/glide, ordinary cruise, acceleration/high effort and hard left/right turns in the final full habitat.
+2. Climb/dive and turn near geometry; confirm fog/motes/caustics do not combine with the wake into unreadable clutter and the effect still follows fish orientation, remains behind/around it and does not obscure the camera/tunnel.
 3. Pause, focus away/back, resume and restart. Verify no giant queued burst, stale emitter, stuck particles or movement change.
-4. Tune intensity, lifetime, spread, count and turn response until the effect improves the sense of movement without becoming constant visual clutter.
+4. Tune only if the combined final scene exposes a new integration problem. Do not gratuitously reopen a P6-approved effect.
 
-D — OWNER ACCEPTANCE / EVIDENCE
-Record direct owner judgment: the environment feels natural/coherent enough for the tech-demo slice, it clearly looks underwater, rock tunnels/vertical routes are pleasant to swim through, and movement reaction improves the sense of water. Record dissent precisely and keep iterating/repairing within scope rather than translating "not right" into PASS.
+D — OWNER FINAL ACCEPTANCE / EVIDENCE
+Hand the final combined build to the owner for ordinary free swimming after the targeted checks. Record direct owner judgment that:
+- the prototype-course look is gone;
+- the environment feels natural/coherent enough for the tech-demo slice;
+- it clearly looks underwater while moving;
+- rock tunnels/open/vertical routes remain pleasant and readable;
+- the reactive water improves motion without clutter;
+- the complete visual stack is comfortable enough to move on.
+
+Record dissent precisely and repair within P2 scope rather than translating "not right" into PASS. The owner does not need to repeat every earlier checkpoint when those source identities remain unchanged; this final session establishes that the accepted pieces still work together.
 
 Create/update:
 - `docs/tasks/p2/qualification/native-world.md` with scenario-by-scenario PASS/FAIL/NOT OBSERVED/BLOCKED, source/platform/actions/observations/performance and durable artifact references when available.
 - `docs/tasks/p2/qualification/accepted-environment.md` with the accepted renderer, main habitat/resource identities, key atmosphere parameters, effect parameters, asset/preparation identity and final observed display/platform scope.
 
 VALIDATE / VERSION
-Run targeted checks only for source changed during tuning, then git diff --check and asset-boundary review. Confirm no gameplay state authority moved into rendering/effects. Set root package.json to `0.2.7` only if V18–V20 are fully observed and the accepted candidate is saved/reproducible. If a material criterion fails, retain `0.2.6` and report the exact repair. Do not self-commit or push; leave the manual checkpoint for runner/coordinator handling.
+Run targeted checks only for source changed during tuning, then git diff --check and asset-boundary review. Confirm no gameplay state authority moved into rendering/effects. Set root package.json to `0.2.7` only if V18–V20 are fully observed and the accepted candidate is saved/reproducible. If a material criterion fails, retain `0.2.6` and report the exact repair. If running manually, stop here for final owner review before P8 closeout. Do not commit or push unless the surrounding manual workflow explicitly asks for it.
