@@ -7,6 +7,12 @@ FAMILIES = {
                    "yellow_green": "#91B85A", "muted_teal": "#4B948A"},
     "sand": {"warm_light": "#D8D4AD"},
     "rock": {"cool_slate": "#7798A9", "warm_stone": "#A29B89"},
+    "detail": {
+        "shell_cream": "#C9BEA5", "shell_sand": "#B9AD96",
+        "rubble_coral": "#B78378", "rubble_stone": "#A89A88",
+        "pebble_slate": "#7D9297", "pebble_warm": "#958B7D",
+        "sponge_ochre": "#B5A071", "sponge_rose": "#B48578",
+    },
     "fish": {
         "yellow": "#F2C94C", "orange": "#ED8B45", "blue": "#377BB2",
         "white": "#ECECE2", "black": "#1E2833",

@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_detail_pack_001_proof.gd" id="1_proof"]
+
+[sub_resource type="StandardMaterial3D" id="Sand"]
+albedo_color = Color(0.68, 0.65, 0.52, 1)
+roughness = 0.95
+
+[sub_resource type="PlaneMesh" id="Ground"]
+size = Vector2(2.2, 1.4)
+material = SubResource("Sand")
+
+[node name="FAFDetailPack001Proof" type="Node3D"]
+script = ExtResource("1_proof")
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("Ground")
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0.2, 1.12, 1.35)
+current = true
+fov = 40.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.65, 0.85, 0)
+light_energy = 1.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

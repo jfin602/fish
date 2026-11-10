@@ -16,3 +16,5 @@ Use a restrained neutral field with vivid living accents. Shared names help vari
 The [first coral pack](coral-pack-001/README.md) adds a warm yellow and muted purple swatch to the code seeds, with limited cyan/blue accents. Its individual records name the selected family and swatch; these remain editable starting colors rather than a scene-wide color lock.
 
 The [first vegetation pack](plant-pack-001/README.md) adds yellow-green and muted teal beside existing reef and deep greens. These remain starting swatches; repeated placements should be judged under actual water-column lighting and beside adjacent coral/rock colors.
+
+The [first small-detail pack](detail-pack-001/README.md) adds subdued shell cream/sand, coral rubble, cool/warm pebble and sponge ochre/rose swatches. These are low-saturation local accents around major reef forms, not a replacement for the quiet sand field.

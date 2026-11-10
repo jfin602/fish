@@ -1,0 +1,361 @@
+{
+  "source": "assets/faf/details/detail_001_to_004_family.blend",
+  "assets": [
+    {
+      "faf_id": "FAF-DETAIL-001A",
+      "category": "DETAIL",
+      "species_or_type": "shell",
+      "stem": "detail_001a_fan_shell",
+      "generator": "details.shell.v1",
+      "dimensions_m": [
+        0.1593,
+        0.11272,
+        0.05327
+      ],
+      "triangles": 80,
+      "materials": 1,
+      "material_name": "mat__detail_shell_cream",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.shell_cream",
+      "spec": {
+        "width": 0.16,
+        "depth": 0.12,
+        "arch_height": 0.04,
+        "fan_angle": 1.05,
+        "rib_strength": 0.18,
+        "yaw": 0.1,
+        "tilt": 0.07,
+        "seed": 1011
+      },
+      "seed": 1011,
+      "glb": "game/assets/faf/details/detail_001a_fan_shell.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-001B",
+      "category": "DETAIL",
+      "species_or_type": "shell",
+      "stem": "detail_001b_ridge_shell",
+      "generator": "details.shell.v1",
+      "dimensions_m": [
+        0.11535,
+        0.14196,
+        0.06461
+      ],
+      "triangles": 80,
+      "materials": 1,
+      "material_name": "mat__detail_shell_sand",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.shell_sand",
+      "spec": {
+        "width": 0.1,
+        "depth": 0.17,
+        "arch_height": 0.052,
+        "fan_angle": 0.5,
+        "rib_strength": 0.12,
+        "yaw": 0.55,
+        "tilt": -0.1,
+        "seed": 1012
+      },
+      "seed": 1012,
+      "glb": "game/assets/faf/details/detail_001b_ridge_shell.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-002A",
+      "category": "DETAIL",
+      "species_or_type": "rubble",
+      "stem": "detail_002a_coral_rubble",
+      "generator": "details.rubble.v1",
+      "dimensions_m": [
+        0.17042,
+        0.11637,
+        0.0445
+      ],
+      "triangles": 48,
+      "materials": 1,
+      "material_name": "mat__detail_rubble_coral",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.rubble_coral",
+      "spec": {
+        "pieces": 3,
+        "size": 0.075,
+        "spread": 0.14,
+        "tallness": 0.5,
+        "angularity": 0.35,
+        "seed": 2021
+      },
+      "seed": 2021,
+      "glb": "game/assets/faf/details/detail_002a_coral_rubble.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-002B",
+      "category": "DETAIL",
+      "species_or_type": "rubble",
+      "stem": "detail_002b_reef_rubble",
+      "generator": "details.rubble.v1",
+      "dimensions_m": [
+        0.17332,
+        0.05472,
+        0.04932
+      ],
+      "triangles": 32,
+      "materials": 1,
+      "material_name": "mat__detail_rubble_stone",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.rubble_stone",
+      "spec": {
+        "pieces": 2,
+        "size": 0.095,
+        "spread": 0.18,
+        "tallness": 0.6,
+        "angularity": 0.42,
+        "seed": 2022
+      },
+      "seed": 2022,
+      "glb": "game/assets/faf/details/detail_002b_reef_rubble.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-003A",
+      "category": "DETAIL",
+      "species_or_type": "pebble",
+      "stem": "detail_003a_slate_pebbles",
+      "generator": "details.pebble.v1",
+      "dimensions_m": [
+        0.12795,
+        0.11195,
+        0.01245
+      ],
+      "triangles": 90,
+      "materials": 1,
+      "material_name": "mat__detail_pebble_slate",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.pebble_slate",
+      "spec": {
+        "pieces": 5,
+        "size": 0.037,
+        "spread": 0.105,
+        "flatness": 0.27,
+        "seed": 3031
+      },
+      "seed": 3031,
+      "glb": "game/assets/faf/details/detail_003a_slate_pebbles.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-003B",
+      "category": "DETAIL",
+      "species_or_type": "pebble",
+      "stem": "detail_003b_warm_pebbles",
+      "generator": "details.pebble.v1",
+      "dimensions_m": [
+        0.16286,
+        0.18853,
+        0.01068
+      ],
+      "triangles": 72,
+      "materials": 1,
+      "material_name": "mat__detail_pebble_warm",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.pebble_warm",
+      "spec": {
+        "pieces": 4,
+        "size": 0.05,
+        "spread": 0.17,
+        "flatness": 0.21,
+        "seed": 3032
+      },
+      "seed": 3032,
+      "glb": "game/assets/faf/details/detail_003b_warm_pebbles.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-004A",
+      "category": "DETAIL",
+      "species_or_type": "sponge",
+      "stem": "detail_004a_encrusting_sponge",
+      "generator": "details.sponge.v1",
+      "dimensions_m": [
+        0.14392,
+        0.14109,
+        0.03158
+      ],
+      "triangles": 46,
+      "materials": 1,
+      "material_name": "mat__detail_sponge_ochre",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.sponge_ochre",
+      "spec": {
+        "cups": 1,
+        "radius": 0.075,
+        "height": 0.035,
+        "spread": 0,
+        "mouth_ratio": 0.48,
+        "lean": 0.08,
+        "seed": 4041
+      },
+      "seed": 4041,
+      "glb": "game/assets/faf/details/detail_004a_encrusting_sponge.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    },
+    {
+      "faf_id": "FAF-DETAIL-004B",
+      "category": "DETAIL",
+      "species_or_type": "sponge",
+      "stem": "detail_004b_cup_sponge",
+      "generator": "details.sponge.v1",
+      "dimensions_m": [
+        0.16297,
+        0.08657,
+        0.10678
+      ],
+      "triangles": 92,
+      "materials": 1,
+      "material_name": "mat__detail_sponge_rose",
+      "armature_bone_count": 0,
+      "animation_actions": [],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "palette": "detail.sponge_rose",
+      "spec": {
+        "cups": 2,
+        "radius": 0.037,
+        "height": 0.085,
+        "spread": 0.11,
+        "mouth_ratio": 0.4,
+        "lean": 0.23,
+        "seed": 4042
+      },
+      "seed": 4042,
+      "glb": "game/assets/faf/details/detail_004b_cup_sponge.glb",
+      "blender_source": "assets/faf/details/detail_001_to_004_family.blend"
+    }
+  ]
+}

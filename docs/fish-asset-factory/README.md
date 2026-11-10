@@ -21,3 +21,5 @@ The first original coral pack is [FAF-CORAL-001–004](coral-pack-001/README.md)
 The first original vegetation pack is [FAF-PLANT-001–003](plant-pack-001/README.md): eight deterministic grass, broad seaweed and reef algae assets with sway-ready height coordinates, family/density review, separate GLBs and isolated Godot proof. It has not been placed into the live P2 habitat.
 
 The first original modular seabed pack is [FAF-TERRAIN-001](terrain-001/README.md): six deterministic broad-polygon sand/reef chunks with overlap-friendly irregular aprons, separate GLBs, Blender composition review, and isolated Godot proof. Visible close-view seams need authored dressing before use in a style-proving scene. It has not been placed into the live P2 habitat.
+
+The first small reef-floor detail pack is [FAF-DETAIL-001–004](detail-pack-001/README.md): eight inexpensive shell, rubble, pebble and sponge A/B assets with deterministic family generators, separate GLBs, Blender pair review and one isolated Godot cluster proof. It has not been placed into the live P2 habitat.
