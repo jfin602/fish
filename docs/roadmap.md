@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-10. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass, while G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition; P3/P1–P3 are implemented at `0.3.3`, with P4 dressing next.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-10. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass, while G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition; P3/P1–P4 are implemented at `0.3.4`, with P5 Character Select/session routing next.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -13,7 +13,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
-| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **IN PROGRESS** at root `0.3.3`; P1 catalog, P2 terrain and P3 geology implementation checked, P4 dressing next. Native world-art review remains P7. [Design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md), [evidence](tasks/p3/qualification/implementation.md). |
+| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **IN PROGRESS** at root `0.3.4`; P1 catalog, P2 terrain, P3 geology and P4 dressing implementation checked, P5 Character Select next. Native world-art review remains P7. [Design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md), [evidence](tasks/p3/qualification/implementation.md). |
 | P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
 | P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -131,7 +131,7 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 ## P3 — Rebuild and dress the reef
 
-**Status: IN PROGRESS at root `0.3.3` under owner transition S16.** P1 runtime integration, P2 depth-world terrain and P3 caves/tunnels/geology are implemented with focused source/runtime checks; P4 depth-based reef dressing is next. Native appearance still needs the scheduled P7 world-art review. P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md); [implementation evidence](tasks/p3/qualification/implementation.md). Scenarios V21–V23.
+**Status: IN PROGRESS at root `0.3.4` under owner transition S16.** P1 runtime integration, P2 depth-world terrain, P3 caves/tunnels/geology and P4 depth-based dressing are implemented with focused source/runtime checks; P5 Character Select/session routing is next. Native appearance still needs the scheduled P7 world-art review. P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md); [implementation evidence](tasks/p3/qualification/implementation.md). Scenarios V21–V23.
 
 P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the original authored/modular terrain assumption:** the P3 world is compiled deterministically as an irregular basin with generated geology, protected routes and terrain-aware FAF placement, then baked for fast loading. Ecology remains later scope.
 

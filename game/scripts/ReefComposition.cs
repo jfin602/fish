@@ -123,6 +123,8 @@ public partial class ReefComposition : Node3D
         }
         if (GetNodeOrNull<FafGeologyWorld>("Geology") is not { } geology ||
             !geology.TryBuild(seabed, out diagnostic)) return false;
+        if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
+            !dressing.TryBuild(seabed, terrain, out diagnostic)) return false;
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;

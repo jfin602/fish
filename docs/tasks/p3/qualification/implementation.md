@@ -84,3 +84,33 @@ Across both swim-throughs, cave, corridor/return and the two P2 five-band lanes,
 | `git diff --check` | PASS after the source, documentation and `0.3.3` version updates; implementation changes remain uncommitted for the runner. |
 
 The Godot MCP server `2026.11.04` reported its editor bridge disconnected, so no MCP scene mutation or native visual claim was made. `0.3.3` records implemented and headless-checked geology; actual look, apparent passage clearance and hand-controlled comfort still require P7 Forward+ review against the reef target.
+
+## P4 — Depth-based reef dressing (2026-11-10)
+
+**Working-tree result:** implemented for assigned version `0.3.4`. Pre-task clean `main` HEAD was `39c20b0c56d3659d576262a3733719744c197bb6`; this task made no commit. P2 G2.3/V20 remains open, and visual style/performance judgment remains P7 work.
+
+`FafReefDressing` adds 28 fixed, named cluster pockets to normal play around the west/east FAF shelves, shallow beacon, tunnel outer jaw, cave outer lip, canyon outer rock and deep spur. Irregular coral, plant and detail offsets are rotated and scaled per pocket; empty sand and the center of both five-band lanes remain open. Each base is grounded against `FafTerrainWorld.GetVisibleHeightAt()` rather than the hidden collision surface, including where raised FAF chunks overlap. The 12 coral, 8 plant and 8 detail source meshes/materials are drawn through one `MultiMeshInstance3D` per variant: 295 visual placements in 28 batches, with no new physics, asset exports, terrain changes or gameplay authority. Shells, rubble, pebbles and sponges remain beside larger bases and contact seams. Broad seaweed is absent from the deep zone. Plant sway was left uninstalled: the existing UV.y mask remains available for later native review, while all current plants are static presentation meshes.
+
+| Depth zone | Clusters | Coral | Plants | Details | Total | Placements per cluster |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Shallow/high | 8 | 56 | 40 | 32 | 128 | 16 |
+| Upper | 7 | 35 | 28 | 21 | 84 | 12 |
+| Middle | 6 | 24 | 18 | 12 | 54 | 9 |
+| Lower | 4 | 8 | 4 | 8 | 20 | 5 |
+| Deep | 3 | 3 | 0 | 6 | 9 | 3 |
+| **Total** | **28** | **126** | **90** | **79** | **295** | — |
+
+These are authored patch counts, not a uniform per-square-metre scatter. Shallow/upper pockets contain 212 placements; lower/deep contain 29. The gradient is expressed both in number of pockets and intensity within each pocket. Warm coral variants recur most visibly where coral density is highest near the sun shelf; the deep zone retains exposed geology and small accents.
+
+### T2 checks actually run
+
+| Check | Result |
+| --- | --- |
+| `tools/dev build` | PASS: zero warnings/errors. |
+| `XDG_DATA_HOME=/tmp/fish-p4-xdg tools/dev inspect-dressing` | PASS: all **28** catalog variants, 28 named clusters, **295** placements and 28 matching MultiMesh batches. Exact zone/family counts above. Every base matched the visible floor at its centre within 0.012 m of the authored 0.015 m lift; largest sampled half-footprint surface change was **0.286 m** under a 0.45 m tolerance. No tall plants in deep. Fish-envelope margins of 1.5 m along both five-band lanes, tunnel, shelter, canyon and reconnecting route, plus 2.0 m at the cave turn, passed. Count cap 295. |
+| `inspect-geology`, `inspect-reef` | PASS: west/cave/canyon/return forward/back fish sweeps, cave turn and camera recovery; both five-band lanes, existing P2 swim-throughs and hidden limits. Dressing is visual-only, so these remain collision checks rather than visual clearance from a hand-held camera. |
+| `inspect-terrain`, `inspect-habitat` | PASS: 51 FAF chunks, 96 route floor samples, continuous 202-sample seabed, five ordered depths and clear spawn. |
+| `inspect-depth`, `inspect-atmosphere` | PASS: existing world-height fog/light anchors and presets, Forward+ surface/shafts/caustics/motes, and equal-intent movement with atmosphere enabled/disabled. The atmosphere fixture's intentional optional-screen warning remains expected. |
+| `git diff --check` | PASS after source, docs and root version update. |
+
+The MCP server was reachable but its Godot editor bridge was disconnected. The headless checks use the installed Godot 4.7.2 .NET executable with a sandbox-writable XDG data directory. A minimal one-box probe confirmed this headless renderer returns an identity transform even after `MultiMesh.set_instance_transform`; the dressing check therefore verifies authored positions and batch counts but defers GPU transform readback and appearance to native P7. An attempted native launch could not connect to X11/Wayland in this sandbox. No rendered judgment or performance acceptance is claimed. P5 still needs to qualify the five-fish Character Select entry, animated previews, shared player visual/collider contract and Pause → Return to Character Select cleanup. P6 remains the ambient-life and repetition/intersection cleanup step; P7 remains the actual owner/native style and performance checkpoint.
