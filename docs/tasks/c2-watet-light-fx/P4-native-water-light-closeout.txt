@@ -1,0 +1,40 @@
+TASK: Correction 2 / P4 — Native water light closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.2.6`.
+
+GOAL / MANUAL HANDOFF
+This is c2-watet-light-fx's ONE FINAL CLOSEOUT and mandatory native Godot/owner checkpoint. The inherited Browser required field pauses the runner; web browsing alone cannot qualify a native Forward+ game window. Use an actual Fish desktop session or exact owner-reported playtest evidence. If unavailable, record BLOCKED / NOT OBSERVED and do not call this correction accepted.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c2-watet-light-fx/README.md, implementation-plan.md P4, actual P1–P3 implementation evidence, docs/art-style.md and current P2 native/closeout evidence. Inspect the real modified source/resources, normal main scene, actual effects-off path, branch/HEAD/dirty state, root 0.2.6, renderer/device identity and any unresolved errors. Do not rerun unrelated suites.
+
+NATIVE VISUAL OBSERVATION
+1. Run normal P2 play in Forward+ and inspect a mid-depth open-water view. Confirm water-blue depth falloff remains readable, reef/fish silhouettes stay clear, motes are restrained and the scene no longer depends on a heavy whole-screen wobble to read as underwater.
+2. Swim or position the accepted camera near the upper route and look upward. Confirm a visible moving water surface spans the playable world, the bright sky/sun-above cue reads through/from the underside, movement is slow/natural, and there are no obvious plane edges, clipping, z-fighting, texture seams or camera intersections.
+3. Observe the light shafts from multiple yaw/pitch angles while moving. Confirm they align plausibly with the sun, have soft broken edges, fade naturally through depth, do not look like opaque cones/cards and do not block navigation/readability.
+4. Observe sand, rocks and coral at near/mid distances for several seconds while moving. Confirm caustics form irregular broken loops/veins with unequal spacing/brightness and slow drift. Explicitly FAIL if the dominant impression is an obvious square, checker, regular diamond, evenly spaced crossing-line grid or repeating tiled net.
+5. Traverse at least the open route plus one tunnel/shelter and the upper route. Confirm camera/world stability, no distracting full-screen swimming wobble, no UI distortion/input interception and no change to movement/collision behavior. Pause/resume once and confirm presentation motion/rearm behaves cleanly.
+
+PERFORMANCE A/B
+6. On the same source revision, device, resolution/display mode and route/view sequence, collect warmed-up effects-enabled and effects-disabled samples using the implemented diagnostic. Record FPS or frame-time plus draw calls/primitives and effect counts. Historical P7 values (54 open / 53 tunnel / 49 shelter / 41 upper on the earlier Radeon 880M candidate) are context only, not the same-run baseline.
+7. If the new stack produces a repeatable median regression around 10% or greater, obvious upper-view collapse/stutter, or disproportionate transparent draw cost, tune within this correction and rerun the bounded comparison before owner acceptance. A larger known cost may be accepted only by an explicit owner decision recorded with the observed numbers; do not hide it.
+
+OWNER JUDGMENT
+Record separate PASS / FAIL / NOT OBSERVED judgments for:
+- overhead water surface / above-water sun read;
+- volumetric/light-shaft look;
+- organic non-grid caustics;
+- underwater color/depth/readability;
+- motion comfort and stable camera image;
+- representative native performance.
+
+A still screenshot can support appearance but cannot prove motion comfort, animation or performance. If the owner rejects any item, record the exact view/problem and leave the correction NOT GREEN with the smallest repair target.
+
+CLOSEOUT / EVIDENCE
+Create/update docs/tasks/c2-watet-light-fx/qualification/implementation.md, qualification/native-water-light.md and one docs/tasks/c2-watet-light-fx/closeout.md using only actual evidence. Preserve failed attempts and repairs. Reconcile only owning presentation/technical/art-style routing docs where implemented/observed behavior changed. Keep docs/roadmap.md as Gate authority; do not automatically mark P2/G2.1–G2.3/V18–V20 passed because this correction's visuals are accepted.
+
+VALIDATE / VERSION / GIT
+T3 real-window Forward+ qualification plus T1 documentation/link/diff checks. Run targeted checks only for any closeout repair, git diff --check, confirm no package-lock.json/untracked third-party payload, and keep package.json unchanged at 0.2.6. Leave the final closeout uncommitted for human review; do not self-commit or push. Runner execution of this prompt does not itself approve owner acceptance.
