@@ -2,17 +2,17 @@ TASK: Phase 2 / P5 — Underwater atmosphere
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol XHigh`.
-- Browser required: no.
+- Browser required: yes.
 - This prompt's assigned project version is `0.2.5`.
 
 GOAL
-Make the composed P2 habitat read convincingly underwater using a coherent, tunable environment stack on the renderer selected in P2. This is not a flat blue overlay and must not distort the pause/settings UI or alter authoritative swimming.
+Make the composed P2 habitat read convincingly underwater using a coherent, tunable environment stack on the renderer selected in P2. This is not a flat blue overlay and must not distort the pause/settings UI or alter authoritative swimming. This task includes a native owner visual checkpoint because the underwater look cannot be qualified headlessly.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P5, renderer-decision evidence, P2 design underwater-atmosphere section, UX underwater-world presentation, roadmap G2.2 and V19. Inspect the actual `0.2.4` habitat, selected renderer/project settings, WorldEnvironment/light/material owners, UI CanvasLayers, camera/display lifecycle, representative assets and tools/dev. Preserve the accepted P1 movement/camera profile.
+Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P5, renderer-decision evidence, P2 design underwater-atmosphere section, UX underwater-world presentation, roadmap G2.2 and V19. Inspect the actual `0.2.4` habitat, selected renderer/project settings, WorldEnvironment/light/material owners, UI CanvasLayers, camera/display lifecycle, representative assets and tools/dev. Preserve the accepted P1 movement/camera profile and the P4 owner-accepted habitat composition.
 
 IMPLEMENT
-1. Create one coherent environment/presentation ownership boundary (resources/components/scenes as appropriate) rather than scattering renderer values across Main, asset loading and fish scripts. Centralize the parameters needed for P7 native tuning.
+1. Create one coherent environment/presentation ownership boundary (resources/components/scenes as appropriate) rather than scattering renderer values across Main, asset loading and fish scripts. Centralize the parameters needed for visual tuning and P7 final qualification.
 2. Add renderer-appropriate distance/depth attenuation or fog so far geometry loses contrast/color naturally while nearby navigation remains readable. Treat upper/lower/deeper viewpoints intentionally; do not hide world seams solely with opaque fog.
 3. Establish top-biased underwater illumination and restrained blue/green absorption/grade while preserving useful sand/rock/coral/fish color. Keep the player silhouette readable against near and distant backgrounds.
 4. Add animated caustic-style light motion on seabed/rocks/coral using a technique supported by the selected renderer. It may be a material, projected/decal-like treatment or bounded screen/world shader, but it must animate coherently and avoid driving gameplay state.
@@ -21,11 +21,35 @@ IMPLEMENT
 7. Handle pause, resize/fullscreen/windowed-fullscreen, scene restart and missing optional visual resources safely. Presentation time may pause with gameplay where appropriate; it cannot advance authoritative simulation.
 8. Add focused checks for environment resource load, selected-renderer-only features, finite bounded parameters, UI layer ordering/configuration, resize safety and equal authoritative movement outcomes with presentation enabled/disabled where practical. Record implementation evidence.
 
+OWNER VISUAL CHECKPOINT
+After the atmosphere stack loads cleanly and focused checks pass, run the actual P2 habitat in a native Godot game window and hand control to the owner before accepting the visual settings.
+
+The owner should inspect while actually swimming, not from a still screenshot:
+- spawn/near-field view;
+- a farther view across reef/rock geometry;
+- an upper-to-lower or lower-to-upper depth change;
+- the tunnel/overhang area;
+- slow glide and ordinary cruise;
+- a few faster yaw/pitch turns;
+- pause/settings in both supported display modes when practical.
+
+Tune from owner feedback until the current candidate satisfies the intended P5 look:
+- unmistakably underwater rather than merely blue;
+- useful depth separation between near and far geometry;
+- visible but restrained top-biased lighting and caustic motion;
+- motes that add water depth without reading as snow/noise;
+- full-view treatment that adds fluidity without nausea or distracting shimmer;
+- fish, coral, tunnel entrances and collision-relevant silhouettes remain readable;
+- pause/settings/UI remain crisp and unaffected by world distortion;
+- no obvious renderer-specific artifact or shader failure.
+
+Prefer changing P5 presentation parameters over changing the accepted P1 motor/camera or the owner-accepted P4 geometry. Re-run only the affected viewpoints after each adjustment. Record the accepted atmosphere parameter identity and owner feedback in P2 implementation evidence. Do not proceed to P6 while the owner says the water treatment still looks materially wrong.
+
 SCOPE / DEFERRALS
 No reactive fish wake (P6), ecology, AI, growth, survival, first person, audio overhaul, graphics settings product, engine upgrade, weather/ocean surface system or full fluid simulation. Do not rewrite accepted camera/motor semantics to compensate for visual discomfort; expose/tune P2 presentation instead.
 
 VALIDATE
-T2. Use actual import/build/main-scene checks plus focused shader/resource/config tests. Verify no shader compile/runtime errors under the locked renderer, finite fog/light/post parameters, bounded motes, UI remains a separate CanvasLayer/presentation path, P1 controls still work in scene checks, no package-lock.json, asset boundaries remain safe, and git diff --check passes. Synthetic/headless checks cannot establish convincing underwater appearance; P7 owns that.
+T2 plus the native owner visual checkpoint above. Use actual import/build/main-scene checks plus focused shader/resource/config tests. Verify no shader compile/runtime errors under the locked renderer, finite fog/light/post parameters, bounded motes, UI remains a separate CanvasLayer/presentation path, P1 controls still work in scene checks, no package-lock.json, asset boundaries remain safe, and git diff --check passes. Synthetic/headless checks establish integration only; the native checkpoint establishes whether the atmosphere actually reads correctly in motion.
 
 DONE / VERSION / HANDOFF
-The selected renderer has a complete tunable underwater atmosphere stack integrated with the P2 habitat, focused checks pass and P1 authoritative state is unchanged. Set root package.json to `0.2.5` only after required checks. Report exact resources/parameters, unsupported tradeoffs, test results and P6 effect hooks. Do not commit or push.
+The selected renderer has an owner-accepted, tunable underwater atmosphere stack integrated with the P2 habitat, focused checks pass and P1 authoritative state is unchanged. Set root package.json to `0.2.5` only after required checks and visual acceptance. Report exact resources/parameters, unsupported tradeoffs, test results, owner feedback/adjustments and P6 effect hooks. If running manually, stop here for review before starting P6. Do not commit or push unless the surrounding manual workflow explicitly asks for it.
