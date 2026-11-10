@@ -18,7 +18,7 @@ The repository contains documentation, a Node.js development phase runner, and t
 | Execute an explicitly selected task stack | `npm run fish:phase -- <folder>` |
 | Check runner behavior and prompt grammar | `npm run test:runner` |
 
-P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c1-bindings/README.md) is reconciled into the accepted P1 baseline. [P2 underwater world](docs/tasks/p2/README.md) is authored, not started, and ready to run from root `0.2.0`. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and `automation-smoke`. Check actual command composition before invoking it.
+P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c1-bindings/README.md) is reconciled into the accepted P1 baseline. [P2 underwater world](docs/tasks/p2/README.md) is in progress: P1–P6 are implemented at root `0.2.6`, and P7 native qualification is next. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and focused `inspect-*` commands. Check actual command composition before invoking it.
 
 ## Documentation routing
 

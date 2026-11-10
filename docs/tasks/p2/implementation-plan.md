@@ -57,7 +57,7 @@ On **Forward+**, implement a coherent environment stack owned by a small number 
 
 Do not apply a uniform full-screen blue rectangle and call it water. Keep pause/settings/HUD crisp and outside inappropriate distortion. Shaders/effects must tolerate resize/fullscreen changes, pause and missing optional visual resources. Add bounded render-resource/scene checks and prove equal authoritative fish movement under presentation on/off where practical. Assigned P5 version: `0.2.5`.
 
-## P6 — Fish-reactive water
+## P6 — Fish-reactive water — COMPLETE
 
 Add a presentation-only component/effect anchored to the accepted player visual/root. Read movement state such as velocity magnitude, acceleration/effort, turn rate and glide state without writing back. Drive a **Forward+** combination of GPUParticles3D, bubbles/turbulence, particle trails/ribbons and/or local distortion as appropriate. No Compatibility fallback path is required.
 

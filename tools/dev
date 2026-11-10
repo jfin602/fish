@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-water|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -78,6 +78,10 @@ atmosphere_check() {
   logged atmosphere-movement 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/atmosphere_movement_check.gd
   grep -Fq 'ATMOSPHERE_MOVEMENT_OK' "$LOGS/atmosphere-movement.log" || { echo 'Atmosphere movement marker missing' >&2; return 1; }
 }
+water_reaction_check() {
+  logged water-reaction 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/water_reaction_check.gd
+  grep -Fq 'WATER_REACTION_OK' "$LOGS/water-reaction.log" || { echo 'Water reaction marker missing' >&2; return 1; }
+}
 case "${1:-help}" in
   doctor)
     need_tools
@@ -96,7 +100,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; atmosphere_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; atmosphere_check; water_reaction_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
@@ -143,6 +147,7 @@ case "${1:-help}" in
   inspect-habitat) need_tools; habitat_check ;;
   inspect-reef) need_tools; reef_check ;;
   inspect-atmosphere) need_tools; atmosphere_check ;;
+  inspect-water) need_tools; water_reaction_check ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;

@@ -264,6 +264,7 @@ public partial class PlayShell : Node
     private void Pause()
     {
         _fish.ClearAndDisarmInput();
+        _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
         if (_overlay.Visible) return;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GetTree().Paused = true;

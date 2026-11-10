@@ -1,6 +1,6 @@
 # P2 — Build the underwater world
 
-**Status: IN PROGRESS. P1 comparison through P5 underwater atmosphere are implemented at root `0.2.5`; P6 fish-reactive water is next.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
+**Status: IN PROGRESS. P1 comparison through P6 fish-reactive water are implemented at root `0.2.6`; P7 native world tuning is next.** [P1 closeout](../p1/closeout.md) records the accepted baseline and Gate results. This Phase replaces the visible movement-laboratory presentation with a natural reef-like habitat, locks the renderer from measured native comparison, adds convincing underwater atmosphere, and adds movement-reactive water presentation. Read the [phase design](../../planning/p2/underwater-world.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), and [runner contract](../../phase-runner.md).
 
 ## Scope and finish line
 
@@ -39,7 +39,7 @@ The P1 handoff resolved stale conflict-marker text in root `AGENTS.md` and `READ
 | P3 | [Natural habitat foundation](P3-natural-habitat-foundation.txt) | Continuous seabed, hidden limits, new normal-play habitat, P1 course preserved; [implementation evidence](qualification/implementation.md#p2-p3--natural-habitat-foundation) | `0.2.3` | T2 complete; P7 native appearance/traversal ahead |
 | P4 | [Reef tunnels and world composition](P4-reef-tunnels-and-world-composition.txt) | Complete prepared rock/coral palette in normal play; open/tunnel/shelter/vertical routes; [implementation evidence](qualification/implementation.md#p2-p4--reef-tunnels-and-world-composition) | `0.2.4` | T2 complete; P7 native appearance/traversal ahead |
 | P5 | [Underwater atmosphere](P5-underwater-atmosphere.txt) | Forward+ underwater fog/depth/color/light/caustics/motes/screen treatment; [implementation evidence](qualification/implementation.md#p2-p5--underwater-atmosphere) | `0.2.5` | T2 complete; P7 native judgment ahead |
-| P6 | [Fish-reactive water](P6-fish-reactive-water.txt) | Forward+ GPU particle/trail/turbulence response driven read-only by actual movement | `0.2.6` | T2 |
+| P6 | [Fish-reactive water](P6-fish-reactive-water.txt) | Forward+ GPU particle/trail/turbulence response driven read-only by actual movement; [implementation evidence](qualification/implementation.md#p2-p6--fish-reactive-water) | `0.2.6` | T2 complete; V20 native appearance ahead |
 | P7 | [Native world tuning](P7-native-world-tuning.txt) | V18–V20 owner/native tuning and performance/readability qualification | `0.2.7` | T3, mandatory manual handoff |
 | P8 | [Underwater world closeout](P8-underwater-world-closeout.txt) | G2.1–G2.3 evidence review, docs reconciliation and Phase disposition | `0.2.8` | T3/T1, final manual closeout |
 

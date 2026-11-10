@@ -85,7 +85,10 @@ public partial class Main : Node3D
         }
 
         if (populated && !isCourseFixture && GetParent() is not RendererComparison)
+        {
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
+            fish.AddChild(new WaterReaction(fish));
+        }
 
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))
             CallDeferred(MethodName.VerifySmoke);
@@ -104,10 +107,12 @@ public partial class Main : Node3D
         var animation = GetNodeOrNull<AnimationPlayer>("Fish/PlayerVisual/AnimationPlayer");
         var course = GetNodeOrNull<Node3D>("Habitat/MovementCourse");
         var seabed = GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
+        var water = GetNodeOrNull<WaterReaction>("Fish/WaterReaction");
         if (fish.Tuning.ResourcePath != "res://resources/swim_tuning.tres" ||
             skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
-            (course is null && (seabed?.GetNodeOrNull<MeshInstance3D>("Mesh")?.Mesh is null ||
+            (course is null && (water is null || water.GetChildCount() != 3 ||
+                seabed?.GetNodeOrNull<MeshInstance3D>("Mesh")?.Mesh is null ||
                 seabed.GetNodeOrNull<CollisionShape3D>("Collision")?.Shape is null ||
                 GetNodeOrNull<StaticBody3D>("Habitat/HiddenLimits") is null ||
                 GetNodeOrNull<Node3D>("Habitat/Composition") is null)))
