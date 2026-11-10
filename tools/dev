@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-depth|inspect-water|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -36,7 +36,7 @@ logged() {
 do_import() { logged import 120 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --import; }
 do_build() { (cd "$PROJECT" && logged build 180 "$DOTNET_BIN" build Fish.csproj --nologo); }
 smoke() {
-  logged smoke 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" -- --smoke
+  logged smoke 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --smoke
   grep -Fq 'FISH_SMOKE_OK main scene and C# scripts executed' "$LOGS/smoke.log" || { echo 'C# smoke marker missing' >&2; return 1; }
 }
 scene_tool() { local label=$1; shift; logged "$label" 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- "$@"; }
@@ -79,12 +79,18 @@ atmosphere_check() {
   grep -Fq 'ATMOSPHERE_MOVEMENT_OK' "$LOGS/atmosphere-movement.log" || { echo 'Atmosphere movement marker missing' >&2; return 1; }
 }
 depth_check() {
-  logged depth-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" -- --depth-check
+  logged depth-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --depth-check
   grep -Fq 'DEPTH_CHECK_OK' "$LOGS/depth-check.log" || { echo 'Depth assertion marker missing' >&2; return 1; }
 }
 water_reaction_check() {
   logged water-reaction 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/water_reaction_check.gd
   grep -Fq 'WATER_REACTION_OK' "$LOGS/water-reaction.log" || { echo 'Water reaction marker missing' >&2; return 1; }
+}
+faf_runtime_check() {
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/faf-runtime.XXXXXX")
+  logged faf-runtime 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --faf-runtime-check
+  grep -Fq 'FAF_RUNTIME_CHECK_OK environment=38 terrain=6 rock=4 coral=12 plant=8 detail=8 fish=5' "$LOGS/faf-runtime.log" || { echo 'FAF runtime marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
   doctor)
@@ -158,6 +164,7 @@ case "${1:-help}" in
   inspect-atmosphere) need_tools; atmosphere_check ;;
   inspect-depth) need_tools; depth_check ;;
   inspect-water) need_tools; water_reaction_check ;;
+  inspect-faf) need_tools; faf_runtime_check ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;

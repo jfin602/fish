@@ -10,10 +10,10 @@ Dimensions are Blender source bounds in metres, X × Y × Z. Blender forward is 
 
 | FAF ID / species | Body family | Bounds (m) | Triangles | Meshes | Materials | Bones | Glide / Swim / SwimFast frames |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| [001 Yellow Tang](../fish-001/README.md) | Laterally compressed reef | 0.0563 × 0.2370 × 0.1450 | 1,100 | 8 | 6 | 12 | Existing three loops |
-| 002 Ocellaris Clownfish | Compact oval | 0.05529 × 0.154 × 0.102 | 912 | 8 | 3 | 12 | 48 / 24 / 16 |
-| 003 Blue-Green Chromis | Small schooling | 0.04733 × 0.145 × 0.071 | 404 | 8 | 3 | 11 | 42 / 20 / 14 |
-| 004 Reef Butterflyfish | Highly compressed / long snout | 0.03799 × 0.201 × 0.159 | 896 | 8 | 3 | 12 | 54 / 30 / 20 |
+| [001 Yellow Tang](../fish-001/README.md) | Laterally compressed reef | 0.0563 × 0.2370 × 0.1450 | 1,100 | 8 | 6 | 14 | Existing three loops |
+| 002 Ocellaris Clownfish | Compact oval | 0.05529 × 0.154 × 0.102 | 912 | 8 | 3 | 14 | 48 / 24 / 16 |
+| 003 Blue-Green Chromis | Small schooling | 0.04733 × 0.145 × 0.071 | 404 | 8 | 3 | 13 | 42 / 20 / 14 |
+| 004 Reef Butterflyfish | Highly compressed / long snout | 0.03799 × 0.201 × 0.159 | 896 | 8 | 3 | 14 | 54 / 30 / 20 |
 | 005 Blacktip Reef Shark | Fusiform / tail driven | 0.78 × 1.57 × 0.46 | 876 | 12 | 3 | 14 | 72 / 48 / 30 |
 
 The Chromis deliberately uses 404 triangles, below the initial small-fish working range, to test low-cost schooling density. The shark's modest triangle count reflects broad graphic planes despite its greater dimensions; density in a live scene still needs measurement. Exact material names, bone names, profiles, source transforms, and generator configurations are in the [per-asset manifest](../../../assets/faf/fish/reef_fish_002_to_005_manifest.json).
@@ -24,7 +24,17 @@ The four new candidates live in one [editable Blender master](../../../assets/fa
 
 New exported hierarchy: `root → spine_* → tail_* → tail_fin`, with left/right pectorals, dorsal and anal branches. Eyes are rigidly bound to `spine_01`; body weights blend along the length, and fins are attached to their named control/deform bone. The Chromis omits `spine_04`; the shark adds `spine_05` and `tail_03`. Glide has 30% of each species' base wave amplitude, Swim uses the base profile, and SwimFast uses 135% at a shorter cycle. All three Actions have an exact first/last Blender pose seam and no translation tracks. The common GLB exporter gained per-armature `NLA_TRACKS` mode because the initial multi-scene export had incorrectly included all open fish Actions; the final four GLBs contain exactly three species-owned Actions each.
 
-The four GLBs are [Clownfish](../../../game/assets/faf/fish/fish_002_ocellaris_clownfish.glb), [Chromis](../../../game/assets/faf/fish/fish_003_blue_green_chromis.glb), [Butterflyfish](../../../game/assets/faf/fish/fish_004_reef_butterflyfish.glb), and [Blacktip Reef Shark](../../../game/assets/faf/fish/fish_005_blacktip_reef_shark.glb). Existing Tang source and GLB were not overwritten.
+## Breathing rig correction — 2026-11-10
+
+All five current species were inspected and explicitly classified. Yellow Tang, Ocellaris Clownfish, Blue-Green Chromis and Reef Butterflyfish are `operculate_bony`; each now exports `gill_L` and `gill_R` as deform children of `spine_01`. The new bones sit between the eyes and pectoral roots. The four bony fish have localized deterministic body-surface weights on both sides: Tang 10, Clownfish 25, Chromis 9 and Butterflyfish 24 vertices per side. Their existing source geometry, triangle counts, materials, dimensions and three swimming Actions remain unchanged. Neutral evaluated mesh error is under 0.00000001 m; independent left/right, both-sided and stronger test poses produced local deformation with zero eye and snout movement. No breathing keys or root translation were added. The updated GLBs contain 14, 14, 13 and 14 joints respectively, including the paired gills.
+
+The Blacktip Reef Shark is `exposed_gill_slits_pending`. Its existing 14-bone rig and GLB remain unchanged, with no false operculum. A later species-specific gill-slit deformation must pass strict breathing validation before it can be marked breathing-complete. The manifest records this as `complete: false`; the validator rejects an omitted classification or an attempt to pass the pending shark as final breathing support.
+
+Blender MCP side-view pairs: [Clownfish neutral](evidence/fish_002_gill_neutral.png) / [strong](evidence/fish_002_gill_left_strong.png), [Chromis neutral](evidence/fish_003_gill_neutral.png) / [strong](evidence/fish_003_gill_left_strong.png), [Butterflyfish neutral](evidence/fish_004_gill_neutral.png) / [strong](evidence/fish_004_gill_left_strong.png). The [Tang record](../fish-001/README.md#breathing-rig-correction--2026-11-10) includes side and front views. Viewport review showed a clean, restrained lateral flare with no detached surface or eye pull. This deformation is less legible at small game-camera scale, particularly on the schooling Chromis and over the Clownfish's pale stripe; no final runtime readability claim is made. The bones are ready for a future Godot-driven breathing controller, while visual amplitude will need a camera-scale check when that controller is authored.
+
+Focused Godot 4.7.2 headless import and `faf_reef_fish_pack_001_check.gd` passed on the revised GLBs: bony-fish gill joints/parenting, unchanged shark bone count, meshes, materials, bounds, loops and tail playback. Native breathing playback was outside this Blender/FAF task.
+
+The four pack GLBs are [Clownfish](../../../game/assets/faf/fish/fish_002_ocellaris_clownfish.glb), [Chromis](../../../game/assets/faf/fish/fish_003_blue_green_chromis.glb), [Butterflyfish](../../../game/assets/faf/fish/fish_004_reef_butterflyfish.glb), and [Blacktip Reef Shark](../../../game/assets/faf/fish/fish_005_blacktip_reef_shark.glb). The Tang was originally preserved while this pack was built; its separate source and GLB were updated only for the focused breathing correction above.
 
 ## Visual review and Godot proof
 

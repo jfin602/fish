@@ -11,11 +11,19 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Current gameplay | **P1 COMPLETE.** The owner accepted the current post-c1 controls, swimming, third-person camera/body and starter course as sufficient for progression. [P1 closeout](docs/tasks/p1/closeout.md) maps G1.1–G1.4 and evidence limits; [accepted tuning](docs/tasks/p1/qualification/accepted-tuning.md) is P2's exact baseline. |
 | Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
 | Adaptive Follow | A fifth built-in control preset combines mouse fish steering and W/S depth control with independent camera look while Left Shift is held, then returns smoothly. It is implemented with focused headless checks; native feel remains for owner observation. See [swimming and camera](docs/systems/swimming-and-camera.md). |
+<<<<<<< HEAD
 | Next Phase | **P3 continues through the owner-selected `0.3.6` correction checkpoint.** If the local Git-proven P3 prefix is actually complete through P6 and root is `0.3.6`, run [c3-world-gen](docs/tasks/c3-world-gen/README.md) next, then [c3-visibility](docs/tasks/c3-visibility/README.md), then resume P3 native closeout. GitHub main's root may lag local runner checkpoints; never fake/downgrade versions. |
 | Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
 | Root version | **`0.3.0`** — deliberate owner-approved P3 entry baseline. P2 ended at implementation version `0.2.6`; `0.2.7`/`0.2.8` were never fabricated. |
 | Later gameplay | P3 world formation now uses the deterministic procedural compiler/baked-world architecture while preserving the five-fish Character Select and FAF art goals. Feeding/predators/growth remain P4, persistence/death P5, life recounting/history P6, integrated qualification P7. |
+=======
+| Next Phase | **P3 is in progress.** P1's FAF runtime catalog and focused 43-asset check are implemented; P2's visible depth-world rebuild is next. P2 G2.3/V20 remains an accepted open gap. |
+| Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
+| Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
+| Root version | **`0.3.1`** — P3/P1 implementation version in the uncommitted runner working tree. P2 ended at implementation version `0.2.6`; `0.2.7`/`0.2.8` were never fabricated. |
+| Later gameplay | **P3 targets `0.3.1–0.3.8`; P2 is the next P3 task.** Feeding/predators/growth move to P4, persistence/death P5, life recounting/history P6, and integrated qualification P7. |
+>>>>>>> de27d4e (0.3.1)
 
 ## Product contract to preserve
 

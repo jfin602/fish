@@ -17,7 +17,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/p2/` | Underwater-world Phase stack; historical P1–P8 implementation/evidence retained while later corrections refine the still-open P2 candidate. |
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
 | `docs/tasks/c2-depth/` | Five-band basin/depth-light correction with preserved historical failure and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
-| `docs/tasks/p3/` | Authored, unexecuted FAF reef-world rebuild stack; blocked until P2 GREEN and deliberate `0.3.0` entry. |
+| `docs/tasks/p3/` | FAF reef-world rebuild stack, with P1 runtime integration implemented at `0.3.1` and P2 visual rebuild next. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
@@ -61,6 +61,8 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 The paths above are the current source owners. Keep renderer-specific code behind the selected P2 presentation boundary; [P8 review](docs/tasks/p2/closeout.md) and [c2-depth R1 native closeout](docs/tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) distinguish historical implementation evidence from the later owner-qualified depth result. G2.3 fish-reactive water still needs separate P2 qualification.
 
 ## Planned P3 world-art boundaries
+
+P1 implements the fixed 38-entry environment boundary in `game/scripts/FafRuntimeCatalog.cs` and the five-fish descriptor boundary in `game/scripts/CharacterCatalog.cs`. `game/dev/FafRuntimeChecks.cs` checks imported identity and readiness through that path; `tools/dev inspect-faf` runs it. The environment wrapper instantiates visual-only GLBs and rejects embedded physics. Plant UV.y is recorded as a future visual height mask. Fish presentation transforms normalize model scale/facing without changing the shared collider, motor or camera tuning. The existing dirty-tree Character Select/session work remains outside P1 qualification.
 
 | Boundary | Owns | Does not own |
 | --- | --- | --- |

@@ -69,9 +69,9 @@ WAVE = {
 
 # Tang-specific head placement. Left is -X in the original sculpt; the shared
 # reef-family loft uses +X for left. All dimensions are source metres.
-BREATHING = OperculumSpec(center_y=-0.038, center_z=0.0,
-                         half_width=0.014, region_y=0.025, region_z=0.042,
-                         parent_bone="spine_02", left_x_sign=-1)
+BREATHING = OperculumSpec(center_y=-0.052, center_z=0.0,
+                         half_width=0.013, region_y=0.017, region_z=0.037,
+                         parent_bone="spine_01", left_x_sign=-1)
 
 
 def add_breathing_to_existing() -> dict:

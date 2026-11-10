@@ -25,9 +25,9 @@ class OperculumSpec:
     half_width: float
     region_y: float
     region_z: float
-    parent_bone: str = "spine_02"
-    max_weight: float = 0.65
-    safe_angle_rad: float = 0.22
+    parent_bone: str = "spine_01"
+    max_weight: float = 0.90
+    safe_angle_rad: float = 0.45
     left_x_sign: int = 1
 
     def validate(self):
@@ -83,6 +83,14 @@ def add_operculum_rig(armature, spec: OperculumSpec):
 def _smooth_cap(distance: float) -> float:
     t = max(0.0, min(1.0, 1.0 - distance))
     return t * t * (3.0 - 2.0 * t)
+
+
+def opening_rotation_z(spec: OperculumSpec, name: str, amount: float = 1.0) -> float:
+    """Local Z rotation that moves the chosen side outward in this bone layout."""
+    if name not in GILL_NAMES or not 0 <= amount <= 1:
+        raise ValueError("invalid gill side or opening amount")
+    sign = spec.left_x_sign if name == "gill_L" else -spec.left_x_sign
+    return -sign * spec.safe_angle_rad * amount
 
 
 def weight_operculum_region(body, spec: OperculumSpec):
@@ -181,12 +189,13 @@ def validate_breathing_rig(armature, meshes, spec: OperculumSpec | None = None,
             bone.rotation_euler = (0, 0, 0)
         bpy.context.view_layer.update()
         depsgraph = bpy.context.evaluated_depsgraph_get()
-        evaluated = body.evaluated_get(depsgraph).to_mesh()
+        evaluated_obj = body.evaluated_get(depsgraph)
+        evaluated = evaluated_obj.to_mesh()
         try:
             neutral_error = max((evaluated.vertices[i].co - vert.co).length
                                 for i, vert in enumerate(body.data.vertices))
         finally:
-            body.evaluated_get(depsgraph).to_mesh_clear()
+            evaluated_obj.to_mesh_clear()
             for bone in armature.pose.bones:
                 bone.rotation_euler = original[bone.name]
             bpy.context.view_layer.update()
@@ -194,3 +203,46 @@ def validate_breathing_rig(armature, meshes, spec: OperculumSpec | None = None,
             raise ValueError(f"rest pose changed: {neutral_error:.8f} m")
     return {"anatomy": anatomy, "complete": True, "parent": spec.parent_bone,
             "weighted_vertices": counts, "neutral_error_m": neutral_error}
+
+
+def validate_exported_breathing(glb_path, anatomy: str, *, parent_bone="spine_01",
+                                require_complete=True):
+    """Check the GLB skin itself, independent of Blender's editable armature."""
+    import json
+    from pathlib import Path
+    import struct
+
+    if anatomy not in ANATOMY_TYPES:
+        raise ValueError("GLB breathing anatomy is missing or unknown")
+    blob = Path(glb_path).read_bytes()
+    if len(blob) < 20 or blob[:4] != b"glTF":
+        raise ValueError("invalid GLB header")
+    chunk_length, chunk_type = struct.unpack_from("<II", blob, 12)
+    if chunk_type != 0x4E4F534A:
+        raise ValueError("GLB has no JSON chunk")
+    data = json.loads(blob[20:20 + chunk_length])
+    nodes = data.get("nodes", [])
+    skins = data.get("skins", [])
+    if len(skins) != 1:
+        raise ValueError("fish GLB requires exactly one export skin")
+    names = {nodes[index].get("name") for index in skins[0]["joints"]}
+    if anatomy == OPERCULATE:
+        if not set(GILL_NAMES) <= names:
+            raise ValueError("GLB skin omits required gill bones")
+        parent_indices = {i for i, node in enumerate(nodes)
+                          if node.get("name") == parent_bone}
+        if len(parent_indices) != 1:
+            raise ValueError("GLB omits the operculum parent bone")
+        parent_index = next(iter(parent_indices))
+        for name in GILL_NAMES:
+            index = next(i for i, node in enumerate(nodes) if node.get("name") == name)
+            if index not in nodes[parent_index].get("children", []):
+                raise ValueError(f"GLB {name} has wrong exported parent")
+    else:
+        if set(GILL_NAMES) & names:
+            raise ValueError("exposed-gill GLB contains false operculum bones")
+        if require_complete:
+            raise ValueError("exposed-gill breathing deformation is still pending")
+    return {"anatomy": anatomy, "skin_joints": len(names),
+            "gill_bones_exported": sorted(set(GILL_NAMES) & names),
+            "complete": anatomy == OPERCULATE}

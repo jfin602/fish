@@ -42,6 +42,12 @@ public partial class Main : Node3D
             catch (Exception error) { GD.PushError($"CONTROL_PRESET_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
+        if (OS.GetCmdlineUserArgs().Contains("--faf-runtime-check"))
+        {
+            try { FafRuntimeChecks.Run(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"FAF_RUNTIME_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         var fish = GetNodeOrNull<FishController>("Fish");
         var camera = GetNodeOrNull<Camera3D>("Fish/CameraRig/Camera3D");
         var habitat = GetNodeOrNull<Node3D>("Habitat");

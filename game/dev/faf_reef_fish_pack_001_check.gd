@@ -3,9 +3,9 @@ extends SceneTree
 # Isolated import proof. The four new fish are checked against their source
 # manifests; FAF-FISH-001 retains its own established proof/check fixture.
 const SPECS := {
-	"002": ["fish_002_ocellaris_clownfish", 912, 8, 12],
-	"003": ["fish_003_blue_green_chromis", 404, 8, 11],
-	"004": ["fish_004_reef_butterflyfish", 896, 8, 12],
+	"002": ["fish_002_ocellaris_clownfish", 912, 8, 14],
+	"003": ["fish_003_blue_green_chromis", 404, 8, 13],
+	"004": ["fish_004_reef_butterflyfish", 896, 8, 14],
 	"005": ["fish_005_blacktip_reef_shark", 876, 12, 14],
 }
 
@@ -31,6 +31,15 @@ func _initialize() -> void:
 			_fail(id, "AnimationPlayer/mesh count")
 			return
 		var skeleton: Skeleton3D = skeletons[0]
+		var gill_l: int = skeleton.find_bone("gill_L")
+		var gill_r: int = skeleton.find_bone("gill_R")
+		if id == "005":
+			if gill_l >= 0 or gill_r >= 0:
+				_fail(id, "shark must not import false operculum bones")
+				return
+		elif gill_l < 0 or gill_r < 0 or skeleton.get_bone_parent(gill_l) != skeleton.find_bone("spine_01") or skeleton.get_bone_parent(gill_r) != skeleton.find_bone("spine_01"):
+			_fail(id, "missing or incorrectly parented exported gill bones")
+			return
 		var player: AnimationPlayer = players[0]
 		var triangle_count := 0
 		var materials := {}

@@ -22,8 +22,8 @@ func _initialize() -> void:
 	print("FAF_ROOT ", asset.name)
 	for child in asset.get_children():
 		print("FAF_CHILD ", child.name, " ", child.get_class())
-	if skeletons.size() != 1 or skeletons[0].get_bone_count() != 12:
-		_fail("expected one 12-bone Skeleton3D")
+	if skeletons.size() != 1 or skeletons[0].get_bone_count() != 14:
+		_fail("expected one 14-bone Skeleton3D with paired gills")
 		return
 	if players.size() != 1:
 		_fail("expected one AnimationPlayer")
@@ -32,6 +32,12 @@ func _initialize() -> void:
 		_fail("expected eight mesh parts")
 		return
 	var skeleton: Skeleton3D = skeletons[0]
+	var gill_l: int = skeleton.find_bone("gill_L")
+	var gill_r: int = skeleton.find_bone("gill_R")
+	var head_parent: int = skeleton.find_bone("spine_01")
+	if gill_l < 0 or gill_r < 0 or skeleton.get_bone_parent(gill_l) != head_parent or skeleton.get_bone_parent(gill_r) != head_parent:
+		_fail("missing or incorrectly parented exported gill bones")
+		return
 	var player: AnimationPlayer = players[0]
 	var names: PackedStringArray = player.get_animation_list()
 	for expected in EXPECTED_ACTIONS:

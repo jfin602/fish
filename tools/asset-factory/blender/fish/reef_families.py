@@ -107,11 +107,13 @@ def breathing_spec(bp: Blueprint) -> OperculumSpec | None:
     if bp.breathing_anatomy != OPERCULATE:
         raise ValueError(f"{bp.faf_id} missing valid breathing anatomy")
     length = bp.shape[-1][0] - bp.shape[0][0]
-    center_y = bp.eye_y + length * .12
+    # Sit behind the eye and ahead of the pectoral root (eye_y + .013), so a
+    # raised cover never swallows the nearby fin in side view.
+    center_y = bp.eye_y + min(length * .055, .007)
     width, height, z = _shape_at(bp.shape, center_y)
     return OperculumSpec(center_y=center_y, center_z=z,
-                         half_width=width, region_y=length * .16,
-                         region_z=height * .90, parent_bone="spine_02")
+                         half_width=width, region_y=length * .105,
+                         region_z=height * .90, parent_bone="spine_01")
 
 
 def _material(name, hex_color):
@@ -404,7 +406,7 @@ def inspect_fish(bp: Blueprint, armature, meshes, breathing_check=None):
         'frames':dict(zip(('Glide','Swim','SwimFast'),bp.frames)),
         'origin_m':[0,0,0],'rotation_rad':[0,0,0],'scale':[1,1,1],
         'front_blender':'-Y','up_blender':'+Z',
-        'root_translation_animated':False,'source_generator':'fish.reef_families.v1',
+        'root_translation_animated':False,'source_generator':'fish.reef_families.v2',
         'breathing_anatomy':bp.breathing_anatomy,
         'breathing_validation':breathing_check,
         'generator_config':{

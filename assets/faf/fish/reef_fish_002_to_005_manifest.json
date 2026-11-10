@@ -19,7 +19,7 @@
         "mat__fish_002_ocellaris_clownfish_black"
       ],
       "meshes": 8,
-      "bones": 12,
+      "bones": 14,
       "bone_names": [
         "root",
         "spine_01",
@@ -32,7 +32,9 @@
         "dorsal",
         "anal",
         "pectoral_l",
-        "pectoral_r"
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
       ],
       "actions": [
         "fish_002_ocellaris_clownfish__Glide",
@@ -62,7 +64,18 @@
       "front_blender": "-Y",
       "up_blender": "+Z",
       "root_translation_animated": false,
-      "source_generator": "fish.reef_families.v1",
+      "source_generator": "fish.reef_families.v2",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 25,
+          "gill_R": 25
+        },
+        "neutral_error_m": 3.839941346661803e-09
+      },
       "generator_config": {
         "shape_stations": [
           [
@@ -190,7 +203,8 @@
             "#222832"
           ]
         ],
-        "deterministic": true
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony"
       },
       "loop_checks": {
         "Glide": {
@@ -208,6 +222,15 @@
           "root_translation": false,
           "loop": true
         }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
       },
       "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish.glb",
       "blender_source": "assets/faf/fish/reef_fish_002_to_005.blend"
@@ -229,7 +252,7 @@
         "mat__fish_003_blue_green_chromis_black"
       ],
       "meshes": 8,
-      "bones": 11,
+      "bones": 13,
       "bone_names": [
         "root",
         "spine_01",
@@ -241,7 +264,9 @@
         "dorsal",
         "anal",
         "pectoral_l",
-        "pectoral_r"
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
       ],
       "actions": [
         "fish_003_blue_green_chromis__Glide",
@@ -271,7 +296,18 @@
       "front_blender": "-Y",
       "up_blender": "+Z",
       "root_translation_animated": false,
-      "source_generator": "fish.reef_families.v1",
+      "source_generator": "fish.reef_families.v2",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 9,
+          "gill_R": 9
+        },
+        "neutral_error_m": 0.0
+      },
       "generator_config": {
         "shape_stations": [
           [
@@ -393,7 +429,8 @@
             "#1D3139"
           ]
         ],
-        "deterministic": true
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony"
       },
       "loop_checks": {
         "Glide": {
@@ -411,6 +448,15 @@
           "root_translation": false,
           "loop": true
         }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 13,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
       },
       "glb": "game/assets/faf/fish/fish_003_blue_green_chromis.glb",
       "blender_source": "assets/faf/fish/reef_fish_002_to_005.blend"
@@ -432,7 +478,7 @@
         "mat__fish_004_reef_butterflyfish_black"
       ],
       "meshes": 8,
-      "bones": 12,
+      "bones": 14,
       "bone_names": [
         "root",
         "spine_01",
@@ -445,7 +491,9 @@
         "dorsal",
         "anal",
         "pectoral_l",
-        "pectoral_r"
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
       ],
       "actions": [
         "fish_004_reef_butterflyfish__Glide",
@@ -475,7 +523,18 @@
       "front_blender": "-Y",
       "up_blender": "+Z",
       "root_translation_animated": false,
-      "source_generator": "fish.reef_families.v1",
+      "source_generator": "fish.reef_families.v2",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 24,
+          "gill_R": 24
+        },
+        "neutral_error_m": 5.820766091346741e-11
+      },
       "generator_config": {
         "shape_stations": [
           [
@@ -609,7 +668,8 @@
             "#242A34"
           ]
         ],
-        "deterministic": true
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony"
       },
       "loop_checks": {
         "Glide": {
@@ -627,6 +687,15 @@
           "root_translation": false,
           "loop": true
         }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
       },
       "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish.glb",
       "blender_source": "assets/faf/fish/reef_fish_002_to_005.blend"
@@ -693,7 +762,13 @@
       "front_blender": "-Y",
       "up_blender": "+Z",
       "root_translation_animated": false,
-      "source_generator": "fish.reef_families.v1",
+      "source_generator": "fish.reef_families.v2",
+      "breathing_anatomy": "exposed_gill_slits_pending",
+      "breathing_validation": {
+        "anatomy": "exposed_gill_slits_pending",
+        "complete": false,
+        "status": "pending"
+      },
       "generator_config": {
         "shape_stations": [
           [
@@ -835,7 +910,8 @@
             "#202B32"
           ]
         ],
-        "deterministic": true
+        "deterministic": true,
+        "breathing_anatomy": "exposed_gill_slits_pending"
       },
       "loop_checks": {
         "Glide": {
@@ -853,6 +929,12 @@
           "root_translation": false,
           "loop": true
         }
+      },
+      "breathing_export": {
+        "anatomy": "exposed_gill_slits_pending",
+        "skin_joints": 14,
+        "gill_bones_exported": [],
+        "complete": false
       },
       "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark.glb",
       "blender_source": "assets/faf/fish/reef_fish_002_to_005.blend"

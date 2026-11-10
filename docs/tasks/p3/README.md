@@ -1,6 +1,6 @@
 # P3 — FAF reef world rebuild
 
-**Status: READY TO EXECUTE at root `0.3.0`.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
+**Status: IN PROGRESS at root `0.3.1`; P1 implemented, P2 next.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
 
 Read the [phase design](../../planning/p3/reef-world-rebuild.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), [FAF art style](../../fish-asset-factory/art-style.md), [style proof 001](../../fish-asset-factory/style-proof-001/README.md) and [runner contract](../../phase-runner.md).
 
@@ -25,7 +25,7 @@ The original P3 P2–P4 prompt text was authored before S18 and may already exis
 
 ## Entry and version
 
-Root is now deliberately **`0.3.0`** under owner transition S16. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.
+The deliberate P3 entry was **`0.3.0`** under owner transition S16; P1 has produced the `0.3.1` uncommitted implementation. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.
 
 Before execution:
 
@@ -49,6 +49,8 @@ Before execution:
 | P8 | [FAF reef world closeout](P8-faf-reef-world-closeout.txt) | G3.1–G3.4 evidence review, owning-doc reconciliation and next-phase routing | `0.3.8` | T3/T1, final manual closeout |
 
 P8 is the sole final closeout. P7 is the main native owner checkpoint.
+
+P1's catalog/check source and observed results are in [implementation evidence](qualification/implementation.md). The runner owns its checkpoint commit.
 
 ## Required environment coverage
 

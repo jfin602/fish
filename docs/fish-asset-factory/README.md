@@ -8,6 +8,8 @@ Owner [references](references/README.md) → [art style](art-style.md) → [pale
 
 Each candidate carries a small [manifest/check record](blender-godot-contract.md#candidate-record) and receives separate technical and style decisions. Blender is the editable source and viewport inspection environment. The repo's [tooling skeleton](../../tools/asset-factory/README.md) holds reusable Python; Blender MCP can inspect scenes, capture viewport screenshots and run controlled Python, but transient MCP commands are not the source of truth. Godot's native view is the final production-style check. This workflow supplies no Roadmap Gate evidence by itself.
 
+For every new fish, the [rigging standard](rigging-standards.md#breathing-anatomy-is-required-at-generation) makes breathing anatomy and its deformation rig part of the initial generator path. Ordinary bony fish receive paired operculum bones; non-operculate species require their own declared mechanism or remain explicitly pending. Godot will supply runtime breathing behavior later.
+
 ## Current boundary
 
 The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fish-001/README.md). Its editable Blender source, GLB, rig, three Actions, technical checks and isolated native Godot proof are recorded there. It is a technical reference candidate; reef-context style approval remains open. The older [Sea life Yellow Tang](../assets/p1-starter-manifest.md) remains a separate third-party candidate. The current player and movement are unchanged.

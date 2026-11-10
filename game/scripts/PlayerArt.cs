@@ -9,6 +9,25 @@ public static class PlayerArt
 
     public static bool TryLoadAndAttach(FishController fish, out string diagnostic)
     {
+        if (DemoSelection.CharacterId is null) return TryLoadLegacy(fish, out diagnostic);
+        return TryLoadAndAttach(fish, CharacterCatalog.Find(DemoSelection.CharacterId), out diagnostic);
+    }
+
+    public static bool TryLoadAndAttach(FishController fish, CharacterEntry entry, out string diagnostic)
+    {
+        if (!CharacterCatalog.TryInstantiate(entry, out var visual, out var animation, out diagnostic))
+            return false;
+        fish.AddChild(visual!);
+        visual!.Name = "PlayerVisual";
+        visual.Transform = entry.PresentationTransform;
+        visual.AddChild(new CatalogFishVisualMotion(fish, animation!, entry));
+        ApplyPresentation(fish, entry);
+        diagnostic = "";
+        return true;
+    }
+
+    private static bool TryLoadLegacy(FishController fish, out string diagnostic)
+    {
         if (!FileAccess.FileExists(Source))
         {
             diagnostic = $"FISH_ASSET_MISSING item=Quaternius Fish3 path={Source} action=prepare-source-under-game/assets/vendor-local";
@@ -21,6 +40,12 @@ public static class PlayerArt
             return false;
         }
         return TryAttach(fish, scene, out diagnostic);
+    }
+
+    private static void ApplyPresentation(FishController fish, CharacterEntry entry)
+    {
+        foreach (var part in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
+            if (fish.GetNodeOrNull<MeshInstance3D>(part) is { } placeholder) placeholder.Visible = false;
     }
 
     public static bool TryAttach(FishController fish, PackedScene scene, out string diagnostic)

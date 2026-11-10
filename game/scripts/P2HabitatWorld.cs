@@ -27,7 +27,7 @@ public static class P2HabitatWorld
 
         fish.Position = spawn.Position;
         diagnostic = "";
-        GD.Print("FISH_HABITAT_READY player=Fish3 seabed=continuous palette=CoastSand01,Ground060,Gravel041,Rock063 course=fixture-only");
+        GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} seabed=continuous palette=CoastSand01,Ground060,Gravel041,Rock063 course=fixture-only");
         return true;
     }
 }

@@ -20,7 +20,9 @@ if str(TOOLING) not in sys.path:sys.path.insert(0,str(TOOLING))
 
 from common.export import export_selected_glb  # noqa: E402
 from common.validation import inspect_objects  # noqa: E402
-from fish.reef_families import BLUEPRINTS,create_fish  # noqa: E402
+from fish.reef_families import BLUEPRINTS,create_fish,breathing_spec  # noqa: E402
+from fish.breathing import (OPERCULATE,validate_breathing_rig,
+                            validate_exported_breathing)  # noqa: E402
 
 
 def inspect_loops(bp,scene,armature):
@@ -70,9 +72,15 @@ def export_scenes(built,root:Path,overwrite=False):
         check=inspect_objects([armature,*meshes])
         if check['problems'] or check['triangle_count_source']!=report['triangles']:
             raise RuntimeError(f'{bp.faf_id} export failed source checks: {check}')
+        report['breathing_validation']=validate_breathing_rig(
+            armature,meshes,breathing_spec(bp),
+            require_complete=bp.breathing_anatomy==OPERCULATE)
         output=folder/(bp.stem+'.glb')
         export_selected_glb(str(output),include_animations=True,overwrite=overwrite,
                             animation_mode='NLA_TRACKS')
+        report['breathing_export']=validate_exported_breathing(
+            output,bp.breathing_anatomy,
+            require_complete=bp.breathing_anatomy==OPERCULATE)
         report['glb']=output.relative_to(root).as_posix()
         report['blender_source']='assets/faf/fish/reef_fish_002_to_005.blend'
         reports.append(report)
@@ -86,6 +94,7 @@ def save_source_and_manifest(built,reports,root:Path,overwrite=False):
         raise FileExistsError('existing FAF reef-fish output; pass --overwrite deliberately')
     source.parent.mkdir(parents=True,exist_ok=True)
     # This is a normal editable project, not a Blender append-only library.
+    bpy.context.preferences.filepaths.save_version=0
     bpy.ops.wm.save_as_mainfile(filepath=str(source),compress=True)
     manifest.write_text(json.dumps({
         'reference_fish':'FAF-FISH-001 Yellow Tang (preserved)',

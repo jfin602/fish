@@ -198,6 +198,10 @@ public partial class PlayShell : Node
         ApplyFocusStyle(_resume);
         _resume.Pressed += Resume;
         items.AddChild(_resume);
+        var select = new Button { Name = "CharacterSelectButton", Text = "Character Select", FocusMode = Control.FocusModeEnum.All };
+        ApplyFocusStyle(select);
+        select.Pressed += ReturnToCharacterSelect;
+        items.AddChild(select);
         var quit = new Button { Name = "QuitButton", Text = "Quit test session", FocusMode = Control.FocusModeEnum.All };
         ApplyFocusStyle(quit);
         quit.Pressed += () => GetTree().Quit();
@@ -325,6 +329,16 @@ public partial class PlayShell : Node
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
         UpdateHelp();
         _resume.ReleaseFocus();
+    }
+
+    private void ReturnToCharacterSelect()
+    {
+        _fish.ClearAndDisarmInput();
+        _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
+        GetTree().Paused = false;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        DemoSelection.Clear();
+        GetTree().ChangeSceneToFile("res://scenes/character_select.tscn");
     }
 
     private void UpdateLayout()
