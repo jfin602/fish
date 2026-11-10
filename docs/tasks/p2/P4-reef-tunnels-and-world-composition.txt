@@ -9,7 +9,7 @@ GOAL
 Turn the structural P2 habitat into a deliberate reef exploration space with coral floor, varied rock formations, a tunnel/tight passage, cover/overhang, open cruising space and meaningful vertical routes. Remove obvious developer-course visuals from normal play.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P4, P2 design asset/world sections, art-and-assets P2 boundary, roadmap G2.1, V18, and `artifacts/assets/source/p2-environment/inventory.json` when present. Inspect actual P3 habitat, final P1 fish/camera dimensions/tuning, all prepared P2 environment resources, current ambient fish and asset provenance. Require root `0.2.3`.
+Read AGENTS.md, BOOT.md, stack README, implementation-plan.md P4, P2 design asset/world sections, art-and-assets P2 boundary, the Forward+ renderer-decision record, roadmap G2.1, V18, and `artifacts/assets/source/p2-environment/inventory.json` when present. Inspect actual P3 habitat, final P1 fish/camera dimensions/tuning, all prepared P2 environment resources, current ambient fish and asset provenance. Require root `0.2.3`.
 
 IMPLEMENT
 1. Compose at least three readable traversal categories: broad/open cruising, a tighter rock tunnel/arch/cave-like passage, and a vertical route between lower/upper landmarks. Add one overhang or sheltered pocket that demonstrates cover without trapping the camera.
@@ -21,7 +21,7 @@ IMPLEMENT
 7. Extend scene/resource/collision checks to cover tunnel centerline/clearance, overhang route, broad route, vertical landmarks, no spawn overlaps, bounded representative instance counts and source identities. Assert that Rock Face 01, Rock Face 02, Coastal Cliff 01, Boulder 01, Heliopora coerulea, Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae are all represented in normal play, and that Coast Sand 01, Ground060, Gravel041 and Rock063 all have visible habitat-surface use. Record implementation evidence and any preparation changes.
 
 SCOPE / DEFERRALS
-Do not add underwater shaders/fog beyond what is needed to view composition; P5 owns atmosphere. No reactive wake, ecology, AI, growth, procedural generation, first person or abilities. Keep accepted motor/camera semantics unchanged.
+Do not add underwater shaders/fog beyond what is needed to view composition; P5 owns the Forward+ atmosphere. No reactive wake, Compatibility fallback path, ecology, AI, growth, procedural generation, first person or abilities. Keep accepted motor/camera semantics unchanged.
 
 VALIDATE
 T2. Use actual import/build/scene inspection and focused traversal geometry queries. Check tunnel/route clearances against accepted fish collision/camera requirements, visual/collision bounds for representative rock pieces, no hidden P1 course nodes in normal scene, asset/license/ignore boundaries, bounded high-detail coral usage, no package-lock.json and git diff --check. Native beauty/camera comfort remains P7.

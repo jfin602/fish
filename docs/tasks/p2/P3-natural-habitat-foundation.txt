@@ -9,7 +9,7 @@ GOAL
 Create the structural P2 normal-play habitat: continuous natural seabed/topology, safe spawn and natural hidden limits, while removing the P1 movement course from normal presentation and preserving it as a regression fixture.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P3, P2 renderer-decision evidence, roadmap G2.1, validation V18, MODULES.md, relevant P1 scene/camera evidence, and `artifacts/assets/source/p2-environment/inventory.json` when present. Inspect actual main.tscn, movement_course.tscn, StarterWorld.cs, collision/controller bounds, final camera tuning, selected renderer and current `0.2.2` source. Do not assume authoring-time paths survived P1/P2 repairs.
+Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P3, P2 Forward+ renderer-decision evidence, roadmap G2.1, validation V18, MODULES.md, relevant P1 scene/camera evidence, and `artifacts/assets/source/p2-environment/inventory.json` when present. Inspect actual main.tscn, movement_course.tscn, StarterWorld.cs, collision/controller bounds, final camera tuning, **locked Forward+ renderer** and current `0.2.2` source. Do not assume authoring-time paths survived P1/P2 repairs.
 
 IMPLEMENT
 1. Separate normal play from the P1 qualification course. Keep `movement_course.tscn` or an equivalent dedicated fixture reachable for regression/inspection, but stop instancing its colored targets/camera-check post/test layout into the normal P2 world.
@@ -20,7 +20,7 @@ IMPLEMENT
 6. Add focused scene/collision checks: normal main points to P2 habitat; P1 fixture stays inspectable; spawn is clear; representative seabed points collide; underside/edge escape probes fail; presentation changes do not change fish movement authority. Record implementation evidence.
 
 SCOPE / DEFERRALS
-No final coral/rock composition (P4), atmosphere (P5), reactive water (P6), ecology, growth, persistence, first person, abilities or procedural-world framework. Do not delete historical P1 evidence just to simplify scenes.
+No final coral/rock composition (P4), atmosphere (P5), reactive water (P6), ecology, growth, persistence, first person, abilities, Compatibility production fallback or procedural-world framework. Do not delete historical P1 evidence just to simplify scenes.
 
 VALIDATE
 T2. Run focused saved-scene/import/build/collision checks using actual tools/dev composition. Inspect normal main and P1 fixture separately. Verify accepted fish/camera nodes, collision layers/masks, spawn/underside/edge containment and no tracked vendor payload leakage. Run git diff --check. Headless topology checks do not prove natural appearance; P7 will.

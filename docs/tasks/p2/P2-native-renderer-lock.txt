@@ -1,4 +1,4 @@
-TASK: Phase 2 / P2 — Native renderer lock
+TASK: Phase 2 / P2 — Native Forward+ lock
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
@@ -6,20 +6,30 @@ MODEL / REASONING / USAGE
 - This prompt's assigned project version is `0.2.2`.
 
 GOAL / MANUAL HANDOFF
-Choose and lock the P2 renderer from a real same-candidate native comparison. The runner pauses here. Browser access alone does not control the Godot window; use an actual Fish native desktop/runtime session or exact owner observations. If that is unavailable, record BLOCKED / NOT OBSERVED and do not fabricate a renderer decision.
+Record and lock the owner's Forward+ renderer decision in the real P2 project. The renderer choice is no longer open: after P1 created the reversible comparison slice, the owner ran Forward+ on the real desktop, reported that it runs smoothly, looks perhaps slightly better, and explicitly chose it because the additional rendering features are worth using for the underwater world.
+
+The runner pauses here because the tracked renderer change must correspond to the real native candidate. Browser access alone does not control the Godot window. **Do not require another native Compatibility A/B** unless Forward+ now shows a concrete regression that materially calls the owner's decision into question.
 
 PREREQUISITES AND NARROW READING
-Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P2, P1 implementation evidence, docs/technical-direction.md, `artifacts/assets/source/p2-environment/inventory.json` when present, and validation V19. Inspect the real comparison source, package version `0.2.1`, final P1 candidate/assets/tuning, display modes and tools/dev. Confirm Fish editor/MCP identity before mutation. Preserve unrelated work.
+Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P2, P1 implementation evidence, docs/technical-direction.md, `artifacts/assets/source/p2-environment/inventory.json` when present, and validation V19. Inspect the real P1 comparison source/tools (`RendererComparison.cs`, `renderer_comparison.tscn`, comparison shaders and `tools/dev compare`), package version `0.2.1`, final P1 candidate/assets/tuning, display modes and current `game/project.godot`. Confirm Fish editor/MCP identity before mutation. Preserve unrelated work.
 
-NATIVE COMPARISON
-1. Record source revision/dirty identity, OS/display backend, GPU if available, Godot/.NET versions, monitor/viewport, actual asset hashes/install identity and comparison scene/viewpoints.
-2. Launch the same candidate under Compatibility and Forward+ using the P1 implementation path. Use at least the same spawn/near view, a farther rock/coral view and a moving-camera pass. Verify Fish3 plus representative prepared P2 seabed, rock and coral assets/materials under both renderers; inspect runtime/editor errors. The comparison need not place every asset at once, but the selected renderer must not leave any prepared P2 asset category with an unresolved import/material failure.
-3. Compare the intended P2 feature slice: distance/fog treatment, top-biased light/color, caustic-style motion, suspended particles and restrained screen effect. Record unsupported/degraded behavior rather than hiding it.
-4. Record representative frame timing/FPS or available runtime performance counters under both renderers using the same bounded scene/view conditions. This is a comparative decision, not a production performance certification.
-5. Choose Compatibility or Forward+ from evidence: visual target support, material correctness, stability and performance on the observed desktop. Document why the rejected renderer was not selected. Owner may prefer one visual result, but do not misreport a broken/slow path as equivalent.
+OWNER DECISION TO PRESERVE
+- Native command exercised by the owner: `./tools/dev compare forward-plus`.
+- Observation: Forward+ runs smoothly on the real desktop; visual improvement is modest at this early slice, but no material performance problem was observed.
+- Decision: **use Forward+ for P2** because its added rendering capabilities are expected to benefit the underwater atmosphere and fish-reactive water work.
+- P1's Xvfb/software renderer startup checks remain implementation evidence only; they are not substituted for this owner observation.
+- Compatibility remains a diagnostic comparison path, not a parallel production renderer.
 
-LOCK AND EVIDENCE
-Apply the selected renderer to tracked project/configuration and make the final P2 implementation consume one renderer path. Remove or clearly isolate comparison-only launch scaffolding from normal play while retaining enough documentation to reproduce the decision. Update docs/technical-direction.md only for the actual selected renderer/result and create docs/tasks/p2/qualification/renderer-decision.md with PASS/FAIL/NOT OBSERVED details. Do not claim G2.2 yet; the final environment/effects are still ahead.
+LOCK / VERIFY
+1. Record current revision/dirty identity, OS/display backend, GPU if available, Godot/.NET versions, viewport/display mode, actual asset install identity and the P1 comparison implementation identity.
+2. Change the tracked project/default normal-play renderer to the exact Forward+ rendering method already proven by `tools/dev compare forward-plus`. Do not guess the project setting name/value; reuse the implementation's actual renderer mapping.
+3. Keep the comparison tooling available for bounded diagnostics if useful, including `compare compatibility`, but remove any production ambiguity: normal main play and later P2 prompts target Forward+ only.
+4. Launch/confirm the tracked Forward+ candidate in a real desktop game window, or bind this lock to the owner's already-observed comparison candidate when source identity proves it is the same gameplay/render slice. Verify Fish3, representative prepared seabed/rock/coral materials, camera movement, pause/settings UI, fullscreen/windowed-fullscreen behavior as applicable, and runtime/editor errors. Record available frame timing/FPS/performance counters without inventing a production budget.
+5. If the tracked Forward+ lock exposes a new material crash, broken asset/material path, unusable camera/UI behavior or obvious performance regression, stop and record the exact blocker. Do not silently fall back to Compatibility. Any renderer reversal requires a new explicit owner decision.
+6. Update docs/technical-direction.md for the actual Forward+ lock and create/update `docs/tasks/p2/qualification/renderer-decision.md`. The record must distinguish: P1 automated comparison checks, the owner's real desktop Forward+ observation/selection, the tracked project change, post-lock verification, and any remaining limitations. Do not claim G2.2 yet; the final habitat/effects are still ahead.
 
 VALIDATE / VERSION
-Run only checks invalidated by the renderer lock: import/build/main/comparison scene and representative asset/shader load, plus git diff --check. Confirm P1 movement state/tuning is unchanged. Set root package.json to `0.2.2` only if the native comparison and selected-renderer lock are complete/reproducible. If blocked, retain `0.2.1` and hand back the exact missing observation or repair. Do not self-commit or push; the coordinator/runner owns the manual checkpoint.
+Run only checks invalidated by the renderer lock: import/build/main/comparison-scene and representative asset/shader load, plus `git diff --check`. Confirm P1 movement state/tuning is unchanged and normal play starts with Forward+. Set root package.json to `0.2.2` only if the Forward+ tracked lock and evidence are complete/reproducible. If blocked, retain `0.2.1` and hand back the exact repair. Do not self-commit or push; the coordinator/runner owns the manual checkpoint.
+
+REPORT
+Report the tracked Forward+ project setting/mapping, source/platform evidence used, post-lock native result, changed files/checks, any limitations, and the P3 habitat entry state. Do not reopen the renderer choice merely because Compatibility still exists as a compare command.

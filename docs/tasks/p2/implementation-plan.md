@@ -4,11 +4,11 @@
 
 Read AGENTS.md, BOOT.md, this stack README/assessment, [P2 design](../../planning/p2/underwater-world.md), [roadmap G2](../../roadmap.md#p2--build-the-underwater-world), [validation V18–V20](../../validation.md), [technical direction](../../technical-direction.md), [UX](../../ux-and-presentation.md), [art/assets](../../art-and-assets.md), final P1 accepted tuning/evidence, and affected source only.
 
-Before implementation inspect branch/HEAD/dirty state, `package.json`, final P1/c1 state, `game/project.godot`, main/course scenes, `StarterWorld.cs`, fish/camera/display source, `artifacts/assets/source/p2-environment/inventory.json` plus the local vendor asset mapping when present, and `tools/dev` composition. Require actual P1 close and deliberate root `0.2.0` baseline. Confirm Godot MCP targets Fish before editor mutations.
+Before continuation inspect branch/HEAD/dirty state, `package.json`, final P1/c1 state, P2/P1 implementation evidence, `game/project.godot`, main/course/comparison scenes, `RendererComparison.cs`, `StarterWorld.cs`, fish/camera/display source, `artifacts/assets/source/p2-environment/inventory.json` plus the local vendor asset mapping when present, and `tools/dev` composition. Require the real P2/P1 `0.2.1` checkpoint. Confirm Godot MCP targets Fish before editor mutations. **Forward+ is the owner-selected P2 renderer from this point forward.**
 
-## P1 — Renderer comparison vertical slice
+## P1 — Renderer comparison vertical slice — COMPLETE
 
-Keep Compatibility as the current production setting until the native decision. Add the smallest reversible development path that can launch/inspect the same candidate under Compatibility and Forward+ using the actual Godot 4.7.2 capabilities. Inspect the engine CLI/project override rather than inventing unsupported flags. Do not create two permanent gameplay projects.
+P1 established the reversible Compatibility/Forward+ comparison at root `0.2.1`. Compatibility remained the tracked default only to keep the comparison non-destructive until the owner selected a renderer. Add the smallest reversible development path that can launch/inspect the same candidate under Compatibility and Forward+ using the actual Godot 4.7.2 capabilities. Inspect the engine CLI/project override rather than inventing unsupported flags. Do not create two permanent gameplay projects.
 
 Create a bounded underwater rendering vertical slice using the existing P1 fish/camera and representative assets from the prepared P2 palette. Verify the full prepared set imports, while keeping the comparison scene small enough for a fair renderer A/B. It should make the renderer comparison meaningful by exercising:
 - distance/depth fog or renderer-appropriate equivalent;
@@ -19,11 +19,13 @@ Create a bounded underwater rendering vertical slice using the existing P1 fish/
 
 The slice is diagnostic, not the final P2 habitat. Keep the existing main scene runnable. Add focused checks for renderer launch selection/config isolation, material/resource load, finite shader parameters and unchanged movement authority. Record implementation evidence and exact commands. Assigned P1 version: `0.2.1`.
 
-## P2 — Native renderer lock
+## P2 — Native Forward+ lock
 
-Mandatory native handoff. Run the same candidate/viewpoints under both renderers on the target desktop where supported. Record Godot/backend, resolution/display mode, source/assets, visual correctness, errors, material parity, fog/post/particle behavior and representative frame timing/FPS. Use real game pixels; an editor viewport/headless process alone is insufficient.
+The renderer choice is no longer open. The owner ran `./tools/dev compare forward-plus` on the real desktop, reported smooth performance and slightly improved appearance, and explicitly chose Forward+ because its additional rendering capabilities are worthwhile for P2.
 
-Choose Compatibility or Forward+ from evidence and explain the tradeoff. Apply that choice to the tracked project/configuration, remove/disable comparison-only production ambiguity, update the technical record, and retain a reproducible way to understand the rejected path without shipping dual runtime logic. If one renderer cannot launch or materially breaks the candidate, record that as evidence rather than forcing parity. Write `qualification/renderer-decision.md`. Assigned P2 version: `0.2.2`.
+Treat that owner observation plus P1's reproducible comparison tooling as the decision input. Do **not** require another native Compatibility run. Switch the tracked project/default normal-play renderer to the exact Forward+ method proven by the comparison path, then run/confirm a bounded Forward+ normal-play smoke on representative Fish3, seabed, rock/coral, camera, pause/UI and display behavior. Record source/platform/errors and any available frame timing; if Forward+ materially fails after the tracked lock, stop with the concrete blocker and return to the owner rather than silently falling back.
+
+Keep `tools/dev compare compatibility` only as a development diagnostic if it remains useful; production/main should have one renderer: Forward+. Update the technical record and write `qualification/renderer-decision.md` with the P1 automated comparison boundary, the owner's real desktop Forward+ selection, the tracked lock, validation results and limitations. Assigned P2 version: `0.2.2`.
 
 ## P3 — Natural habitat foundation
 
@@ -53,20 +55,20 @@ Remove P1 target spheres/camera-check post/test-course presentation from normal 
 
 ## P5 — Underwater atmosphere
 
-On the locked renderer, implement a coherent environment stack owned by a small number of resources/components:
-- distance/depth attenuation/fog;
+On **Forward+**, implement a coherent environment stack owned by a small number of resources/components. Use Forward+ capabilities deliberately instead of carrying Compatibility-safe fallbacks. Prefer volumetric/depth-aware fog and GPU-driven presentation where they materially improve the result:
+- Forward+ volumetric fog and/or depth-aware distance attenuation, tuned for near-route readability and distant water depth;
 - underwater color/contrast;
 - top-biased sunlight;
 - animated caustic-style illumination across representative sand/gravel/rock/coral surfaces from the actual prepared palette;
-- sparse suspended motes;
-- restrained whole-view water distortion/noise/grade, depth-aware where the selected renderer supports it;
+- sparse GPU-driven suspended motes/particles;
+- restrained whole-view water distortion/noise/grade using Forward+ depth/screen information where useful;
 - tunable parameters for native iteration.
 
 Do not apply a uniform full-screen blue rectangle and call it water. Keep pause/settings/HUD crisp and outside inappropriate distortion. Shaders/effects must tolerate resize/fullscreen changes, pause and missing optional visual resources. Add bounded render-resource/scene checks and prove equal authoritative fish movement under presentation on/off where practical. Assigned P5 version: `0.2.5`.
 
 ## P6 — Fish-reactive water
 
-Add a presentation-only component/effect anchored to the accepted player visual/root. Read movement state such as velocity magnitude, acceleration/effort, turn rate and glide state without writing back. Drive a renderer-appropriate combination of wake particles, bubbles, turbulence, ribbon/trail or local distortion.
+Add a presentation-only component/effect anchored to the accepted player visual/root. Read movement state such as velocity magnitude, acceleration/effort, turn rate and glide state without writing back. Drive a **Forward+** combination of GPUParticles3D, bubbles/turbulence, particle trails/ribbons and/or local distortion as appropriate. No Compatibility fallback path is required.
 
 Tune four observable states: near-rest/glide minimal, normal cruise subtle steady wake, acceleration/high effort stronger response, hard turn directional/asymmetric disturbance. Spawn from plausible tail/body space through pitch/yaw, avoid camera obstruction, cap counts/lifetimes, and clear/freeze safely across pause/focus/reset/scene reload. Add tests that effect updates cannot change fish transform/velocity/collision and that resume does not dump a queued burst. Assigned P6 version: `0.2.6`.
 
@@ -74,7 +76,7 @@ Tune four observable states: near-rest/glide minimal, normal cruise subtle stead
 
 Mandatory native handoff on the final combined P2 candidate. Traverse V18 broad/tight/vertical routes, including rock tunnel/overhang and seabed/edge containment. Tune composition/collision/camera clearance rather than changing accepted motor semantics to fit the world.
 
-Observe V19 at near/far and upper/lower viewpoints in fullscreen and windowed-fullscreen: water depth, color/light, caustic motion, motes, post effect, UI readability, motion comfort and representative performance. Confirm the accepted normal-play world visibly uses the complete prepared seabed, four-piece rock set and five-species coral set. A missing prepared asset is a failed/incomplete composition requirement, not a performance exception; optimize its representation rather than dropping it. Confirm the locked renderer still matches its decision record after full scene load.
+Observe V19 at near/far and upper/lower viewpoints in fullscreen and windowed-fullscreen: water depth, color/light, caustic motion, motes, post effect, UI readability, motion comfort and representative performance. Confirm the accepted normal-play world visibly uses the complete prepared seabed, four-piece rock set and five-species coral set. A missing prepared asset is a failed/incomplete composition requirement, not a performance exception; optimize its representation rather than dropping it. Confirm **Forward+** remains smooth/stable enough on the full scene and still matches the owner-selected renderer decision after full scene load. If the full habitat reveals a material Forward+ blocker, stop and escalate instead of silently switching renderer.
 
 Observe V20 at rest/glide, cruise, acceleration/high effort and hard turn. Tune intensity/origin/lifetime so reaction is visible but not distracting. Exercise pause/focus/resume to catch backlog/burst issues. Record owner judgment that the prototype-course look is gone, the world feels natural/coherent and clearly underwater, and movement reaction improves the sense of swimming. Write `qualification/native-world.md` and `qualification/accepted-environment.md`. Assigned P7 version: `0.2.7`.
 
@@ -86,6 +88,6 @@ On success, route the next roadmap Phase to P3 feeding/escape/growth. Movement a
 
 ## Test strategy and exclusions
 
-Use T1 for config/resource/unit risks, T2 for scene/collision/effect integration and T3 for renderer/world visual qualification. Inspect `./tools/dev check` composition and avoid redundant builds. Use real Godot scene/runtime checks, `git diff --check`, public-asset boundary review and no `package-lock.json`.
+Use T1 for config/resource/unit risks, T2 for scene/collision/effect integration and T3 for Forward+/world visual qualification. Inspect `./tools/dev check` composition and avoid redundant builds. Use real Godot scene/runtime checks, `git diff --check`, public-asset boundary review and no `package-lock.json`.
 
-Do not expand into ecology, survival saves, first person, controller, free look, Movement abilities, procedural production generation, surface/ocean waves, buoyancy, general graphics settings, new engine versions, broad refactors or a physically simulated fluid.
+Do not expand into ecology, survival saves, first person, controller, free look, Movement abilities, procedural production generation, surface/ocean waves, buoyancy, general graphics settings, new engine versions, broad refactors, dual production renderer support or a physically simulated fluid.

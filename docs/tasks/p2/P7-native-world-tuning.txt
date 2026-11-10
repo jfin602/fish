@@ -12,7 +12,7 @@ PREREQUISITES AND NARROW READING
 Read AGENTS.md, BOOT.md, this stack README, implementation-plan.md P7, renderer-decision evidence, P1–P6 implementation evidence, validation V18–V20, roadmap G2.1–G2.3, P2 design, and `artifacts/assets/source/p2-environment/inventory.json` when present. Inspect actual `0.2.6` candidate, final P1 accepted tuning/profile, habitat/environment/effect resources, asset identity and tools/dev. Verify Fish editor/MCP project identity before mutations. Reuse prior unchanged build checks; rebuild only affected source.
 
 A — V18 HABITAT / TRAVERSAL
-1. Record revision/dirty identity, OS/display backend, selected renderer, Godot/.NET, display mode/resolution and player/camera/tuning identity.
+1. Record revision/dirty identity, OS/display backend, **Forward+ renderer/backend**, Godot/.NET, display mode/resolution and player/camera/tuning identity.
 2. Launch the normal P2 world and spend several minutes swimming rather than inspecting a still scene. Traverse one broad route, the intended rock tunnel/tight passage, the overhang/sheltered pocket and a lower-to-upper vertical route.
 3. Verify the normal world no longer exposes colored P1 target spheres, camera-check cylinder, obvious flat double-ground/test-room boundaries or a second swimmable layer beneath the seabed. Probe edges/underside naturally and confirm the fish stays inside the intended world.
 4. Judge rock/coral placement, repetition, seabed variation, sightlines, collision fairness and camera behavior. Confirm the normal-play world actually uses the intended prepared palette: Coast Sand 01, Ground060, Gravel041, Rock063; Rock Face 01, Rock Face 02, Coastal Cliff 01, Boulder 01; Heliopora coerulea, Acropora cervicornis, Acropora palmata, Meandrina meandrites and Montipora danae. Every listed model must be visibly represented and every listed terrain material must visibly contribute to the habitat. A missing prepared asset is a P4/P7 defect to repair, not a performance exception. Tune density, LOD/derived resources, geometry/collision and placement within P2 scope; do not change accepted motor semantics just to fit a bad tunnel. Preserve the P1 regression fixture separately.
@@ -21,7 +21,7 @@ B — V19 UNDERWATER ATMOSPHERE
 1. Observe near/far and upper/lower/deeper viewpoints while moving. Confirm depth/distance treatment, underwater color/contrast, top light, moving caustic-style illumination and suspended matter work together so the scene reads clearly as submerged.
 2. Observe the screen treatment through yaw, pitch, fast turns and slow glide. Reduce nausea/noise/distortion if needed. Fish, tunnel entrances and collision-relevant shapes must remain readable.
 3. Open pause/settings and switch fullscreen/windowed-fullscreen as supported. UI text/focus must remain crisp and not be distorted like world geometry. Exercise focus loss/refocus for visual/input cleanup.
-4. Compare the final renderer behavior to `qualification/renderer-decision.md`; if the full habitat materially invalidates that decision, stop and repair/re-evaluate rather than silently switching.
+4. Confirm the full habitat still supports the owner's Forward+ decision recorded in `qualification/renderer-decision.md`. If Forward+ now reveals a material crash, broken visuals or unacceptable performance, stop and repair/escalate rather than silently switching to Compatibility. A renderer reversal requires an explicit owner decision.
 5. Record representative frame timing/FPS/performance counters in at least open water and the densest reef/effect view on the observed machine. The dense view should exercise the real mixed rock/coral/material palette, including at least one of the heavier Smithsonian/Poly Haven assets, so performance evidence covers the prepared content rather than placeholder geometry. Tune instance density, LOD/derived resources and bounded P2 effects for obvious regressions while retaining at least one visible use of every prepared model and visible use of every terrain material; do not invent a production budget.
 
 C — V20 FISH-REACTIVE WATER
@@ -35,7 +35,7 @@ Record direct owner judgment: the environment feels natural/coherent enough for 
 
 Create/update:
 - `docs/tasks/p2/qualification/native-world.md` with scenario-by-scenario PASS/FAIL/NOT OBSERVED/BLOCKED, source/platform/actions/observations/performance and durable artifact references when available.
-- `docs/tasks/p2/qualification/accepted-environment.md` with the accepted renderer, main habitat/resource identities, key atmosphere parameters, effect parameters, asset/preparation identity and final observed display/platform scope.
+- `docs/tasks/p2/qualification/accepted-environment.md` with **Forward+**, main habitat/resource identities, key atmosphere parameters, effect parameters, asset/preparation identity and final observed display/platform scope.
 
 VALIDATE / VERSION
 Run targeted checks only for source changed during tuning, then git diff --check and asset-boundary review. Confirm no gameplay state authority moved into rendering/effects. Set root package.json to `0.2.7` only if V18–V20 are fully observed and the accepted candidate is saved/reproducible. If a material criterion fails, retain `0.2.6` and report the exact repair. Do not self-commit or push; leave the manual checkpoint for runner/coordinator handling.
