@@ -321,16 +321,22 @@ public partial class PlayShell : Node
         string Axis(SteeringAxis axis) =>
             (profile.MouseX.Steering == axis ? "Mouse X" : "") +
             (profile.MouseY.Steering == axis ? (profile.MouseX.Steering == axis ? "/Mouse Y" : "Mouse Y") : "");
+        string Steering(ControlAction left, ControlAction right, SteeringAxis axis)
+        {
+            var keys = Keys(left).Length == 0 && Keys(right).Length == 0
+                ? "" : $"{Keys(left)}/{Keys(right)}";
+            return string.Join(" + ", new[] { keys, Axis(axis) }.Where(part => part.Length > 0));
+        }
         var otherPause = string.Join("/", profile.Bindings(ControlAction.PauseOptions)
             .Where(binding => binding != new ControlBinding(BindingDevice.PhysicalKey, ControlPreset.RecoveryKey))
             .Select(ControlPresetsPanel.BindingName));
         _help.Text = $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
-            $"Turn: {Keys(ControlAction.YawLeft)}/{Keys(ControlAction.YawRight)} {Axis(SteeringAxis.Yaw)}  " +
-            $"Pitch: {Keys(ControlAction.PitchUp)}/{Keys(ControlAction.PitchDown)} {Axis(SteeringAxis.Pitch)}  " +
+            $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
+            $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
             $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
             (CanQuickCycle() ? "  Debug: F6 cycles presets" : "");
-        _help.Position = new Vector2(20, 16);
-        _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 80);
+        _help.Position = new Vector2(20, 60);
+        _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 120);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
         _help.AddThemeFontSizeOverride("font_size", viewport.Y < 700 ? 16 : 19);
     }
