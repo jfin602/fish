@@ -1,6 +1,6 @@
 # P4 — Freshwater Pond and World Selection
 
-**Decision date:** 2026-11-11. **Status:** owner-approved future design; NOT IMPLEMENTED / NOT QUALIFIED. **Dependency:** finish the P3 `c3-world-gen` manual M1–M4 repair and re-qualify the Ocean candidate before beginning P4. **Version:** P3 remains `0.3.6` during corrections; P4 uses the `0.4.x` development line only when deliberately entered.
+**Decision date:** 2026-11-11. **Status:** owner-approved future design; [Phase 4 implementation stack](../../tasks/p4/README.md) AUTHORED / NOT EXECUTED; NOT IMPLEMENTED / NOT QUALIFIED. **Dependency:** finish the P3 `c3-world-gen` manual M1–M4 repair and re-qualify the Ocean candidate before beginning P4. **Version:** P3 remains `0.3.6` during corrections; P4 uses the `0.4.x` development line only when deliberately entered.
 
 ## Outcome and preservation contract
 
