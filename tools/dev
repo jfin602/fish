@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -79,11 +79,15 @@ terrain_world_check() {
   grep -Fq 'FAF_TERRAIN_WORLD_OK' "$LOGS/terrain-world.log" || { echo 'FAF terrain world marker missing' >&2; return 1; }
 }
 geology_check() {
-  logged geology-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_geology_check.gd
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/geology-check.XXXXXX")
+  logged geology-check 45 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_geology_check.gd
   grep -Fq 'FAF_GEOLOGY_OK' "$LOGS/geology-check.log" || { echo 'FAF geology marker missing' >&2; return 1; }
 }
 collision_check() {
-  logged world-collision 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/world_collision_check.gd
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/collision-check.XXXXXX")
+  logged world-collision 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/world_collision_check.gd
   grep -Fq 'WORLD_COLLISION_OK' "$LOGS/world-collision.log" || { echo 'World collision marker missing' >&2; return 1; }
 }
 dressing_check() {
@@ -123,6 +127,14 @@ world_compiler_check() {
   profile=$(mktemp -d "$ROOT/artifacts/world-compiler.XXXXXX")
   logged world-compiler 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --world-compiler-check
   grep -Fq 'WORLD_COMPILER_CHECK_OK' "$LOGS/world-compiler.log" || { echo 'World compiler check marker missing' >&2; return 1; }
+}
+generated_geology_check() {
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/generated-geology.XXXXXX")
+  logged generated-geology-mesh 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --geology-mesh-check
+  grep -Fq 'GEOLOGY_MESH_OK' "$LOGS/generated-geology-mesh.log" || { echo 'Generated geology mesh marker missing' >&2; return 1; }
+  logged generated-geology-clearance 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/generated_geology_check.gd
+  grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
   doctor)
@@ -212,6 +224,7 @@ case "${1:-help}" in
   inspect-reef) need_tools; reef_check ;;
   inspect-terrain) need_tools; terrain_world_check ;;
   inspect-geology) need_tools; geology_check ;;
+  inspect-generated-geology) need_tools; generated_geology_check ;;
   inspect-collision) need_tools; collision_check ;;
   inspect-dressing) need_tools; dressing_check ;;
   inspect-ambient) need_tools; ambient_check ;;

@@ -131,12 +131,20 @@ public partial class Main : Node3D
             CallDeferred(MethodName.VerifyDepth);
         if (OS.GetCmdlineUserArgs().Contains("--basin-check"))
             CallDeferred(MethodName.VerifyBasin);
+        if (OS.GetCmdlineUserArgs().Contains("--geology-mesh-check"))
+            CallDeferred(MethodName.VerifyGeologyMesh);
     }
 
     private void VerifyBasin()
     {
         try { BasinChecks.Run(this); GetTree().Quit(); }
         catch (Exception error) { GD.PushError($"BASIN_CHECK_FAILED {error}"); GetTree().Quit(1); }
+    }
+
+    private void VerifyGeologyMesh()
+    {
+        try { GeologicalRegionChecks.Run(this); GetTree().Quit(); }
+        catch (Exception error) { GD.PushError($"GEOLOGY_MESH_FAILED {error}"); GetTree().Quit(1); }
     }
 
     private void VerifyDepth()

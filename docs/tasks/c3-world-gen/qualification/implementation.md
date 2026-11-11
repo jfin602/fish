@@ -46,3 +46,36 @@ The dense seed-42 check found a minimum of `-12.59 m` at `(4.5, 2.0)` in the cen
 The repository's `prepare-faf-collision` wrapper invokes `godot --import`; that editor stage could not create a local socket under this sandbox. The same tracked terrain collision preparation script ran directly in headless mode and reported `TERRAIN_COLLISION_PREP_OK`. The headless checks are geometry and runtime identity evidence, not native visual qualification.
 
 **P3 geology entry:** `inspect-reef` fails tunnel camera clearance near `(-7.9, -3.53, -17.78)`; `inspect-terrain` fails a 1.22 m visual/collision route-floor agreement near `(21, -0.64, 11)`; `inspect-geology` fails west tunnel camera clearance near `(-7.9, -3.76, -17.31)`. These are real conflicts between the new basin and the interim authored P3 piece/route layout. P3 must generate geological masses, cave/tunnel shells and collision from the basin, and P4–P5 must establish protected routes and supported placement before those checks can be qualified. Normal play still generates this P2 candidate at startup; P6 must bake/load the complete world. P7 must inspect the actual visual perimeter and full traversal. No P3 Gate or new native P2 claim is made here.
+
+## P3 — true 3D geological regions (2026-11-10)
+
+**Pre-task state:** clean `main` at `12cb7ccdbb00a21b52a938c665b30c097c483cc8`; root `0.3.6`. The Godot Editor MCP server `2026.11.04` was reachable but had no connected editor peer. The pinned local executable was `Godot 4.7.2.stable.mono`, and the pinned .NET SDK was `10.0.403`. `SurfaceTool`, `ArrayMesh.CreateTrimeshShape`, `ConcavePolygonShape3D.BackfaceCollision` and static-body attachment were verified by build and headless scene execution. The runner owns the commit; this task leaves its changes uncommitted.
+
+`GeologicalRegionGenerator` uses bounded, deterministic quadratic centerlines and 16 stations × 20 cross-section sides per closed shell. Each station has an inner traversable floor/wall/ceiling ring and an outer geological ring; paired loft faces and portal annuli close the mesh. The outer ring extends 2.7–3.2 m beyond the opening and 1.7 m below the sampled basin, creating broad structural mass and buried contact instead of a suspended roof. Floors follow the actual analytic basin with a 0.24–0.62 m lift, higher in each passage and lower at its portals. The canyon is a separately closed 16 × 13-profile ribbon with an open top, two ridges, side walls, a floor and buried skirts. All five use ordinary `ArrayMesh` resources and matching `ConcavePolygonShape3D` collision made from the visual triangles; they can be serialized by P6 without runtime CSG or voxels. Independent named seed streams affect each shell, and basin height changes affect every structure. FAF rocks/terrain remain in the interim scene for edge/detail use, but no generated cave, tunnel or arch depends on a placed FAF roof/support piece.
+
+The generated scene path is `Habitat/Composition/ReefComposition/Geology/GeneratedRegions/<id>`. Every body has `Mesh`, `Collision`, and `Centerline` children. The line contains ordered `Entry`, `Center`, `Exit` and `ProbeNN` markers (16 samples total) carrying the fish/camera probe radii (0.48/0.22 m), nominal side/headroom metadata or `open_top`. These are P4 inputs, not a claim that the old authored route graph has been reconciled. P4 must measure clearance against the complete final world before routing and reserve the resulting corridors from dressing.
+
+| Generated ID | Kind | Visual/collision triangles | Measured minimum clear sphere radius along 16 probes, fish/camera | Live camera distance at center |
+| --- | --- | ---: | ---: | ---: |
+| `cave-chamber` | Widened cave shell with two portals | 1,280 / 1,280 | 1.55 / 2.32 m | 4.29 m |
+| `west-swim-through` | Curved tunnel | 1,280 / 1,280 | 1.51 / 1.79 m | 4.29 m |
+| `east-swim-through` | Narrower, differently curved tunnel | 1,280 / 1,280 | 1.40 / 1.56 m | 4.29 m |
+| `stone-arch` | Broad short arch/overhang shell | 1,280 / 1,280 | 1.64 / 2.49 m | 4.29 m |
+| `canyon-ridge` | Open ridge/canyon transition | 828 / 828 | 0.80 / 1.38 m | 4.29 m |
+
+The minimum clear sphere radii come from 8-step physics shape-query bisection at each named route probe; the camera point is 2 m above the fish point. They include the current FAF and terrain collision, so the canyon's 0.80 m fish radius is the tightest measured point. All five routes also passed 225 sampled fish/camera overlap pairs across their centerlines, fish collision sweeps outward and back, generated-floor and side-wall rays at the center, generated-ceiling rays for the four enclosed structures, and a live camera nonpenetration check. The 4.29 m camera distance is the stationary center sample, not a native camera-feel or full input-path judgment.
+
+**T2 results:**
+
+| Check | Observed result |
+| --- | --- |
+| `./tools/dev build` | PASS; 0 warnings, 0 errors. |
+| `./tools/dev inspect-generated-geology` | PASS; five distinct IDs/kinds, 5,948 finite nondegenerate visual triangles and 5,948 identical collision triangles, 8,922 oppositely paired geometric edges, buried basin overlap, floor/wall/ceiling classification, two-surface X/Z cases, same-seed identity, different-seed variation, route hooks and physical clearance/traversal. |
+| `./tools/dev inspect-collision` | PASS; 46 static bodies, 51 shapes, 38 interim FAF geological pieces, five generated geological mesh/collision pairs, seabed/draped terrain and remote limits. The open floor ray moved to a clear X/Z because the generated arch now covers the origin below the spawn. |
+| `./tools/dev inspect-basin` | PASS; the seed-42 18,432-triangle open basin and its collision, deep core and irregular natural perimeter remain unchanged. |
+| `./tools/dev inspect-habitat` | PASS; 202 heightfield collision samples exclude the new geology, while a clear open-floor location verifies downward/underside blocking, bank, spawn, motor and P1 fixture. |
+| Main scene headless `--smoke` | PASS with isolated `XDG_DATA_HOME`; normal habitat/atmosphere loaded, motor check and `FISH_SMOKE_OK`. |
+| `./tools/dev inspect-geology` | FAIL on the already recorded interim west-tunnel camera route: FAF `Solid` at approximately `(-7.9, -3.76, -17.31)`. P4–P5 own route/placement reconciliation; this result remains visible. |
+| `git diff --check` | PASS. |
+
+This is headless source/physics evidence. Native visual continuity, the final route graph, protected placement, bake/load timing and owner acceptance remain P4–P7 work. The generated shells currently build during normal scene initialization; P6 must serialize and load them as baked resources without generation on the normal path.

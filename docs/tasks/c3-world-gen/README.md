@@ -1,6 +1,6 @@
 # c3-world-gen — deterministic procedural reef world correction
 
-**State:** P1–P2 IMPLEMENTED / P3–P7 NOT EXECUTED / NOT QUALIFIED. P2 has headless geometry evidence; native appearance and rebuilt routes remain open.
+**State:** P1–P3 IMPLEMENTED / P4–P7 NOT EXECUTED / NOT QUALIFIED. P2 basin and P3 generated geology have headless geometry/collision evidence; native appearance and rebuilt world routes remain open.
 **Type:** Correction 3.  
 **Authoring baseline:** GitHub main at `4c9b601df7c8aa97f983b02bea216aee13af2748`, root `0.3.0`.  
 **Execution version:** every prompt requires **unchanged `0.3.6`**, the owner-selected P3 P6 checkpoint. This is a strict preflight for the intended local execution point, not an instruction to bump/downgrade GitHub main or fabricate P3 checkpoints.

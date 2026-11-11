@@ -60,6 +60,7 @@ From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `
 | `./tools/dev compare compatibility` or `./tools/dev compare forward-plus` | Build and launch the preserved P1 fixture inside the bounded P2 rendering slice. Godot 4.7.2 uses `--rendering-method gl_compatibility` / `forward_plus` for one process; the saved production method remains Forward+. Add `--effects=off` to either command to hide comparison effects and fog. |
 | `./tools/dev inspect-scene <path>` | Inspect a real saved scene; missing paths fail nonzero. |
 | `./tools/dev inspect-geology` | Check live FAF geology IDs/placement, two covered swim-throughs, cave turn space, deep corridor/return, visual bounds and camera obstruction recovery. |
+| `./tools/dev inspect-generated-geology` | Check C3 generated geological mesh topology, deterministic collision identity, named probes, physics clearance, fish traversal and camera obstruction. |
 | `./tools/dev inspect-atmosphere` | Check tracked Forward+ settings, normal atmosphere resources and bounds, UI ordering, resize/pause safety, optional screen resource behavior and equal fish movement with effects on/off. |
 | `./tools/dev automation-smoke` | Create/edit/save/reload/assert/remove a disposable scene using Godot APIs. |
 

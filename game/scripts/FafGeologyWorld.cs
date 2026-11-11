@@ -56,6 +56,7 @@ public partial class FafGeologyWorld : Node3D
     };
 
     public int PieceCount => Layout.Length;
+    public IReadOnlyList<GeologicalRegion> GeneratedRegions { get; private set; } = System.Array.Empty<GeologicalRegion>();
 
     public bool TryBuild(SeabedSurface seabed, out string diagnostic)
     {
@@ -97,8 +98,41 @@ public partial class FafGeologyWorld : Node3D
                 seabed.GetHeightAt(marker.Position.X, marker.Position.Z) + lift,
                 marker.Position.Z);
         }
+        var generated = new Node3D { Name = "GeneratedRegions" };
+        AddChild(generated);
+        var regions = GeologicalRegionGenerator.Generate(seabed.Basin);
+        foreach (var region in regions)
+        {
+            var body = new StaticBody3D
+            {
+                Name = region.Id,
+                CollisionLayer = 1,
+                CollisionMask = 0,
+            };
+            body.SetMeta("geology_kind", region.Kind);
+            body.SetMeta("algorithm_version", GeologicalRegionGenerator.AlgorithmVersion);
+            body.AddChild(new MeshInstance3D { Name = "Mesh", Mesh = region.Mesh });
+            body.AddChild(new CollisionShape3D { Name = "Collision", Shape = region.Collision });
+            var centerline = new Node3D { Name = "Centerline" };
+            body.AddChild(centerline);
+            for (var i = 0; i < region.Centerline.Length; i++)
+            {
+                var name = i == 0 ? "Entry" : i == region.Centerline.Length - 1 ? "Exit" :
+                    i == region.Centerline.Length / 2 ? "Center" : $"Probe{i:00}";
+                var marker = new Marker3D { Name = name, Position = region.Centerline[i] };
+                marker.SetMeta("fish_probe_radius", .48f);
+                marker.SetMeta("camera_probe_radius", .22f);
+                marker.SetMeta("nominal_fish_side_room", region.NominalFishSideRoom);
+                if (region.NominalCameraHeadroom is { } headroom)
+                    marker.SetMeta("nominal_camera_headroom", headroom);
+                else marker.SetMeta("open_top", true);
+                centerline.AddChild(marker);
+            }
+            generated.AddChild(body);
+        }
+        GeneratedRegions = regions;
         diagnostic = "";
-        GD.Print($"FAF_GEOLOGY_READY pieces={PieceCount} collision={PieceCount} routes=west-tunnel,east-cave,deep-corridor");
+        GD.Print($"FAF_GEOLOGY_READY pieces={PieceCount} generated={regions.Count} collision={PieceCount + regions.Count} routes=west-tunnel,east-cave,deep-corridor,generated-centerlines");
         return true;
     }
 }

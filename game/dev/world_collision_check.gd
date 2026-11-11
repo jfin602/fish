@@ -66,13 +66,13 @@ func _run() -> void:
 	var geology: Node3D = main.get_node("Habitat/Composition/ReefComposition/Geology/Visuals")
 	var all_solids: Array[StaticBody3D] = []
 	solids(main, all_solids)
-	if all_solids.size() != 41:
-		fail("expected 38 geology pieces, draped terrain, seabed and limits; got " + str(all_solids.size()))
+	if all_solids.size() != 46:
+		fail("expected 38 FAF pieces, five generated regions, draped terrain, seabed and limits; got " + str(all_solids.size()))
 		return
 	var shapes: Array[CollisionShape3D] = []
 	var polygons: Array[CollisionPolygon3D] = []
 	all_shapes(main, shapes, polygons)
-	if shapes.size() != 46 or not polygons.is_empty():
+	if shapes.size() != 51 or not polygons.is_empty():
 		fail("unexpected shape/polygon inventory: " + str(shapes.size()) + "/" + str(polygons.size()))
 		return
 	for shape_node in shapes:
@@ -135,6 +135,29 @@ func _run() -> void:
 	if resources.size() != 7:
 		fail("unexpected prepared resource reuse count: " + str(resources.size()))
 		return
+	var generated: Node3D = main.get_node("Habitat/Composition/ReefComposition/Geology/GeneratedRegions")
+	if generated.get_child_count() != 5:
+		fail("generated geological body count changed")
+		return
+	var generated_triangles := 0
+	for body in generated.get_children():
+		var mesh: ArrayMesh = body.get_node("Mesh").mesh
+		var shape: ConcavePolygonShape3D = body.get_node("Collision").shape
+		if body.collision_layer != 1 or body.collision_mask != 0 or mesh == null or shape == null or not shape.backface_collision:
+			fail("generated body lacks matching static collision: " + body.name)
+			return
+		var vertices: PackedVector3Array = mesh.surface_get_arrays(0)[Mesh.ARRAY_VERTEX]
+		if shape.data.size() != vertices.size():
+			fail("generated collision triangle count mismatch: " + body.name)
+			return
+		for index in vertices.size():
+			if vertices[index].distance_to(shape.data[index]) > 0.001:
+				fail("generated collision vertex mismatch: " + body.name)
+				return
+		generated_triangles += vertices.size() / 3
+	if generated_triangles != 5948:
+		fail("generated triangle inventory changed: " + str(generated_triangles))
+		return
 	var terrain: Node3D = main.get_node("Habitat/Composition/ReefComposition/Terrain")
 	var terrain_body: StaticBody3D = terrain.get_node_or_null("DrapedTerrainSolid")
 	if terrain_body == null or terrain_body.collision_layer != 1 or terrain_body.collision_mask != 0 or terrain_body.transform != Transform3D.IDENTITY:
@@ -174,7 +197,7 @@ func _run() -> void:
 			fail("boundary disabled: " + name)
 			return
 	var space := main.get_world_3d().direct_space_state
-	var floor_hit := ray(space, Vector3.ZERO, Vector3(0, -15, 0))
+	var floor_hit := ray(space, Vector3(9, 0, 0), Vector3(9, -15, 0))
 	if floor_hit.get("collider") != seabed and floor_hit.get("collider") != terrain_body:
 		fail("visible terrain/seabed floor ray missed")
 		return
@@ -186,5 +209,5 @@ func _run() -> void:
 		if ray(space, pair[0], pair[1]).get("collider") != pair[2]:
 			fail("terrain or boundary ray missed: " + str(pair[0]))
 			return
-	print("WORLD_COLLISION_OK static=41 shapes=46 polygons=0 geology=38 terrain_triangles=58752 prepared_variants=8 p2_orphans=0 seabed=solid limits=5 fish_radius=0.48 geometry=aligned")
+	print("WORLD_COLLISION_OK static=46 shapes=51 polygons=0 faf_geology=38 generated=5 generated_triangles=5948 terrain_triangles=58752 prepared_variants=8 p2_orphans=0 seabed=solid limits=5 fish_radius=0.48 geometry=aligned")
 	quit()
