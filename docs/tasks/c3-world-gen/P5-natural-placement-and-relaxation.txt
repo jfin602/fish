@@ -1,0 +1,33 @@
+TASK: Correction 3 / P5 — Natural FAF placement and relaxation
+
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Replace placed/random-looking FAF transforms with deterministic terrain-caused habitat clusters, natural spacing, support/embedding checks and repair/scoring.
+
+READ
+Read c3-world-gen plan P5, procedural-world plan, FAF catalog/style/pack records, route/environment fields and current P3 dressing/ambient implementation. Inspect actual required 38 environment variants and current placement ownership.
+
+IMPLEMENT
+1. Define a small set of deterministic habitat/cluster roles (e.g. shallow coral garden, sea-grass meadow, sandy clearing, rocky slope, cave entrance, sheltered pocket, drop-off reef, deep rubble field).
+2. Select zone/cluster anchors from environmental suitability rather than arbitrary XYZ.
+3. Within zones use deterministic blue-noise/Poisson-like spacing or equivalent non-grid distribution.
+4. Score family-specific candidates from depth, slope/normal, route distance, cave/geology proximity, shelter/exposure and local density.
+5. Project every asset onto the actual terrain surface. Orient/offset according to its role and surface normal.
+6. For large rocks and FAF terrain accents, sample multiple footprint support points; embed/partially sink where appropriate and reject unsupported/floating placements. FAF terrain A–F are localized features, not the base floor.
+7. Reserve route/cave clearance before decoration; reject candidates intersecting protected corridors.
+8. Run bounded relaxation/repair passes for major intersections, unsupported pieces, repeated orientation/spacing, density spikes and blocked sight/route entrances.
+9. Preserve the shallow/high -> deep/lower living-density trend and meaningful coverage of all required FAF variants without checklist clutter.
+10. Produce deterministic world-score diagnostics: counts by zone/depth/family, support failures before/after repair, spacing/repetition metrics, intersections, route violations and cost estimates.
+11. Add focused multi-seed checks proving same-seed repeatability, different-seed variation, zero unresolved critical support/route failures and no regular grid placement.
+
+VALIDATE
+T2: build, placement/support/route/coverage/density checks across representative seeds, main generated-world smoke, relevant FAF asset-load checks and git diff --check.
+
+DONE WHEN
+The generated world dressing is terrain- and habitat-driven, all major pieces are supported/embedded, routes stay open, density follows depth and repeated assets no longer depend on fixed authored/random XYZ transforms.
+
+REPORT
+Cluster roles, suitability rules, spacing method, repair passes, per-seed metrics and remaining P6 bake/performance work. No commit/push; keep 0.3.6.

@@ -19,6 +19,10 @@ Turn the accepted technical depth world into the first fully dressed Fish reef:
 - improve on style-proof 001's weak stacked arch, visible terrain seams and sparse layering;
 - reach the owner-approved reef target from the actual gameplay camera.
 
+## World-generation architecture correction
+
+The original P3 P2–P4 prompt text was authored before S18 and may already exist in local runner history. **Do not rewrite/fabricate those checkpoints.** At the owner-selected P3 P6 / `0.3.6` pause, [c3-world-gen](../c3-world-gen/README.md) supersedes the old placed/modular world-formation assumptions with the deterministic compiler/bake architecture. Run c3-world-gen before c3-visibility and before P3 P7 native closeout. Character Select and later P3 art goals remain in force.
+
 ## Entry and version
 
 Root is now deliberately **`0.3.0`** under owner transition S16. P2 G2.3/V20 remains an accepted evidence gap; this P3 entry does not relabel it PASS.

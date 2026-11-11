@@ -2,13 +2,13 @@
 
 **Mode:** Correction 3; owner-selected execution version **0.3.6 unchanged** (P3 P6 checkpoint). The inspected historical GitHub authoring baseline was 0.3.0; local completion of P3 P6 must be verified before running.
 **Existing decision:** [Underwater visibility and discovery](../../systems/underwater-visibility.md), S17/C50, validation V25.
-**Execution order:** P1 -> P2 -> P3 -> P4 native/manual closeout.
+**Execution order:** first complete/reconcile c3-world-gen at 0.3.6; then P1 -> P2 -> P3 -> P4 native/manual closeout.
 
 ## Entry, safe handoff and source trace
 
 Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, this README/assessment, the visibility contract, P3 world plan and relevant P2/c2 closeouts. Inspect Git branch/HEAD, local changes, package.json, correct Fish Godot project identity, actual scene architecture and tools/dev commands. Confirm the actual active package version equals this correction's unchanged metadata **before** running the runner. If P3 already made progress, stop and reconcile c3 metadata/version with the proven completed P3 prefix; do not downgrade package.json, reset work, or run two stacks concurrently. Prompt files must not be edited beneath an active runner.
 
-At authoring, the main presentation path is main.tscn -> UnderwaterAtmosphere -> one Forward+ Environment plus one directional sun, overhead surface, caustic decal, ribbon shafts, volumetric treatment, water reaction and below-UI screen treatment. Current tuning spans UnderwaterAtmosphere.cs, LightingSettings.cs, LightingPresetStore.cs and GraphicsPanel.cs; WaterColumnChecks.cs and game/dev/* provide depth/atmosphere checks. P3 may change scene paths/active fish visuals; inspect rather than hardcoding obsolete P2 scene assumptions.
+After c3-world-gen, inspect the actual generated/baked world loader and geometry first. At original visibility authoring, the main presentation path was main.tscn -> UnderwaterAtmosphere -> one Forward+ Environment plus one directional sun, overhead surface, caustic decal, ribbon shafts, volumetric treatment, water reaction and below-UI screen treatment. Current tuning spans UnderwaterAtmosphere.cs, LightingSettings.cs, LightingPresetStore.cs and GraphicsPanel.cs; WaterColumnChecks.cs and game/dev/* provide depth/atmosphere checks. P3 may change scene paths/active fish visuals; inspect rather than hardcoding obsolete P2 scene assumptions.
 
 ## P1 — stronger distance extinction, same lighting identity
 
@@ -57,4 +57,4 @@ Create qualification/native-visibility.md with actual screenshots/logs (retained
 
 ## Deferred
 
-Large-map occlusion/LOD, true optical simulation, new volumetric zones in every cave, procedural world generation, predators/feeding/growth, persistence, movement/camera redesign, new GFX framework, renderer selection and P3 art/character-selection development are separate work.
+Large-map occlusion/LOD, true optical simulation, new volumetric zones in every cave, predators/feeding/growth, persistence, movement/camera redesign, new GFX framework, renderer selection and P3 art/character-selection development are separate work. Procedural world generation is handled separately by c3-world-gen and should already be reconciled before this correction.

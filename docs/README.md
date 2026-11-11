@@ -14,6 +14,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Movement abilities](planning/p1/movement-abilities.md) | Approved future burst/precision/evasive-turn group; immediate sequencing superseded by P2 worldbuilding. |
 | [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, depth-structured traversal, renderer lock, water-column atmosphere and movement-reactive presentation. |
 | [P3 FAF reef-world plan](planning/p3/reef-world-rebuild.md) | Rebuild/dress the accepted varying-depth world with the complete original FAF environment library, caves/tunnels, depth-based density, and the five-fish Character Select/session-return flow. |
+| [P3 procedural world generation](planning/p3/procedural-world-generation.md) | Deterministic finite world compiler: irregular basin, true 3D geology, terrain-aware placement, baked candidate/Base World lifecycle and generation-time target. |
 | [Underwater visibility and discovery](systems/underwater-visibility.md) | Owner-selected distance/depth extinction, progressive reef reveal, near-field readability, tuning controls, and pending native acceptance. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
@@ -38,7 +39,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## Current sequence
 
-P1 is complete. P2 is **owner-closed for progression / NOT GREEN**: G2.1/G2.2 pass and G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition. **[P3 FAF reef rebuild](tasks/p3/README.md) is now READY TO EXECUTE**, including the five-fish Character Select/session-return flow. Feeding/predators/growth follow as P4. The previously selected Movement abilities remain a future enhancement.
+P1 is complete. P2 is **owner-closed for progression / NOT GREEN**: G2.1/G2.2 pass and G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition. **[P3 FAF reef rebuild](tasks/p3/README.md) is now READY TO EXECUTE**; at the owner-selected local `0.3.6` checkpoint, [c3-world-gen](tasks/c3-world-gen/README.md) supersedes the old placed-world architecture and should run before c3-visibility, including the five-fish Character Select/session-return flow. Feeding/predators/growth follow as P4. The previously selected Movement abilities remain a future enhancement.
 
 ## Status language
 

@@ -23,7 +23,7 @@ Keep authoritative fish/run/ecology state separate from input adapters, camera t
 
 Introduce stable run and significant event IDs when their first owning systems are added. Growth, consumption, health changes, escapes, and death must have inspectable real causes. An event journal should capture meaningful occurrences, not every rendered frame. [The module map](../MODULES.md) describes intended responsibilities without requiring empty frameworks.
 
-Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. P2 now owns the first deliberate habitat/water treatment and renderer lock; final player species, production biome, larger world generation, and exact balance remain open. Asset selection alone does not change the renderer or establish runtime suitability.
+Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. P2 owns the first deliberate habitat/water treatment and renderer lock. **S18 now selects P3's larger-world direction: a finite deterministic world compiler with baked outputs and curated Base Worlds.** Final biome scale, player-facing generation UX and exact balance remain open. Asset selection alone does not change the renderer or establish runtime suitability.
 
 ## P2 worldbuilding and rendering boundary
 
@@ -32,6 +32,27 @@ After P1 close, [P2](planning/p2/underwater-world.md) replaced the normal-play m
 P2/P1 provides same-candidate Compatibility/Forward+ diagnostic paths. The owner selected **Forward+** after a smooth real-desktop run, and P2/P2 locked the saved desktop project to that method. Normal main play and subsequent P2 world/effect work use Forward+; the Compatibility command remains a bounded diagnostic. The [decision record](tasks/p2/qualification/renderer-decision.md) separates the owner's observation, the saved setting, and post-lock checks. A renderer reversal requires a concrete blocker and explicit owner decision.
 
 The current candidate blends the four prepared seabed material sets on one visual shader surface over the continuous collidable heightfield. `UnderwaterAtmosphere.cs` installs Forward+ camera-depth distance/height/volumetric fog, top light, a moving overhead visual water mesh, drifting organic caustic projection, six world-depth-attenuated ribbon shafts, low-detail suspended GPU motes and a restrained `underwater_screen.gdshader` pass below the UI. The seabed shader attenuates color by world height. The paused settings shell offers a GFX panel with live bounded sliders and local lighting presets. `WaterReaction.cs` reads fish movement to drive capped tail-space GPU ribbons and spherical bubbles. These presentation components do not apply forces or own simulation state. The owner-green [c2 water/light closeout](tasks/c2-watet-light-fx/closeout.md) remains the base; [c2-depth P4](tasks/c2-depth/closeout.md) retains the historical failed route/visual observation, and the later [R1 native closeout](tasks/c2-depth/qualification/native-depth.md#r1-addendum--repaired-candidate-native-observation) qualifies repaired authored traversal, natural terrain, depth visibility and deep overhead cue with owner acceptance. Keep HUD/pause/settings readable outside world distortion.
+
+## P3 deterministic world compiler boundary
+
+P3 world formation is no longer an authored heightfield plus fixed prop-anchor problem. [Procedural world generation](planning/p3/procedural-world-generation.md) owns the selected architecture and [c3-world-gen](tasks/c3-world-gen/README.md) owns implementation.
+
+Separate **generation-time** and **runtime** responsibilities:
+
+- generation consumes an explicit seed/settings/generator version and the FAF catalog;
+- generation creates an irregular basin, true 3D geological regions, protected route graph, environment analysis and deterministic placements;
+- generation performs support/intersection/route repair and records world metrics/timings;
+- generation bakes ordinary Godot mesh/collision/data resources plus a manifest;
+- normal play loads baked resources and must not run the compiler;
+- generated candidates stay ignored/user-side until explicitly promoted to curated Base Worlds.
+
+The open basin may retain a cheap height/sample API, but `GetHeightAt(x,z)` is not a universal terrain contract. Cave ceilings/walls/overhangs require actual mesh projection/raycast queries and arbitrary 3D collision.
+
+The perceived world boundary comes from generated rising terrain/geology. Fail-safe collision can exist outside/behind it but should not define ordinary navigation.
+
+The owner target for a P3-sized compile is **≤120 seconds** on the identified current development machine. This must be measured. Baked load must be generator-independent and materially faster; record actual timing.
+
+This is finite content compilation, not infinite streaming, voxel/destructible terrain, runtime erosion or procedural ecology.
 
 ## Persistence and narrative boundaries
 

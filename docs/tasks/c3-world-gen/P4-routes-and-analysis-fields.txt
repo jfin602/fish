@@ -1,0 +1,29 @@
+TASK: Correction 3 / P4 — Routes and environmental analysis
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Generate protected playable routes before dressing and derive deterministic terrain/environment fields that natural placement can query.
+
+READ
+Read c3-world-gen plan P4, current generated basin/geology contracts, fish/camera clearance, P3 depth-density requirements and current route/test tooling.
+
+IMPLEMENT
+1. Build a deterministic 3D route graph after basin/geology generation and before decoration.
+2. Include safe spawn, shallow/middle/deep traversal, return path, alternate route, cave/tunnel paths, open-water corridor(s) and landmark approaches.
+3. Store route edge/node metadata plus protected clearance/exclusion radii/volumes derived from accepted fish/camera needs.
+4. Derive reusable environmental analysis grids/queries from actual terrain/geology: depth/elevation, surface normal/slope, broad curvature/concavity, perimeter distance, deep-core distance, route distance, cave/entrance distance, shelter/exposure approximation and large-geology proximity.
+5. Use actual mesh projection/raycast for arbitrary cave/wall/overhang surfaces; one-height sampling is allowed only for open seabed.
+6. Keep analysis deterministic and cache/batch expensive samples.
+7. Add focused checks for graph connectivity, shallow-to-deep return, alternate/cave routes, clearance, field finiteness/ranges and repeatability for same seed.
+
+VALIDATE
+T2: build, route graph/field checks, generated geology regression, affected fish/camera clearance checks and git diff --check.
+
+DONE WHEN
+A generated world has connected protected routes and deterministic terrain-derived placement information ready for natural dressing.
+
+REPORT
+Route graph summary, field resolution/ownership, query APIs, cache strategy, checks and P5 placement inputs. No commit/push; keep 0.3.6.

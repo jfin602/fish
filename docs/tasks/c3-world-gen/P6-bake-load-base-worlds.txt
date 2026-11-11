@@ -1,0 +1,32 @@
+TASK: Correction 3 / P6 — Bake load and Base World workflow
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Complete the deterministic world-compiler workflow: generate a full candidate, measure it, bake it, reload without generation and provide explicit curated Base World promotion.
+
+READ
+Read c3-world-gen plan P6, current compiler/basin/geology/routes/placement implementation, tools/dev conventions, public repository asset rules and current P3 normal-play scene/bootstrap ownership.
+
+IMPLEMENT
+1. Add repository-relative developer commands for explicit-seed full generation, candidate inspection/validation, baked candidate load/run and explicit Base World promotion. Fit existing tools/dev command style.
+2. Compile at least representative full P3 qualification seed/settings with stage timing instrumentation. Do not hide expensive stages.
+3. Target total generation **≤120 seconds** on the identified current development machine. If measured over target, profile and optimize real hotspots (sampling resolution, spatial index, collision construction, serialization, placement repair) without deleting required world quality/features. Headless timing on a different machine is not native acceptance.
+4. Bake terrain, collision, geology, routes, environment data and placements into generator-independent resources plus manifest.
+5. Reload the baked candidate through normal world-loading path and prove no generator/compiler stage executes. Record actual baked load time and require it to be materially faster than generation; do not invent a hard load target without evidence.
+6. Preserve seed/generator/settings/content identity across bake/reload.
+7. Implement explicit candidate -> Base World promotion into a tracked/reviewable location. Never auto-promote, overwrite silently or duplicate FAF source payload unnecessarily.
+8. Promotion records source seed, generator/settings version and baked manifest. Produce a normal diff but do not commit a candidate automatically.
+9. Keep existing P3 Character Select and selected fish routing intact while switching environment loading from authored/placed world to baked world.
+10. Prepare deterministic P7 qualification seed/settings and evidence commands without declaring it a shipping Base World.
+
+VALIDATE
+T2/T3 preparation: build, full compiler checks, candidate validation, bake/reload identity, generator-not-invoked assertion, promotion dry-run/disposable target, relevant main/Character Select smoke and git diff --check. Record actual timings where executable; do not fabricate native timing.
+
+DONE WHEN
+A full deterministic world can be generated, validated, baked, reloaded without generation and explicitly promoted to a reviewable Base World package, with phase timing instrumentation ready for native P7.
+
+REPORT
+Commands, seed/settings, stage timings, output manifest/resources, baked load result, promotion workflow, checks and P7 handoff. No commit/push; keep 0.3.6.

@@ -8,7 +8,7 @@
 
 Rebuild the current varying-depth P2 world into the first **style-proving Fish reef** using the completed Fish Asset Factory library.
 
-P3 does not invent a new navigation topology from scratch. It preserves the accepted P2 five-depth route/water-column skeleton, Forward+ atmosphere, movement and camera, then replaces the visible technical/test-world language with authored low-poly terrain, geology, caves, tunnels, coral gardens, vegetation, reef-floor detail and bounded ambient life.
+**S18 supersedes the original authored/modular world assumption.** P3 now compiles a deterministic finite reef world: irregular basin, true 3D geology, protected routes, terrain analysis, natural FAF habitat placement and baked output. It preserves the accepted Forward+ atmosphere, movement/camera authority and overall shallow-to-deep gameplay intent, but it does not preserve obsolete fixed P2/P3 anchor topology when that topology causes artificial world structure.
 
 The target is the authoritative [FAF art style](../../fish-asset-factory/art-style.md) and [reef target](../../fish-asset-factory/references/reef-style-target.png). The isolated [FAF style proof 001](../../fish-asset-factory/style-proof-001/README.md) is a useful composition baseline and warning record: its stacked boulder arch, visible terrain apron seams, sparse reef layering and diorama perimeter are **not** the live-world finish to copy.
 
@@ -55,45 +55,24 @@ Pause/Game Menu adds **Return to Character Select**. It clears held/captured inp
 
 FAF-FISH-001–004 may additionally provide presentation-only ambient reef life. FAF-FISH-005 remains excluded from ambient predator presentation by default even though it is selectable as the player visual; later ecology will decide shark threat behavior.
 
-## Preserve the depth skeleton, rebuild the visible world
+## Procedural world formation
 
-The accepted P2 depth structure remains the navigation skeleton:
+The authoritative formation contract is [procedural-world-generation.md](procedural-world-generation.md), implemented by [c3-world-gen](../../tasks/c3-world-gen/README.md).
 
-- shallow / sun shelf;
-- upper reef;
-- middle shelf;
-- lower reef;
-- deep shelf;
-- primary/alternate shallow-to-deep return;
-- accepted tunnel/shelter route identities.
+The generated world owns:
 
-The accepted analytic seabed/collision query may remain hidden underneath if it is still the safest route/depth authority. The visible world should be rebuilt with FAF terrain chunks and geology while preserving honest collision clearance.
+- an irregular non-circular basin with useful deepest terrain near the central region;
+- natural outward-rising perimeter rather than visible rectangular/four-wall limits;
+- arbitrary 3D geological cave/tunnel/arch/overhang meshes;
+- generated protected shallow/middle/deep/return/alternate/cave routes;
+- terrain/environment analysis fields;
+- habitat zones and terrain-aware cluster placement;
+- support/embedding and relaxation/repair;
+- deterministic bake/load and Base World promotion.
 
-Use the terrain pack as authored overlapping macro surfaces, not as a tile grid:
+The six FAF terrain variants are no longer floor tiles. They may appear as localized embedded features when supported by generated terrain, while the generated basin/geology owns playable ground.
 
-- A open sand;
-- B rolling seabed;
-- C raised reef shelf;
-- D slope transition;
-- E drop-off;
-- F rocky reef floor.
-
-Rotate/offset/overlap them and dress contacts. Avoid visible patch aprons, parallel shelf edges, concentric bands, high test-room rims, perched mounds and Z-fighting.
-
-## Geological structure
-
-P3 must turn the depth world into memorable playable geology.
-
-Target at least:
-
-- two distinct swim-through tunnel/arch routes;
-- one cave/sheltered chamber large enough to enter, turn and leave;
-- one deeper canyon/rock corridor;
-- several overhang/shelf transitions;
-- major landmark formations readable from multiple routes;
-- alternate passages that reconnect rather than becoming decorative traps.
-
-Use terrain shelves/drop-offs as major structural mass and FAF rocks as formation/edge/seam language. **Do not recreate the weak three-boulder lintel from style-proof 001 as the main landmark.** Large formations should read geologically continuous from gameplay scale.
+Good generated candidates may be promoted to curated Base Worlds after owner review. Normal play loads a baked world without rerunning generation.
 
 ## Depth-based composition
 
@@ -147,7 +126,8 @@ Richness comes from curated clusters and layered composition.
 - Keep coral saturation concentrated on living focal areas.
 - Preserve broad swim lanes, cave mouths and camera sightlines.
 - Use plant UV.y height masks for optional cheap visual sway; roots remain fixed and physics-free.
-- Prefer deterministic authored transforms and reusable scene/MultiMesh grouping where useful.
+- Prefer deterministic generated cluster transforms and reusable scene/MultiMesh grouping where useful.
+- Never place normal world assets from random XYZ alone; use terrain suitability, real surface projection, route exclusions and support tests.
 
 ## Ambient life
 
@@ -188,6 +168,6 @@ P3 is complete when the owner can swim the full accepted five-depth world and ju
 
 ## Deferrals
 
-No feeding, prey/predator AI, species stats, growth, save/resume, death/history, first-person implementation, new movement physics, procedural world generation, new core FAF family production, production audio pass or final whole-game biome/content scale. Character Select is session routing/presentation only.
+Procedural world generation is now **in scope** through the finite compiler/bake architecture. Still deferred: infinite streaming terrain, voxel/destructible terrain, runtime erosion/cave carving, procedural ecology, feeding/predator AI, species stats, growth, save/resume, death/history, first-person implementation, new movement physics, new core FAF family production, production audio pass and final whole-game biome/content scale. Character Select remains session routing/presentation only.
 
 The next gameplay phase after successful P3 closeout is feeding/predators/growth.

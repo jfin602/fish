@@ -1,0 +1,30 @@
+TASK: Correction 3 / P2 — Irregular basin and natural perimeter
+
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Replace the square/terraced ground model with a deterministic continuous irregular basin whose useful deepest region is near the center and whose terrain forms the perceived world boundary.
+
+READ
+Read c3-world-gen plan P2, procedural-world plan, current terrain/seabed/habitat source, accepted P2 water/depth contracts and relevant P3 world evidence. Inspect actual P1 output rather than assuming historical SeabedSurface is unchanged.
+
+IMPLEMENT
+1. Generate a deterministic irregular basin domain: angular/perimeter-radius variation or equivalent domain warp, broad center-to-perimeter bowl curve, large low-frequency folds/ridges/channels and bounded detail.
+2. Keep the useful deepest region in the central portion while allowing asymmetry/local secondary depressions. Avoid perfect circle, square, concentric rings and parallel shelf strips.
+3. Build one continuous open-seabed visual mesh and matching collision from the generated field.
+4. Generate a natural perimeter that rises into shallows/banks/ridges or beyond usable water. Remove/relegate rectangular side-wall containment so it exists only as unreachable safety outside/behind natural terrain.
+5. Preserve accepted water surface/depth presentation inputs through explicit generated world/depth metadata rather than obsolete hard-coded shelf coordinates.
+6. Expose cheap open-seabed sampling plus actual mesh/collision identity for later geology/placement.
+7. Extend focused checks with dense samples proving finite continuity, center/deep ordering, outward rise, angular perimeter variation, collision agreement, no ordinary route to fail-safe walls and deterministic same-seed metrics.
+8. Preserve movement/camera authority and P1 fixture.
+
+VALIDATE
+T2: build, focused generated-basin/collision checks, affected atmosphere/depth identity checks, main smoke on the generated basin fixture, and git diff --check.
+
+DONE WHEN
+The candidate ground is one deterministic irregular basin with a central deep region and natural terrain perimeter; normal world structure no longer depends on a square four-wall room or lateral shelf staircase.
+
+REPORT
+Seed/settings, basin metrics, min/deep-core location, perimeter variation, collision/containment strategy, checks and P3 geology entry. No commit/push; keep 0.3.6.

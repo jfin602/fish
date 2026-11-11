@@ -11,6 +11,7 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | [P1 — Swim controls worksheet](p1/swim-controls-worksheet.md) | Complete historical design record; implementation/native acceptance remain separate. |
 | [Movement abilities](p1/movement-abilities.md) | Approved future feature group; its original "next after core" sequencing is superseded by the P2 decision. |
 | [P2 — Build the underwater world](p2/underwater-world.md) | In progress; technical depth world and atmosphere exist, with G2.3/V20 still open. |
-| [P3 — FAF reef world rebuild](p3/reef-world-rebuild.md) | Owner-selected and fully authored; blocked on P2 closeout, then rebuilds the accepted varying-depth world with the completed FAF library and adds the five-fish Character Select/session-return flow. |
+| [P3 — FAF reef world rebuild](p3/reef-world-rebuild.md) | Owner-selected world-art/Character Select plan; world formation is superseded by the procedural compiler architecture below. |
+| [P3 — Procedural realistic world generation](p3/procedural-world-generation.md) | Owner-approved deterministic finite world compiler: irregular basin, true 3D geology, natural placement, bake/load and curated Base Worlds; implemented by c3-world-gen. |
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md).

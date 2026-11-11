@@ -1,0 +1,31 @@
+TASK: Correction 3 / P1 — World compiler and baked contract
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Create the deterministic finite world-compiler boundary and baked-world data contract without yet replacing the full P3 terrain.
+
+PREFLIGHT / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, c3-world-gen README/assessment/implementation-plan P1, docs/planning/p3/procedural-world-generation.md, current P3 implementation/evidence, MODULES.md and only affected current world/tooling source. Inspect HEAD, dirty work, package.json and actual P3 completed-prefix commits. If root is not exactly 0.3.6 or P3 P1–P6 are not proven complete, STOP; do not downgrade/reset/fake checkpoints. Do not run concurrently with c3-visibility.
+
+IMPLEMENT
+1. Add the smallest explicit generation settings/schema containing a seed and stable generator version.
+2. Add a deterministic compile context with stable subsystem/zone PRNG streams so generation never depends on global/random frame state.
+3. Define an inspectable generated-world manifest: world ID, seed, generator/settings versions, FAF/catalog identity, baked resource paths, summary metrics/hashes and phase timings.
+4. Define candidate output under user/ignored development storage. Do not track generated candidates by default.
+5. Add a baked-world loader boundary that consumes saved resources/manifest and is structurally independent from the generator path.
+6. Expose coarse compile-stage progress/timing callbacks/logging.
+7. Add a tiny deterministic fixture compile/check: same seed/settings twice must yield identical manifest summary/content hashes; a different seed must change generation identity. Reorder-independent stable source traversal where practical.
+8. Do not create final basin/caves/placement yet. Preserve current main world until later prompts replace it.
+9. Add focused developer command(s)/checks through existing tools/dev conventions and write actual results only when executed.
+
+VALIDATE
+T2: ./tools/dev build plus the new focused compiler/manifest determinism check, existing main smoke as needed, no package-lock/vendor payload, and git diff --check. Use isolated temp/user data.
+
+DONE WHEN
+A deterministic seed/settings compile context, manifest, candidate storage and generator-independent baked loader contract exist with focused repeatability evidence.
+
+REPORT
+Changed owners, schemas, candidate path, deterministic strategy, commands/results and remaining P2 basin work. Do not commit/push; runner owns checkpoint. Keep 0.3.6 unchanged.

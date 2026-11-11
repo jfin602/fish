@@ -133,26 +133,28 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 **Status: READY TO START at root `0.3.0` under owner transition S16.** P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md). Scenarios V21–V23.
 
-P3 is the first style-proving world-art phase. It consumes the completed FAF library and the accepted P2 five-depth navigation/water system. It does not generate a new navigation topology or implement ecology.
+P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the original authored/modular terrain assumption:** the P3 world is compiled deterministically as an irregular basin with generated geology, protected routes and terrain-aware FAF placement, then baked for fast loading. Ecology remains later scope.
 
-### G3.1 — FAF terrain and geology integration
-
-**Result: NOT OBSERVED.**
-
-- Preserve the accepted P2 shallow/upper/middle/lower/deep route skeleton, Forward+ water/depth treatment, movement/camera authority and P1 fixture.
-- Rebuild the visible seabed using all six FAF-TERRAIN-001 variants so the world no longer reads as analytic terraces, rings or a test basin.
-- Integrate all four FAF-ROCK-001 variants into natural shelves, walls, overhangs and landmarks.
-- Provide at least two distinct swim-through tunnel/arch routes, one cave/shelter chamber and one deeper canyon/corridor with collision/camera clearance that agrees with visible geometry.
-- Path-critical visible terrain and hidden/simplified collision remain coherent; no underside/edge escape is introduced.
-
-### G3.2 — Depth-based reef composition
+### G3.1 — Procedural basin, geology and baked world
 
 **Result: NOT OBSERVED.**
 
-- All twelve FAF coral variants, eight FAF plant variants and eight FAF detail variants participate meaningfully in normal-play composition.
-- Shallow/high areas are visibly the lushest and most colorful; upper/middle bands remain rich but readable; lower/deep areas become progressively sparser and more geological.
-- Terrain/rock seams are dressed without obscuring broad routes, cave mouths, tunnel entrances or major landmarks.
-- Repeated assets are varied through scale, rotation, grouping and cluster composition; the world avoids grid/random-stamp repetition.
+- Compile a deterministic irregular basin whose useful deepest region is near the center and which rises toward a visibly non-circular natural perimeter.
+- Normal play does not perceive square/four-wall containment or a perfect circular rim; fail-safe collision remains outside/behind natural terrain.
+- Generate true 3D geological cave/tunnel/arch/overhang regions with actual floor/walls/ceilings and usable collision/camera clearance.
+- Generate/protect connected shallow/middle/deep/return/alternate/cave routes before decoration.
+- Same seed/settings/generator version reproduces the same world; the accepted candidate can be baked and loaded without rerunning generation.
+- Preserve Forward+ water/depth presentation, movement/camera authority and the P1 fixture.
+
+### G3.2 — Natural terrain-aware reef composition
+
+**Result: NOT OBSERVED.**
+
+- All required FAF environment variants participate meaningfully through habitat/cluster rules rather than checklist/random XYZ placement.
+- Placement is derived from generated terrain/geology fields, projected to real surfaces and spaced non-uniformly; route/cave clearances are protected before dressing.
+- Large rocks and FAF terrain accents are supported/embedded by footprint tests; no unresolved major floating ground/rock pieces remain.
+- Shallow/high areas are visibly the lushest and most colorful; upper/middle remain rich but readable; lower/deep become progressively sparser and more geological.
+- Relaxation/repair removes major intersections, blocked routes, obvious repeated orientation/spacing and density spikes.
 - Optional plant sway remains presentation-only with fixed roots and no movement/collision authority.
 
 ### G3.3 — Target style, ambient life and performance
@@ -163,6 +165,8 @@ P3 is the first style-proving world-art phase. It consumes the completed FAF lib
 - Where used, FAF-FISH-001–004 provide bounded non-gameplay ambient reef life; FAF-FISH-005 shark remains deferred to ecology by default.
 - The rebuilt world remains readable and comfortable through full depth traversal, caves and tunnels under the accepted Forward+ atmosphere.
 - Representative dense-shallow, cave/middle and deep-sparse views have recorded native performance on the target desktop, with owner acceptance of the final visual direction.
+- Full candidate generation and baked load times are recorded; the owner target is ≤120 s generation and baked load materially faster without generator execution.
+- Explicit candidate-to-Base-World promotion is reviewable and preserves seed/generator/settings identity.
 
 ### G3.4 — Character select and session routing
 

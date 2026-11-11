@@ -65,12 +65,14 @@ The paths above are the current source owners. Keep renderer-specific code behin
 | Boundary | Owns | Does not own |
 | --- | --- | --- |
 | FAF world catalog / wrappers | Canonical tracked FAF environment IDs, runtime resource paths and reusable placement roots for terrain, rocks, coral, plants and details. | Re-exporting Blender sources or inventing gameplay state. |
-| P3 terrain/geology composition | Visible FAF terrain skin, rock clusters, caves/tunnels/overhangs and authored deterministic placement over the accepted P2 navigation/depth skeleton. | Replacing fish movement/camera/depth authority to make art fit. |
-| P3 reef dressing | Coral/plant/detail clusters, depth-density rules, optional visual sway, seam dressing and open-route exclusions. | Ecology simulation or collision-heavy decorative dressing. |
+| P3 world compiler / bake loader | Seed/settings/generator-version context, deterministic stages, candidate manifest/resources, baked-world loader, timings and Base World promotion. | Gameplay simulation, save-game persistence or every-load regeneration. |
+| P3 basin / geology | Irregular center-deep basin, natural perimeter, arbitrary 3D cave/tunnel/arch/overhang mesh and generated collision. | Visible rectangular world walls, voxel sandbox or movement/camera authority. |
+| P3 routes / analysis | Protected 3D route graph plus terrain-derived depth/slope/normal/curvature/perimeter/cave/exposure fields. | Decorative placement or fish simulation. |
+| P3 reef dressing | Habitat zones, terrain-aware cluster placement, surface projection, blue-noise spacing, support/embedding checks, relaxation/scoring and depth-density rules. | Random XYZ/grid stamping, floating terrain tiles or procedural ecology. |
 | P3 character select / player visual | Five-fish selectable visual catalog, animated preview, session-local selected FAF ID, shared-player visual attachment and Return to Character Select routing. | Species stats, alternate colliders/motors, persistence, death/history or predator behavior. |
 | P3 ambient life | Bounded presentation-only FAF-FISH-001–004 schools/loops when used. | Feeding, prey/predator state, damage, persistence or ambient shark predator gameplay. |
 
-Exact source paths should follow the smallest implementation that fits the accepted P2 world; do not create empty frameworks before P3 execution.
+Exact source paths should follow the smallest implementation that fits the compiled-world boundary; c3-world-gen may introduce only the concrete compiler/bake/query owners its prompts require. Do not create empty frameworks.
 
 ## Later gameplay boundaries
 

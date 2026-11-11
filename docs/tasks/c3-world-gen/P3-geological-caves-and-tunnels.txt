@@ -1,0 +1,30 @@
+TASK: Correction 3 / P3 — True 3D geological caves and tunnels
+
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Generate true arbitrary 3D geological regions for caves, tunnels, arches and overhangs so enclosed spaces are part of terrain/geology rather than placed roof props.
+
+READ
+Read c3-world-gen plan P3, procedural-world plan, current generated basin source, FAF rock/terrain records, FollowCamera/collider clearance contracts and current P3 geology implementation. Inspect actual mesh/collision APIs available in Godot 4.7.2.
+
+IMPLEMENT
+1. Add one bounded deterministic geological-region generator suitable for baking. Prefer explicit generated mesh topology (spline/loft/shell or equivalent) or generation-time CSG that is converted to ordinary mesh; do not add voxel sandbox/runtime CSG.
+2. Generate at minimum one cave chamber, two distinct tunnels/swim-throughs, one arch/overhang and one canyon/ridge transition.
+3. Caves/tunnels must contain actual floor, side walls and ceiling at overlapping X/Z where applicable; do not fake enclosure with a heightfield or balancing a roof asset above boulders.
+4. Integrate geological regions into the basin with broad overlap/transition skirts/masses; no visible floating geological shell.
+5. Bake/create matching collision appropriate for traversal and camera obstruction.
+6. Establish named generated entrances/centerlines/clearance probes for P4 routing.
+7. Focused checks prove finite/manifold-enough output for collision, floor/wall/ceiling presence, two-surface X/Z cases, basin integration, distinct geometry per structure and accepted fish/camera clearance.
+8. Keep FAF rocks available for dressing/edge detail; they are not the structural cave shell.
+
+VALIDATE
+T2: build, focused geology/collision/clearance checks, generated-basin regression, representative headless scene load and git diff --check.
+
+DONE WHEN
+The generated world contains real baked-capable 3D cave/tunnel/arch/overhang geology integrated into the basin, with usable collision/clearance and no placed-prop cave dependency.
+
+REPORT
+Generator representation, structure IDs, triangle/collision metrics, route clearances, checks and P4 routing hooks. No commit/push; keep 0.3.6.

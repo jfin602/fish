@@ -1,0 +1,51 @@
+TASK: Correction 3 / P7 — Native generated world closeout
+
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.3.6`.
+
+GOAL
+Qualify the procedural-world correction in a real Fish environment: generation time, baked reload, basin/geology, natural placement and owner exploration judgment.
+
+NATIVE OWNER HANDOFF / READ
+The runner MUST pause here. Read c3-world-gen README/assessment/plan P7, P1–P6 implementation evidence, procedural-world plan, validation V26/V27, current P3/FAF/visibility records and actual generated-world tooling. Verify HEAD/dirty state, root 0.3.6, Godot 4.7.2 .NET, renderer, hardware/display and actual Fish project. Do not run c3-visibility until this correction's generated world is accepted or its gaps are understood.
+
+A — GENERATE AND MEASURE
+1. Generate the qualification candidate from the recorded seed/settings in the real development environment.
+2. Record total and per-stage generation time, hardware, generator/settings version, manifest path/hash summary and errors.
+3. The owner target is <=120 seconds for this P3-sized world. If exceeded, mark FAIL unless the owner explicitly changes the target after seeing measured quality/cost; do not silently call it acceptable.
+4. Regenerate the same seed/settings (or use a deterministic verification command) and prove matching world identity/content summaries. Generate/inspect a different seed enough to prove variation.
+
+B — BAKE / LOAD
+1. Load the baked qualification world through the normal world loader.
+2. Prove generator/compiler stages do not run on baked load.
+3. Record actual load time and compare with generation; it must be materially faster.
+4. Exercise the explicit Base World promotion workflow against a disposable/reviewable target, or promote the candidate only with owner approval. Verify no silent overwrite/duplicated source payload.
+
+C — NATIVE WORLD REVIEW
+Swim normal gameplay through the generated world and inspect:
+- basin is visibly irregular, not square/perfect-circle/concentric;
+- useful deepest region is near the center and terrain generally rises outward;
+- perimeter reads as natural shallow bank/ridge/cliff rather than a world wall;
+- no reachable/visible rectangular fail-safe wall defines the world;
+- cave chamber, both tunnels, arch/overhang and canyon are actual terrain/geological forms;
+- caves provide real floor/walls/ceilings and comfortable fish/camera clearance;
+- no large terrain/rock piece visibly floats above unsupported ground;
+- reef/plant/detail placement reads clustered/caused rather than uniform random stamping;
+- shallow/high areas are lusher than lower/deep while open water remains;
+- cave mouths/routes/landmarks stay readable;
+- FAF art and Forward+ water/light remain coherent;
+- selected player/Character Select/movement/camera behavior is unchanged.
+
+Inspect several zones and approach the perimeter from multiple directions. Preserve dissent; one attractive screenshot is not enough.
+
+D — EVIDENCE / CLOSEOUT
+Create docs/tasks/c3-world-gen/qualification/native-world-gen.md with source, seed/settings, timings, screenshots/logs, route observations and owner judgment. Create one closeout.md mapping V26/V27 and every correction criterion PASS/FAIL/NOT OBSERVED/BLOCKED.
+
+Do not mark original P3 G3.1–G3.3 GREEN solely from source checks. Reconcile roadmap/BOOT/MODULES/planning only for actual executed evidence. Preserve P2 historical results and Character Select boundaries.
+
+VALIDATE
+T3 native qualification plus focused regressions if fixes occurred, documentation link/diff checks and git diff --check. Root stays 0.3.6. Leave final closeout changes uncommitted for human review.
+
+REPORT
+Measured generation/load times, deterministic identity, basin/perimeter/geology/placement owner judgment, Base World promotion result, performance/errors, correction disposition and whether c3-visibility can proceed.
