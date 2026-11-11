@@ -15,6 +15,7 @@ var view := "three_quarter"
 var distance_mode := "close"
 var action := ""
 var capture_path := ""
+var capture_phase := -1.0
 var creature: Node3D
 var player: AnimationPlayer
 var label: Label
@@ -35,6 +36,8 @@ func _ready() -> void:
 			action = argument.trim_prefix("--faf-action=")
 		if argument.begins_with("--faf-capture="):
 			capture_path = argument.trim_prefix("--faf-capture=")
+		if argument.begins_with("--faf-phase="):
+			capture_phase = clampf(float(argument.trim_prefix("--faf-phase=")),0,1)
 	_make_environment()
 	_make_bank()
 	_make_waterline()
@@ -134,6 +137,16 @@ func _show_selected() -> void:
 	player = creature.find_child("AnimationPlayer",true,false) as AnimationPlayer
 	if action == "" or not player.get_animation_list().has(stem+"__"+action):
 		action = CREATURES[selected][3]
+	_place_selected()
+	player.play(stem+"__"+action)
+	_position_camera()
+	_update_caption()
+	print("FAF_POND_CREATURE_PROOF ",stem," action=",action," view=",view,
+		" distance=",distance_mode," placement=",creature.position,
+		" renderer=",ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+
+
+func _place_selected() -> void:
 	match selected:
 		0:
 			creature.position = Vector3(-1.75,.34,0) if action in ["IdleShore","Hop",""] else Vector3(.15,-.025,0)
@@ -141,12 +154,6 @@ func _show_selected() -> void:
 			creature.position = Vector3(-1.75,.33,0) if action == "ShoreCrawl" else Vector3(1.30,-.28,0) if action in ["UnderwaterSwim","Dive"] else Vector3(.15,-.025,0)
 		2:
 			creature.position = Vector3(1.15,-.37,0) if action in ["IdleBottom","BottomWalk",""] else Vector3(1.30,-.29,0) if action == "Dive" else Vector3(.15,-.045,0)
-	player.play(stem+"__"+action)
-	_position_camera()
-	_update_caption()
-	print("FAF_POND_CREATURE_PROOF ",stem," action=",action," view=",view,
-		" distance=",distance_mode," placement=",creature.position,
-		" renderer=",ProjectSettings.get_setting("rendering/renderer/rendering_method"))
 
 
 func _position_camera() -> void:
@@ -189,13 +196,16 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		idx = posmod(idx + (-1 if event.keycode == KEY_J else 1),names.size())
 		action = String(names[idx]).trim_prefix(stem+"__")
 		player.play(stem+"__"+action)
+		_place_selected()
+		_position_camera()
 		_update_caption()
 
 
 func _capture() -> void:
 	for i in range(5):await get_tree().process_frame
 	var clip := player.get_animation(player.current_animation)
-	player.seek(clip.length * (.70 if action in ["Hop","Dive"] else .38),true)
+	var phase := capture_phase if capture_phase >= 0 else .70 if action in ["Hop","Dive"] else .38
+	player.seek(clip.length * phase,true)
 	player.advance(0)
 	await RenderingServer.frame_post_draw
 	var err := get_viewport().get_texture().get_image().save_png(capture_path)

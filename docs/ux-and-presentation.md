@@ -24,7 +24,9 @@ The Pause/Game Menu includes **Return to Character Select**. That action clears 
 
 ## P4 World Select and habitat-filtered characters
 
-**Owner-selected for P4 — 2026-11-11; not yet implemented.** Preserve P3's five-fish marine Character Select for Ocean; add a World Select step before Character Select for a fresh demo/new-life entry. The screen offers **Ocean** and **Freshwater Pond** with readable previews, selection/focus, Back and Start/Choose behavior; each world loads its own environment and compatible character list. Marine fish cannot be selected in Pond and freshwater fish cannot be selected in Ocean. The same restriction also governs ambient/spawned populations.
+**Owner-selected for P4 — 2026-11-11; P2 menu routing implemented.** Preserve P3's five-fish marine Character Select for Ocean; World Select now opens before Character Select for a fresh demo session. The screen offers **Ocean** and **Freshwater Pond** with readable previews, selection/focus, Back and Start/Choose behavior; each world loads its own environment and compatible character list. Marine fish cannot be selected in Pond and freshwater fish cannot be selected in Ocean. The same restriction also governs ambient/spawned populations.
+
+At P2, Ocean is the only playable route. Pond remains selected when its absent bake produces a visible unavailable error; no character or play scene opens. Habitat-filtered species and ambient eligibility are P3 work, and the Pond bake is P4 work. The demo's World Select Back action quits the demo; there is no implemented Main Menu yet.
 
 Proposed New Life path: **Main Menu → World Select → Character Select → Play**. In the current tech demo World Select may be the first gameplay selection screen. Character Select → Back returns to World Select; session-only Pause → Return to selection must clear held input and mouse capture. Neither navigation nor switching demo worlds is a death, save, archived life or gameplay world migration. A failed load stays visible as an error, not an implicit fallback to the other world.
 

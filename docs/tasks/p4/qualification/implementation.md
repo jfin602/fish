@@ -23,3 +23,23 @@ On the selected Fish project (`/home/jfin/dev/fish/game`), `tools/dev doctor` re
 | `git diff --check` | PASS. |
 
 The pre-existing dirty tree included Pond creature source/assets/checks and a Python bytecode change. Those files were preserved and were outside this P1 implementation; their integration requirements remain for later P4 work. The editor bridge was offline, and headless checks do not establish native image fidelity, fish feel, or Pond quality. P2 adds World Select navigation; P4 creates and qualifies the Pond package before it can load.
+
+## P2 — World Select and navigation (2026-11-11)
+
+**Pre-task source:** `main` at `7942c431ae5fa9c61d24871638154795ec34e780`, clean tree, root `0.4.1`. **Result:** uncommitted P2 changes at root `0.4.2`; the phase runner owns staging and the checkpoint commit. During execution, separate Pond creature assets, documentation and generator checks appeared in the shared working tree. They were not edited for P2 and must be reviewed separately before runner staging.
+
+`project.godot` now starts `world_select.tscn`. `WorldSelect.cs` renders distinct Ocean and Freshwater Pond cards with names, catalog descriptions, honest pending-preview text, a written selected marker, focus borders, keyboard/pointer browsing, Choose, Back/Quit demo, loading text and visible load errors. It sizes to the viewport and switches to one column below 900 px. The existing `WorldSession` holds the requested world even when Pond preflight rejects its absent bake; no Ocean fallback or world scene is loaded. A successful Ocean preflight enters the five-fish Character Select, whose Back/Escape returns to World Select. Pause → Return to World Select clears/disarms fish input, suspends water reaction, restores the pointer, releases pause, unloads the previous play scene and clears session references. No persistence, death, archive or Main Menu action was added. The P3 Ocean motor, collider and baked package were not changed.
+
+| Check | Result |
+| --- | --- |
+| `tools/dev doctor` | **PASS:** Fish project at `/home/jfin/dev/fish/game`, Godot 4.7.2 .NET, SDK 10.0.403, MCP addon 2026.11.04. MCP bridge reported disconnected. |
+| `tools/dev import` | **BLOCKED** by sandbox socket permission when Godot's editor IDE server and MCP addon attempted listeners; it also could not write user editor settings. This is an environment failure, not an import PASS. |
+| `XDG_DATA_HOME=/tmp/fish-p4-p2-inspect tools/dev inspect-scene res://scenes/world_select.tscn` | **PASS:** `SCENE_OK` for the actual World Select packed scene. The ordinary inspect invocation first failed because the default user log path was unwritable; the isolated writable data directory resolved it. |
+| `tools/dev build` | **PASS:** zero warnings and errors after the final source edits. |
+| `tools/dev inspect-world-select` | **PASS:** `WORLD_SELECT_CHECK_OK`; verified written selection and focus via keyboard/pointer, Pond's `WORLD_BAKE_NOT_INSTALLED` error and retained `pond` session ID, invalid ID rejection, Ocean → Character Select → Back → Ocean, Ocean → Play → focus loss/held-input clear → Return, scene/habitat cleanup, repeat Ocean with a different fish, and World Select Back/Quit action. Both Ocean loads reported `world-6cba9a67e6275297` and `generator_invocations=0`. |
+| `tools/dev inspect-character-select` and `tools/dev smoke-world` | **PASS:** all five existing FAF fish loaded the accepted Ocean route; return/reselect and normal main scene smoke passed. |
+| Existing `input_lifecycle_check.gd` | Initial **FAIL** was an origin-relative position assertion incompatible with the baked spawn; changed the assertion to compare against the observed starting position. Rerun **PASS**: `INPUT_LIFECYCLE_OK`, including focus loss, capture and rearm. |
+| Headless windowed-fullscreen World Select route | **PASS** for startup/routing under `--display-mode=windowed-fullscreen`; logs show the requested mode through World Select, Character Select and Play. Headless reported the effective window as minimized, so visual sizing in either native display mode is **NOT OBSERVED**. |
+| `git diff --check` | **PASS** after source and documentation changes. |
+
+The editor bridge was offline, the editor import was blocked by sandbox sockets, and no native pointer/keyboard feel or visible fullscreen/windowed-fullscreen layout was observed. P3 habitat species enforcement is next. Pond generation/bake remains P4; no Pond resources or marine-fish fallback were invented here.

@@ -84,9 +84,26 @@
         1,
         1
       ],
-      "technical_review": "pending_export_check",
-      "visual_review": "pending_native_review",
-      "glb": "game/assets/faf/pond/creatures/creature_001_northern_leopard_frog.glb"
+      "technical_review": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "visual_review": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "glb": "game/assets/faf/pond/creatures/creature_001_northern_leopard_frog.glb",
+      "evidence_views": [
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-side.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-top.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-three-quarter.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-swim.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-hop.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-dive.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-game.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-motion-a.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/frog-motion-b.png"
+      ],
+      "anatomy_motion_references": [
+        "https://animaldiversity.org/accounts/Lithobates_pipiens/",
+        "https://www.nature.com/articles/420621a"
+      ],
+      "native_observation": "Shore/top and swim views show broad spotted body, paired long hind legs, articulated feet and restrained surface motion. At 3.8 m the small animal occupies few pixels; close bank encounters read better.",
+      "reviewed_on": "2026-11-11"
     },
     {
       "faf_id": "FAF-CREATURE-002",
@@ -163,9 +180,27 @@
         1,
         1
       ],
-      "technical_review": "pending_export_check",
-      "visual_review": "pending_native_review",
-      "glb": "game/assets/faf/pond/creatures/creature_002_northern_water_snake.glb"
+      "technical_review": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "visual_review": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "glb": "game/assets/faf/pond/creatures/creature_002_northern_water_snake.glb",
+      "evidence_views": [
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-side.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-top.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-three-quarter.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-underwater.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-turn.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-dive.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-game.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-motion-a.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/snake-motion-b.png"
+      ],
+      "anatomy_motion_references": [
+        "https://animaldiversity.org/accounts/Nerodia_sipedon/",
+        "https://pubmed.ncbi.nlm.nih.gov/17993267/",
+        "https://pubmed.ncbi.nlm.nih.gov/3184194/"
+      ],
+      "native_observation": "Top and side views show a broad head, alternating flank bands and a continuous tapered body wave. Strong turn and submerged poses remain connected; close camera is needed to read the head.",
+      "reviewed_on": "2026-11-11"
     },
     {
       "faf_id": "FAF-CREATURE-003",
@@ -180,7 +215,7 @@
         0.750238,
         0.220806
       ],
-      "triangles": 910,
+      "triangles": 838,
       "materials": 5,
       "material_names": [
         "mat__creature_003_common_snapping_turtle_0",
@@ -245,9 +280,25 @@
         1,
         1
       ],
-      "technical_review": "pending_export_check",
-      "visual_review": "pending_native_review",
-      "glb": "game/assets/faf/pond/creatures/creature_003_common_snapping_turtle.glb"
+      "technical_review": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "visual_review": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "glb": "game/assets/faf/pond/creatures/creature_003_common_snapping_turtle.glb",
+      "evidence_views": [
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-side.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-top.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-three-quarter.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-walk.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-dive.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-game.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-motion-a.png",
+        "docs/fish-asset-factory/pond-creature-pack-001/evidence/turtle-motion-b.png"
+      ],
+      "anatomy_motion_references": [
+        "https://herpetology.inhs.illinois.edu/resources/species-lists/ilspecies/snapping-turtle/",
+        "https://animaldiversity.org/accounts/Chelydra_serpentina/"
+      ],
+      "native_observation": "Side/top views show broad rigid carapace, beaked head, four articulated limbs and long tail. Swim, bottom walk and dive remain clear of the shell; shell scutes remain simplified.",
+      "reviewed_on": "2026-11-11"
     }
   ]
 }

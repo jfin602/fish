@@ -81,8 +81,11 @@ func _initialize() -> void:
 			var moving_name := "hind_lower_L" if stem.contains("frog") else "spine_08" if stem.contains("snake") else "fore_upper_L"
 			var bone_index := skeleton.find_bone(moving_name)
 			var moving_before := skeleton.get_bone_pose(bone_index)
-			player.seek(action.length * (.35 if looping else .65), true)
-			player.advance(0)
+			if looping:
+				player.seek(action.length * .35, true)
+				player.advance(0)
+			else:
+				player.advance(action.length * .65)
 			if not root_before.is_equal_approx(skeleton.get_bone_pose(skeleton.find_bone("root"))):
 				_fail(stem + " gameplay root moved in " + role)
 				return
@@ -99,10 +102,9 @@ func _initialize() -> void:
 					_fail(stem + " loop seam mismatch " + role)
 					return
 			else:
-				player.seek(action.length, true)
-				player.advance(0)
-				if action.loop_mode != Animation.LOOP_NONE:
-					_fail(stem + " one-shot loops " + role)
+				player.advance(action.length)
+				if player.is_playing():
+					_fail(stem + " one-shot did not stop " + role)
 					return
 		print("FAF_POND_CREATURE_IMPORTED ", stem, " triangles=", tri_count,
 			" materials=", mat_names.size(), " bones=", skeleton.get_bone_count(),

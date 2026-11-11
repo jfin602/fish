@@ -118,16 +118,19 @@ func _run() -> void:
 		return
 	await _tick(3)
 	# Pointer activity is inert in keyboard mode; W still reaches the motor.
+	var pointer_neutral := fish.global_position
 	_mouse_button(MOUSE_BUTTON_LEFT, true)
 	_motion(Vector2(40, 20))
 	await _tick(8)
-	if not _require(fish.position.length() < 0.001, "inactive mouse moved keyboard fish"):
+	if not _require(fish.global_position.distance_to(pointer_neutral) < 0.001,
+			"inactive mouse moved keyboard fish"):
 		return
 	_mouse_button(MOUSE_BUTTON_LEFT, false)
 	_key(KEY_W, true)
 	await _tick(15)
 	_key(KEY_W, false)
-	if not _require(fish.position.z < -0.15, "keyboard thrust did not reach motor"):
+	if not _require(fish.global_position.z < pointer_neutral.z - 0.15,
+			"keyboard thrust did not reach motor"):
 		return
 	_key(KEY_ESCAPE, true)
 	await process_frame

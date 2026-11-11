@@ -137,21 +137,27 @@ public static class CharacterChecks
         fish._Input(new InputEventMouseMotion { Relative = new Vector2(20, 8) });
         var shell = world.GetNode<PlayShell>("PlayShell");
         var options = shell.FindChild("OptionsButton", true, false) as Button;
-        var leave = shell.FindChild("CharacterSelectButton", true, false) as Button;
+        var leave = shell.FindChild("WorldSelectButton", true, false) as Button;
         Require(options is not null && leave is not null, "route pause controls missing");
         options!.EmitSignal(Button.SignalName.Pressed);
         Require(tree.Paused && !fish.GetInputArmed() && fish.GetHeldInputCount() == 0 &&
             Input.MouseMode == Input.MouseModeEnum.Visible, "pause did not clear input/capture");
         leave!.EmitSignal(Button.SignalName.Pressed);
         await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
-        var returned = tree.CurrentScene as CharacterSelect;
+        var returned = tree.CurrentScene as WorldSelect;
         Require(returned is not null && !tree.Paused &&
             Input.MouseMode == Input.MouseModeEnum.Visible &&
             DemoSelection.CharacterId is null && !GodotObject.IsInstanceValid(world) &&
+            WorldSession.ActiveHabitat is null && WorldSession.ActiveManifest is null &&
             root.GetChildren().OfType<Main>().Count() == 0,
             "return retained gameplay session, selection or capture");
-        var second = returned!.FindChild("Character_4", true, false) as Button;
-        var start = returned.FindChild("EnterWorldButton", true, false) as Button;
+        var choose = returned!.FindChild("ChooseWorldButton", true, false) as Button;
+        Require(choose is not null, "world choice missing after return");
+        choose!.EmitSignal(Button.SignalName.Pressed);
+        await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
+        var secondPage = tree.CurrentScene as CharacterSelect;
+        var second = secondPage?.FindChild("Character_4", true, false) as Button;
+        var start = secondPage?.FindChild("EnterWorldButton", true, false) as Button;
         Require(second is not null && start is not null, "second start controls missing");
         second!.EmitSignal(Button.SignalName.Pressed);
         start!.EmitSignal(Button.SignalName.Pressed);

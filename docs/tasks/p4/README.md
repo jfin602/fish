@@ -1,6 +1,6 @@
 # P4 — Freshwater Pond and World Select
 
-**State: P1 IMPLEMENTED at root `0.4.1` / P2 NEXT.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 Gate or native GREEN result is claimed. P4 inherits accepted progression Ocean Base World `ocean-m4-42`: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`. The old `qualification-42` package remains intact. The complete 14-prompt stack validated from the `0.4.0` baseline. [P1 implementation evidence](qualification/implementation.md) records the new catalog and loader; Pond remains uninstalled.
+**State: P2 IMPLEMENTED at root `0.4.2` / P3 NEXT.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 Gate or native GREEN result is claimed. P4 inherits accepted progression Ocean Base World `ocean-m4-42`: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`. The old `qualification-42` package remains intact. The complete 14-prompt stack validated from the `0.4.0` baseline. [P1/P2 implementation evidence](qualification/implementation.md) records the catalog, loader and menu routes; Pond remains uninstalled.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [P4 design](../../planning/p4/freshwater-world.md) · [Roadmap](../../roadmap.md) · [Runner contract](../../phase-runner.md) · [Validation V28–V32](../../validation.md)
 
@@ -59,4 +59,4 @@ npm run fish:phase:validate -- p4
 npm run fish:phase -- p4
 ```
 
-Validation checks prompt grammar/versions, not entry readiness or gameplay. The runner owns implementation checkpoint commits. Do **not** execute P4 now or fabricate `0.4.x` history. P5 is feeding/predators/growth, P6 persistence, P7 history and P8 integration; none is hidden P4 work.
+Validation checks prompt grammar/versions, not entry readiness or gameplay. The runner owns implementation checkpoint commits; only actual executed work earns a `0.4.x` checkpoint. P5 is feeding/predators/growth, P6 persistence, P7 history and P8 integration; none is hidden P4 work.

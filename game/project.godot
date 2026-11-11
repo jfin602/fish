@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Fish"
-run/main_scene="res://scenes/character_select.tscn"
+run/main_scene="res://scenes/world_select.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
 [autoload]

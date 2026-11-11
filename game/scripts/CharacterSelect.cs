@@ -67,6 +67,11 @@ public partial class CharacterSelect : Control
         }
         Select(_selected);
         _enter.GrabFocus();
+        if (WorldSession.SelectedWorldId != WorldCatalog.OceanId)
+        {
+            _status.Text = "No compatible demo fish are available for this world yet. Go back and choose Ocean.";
+            _enter.Disabled = true;
+        }
         GD.Print($"FISH_CHARACTER_SELECT_READY entries={CharacterCatalog.All.Count}");
         if (!_checkStarted && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--character-check"))
         {
@@ -104,6 +109,11 @@ public partial class CharacterSelect : Control
         {
             GetViewport().SetInputAsHandled();
             EnterWorld();
+        }
+        else if (key.Keycode == Key.Escape)
+        {
+            GetViewport().SetInputAsHandled();
+            BackToWorldSelect();
         }
     }
 
@@ -239,6 +249,9 @@ public partial class CharacterSelect : Control
         _enter.Name = "EnterWorldButton";
         _enter.CustomMinimumSize = new Vector2(190, 48);
         actions.AddChild(_enter);
+        var back = Action("Back to World Select", BackToWorldSelect);
+        back.Name = "BackToWorldButton";
+        actions.AddChild(back);
         actions.AddChild(Action("Quit", () => GetTree().Quit()));
     }
 
@@ -249,8 +262,10 @@ public partial class CharacterSelect : Control
         _name.Text = entry.Name;
         _category.Text = entry.Category.ToUpperInvariant() + "   /   " + entry.Id;
         _description.Text = entry.Description;
-        _status.Text = _diagnostics[index].Length == 0 ? "READY TO SWIM" : _diagnostics[index];
-        _enter.Disabled = _diagnostics[index].Length > 0;
+        _status.Text = WorldSession.SelectedWorldId != WorldCatalog.OceanId
+            ? "No compatible demo fish are available for this world yet. Go back and choose Ocean."
+            : _diagnostics[index].Length == 0 ? "READY TO SWIM" : _diagnostics[index];
+        _enter.Disabled = _diagnostics[index].Length > 0 || WorldSession.SelectedWorldId != WorldCatalog.OceanId;
         for (var i = 0; i < _tiles.Length; i++)
         {
             _tiles[i].Text = (i == index ? "✓ SELECTED\n" : $"{i + 1:00}  ") +
@@ -294,6 +309,16 @@ public partial class CharacterSelect : Control
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GetTree().Paused = false;
         GetTree().ChangeSceneToFile("res://scenes/main.tscn");
+    }
+
+    private void BackToWorldSelect()
+    {
+        _dragging = false;
+        DemoSelection.Clear();
+        WorldSession.Unload();
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        GetTree().Paused = false;
+        GetTree().ChangeSceneToFile("res://scenes/world_select.tscn");
     }
 
     private static Label Label(string text, int size, Color color)
