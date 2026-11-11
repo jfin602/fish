@@ -15,7 +15,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, depth-structured traversal, renderer lock, water-column atmosphere and movement-reactive presentation. |
 | [P3 FAF reef-world plan](planning/p3/reef-world-rebuild.md) | Rebuild/dress the accepted varying-depth world with the complete original FAF environment library, caves/tunnels, depth-based density, and the five-fish Character Select/session-return flow. |
 | [P3 procedural world generation](planning/p3/procedural-world-generation.md) | Deterministic finite world compiler: irregular basin, true 3D geology, terrain-aware placement, baked candidate/Base World lifecycle and generation-time target. |
-| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Approved future Ocean/Pond World Select, distinct visual habitats, habitat-compatible species and shared loading/FAF requirements. |
+| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Approved future Ocean/Pond World Select, distinct visual habitats, habitat-compatible species, surface camera and shared loading/FAF requirements; [authored P4 stack](tasks/p4/README.md) is unexecuted. |
 | [Underwater visibility and discovery](systems/underwater-visibility.md) | Owner-selected distance/depth extinction, progressive reef reveal, near-field readability, tuning controls, and pending native acceptance. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
