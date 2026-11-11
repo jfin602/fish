@@ -1,5 +1,5 @@
 shader_type spatial;
-render_mode unshaded, cull_front, blend_mix, fog_disabled;
+render_mode unshaded, cull_disabled, blend_mix, fog_disabled;
 
 // The surface is viewed from below. Time is supplied by the atmosphere so pause freezes it.
 uniform float surface_time = 0.0;
@@ -12,6 +12,8 @@ uniform float surface_half_size = 45.5;
 uniform vec3 surface_dark = vec3(0.08, 0.42, 0.49);
 uniform vec3 surface_light = vec3(0.20, 0.66, 0.67);
 uniform float overcast = 0.0;
+uniform float air_surface_enabled = 0.0;
+uniform sampler2D air_scene : hint_screen_texture, filter_linear;
 
 varying vec3 surface_world;
 varying vec3 surface_normal;
@@ -56,4 +58,17 @@ void fragment() {
     float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
         surface_half_size - 2.0, edge_distance);
     ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade;
+    // The same plane is visible from air. Keep it translucent so a fish just
+    // beneath the interface remains readable when the camera looks down.
+    if (FRONT_FACING && air_surface_enabled < 0.5) discard;
+    if (FRONT_FACING) {
+        float air_fresnel = pow(1.0 - abs(dot(normal, ray_up)), 3.0);
+        vec2 bend = vec2(normal.x, -normal.z) * 0.003;
+        vec3 refracted = texture(air_scene, clamp(SCREEN_UV + bend,
+            vec2(0.002), vec2(0.998))).rgb;
+        vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple)
+                        + vec3(0.13, 0.15, 0.11) * air_fresnel;
+        ALBEDO = mix(refracted, water_tint, mix(0.24, 0.52, air_fresnel));
+        ALPHA = 0.90 * edge_fade;
+    }
 }

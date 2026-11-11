@@ -53,6 +53,14 @@ public partial class UnderwaterAtmosphere : Node3D
     private float _surfaceHeight;
     private float _deepReferenceHeight;
     private float _lastDepth = -1f;
+    private float _lastImmersion = -1f;
+    private float _immersion = 1f;
+    private bool _immersionInitialized;
+    private const float ImmersionHalfBand = 0.45f;
+    private const float ImmersionResponse = 7f;
+    private static readonly Color PondAirBackground = new(0.43f, 0.48f, 0.46f);
+    private static readonly Color PondAirAmbient = new(0.75f, 0.77f, 0.70f);
+    private static readonly Color PondAirSun = new(0.88f, 0.87f, 0.76f);
     private DirectionalLight3D? _sun;
     private Node3D? _effects;
     private CanvasLayer? _screenLayer;
@@ -60,6 +68,7 @@ public partial class UnderwaterAtmosphere : Node3D
     private GpuParticles3D? _motes;
     private readonly Decal[] _caustics = new Decal[1];
     private bool _enabled = true;
+    private bool _visibilityBypass;
     private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
     private WaterVisualProfile _profile = WaterVisualProfile.Ocean;
@@ -96,6 +105,16 @@ public partial class UnderwaterAtmosphere : Node3D
     public float SurfaceHeight => _surfaceHeight;
     public float DeepReferenceHeight => _deepReferenceHeight;
     public float EffectiveDepth01 { get; private set; }
+    public float CameraSignedImmersionDepth { get; private set; }
+    public float CameraImmersion01 => _immersion;
+    public static float TargetCameraImmersion(float? waterHeight, float eyeY)
+    {
+        if (waterHeight is not { } height || !float.IsFinite(height) || !float.IsFinite(eyeY))
+            return 1f;
+        var signedDepth = height - eyeY;
+        return Mathf.SmoothStep(0f, 1f, Mathf.Clamp(
+            (signedDepth + ImmersionHalfBand) / (2f * ImmersionHalfBand), 0f, 1f));
+    }
     /// <summary>Artistic depth-fog end distance, not a measured optical sight distance.</summary>
     public float EffectiveUsefulRange { get; private set; }
     public float EffectiveBaseVisibilityRange => VisibilityRangeMeters;
@@ -104,7 +123,8 @@ public partial class UnderwaterAtmosphere : Node3D
     public void SetVisibilityDiagnosticBypass(bool bypass)
     {
         if (_environment is null) throw new InvalidOperationException("Atmosphere is not initialized");
-        _environment.FogDensity = bypass ? 0f : FogExtinction;
+        _visibilityBypass = bypass;
+        _environment.FogDensity = bypass ? 0f : FogExtinction * _immersion;
     }
 
     /// <summary>Approximate engine depth-fog scene retention before height/volumetric fog.</summary>
@@ -149,13 +169,13 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial?.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
         _surfaceMaterial?.SetShaderParameter("wave_detail", SurfaceWaveDetail);
         _shaftMaterial?.SetShaderParameter("shaft_count", ShaftCount);
-        _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness);
+        _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness * _immersion);
         _screenMaterial?.SetShaderParameter("warp_pixels", ScreenWarpPixels);
         RefreshDepth(true);
         foreach (var decal in _caustics)
-            if (decal is not null) decal.EmissionEnergy = CausticEnergy;
+            if (decal is not null) decal.EmissionEnergy = CausticEnergy * _immersion;
         if (_motes is not null) _motes.Amount = Mathf.Max(1, MoteCount);
-        if (_motes is not null) _motes.Visible = MoteCount > 0;
+        if (_motes is not null) _motes.Visible = MoteCount > 0 && _immersion > 0.005f;
     }
 
     public void Initialize(Node3D main)
@@ -262,13 +282,19 @@ public partial class UnderwaterAtmosphere : Node3D
         if (_effects is not null) _effects.Visible = enabled;
         if (_motes is not null) _motes.Emitting = enabled;
         if (_screenLayer is not null) _screenLayer.Visible = enabled;
-        if (enabled) RefreshDepth(true);
+        if (enabled)
+        {
+            // The eye may have moved while effects were disabled. Rejoin at its
+            // current position instead of replaying a stale underwater state.
+            _immersionInitialized = false;
+            RefreshDepth(true);
+        }
     }
 
     public override void _Process(double delta)
     {
         if (!_enabled || _effects is null) return;
-        RefreshDepth();
+        RefreshDepth(false, (float)delta);
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
@@ -285,32 +311,61 @@ public partial class UnderwaterAtmosphere : Node3D
     }
 
     /// <summary>Presentation-only read of the active viewport camera. Base settings never change here.</summary>
-    public void RefreshDepth(bool force = false)
+    public void RefreshDepth(bool force = false, float delta = 0f)
     {
         if (!_enabled || _environment is null || _sun is null || _deepReferenceHeight >= _surfaceHeight)
             return;
         var camera = GetViewport().GetCamera3D();
         if (camera is null) return;
+        // A positive signed depth places the eye below the real, level Pond plane.
+        // No fish transform, collider or motor state is consulted here.
+        if (_profile.Id == WorldEnvironmentProfile.Pond)
+        {
+            var seabed = GetParent()?.GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
+            if (seabed is not null && seabed.TryGetPondWaterSurfaceHeight(out var height))
+            {
+                CameraSignedImmersionDepth = height - camera.GlobalPosition.Y;
+                var target = TargetCameraImmersion(height, camera.GlobalPosition.Y);
+                if (!_immersionInitialized) { _immersion = target; _immersionInitialized = true; }
+                else if (delta > 0f) _immersion = Mathf.Lerp(_immersion, target,
+                    1f - Mathf.Exp(-ImmersionResponse * delta));
+            }
+            // Missing baked height data fails closed to the underwater presentation.
+            else { CameraSignedImmersionDepth = float.NaN; _immersion = 1f; _immersionInitialized = false; }
+        }
+        else { CameraSignedImmersionDepth = _surfaceHeight - camera.GlobalPosition.Y; _immersion = 1f; }
         var raw = Mathf.Clamp((_surfaceHeight - camera.GlobalPosition.Y) /
             (_surfaceHeight - _deepReferenceHeight), 0f, 1f);
         var depth = raw * raw * (3f - 2f * raw);
-        if (!force && Mathf.Abs(depth - _lastDepth) < 0.001f) return;
+        if (!force && Mathf.Abs(depth - _lastDepth) < 0.001f &&
+            Mathf.Abs(_immersion - _lastImmersion) < 0.001f) return;
         _lastDepth = depth;
+        _lastImmersion = _immersion;
         EffectiveDepth01 = depth;
         // The depth mode gives a clear foreground and a continuous camera-distance
         // reveal. Camera depth never changes the saved surface-distance base.
         EffectiveUsefulRange = EffectiveBaseVisibilityRange * Mathf.Lerp(1f, _profile.DeepRangeFactor, depth);
-        _environment.FogDepthEnd = EffectiveUsefulRange;
-        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth));
+        _environment.FogDepthEnd = Mathf.Lerp(100f, EffectiveUsefulRange, _immersion);
+        _environment.FogDensity = _visibilityBypass ? 0f : FogExtinction * _immersion;
+        _environment.FogHeightDensity = LowerWaterFog * _immersion;
+        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion;
         _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));
-        _environment.FogLightColor = DistanceFogColor.Lerp(_profile.DeepFog, depth);
-        _environment.VolumetricFogAlbedo = VolumetricWaterColor.Lerp(_profile.DeepVolume, depth);
-        _environment.BackgroundColor = BackgroundWater.Lerp(_profile.DeepBackground, depth);
-        _environment.AmbientLightColor = AmbientWater.Lerp(_profile.DeepAmbient, depth);
-        _environment.AmbientLightEnergy = AmbientEnergy * Mathf.Lerp(1f, _profile.DeepAmbientFactor, depth);
-        _sun.LightEnergy = SunEnergy * Mathf.Lerp(1f, _profile.DeepLightFactor, depth);
+        _environment.FogLightColor = PondAirBackground.Lerp(DistanceFogColor.Lerp(_profile.DeepFog, depth), _immersion);
+        _environment.VolumetricFogAlbedo = PondAirAmbient.Lerp(VolumetricWaterColor.Lerp(_profile.DeepVolume, depth), _immersion);
+        _environment.BackgroundColor = PondAirBackground.Lerp(BackgroundWater.Lerp(_profile.DeepBackground, depth), _immersion);
+        _environment.AmbientLightColor = PondAirAmbient.Lerp(AmbientWater.Lerp(_profile.DeepAmbient, depth), _immersion);
+        _environment.AmbientLightEnergy = Mathf.Lerp(0.75f, AmbientEnergy * Mathf.Lerp(1f, _profile.DeepAmbientFactor, depth), _immersion);
+        _sun.LightColor = PondAirSun.Lerp(SunColor, _immersion);
+        _sun.LightEnergy = Mathf.Lerp(1.0f, SunEnergy * Mathf.Lerp(1f, _profile.DeepLightFactor, depth), _immersion);
+        _sun.LightVolumetricFogEnergy = 0.8f * _immersion;
         _skyMaterial?.SetShaderParameter("water_depth", depth);
+        _skyMaterial?.SetShaderParameter("air_mix", 1f - _immersion);
         _surfaceMaterial?.SetShaderParameter("camera_depth", depth);
+        _screenMaterial?.SetShaderParameter("immersion", _immersion);
+        _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness * _immersion);
+        foreach (var decal in _caustics)
+            if (decal is not null) decal.EmissionEnergy = CausticEnergy * _immersion;
+        if (_motes is not null) _motes.Visible = MoteCount > 0 && _immersion > 0.005f;
     }
 
     private void AddSky()
@@ -365,6 +420,7 @@ public partial class UnderwaterAtmosphere : Node3D
             SubdivideDepth = 48,
         };
         _surfaceMaterial = new ShaderMaterial { Shader = shader };
+        _surfaceMaterial.SetShaderParameter("air_surface_enabled", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
         _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
         _surfaceMaterial.SetShaderParameter("surface_time", 0.0f);
         _surfaceMaterial.SetShaderParameter("wave_height", SurfaceWaveHeight);

@@ -128,7 +128,8 @@ public partial class Main : Node3D
 
         GD.Print("FISH_FOUNDATION_READY");
 
-        if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
+        if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check") ||
+            OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check"))
         {
             WorldSession.Select(WorldCatalog.PondId);
             DemoSelection.CharacterId = "FAF-FISH-006";
@@ -203,6 +204,12 @@ public partial class Main : Node3D
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
         {
             PondSurfaceChecks.Start(this);
+            return;
+        }
+        if (populated && OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check"))
+        {
+            try { PondCameraImmersionChecks.Run(this); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"POND_CAMERA_IMMERSION_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
 

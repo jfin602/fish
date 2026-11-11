@@ -139,12 +139,13 @@ public static class PondAtmosphereChecks
         var screen = atmosphere.ScreenLayer ?? throw new Exception("water screen missing");
         var rect = screen.GetNode<ColorRect>("ScreenTreatment");
         var original = camera.GlobalPosition;
-        camera.GlobalPosition = new Vector3(original.X, atmosphere.SurfaceHeight, original.Z);
-        atmosphere.RefreshDepth(true);
+        camera.GlobalPosition = new Vector3(original.X, atmosphere.SurfaceHeight - 2f, original.Z);
+        atmosphere.RefreshDepth(true, 2f);
         Require(atmosphere.ProfileId == WorldEnvironmentProfile.Pond &&
             atmosphere.ParametersAreFinite() && env.FogEnabled && env.VolumetricFogEnabled &&
             atmosphere.BackgroundWater == WaterVisualProfile.Pond.Background &&
-            env.FogLightColor == WaterVisualProfile.Pond.Fog &&
+            Mathf.Abs(env.FogLightColor.R - WaterVisualProfile.Pond.Fog.Lerp(
+                WaterVisualProfile.Pond.DeepFog, atmosphere.EffectiveDepth01).R) < .001f &&
             (float)sky.GetShaderParameter("overcast") == 1f &&
             (float)surfaceMaterial.GetShaderParameter("overcast") == 1f &&
             (Vector3)shaftMaterial.GetShaderParameter("shaft_color") == new Vector3(
