@@ -6,13 +6,19 @@ This document organizes the Fish concept approved in the project discussion. [De
 
 ## Confirmed core
 
-- Control a fish in a realistic 3D ocean environment, primarily in third person.
+- Control a fish in a stylized 3D aquatic environment, primarily in third person. Ocean and freshwater Pond are separate supported habitats.
 - Begin as a hatchling and survive long enough to grow into a large fish.
 - Find food and eat suitable smaller fish while avoiding being eaten.
 - Continue the same fish across multiple play sessions.
 - Permanently end that life on death; begin the next run as a hatchling.
 - Recount the dead fish's actual life briefly, then retain the story in a main-menu history section.
 - Offer an optional first-person view as a secondary way to experience the same game.
+
+## Multi-habitat world structure
+
+The original reef/Ocean world remains an active playable option; P4 adds a separate Freshwater Pond, not a replacement Ocean skin. New Life uses **World Select → habitat-filtered Character Select → Play**. The current five FAF marine fish remain Ocean-only; future freshwater fish are Pond-only. Ordinary ambient and ecological populations respect the same habitat compatibility. The two habitats share movement/camera, procedural world generation and bake/load, but have separate environments, art, fog/light and content. [P4 plan](planning/p4/freshwater-world.md) owns the design.
+
+World choice is a new-life choice, not an ability to transfer an existing fish between habitats. When persistence arrives, Continue restores the same living run, species, and world directly; a failed/missing world is a recovery issue, not a silent migration.
 
 ## Connected loops
 
@@ -54,7 +60,7 @@ The central early proof is a visible change in food-chain position. A species th
 
 The core control direction is owner-approved in the [swimming contract](systems/swimming-and-camera.md), with the conversation preserved in the [completed worksheet](planning/p1/swim-controls-worksheet.md). First establish natural, nimble swimming that remains easy to control, using mouse steering and keyboard fallback. Controller support follows later. P10 owner feedback added a limited, self-returning camera pan in mouse mode and wheel zoom in either mode; a broader free-look system remains later work.
 
-After actual playtesting and owner acceptance of the core, [P2 worldbuilding](planning/p2/underwater-world.md) establishes the technical underwater habitat/depth system. [P3 reef world rebuilding](planning/p3/reef-world-rebuild.md) then turns that varying-depth world into the first style-proving FAF reef. P3 also adds a Character Select page using all five FAF fish candidates—including the Blacktip Reef Shark—as visual-only player bodies under one shared movement/collision/camera contract, with an in-game return-to-select action that does not represent death or persistence. [Movement abilities](planning/p1/movement-abilities.md) remain accepted future movement work. Feeding belongs to P4; tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
+After actual playtesting and owner acceptance of the core, [P2 worldbuilding](planning/p2/underwater-world.md) establishes the technical underwater habitat/depth system. [P3 reef world rebuilding](planning/p3/reef-world-rebuild.md) then turns that varying-depth world into the first style-proving FAF reef. P3 also adds a Character Select page using all five FAF fish candidates—including the Blacktip Reef Shark—as visual-only player bodies under one shared movement/collision/camera contract, with an in-game return-to-select action that does not represent death or persistence. [Movement abilities](planning/p1/movement-abilities.md) remain accepted future movement work. Feeding belongs to P5 after P4 World Select/Freshwater Pond; tiny food collected by contact and an aimed bite for live prey remain working feeding designs.
 
 Threats must remain legible above, below, and outside the camera's immediate view. Candidate predator behavior is approach, a readable attack commitment, pursuit, and disengagement. Small fish can use cover and turning; larger fish gain useful hunting capability. Numeric advantages and handling changes are tuning decisions.
 
@@ -70,11 +76,11 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 [P2](tasks/p2/README.md) then replaces the visible test-course presentation with a natural reef-like habitat, locks a renderer from measured Compatibility/Forward+ testing, makes the world read convincingly underwater, and adds movement-reactive water presentation. The P1 course remains a regression fixture. [Art and assets](art-and-assets.md) owns source/provenance boundaries; the P2 slice does not settle the final species or production biome.
 
-After the P3 reef-art rebuild, the P4 feeding-and-growth prototype uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
+After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 feeding-and-growth prototype then uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 
-The current bootstrap task establishes the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
+The current P3 correction is still underway at `0.3.6`; the P4 design is approved but not implemented. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
 
 ## Deferred choices
 
