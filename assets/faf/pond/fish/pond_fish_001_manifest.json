@@ -1,0 +1,5979 @@
+{
+  "pack": "Pond FAF fish 001",
+  "generator": "fish.pond_families.v1",
+  "habitat": "pond",
+  "blender_version": "5.2.3 LTS",
+  "source_reference": "owner-supplied best-pond-faf.png; local reference, not redistributed",
+  "assets": [
+    {
+      "faf_id": "FAF-FISH-006",
+      "species": "Bluegill",
+      "scientific_family": "deep_sunfish",
+      "life_stage": "egg",
+      "habitat": "pond",
+      "stem": "fish_006_bluegill__egg",
+      "dimensions_m": [
+        0.003662,
+        0.00287,
+        0.003595
+      ],
+      "triangles": 160,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_006_bluegill__egg_embryo",
+        "mat__fish_006_bluegill__egg_shell"
+      ],
+      "bones": 4,
+      "bone_names": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "actions": [
+        "fish_006_bluegill__egg__Idle",
+        "fish_006_bluegill__egg__Hatch"
+      ],
+      "loop_roles": [
+        "Idle"
+      ],
+      "breathing_anatomy": "not_applicable_egg",
+      "breathing_validation": null,
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "generator_config": {
+        "diameter_m": 0.0035,
+        "shell_color": "#A5A38B",
+        "embryo_color": "#5D6354",
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_006_bluegill__egg.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-006",
+      "species": "Bluegill",
+      "scientific_family": "deep_sunfish",
+      "life_stage": "larva",
+      "habitat": "pond",
+      "stem": "fish_006_bluegill__larva",
+      "dimensions_m": [
+        0.008098,
+        0.02477,
+        0.007968
+      ],
+      "triangles": 484,
+      "materials": 4,
+      "material_names": [
+        "mat__fish_006_bluegill__larva_belly",
+        "mat__fish_006_bluegill__larva_body",
+        "mat__fish_006_bluegill__larva_eye",
+        "mat__fish_006_bluegill__larva_fin"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_006_bluegill__larva__Idle",
+        "fish_006_bluegill__larva__Glide",
+        "fish_006_bluegill__larva__SwimSlow",
+        "fish_006_bluegill__larva__Swim",
+        "fish_006_bluegill__larva__SwimFast",
+        "fish_006_bluegill__larva__TurnLeft",
+        "fish_006_bluegill__larva__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 9.313225746154785e-10
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "generator_config": {
+        "species": {
+          "number": 6,
+          "slug": "bluegill",
+          "common_name": "Bluegill",
+          "family": "deep_sunfish",
+          "length": 0.255,
+          "half_width": 0.032,
+          "half_height": 0.085,
+          "stations": [
+            [
+              0,
+              0.23,
+              0.2,
+              0
+            ],
+            [
+              0.1,
+              0.61,
+              0.57,
+              0
+            ],
+            [
+              0.25,
+              0.92,
+              0.91,
+              0
+            ],
+            [
+              0.43,
+              1,
+              1,
+              0
+            ],
+            [
+              0.62,
+              0.89,
+              0.94,
+              0
+            ],
+            [
+              0.78,
+              0.59,
+              0.64,
+              0
+            ],
+            [
+              0.91,
+              0.23,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.17,
+          "eye_z": 0.16,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.24,
+                0.8
+              ],
+              [
+                0.32,
+                1.34
+              ],
+              [
+                0.48,
+                1.5
+              ],
+              [
+                0.62,
+                1.4
+              ],
+              [
+                0.78,
+                1.16
+              ],
+              [
+                0.84,
+                0.46
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.47,
+                -0.84
+              ],
+              [
+                0.57,
+                -1.19
+              ],
+              [
+                0.75,
+                -1.27
+              ],
+              [
+                0.83,
+                -0.47
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.12,
+              0.75
+            ],
+            [
+              1.19,
+              0.6
+            ],
+            [
+              1.14,
+              0
+            ],
+            [
+              1.19,
+              -0.6
+            ],
+            [
+              1.12,
+              -0.75
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.022,
+            0.07,
+            0.15,
+            0.23
+          ],
+          "cadence": 1.05,
+          "palettes": [
+            [
+              "#90967B",
+              "#B7AF91",
+              "#6D766C",
+              "#939675",
+              "#2B302B"
+            ],
+            [
+              "#83976C",
+              "#C2B98E",
+              "#66785E",
+              "#879469",
+              "#252B28"
+            ],
+            [
+              "#5F825E",
+              "#D2BD78",
+              "#426457",
+              "#708865",
+              "#20292C"
+            ],
+            [
+              "#466F5A",
+              "#D5AF67",
+              "#314F61",
+              "#5D805F",
+              "#1B252B"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "larva",
+          "size": 0.085,
+          "depth": 0.57,
+          "width": 0.7,
+          "head": 0.42,
+          "peduncle": -0.34,
+          "eye": 1.65,
+          "fin": 0.38,
+          "tail": 0.62,
+          "wave": 1.28,
+          "cadence": 1.2,
+          "marking": 0.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_006_bluegill__larva.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-006",
+      "species": "Bluegill",
+      "scientific_family": "deep_sunfish",
+      "life_stage": "juvenile",
+      "habitat": "pond",
+      "stem": "fish_006_bluegill__juvenile",
+      "dimensions_m": [
+        0.049256,
+        0.099684,
+        0.047545
+      ],
+      "triangles": 796,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_006_bluegill__juvenile_belly",
+        "mat__fish_006_bluegill__juvenile_body",
+        "mat__fish_006_bluegill__juvenile_eye",
+        "mat__fish_006_bluegill__juvenile_fin",
+        "mat__fish_006_bluegill__juvenile_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_006_bluegill__juvenile__Idle",
+        "fish_006_bluegill__juvenile__Glide",
+        "fish_006_bluegill__juvenile__SwimSlow",
+        "fish_006_bluegill__juvenile__Swim",
+        "fish_006_bluegill__juvenile__SwimFast",
+        "fish_006_bluegill__juvenile__TurnLeft",
+        "fish_006_bluegill__juvenile__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 3.725290298461914e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "generator_config": {
+        "species": {
+          "number": 6,
+          "slug": "bluegill",
+          "common_name": "Bluegill",
+          "family": "deep_sunfish",
+          "length": 0.255,
+          "half_width": 0.032,
+          "half_height": 0.085,
+          "stations": [
+            [
+              0,
+              0.23,
+              0.2,
+              0
+            ],
+            [
+              0.1,
+              0.61,
+              0.57,
+              0
+            ],
+            [
+              0.25,
+              0.92,
+              0.91,
+              0
+            ],
+            [
+              0.43,
+              1,
+              1,
+              0
+            ],
+            [
+              0.62,
+              0.89,
+              0.94,
+              0
+            ],
+            [
+              0.78,
+              0.59,
+              0.64,
+              0
+            ],
+            [
+              0.91,
+              0.23,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.17,
+          "eye_z": 0.16,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.24,
+                0.8
+              ],
+              [
+                0.32,
+                1.34
+              ],
+              [
+                0.48,
+                1.5
+              ],
+              [
+                0.62,
+                1.4
+              ],
+              [
+                0.78,
+                1.16
+              ],
+              [
+                0.84,
+                0.46
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.47,
+                -0.84
+              ],
+              [
+                0.57,
+                -1.19
+              ],
+              [
+                0.75,
+                -1.27
+              ],
+              [
+                0.83,
+                -0.47
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.12,
+              0.75
+            ],
+            [
+              1.19,
+              0.6
+            ],
+            [
+              1.14,
+              0
+            ],
+            [
+              1.19,
+              -0.6
+            ],
+            [
+              1.12,
+              -0.75
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.022,
+            0.07,
+            0.15,
+            0.23
+          ],
+          "cadence": 1.05,
+          "palettes": [
+            [
+              "#90967B",
+              "#B7AF91",
+              "#6D766C",
+              "#939675",
+              "#2B302B"
+            ],
+            [
+              "#83976C",
+              "#C2B98E",
+              "#66785E",
+              "#879469",
+              "#252B28"
+            ],
+            [
+              "#5F825E",
+              "#D2BD78",
+              "#426457",
+              "#708865",
+              "#20292C"
+            ],
+            [
+              "#466F5A",
+              "#D5AF67",
+              "#314F61",
+              "#5D805F",
+              "#1B252B"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "juvenile",
+          "size": 0.33,
+          "depth": 0.8,
+          "width": 0.84,
+          "head": 0.23,
+          "peduncle": -0.17,
+          "eye": 1.22,
+          "fin": 0.74,
+          "tail": 0.84,
+          "wave": 1.15,
+          "cadence": 1.12,
+          "marking": 0.45
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_006_bluegill__juvenile.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-006",
+      "species": "Bluegill",
+      "scientific_family": "deep_sunfish",
+      "life_stage": "subadult",
+      "habitat": "pond",
+      "stem": "fish_006_bluegill__subadult",
+      "dimensions_m": [
+        0.121811,
+        0.209363,
+        0.139965
+      ],
+      "triangles": 796,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_006_bluegill__subadult_belly",
+        "mat__fish_006_bluegill__subadult_body",
+        "mat__fish_006_bluegill__subadult_eye",
+        "mat__fish_006_bluegill__subadult_fin",
+        "mat__fish_006_bluegill__subadult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_006_bluegill__subadult__Idle",
+        "fish_006_bluegill__subadult__Glide",
+        "fish_006_bluegill__subadult__SwimSlow",
+        "fish_006_bluegill__subadult__Swim",
+        "fish_006_bluegill__subadult__SwimFast",
+        "fish_006_bluegill__subadult__TurnLeft",
+        "fish_006_bluegill__subadult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 7.450580596923828e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "generator_config": {
+        "species": {
+          "number": 6,
+          "slug": "bluegill",
+          "common_name": "Bluegill",
+          "family": "deep_sunfish",
+          "length": 0.255,
+          "half_width": 0.032,
+          "half_height": 0.085,
+          "stations": [
+            [
+              0,
+              0.23,
+              0.2,
+              0
+            ],
+            [
+              0.1,
+              0.61,
+              0.57,
+              0
+            ],
+            [
+              0.25,
+              0.92,
+              0.91,
+              0
+            ],
+            [
+              0.43,
+              1,
+              1,
+              0
+            ],
+            [
+              0.62,
+              0.89,
+              0.94,
+              0
+            ],
+            [
+              0.78,
+              0.59,
+              0.64,
+              0
+            ],
+            [
+              0.91,
+              0.23,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.17,
+          "eye_z": 0.16,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.24,
+                0.8
+              ],
+              [
+                0.32,
+                1.34
+              ],
+              [
+                0.48,
+                1.5
+              ],
+              [
+                0.62,
+                1.4
+              ],
+              [
+                0.78,
+                1.16
+              ],
+              [
+                0.84,
+                0.46
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.47,
+                -0.84
+              ],
+              [
+                0.57,
+                -1.19
+              ],
+              [
+                0.75,
+                -1.27
+              ],
+              [
+                0.83,
+                -0.47
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.12,
+              0.75
+            ],
+            [
+              1.19,
+              0.6
+            ],
+            [
+              1.14,
+              0
+            ],
+            [
+              1.19,
+              -0.6
+            ],
+            [
+              1.12,
+              -0.75
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.022,
+            0.07,
+            0.15,
+            0.23
+          ],
+          "cadence": 1.05,
+          "palettes": [
+            [
+              "#90967B",
+              "#B7AF91",
+              "#6D766C",
+              "#939675",
+              "#2B302B"
+            ],
+            [
+              "#83976C",
+              "#C2B98E",
+              "#66785E",
+              "#879469",
+              "#252B28"
+            ],
+            [
+              "#5F825E",
+              "#D2BD78",
+              "#426457",
+              "#708865",
+              "#20292C"
+            ],
+            [
+              "#466F5A",
+              "#D5AF67",
+              "#314F61",
+              "#5D805F",
+              "#1B252B"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "subadult",
+          "size": 0.68,
+          "depth": 0.94,
+          "width": 0.95,
+          "head": 0.08,
+          "peduncle": -0.05,
+          "eye": 1.06,
+          "fin": 0.93,
+          "tail": 0.96,
+          "wave": 1.04,
+          "cadence": 1.04,
+          "marking": 0.82
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_006_bluegill__subadult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-006",
+      "species": "Bluegill",
+      "scientific_family": "deep_sunfish",
+      "life_stage": "adult",
+      "habitat": "pond",
+      "stem": "fish_006_bluegill__adult",
+      "dimensions_m": [
+        0.190302,
+        0.309825,
+        0.23545
+      ],
+      "triangles": 796,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_006_bluegill__adult_belly",
+        "mat__fish_006_bluegill__adult_body",
+        "mat__fish_006_bluegill__adult_eye",
+        "mat__fish_006_bluegill__adult_fin",
+        "mat__fish_006_bluegill__adult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_006_bluegill__adult__Idle",
+        "fish_006_bluegill__adult__Glide",
+        "fish_006_bluegill__adult__SwimSlow",
+        "fish_006_bluegill__adult__Swim",
+        "fish_006_bluegill__adult__SwimFast",
+        "fish_006_bluegill__adult__TurnLeft",
+        "fish_006_bluegill__adult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 4.208342239866799e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "generator_config": {
+        "species": {
+          "number": 6,
+          "slug": "bluegill",
+          "common_name": "Bluegill",
+          "family": "deep_sunfish",
+          "length": 0.255,
+          "half_width": 0.032,
+          "half_height": 0.085,
+          "stations": [
+            [
+              0,
+              0.23,
+              0.2,
+              0
+            ],
+            [
+              0.1,
+              0.61,
+              0.57,
+              0
+            ],
+            [
+              0.25,
+              0.92,
+              0.91,
+              0
+            ],
+            [
+              0.43,
+              1,
+              1,
+              0
+            ],
+            [
+              0.62,
+              0.89,
+              0.94,
+              0
+            ],
+            [
+              0.78,
+              0.59,
+              0.64,
+              0
+            ],
+            [
+              0.91,
+              0.23,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.17,
+          "eye_z": 0.16,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.24,
+                0.8
+              ],
+              [
+                0.32,
+                1.34
+              ],
+              [
+                0.48,
+                1.5
+              ],
+              [
+                0.62,
+                1.4
+              ],
+              [
+                0.78,
+                1.16
+              ],
+              [
+                0.84,
+                0.46
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.47,
+                -0.84
+              ],
+              [
+                0.57,
+                -1.19
+              ],
+              [
+                0.75,
+                -1.27
+              ],
+              [
+                0.83,
+                -0.47
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.12,
+              0.75
+            ],
+            [
+              1.19,
+              0.6
+            ],
+            [
+              1.14,
+              0
+            ],
+            [
+              1.19,
+              -0.6
+            ],
+            [
+              1.12,
+              -0.75
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.022,
+            0.07,
+            0.15,
+            0.23
+          ],
+          "cadence": 1.05,
+          "palettes": [
+            [
+              "#90967B",
+              "#B7AF91",
+              "#6D766C",
+              "#939675",
+              "#2B302B"
+            ],
+            [
+              "#83976C",
+              "#C2B98E",
+              "#66785E",
+              "#879469",
+              "#252B28"
+            ],
+            [
+              "#5F825E",
+              "#D2BD78",
+              "#426457",
+              "#708865",
+              "#20292C"
+            ],
+            [
+              "#466F5A",
+              "#D5AF67",
+              "#314F61",
+              "#5D805F",
+              "#1B252B"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "adult",
+          "size": 1.0,
+          "depth": 1.0,
+          "width": 1.0,
+          "head": 0.0,
+          "peduncle": 0.0,
+          "eye": 1.0,
+          "fin": 1.0,
+          "tail": 1.0,
+          "wave": 1.0,
+          "cadence": 1.0,
+          "marking": 1.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_006_bluegill__adult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-007",
+      "species": "Largemouth Bass",
+      "scientific_family": "large_mouth_predator",
+      "life_stage": "egg",
+      "habitat": "pond",
+      "stem": "fish_007_largemouth_bass__egg",
+      "dimensions_m": [
+        0.00429,
+        0.003362,
+        0.004211
+      ],
+      "triangles": 160,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_007_largemouth_bass__egg_embryo",
+        "mat__fish_007_largemouth_bass__egg_shell"
+      ],
+      "bones": 4,
+      "bone_names": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "actions": [
+        "fish_007_largemouth_bass__egg__Idle",
+        "fish_007_largemouth_bass__egg__Hatch"
+      ],
+      "loop_roles": [
+        "Idle"
+      ],
+      "breathing_anatomy": "not_applicable_egg",
+      "breathing_validation": null,
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "generator_config": {
+        "diameter_m": 0.0041,
+        "shell_color": "#9E9C7C",
+        "embryo_color": "#59634E",
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_007_largemouth_bass__egg.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-007",
+      "species": "Largemouth Bass",
+      "scientific_family": "large_mouth_predator",
+      "life_stage": "larva",
+      "habitat": "pond",
+      "stem": "fish_007_largemouth_bass__larva",
+      "dimensions_m": [
+        0.01365,
+        0.058056,
+        0.007607
+      ],
+      "triangles": 520,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_007_largemouth_bass__larva_belly",
+        "mat__fish_007_largemouth_bass__larva_body",
+        "mat__fish_007_largemouth_bass__larva_eye",
+        "mat__fish_007_largemouth_bass__larva_fin",
+        "mat__fish_007_largemouth_bass__larva_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_007_largemouth_bass__larva__Idle",
+        "fish_007_largemouth_bass__larva__Glide",
+        "fish_007_largemouth_bass__larva__SwimSlow",
+        "fish_007_largemouth_bass__larva__Swim",
+        "fish_007_largemouth_bass__larva__SwimFast",
+        "fish_007_largemouth_bass__larva__TurnLeft",
+        "fish_007_largemouth_bass__larva__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 3.637978807091713e-11
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "generator_config": {
+        "species": {
+          "number": 7,
+          "slug": "largemouth_bass",
+          "common_name": "Largemouth Bass",
+          "family": "large_mouth_predator",
+          "length": 0.58,
+          "half_width": 0.07,
+          "half_height": 0.083,
+          "stations": [
+            [
+              0,
+              0.27,
+              0.3,
+              -0.05
+            ],
+            [
+              0.12,
+              0.68,
+              0.58,
+              -0.06
+            ],
+            [
+              0.28,
+              0.96,
+              0.82,
+              0
+            ],
+            [
+              0.45,
+              1,
+              1,
+              0
+            ],
+            [
+              0.61,
+              0.86,
+              0.89,
+              0
+            ],
+            [
+              0.77,
+              0.56,
+              0.58,
+              0
+            ],
+            [
+              0.92,
+              0.22,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.18,
+          "eye_z": 0.2,
+          "eye_radius": 0.01,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.83
+              ],
+              [
+                0.4,
+                1.27
+              ],
+              [
+                0.5,
+                1.24
+              ],
+              [
+                0.55,
+                0.75
+              ]
+            ],
+            [
+              [
+                0.54,
+                0.74
+              ],
+              [
+                0.62,
+                1.32
+              ],
+              [
+                0.78,
+                1.23
+              ],
+              [
+                0.84,
+                0.48
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.66,
+                -0.65
+              ],
+              [
+                0.73,
+                -1.02
+              ],
+              [
+                0.84,
+                -0.93
+              ],
+              [
+                0.88,
+                -0.32
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.11
+            ],
+            [
+              1.16,
+              0.88
+            ],
+            [
+              1.23,
+              0.85
+            ],
+            [
+              1.12,
+              0
+            ],
+            [
+              1.23,
+              -0.85
+            ],
+            [
+              1.16,
+              -0.88
+            ],
+            [
+              0.94,
+              -0.11
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.013,
+            0.05,
+            0.13,
+            0.25
+          ],
+          "cadence": 0.88,
+          "palettes": [
+            [
+              "#A09C79",
+              "#C8BE9D",
+              "#76745D",
+              "#979476",
+              "#252B27"
+            ],
+            [
+              "#8B966D",
+              "#D1C89F",
+              "#596B4E",
+              "#86906A",
+              "#202722"
+            ],
+            [
+              "#6A8057",
+              "#D2C7A0",
+              "#344B38",
+              "#697D56",
+              "#1B2522"
+            ],
+            [
+              "#58704B",
+              "#D6CBAA",
+              "#2E493A",
+              "#5C714B",
+              "#192320"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "larva",
+          "size": 0.085,
+          "depth": 0.57,
+          "width": 0.7,
+          "head": 0.42,
+          "peduncle": -0.34,
+          "eye": 1.65,
+          "fin": 0.38,
+          "tail": 0.62,
+          "wave": 1.28,
+          "cadence": 1.2,
+          "marking": 0.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_007_largemouth_bass__larva.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-007",
+      "species": "Largemouth Bass",
+      "scientific_family": "large_mouth_predator",
+      "life_stage": "juvenile",
+      "habitat": "pond",
+      "stem": "fish_007_largemouth_bass__juvenile",
+      "dimensions_m": [
+        0.077166,
+        0.235077,
+        0.043735
+      ],
+      "triangles": 808,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_007_largemouth_bass__juvenile_belly",
+        "mat__fish_007_largemouth_bass__juvenile_body",
+        "mat__fish_007_largemouth_bass__juvenile_eye",
+        "mat__fish_007_largemouth_bass__juvenile_fin",
+        "mat__fish_007_largemouth_bass__juvenile_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_007_largemouth_bass__juvenile__Idle",
+        "fish_007_largemouth_bass__juvenile__Glide",
+        "fish_007_largemouth_bass__juvenile__SwimSlow",
+        "fish_007_largemouth_bass__juvenile__Swim",
+        "fish_007_largemouth_bass__juvenile__SwimFast",
+        "fish_007_largemouth_bass__juvenile__TurnLeft",
+        "fish_007_largemouth_bass__juvenile__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 7.450580596923828e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "generator_config": {
+        "species": {
+          "number": 7,
+          "slug": "largemouth_bass",
+          "common_name": "Largemouth Bass",
+          "family": "large_mouth_predator",
+          "length": 0.58,
+          "half_width": 0.07,
+          "half_height": 0.083,
+          "stations": [
+            [
+              0,
+              0.27,
+              0.3,
+              -0.05
+            ],
+            [
+              0.12,
+              0.68,
+              0.58,
+              -0.06
+            ],
+            [
+              0.28,
+              0.96,
+              0.82,
+              0
+            ],
+            [
+              0.45,
+              1,
+              1,
+              0
+            ],
+            [
+              0.61,
+              0.86,
+              0.89,
+              0
+            ],
+            [
+              0.77,
+              0.56,
+              0.58,
+              0
+            ],
+            [
+              0.92,
+              0.22,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.18,
+          "eye_z": 0.2,
+          "eye_radius": 0.01,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.83
+              ],
+              [
+                0.4,
+                1.27
+              ],
+              [
+                0.5,
+                1.24
+              ],
+              [
+                0.55,
+                0.75
+              ]
+            ],
+            [
+              [
+                0.54,
+                0.74
+              ],
+              [
+                0.62,
+                1.32
+              ],
+              [
+                0.78,
+                1.23
+              ],
+              [
+                0.84,
+                0.48
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.66,
+                -0.65
+              ],
+              [
+                0.73,
+                -1.02
+              ],
+              [
+                0.84,
+                -0.93
+              ],
+              [
+                0.88,
+                -0.32
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.11
+            ],
+            [
+              1.16,
+              0.88
+            ],
+            [
+              1.23,
+              0.85
+            ],
+            [
+              1.12,
+              0
+            ],
+            [
+              1.23,
+              -0.85
+            ],
+            [
+              1.16,
+              -0.88
+            ],
+            [
+              0.94,
+              -0.11
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.013,
+            0.05,
+            0.13,
+            0.25
+          ],
+          "cadence": 0.88,
+          "palettes": [
+            [
+              "#A09C79",
+              "#C8BE9D",
+              "#76745D",
+              "#979476",
+              "#252B27"
+            ],
+            [
+              "#8B966D",
+              "#D1C89F",
+              "#596B4E",
+              "#86906A",
+              "#202722"
+            ],
+            [
+              "#6A8057",
+              "#D2C7A0",
+              "#344B38",
+              "#697D56",
+              "#1B2522"
+            ],
+            [
+              "#58704B",
+              "#D6CBAA",
+              "#2E493A",
+              "#5C714B",
+              "#192320"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "juvenile",
+          "size": 0.33,
+          "depth": 0.8,
+          "width": 0.84,
+          "head": 0.23,
+          "peduncle": -0.17,
+          "eye": 1.22,
+          "fin": 0.74,
+          "tail": 0.84,
+          "wave": 1.15,
+          "cadence": 1.12,
+          "marking": 0.45
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_007_largemouth_bass__juvenile.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-007",
+      "species": "Largemouth Bass",
+      "scientific_family": "large_mouth_predator",
+      "life_stage": "subadult",
+      "habitat": "pond",
+      "stem": "fish_007_largemouth_bass__subadult",
+      "dimensions_m": [
+        0.187781,
+        0.495288,
+        0.11787
+      ],
+      "triangles": 808,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_007_largemouth_bass__subadult_belly",
+        "mat__fish_007_largemouth_bass__subadult_body",
+        "mat__fish_007_largemouth_bass__subadult_eye",
+        "mat__fish_007_largemouth_bass__subadult_fin",
+        "mat__fish_007_largemouth_bass__subadult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_007_largemouth_bass__subadult__Idle",
+        "fish_007_largemouth_bass__subadult__Glide",
+        "fish_007_largemouth_bass__subadult__SwimSlow",
+        "fish_007_largemouth_bass__subadult__Swim",
+        "fish_007_largemouth_bass__subadult__SwimFast",
+        "fish_007_largemouth_bass__subadult__TurnLeft",
+        "fish_007_largemouth_bass__subadult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 1.862645149230957e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "generator_config": {
+        "species": {
+          "number": 7,
+          "slug": "largemouth_bass",
+          "common_name": "Largemouth Bass",
+          "family": "large_mouth_predator",
+          "length": 0.58,
+          "half_width": 0.07,
+          "half_height": 0.083,
+          "stations": [
+            [
+              0,
+              0.27,
+              0.3,
+              -0.05
+            ],
+            [
+              0.12,
+              0.68,
+              0.58,
+              -0.06
+            ],
+            [
+              0.28,
+              0.96,
+              0.82,
+              0
+            ],
+            [
+              0.45,
+              1,
+              1,
+              0
+            ],
+            [
+              0.61,
+              0.86,
+              0.89,
+              0
+            ],
+            [
+              0.77,
+              0.56,
+              0.58,
+              0
+            ],
+            [
+              0.92,
+              0.22,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.18,
+          "eye_z": 0.2,
+          "eye_radius": 0.01,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.83
+              ],
+              [
+                0.4,
+                1.27
+              ],
+              [
+                0.5,
+                1.24
+              ],
+              [
+                0.55,
+                0.75
+              ]
+            ],
+            [
+              [
+                0.54,
+                0.74
+              ],
+              [
+                0.62,
+                1.32
+              ],
+              [
+                0.78,
+                1.23
+              ],
+              [
+                0.84,
+                0.48
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.66,
+                -0.65
+              ],
+              [
+                0.73,
+                -1.02
+              ],
+              [
+                0.84,
+                -0.93
+              ],
+              [
+                0.88,
+                -0.32
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.11
+            ],
+            [
+              1.16,
+              0.88
+            ],
+            [
+              1.23,
+              0.85
+            ],
+            [
+              1.12,
+              0
+            ],
+            [
+              1.23,
+              -0.85
+            ],
+            [
+              1.16,
+              -0.88
+            ],
+            [
+              0.94,
+              -0.11
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.013,
+            0.05,
+            0.13,
+            0.25
+          ],
+          "cadence": 0.88,
+          "palettes": [
+            [
+              "#A09C79",
+              "#C8BE9D",
+              "#76745D",
+              "#979476",
+              "#252B27"
+            ],
+            [
+              "#8B966D",
+              "#D1C89F",
+              "#596B4E",
+              "#86906A",
+              "#202722"
+            ],
+            [
+              "#6A8057",
+              "#D2C7A0",
+              "#344B38",
+              "#697D56",
+              "#1B2522"
+            ],
+            [
+              "#58704B",
+              "#D6CBAA",
+              "#2E493A",
+              "#5C714B",
+              "#192320"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "subadult",
+          "size": 0.68,
+          "depth": 0.94,
+          "width": 0.95,
+          "head": 0.08,
+          "peduncle": -0.05,
+          "eye": 1.06,
+          "fin": 0.93,
+          "tail": 0.96,
+          "wave": 1.04,
+          "cadence": 1.04,
+          "marking": 0.82
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_007_largemouth_bass__subadult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-007",
+      "species": "Largemouth Bass",
+      "scientific_family": "large_mouth_predator",
+      "life_stage": "adult",
+      "habitat": "pond",
+      "stem": "fish_007_largemouth_bass__adult",
+      "dimensions_m": [
+        0.292376,
+        0.7337,
+        0.19422
+      ],
+      "triangles": 808,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_007_largemouth_bass__adult_belly",
+        "mat__fish_007_largemouth_bass__adult_body",
+        "mat__fish_007_largemouth_bass__adult_eye",
+        "mat__fish_007_largemouth_bass__adult_fin",
+        "mat__fish_007_largemouth_bass__adult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_007_largemouth_bass__adult__Idle",
+        "fish_007_largemouth_bass__adult__Glide",
+        "fish_007_largemouth_bass__adult__SwimSlow",
+        "fish_007_largemouth_bass__adult__Swim",
+        "fish_007_largemouth_bass__adult__SwimFast",
+        "fish_007_largemouth_bass__adult__TurnLeft",
+        "fish_007_largemouth_bass__adult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 3.902952795438518e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "generator_config": {
+        "species": {
+          "number": 7,
+          "slug": "largemouth_bass",
+          "common_name": "Largemouth Bass",
+          "family": "large_mouth_predator",
+          "length": 0.58,
+          "half_width": 0.07,
+          "half_height": 0.083,
+          "stations": [
+            [
+              0,
+              0.27,
+              0.3,
+              -0.05
+            ],
+            [
+              0.12,
+              0.68,
+              0.58,
+              -0.06
+            ],
+            [
+              0.28,
+              0.96,
+              0.82,
+              0
+            ],
+            [
+              0.45,
+              1,
+              1,
+              0
+            ],
+            [
+              0.61,
+              0.86,
+              0.89,
+              0
+            ],
+            [
+              0.77,
+              0.56,
+              0.58,
+              0
+            ],
+            [
+              0.92,
+              0.22,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.18,
+          "eye_z": 0.2,
+          "eye_radius": 0.01,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.83
+              ],
+              [
+                0.4,
+                1.27
+              ],
+              [
+                0.5,
+                1.24
+              ],
+              [
+                0.55,
+                0.75
+              ]
+            ],
+            [
+              [
+                0.54,
+                0.74
+              ],
+              [
+                0.62,
+                1.32
+              ],
+              [
+                0.78,
+                1.23
+              ],
+              [
+                0.84,
+                0.48
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.66,
+                -0.65
+              ],
+              [
+                0.73,
+                -1.02
+              ],
+              [
+                0.84,
+                -0.93
+              ],
+              [
+                0.88,
+                -0.32
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.11
+            ],
+            [
+              1.16,
+              0.88
+            ],
+            [
+              1.23,
+              0.85
+            ],
+            [
+              1.12,
+              0
+            ],
+            [
+              1.23,
+              -0.85
+            ],
+            [
+              1.16,
+              -0.88
+            ],
+            [
+              0.94,
+              -0.11
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.013,
+            0.05,
+            0.13,
+            0.25
+          ],
+          "cadence": 0.88,
+          "palettes": [
+            [
+              "#A09C79",
+              "#C8BE9D",
+              "#76745D",
+              "#979476",
+              "#252B27"
+            ],
+            [
+              "#8B966D",
+              "#D1C89F",
+              "#596B4E",
+              "#86906A",
+              "#202722"
+            ],
+            [
+              "#6A8057",
+              "#D2C7A0",
+              "#344B38",
+              "#697D56",
+              "#1B2522"
+            ],
+            [
+              "#58704B",
+              "#D6CBAA",
+              "#2E493A",
+              "#5C714B",
+              "#192320"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "adult",
+          "size": 1.0,
+          "depth": 1.0,
+          "width": 1.0,
+          "head": 0.0,
+          "peduncle": 0.0,
+          "eye": 1.0,
+          "fin": 1.0,
+          "tail": 1.0,
+          "wave": 1.0,
+          "cadence": 1.0,
+          "marking": 1.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_007_largemouth_bass__adult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-008",
+      "species": "Channel Catfish",
+      "scientific_family": "broad_head_bottom_fish",
+      "life_stage": "egg",
+      "habitat": "pond",
+      "stem": "fish_008_channel_catfish__egg",
+      "dimensions_m": [
+        0.004185,
+        0.00328,
+        0.004109
+      ],
+      "triangles": 160,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_008_channel_catfish__egg_embryo",
+        "mat__fish_008_channel_catfish__egg_shell"
+      ],
+      "bones": 4,
+      "bone_names": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "actions": [
+        "fish_008_channel_catfish__egg__Idle",
+        "fish_008_channel_catfish__egg__Hatch"
+      ],
+      "loop_roles": [
+        "Idle"
+      ],
+      "breathing_anatomy": "not_applicable_egg",
+      "breathing_validation": null,
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "generator_config": {
+        "diameter_m": 0.004,
+        "shell_color": "#9BA28E",
+        "embryo_color": "#576565",
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_008_channel_catfish__egg.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-008",
+      "species": "Channel Catfish",
+      "scientific_family": "broad_head_bottom_fish",
+      "life_stage": "larva",
+      "habitat": "pond",
+      "stem": "fish_008_channel_catfish__larva",
+      "dimensions_m": [
+        0.01572,
+        0.063752,
+        0.006441
+      ],
+      "triangles": 532,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_008_channel_catfish__larva_belly",
+        "mat__fish_008_channel_catfish__larva_body",
+        "mat__fish_008_channel_catfish__larva_eye",
+        "mat__fish_008_channel_catfish__larva_fin",
+        "mat__fish_008_channel_catfish__larva_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_008_channel_catfish__larva__Idle",
+        "fish_008_channel_catfish__larva__Glide",
+        "fish_008_channel_catfish__larva__SwimSlow",
+        "fish_008_channel_catfish__larva__Swim",
+        "fish_008_channel_catfish__larva__SwimFast",
+        "fish_008_channel_catfish__larva__TurnLeft",
+        "fish_008_channel_catfish__larva__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 9.318983179626335e-10
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "generator_config": {
+        "species": {
+          "number": 8,
+          "slug": "channel_catfish",
+          "common_name": "Channel Catfish",
+          "family": "broad_head_bottom_fish",
+          "length": 0.66,
+          "half_width": 0.074,
+          "half_height": 0.07,
+          "stations": [
+            [
+              0,
+              0.57,
+              0.26,
+              -0.2
+            ],
+            [
+              0.12,
+              0.93,
+              0.54,
+              -0.09
+            ],
+            [
+              0.28,
+              1,
+              0.82,
+              0
+            ],
+            [
+              0.46,
+              0.88,
+              1,
+              0
+            ],
+            [
+              0.63,
+              0.69,
+              0.83,
+              0
+            ],
+            [
+              0.79,
+              0.44,
+              0.53,
+              0
+            ],
+            [
+              0.93,
+              0.19,
+              0.24,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.08,
+          "eye_radius": 0.007,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.8
+              ],
+              [
+                0.37,
+                1.33
+              ],
+              [
+                0.46,
+                1.13
+              ],
+              [
+                0.52,
+                0.55
+              ]
+            ],
+            [
+              [
+                0.72,
+                0.55
+              ],
+              [
+                0.78,
+                0.79
+              ],
+              [
+                0.84,
+                0.53
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.56,
+                -0.76
+              ],
+              [
+                0.66,
+                -1.12
+              ],
+              [
+                0.86,
+                -0.95
+              ],
+              [
+                0.91,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.95,
+              0.1
+            ],
+            [
+              1.16,
+              0.96
+            ],
+            [
+              1.22,
+              0.91
+            ],
+            [
+              1.09,
+              0
+            ],
+            [
+              1.22,
+              -0.91
+            ],
+            [
+              1.16,
+              -0.96
+            ],
+            [
+              0.95,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.01,
+            0.045,
+            0.13,
+            0.27
+          ],
+          "cadence": 0.8,
+          "palettes": [
+            [
+              "#8A8A80",
+              "#B8B3A3",
+              "#5E615B",
+              "#85877E",
+              "#202629"
+            ],
+            [
+              "#798989",
+              "#C3C1B4",
+              "#596765",
+              "#758480",
+              "#1E2528"
+            ],
+            [
+              "#657B80",
+              "#CECDC2",
+              "#475D63",
+              "#60777B",
+              "#1B2228"
+            ],
+            [
+              "#546D75",
+              "#D5D1C4",
+              "#394F59",
+              "#526B70",
+              "#192027"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "larva",
+          "size": 0.085,
+          "depth": 0.57,
+          "width": 0.7,
+          "head": 0.42,
+          "peduncle": -0.34,
+          "eye": 1.65,
+          "fin": 0.38,
+          "tail": 0.62,
+          "wave": 1.28,
+          "cadence": 1.2,
+          "marking": 0.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_008_channel_catfish__larva.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-008",
+      "species": "Channel Catfish",
+      "scientific_family": "broad_head_bottom_fish",
+      "life_stage": "juvenile",
+      "habitat": "pond",
+      "stem": "fish_008_channel_catfish__juvenile",
+      "dimensions_m": [
+        0.111756,
+        0.258049,
+        0.037123
+      ],
+      "triangles": 868,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_008_channel_catfish__juvenile_belly",
+        "mat__fish_008_channel_catfish__juvenile_body",
+        "mat__fish_008_channel_catfish__juvenile_eye",
+        "mat__fish_008_channel_catfish__juvenile_fin",
+        "mat__fish_008_channel_catfish__juvenile_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_008_channel_catfish__juvenile__Idle",
+        "fish_008_channel_catfish__juvenile__Glide",
+        "fish_008_channel_catfish__juvenile__SwimSlow",
+        "fish_008_channel_catfish__juvenile__Swim",
+        "fish_008_channel_catfish__juvenile__SwimFast",
+        "fish_008_channel_catfish__juvenile__TurnLeft",
+        "fish_008_channel_catfish__juvenile__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 5.820766091346741e-11
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "generator_config": {
+        "species": {
+          "number": 8,
+          "slug": "channel_catfish",
+          "common_name": "Channel Catfish",
+          "family": "broad_head_bottom_fish",
+          "length": 0.66,
+          "half_width": 0.074,
+          "half_height": 0.07,
+          "stations": [
+            [
+              0,
+              0.57,
+              0.26,
+              -0.2
+            ],
+            [
+              0.12,
+              0.93,
+              0.54,
+              -0.09
+            ],
+            [
+              0.28,
+              1,
+              0.82,
+              0
+            ],
+            [
+              0.46,
+              0.88,
+              1,
+              0
+            ],
+            [
+              0.63,
+              0.69,
+              0.83,
+              0
+            ],
+            [
+              0.79,
+              0.44,
+              0.53,
+              0
+            ],
+            [
+              0.93,
+              0.19,
+              0.24,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.08,
+          "eye_radius": 0.007,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.8
+              ],
+              [
+                0.37,
+                1.33
+              ],
+              [
+                0.46,
+                1.13
+              ],
+              [
+                0.52,
+                0.55
+              ]
+            ],
+            [
+              [
+                0.72,
+                0.55
+              ],
+              [
+                0.78,
+                0.79
+              ],
+              [
+                0.84,
+                0.53
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.56,
+                -0.76
+              ],
+              [
+                0.66,
+                -1.12
+              ],
+              [
+                0.86,
+                -0.95
+              ],
+              [
+                0.91,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.95,
+              0.1
+            ],
+            [
+              1.16,
+              0.96
+            ],
+            [
+              1.22,
+              0.91
+            ],
+            [
+              1.09,
+              0
+            ],
+            [
+              1.22,
+              -0.91
+            ],
+            [
+              1.16,
+              -0.96
+            ],
+            [
+              0.95,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.01,
+            0.045,
+            0.13,
+            0.27
+          ],
+          "cadence": 0.8,
+          "palettes": [
+            [
+              "#8A8A80",
+              "#B8B3A3",
+              "#5E615B",
+              "#85877E",
+              "#202629"
+            ],
+            [
+              "#798989",
+              "#C3C1B4",
+              "#596765",
+              "#758480",
+              "#1E2528"
+            ],
+            [
+              "#657B80",
+              "#CECDC2",
+              "#475D63",
+              "#60777B",
+              "#1B2228"
+            ],
+            [
+              "#546D75",
+              "#D5D1C4",
+              "#394F59",
+              "#526B70",
+              "#192027"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "juvenile",
+          "size": 0.33,
+          "depth": 0.8,
+          "width": 0.84,
+          "head": 0.23,
+          "peduncle": -0.17,
+          "eye": 1.22,
+          "fin": 0.74,
+          "tail": 0.84,
+          "wave": 1.15,
+          "cadence": 1.12,
+          "marking": 0.45
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_008_channel_catfish__juvenile.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-008",
+      "species": "Channel Catfish",
+      "scientific_family": "broad_head_bottom_fish",
+      "life_stage": "subadult",
+      "habitat": "pond",
+      "stem": "fish_008_channel_catfish__subadult",
+      "dimensions_m": [
+        0.272587,
+        0.543587,
+        0.101949
+      ],
+      "triangles": 868,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_008_channel_catfish__subadult_belly",
+        "mat__fish_008_channel_catfish__subadult_body",
+        "mat__fish_008_channel_catfish__subadult_eye",
+        "mat__fish_008_channel_catfish__subadult_fin",
+        "mat__fish_008_channel_catfish__subadult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_008_channel_catfish__subadult__Idle",
+        "fish_008_channel_catfish__subadult__Glide",
+        "fish_008_channel_catfish__subadult__SwimSlow",
+        "fish_008_channel_catfish__subadult__Swim",
+        "fish_008_channel_catfish__subadult__SwimFast",
+        "fish_008_channel_catfish__subadult__TurnLeft",
+        "fish_008_channel_catfish__subadult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 7.679882693323606e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "generator_config": {
+        "species": {
+          "number": 8,
+          "slug": "channel_catfish",
+          "common_name": "Channel Catfish",
+          "family": "broad_head_bottom_fish",
+          "length": 0.66,
+          "half_width": 0.074,
+          "half_height": 0.07,
+          "stations": [
+            [
+              0,
+              0.57,
+              0.26,
+              -0.2
+            ],
+            [
+              0.12,
+              0.93,
+              0.54,
+              -0.09
+            ],
+            [
+              0.28,
+              1,
+              0.82,
+              0
+            ],
+            [
+              0.46,
+              0.88,
+              1,
+              0
+            ],
+            [
+              0.63,
+              0.69,
+              0.83,
+              0
+            ],
+            [
+              0.79,
+              0.44,
+              0.53,
+              0
+            ],
+            [
+              0.93,
+              0.19,
+              0.24,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.08,
+          "eye_radius": 0.007,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.8
+              ],
+              [
+                0.37,
+                1.33
+              ],
+              [
+                0.46,
+                1.13
+              ],
+              [
+                0.52,
+                0.55
+              ]
+            ],
+            [
+              [
+                0.72,
+                0.55
+              ],
+              [
+                0.78,
+                0.79
+              ],
+              [
+                0.84,
+                0.53
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.56,
+                -0.76
+              ],
+              [
+                0.66,
+                -1.12
+              ],
+              [
+                0.86,
+                -0.95
+              ],
+              [
+                0.91,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.95,
+              0.1
+            ],
+            [
+              1.16,
+              0.96
+            ],
+            [
+              1.22,
+              0.91
+            ],
+            [
+              1.09,
+              0
+            ],
+            [
+              1.22,
+              -0.91
+            ],
+            [
+              1.16,
+              -0.96
+            ],
+            [
+              0.95,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.01,
+            0.045,
+            0.13,
+            0.27
+          ],
+          "cadence": 0.8,
+          "palettes": [
+            [
+              "#8A8A80",
+              "#B8B3A3",
+              "#5E615B",
+              "#85877E",
+              "#202629"
+            ],
+            [
+              "#798989",
+              "#C3C1B4",
+              "#596765",
+              "#758480",
+              "#1E2528"
+            ],
+            [
+              "#657B80",
+              "#CECDC2",
+              "#475D63",
+              "#60777B",
+              "#1B2228"
+            ],
+            [
+              "#546D75",
+              "#D5D1C4",
+              "#394F59",
+              "#526B70",
+              "#192027"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "subadult",
+          "size": 0.68,
+          "depth": 0.94,
+          "width": 0.95,
+          "head": 0.08,
+          "peduncle": -0.05,
+          "eye": 1.06,
+          "fin": 0.93,
+          "tail": 0.96,
+          "wave": 1.04,
+          "cadence": 1.04,
+          "marking": 0.82
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_008_channel_catfish__subadult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-008",
+      "species": "Channel Catfish",
+      "scientific_family": "broad_head_bottom_fish",
+      "life_stage": "adult",
+      "habitat": "pond",
+      "stem": "fish_008_channel_catfish__adult",
+      "dimensions_m": [
+        0.422596,
+        0.8052,
+        0.1715
+      ],
+      "triangles": 868,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_008_channel_catfish__adult_belly",
+        "mat__fish_008_channel_catfish__adult_body",
+        "mat__fish_008_channel_catfish__adult_eye",
+        "mat__fish_008_channel_catfish__adult_fin",
+        "mat__fish_008_channel_catfish__adult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_008_channel_catfish__adult__Idle",
+        "fish_008_channel_catfish__adult__Glide",
+        "fish_008_channel_catfish__adult__SwimSlow",
+        "fish_008_channel_catfish__adult__Swim",
+        "fish_008_channel_catfish__adult__SwimFast",
+        "fish_008_channel_catfish__adult__TurnLeft",
+        "fish_008_channel_catfish__adult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 22,
+          "gill_R": 22
+        },
+        "neutral_error_m": 2.9802322387695312e-08
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "generator_config": {
+        "species": {
+          "number": 8,
+          "slug": "channel_catfish",
+          "common_name": "Channel Catfish",
+          "family": "broad_head_bottom_fish",
+          "length": 0.66,
+          "half_width": 0.074,
+          "half_height": 0.07,
+          "stations": [
+            [
+              0,
+              0.57,
+              0.26,
+              -0.2
+            ],
+            [
+              0.12,
+              0.93,
+              0.54,
+              -0.09
+            ],
+            [
+              0.28,
+              1,
+              0.82,
+              0
+            ],
+            [
+              0.46,
+              0.88,
+              1,
+              0
+            ],
+            [
+              0.63,
+              0.69,
+              0.83,
+              0
+            ],
+            [
+              0.79,
+              0.44,
+              0.53,
+              0
+            ],
+            [
+              0.93,
+              0.19,
+              0.24,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.08,
+          "eye_radius": 0.007,
+          "dorsal": [
+            [
+              [
+                0.32,
+                0.8
+              ],
+              [
+                0.37,
+                1.33
+              ],
+              [
+                0.46,
+                1.13
+              ],
+              [
+                0.52,
+                0.55
+              ]
+            ],
+            [
+              [
+                0.72,
+                0.55
+              ],
+              [
+                0.78,
+                0.79
+              ],
+              [
+                0.84,
+                0.53
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.56,
+                -0.76
+              ],
+              [
+                0.66,
+                -1.12
+              ],
+              [
+                0.86,
+                -0.95
+              ],
+              [
+                0.91,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.95,
+              0.1
+            ],
+            [
+              1.16,
+              0.96
+            ],
+            [
+              1.22,
+              0.91
+            ],
+            [
+              1.09,
+              0
+            ],
+            [
+              1.22,
+              -0.91
+            ],
+            [
+              1.16,
+              -0.96
+            ],
+            [
+              0.95,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.01,
+            0.045,
+            0.13,
+            0.27
+          ],
+          "cadence": 0.8,
+          "palettes": [
+            [
+              "#8A8A80",
+              "#B8B3A3",
+              "#5E615B",
+              "#85877E",
+              "#202629"
+            ],
+            [
+              "#798989",
+              "#C3C1B4",
+              "#596765",
+              "#758480",
+              "#1E2528"
+            ],
+            [
+              "#657B80",
+              "#CECDC2",
+              "#475D63",
+              "#60777B",
+              "#1B2228"
+            ],
+            [
+              "#546D75",
+              "#D5D1C4",
+              "#394F59",
+              "#526B70",
+              "#192027"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "adult",
+          "size": 1.0,
+          "depth": 1.0,
+          "width": 1.0,
+          "head": 0.0,
+          "peduncle": 0.0,
+          "eye": 1.0,
+          "fin": 1.0,
+          "tail": 1.0,
+          "wave": 1.0,
+          "cadence": 1.0,
+          "marking": 1.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_008_channel_catfish__adult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-009",
+      "species": "Common Carp",
+      "scientific_family": "deep_scaled_cyprinid",
+      "life_stage": "egg",
+      "habitat": "pond",
+      "stem": "fish_009_common_carp__egg",
+      "dimensions_m": [
+        0.005022,
+        0.003936,
+        0.00493
+      ],
+      "triangles": 160,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_009_common_carp__egg_embryo",
+        "mat__fish_009_common_carp__egg_shell"
+      ],
+      "bones": 4,
+      "bone_names": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "actions": [
+        "fish_009_common_carp__egg__Idle",
+        "fish_009_common_carp__egg__Hatch"
+      ],
+      "loop_roles": [
+        "Idle"
+      ],
+      "breathing_anatomy": "not_applicable_egg",
+      "breathing_validation": null,
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "generator_config": {
+        "diameter_m": 0.0048,
+        "shell_color": "#B5AA7B",
+        "embryo_color": "#766345",
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_009_common_carp__egg.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-009",
+      "species": "Common Carp",
+      "scientific_family": "deep_scaled_cyprinid",
+      "life_stage": "larva",
+      "habitat": "pond",
+      "stem": "fish_009_common_carp__larva",
+      "dimensions_m": [
+        0.015428,
+        0.058721,
+        0.010038
+      ],
+      "triangles": 504,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_009_common_carp__larva_belly",
+        "mat__fish_009_common_carp__larva_body",
+        "mat__fish_009_common_carp__larva_eye",
+        "mat__fish_009_common_carp__larva_fin",
+        "mat__fish_009_common_carp__larva_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_009_common_carp__larva__Idle",
+        "fish_009_common_carp__larva__Glide",
+        "fish_009_common_carp__larva__SwimSlow",
+        "fish_009_common_carp__larva__Swim",
+        "fish_009_common_carp__larva__SwimFast",
+        "fish_009_common_carp__larva__TurnLeft",
+        "fish_009_common_carp__larva__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 3.2741809263825417e-11
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "generator_config": {
+        "species": {
+          "number": 9,
+          "slug": "common_carp",
+          "common_name": "Common Carp",
+          "family": "deep_scaled_cyprinid",
+          "length": 0.6,
+          "half_width": 0.083,
+          "half_height": 0.106,
+          "stations": [
+            [
+              0,
+              0.33,
+              0.31,
+              -0.1
+            ],
+            [
+              0.12,
+              0.72,
+              0.62,
+              -0.03
+            ],
+            [
+              0.28,
+              0.93,
+              0.88,
+              0
+            ],
+            [
+              0.46,
+              1,
+              1,
+              0
+            ],
+            [
+              0.65,
+              0.87,
+              0.91,
+              0
+            ],
+            [
+              0.8,
+              0.53,
+              0.63,
+              0
+            ],
+            [
+              0.93,
+              0.21,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.15,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.3,
+                0.87
+              ],
+              [
+                0.37,
+                1.35
+              ],
+              [
+                0.52,
+                1.48
+              ],
+              [
+                0.72,
+                1.33
+              ],
+              [
+                0.84,
+                0.47
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.7,
+                -0.63
+              ],
+              [
+                0.76,
+                -1.0
+              ],
+              [
+                0.85,
+                -0.82
+              ],
+              [
+                0.9,
+                -0.29
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.15,
+              0.78
+            ],
+            [
+              1.22,
+              0.72
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.22,
+              -0.72
+            ],
+            [
+              1.15,
+              -0.78
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.011,
+            0.046,
+            0.12,
+            0.22
+          ],
+          "cadence": 0.73,
+          "palettes": [
+            [
+              "#9A9782",
+              "#C6BCA0",
+              "#777565",
+              "#99927D",
+              "#292B28"
+            ],
+            [
+              "#A99C6A",
+              "#CFBE88",
+              "#89784E",
+              "#A99B70",
+              "#252925"
+            ],
+            [
+              "#B59959",
+              "#D9C68F",
+              "#826847",
+              "#B49960",
+              "#222721"
+            ],
+            [
+              "#B58B50",
+              "#E0CC94",
+              "#79593B",
+              "#AA8150",
+              "#1F2520"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "larva",
+          "size": 0.085,
+          "depth": 0.57,
+          "width": 0.7,
+          "head": 0.42,
+          "peduncle": -0.34,
+          "eye": 1.65,
+          "fin": 0.38,
+          "tail": 0.62,
+          "wave": 1.28,
+          "cadence": 1.2,
+          "marking": 0.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_009_common_carp__larva.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-009",
+      "species": "Common Carp",
+      "scientific_family": "deep_scaled_cyprinid",
+      "life_stage": "juvenile",
+      "habitat": "pond",
+      "stem": "fish_009_common_carp__juvenile",
+      "dimensions_m": [
+        0.08574,
+        0.23756,
+        0.058778
+      ],
+      "triangles": 816,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_009_common_carp__juvenile_belly",
+        "mat__fish_009_common_carp__juvenile_body",
+        "mat__fish_009_common_carp__juvenile_eye",
+        "mat__fish_009_common_carp__juvenile_fin",
+        "mat__fish_009_common_carp__juvenile_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_009_common_carp__juvenile__Idle",
+        "fish_009_common_carp__juvenile__Glide",
+        "fish_009_common_carp__juvenile__SwimSlow",
+        "fish_009_common_carp__juvenile__Swim",
+        "fish_009_common_carp__juvenile__SwimFast",
+        "fish_009_common_carp__juvenile__TurnLeft",
+        "fish_009_common_carp__juvenile__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 1.875391307230752e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "generator_config": {
+        "species": {
+          "number": 9,
+          "slug": "common_carp",
+          "common_name": "Common Carp",
+          "family": "deep_scaled_cyprinid",
+          "length": 0.6,
+          "half_width": 0.083,
+          "half_height": 0.106,
+          "stations": [
+            [
+              0,
+              0.33,
+              0.31,
+              -0.1
+            ],
+            [
+              0.12,
+              0.72,
+              0.62,
+              -0.03
+            ],
+            [
+              0.28,
+              0.93,
+              0.88,
+              0
+            ],
+            [
+              0.46,
+              1,
+              1,
+              0
+            ],
+            [
+              0.65,
+              0.87,
+              0.91,
+              0
+            ],
+            [
+              0.8,
+              0.53,
+              0.63,
+              0
+            ],
+            [
+              0.93,
+              0.21,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.15,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.3,
+                0.87
+              ],
+              [
+                0.37,
+                1.35
+              ],
+              [
+                0.52,
+                1.48
+              ],
+              [
+                0.72,
+                1.33
+              ],
+              [
+                0.84,
+                0.47
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.7,
+                -0.63
+              ],
+              [
+                0.76,
+                -1.0
+              ],
+              [
+                0.85,
+                -0.82
+              ],
+              [
+                0.9,
+                -0.29
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.15,
+              0.78
+            ],
+            [
+              1.22,
+              0.72
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.22,
+              -0.72
+            ],
+            [
+              1.15,
+              -0.78
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.011,
+            0.046,
+            0.12,
+            0.22
+          ],
+          "cadence": 0.73,
+          "palettes": [
+            [
+              "#9A9782",
+              "#C6BCA0",
+              "#777565",
+              "#99927D",
+              "#292B28"
+            ],
+            [
+              "#A99C6A",
+              "#CFBE88",
+              "#89784E",
+              "#A99B70",
+              "#252925"
+            ],
+            [
+              "#B59959",
+              "#D9C68F",
+              "#826847",
+              "#B49960",
+              "#222721"
+            ],
+            [
+              "#B58B50",
+              "#E0CC94",
+              "#79593B",
+              "#AA8150",
+              "#1F2520"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "juvenile",
+          "size": 0.33,
+          "depth": 0.8,
+          "width": 0.84,
+          "head": 0.23,
+          "peduncle": -0.17,
+          "eye": 1.22,
+          "fin": 0.74,
+          "tail": 0.84,
+          "wave": 1.15,
+          "cadence": 1.12,
+          "marking": 0.45
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_009_common_carp__juvenile.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-009",
+      "species": "Common Carp",
+      "scientific_family": "deep_scaled_cyprinid",
+      "life_stage": "subadult",
+      "habitat": "pond",
+      "stem": "fish_009_common_carp__subadult",
+      "dimensions_m": [
+        0.207204,
+        0.50029,
+        0.161104
+      ],
+      "triangles": 816,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_009_common_carp__subadult_belly",
+        "mat__fish_009_common_carp__subadult_body",
+        "mat__fish_009_common_carp__subadult_eye",
+        "mat__fish_009_common_carp__subadult_fin",
+        "mat__fish_009_common_carp__subadult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_009_common_carp__subadult__Idle",
+        "fish_009_common_carp__subadult__Glide",
+        "fish_009_common_carp__subadult__SwimSlow",
+        "fish_009_common_carp__subadult__Swim",
+        "fish_009_common_carp__subadult__SwimFast",
+        "fish_009_common_carp__subadult__TurnLeft",
+        "fish_009_common_carp__subadult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 5.966285243630409e-10
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "generator_config": {
+        "species": {
+          "number": 9,
+          "slug": "common_carp",
+          "common_name": "Common Carp",
+          "family": "deep_scaled_cyprinid",
+          "length": 0.6,
+          "half_width": 0.083,
+          "half_height": 0.106,
+          "stations": [
+            [
+              0,
+              0.33,
+              0.31,
+              -0.1
+            ],
+            [
+              0.12,
+              0.72,
+              0.62,
+              -0.03
+            ],
+            [
+              0.28,
+              0.93,
+              0.88,
+              0
+            ],
+            [
+              0.46,
+              1,
+              1,
+              0
+            ],
+            [
+              0.65,
+              0.87,
+              0.91,
+              0
+            ],
+            [
+              0.8,
+              0.53,
+              0.63,
+              0
+            ],
+            [
+              0.93,
+              0.21,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.15,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.3,
+                0.87
+              ],
+              [
+                0.37,
+                1.35
+              ],
+              [
+                0.52,
+                1.48
+              ],
+              [
+                0.72,
+                1.33
+              ],
+              [
+                0.84,
+                0.47
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.7,
+                -0.63
+              ],
+              [
+                0.76,
+                -1.0
+              ],
+              [
+                0.85,
+                -0.82
+              ],
+              [
+                0.9,
+                -0.29
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.15,
+              0.78
+            ],
+            [
+              1.22,
+              0.72
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.22,
+              -0.72
+            ],
+            [
+              1.15,
+              -0.78
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.011,
+            0.046,
+            0.12,
+            0.22
+          ],
+          "cadence": 0.73,
+          "palettes": [
+            [
+              "#9A9782",
+              "#C6BCA0",
+              "#777565",
+              "#99927D",
+              "#292B28"
+            ],
+            [
+              "#A99C6A",
+              "#CFBE88",
+              "#89784E",
+              "#A99B70",
+              "#252925"
+            ],
+            [
+              "#B59959",
+              "#D9C68F",
+              "#826847",
+              "#B49960",
+              "#222721"
+            ],
+            [
+              "#B58B50",
+              "#E0CC94",
+              "#79593B",
+              "#AA8150",
+              "#1F2520"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "subadult",
+          "size": 0.68,
+          "depth": 0.94,
+          "width": 0.95,
+          "head": 0.08,
+          "peduncle": -0.05,
+          "eye": 1.06,
+          "fin": 0.93,
+          "tail": 0.96,
+          "wave": 1.04,
+          "cadence": 1.04,
+          "marking": 0.82
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_009_common_carp__subadult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-009",
+      "species": "Common Carp",
+      "scientific_family": "deep_scaled_cyprinid",
+      "life_stage": "adult",
+      "habitat": "pond",
+      "stem": "fish_009_common_carp__adult",
+      "dimensions_m": [
+        0.321671,
+        0.741,
+        0.26288
+      ],
+      "triangles": 816,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_009_common_carp__adult_belly",
+        "mat__fish_009_common_carp__adult_body",
+        "mat__fish_009_common_carp__adult_eye",
+        "mat__fish_009_common_carp__adult_fin",
+        "mat__fish_009_common_carp__adult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_009_common_carp__adult__Idle",
+        "fish_009_common_carp__adult__Glide",
+        "fish_009_common_carp__adult__SwimSlow",
+        "fish_009_common_carp__adult__Swim",
+        "fish_009_common_carp__adult__SwimFast",
+        "fish_009_common_carp__adult__TurnLeft",
+        "fish_009_common_carp__adult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 7.519891394936788e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "generator_config": {
+        "species": {
+          "number": 9,
+          "slug": "common_carp",
+          "common_name": "Common Carp",
+          "family": "deep_scaled_cyprinid",
+          "length": 0.6,
+          "half_width": 0.083,
+          "half_height": 0.106,
+          "stations": [
+            [
+              0,
+              0.33,
+              0.31,
+              -0.1
+            ],
+            [
+              0.12,
+              0.72,
+              0.62,
+              -0.03
+            ],
+            [
+              0.28,
+              0.93,
+              0.88,
+              0
+            ],
+            [
+              0.46,
+              1,
+              1,
+              0
+            ],
+            [
+              0.65,
+              0.87,
+              0.91,
+              0
+            ],
+            [
+              0.8,
+              0.53,
+              0.63,
+              0
+            ],
+            [
+              0.93,
+              0.21,
+              0.25,
+              0
+            ],
+            [
+              1,
+              0.13,
+              0.15,
+              0
+            ]
+          ],
+          "eye_u": 0.16,
+          "eye_z": 0.15,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.3,
+                0.87
+              ],
+              [
+                0.37,
+                1.35
+              ],
+              [
+                0.52,
+                1.48
+              ],
+              [
+                0.72,
+                1.33
+              ],
+              [
+                0.84,
+                0.47
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.7,
+                -0.63
+              ],
+              [
+                0.76,
+                -1.0
+              ],
+              [
+                0.85,
+                -0.82
+              ],
+              [
+                0.9,
+                -0.29
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.1
+            ],
+            [
+              1.15,
+              0.78
+            ],
+            [
+              1.22,
+              0.72
+            ],
+            [
+              1.1,
+              0
+            ],
+            [
+              1.22,
+              -0.72
+            ],
+            [
+              1.15,
+              -0.78
+            ],
+            [
+              0.94,
+              -0.1
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.011,
+            0.046,
+            0.12,
+            0.22
+          ],
+          "cadence": 0.73,
+          "palettes": [
+            [
+              "#9A9782",
+              "#C6BCA0",
+              "#777565",
+              "#99927D",
+              "#292B28"
+            ],
+            [
+              "#A99C6A",
+              "#CFBE88",
+              "#89784E",
+              "#A99B70",
+              "#252925"
+            ],
+            [
+              "#B59959",
+              "#D9C68F",
+              "#826847",
+              "#B49960",
+              "#222721"
+            ],
+            [
+              "#B58B50",
+              "#E0CC94",
+              "#79593B",
+              "#AA8150",
+              "#1F2520"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "adult",
+          "size": 1.0,
+          "depth": 1.0,
+          "width": 1.0,
+          "head": 0.0,
+          "peduncle": 0.0,
+          "eye": 1.0,
+          "fin": 1.0,
+          "tail": 1.0,
+          "wave": 1.0,
+          "cadence": 1.0,
+          "marking": 1.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_009_common_carp__adult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-010",
+      "species": "Northern Pike",
+      "scientific_family": "long_snouted_ambush",
+      "life_stage": "egg",
+      "habitat": "pond",
+      "stem": "fish_010_northern_pike__egg",
+      "dimensions_m": [
+        0.003976,
+        0.003116,
+        0.003903
+      ],
+      "triangles": 160,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_010_northern_pike__egg_embryo",
+        "mat__fish_010_northern_pike__egg_shell"
+      ],
+      "bones": 4,
+      "bone_names": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "actions": [
+        "fish_010_northern_pike__egg__Idle",
+        "fish_010_northern_pike__egg__Hatch"
+      ],
+      "loop_roles": [
+        "Idle"
+      ],
+      "breathing_anatomy": "not_applicable_egg",
+      "breathing_validation": null,
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "generator_config": {
+        "diameter_m": 0.0038,
+        "shell_color": "#9AA185",
+        "embryo_color": "#56664E",
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_010_northern_pike__egg.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-010",
+      "species": "Northern Pike",
+      "scientific_family": "long_snouted_ambush",
+      "life_stage": "larva",
+      "habitat": "pond",
+      "stem": "fish_010_northern_pike__larva",
+      "dimensions_m": [
+        0.011168,
+        0.085423,
+        0.006023
+      ],
+      "triangles": 488,
+      "materials": 4,
+      "material_names": [
+        "mat__fish_010_northern_pike__larva_belly",
+        "mat__fish_010_northern_pike__larva_body",
+        "mat__fish_010_northern_pike__larva_eye",
+        "mat__fish_010_northern_pike__larva_fin"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_010_northern_pike__larva__Idle",
+        "fish_010_northern_pike__larva__Glide",
+        "fish_010_northern_pike__larva__SwimSlow",
+        "fish_010_northern_pike__larva__Swim",
+        "fish_010_northern_pike__larva__SwimFast",
+        "fish_010_northern_pike__larva__TurnLeft",
+        "fish_010_northern_pike__larva__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 9.313225746154785e-10
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "generator_config": {
+        "species": {
+          "number": 10,
+          "slug": "northern_pike",
+          "common_name": "Northern Pike",
+          "family": "long_snouted_ambush",
+          "length": 0.84,
+          "half_width": 0.058,
+          "half_height": 0.065,
+          "stations": [
+            [
+              0,
+              0.39,
+              0.31,
+              -0.11
+            ],
+            [
+              0.14,
+              0.53,
+              0.36,
+              -0.08
+            ],
+            [
+              0.26,
+              0.72,
+              0.6,
+              0
+            ],
+            [
+              0.42,
+              1,
+              1,
+              0
+            ],
+            [
+              0.59,
+              0.86,
+              0.88,
+              0
+            ],
+            [
+              0.76,
+              0.52,
+              0.52,
+              0
+            ],
+            [
+              0.92,
+              0.19,
+              0.22,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.2,
+          "eye_z": 0.22,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.73,
+                0.55
+              ],
+              [
+                0.79,
+                1.15
+              ],
+              [
+                0.88,
+                1.18
+              ],
+              [
+                0.94,
+                0.29
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.72,
+                -0.5
+              ],
+              [
+                0.8,
+                -1.15
+              ],
+              [
+                0.9,
+                -1.03
+              ],
+              [
+                0.94,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.09
+            ],
+            [
+              1.16,
+              0.7
+            ],
+            [
+              1.22,
+              0.65
+            ],
+            [
+              1.11,
+              0
+            ],
+            [
+              1.22,
+              -0.65
+            ],
+            [
+              1.16,
+              -0.7
+            ],
+            [
+              0.94,
+              -0.09
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.006,
+            0.03,
+            0.095,
+            0.23
+          ],
+          "cadence": 0.92,
+          "palettes": [
+            [
+              "#8B9077",
+              "#B8B59C",
+              "#68715D",
+              "#86876B",
+              "#222923"
+            ],
+            [
+              "#71825D",
+              "#C1BE99",
+              "#B0B58A",
+              "#71805D",
+              "#202720"
+            ],
+            [
+              "#62774E",
+              "#C9C7A3",
+              "#B4BC8B",
+              "#64744D",
+              "#1C241F"
+            ],
+            [
+              "#526D48",
+              "#D3CBA9",
+              "#B9C58D",
+              "#5C734A",
+              "#19231D"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "larva",
+          "size": 0.085,
+          "depth": 0.57,
+          "width": 0.7,
+          "head": 0.42,
+          "peduncle": -0.34,
+          "eye": 1.65,
+          "fin": 0.38,
+          "tail": 0.62,
+          "wave": 1.28,
+          "cadence": 1.2,
+          "marking": 0.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_010_northern_pike__larva.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-010",
+      "species": "Northern Pike",
+      "scientific_family": "long_snouted_ambush",
+      "life_stage": "juvenile",
+      "habitat": "pond",
+      "stem": "fish_010_northern_pike__juvenile",
+      "dimensions_m": [
+        0.064741,
+        0.345059,
+        0.034665
+      ],
+      "triangles": 776,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_010_northern_pike__juvenile_belly",
+        "mat__fish_010_northern_pike__juvenile_body",
+        "mat__fish_010_northern_pike__juvenile_eye",
+        "mat__fish_010_northern_pike__juvenile_fin",
+        "mat__fish_010_northern_pike__juvenile_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_010_northern_pike__juvenile__Idle",
+        "fish_010_northern_pike__juvenile__Glide",
+        "fish_010_northern_pike__juvenile__SwimSlow",
+        "fish_010_northern_pike__juvenile__Swim",
+        "fish_010_northern_pike__juvenile__SwimFast",
+        "fish_010_northern_pike__juvenile__TurnLeft",
+        "fish_010_northern_pike__juvenile__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 20,
+          "gill_R": 20
+        },
+        "neutral_error_m": 1.8684043970938867e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "generator_config": {
+        "species": {
+          "number": 10,
+          "slug": "northern_pike",
+          "common_name": "Northern Pike",
+          "family": "long_snouted_ambush",
+          "length": 0.84,
+          "half_width": 0.058,
+          "half_height": 0.065,
+          "stations": [
+            [
+              0,
+              0.39,
+              0.31,
+              -0.11
+            ],
+            [
+              0.14,
+              0.53,
+              0.36,
+              -0.08
+            ],
+            [
+              0.26,
+              0.72,
+              0.6,
+              0
+            ],
+            [
+              0.42,
+              1,
+              1,
+              0
+            ],
+            [
+              0.59,
+              0.86,
+              0.88,
+              0
+            ],
+            [
+              0.76,
+              0.52,
+              0.52,
+              0
+            ],
+            [
+              0.92,
+              0.19,
+              0.22,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.2,
+          "eye_z": 0.22,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.73,
+                0.55
+              ],
+              [
+                0.79,
+                1.15
+              ],
+              [
+                0.88,
+                1.18
+              ],
+              [
+                0.94,
+                0.29
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.72,
+                -0.5
+              ],
+              [
+                0.8,
+                -1.15
+              ],
+              [
+                0.9,
+                -1.03
+              ],
+              [
+                0.94,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.09
+            ],
+            [
+              1.16,
+              0.7
+            ],
+            [
+              1.22,
+              0.65
+            ],
+            [
+              1.11,
+              0
+            ],
+            [
+              1.22,
+              -0.65
+            ],
+            [
+              1.16,
+              -0.7
+            ],
+            [
+              0.94,
+              -0.09
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.006,
+            0.03,
+            0.095,
+            0.23
+          ],
+          "cadence": 0.92,
+          "palettes": [
+            [
+              "#8B9077",
+              "#B8B59C",
+              "#68715D",
+              "#86876B",
+              "#222923"
+            ],
+            [
+              "#71825D",
+              "#C1BE99",
+              "#B0B58A",
+              "#71805D",
+              "#202720"
+            ],
+            [
+              "#62774E",
+              "#C9C7A3",
+              "#B4BC8B",
+              "#64744D",
+              "#1C241F"
+            ],
+            [
+              "#526D48",
+              "#D3CBA9",
+              "#B9C58D",
+              "#5C734A",
+              "#19231D"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "juvenile",
+          "size": 0.33,
+          "depth": 0.8,
+          "width": 0.84,
+          "head": 0.23,
+          "peduncle": -0.17,
+          "eye": 1.22,
+          "fin": 0.74,
+          "tail": 0.84,
+          "wave": 1.15,
+          "cadence": 1.12,
+          "marking": 0.45
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_010_northern_pike__juvenile.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-010",
+      "species": "Northern Pike",
+      "scientific_family": "long_snouted_ambush",
+      "life_stage": "subadult",
+      "habitat": "pond",
+      "stem": "fish_010_northern_pike__subadult",
+      "dimensions_m": [
+        0.158766,
+        0.726109,
+        0.09003
+      ],
+      "triangles": 776,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_010_northern_pike__subadult_belly",
+        "mat__fish_010_northern_pike__subadult_body",
+        "mat__fish_010_northern_pike__subadult_eye",
+        "mat__fish_010_northern_pike__subadult_fin",
+        "mat__fish_010_northern_pike__subadult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_010_northern_pike__subadult__Idle",
+        "fish_010_northern_pike__subadult__Glide",
+        "fish_010_northern_pike__subadult__SwimSlow",
+        "fish_010_northern_pike__subadult__Swim",
+        "fish_010_northern_pike__subadult__SwimFast",
+        "fish_010_northern_pike__subadult__TurnLeft",
+        "fish_010_northern_pike__subadult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 19,
+          "gill_R": 19
+        },
+        "neutral_error_m": 2.0848101720197344e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "generator_config": {
+        "species": {
+          "number": 10,
+          "slug": "northern_pike",
+          "common_name": "Northern Pike",
+          "family": "long_snouted_ambush",
+          "length": 0.84,
+          "half_width": 0.058,
+          "half_height": 0.065,
+          "stations": [
+            [
+              0,
+              0.39,
+              0.31,
+              -0.11
+            ],
+            [
+              0.14,
+              0.53,
+              0.36,
+              -0.08
+            ],
+            [
+              0.26,
+              0.72,
+              0.6,
+              0
+            ],
+            [
+              0.42,
+              1,
+              1,
+              0
+            ],
+            [
+              0.59,
+              0.86,
+              0.88,
+              0
+            ],
+            [
+              0.76,
+              0.52,
+              0.52,
+              0
+            ],
+            [
+              0.92,
+              0.19,
+              0.22,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.2,
+          "eye_z": 0.22,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.73,
+                0.55
+              ],
+              [
+                0.79,
+                1.15
+              ],
+              [
+                0.88,
+                1.18
+              ],
+              [
+                0.94,
+                0.29
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.72,
+                -0.5
+              ],
+              [
+                0.8,
+                -1.15
+              ],
+              [
+                0.9,
+                -1.03
+              ],
+              [
+                0.94,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.09
+            ],
+            [
+              1.16,
+              0.7
+            ],
+            [
+              1.22,
+              0.65
+            ],
+            [
+              1.11,
+              0
+            ],
+            [
+              1.22,
+              -0.65
+            ],
+            [
+              1.16,
+              -0.7
+            ],
+            [
+              0.94,
+              -0.09
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.006,
+            0.03,
+            0.095,
+            0.23
+          ],
+          "cadence": 0.92,
+          "palettes": [
+            [
+              "#8B9077",
+              "#B8B59C",
+              "#68715D",
+              "#86876B",
+              "#222923"
+            ],
+            [
+              "#71825D",
+              "#C1BE99",
+              "#B0B58A",
+              "#71805D",
+              "#202720"
+            ],
+            [
+              "#62774E",
+              "#C9C7A3",
+              "#B4BC8B",
+              "#64744D",
+              "#1C241F"
+            ],
+            [
+              "#526D48",
+              "#D3CBA9",
+              "#B9C58D",
+              "#5C734A",
+              "#19231D"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "subadult",
+          "size": 0.68,
+          "depth": 0.94,
+          "width": 0.95,
+          "head": 0.08,
+          "peduncle": -0.05,
+          "eye": 1.06,
+          "fin": 0.93,
+          "tail": 0.96,
+          "wave": 1.04,
+          "cadence": 1.04,
+          "marking": 0.82
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_010_northern_pike__subadult.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-010",
+      "species": "Northern Pike",
+      "scientific_family": "long_snouted_ambush",
+      "life_stage": "adult",
+      "habitat": "pond",
+      "stem": "fish_010_northern_pike__adult",
+      "dimensions_m": [
+        0.24785,
+        1.0752,
+        0.15145
+      ],
+      "triangles": 776,
+      "materials": 5,
+      "material_names": [
+        "mat__fish_010_northern_pike__adult_belly",
+        "mat__fish_010_northern_pike__adult_body",
+        "mat__fish_010_northern_pike__adult_eye",
+        "mat__fish_010_northern_pike__adult_fin",
+        "mat__fish_010_northern_pike__adult_mark"
+      ],
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_010_northern_pike__adult__Idle",
+        "fish_010_northern_pike__adult__Glide",
+        "fish_010_northern_pike__adult__SwimSlow",
+        "fish_010_northern_pike__adult__Swim",
+        "fish_010_northern_pike__adult__SwimFast",
+        "fish_010_northern_pike__adult__TurnLeft",
+        "fish_010_northern_pike__adult__TurnRight"
+      ],
+      "loop_roles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 19,
+          "gill_R": 19
+        },
+        "neutral_error_m": 3.840643683130479e-09
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "generator": "fish.pond_families.v1",
+      "source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "generator_config": {
+        "species": {
+          "number": 10,
+          "slug": "northern_pike",
+          "common_name": "Northern Pike",
+          "family": "long_snouted_ambush",
+          "length": 0.84,
+          "half_width": 0.058,
+          "half_height": 0.065,
+          "stations": [
+            [
+              0,
+              0.39,
+              0.31,
+              -0.11
+            ],
+            [
+              0.14,
+              0.53,
+              0.36,
+              -0.08
+            ],
+            [
+              0.26,
+              0.72,
+              0.6,
+              0
+            ],
+            [
+              0.42,
+              1,
+              1,
+              0
+            ],
+            [
+              0.59,
+              0.86,
+              0.88,
+              0
+            ],
+            [
+              0.76,
+              0.52,
+              0.52,
+              0
+            ],
+            [
+              0.92,
+              0.19,
+              0.22,
+              0
+            ],
+            [
+              1,
+              0.12,
+              0.14,
+              0
+            ]
+          ],
+          "eye_u": 0.2,
+          "eye_z": 0.22,
+          "eye_radius": 0.008,
+          "dorsal": [
+            [
+              [
+                0.73,
+                0.55
+              ],
+              [
+                0.79,
+                1.15
+              ],
+              [
+                0.88,
+                1.18
+              ],
+              [
+                0.94,
+                0.29
+              ]
+            ]
+          ],
+          "anal": [
+            [
+              [
+                0.72,
+                -0.5
+              ],
+              [
+                0.8,
+                -1.15
+              ],
+              [
+                0.9,
+                -1.03
+              ],
+              [
+                0.94,
+                -0.28
+              ]
+            ]
+          ],
+          "tail": [
+            [
+              0.94,
+              0.09
+            ],
+            [
+              1.16,
+              0.7
+            ],
+            [
+              1.22,
+              0.65
+            ],
+            [
+              1.11,
+              0
+            ],
+            [
+              1.22,
+              -0.65
+            ],
+            [
+              1.16,
+              -0.7
+            ],
+            [
+              0.94,
+              -0.09
+            ]
+          ],
+          "wave": [
+            0.0,
+            0.006,
+            0.03,
+            0.095,
+            0.23
+          ],
+          "cadence": 0.92,
+          "palettes": [
+            [
+              "#8B9077",
+              "#B8B59C",
+              "#68715D",
+              "#86876B",
+              "#222923"
+            ],
+            [
+              "#71825D",
+              "#C1BE99",
+              "#B0B58A",
+              "#71805D",
+              "#202720"
+            ],
+            [
+              "#62774E",
+              "#C9C7A3",
+              "#B4BC8B",
+              "#64744D",
+              "#1C241F"
+            ],
+            [
+              "#526D48",
+              "#D3CBA9",
+              "#B9C58D",
+              "#5C734A",
+              "#19231D"
+            ]
+          ]
+        },
+        "development": {
+          "stage": "adult",
+          "size": 1.0,
+          "depth": 1.0,
+          "width": 1.0,
+          "head": 0.0,
+          "peduncle": 0.0,
+          "eye": 1.0,
+          "fin": 1.0,
+          "tail": 1.0,
+          "wave": 1.0,
+          "cadence": 1.0,
+          "marking": 1.0
+        },
+        "deterministic": true
+      },
+      "technical_review": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "visual_review": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "glb": "game/assets/faf/pond/fish/fish_010_northern_pike__adult.glb"
+    }
+  ],
+  "pack_review": "technical_pass; isolated_visual_review; owner_style_lock_pending"
+}

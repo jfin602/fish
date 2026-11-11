@@ -1,0 +1,65 @@
+[
+  {
+    "stage": "egg",
+    "idle_motion_m": 7.403e-05,
+    "hatch_shell_l_m": 0.00310259,
+    "hatch_shell_r_m": 0.00310259,
+    "hatch_embryo_m": 0.0019258
+  },
+  {
+    "stage": "larva",
+    "neutral_error_m": 0.0,
+    "gill_L_motion_m": 0.00041044,
+    "gill_R_motion_m": 0.00041044,
+    "swim_fast_motion_m": 0.00215378,
+    "turn_left_motion_m": 0.00478385,
+    "turn_right_motion_m": 0.00478385,
+    "eye_motion_m": 0,
+    "gill_weighted_vertices": {
+      "gill_L": 12,
+      "gill_R": 12
+    }
+  },
+  {
+    "stage": "juvenile",
+    "neutral_error_m": 7e-09,
+    "gill_L_motion_m": 0.00125804,
+    "gill_R_motion_m": 0.00125804,
+    "swim_fast_motion_m": 0.0067656,
+    "turn_left_motion_m": 0.01679229,
+    "turn_right_motion_m": 0.01679229,
+    "eye_motion_m": 0,
+    "gill_weighted_vertices": {
+      "gill_L": 23,
+      "gill_R": 23
+    }
+  },
+  {
+    "stage": "subadult",
+    "neutral_error_m": 2e-09,
+    "gill_L_motion_m": 0.00259256,
+    "gill_R_motion_m": 0.00259256,
+    "swim_fast_motion_m": 0.00913413,
+    "turn_left_motion_m": 0.0313565,
+    "turn_right_motion_m": 0.0313565,
+    "eye_motion_m": 0,
+    "gill_weighted_vertices": {
+      "gill_L": 23,
+      "gill_R": 23
+    }
+  },
+  {
+    "stage": "adult",
+    "neutral_error_m": 4e-09,
+    "gill_L_motion_m": 0.00380656,
+    "gill_R_motion_m": 0.00380656,
+    "swim_fast_motion_m": 0.02236291,
+    "turn_left_motion_m": 0.04413048,
+    "turn_right_motion_m": 0.04413048,
+    "eye_motion_m": 0,
+    "gill_weighted_vertices": {
+      "gill_L": 23,
+      "gill_R": 23
+    }
+  }
+]

@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_foliage_proof.gd" id="1_script"]
+
+[node name="FAFPondFoliageProof" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Camera" type="Camera3D" parent="."]
+current = true
+fov = 51.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.75, 0.48, -0.3)
+light_energy = 1.35
+light_color = Color(1, 0.86, 0.65, 1)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

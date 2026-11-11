@@ -24,11 +24,15 @@ The first varied original reef-fish library is [FAF-FISH-001–005](reef-fish-pa
 
 The [life-stage family](life-stages-001/README.md) adds 20 developmental representations to those five identities, alongside their preserved canonical adults. Four bony-fish species have Egg, Larva, Juvenile, Subadult and Adult; the live-bearing shark has NewbornPup, EarlyJuvenile, Juvenile, Subadult and Adult. Stage-specific geometry, proportions, markings, color and swim motion are recorded in a separate source, manifest, GLBs and isolated Godot viewer. These assets do not change gameplay growth or the current player.
 
+The first original freshwater [Pond fish pack](pond-fish-pack-001/README.md) registers **FAF-FISH-006–010**: bluegill, largemouth bass, channel catfish, common carp and northern pike. Each has five separately rigged developmental stages, including a deforming Egg with Idle/Hatch. The 25 Pond-tagged GLBs, five editable Blender masters, manifest, focused checks and isolated Forward+ viewer do not enter Ocean or normal play. Pond-context owner style approval remains open.
+
 The first original rock family is [FAF-ROCK-001](rock-001/README.md): four deterministic boulder variants with a shared generator, Blender review collection, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
 
 The first original coral pack is [FAF-CORAL-001–004](coral-pack-001/README.md): twelve deterministic assets in branching, rounded, tube and fan families, with Blender family review, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
 
 The first original vegetation pack is [FAF-PLANT-001–003](plant-pack-001/README.md): eight deterministic grass, broad seaweed and reef algae assets with sway-ready height coordinates, family/density review, separate GLBs and isolated Godot proof. It has not been placed into the live P2 habitat.
+
+The first Pond-only [foliage pack](pond-foliage-pack-001/README.md) adds **FAF-PLANT-004–009**: 13 lily, grass, cattail, reed, submerged algae and floating muck variants. It has a separate editable Blender master, deterministic family generators, Pond-tagged GLBs and an isolated Forward+ shallow-bank proof. It does not enter Ocean or normal play.
 
 The first original modular seabed pack is [FAF-TERRAIN-001](terrain-001/README.md): six deterministic broad-polygon sand/reef chunks with overlap-friendly irregular aprons, separate GLBs, Blender composition review, and isolated Godot proof. Visible close-view seams need authored dressing before use in a style-proving scene. It has not been placed into the live P2 habitat.
 

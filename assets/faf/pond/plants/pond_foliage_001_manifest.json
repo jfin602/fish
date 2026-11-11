@@ -1,0 +1,903 @@
+{
+  "pack": "pond_foliage_001",
+  "habitat": "pond",
+  "asset_count": 13,
+  "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+  "assets": [
+    {
+      "faf_id": "FAF-PLANT-004A",
+      "habitat": "pond",
+      "family": "lily_pad",
+      "variant": "A",
+      "generator": "plants.pond_foliage.lily_pad.v1",
+      "seed": 6401,
+      "spec": {
+        "radius": 0.46,
+        "stem_depth": 0.72,
+        "notch": 0.27,
+        "stem_lean": 0.1,
+        "seed": 6401
+      },
+      "dimensions_m_blender_xyz": [
+        0.9233,
+        0.9026,
+        0.745
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.46839,
+        -0.42809,
+        -0.72
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.45491,
+        0.47451,
+        0.025
+      ],
+      "triangles": 114,
+      "materials": 2,
+      "components": [
+        "pad",
+        "stem"
+      ],
+      "palette": [
+        "olive",
+        "stem_brown"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "water_surface",
+        "origin_height_m": 0,
+        "mud_depth_m": 0.72,
+        "clearance": "stem only below pad; keep route center open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_004a_lily_pad.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-004B",
+      "habitat": "pond",
+      "family": "lily_pad",
+      "variant": "B",
+      "generator": "plants.pond_foliage.lily_pad.v1",
+      "seed": 6402,
+      "spec": {
+        "radius": 0.62,
+        "stem_depth": 1.08,
+        "notch": 0.38,
+        "stem_lean": 0.17,
+        "seed": 6402
+      },
+      "dimensions_m_blender_xyz": [
+        1.17683,
+        1.24719,
+        1.105
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.58449,
+        -0.60571,
+        -1.08
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.59234,
+        0.64149,
+        0.025
+      ],
+      "triangles": 114,
+      "materials": 2,
+      "components": [
+        "pad",
+        "stem"
+      ],
+      "palette": [
+        "yellow_olive",
+        "stem_brown"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "water_surface",
+        "origin_height_m": 0,
+        "mud_depth_m": 1.08,
+        "clearance": "stem only below pad; keep route center open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_004b_lily_pad.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-004C",
+      "habitat": "pond",
+      "family": "lily_pad",
+      "variant": "C",
+      "generator": "plants.pond_foliage.lily_pad.v1",
+      "seed": 6403,
+      "spec": {
+        "radius": 0.77,
+        "stem_depth": 1.48,
+        "notch": 0.33,
+        "stem_lean": 0.24,
+        "seed": 6403
+      },
+      "dimensions_m_blender_xyz": [
+        1.57619,
+        1.50054,
+        1.505
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.77371,
+        -0.76781,
+        -1.48
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.80247,
+        0.73273,
+        0.025
+      ],
+      "triangles": 114,
+      "materials": 2,
+      "components": [
+        "pad",
+        "stem"
+      ],
+      "palette": [
+        "moss",
+        "stem_brown"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "water_surface",
+        "origin_height_m": 0,
+        "mud_depth_m": 1.48,
+        "clearance": "stem only below pad; keep route center open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_004c_lily_pad.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/lily_pad_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-005A",
+      "habitat": "pond",
+      "family": "tall_grass",
+      "variant": "A",
+      "generator": "plants.pond_foliage.tall_grass.v1",
+      "seed": 6501,
+      "spec": {
+        "height": 0.96,
+        "blade_count": 8,
+        "spread": 0.4,
+        "blade_width": 0.068,
+        "lean": 0.24,
+        "seed": 6501
+      },
+      "dimensions_m_blender_xyz": [
+        0.69897,
+        0.70451,
+        0.99948
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.3436,
+        -0.41098,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.35537,
+        0.29353,
+        0.99948
+      ],
+      "triangles": 288,
+      "materials": 1,
+      "components": [
+        "blades"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "dry_or_damp_bank",
+        "origin_height_m": 0,
+        "clearance": "bank edge; do not place in main swim lane"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_005a_tall_grass.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-005B",
+      "habitat": "pond",
+      "family": "tall_grass",
+      "variant": "B",
+      "generator": "plants.pond_foliage.tall_grass.v1",
+      "seed": 6502,
+      "spec": {
+        "height": 1.24,
+        "blade_count": 11,
+        "spread": 0.52,
+        "blade_width": 0.057,
+        "lean": 0.32,
+        "seed": 6502
+      },
+      "dimensions_m_blender_xyz": [
+        1.11684,
+        1.01339,
+        1.30129
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.55813,
+        -0.53351,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.55872,
+        0.47988,
+        1.30129
+      ],
+      "triangles": 396,
+      "materials": 1,
+      "components": [
+        "blades"
+      ],
+      "palette": [
+        "yellow_olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "dry_or_damp_bank",
+        "origin_height_m": 0,
+        "clearance": "bank edge; do not place in main swim lane"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_005b_tall_grass.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/tall_grass_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-006A",
+      "habitat": "pond",
+      "family": "cattail",
+      "variant": "A",
+      "generator": "plants.pond_foliage.cattail.v1",
+      "seed": 6601,
+      "spec": {
+        "height": 1.42,
+        "stalk_count": 3,
+        "spread": 0.43,
+        "head_length": 0.24,
+        "seed": 6601
+      },
+      "dimensions_m_blender_xyz": [
+        0.46518,
+        0.54611,
+        1.38872
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.19385,
+        -0.25398,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.27134,
+        0.29213,
+        1.38872
+      ],
+      "triangles": 294,
+      "materials": 2,
+      "components": [
+        "stalks",
+        "seed_heads",
+        "leaves"
+      ],
+      "palette": [
+        "moss",
+        "seed_brown"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "shallow_mud",
+        "origin_height_m": 0,
+        "clearance": "cluster along banks, leave underwater route open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_006a_cattail.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-006B",
+      "habitat": "pond",
+      "family": "cattail",
+      "variant": "B",
+      "generator": "plants.pond_foliage.cattail.v1",
+      "seed": 6602,
+      "spec": {
+        "height": 1.76,
+        "stalk_count": 4,
+        "spread": 0.55,
+        "head_length": 0.3,
+        "seed": 6602
+      },
+      "dimensions_m_blender_xyz": [
+        0.78951,
+        0.73222,
+        1.66694
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.39863,
+        -0.39261,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.39088,
+        0.33961,
+        1.66694
+      ],
+      "triangles": 392,
+      "materials": 2,
+      "components": [
+        "stalks",
+        "seed_heads",
+        "leaves"
+      ],
+      "palette": [
+        "olive",
+        "seed_brown"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "shallow_mud",
+        "origin_height_m": 0,
+        "clearance": "cluster along banks, leave underwater route open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_006b_cattail.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/cattail_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-007A",
+      "habitat": "pond",
+      "family": "reed",
+      "variant": "A",
+      "generator": "plants.pond_foliage.reed.v1",
+      "seed": 6701,
+      "spec": {
+        "height": 1.38,
+        "stalk_count": 6,
+        "spread": 0.47,
+        "lean": 0.24,
+        "seed": 6701
+      },
+      "dimensions_m_blender_xyz": [
+        0.69835,
+        0.80221,
+        1.35687
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.33295,
+        -0.39547,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.3654,
+        0.40674,
+        1.35687
+      ],
+      "triangles": 204,
+      "materials": 1,
+      "components": [
+        "stems",
+        "leaves"
+      ],
+      "palette": [
+        "yellow_olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "shallow_mud",
+        "origin_height_m": 0,
+        "clearance": "cluster along banks, leave underwater route open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_007a_reed.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-007B",
+      "habitat": "pond",
+      "family": "reed",
+      "variant": "B",
+      "generator": "plants.pond_foliage.reed.v1",
+      "seed": 6702,
+      "spec": {
+        "height": 1.85,
+        "stalk_count": 8,
+        "spread": 0.58,
+        "lean": 0.32,
+        "seed": 6702
+      },
+      "dimensions_m_blender_xyz": [
+        1.06313,
+        1.03973,
+        1.81443
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.58883,
+        -0.53478,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.4743,
+        0.50495,
+        1.81443
+      ],
+      "triangles": 272,
+      "materials": 1,
+      "components": [
+        "stems",
+        "leaves"
+      ],
+      "palette": [
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "shallow_mud",
+        "origin_height_m": 0,
+        "clearance": "cluster along banks, leave underwater route open"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_007b_reed.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/reed_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-008A",
+      "habitat": "pond",
+      "family": "submerged_algae",
+      "variant": "A",
+      "generator": "plants.pond_foliage.submerged_algae.v1",
+      "seed": 6801,
+      "spec": {
+        "spread": 0.43,
+        "height": 0.2,
+        "paddle_count": 5,
+        "seed": 6801
+      },
+      "dimensions_m_blender_xyz": [
+        0.3315,
+        0.33415,
+        0.18493
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.14643,
+        -0.17011,
+        0.003
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.18507,
+        0.16404,
+        0.18793
+      ],
+      "triangles": 168,
+      "materials": 1,
+      "components": [
+        "contact",
+        "paddles"
+      ],
+      "palette": [
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "substrate_contact",
+        "origin_height_m": 0,
+        "clearance": "attach local +Z to ground, log, or rock face"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_008a_submerged_algae.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-008B",
+      "habitat": "pond",
+      "family": "submerged_algae",
+      "variant": "B",
+      "generator": "plants.pond_foliage.submerged_algae.v1",
+      "seed": 6802,
+      "spec": {
+        "spread": 0.64,
+        "height": 0.29,
+        "paddle_count": 7,
+        "seed": 6802
+      },
+      "dimensions_m_blender_xyz": [
+        0.59444,
+        0.50679,
+        0.29259
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.26958,
+        -0.27825,
+        0.003
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.32486,
+        0.22854,
+        0.29559
+      ],
+      "triangles": 224,
+      "materials": 1,
+      "components": [
+        "contact",
+        "paddles"
+      ],
+      "palette": [
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "substrate_contact",
+        "origin_height_m": 0,
+        "clearance": "attach local +Z to ground, log, or rock face"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_008b_submerged_algae.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/submerged_algae_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-009A",
+      "habitat": "pond",
+      "family": "floating_muck",
+      "variant": "A",
+      "generator": "plants.pond_foliage.floating_muck.v1",
+      "seed": 6901,
+      "spec": {
+        "spread": 0.78,
+        "island_count": 5,
+        "open_fraction": 0.43,
+        "seed": 6901
+      },
+      "dimensions_m_blender_xyz": [
+        0.95807,
+        0.61843,
+        0.017
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.46146,
+        -0.25229,
+        -0.002
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.49661,
+        0.36614,
+        0.015
+      ],
+      "triangles": 180,
+      "materials": 1,
+      "components": [
+        "islands"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "water_surface",
+        "origin_height_m": 0,
+        "clearance": "small separated patch with open water around it"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_009a_floating_muck.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_underwater.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-PLANT-009B",
+      "habitat": "pond",
+      "family": "floating_muck",
+      "variant": "B",
+      "generator": "plants.pond_foliage.floating_muck.v1",
+      "seed": 6902,
+      "spec": {
+        "spread": 1.12,
+        "island_count": 7,
+        "open_fraction": 0.5,
+        "seed": 6902
+      },
+      "dimensions_m_blender_xyz": [
+        1.16729,
+        1.40326,
+        0.017
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.59576,
+        -0.71182,
+        -0.002
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.57153,
+        0.69145,
+        0.015
+      ],
+      "triangles": 252,
+      "materials": 1,
+      "components": [
+        "islands"
+      ],
+      "palette": [
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "water_surface",
+        "origin_height_m": 0,
+        "clearance": "small separated patch with open water around it"
+      },
+      "sway_coordinate": "UV.y, root=0, tip=1; visual-only shader-ready",
+      "source": "assets/faf/pond/plants/pond_foliage_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_009b_floating_muck.glb",
+      "review_status": "Godot 4.7.2 Forward+ import and family/mixed native views reviewed; owner style lock open",
+      "evidence_family_views": [
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_above.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_waterline.png",
+        "docs/fish-asset-factory/pond-foliage-pack-001/evidence/floating_muck_underwater.png"
+      ]
+    }
+  ],
+  "validation": {
+    "glb_binary": "passed: 13 Pond-tagged opaque exports; exact triangles",
+    "godot_import": "passed: 13 assets, 3 lily stems, identity transforms and dimensions",
+    "native_views": "passed: mixed and six families from above, waterline and underwater",
+    "render_backend": "Godot 4.7.2 .NET Forward+ / AMD Radeon 880M",
+    "style_lock": "owner pending"
+  }
+}

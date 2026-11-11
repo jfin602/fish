@@ -19,6 +19,10 @@ Two earlier owner-supplied screenshots from the Fish art-planning conversation r
 
 **Use the repository target as the primary world comparison.** A adds creature, geometry, coral shape and color detail; B adds habitat scale, spatial composition, density, lighting and visibility. A clean Blender asset render alone does not prove the in-game result.
 
+### Future Freshwater Pond reference candidates
+
+The owner-supplied [Pond style target and five generated views](references/pond/README.md) establish a **candidate** direction for the later Freshwater Pond: visible faceted low-poly geometry, a lily-pad canopy and stems, massive submerged wood and roots, muddy sediment, olive/emerald water, isolated golden light and short, depth-dependent visibility. Its theme is beautiful freshwater wilderness with natural survival tension. Owner visual acceptance remains open. This Pond pack is separate from the accepted reef/Ocean target above; it does not change the existing Ocean palette, current scene, FAF model acceptance rules or Roadmap Gates.
+
 ## Non-negotiable visual principles
 
 1. **Low-poly shapes are visible and intentional.** Favor broad planar facets, readable topology and strong silhouettes. Avoid dense sculpted surface noise, photogrammetry, realistic scans left visually unadapted, and generic smooth primitives as finished hero art. Selective smooth shading is allowed where fish deformation, eyes, or motion need it.
