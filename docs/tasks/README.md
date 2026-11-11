@@ -14,8 +14,8 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [p2](p2/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: G2.1/G2.2 pass; G2.3/V20 remains an accepted gap under S16. P3 transition authorized. |
 | [p3](p3/README.md) | **IN PROGRESS at `0.3.6` / NOT GREEN**: FAF Ocean world C3 corrections, native route/style acceptance pending; preserve historical failures. |
 | [p4](p4/README.md) | **AUTHORED / NOT EXECUTED**: Ocean + Freshwater Pond World Select, habitat-restricted fish, low-poly Pond FAF and surface fish/camera/shore; `0.4.1–0.4.14` only after an explicit `0.4.0` entry from accepted/reconciled P3. |
-| [c3-world-gen](c3-world-gen/README.md) | **AUTHORED / NOT EXECUTED** Correction 3 at unchanged `0.3.6`: procedural world compiler, irregular basin, true 3D geology, natural placement, bake/load/Base Worlds. Run before c3-visibility. |
-| [c3-visibility](c3-visibility/README.md) | **AUTHORED / NOT EXECUTED** Correction 3 at unchanged `0.3.6`: underwater distance visibility/discovery tuning; run after c3-world-gen so tuning uses the generated world. |
+| [c3-world-gen](c3-world-gen/README.md) | **P1–P6 IMPLEMENTED / P7 NATIVE FAILED** at `0.3.6`: seeded compiler/bake/load works partly, while visual naturalness and alternate-seed routes fail; four [manual M1–M4 repairs](c3-world-gen/manual/README.md) and owner review are pending before P4. |
+| [c3-visibility](c3-visibility/README.md) | **P1–P3 IMPLEMENTED / P4 NATIVE NOT GREEN** at `0.3.6`: visibility source exists but clearance/native observation failed; revisit after accepted C3 world repair, without inventing V25 PASS. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
 
 ## Stack layout
