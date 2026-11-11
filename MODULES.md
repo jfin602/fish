@@ -18,6 +18,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `docs/tasks/c2-watet-light-fx/` | Owner-green P2 water/light correction: overhead surface, organic caustics, ribbon shafts, GFX presets and native evidence. |
 | `docs/tasks/c2-depth/` | Five-band basin/depth-light correction with preserved historical failure and later R1 route/visual repair qualified by normal-input traversal and owner hand-play. |
 | `docs/tasks/p3/`, `docs/tasks/c3-world-gen/` | FAF reef-world rebuild and procedural correction at `0.3.6`; P1–P6 are implemented, while [C3 P7 native closeout](docs/tasks/c3-world-gen/closeout.md) fails visual naturalness and alternate-seed route completion. |
+| `docs/tasks/p4/` | **Authored, not executed** Phase 4 stack: World Select/Ocean and Pond manifests, habitat-restricted species, Pond environment/FAF and surface swimming + third-person camera crossing, with P7/P12 native checkpoints and P14 final closeout. No source modules implemented by this stack yet. |
 | `docs/fish-asset-factory/` | Original Fish art style, palette, construction/export standards and visual review; no gameplay or Gate authority. |
 | `tools/asset-factory/` | Tracked Blender naming, palette, basic validation and GLB export helpers; family generator packages are reserved, not implemented. |
 
