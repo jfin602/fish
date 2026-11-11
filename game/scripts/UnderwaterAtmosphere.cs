@@ -62,6 +62,32 @@ public partial class UnderwaterAtmosphere : Node3D
     private bool _enabled = true;
     private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
+    private WaterVisualProfile _profile = WaterVisualProfile.Ocean;
+
+    public WorldEnvironmentProfile ProfileId => _profile.Id;
+
+    /// <summary>Choose scene-local presentation before Initialize; never edits user presets.</summary>
+    public void ConfigureProfile(WorldEnvironmentProfile id)
+    {
+        if (_environment is not null) throw new InvalidOperationException("Water profile is already initialized");
+        _profile = WaterVisualProfile.For(id);
+        BackgroundWater = _profile.Background;
+        AmbientWater = _profile.Ambient;
+        DistanceFogColor = _profile.Fog;
+        VolumetricWaterColor = _profile.Volume;
+        SunColor = _profile.Sun;
+        CausticColor = _profile.Caustic;
+        MoteColor = _profile.Motes;
+        if (id == WorldEnvironmentProfile.Pond)
+        {
+            LowerWaterFog = 0.024f;
+            VolumetricAmbientInject = 0.25f;
+            VolumetricAnisotropy = 0.11f;
+            FogLength = 52f;
+            ScreenWarpPixels = 0.04f;
+            ScreenColorVariation = 0.003f;
+        }
+    }
 
     public bool Enabled => _enabled;
     public GpuParticles3D? Motes => _motes;
@@ -217,7 +243,8 @@ public partial class UnderwaterAtmosphere : Node3D
             _environment.VolumetricFogEnabled = enabled;
             _environment.BackgroundMode = enabled && _skyMaterial is not null
                 ? Godot.Environment.BGMode.Sky : Godot.Environment.BGMode.Color;
-            if (!enabled) _environment.BackgroundColor = new Color(0.025f, 0.19f, 0.24f);
+            if (!enabled) _environment.BackgroundColor = _profile.Id == WorldEnvironmentProfile.Ocean
+                ? new Color(0.025f, 0.19f, 0.24f) : _profile.Background;
             _environment.AmbientLightSource = enabled
                 ? Godot.Environment.AmbientSource.Color : Godot.Environment.AmbientSource.Bg;
             if (!enabled)
@@ -272,16 +299,16 @@ public partial class UnderwaterAtmosphere : Node3D
         EffectiveDepth01 = depth;
         // The depth mode gives a clear foreground and a continuous camera-distance
         // reveal. Camera depth never changes the saved surface-distance base.
-        EffectiveUsefulRange = EffectiveBaseVisibilityRange * (1f - 3f / 7f * depth);
+        EffectiveUsefulRange = EffectiveBaseVisibilityRange * Mathf.Lerp(1f, _profile.DeepRangeFactor, depth);
         _environment.FogDepthEnd = EffectiveUsefulRange;
-        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * (1f + 1.25f * depth));
-        _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * (1f - 0.32f * depth));
-        _environment.FogLightColor = DistanceFogColor.Lerp(new Color(0.055f, 0.18f, 0.30f), depth);
-        _environment.VolumetricFogAlbedo = VolumetricWaterColor.Lerp(new Color(0.22f, 0.43f, 0.59f), depth);
-        _environment.BackgroundColor = BackgroundWater.Lerp(new Color(0.025f, 0.095f, 0.18f), depth);
-        _environment.AmbientLightColor = AmbientWater.Lerp(new Color(0.32f, 0.52f, 0.65f), depth);
-        _environment.AmbientLightEnergy = AmbientEnergy * (1f - 0.52f * depth);
-        _sun.LightEnergy = SunEnergy * (1f - 0.65f * depth);
+        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth));
+        _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));
+        _environment.FogLightColor = DistanceFogColor.Lerp(_profile.DeepFog, depth);
+        _environment.VolumetricFogAlbedo = VolumetricWaterColor.Lerp(_profile.DeepVolume, depth);
+        _environment.BackgroundColor = BackgroundWater.Lerp(_profile.DeepBackground, depth);
+        _environment.AmbientLightColor = AmbientWater.Lerp(_profile.DeepAmbient, depth);
+        _environment.AmbientLightEnergy = AmbientEnergy * Mathf.Lerp(1f, _profile.DeepAmbientFactor, depth);
+        _sun.LightEnergy = SunEnergy * Mathf.Lerp(1f, _profile.DeepLightFactor, depth);
         _skyMaterial?.SetShaderParameter("water_depth", depth);
         _surfaceMaterial?.SetShaderParameter("camera_depth", depth);
     }
@@ -297,6 +324,11 @@ public partial class UnderwaterAtmosphere : Node3D
         }
         _skyMaterial = new ShaderMaterial { Shader = shader };
         _skyMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
+        _skyMaterial.SetShaderParameter("shallow_horizon", new Vector3(_profile.SkyHorizon.R, _profile.SkyHorizon.G, _profile.SkyHorizon.B));
+        _skyMaterial.SetShaderParameter("deep_horizon", new Vector3(_profile.DeepSkyHorizon.R, _profile.DeepSkyHorizon.G, _profile.DeepSkyHorizon.B));
+        _skyMaterial.SetShaderParameter("shallow_zenith", new Vector3(_profile.SkyZenith.R, _profile.SkyZenith.G, _profile.SkyZenith.B));
+        _skyMaterial.SetShaderParameter("deep_zenith", new Vector3(_profile.DeepSkyZenith.R, _profile.DeepSkyZenith.G, _profile.DeepSkyZenith.B));
+        _skyMaterial.SetShaderParameter("overcast", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
         _environment!.Sky = new Sky { SkyMaterial = _skyMaterial };
         _environment.BackgroundMode = Godot.Environment.BGMode.Sky;
     }
@@ -331,6 +363,9 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
         _surfaceMaterial.SetShaderParameter("wave_detail", SurfaceWaveDetail);
         _surfaceMaterial.SetShaderParameter("surface_half_size", (extent.X + 14.0f) * 0.5f);
+        _surfaceMaterial.SetShaderParameter("surface_dark", new Vector3(_profile.SurfaceDark.R, _profile.SurfaceDark.G, _profile.SurfaceDark.B));
+        _surfaceMaterial.SetShaderParameter("surface_light", new Vector3(_profile.SurfaceLight.R, _profile.SurfaceLight.G, _profile.SurfaceLight.B));
+        _surfaceMaterial.SetShaderParameter("overcast", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
         _surface = new MeshInstance3D
         {
             Name = "OverheadSurface",
@@ -437,6 +472,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _shaftMaterial.SetShaderParameter("water_surface_y", _surfaceHeight);
         _shaftMaterial.SetShaderParameter("water_deep_y", _deepReferenceHeight);
         _shaftMaterial.SetShaderParameter("deep_transmission", 0.12f);
+        _shaftMaterial.SetShaderParameter("shaft_color", new Vector3(_profile.ShaftColor.R, _profile.ShaftColor.G, _profile.ShaftColor.B));
         _shafts = new MeshInstance3D
         {
             Name = "SunShafts",
@@ -629,6 +665,8 @@ public partial class UnderwaterAtmosphere : Node3D
     public override void _ExitTree()
     {
         if (_screenRect is not null) GetViewport().SizeChanged -= ResizeScreen;
+        if (_environment is not null && GetParent()?.GetNodeOrNull<WorldEnvironment>("WorldEnvironment") is { } world &&
+            world.Environment == _environment) world.Environment = null;
     }
 
     public bool ParametersAreFinite() =>

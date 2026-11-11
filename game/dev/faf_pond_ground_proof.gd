@@ -14,6 +14,7 @@ var placed := 0
 var rejected_route := 0
 var rejected_support := 0
 var total_triangles := 0
+var shared_material_bindings := 0
 var view := "overview"
 var capture_dir := ""
 var check_only := false
@@ -198,6 +199,7 @@ func _place(entry: Dictionary, x: float, z: float, yaw: float, scale_value: floa
 		return false
 	var instance := packed.instantiate() as Node3D
 	instance.name = "Ground_%s_%d" % [entry["faf_id"],placed]
+	_bind_shared_materials(instance)
 	add_child(instance)
 	var embed := .10 if bank else .018
 	instance.position = center["position"] - normal * embed
@@ -209,6 +211,19 @@ func _place(entry: Dictionary, x: float, z: float, yaw: float, scale_value: floa
 	placed += 1
 	total_triangles += int(entry["triangle_count"])
 	return true
+
+
+func _bind_shared_materials(instance: Node3D) -> void:
+	for child in instance.find_children("*","MeshInstance3D",true,false):
+		var mesh_instance := child as MeshInstance3D
+		for surface in mesh_instance.mesh.get_surface_count():
+			var imported := mesh_instance.mesh.surface_get_material(surface)
+			assert(imported != null)
+			var role: String = String(imported.resource_name).trim_prefix("mat__pond_")
+			var shared := load(MATERIALS + "pond_%s.tres" % role) as StandardMaterial3D
+			assert(shared != null)
+			mesh_instance.set_surface_override_material(surface, shared)
+			shared_material_bindings += 1
 
 
 func _layout() -> void:
@@ -226,9 +241,13 @@ func _layout() -> void:
 		Vector2(-10,-15),Vector2(-6,-8),Vector2(-14,-5),Vector2(-8,-16),Vector2(-16,-11)]
 	for i in dense.size():
 		_place(entries[[0,2,4,6,3,5,7,1,4,6][i]],dense[i].x,dense[i].y,-.6+.23*i, .88 + .04*(i%5))
+	var slope_group := [Vector2(18,5),Vector2(21,10),Vector2(17,-8),Vector2(20,-12),Vector2(16,14),Vector2(22,-1)]
+	for i in slope_group.size():
+		_place(entries[[0,1,2,3,4,6][i]],slope_group[i].x,slope_group[i].y,-.35+.18*i, .91+.03*i)
 	_setup_camera()
 	print("FAF_POND_GROUND_PROOF_READY imported=8 instances=",placed," detail_triangles=",total_triangles,
 		" route_rejects=",rejected_route," support_rejects=",rejected_support,
+		" shared_material_bindings=",shared_material_bindings,
 		" renderer=",ProjectSettings.get_setting("rendering/renderer/rendering_method"))
 	if check_only: get_tree().quit(0 if placed >= 20 else 1)
 	elif capture_dir != "": _capture.call_deferred()
@@ -239,15 +258,34 @@ func _setup_camera() -> void:
 		"banks": camera.position = Vector3(-14,3.8,19); camera.look_at(Vector3(-15,-1,13))
 		"details": camera.position = Vector3(9,3.7,19); camera.look_at(Vector3(8,-1,13))
 		"cluster": camera.position = Vector3(-16,3.1,-2); camera.look_at(Vector3(-10,-1,-10))
+		"slope": camera.position = Vector3(18,6,19); camera.look_at(Vector3(19,-.3,2))
 		"above": camera.position = Vector3(-5,25,12); camera.look_at(Vector3(-3,-1,-2))
 		"underwater": camera.position = Vector3(-21,-.15,-18); camera.look_at(Vector3(-9,-1,-9))
-		"fish": camera.position = Vector3(-3,-.2,-18); camera.look_at(Vector3(-10,-1,-10))
+		"fish":
+			# Use the real Fish camera node/FOV in a frozen presentation pose.
+			var main: Node3D = load("res://scenes/main.tscn").instantiate()
+			var fish: CharacterBody3D = main.get_node("Fish").duplicate() as CharacterBody3D
+			main.free()
+			fish.name = "ReviewFishCameraRig"
+			fish.process_mode = Node.PROCESS_MODE_DISABLED
+			add_child(fish)
+			fish.global_position = Vector3.ZERO
+			var fish_camera := fish.get_node("CameraRig/Camera3D") as Camera3D
+			fish_camera.global_position = Vector3(-3,-.2,-18)
+			fish_camera.look_at(Vector3(-10,-1,-10))
+			fish_camera.current = true
 		"gallery": camera.position = Vector3(-3,6,22); camera.look_at(Vector3(-1,-1,12))
 		_: camera.position = Vector3(-10,14,21); camera.look_at(Vector3(-5,-1,-4))
 
 
 func _capture() -> void:
 	for i in range(8): await get_tree().process_frame
+	var active := get_viewport().get_camera_3d()
+	print("FAF_POND_GROUND_CAMERA view=",view," node=",active.get_path()," position=",active.global_position,
+		" forward=",-active.global_basis.z)
+	print("FAF_POND_GROUND_RENDER draw_calls=",Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
+		" objects=",Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME),
+		" primitives=",Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))
 	DirAccess.make_dir_recursive_absolute(capture_dir)
 	var path: String = capture_dir.path_join("pond_ground_%s.png" % view)
 	var error := get_viewport().get_texture().get_image().save_png(path)

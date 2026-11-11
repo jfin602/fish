@@ -2,6 +2,6 @@
 
 [resource]
 resource_name = "mat__pond_wet_bank"
-albedo_color = Color(0.04397, 0.03664, 0.01848, 1)
+albedo_color = Color(0.232, 0.211, 0.145, 1)
 metallic = 0.0
 roughness = 0.94

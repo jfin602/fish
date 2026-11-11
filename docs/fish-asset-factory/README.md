@@ -38,6 +38,8 @@ The first Pond-only [creature pack](pond-creature-pack-001/README.md) registers 
 
 The first Pond [wood and cover pack](pond-wood-pack-001/README.md) registers **FAF-WOOD-001–004**: twelve distinct fallen-log, hollow-trunk, stump and branch/root variants. Source-controlled Blender recipes, editable masters, Pond-tagged GLBs, simple scene collision wrappers and an isolated Forward+ traversal fixture preserve the current Ocean and P3 worlds. Its hero opening is qualified with the existing fish controller and follow camera in both directions; style refinement remains separately recorded.
 
+The first Pond [ground-dressing pack](pond-ground-pack-001/README.md) reserves **FAF-TERRAIN-002A/B** and **FAF-DETAIL-005–007 A/B**: two bank shoulders, two algae-coated stones, two pebble clusters and two leaf-litter clusters. Four shared earthy materials and one broad-frequency basin shader support a single-floor isolated Forward+ placement proof. It does not change the generated Pond or Ocean runtime worlds.
+
 The first original modular seabed pack is [FAF-TERRAIN-001](terrain-001/README.md): six deterministic broad-polygon sand/reef chunks with overlap-friendly irregular aprons, separate GLBs, Blender composition review, and isolated Godot proof. Visible close-view seams need authored dressing before use in a style-proving scene. It has not been placed into the live P2 habitat.
 
 The first small reef-floor detail pack is [FAF-DETAIL-001–004](detail-pack-001/README.md): eight inexpensive shell, rubble, pebble and sponge A/B assets with deterministic family generators, separate GLBs, Blender pair review and one isolated Godot cluster proof. It has not been placed into the live P2 habitat.

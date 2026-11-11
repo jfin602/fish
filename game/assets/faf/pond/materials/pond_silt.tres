@@ -2,6 +2,6 @@
 
 [resource]
 resource_name = "mat__pond_silt"
-albedo_color = Color(0.04851, 0.03968, 0.01984, 1)
+albedo_color = Color(0.244, 0.22, 0.151, 1)
 metallic = 0.0
 roughness = 0.94

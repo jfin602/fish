@@ -37,6 +37,12 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        if (OS.GetCmdlineUserArgs().Contains("--pond-atmosphere-check"))
+        {
+            try { PondAtmosphereChecks.Run(this); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"POND_ATMOSPHERE_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         if (OS.GetCmdlineUserArgs().Contains("--species-check"))
         {
             SpeciesCompatibilityChecks.Run(this);
@@ -165,6 +171,9 @@ public partial class Main : Node3D
 
         if (populated && !isCourseFixture && GetParent() is not RendererComparison)
         {
+            var profile = WorldCatalog.Resolve(WorldSession.SelectedWorldId).EnvironmentProfile;
+            GetNode<PlayShell>("PlayShell").ConfigureLighting(profile);
+            GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").ConfigureProfile(profile);
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish));

@@ -9,7 +9,7 @@ namespace Fish;
 /// <summary>Paused, live graphics tuning with local lighting snapshots.</summary>
 public partial class GraphicsPanel : PanelContainer
 {
-    private readonly LightingPresetStore _store;
+    private LightingPresetStore _store;
     private readonly Func<UnderwaterAtmosphere?> _atmosphere;
     private readonly Action _closed;
     private readonly List<(HSlider Slider, Label Value, Func<LightingSettings, float> Read)> _sliders = [];
@@ -28,6 +28,13 @@ public partial class GraphicsPanel : PanelContainer
         Visible = false;
         ProcessMode = ProcessModeEnum.Always;
         MouseFilter = MouseFilterEnum.Stop;
+    }
+
+    public void SetStore(LightingPresetStore store)
+    {
+        _store = store;
+        _draft = store.Current.Settings.Copy();
+        RefreshChoices();
     }
 
     public override void _Ready()

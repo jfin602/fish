@@ -22,7 +22,8 @@ public partial class PlayShell : Node
     private OptionButton _mode = null!;
     private ControlPresetsPanel _presetEditor = null!;
     private GraphicsPanel _graphicsPanel = null!;
-    private readonly LightingPresetStore _lightingPresets = new();
+    private LightingPresetStore _lightingPresets = new();
+    private WorldEnvironmentProfile _lightingProfile = WorldEnvironmentProfile.Ocean;
     private Label? _quickPresetLabel;
     private double _quickPresetSeconds;
     private readonly ControlPresetStore _presets = new();
@@ -39,6 +40,8 @@ public partial class PlayShell : Node
     public override void _Ready()
     {
         _presets.Load();
+        _lightingProfile = WorldCatalog.Resolve(WorldSession.SelectedWorldId).EnvironmentProfile;
+        _lightingPresets = LightingPresetStore.ForProfile(_lightingProfile);
         _lightingPresets.Load();
         _fish.ConfigureMouse(_preferences.MouseSensitivity, _preferences.InvertMouseY);
         _fish.SetActivePreset(_presets.Current);
@@ -407,6 +410,15 @@ public partial class PlayShell : Node
 
     public void ApplySavedLighting() =>
         GetParent()?.GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere")?.ApplyLighting(_lightingPresets.Current.Settings);
+
+    public void ConfigureLighting(WorldEnvironmentProfile profile)
+    {
+        if (_lightingProfile == profile) return;
+        _lightingProfile = profile;
+        _lightingPresets = LightingPresetStore.ForProfile(profile);
+        _lightingPresets.Load();
+        _graphicsPanel.SetStore(_lightingPresets);
+    }
 
     private void UpdateSensitivityLabel() =>
         _sensitivityLabel.Text = _presets.Current.IsBuiltin

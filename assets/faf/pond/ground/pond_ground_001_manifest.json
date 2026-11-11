@@ -48,8 +48,9 @@
       "collision": "simple bank wedge",
       "blender_source": "assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.blend",
       "glb": "game/assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open",
+      "godot_wrapper": "game/scenes/faf_pond_ground/terrain_002a_eroded_bank_undercut.tscn"
     },
     {
       "faf_id": "FAF-TERRAIN-002B",
@@ -92,8 +93,9 @@
       "collision": "simple bank wedge",
       "blender_source": "assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.blend",
       "glb": "game/assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open",
+      "godot_wrapper": "game/scenes/faf_pond_ground/terrain_002b_eroded_bank_scarred.tscn"
     },
     {
       "faf_id": "FAF-DETAIL-005A",
@@ -134,8 +136,8 @@
       "collision": "none in proof; conservative box if gameplay clearance requires",
       "blender_source": "assets/faf/pond/ground/detail_005a_algae_stone_low.blend",
       "glb": "game/assets/faf/pond/ground/detail_005a_algae_stone_low.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-DETAIL-005B",
@@ -176,8 +178,8 @@
       "collision": "none in proof; conservative box if gameplay clearance requires",
       "blender_source": "assets/faf/pond/ground/detail_005b_algae_stone_upright.blend",
       "glb": "game/assets/faf/pond/ground/detail_005b_algae_stone_upright.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-DETAIL-006A",
@@ -217,8 +219,8 @@
       "collision": "none",
       "blender_source": "assets/faf/pond/ground/detail_006a_pebble_scatter.blend",
       "glb": "game/assets/faf/pond/ground/detail_006a_pebble_scatter.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-DETAIL-006B",
@@ -258,8 +260,8 @@
       "collision": "none",
       "blender_source": "assets/faf/pond/ground/detail_006b_pebble_chain.blend",
       "glb": "game/assets/faf/pond/ground/detail_006b_pebble_chain.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-DETAIL-007A",
@@ -299,8 +301,8 @@
       "collision": "none",
       "blender_source": "assets/faf/pond/ground/detail_007a_leaf_litter_broad.blend",
       "glb": "game/assets/faf/pond/ground/detail_007a_leaf_litter_broad.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-DETAIL-007B",
@@ -340,8 +342,30 @@
       "collision": "none",
       "blender_source": "assets/faf/pond/ground/detail_007b_leaf_litter_windrow.blend",
       "glb": "game/assets/faf/pond/ground/detail_007b_leaf_litter_windrow.glb",
-      "technical_state": "generated; import check pending",
-      "style_state": "native review pending"
+      "technical_state": "static GLB and Godot import passed; native fixture placement observed",
+      "style_state": "native candidate review; owner approval open"
     }
-  ]
+  ],
+  "shared_material_resources": {
+    "silt": "game/assets/faf/pond/materials/pond_silt.tres",
+    "mud": "game/assets/faf/pond/materials/pond_mud.tres",
+    "wet_bank": "game/assets/faf/pond/materials/pond_wet_bank.tres",
+    "algae_stone": "game/assets/faf/pond/materials/pond_algae_stone.tres"
+  },
+  "basin_material": "game/assets/faf/pond/materials/pond_basin_variation.gdshader",
+  "proof_scene": "game/scenes/faf_pond_ground_proof.tscn",
+  "placement_contract": {
+    "surface": "sample the final visual/collision triangle surface after generation; use its height and normal, not a base-height guess",
+    "support": "test center and four footprint corners; reject unsupported spans or slopes beyond family limit; partially embed 0.018 m small details / 0.10 m banks",
+    "protection": "reject protected fish routes and both hero-log entrance clearances before placement",
+    "distribution": "seeded authored clusters near banks, wood and stone with quiet gaps; yaw variation and 0.88\u20131.04 scale in proof; no grid or floor tiles",
+    "collision": "only bank wrappers have simple stepped collision; stones, pebbles and leaves have none in proof"
+  },
+  "validation": {
+    "static_glb": "8/8 passed; IDs, Pond tags, transforms, triangle and material identity, ground pivots",
+    "godot_import": "8/8 passed in Godot 4.7.2 .NET; 4 shared materials loaded",
+    "determinism": "8/8 GLBs byte-identical on second fixed-seed build",
+    "native_proof": "Forward+ AMD Radeon 880M; 29 placements including six on the rising bank; 2 protected-site rejections; 0 support failures; 1692 instanced detail triangles; 68 shared-material surface bindings; 1914 basin triangles; whole-fixture cluster frame 148 draw calls/183 objects/16906 primitives; above/underwater/actual Fish-camera-node captures",
+    "style": "candidate; owner lock open"
+  }
 }

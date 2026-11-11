@@ -11,9 +11,9 @@ void vertex() {
 }
 
 void fragment() {
-	float broad = sin(world_point.x * 0.085 + 0.4) * sin(world_point.z * 0.071 - 0.6);
+	float broad = sin(world_point.x * 0.20 + 0.4) * sin(world_point.z * 0.16 - 0.6);
 	float shore = smoothstep(-6.0, 3.0, world_point.y);
-	float mix_amount = clamp(0.34 + 0.30 * broad + 0.20 * shore, 0.08, 0.86);
+	float mix_amount = clamp(0.34 + 0.37 * broad + 0.20 * shore, 0.08, 0.86);
 	ALBEDO = mix(silt_color, mud_color, mix_amount);
 	ROUGHNESS = 0.96;
 }

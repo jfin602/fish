@@ -12,11 +12,15 @@ namespace Fish;
 public sealed class LightingPresetStore
 {
     public const string DefaultPath = "user://lighting-presets.json";
+    public const string PondPath = "user://lighting-presets-pond.json";
     public const int MaxCustomPresets = 16;
     public const string DefaultId = "builtin:default";
     public const string SoftId = "builtin:soft";
+    public const string PondCloudyId = "builtin:pond-cloudy";
+    public const string PondShallowsId = "builtin:pond-shallows";
     private const int MaxFileBytes = 32768;
     private readonly string _path;
+    private readonly WorldEnvironmentProfile _profile;
     private readonly Dictionary<string, LightingPreset> _presets = new(StringComparer.Ordinal);
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -30,22 +34,49 @@ public sealed class LightingPresetStore
     public IReadOnlyList<LightingPreset> List() => _presets.Values
         .OrderBy(p => p.IsBuiltin ? 0 : 1).ThenBy(p => p.Name, StringComparer.OrdinalIgnoreCase).ToArray();
 
-    public LightingPresetStore(string path = DefaultPath)
+    public LightingPresetStore(string path = DefaultPath, WorldEnvironmentProfile profile = WorldEnvironmentProfile.Ocean)
     {
+        _profile = profile;
         _path = path.StartsWith("user://", StringComparison.Ordinal) ? ProjectSettings.GlobalizePath(path) : path;
         ResetDefaults();
     }
 
+    public static LightingPresetStore ForProfile(WorldEnvironmentProfile profile) =>
+        new(profile == WorldEnvironmentProfile.Pond ? PondPath : DefaultPath, profile);
+
     private void ResetDefaults()
     {
         _presets.Clear();
-        _presets.Add(DefaultId, new LightingPreset(DefaultId, "Natural", new LightingSettings()));
-        _presets.Add(SoftId, new LightingPreset(SoftId, "Soft", new LightingSettings
+        if (_profile == WorldEnvironmentProfile.Pond)
         {
-            SurfaceWaveDetail = 0.45f, CausticEnergy = 0.24f, ShaftCount = 4,
-            ShaftBrightness = 0.65f, MoteCount = 80, ScreenWarpPixels = 0f,
-        }));
-        CurrentId = DefaultId;
+            _presets.Add(PondCloudyId, new LightingPreset(PondCloudyId, "Pond · Overcast", new LightingSettings
+            {
+                SurfaceWaveHeight = 0.45f, SurfaceWaveSpeed = 0.65f, SurfaceWaveDetail = 0.35f,
+                CausticEnergy = 0.08f, CausticDrift = 0.08f, CausticTravel = 0.25f,
+                ShaftCount = 2, ShaftBrightness = 0.32f, SunEnergy = 0.72f,
+                AmbientEnergy = 0.32f, VolumetricDensity = 0.029f,
+                VisibilityDistanceMeters = 25f, MoteCount = 72, ScreenWarpPixels = 0.04f,
+            }));
+            _presets.Add(PondShallowsId, new LightingPreset(PondShallowsId, "Pond · Brighter Shallows", new LightingSettings
+            {
+                SurfaceWaveHeight = 0.50f, SurfaceWaveSpeed = 0.7f, SurfaceWaveDetail = 0.4f,
+                CausticEnergy = 0.16f, CausticDrift = 0.11f, CausticTravel = 0.35f,
+                ShaftCount = 3, ShaftBrightness = 0.55f, SunEnergy = 1.08f,
+                AmbientEnergy = 0.43f, VolumetricDensity = 0.024f,
+                VisibilityDistanceMeters = 32f, MoteCount = 64, ScreenWarpPixels = 0.04f,
+            }));
+            CurrentId = PondCloudyId;
+        }
+        else
+        {
+            _presets.Add(DefaultId, new LightingPreset(DefaultId, "Natural", new LightingSettings()));
+            _presets.Add(SoftId, new LightingPreset(SoftId, "Soft", new LightingSettings
+            {
+                SurfaceWaveDetail = 0.45f, CausticEnergy = 0.24f, ShaftCount = 4,
+                ShaftBrightness = 0.65f, MoteCount = 80, ScreenWarpPixels = 0f,
+            }));
+            CurrentId = DefaultId;
+        }
     }
 
     public void Load()
@@ -91,7 +122,7 @@ public sealed class LightingPresetStore
             catch (IOException) { GD.PushWarning("Could not preserve corrupt lighting file"); }
             catch (UnauthorizedAccessException) { GD.PushWarning("Could not preserve corrupt lighting file"); }
             ResetDefaults();
-            GD.PushWarning($"Lighting presets could not be loaded ({error.Message}); using Natural");
+            GD.PushWarning($"Lighting presets could not be loaded ({error.Message}); using {Current.Name}");
         }
     }
 
@@ -126,7 +157,7 @@ public sealed class LightingPresetStore
     {
         if (Current.IsBuiltin) throw new ArgumentException("Built-in lighting presets cannot be deleted");
         _presets.Remove(CurrentId);
-        CurrentId = DefaultId;
+        CurrentId = _profile == WorldEnvironmentProfile.Pond ? PondCloudyId : DefaultId;
         Save();
     }
 
