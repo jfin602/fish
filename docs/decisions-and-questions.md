@@ -28,6 +28,8 @@
 - **S17 — Underwater visibility as discovery (2026-11-10):** the owner observed that distant terrain and opposite map bounds are exposed too clearly in normal play. The reef must instead reveal progressively while swimming: crisp nearby detail, softened midground, indistinct distant silhouettes, and water concealing far boundaries. Increase distance extinction without making the colorful nearby world unreadable; retain depth-dependent visibility and accepted lighting. The [visibility contract](systems/underwater-visibility.md) contains initial tunable ranges and the pending implementation/qualification scope.
 - **S18 — Deterministic procedural reef worlds (2026-11-10):** the owner rejected the placed/floating-ground look and selected a deterministic finite world compiler. New worlds should form as irregular basin/pond-like terrain with the useful deepest region near the center, natural non-circular perimeter, true geological caves/tunnels/arches/overhangs, terrain-aware clustered placement, and a compile/bake/load workflow. Explicit generation may take up to roughly two minutes on the current development machine if the result can be baked so later loads are much faster. Good generated candidates can be explicitly promoted to curated Base Worlds. This changes world-generation architecture, not Fish's stylized low-poly art direction.
 
+- **S19 — Multi-habitat direction and Phase 4 (2026-11-11):** The owner chose to finish `c3-world-gen` M1–M4 manual corrections before P4, then preserve the existing Ocean as one selectable world and build a separate dark/murky freshwater Pond world as Phase 4. A new World Select comes before Character Select. Marine fish must not be selectable or spawned in freshwater; freshwater fish must not be selectable or spawned in the ocean. Share existing movement/camera, Forward+ and procedural compiler rather than replacing the Ocean. Original feeding/growth P4 and subsequent phases shift to P5–P8. [P4 plan](planning/p4/freshwater-world.md) details scoped implementation; approval is not implementation or native qualification.
+
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
 ## Confirmed requirements
@@ -92,6 +94,12 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C56 | A P3-sized generated candidate targets **≤120 seconds** on the identified current development machine. Measure actual phase/total time; a baked candidate/Base World reload must skip the generator and be materially faster, with actual load time recorded rather than assumed. | S18 |
 | C57 | Generated candidates remain user/ignored data until explicitly retained. Owner-approved candidates may be promoted to reviewable curated **Base Worlds** preserving seed, generator/settings version and baked-resource identity; promotion never silently overwrites an existing Base World. | S18 |
 
+| C58 | Complete the four `c3-world-gen/manual` M1–M4 corrections and re-qualify the generated Ocean candidate before beginning P4; do not reclassify failed P3 results as PASS or change the root `0.3.6` version during correction. | S19 |
+| C59 | P4 adds a World Select offering both the preserved Ocean and a new Freshwater Pond. New Life routes through World Select and then compatible Character Select; both worlds remain independently playable. | S19 |
+| C60 | Marine fish are ocean-only and freshwater fish are pond-only, for player selection and normal ambient/ecological spawning. Missing compatibility data never defaults to cross-habitat eligibility. | S19 |
+| C61 | P4 preserves the accepted FAF ocean assets, ocean lighting/renderer, existing controls/camera and deterministic generated/baked world pipeline. Freshwater receives independent art, environment and compatible wildlife/plant catalogs, using shared infrastructure. | S19 |
+| C62 | The originally planned feeding/predator/growth phase moves to P5; persistence/death, life stories/history and integrated qualification move to P6, P7 and P8 respectively. World and species identity must be retained when lives become persistent. | S19 |
+
 ## Working designs
 
 | ID | Proposed approach | Owner |
@@ -109,6 +117,7 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | W11 | Historical P2 used one compact authored/modular reef habitat. S18 supersedes that as P3's production-world architecture: P3 uses a deterministic finite compiler and baked worlds while preserving the P1 fixture separately. | [P2 underwater-world plan](planning/p2/underwater-world.md); [P3 procedural world plan](planning/p3/procedural-world-generation.md) |
 | W12 | Fish-reactive water is a rendering/particle/shader presentation effect driven read-only from movement state, not a fluid simulation or alternate movement authority. | [P2 underwater-world plan](planning/p2/underwater-world.md) |
 | W13 | P3 uses FAF-FISH-001–004 as bounded presentation-only ambient reef life when practical. All five FAF fish, including FAF-FISH-005 Blacktip Reef Shark, are selectable player visuals; shark selection remains visual-only and does not imply predator behavior. | [P3 reef-world plan](planning/p3/reef-world-rebuild.md) |
+| W14 | P4 uses a stable habitat/world manifest and shared fish compatibility policy; Pond and Ocean keep separate baked resources and atmosphere while sharing core engine code. | [P4 freshwater plan](planning/p4/freshwater-world.md) |
 
 Engineering invariants in the system documents preserve confirmed behavior: stable run identity, idempotent feeding/death/archive operations, no offline simulation, factual story provenance, and separation of active saves from history. Their exact code and storage format remain unimplemented.
 
@@ -118,16 +127,16 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 
 | ID | Decision | When it matters |
 | --- | --- | --- |
-| Q01 | Final player species and specific ocean biome remain open. The marine setting and C37 visual language are confirmed. | Before committing to production content and ecological composition. |
+| Q01 | Ocean and freshwater Pond are selected habitats. Exact final native fish rosters, future biome count and species-specific gameplay remain open; ocean C37 art work remains supported. | Before expanding each habitat's ecological content. |
 | Q02 | Only the [remaining tuning and bindings](systems/swimming-and-camera.md#remaining-tuning-and-bindings), later controller details, and Movement abilities specifics remain open. Qualitative core controls and playtest criteria are confirmed in C18–C26. | Resolve and record core bindings/tuning before P1 closes; controller and ability details follow their later scope. |
 | Q03 | Growth model, edible-size rule, body/collision scaling, maximum size, and balancing rates. | Before qualifying the first feeding-to-growth loop. |
 | Q04 | Hunger, diet restrictions, injury recovery, attack damage, and additional death causes. | Before broad survival mechanics are implemented. |
 | Q05 | Intended life/session lengths, full-size payoff, aging, and any victory or ending. | Before long-term pacing and content expansion. |
-| Q06 | P2 uses a compact authored/modular habitat for the current slice. Procedural generation, seeds, larger-world variation and population replenishment remain open for later expansion. | Before expanding beyond the first qualified habitat. |
+| Q06 | S18 selected a deterministic finite procedural compiler and baked worlds; P3 C3 repairs/qualification remain outstanding. Runtime population replenishment and future biome/world-size choices remain open. | Before procedural population simulation or further world-scale expansion. |
 | Q07 | One or multiple living save slots, manual/automatic checkpoint policy, abandonment records, and supported recovery guarantees. | Before save/menu qualification. |
 | Q08 | Narrative length, fish naming, portraits, narration, filtering, sorting, and optional archive deletion. | Before the first polished history flow. |
 | Q09 | Cross-run discovery persistence, cosmetics, unlocks, or permanent stat progression. | Before implementing any carryover beyond saved stories. |
-| Q10 | **Resolved for P2:** use Forward+ for the underwater-world phase, based on the owner's real desktop trial after P2/P1. Audio direction, production performance budgets, final biome, exact asset treatment and wider platform qualification remain open; C37 settles the broad visual style. | Revisit the renderer only if a concrete Forward+ blocker emerges or later platform work requires another decision. |
+| Q10 | **Resolved for P2:** use Forward+ from the owner's real desktop trial. Ocean and Pond are now selected habitat directions (S19), while audio, production performance budgets, exact asset treatment and broader platform qualification remain open; the shared low-poly language is retained. | Revisit the renderer only for a concrete Forward+ blocker or platform requirement. |
 
 ## Design approval and actual core acceptance
 
