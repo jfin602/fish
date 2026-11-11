@@ -1,0 +1,29 @@
+TASK: Phase 4 / P4 — Pond generation and bake
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.4`.
+
+GOAL
+Make the corrected C3 deterministic world compiler generate and bake a distinct irregular freshwater Pond with shoreline-first geometry, natural depth, traversable paths and valid colliders, without modifying the Ocean Base World.
+
+READ / ENTRY
+AGENTS.md, BOOT.md, P4 README/plan P4, P4 design, c3-world-gen manual M1–M4 results and current accepted compiler contract, MODULES.md, current WorldGeneration/GeneratedBasin/GeologicalRegionGenerator/WorldEnvironmentAnalysis, route/placement fields, FullWorldPackage/BakedWorldLoader and tools/dev compile/promote scripts. Require completed P3 source/0.4.3 and inspect local HEAD/dirty state.
+
+IMPLEMENT
+1. Adapt the shared generator/settings schema for Pond-specific, deterministic water-body footprint, shallow shoreline band, inward distance-to-bank depth, asymmetry, coves, sloped muddy shelves, deep core and safe spawn; retain correct Ocean profiles.
+2. Add appropriate generic route/clearance/terrain-suitability fields for future submerged roots/logs/lilies/reeds, without duplicating the compiler. Pond routes must connect shallow -> middle -> deep -> return plus at least one alternate safe path. No fixed +/-24.9 m ghost constraints; reconcile actual accepted fish/world bounds.
+3. Produce physical terrain mesh and matching simplified collision, natural bank connection, valid water plane/height and safe world boundaries. Avoid perfect circles, square walls, artificial cliffs/slabs, floating props or ungrounded cave tubes.
+4. Generate Pond to an independent candidate/baked output location with stable world/habitat ID and manifest; normal loading invokes zero generator stages. Do not promote a placeholder without review or overwrite Ocean Base World.
+5. Test identical seed/settings version reproducibility with hash/identity and at least two distinct valid seeds for route/geometry variation; record compile/bake time versus documented target and load time rather than assuming. Handle impossible routes explicitly, never silently substitute seed 42.
+6. Add inspectable in-world landmarks to qualify bank/shallow, middle, deeper basin and route clearance. Aesthetic dressing belongs to P6.
+
+SCOPE / DEFERRALS
+No decorative FAF pack yet, no pond wildlife or player fish, no waterline camera, no Ocean compiler rewrite beyond shared bug fixes that pass regression.
+
+VALIDATE
+T2 reproducibility, terrain/collision route queries, full compile and generator-free baked load and Godot build; git diff --check. Record seeds, timings, manifest resource hashes, failures under qualification/implementation.md.
+
+DONE / VERSION / REPORT
+A valid independent Pond baked package loads through the shared world identity and is not just an Ocean tint. Set version 0.4.4 only if compiler/route checks pass; report all failed seeds and native-unobserved naturalness. No self-commit/push.
