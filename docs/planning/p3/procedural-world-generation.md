@@ -1,7 +1,7 @@
 # P3 procedural realistic world generation
 
 **Decision date:** 2026-11-10  
-**Status:** Owner-approved architecture; implementation is owned by [c3-world-gen](../../tasks/c3-world-gen/README.md).  
+**Status:** Owner-approved architecture, implemented through C3 P6; [P7 native qualification](../../tasks/c3-world-gen/closeout.md) failed visual naturalness and alternate-seed route completion. Human owner acceptance remains pending.
 **Meaning of realistic:** geologically and compositionally believable landforms, support, routes and habitat placement inside Fish's existing **bright stylized low-poly reef naturalism**. This does not change the art style to photorealism.
 
 ## Outcome

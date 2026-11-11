@@ -1,6 +1,6 @@
 # c3-world-gen — deterministic procedural reef world correction
 
-**State:** P1–P6 IMPLEMENTED / P7 NATIVE REVIEW PENDING. P6 bakes a full candidate, verifies generator-free reload, and provides explicit no-overwrite promotion. Seed 42 is a provisional qualification Base World, not a shipping decision. [P6 evidence](qualification/implementation.md#p6--full-bake-load-and-base-world-workflow) records desktop headless timings; native qualification remains P7.
+**State:** P1–P6 IMPLEMENTED / P7 NATIVE REVIEW FAILED, human owner acceptance pending. Seed 42 compiles in 51.687 s and reloads in 149 ms without generation, but [native review](qualification/native-world-gen.md) finds artificial dark slab/tube geology and weak reef composition; full seeds 43/44 fail route repair. The [closeout](closeout.md) leaves the correction not accepted. Seed 42 remains a provisional qualification Base World, not a shipping decision.
 **Type:** Correction 3.  
 **Authoring baseline:** GitHub main at `4c9b601df7c8aa97f983b02bea216aee13af2748`, root `0.3.0`.  
 **Execution version:** every prompt requires **unchanged `0.3.6`**, the owner-selected P3 P6 checkpoint. This is a strict preflight for the intended local execution point, not an instruction to bump/downgrade GitHub main or fabricate P3 checkpoints.
