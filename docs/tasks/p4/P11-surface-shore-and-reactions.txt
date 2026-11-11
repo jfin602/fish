@@ -1,0 +1,29 @@
+TASK: Phase 4 / P11 — Surface shore and reactions
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.11`.
+
+GOAL
+Finish the Pond's above-water visual scene with the actual generated nearby bank, woodland sky and vegetation, plus performance-conscious wake/ripple/splash cues driven by physical fish movement.
+
+READ / ENTRY
+P4 README/plan P11, P4 surface camera and atmosphere contract, owner dark/overcast Pond refs if available, FAF Pond environment kit, accepted generated shoreline mesh/placement fields, current water_surface.gdshader, UnderwaterAtmosphere, WaterReaction, shoreline collision and native P7 notes. Confirm completed P10 version 0.4.10, HEAD/dirty and current scene resource identities.
+
+IMPLEMENT
+1. Render the **real Pond bank** where generated terrain reaches the waterline: eroded mud/grass edge, shoreline reeds/cattails, exposed roots, lily pad tops and nearby woodland trees/branches where supported by geometry. Do not place a separate decorative fake shore or construct an explorable terrestrial world.
+2. Show plausible overcast sky/cloud cover from the above-water camera, with subdued daylight and water-surface reflections. Keep waterline transition coherent looking up and down, correct mesh sidedness and alpha/depth sorting, natural near-bank scale and visible water motion.
+3. Ensure distance atmosphere conceals far map bounds and unbuilt background without a sudden billboard/fog cutoff. Shadow/plant density should remain readable and match dark ominous style; cloudy day is atmospheric, not total blackout.
+4. Integrate cheap bounded surface ripples at contact/near-partial breach, small directional wake at cruising speed, reduced disturbances at glide and no persistent stale rings after pause, focus, world switch or reset. Read fish position/velocity/effort from authoritative motor read-only; do not inject force or alter drag.
+5. Prefer one surface and existing Forward+ pipeline, shared low-poly materials/meshes, batched plants, bounded particles and no unnecessary secondary rendering. Add knobs to independent Pond visual profile; Ocean surface effects stay unchanged.
+6. Add focused resource/geometry/collision/proximity/visual state tests: bank coverage in real generated world, plant support near shore, no fish/camera clipping through decorative shore, surface FX cap/reset, and Pond→Ocean profile restoration.
+
+SCOPE / DEFERRALS
+No surface bird AI/attacks, land travel, physics fluid, weather cycle simulation or guaranteed fully explorable lakeshore. Any ambient bird is optional and must not imply predator behavior.
+
+VALIDATE
+T2 Godot import/build and focused shoreline placement, material and particle bounds checks, camera crossing harness and sampled performance with actual commands. git diff --check. Native aesthetics and waterline transition remain for P12 owner review.
+
+DONE / VERSION
+Waterline/sky/nearby actual shore and restrained read-only fish ripples are present with no Ocean regression. Set 0.4.11 after checks, report measured costs, known errors and P12 handoff. No self-commit/push.
