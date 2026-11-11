@@ -1,6 +1,6 @@
 # Fish Asset Factory (FAF)
 
-FAF is the source-controlled system for making **original Fish art** in the owner's [bright stylized low-poly reef naturalism](art-style.md). It establishes repeatable decisions and review, not a completed procedural asset library. Existing P1/P2 gameplay and third-party imports remain as they are. [Art and assets](../art-and-assets.md) continues to own licensing, acquisition and provenance.
+FAF is the source-controlled system for making **original Fish art** under the shared [stylized low-poly aquatic naturalism contract](art-style.md), retaining bright reef naturalism as the **Ocean-specific** style and adding a distinct freshwater Pond style in P4. It establishes repeatable decisions and review, not a completed procedural asset library. Existing P1/P2 gameplay and third-party imports remain as they are. [Art and assets](../art-and-assets.md) continues to own licensing, acquisition and provenance.
 
 ## Production path
 
@@ -9,6 +9,12 @@ Owner [references](references/README.md) → [art style](art-style.md) → [pale
 Each candidate carries a small [manifest/check record](blender-godot-contract.md#candidate-record) and receives separate technical and style decisions. Blender is the editable source and viewport inspection environment. The repo's [tooling skeleton](../../tools/asset-factory/README.md) holds reusable Python; Blender MCP can inspect scenes, capture viewport screenshots and run controlled Python, but transient MCP commands are not the source of truth. Godot's native view is the final production-style check. This workflow supplies no Roadmap Gate evidence by itself.
 
 For every new fish, the [rigging standard](rigging-standards.md#breathing-anatomy-is-required-at-generation) makes breathing anatomy and its deformation rig part of the initial generator path. Ordinary bony fish receive paired operculum bones; non-operculate species require their own declared mechanism or remain explicitly pending. Godot will supply runtime breathing behavior later.
+
+## Habitat-aware FAF expansion (P4 planned)
+
+After the P3 Ocean generator corrections/qualification, [P4](../planning/p4/freshwater-world.md) extends FAF without replacing any existing marine assets or disrupting fish life-stage/gill-rigging conventions. New freshwater GLBs/Blender masters, manifests, asset IDs and variant generators must be independent of ocean identities. Planned families: freshwater fish, muddy terrain and sediment, logs/stumps/roots, pond vegetation (reeds/cattails/lilies/pondweed/algae), and representative frog/turtle/snake/crayfish/aquatic insects.
+
+A stable species ID and explicit native habitat compatibility (Ocean or Pond) accompany each creature. Ordinary character selection, ambient spawning and future ecology use the same compatibility definition. Existing five FAF marine fish remain Ocean-only. Shared generic geometry may be marked compatible with both habitats explicitly, but habitat-specific coral and fish must never leak across worlds through fallback loading. New species must follow appropriate breathing/animation/rigging standards, with technical and native style review for each selected habitat. These are prospective P4 deliverables, not currently completed packs.
 
 ## Current boundary
 
