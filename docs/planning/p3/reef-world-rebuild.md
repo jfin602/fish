@@ -1,7 +1,7 @@
 # P3 — Rebuild and dress the reef with FAF assets
 
 **Decision date:** 2026-11-10  
-**State:** Owner-selected and READY TO EXECUTE at root `0.3.0`; implementation/evidence NOT STARTED.  
+**State:** P3 in progress at root `0.3.6`. P1–P6 implementation exists, but C3 world generation native qualification failed; M1–M4 manual repair and owner review remain pending. P3 is NOT GREEN. Historical `0.3.0` entry remains described below.  
 **Execution:** [docs/tasks/p3](../../tasks/p3/README.md) under owner transition S16. P2 G2.3/V20 remains an accepted evidence gap rather than a fabricated PASS.
 
 ## Outcome
@@ -170,4 +170,4 @@ P3 is complete when the owner can swim the full accepted five-depth world and ju
 
 Procedural world generation is now **in scope** through the finite compiler/bake architecture. Still deferred: infinite streaming terrain, voxel/destructible terrain, runtime erosion/cave carving, procedural ecology, feeding/predator AI, species stats, growth, save/resume, death/history, first-person implementation, new movement physics, new core FAF family production, production audio pass and final whole-game biome/content scale. Character Select remains session routing/presentation only.
 
-The next gameplay phase after successful P3 closeout is feeding/predators/growth.
+After P3's Ocean world passes the necessary correction/native reviews, the [new P4](../p4/freshwater-world.md) adds World Select and a separate freshwater Pond while preserving this reef. Feeding/predators/growth move to P5. This does not rename the five P3 marine character choices or rewrite earlier P3 evidence.
