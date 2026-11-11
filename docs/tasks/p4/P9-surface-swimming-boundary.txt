@@ -1,0 +1,30 @@
+TASK: Phase 4 / P9 — Surface swimming boundary
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.9`.
+
+GOAL
+Let a Pond fish cruise naturally immediately under the actual generated water surface, with limited fin/back/mouth breach but no airborne fish movement, replacing any invisible ceiling effect. Camera crossing is separate P10.
+
+READ / ENTRY
+P4 README/assessment/plan P9, P4 design 'Surface swimming and air–water camera transition', V32, accepted P1 SwimMotor/FishController/FollowCamera state, current collision/world ceiling, generated/baked surface height and bank geometry, P8 fish rig geometry/bounds, actual controls/presets including Adaptive Follow. Confirm P8 0.4.8 and inspect HEAD/dirty changes.
+
+IMPLEMENT
+1. Define one explicit authoritative **waterline physical boundary** from the selected world's actual water-surface height. In Pond use the existing CharacterBody3D/motor, not a second movement engine. Avoid arbitrary old world-ceiling collision/altitude clamps that cause a visible stop below the surface.
+2. Compute a stable allowed body-center offset from fish collision shape/anatomical extents. Permit limited surface breach by dorsal fin/back/mouth where appropriate, but never allow ordinary swimming inputs to lift the whole collider above water or make it fly. Use a smooth vertical velocity constraint projected along water tangent rather than a visible hard bounce or repeated teleport.
+3. Retain lateral swimming, acceleration/turn/glide, slowing, curved motion and input semantics at the waterline. Surface motion must not impart fictitious buoyancy/air physics, reset movement state, change camera authority or allow escape through shore collision.
+4. Keep generated bank collisions distinct from water surface; body cannot enter terrain, roots/logs or a hidden outer bounding wall. If a water-surface query is absent/invalid, fail safely and report the world configuration issue rather than hardcode a misleading height.
+5. Apply only habitat-enabled policy; Ocean retains existing qualified motor/swimming unless explicitly regression-tested and approved. Do not silently make every world use Pond surface rules.
+6. Add focused near-surface tests: ascend from different depths, sustained upward input, skim at speed, turn while rising, coast/brake, partial body breach, downward return, pause/focus/reset and boundary/bank collision, including repeated oscillations without jitter or position/velocity spikes.
+7. Log actual positions, extents, collisions and assertions to qualification/implementation.md.
+
+SCOPE / DEFERRALS
+No jump button, fish flights, terrestrial movement, damage, feeding, predator AI or physics-driven buoyancy. P10 owns camera/presentation crossing, P11 owns wake/shore.
+
+VALIDATE
+T2 motor/world-surface tests using actual Fish project commands, Godot build, tracked selected world identity and equal-input Ocean regression, git diff --check. Headless tests do not qualify native fluid feel; P12 handles owner observation.
+
+DONE / VERSION
+Near-surface Pond movement is physically smooth and bounded without a faux ceiling, preserving other-depth and Ocean controls. Set 0.4.9 after tests, report actual constraints/thresholds and remaining native gaps. No self-commit/push.
