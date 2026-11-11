@@ -30,7 +30,8 @@ public partial class ReefComposition : Node3D
         ["montipora_danae"] = new(P2 + "smithsonian/montipora-danae/usnm_307-100k-2048_std.glb", new(0, 0.04827f, 0)),
     };
 
-    public bool TryBuild(SeabedSurface seabed, out string diagnostic, Action<string, long>? stage = null)
+    public bool TryBuild(SeabedSurface seabed, string worldId, out string diagnostic,
+        Action<string, long>? stage = null)
     {
         WorldGenerationAudit.MarkStage();
         diagnostic = "";
@@ -164,7 +165,8 @@ public partial class ReefComposition : Node3D
             dressingMilliseconds - dressing.HabitatPlanningMilliseconds - dressing.DensePlacementMilliseconds));
         timer.Restart();
         if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
-            !ambient.TryBuild(seabed, dressing.Placements, GeneratedRoutes, out diagnostic)) return false;
+            !ambient.TryBuild(seabed, dressing.Placements, GeneratedRoutes, out diagnostic,
+                worldId)) return false;
         stage?.Invoke("ambient-life", timer.ElapsedMilliseconds);
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_wood_piece.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.glb" id="2_visual"]
+
+[node name="wood_003a_rooted_leaning_trunk" type="Node3D"]
+script = ExtResource("1_script")
+faf_id = "FAF-WOOD-003A"
+family = "stump"
+radius_m = 0.76
+height_m = 4.35
+
+[node name="Visual" parent="." instance=ExtResource("2_visual")]

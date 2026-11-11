@@ -1,6 +1,7 @@
 #nullable enable
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace Fish;
 
@@ -9,8 +10,9 @@ public partial class CharacterSelect : Control
 {
     private static bool _checkStarted;
     private readonly DisplayPreferences _preferences = new();
-    private readonly string[] _diagnostics = new string[CharacterCatalog.All.Count];
-    private readonly Button[] _tiles = new Button[CharacterCatalog.All.Count];
+    private IReadOnlyList<CharacterEntry> _entries = Array.Empty<CharacterEntry>();
+    private string[] _diagnostics = Array.Empty<string>();
+    private Button[] _tiles = Array.Empty<Button>();
     private Label _name = null!;
     private Label _category = null!;
     private Label _description = null!;
@@ -25,6 +27,7 @@ public partial class CharacterSelect : Control
     private int _selected;
     private bool _dragging;
     private bool _invalidDisplay;
+    private string _shownWorldId = "";
 
     public override void _EnterTree()
     {
@@ -54,30 +57,49 @@ public partial class CharacterSelect : Control
         SetAnchorsPreset(LayoutPreset.TopLeft);
         MouseFilter = MouseFilterEnum.Pass;
         UpdateScreenSize();
-        BuildInterface();
         GetViewport().SizeChanged += UpdateScreenSize;
-        for (var i = 0; i < CharacterCatalog.All.Count; i++)
+        RebuildForWorld();
+        if (!_checkStarted && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--character-check"))
         {
-            var entry = CharacterCatalog.All[i];
+            _checkStarted = true;
+            CharacterChecks.Run(this);
+        }
+    }
+
+    private void RebuildForWorld()
+    {
+        _shownWorldId = WorldSession.SelectedWorldId;
+        _dragging = false;
+        _model = null;
+        _animation = null;
+        _clip = "";
+        foreach (var child in GetChildren()) child.Free();
+        _entries = SpeciesCompatibility.Available(_shownWorldId, SpeciesRole.Selectable);
+        _diagnostics = new string[_entries.Count];
+        _tiles = new Button[_entries.Count];
+        _selected = 0;
+        BuildInterface();
+        for (var i = 0; i < _entries.Count; i++)
+        {
+            var entry = _entries[i];
             _diagnostics[i] = "";
             if (CharacterCatalog.TryInstantiate(entry, out var model, out _, out var diagnostic))
                 model!.Free();
             else _diagnostics[i] = diagnostic;
             _tiles[i].Disabled = _diagnostics[i].Length > 0;
         }
-        Select(_selected);
-        _enter.GrabFocus();
-        if (WorldSession.SelectedWorldId != WorldCatalog.OceanId)
+        if (_entries.Count > 0) Select(0);
+        else
         {
-            _status.Text = "No compatible demo fish are available for this world yet. Go back and choose Ocean.";
+            _name.Text = WorldSession.SelectedWorldId == WorldCatalog.PondId
+                ? "Freshwater fish not installed" : "No native fish installed";
+            _category.Text = "NO SELECTABLE SPECIES";
+            _description.Text = "This habitat has no installed native fish yet.";
+            _status.Text = "No compatible fish are available. Go back to World Select.";
             _enter.Disabled = true;
         }
-        GD.Print($"FISH_CHARACTER_SELECT_READY entries={CharacterCatalog.All.Count}");
-        if (!_checkStarted && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--character-check"))
-        {
-            _checkStarted = true;
-            CharacterChecks.Run(this);
-        }
+        (_entries.Count > 0 ? _enter : FindChild("BackToWorldButton", true, false) as Button)?.GrabFocus();
+        GD.Print($"FISH_CHARACTER_SELECT_READY world={_shownWorldId} entries={_entries.Count}");
     }
 
     public override void _ExitTree()
@@ -88,14 +110,14 @@ public partial class CharacterSelect : Control
     public override void _Input(InputEvent @event)
     {
         if (@event is not InputEventKey { Pressed: true, Echo: false } key) return;
-        if (key.Keycode is Key.Left or Key.A)
+        if (_entries.Count > 0 && (key.Keycode is Key.Left or Key.A))
         {
-            Select((_selected - 1 + CharacterCatalog.All.Count) % CharacterCatalog.All.Count);
+            Select((_selected - 1 + _entries.Count) % _entries.Count);
             GetViewport().SetInputAsHandled();
         }
-        else if (key.Keycode is Key.Right or Key.D)
+        else if (_entries.Count > 0 && (key.Keycode is Key.Right or Key.D))
         {
-            Select((_selected + 1) % CharacterCatalog.All.Count);
+            Select((_selected + 1) % _entries.Count);
             GetViewport().SetInputAsHandled();
         }
         else if (key.Keycode == Key.Enter && GetViewport().GuiGetFocusOwner() is Button focus &&
@@ -119,6 +141,7 @@ public partial class CharacterSelect : Control
 
     public override void _Process(double delta)
     {
+        if (_shownWorldId != WorldSession.SelectedWorldId) RebuildForWorld();
         if (_model is null) return;
         _turntable.RotateY((float)delta * .14f);
         if (_animation is null || _clip.Length == 0) return;
@@ -226,7 +249,7 @@ public partial class CharacterSelect : Control
         var strip = new HBoxContainer();
         strip.AddThemeConstantOverride("separation", 8);
         _gallery.AddChild(strip);
-        for (var i = 0; i < CharacterCatalog.All.Count; i++)
+        for (var i = 0; i < _entries.Count; i++)
         {
             var index = i;
             var button = new Button { Name = "Character_" + i, CustomMinimumSize = new Vector2(164, 68),
@@ -240,9 +263,11 @@ public partial class CharacterSelect : Control
         var actions = new HBoxContainer();
         actions.AddThemeConstantOverride("separation", 10);
         column.AddChild(actions);
-        var previous = Action("← Previous", () => Select((_selected - 1 + CharacterCatalog.All.Count) % CharacterCatalog.All.Count));
+        var previous = Action("← Previous", () => { if (_entries.Count > 0) Select((_selected - 1 + _entries.Count) % _entries.Count); });
+        previous.Disabled = _entries.Count == 0;
         actions.AddChild(previous);
-        var next = Action("Next →", () => Select((_selected + 1) % CharacterCatalog.All.Count));
+        var next = Action("Next →", () => { if (_entries.Count > 0) Select((_selected + 1) % _entries.Count); });
+        next.Disabled = _entries.Count == 0;
         actions.AddChild(next);
         actions.AddChild(new Control { SizeFlagsHorizontal = SizeFlags.ExpandFill, MouseFilter = MouseFilterEnum.Ignore });
         _enter = Action("Enter World", EnterWorld);
@@ -258,18 +283,16 @@ public partial class CharacterSelect : Control
     private void Select(int index)
     {
         _selected = index;
-        var entry = CharacterCatalog.All[index];
+        var entry = _entries[index];
         _name.Text = entry.Name;
         _category.Text = entry.Category.ToUpperInvariant() + "   /   " + entry.Id;
         _description.Text = entry.Description;
-        _status.Text = WorldSession.SelectedWorldId != WorldCatalog.OceanId
-            ? "No compatible demo fish are available for this world yet. Go back and choose Ocean."
-            : _diagnostics[index].Length == 0 ? "READY TO SWIM" : _diagnostics[index];
-        _enter.Disabled = _diagnostics[index].Length > 0 || WorldSession.SelectedWorldId != WorldCatalog.OceanId;
+        _status.Text = _diagnostics[index].Length == 0 ? "READY TO SWIM" : _diagnostics[index];
+        _enter.Disabled = _diagnostics[index].Length > 0;
         for (var i = 0; i < _tiles.Length; i++)
         {
             _tiles[i].Text = (i == index ? "✓ SELECTED\n" : $"{i + 1:00}  ") +
-                CharacterCatalog.All[i].Name + (_diagnostics[i].Length > 0 ? "  • UNAVAILABLE" : "");
+                _entries[i].Name + (_diagnostics[i].Length > 0 ? "  • UNAVAILABLE" : "");
             _tiles[i].Modulate = i == index ? new Color(1, .9f, .62f) : Colors.White;
         }
         _gallery.ScrollHorizontal = Math.Max(0, index * 172 - 344);
@@ -304,7 +327,11 @@ public partial class CharacterSelect : Control
     private void EnterWorld()
     {
         if (_enter.Disabled) return;
-        DemoSelection.CharacterId = CharacterCatalog.All[_selected].Id;
+        if (_entries.Count == 0) return;
+        if (!SpeciesCompatibility.TryResolve(WorldSession.SelectedWorldId,
+            _entries[_selected].Id, SpeciesRole.Selectable, out _, out var diagnostic))
+        { _status.Text = diagnostic; _enter.Disabled = true; return; }
+        DemoSelection.CharacterId = _entries[_selected].Id;
         _dragging = false;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GetTree().Paused = false;

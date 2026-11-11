@@ -89,7 +89,8 @@ public static class WorldCatalog
     internal static FullWorldManifest Load(WorldDefinition world, Node3D habitat)
     {
         VerifyInstalledManifest(world);
-        try { return FullWorldPackage.Load(world.Bake!.Directory, habitat).Manifest; }
+        try { return FullWorldPackage.Load(world.Bake!.Directory, habitat, world.Id,
+            world.Bake.WorldId).Manifest; }
         catch (Exception error) when (error is IOException or InvalidDataException or System.Text.Json.JsonException)
         {
             throw new InvalidDataException($"WORLD_BAKE_INVALID world={world.Id} detail={error.Message} action=restore-or-requalify-baked-package", error);
@@ -107,6 +108,9 @@ public static class WorldSession
     public static void Select(string worldId)
     {
         WorldCatalog.Resolve(worldId);
+        if (ActiveHabitat is { } habitat && worldId != SelectedWorldId)
+            habitat.GetNodeOrNull<FafAmbientReefLife>(
+                "Composition/ReefComposition/AmbientLife")?.ClearPopulation();
         Unload();
         SelectedWorldId = worldId;
     }

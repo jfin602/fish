@@ -1,0 +1,385 @@
+{
+  "pack": "pond-wood-001",
+  "generator": "wood.build_pond_wood_001 v1",
+  "asset_count": 12,
+  "assets": [
+    {
+      "faf_id": "FAF-WOOD-001A",
+      "family": "fallen_log",
+      "stem": "wood_001a_bent_fallen_log",
+      "role": "bank cover",
+      "seed": 1101,
+      "generator_config": {
+        "id": "FAF-WOOD-001A",
+        "stem": "wood_001a_bent_fallen_log",
+        "family": "fallen_log",
+        "seed": 1101,
+        "length": 5.8,
+        "radius": 0.56,
+        "bend": 0.34,
+        "forks": 0,
+        "role": "bank cover"
+      },
+      "dimensions_m": [
+        2.233,
+        6.003,
+        1.264
+      ],
+      "triangle_count": 298,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_001a_bent_fallen_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_001a_bent_fallen_log.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-001B",
+      "family": "fallen_log",
+      "stem": "wood_001b_forked_fallen_log",
+      "role": "forked cover",
+      "seed": 1102,
+      "generator_config": {
+        "id": "FAF-WOOD-001B",
+        "stem": "wood_001b_forked_fallen_log",
+        "family": "fallen_log",
+        "seed": 1102,
+        "length": 5.0,
+        "radius": 0.64,
+        "bend": -0.25,
+        "forks": 2,
+        "role": "forked cover"
+      },
+      "dimensions_m": [
+        3.135,
+        5.201,
+        1.566
+      ],
+      "triangle_count": 374,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_001b_forked_fallen_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_001b_forked_fallen_log.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-001C",
+      "family": "fallen_log",
+      "stem": "wood_001c_broken_fallen_log",
+      "role": "broken end",
+      "seed": 1103,
+      "generator_config": {
+        "id": "FAF-WOOD-001C",
+        "stem": "wood_001c_broken_fallen_log",
+        "family": "fallen_log",
+        "seed": 1103,
+        "length": 4.25,
+        "radius": 0.77,
+        "bend": 0.2,
+        "forks": 1,
+        "role": "broken end"
+      },
+      "dimensions_m": [
+        2.894,
+        4.505,
+        1.815
+      ],
+      "triangle_count": 336,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_001c_broken_fallen_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_001c_broken_fallen_log.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-002A",
+      "family": "hollow_trunk",
+      "stem": "wood_002a_hero_hollow_trunk",
+      "role": "two-way passage",
+      "seed": 2201,
+      "generator_config": {
+        "id": "FAF-WOOD-002A",
+        "stem": "wood_002a_hero_hollow_trunk",
+        "family": "hollow_trunk",
+        "seed": 2201,
+        "length": 10.0,
+        "radius": 2.52,
+        "inner": 2.12,
+        "bend": 0.08,
+        "role": "two-way passage"
+      },
+      "dimensions_m": [
+        7.707,
+        10.22,
+        5.339
+      ],
+      "triangle_count": 818,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_002a_hero_hollow_trunk.blend",
+      "glb": "game/assets/faf/pond/wood/wood_002a_hero_hollow_trunk.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-002B",
+      "family": "hollow_trunk",
+      "stem": "wood_002b_curved_hollow_trunk",
+      "role": "limited refuge",
+      "seed": 2202,
+      "generator_config": {
+        "id": "FAF-WOOD-002B",
+        "stem": "wood_002b_curved_hollow_trunk",
+        "family": "hollow_trunk",
+        "seed": 2202,
+        "length": 4.75,
+        "radius": 1.35,
+        "inner": 0.98,
+        "bend": 0.26,
+        "role": "limited refuge"
+      },
+      "dimensions_m": [
+        5.245,
+        5.419,
+        2.86
+      ],
+      "triangle_count": 492,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_002b_curved_hollow_trunk.blend",
+      "glb": "game/assets/faf/pond/wood/wood_002b_curved_hollow_trunk.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-002C",
+      "family": "hollow_trunk",
+      "stem": "wood_002c_root_flared_hollow",
+      "role": "small passage",
+      "seed": 2203,
+      "generator_config": {
+        "id": "FAF-WOOD-002C",
+        "stem": "wood_002c_root_flared_hollow",
+        "family": "hollow_trunk",
+        "seed": 2203,
+        "length": 4.25,
+        "radius": 1.52,
+        "inner": 1.12,
+        "bend": -0.16,
+        "role": "small passage"
+      },
+      "dimensions_m": [
+        5.551,
+        4.989,
+        3.221
+      ],
+      "triangle_count": 492,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_002c_root_flared_hollow.blend",
+      "glb": "game/assets/faf/pond/wood/wood_002c_root_flared_hollow.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-003A",
+      "family": "stump",
+      "stem": "wood_003a_rooted_leaning_trunk",
+      "role": "bank landmark",
+      "seed": 3301,
+      "generator_config": {
+        "id": "FAF-WOOD-003A",
+        "stem": "wood_003a_rooted_leaning_trunk",
+        "family": "stump",
+        "seed": 3301,
+        "height": 4.35,
+        "radius": 0.76,
+        "lean": 0.42,
+        "role": "bank landmark"
+      },
+      "dimensions_m": [
+        3.302,
+        3.081,
+        4.395
+      ],
+      "triangle_count": 218,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.blend",
+      "glb": "game/assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-003B",
+      "family": "stump",
+      "stem": "wood_003b_broken_stump",
+      "role": "low shoreline stump",
+      "seed": 3302,
+      "generator_config": {
+        "id": "FAF-WOOD-003B",
+        "stem": "wood_003b_broken_stump",
+        "family": "stump",
+        "seed": 3302,
+        "height": 2.15,
+        "radius": 1.04,
+        "lean": -0.17,
+        "role": "low shoreline stump"
+      },
+      "dimensions_m": [
+        3.857,
+        3.598,
+        2.198
+      ],
+      "triangle_count": 218,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_003b_broken_stump.blend",
+      "glb": "game/assets/faf/pond/wood/wood_003b_broken_stump.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-004A",
+      "family": "cluster",
+      "stem": "wood_004a_sparse_sticks",
+      "role": "sparse bottom cover",
+      "seed": 4401,
+      "generator_config": {
+        "id": "FAF-WOOD-004A",
+        "stem": "wood_004a_sparse_sticks",
+        "family": "cluster",
+        "seed": 4401,
+        "count": 5,
+        "spread": 2.4,
+        "height": 1.35,
+        "role": "sparse bottom cover"
+      },
+      "dimensions_m": [
+        4.012,
+        3.204,
+        1.442
+      ],
+      "triangle_count": 160,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_004a_sparse_sticks.blend",
+      "glb": "game/assets/faf/pond/wood/wood_004a_sparse_sticks.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-004B",
+      "family": "cluster",
+      "stem": "wood_004b_forked_branches",
+      "role": "forked bank cover",
+      "seed": 4402,
+      "generator_config": {
+        "id": "FAF-WOOD-004B",
+        "stem": "wood_004b_forked_branches",
+        "family": "cluster",
+        "seed": 4402,
+        "count": 4,
+        "spread": 2.8,
+        "height": 2.05,
+        "role": "forked bank cover"
+      },
+      "dimensions_m": [
+        4.377,
+        4.387,
+        2.123
+      ],
+      "triangle_count": 160,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_004b_forked_branches.blend",
+      "glb": "game/assets/faf/pond/wood/wood_004b_forked_branches.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-004C",
+      "family": "cluster",
+      "stem": "wood_004c_tangled_roots",
+      "role": "root tangle",
+      "seed": 4403,
+      "generator_config": {
+        "id": "FAF-WOOD-004C",
+        "stem": "wood_004c_tangled_roots",
+        "family": "cluster",
+        "seed": 4403,
+        "count": 7,
+        "spread": 3.2,
+        "height": 1.15,
+        "role": "root tangle"
+      },
+      "dimensions_m": [
+        5.344,
+        4.882,
+        1.301
+      ],
+      "triangle_count": 224,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_004c_tangled_roots.blend",
+      "glb": "game/assets/faf/pond/wood/wood_004c_tangled_roots.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-WOOD-004D",
+      "family": "cluster",
+      "stem": "wood_004d_heavy_branch_cover",
+      "role": "heavy branch cover",
+      "seed": 4404,
+      "generator_config": {
+        "id": "FAF-WOOD-004D",
+        "stem": "wood_004d_heavy_branch_cover",
+        "family": "cluster",
+        "seed": 4404,
+        "count": 4,
+        "spread": 3.5,
+        "height": 1.78,
+        "role": "heavy branch cover"
+      },
+      "dimensions_m": [
+        5.599,
+        5.062,
+        1.741
+      ],
+      "triangle_count": 160,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_004d_heavy_branch_cover.blend",
+      "glb": "game/assets/faf/pond/wood/wood_004d_heavy_branch_cover.glb",
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "habitat": "pond",
+      "transform": "identity",
+      "technical_state": "generated; Godot import pending",
+      "style_state": "native review pending"
+    }
+  ]
+}

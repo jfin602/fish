@@ -124,12 +124,15 @@ public static class FullWorldPackage
                 ProjectSettings.GlobalizePath(directory), ManifestFile)))
         ?? throw new InvalidDataException("Empty full-world manifest");
 
-    public static (FullWorldManifest Manifest, FullWorldData Data) Load(string directory, Node3D habitat)
+    public static (FullWorldManifest Manifest, FullWorldData Data) Load(string directory, Node3D habitat,
+        string worldId, string? expectedBakedWorldId = null)
     {
         var generationBefore = WorldGenerationAudit.StageInvocations;
         var timer = Stopwatch.StartNew();
         var path = ProjectSettings.GlobalizePath(directory);
         var manifest = ReadManifest(directory);
+        if (expectedBakedWorldId is not null && manifest.WorldId != expectedBakedWorldId)
+            throw new InvalidDataException("Full-world baked identity does not match selected world");
         var catalogHash = WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment);
         var legacy = manifest.GeneratorVersion == "c3-full-1";
         var m1Baked = manifest.GeneratorVersion == "c3-full-3";
@@ -162,6 +165,9 @@ public static class FullWorldPackage
             manifest.GeologyRegions != 5 || manifest.EnvironmentSamples !=
                 (legacy ? 1681 : WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide))
             throw new InvalidDataException("Full-world data summary mismatch");
+        if (!FafAmbientReefLife.ValidateBakedSpecies(data.Ambient, worldId,
+            expectedBakedWorldId, out var speciesDiagnostic))
+            throw new InvalidDataException($"Full-world ambient species incompatible: {speciesDiagnostic}");
         var seabed = habitat.GetNode<SeabedSurface>("Seabed");
         var mesh = ResourceLoader.Load<ArrayMesh>(directory + "/" + MeshFile)
             ?? throw new InvalidDataException("Baked basin mesh missing");
@@ -182,7 +188,7 @@ public static class FullWorldPackage
             dressing.GetNode<Node3D>("Visuals").GetChildCount() < 30 ||
             ambient.GetNode<Node3D>("Visuals").GetChildCount() != manifest.AmbientFish)
             throw new InvalidDataException("Full-world geometry or collision is missing");
-        ambient.RestoreBaked(data.Ambient, seabed);
+        ambient.RestoreBaked(data.Ambient, seabed, worldId, expectedBakedWorldId);
         reef.InstallBakedData(data);
         if (manifest.GeneratorVersion is "c3-full-9" or "c3-full-11" or GeneratorVersion)
         {

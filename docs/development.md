@@ -56,6 +56,7 @@ From this checkout, `./tools/dev editor` and `./tools/dev run` are equivalent. `
 | `./tools/dev build` | Compile `game/Fish.csproj` with the pinned SDK. |
 | `./tools/dev check` | Compose import, build, generated-world C# smoke, scene automation, missing-scene failure, P1 camera/animation fixtures, FAF asset load, generated route clearance and multi-seed placement checks. The old authored P3 terrain/geology/dressing probes remain historical commands and are not part of this generated-world gate. |
 | `./tools/dev smoke-world` | Run the generated main scene and motor smoke with an isolated user-data profile. |
+| `./tools/dev inspect-species` | Check Ocean/Pond species roles, empty Pond selection, invalid IDs/models/bakes, reef ambient population and world-switch cleanup. |
 | `./tools/dev inspect-placement` | Verify same/different seed placement, all 38 variants, support, route clearance, spacing, depth density and major meshes/collision. |
 | `./tools/dev editor` | Open the Fish editor, forwarding the Fish bridge environment after P2. |
 | `./tools/dev run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]` | Build and launch the real Fish main scene. The optional, validated game-owned argument follows Godot's `--` separator and does not save a preference. |

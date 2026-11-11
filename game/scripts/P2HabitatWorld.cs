@@ -28,7 +28,8 @@ public static class P2HabitatWorld
                 var bakedHabitat = main.GetNode<Node3D>("Habitat");
                 var manifest = baked is null
                     ? WorldCatalog.Load(WorldSession.SelectedWorldId, bakedHabitat)
-                    : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat).Manifest;
+                    : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat,
+                        WorldSession.SelectedWorldId).Manifest;
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
@@ -80,7 +81,7 @@ public static class P2HabitatWorld
             return false;
         }
         Stage("basin-mesh-collision", stage.ElapsedMilliseconds);
-        if (!composition.TryBuild(seabed, out diagnostic, Stage)) return false;
+        if (!composition.TryBuild(seabed, WorldSession.SelectedWorldId, out diagnostic, Stage)) return false;
         GD.Print($"WORLD_GENERATION_READY seed={seed} total_ms={total.ElapsedMilliseconds}");
         if (generation is not null)
         {

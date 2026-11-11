@@ -208,8 +208,6 @@ public partial class WorldSelect : Control
             WorldSession.Select(world.Id);
             WorldCatalog.VerifyInstalledManifest(world);
             world.LoadHabitatScene();
-            if (world.Id != WorldCatalog.OceanId)
-                throw new InvalidDataException($"WORLD_CHARACTERS_UNAVAILABLE world={world.Id} action=complete-p4-freshwater-fish");
             DemoSelection.Clear();
             Input.MouseMode = Input.MouseModeEnum.Visible;
             GetTree().ChangeSceneToFile("res://scenes/character_select.tscn");

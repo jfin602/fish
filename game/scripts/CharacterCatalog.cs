@@ -2,6 +2,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fish;
 
@@ -9,7 +10,9 @@ namespace Fish;
 public sealed record CharacterEntry(
     string Id, string Name, string Category, string Description, string ModelPath,
     float WorldScale, float FacingDegrees, float PreviewYawDegrees,
-    string GlideClip, string SwimClip, string FastClip)
+    string GlideClip, string SwimClip, string FastClip,
+    WorldHabitat NativeHabitat, bool Selectable, bool Ambient, bool Ecological,
+    bool FixtureOnly = false)
 {
     public string PlayerScenePath => ModelPath;
     public string PreviewScenePath => ModelPath;
@@ -23,20 +26,15 @@ public static class CharacterCatalog
     private const string Faf = "res://assets/faf/fish/";
     public static IReadOnlyList<CharacterEntry> All { get; } = new CharacterEntry[]
     {
-        new("FAF-FISH-001", "Yellow Tang", "Reef fish", "A bright, agile reef swimmer.", Faf + "fish_001_yellow_tang.glb", 4.3f, 180, 30, "fish_001_yellow_tang__Glide", "fish_001_yellow_tang__Swim", "fish_001_yellow_tang__SwimFast"),
-        new("FAF-FISH-002", "Ocellaris Clownfish", "Reef fish", "A striped fish at home among the reef.", Faf + "fish_002_ocellaris_clownfish.glb", 6.2f, 180, 30, "fish_002_ocellaris_clownfish__Glide", "fish_002_ocellaris_clownfish__Swim", "fish_002_ocellaris_clownfish__SwimFast"),
-        new("FAF-FISH-003", "Blue-Green Chromis", "Reef fish", "A small blue-green swimmer.", Faf + "fish_003_blue_green_chromis.glb", 6.4f, 180, 30, "fish_003_blue_green_chromis__Glide", "fish_003_blue_green_chromis__Swim", "fish_003_blue_green_chromis__SwimFast"),
-        new("FAF-FISH-004", "Reef Butterflyfish", "Reef fish", "A tall-finned reef explorer.", Faf + "fish_004_reef_butterflyfish.glb", 5.0f, 180, 30, "fish_004_reef_butterflyfish__Glide", "fish_004_reef_butterflyfish__Swim", "fish_004_reef_butterflyfish__SwimFast"),
-        new("FAF-FISH-005", "Blacktip Reef Shark", "Shark", "A sleek shark with striking dark fin tips.", Faf + "fish_005_blacktip_reef_shark.glb", .64f, 180, 30, "fish_005_blacktip_reef_shark__Glide", "fish_005_blacktip_reef_shark__Swim", "fish_005_blacktip_reef_shark__SwimFast"),
+        new("FAF-FISH-001", "Yellow Tang", "Reef fish", "A bright, agile reef swimmer.", Faf + "fish_001_yellow_tang.glb", 4.3f, 180, 30, "fish_001_yellow_tang__Glide", "fish_001_yellow_tang__Swim", "fish_001_yellow_tang__SwimFast", WorldHabitat.Marine, true, true, true),
+        new("FAF-FISH-002", "Ocellaris Clownfish", "Reef fish", "A striped fish at home among the reef.", Faf + "fish_002_ocellaris_clownfish.glb", 6.2f, 180, 30, "fish_002_ocellaris_clownfish__Glide", "fish_002_ocellaris_clownfish__Swim", "fish_002_ocellaris_clownfish__SwimFast", WorldHabitat.Marine, true, true, true),
+        new("FAF-FISH-003", "Blue-Green Chromis", "Reef fish", "A small blue-green swimmer.", Faf + "fish_003_blue_green_chromis.glb", 6.4f, 180, 30, "fish_003_blue_green_chromis__Glide", "fish_003_blue_green_chromis__Swim", "fish_003_blue_green_chromis__SwimFast", WorldHabitat.Marine, true, true, true),
+        new("FAF-FISH-004", "Reef Butterflyfish", "Reef fish", "A tall-finned reef explorer.", Faf + "fish_004_reef_butterflyfish.glb", 5.0f, 180, 30, "fish_004_reef_butterflyfish__Glide", "fish_004_reef_butterflyfish__Swim", "fish_004_reef_butterflyfish__SwimFast", WorldHabitat.Marine, true, true, true),
+        new("FAF-FISH-005", "Blacktip Reef Shark", "Shark", "A sleek shark with striking dark fin tips.", Faf + "fish_005_blacktip_reef_shark.glb", .64f, 180, 30, "fish_005_blacktip_reef_shark__Glide", "fish_005_blacktip_reef_shark__Swim", "fish_005_blacktip_reef_shark__SwimFast", WorldHabitat.Marine, true, false, true),
     };
 
     public static CharacterEntry Default => All[0];
-    public static CharacterEntry Find(string? id)
-    {
-        foreach (var entry in All)
-            if (entry.Id == id) return entry;
-        return Default;
-    }
+    public static CharacterEntry? Find(string? id) => All.FirstOrDefault(entry => entry.Id == id);
 
     public static bool TryInstantiate(CharacterEntry entry, out Node3D? model,
         out AnimationPlayer? player, out string diagnostic)
@@ -90,6 +88,53 @@ public static class CharacterCatalog
         }
         return true;
     }
+}
+
+public enum SpeciesRole { Selectable, Ambient, Ecological }
+
+/// <summary>Single fail-closed policy for menu, baked ambient and future ecological entries.</summary>
+public static class SpeciesCompatibility
+{
+    public static bool TryResolve(string? worldId, string? speciesId, SpeciesRole role,
+        out CharacterEntry? entry, out string diagnostic, string? bakedWorldId = null)
+        => TryResolveFrom(CharacterCatalog.All, worldId, speciesId, role, out entry,
+            out diagnostic, bakedWorldId, false);
+
+    internal static bool TryResolveFrom(IReadOnlyList<CharacterEntry> catalog, string? worldId,
+        string? speciesId, SpeciesRole role, out CharacterEntry? entry, out string diagnostic,
+        string? bakedWorldId = null, bool allowFixture = false)
+    {
+        entry = null;
+        // Diagnostics deliberately avoid echoing arbitrary external identifiers or paths.
+        var world = WorldCatalog.All.FirstOrDefault(w => w.Id == worldId);
+        if (world is null || !Enum.IsDefined(world.Habitat))
+        { diagnostic = "SPECIES_WORLD_UNKNOWN action=choose-known-world"; return false; }
+        if (bakedWorldId is not null && (world.Bake is null || world.Bake.WorldId != bakedWorldId))
+        { diagnostic = "SPECIES_BAKE_INCOMPATIBLE action=load-matching-world"; return false; }
+        if (string.IsNullOrWhiteSpace(speciesId) ||
+            catalog.Count(e => e.Id == speciesId) != 1)
+        { diagnostic = "SPECIES_ID_UNKNOWN action=use-registered-id"; return false; }
+        var candidate = catalog.First(e => e.Id == speciesId);
+        if (candidate.FixtureOnly && !allowFixture)
+        { diagnostic = "SPECIES_FIXTURE_ONLY action=use-production-species"; return false; }
+        if (!Enum.IsDefined(candidate.NativeHabitat) || candidate.NativeHabitat != world.Habitat)
+        { diagnostic = "SPECIES_HABITAT_INCOMPATIBLE action=choose-native-species"; return false; }
+        if (role switch { SpeciesRole.Selectable => !candidate.Selectable,
+            SpeciesRole.Ambient => !candidate.Ambient,
+            SpeciesRole.Ecological => !candidate.Ecological, _ => true })
+        { diagnostic = "SPECIES_ROLE_INELIGIBLE action=choose-eligible-species"; return false; }
+        if (string.IsNullOrWhiteSpace(candidate.ModelPath) ||
+            !FileAccess.FileExists(candidate.ModelPath) ||
+            ResourceLoader.Load<PackedScene>(candidate.ModelPath) is null)
+        { diagnostic = "SPECIES_MODEL_MISSING action=restore-and-import-model"; return false; }
+        entry = candidate;
+        diagnostic = "";
+        return true;
+    }
+
+    public static IReadOnlyList<CharacterEntry> Available(string? worldId, SpeciesRole role)
+        => CharacterCatalog.All.Where(candidate => TryResolve(worldId, candidate.Id, role,
+            out _, out _)).ToArray();
 }
 
 /// <summary>Selection lives for one process and never enters a survival save.</summary>

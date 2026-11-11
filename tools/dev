@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|inspect-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|inspect-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -145,6 +145,12 @@ generated_geology_check() {
   grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
+  inspect-species)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/species.XXXXXX")
+    logged species 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --species-check
+    grep -Fq 'SPECIES_CHECK_OK' "$LOGS/species.log" || { echo 'Species check marker missing' >&2; exit 1; }
+    ;;
   inspect-world-select)
     need_tools
     profile=$(mktemp -d "$ROOT/artifacts/world-select.XXXXXX")

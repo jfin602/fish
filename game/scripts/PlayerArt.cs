@@ -9,12 +9,23 @@ public static class PlayerArt
 
     public static bool TryLoadAndAttach(FishController fish, out string diagnostic)
     {
-        if (DemoSelection.CharacterId is null) return TryLoadLegacy(fish, out diagnostic);
-        return TryLoadAndAttach(fish, CharacterCatalog.Find(DemoSelection.CharacterId), out diagnostic);
+        if (DemoSelection.CharacterId is null)
+        {
+            if (WorldSession.SelectedWorldId == WorldCatalog.OceanId)
+                return TryLoadLegacy(fish, out diagnostic);
+            diagnostic = "SPECIES_SELECTION_REQUIRED action=choose-native-species";
+            return false;
+        }
+        if (!SpeciesCompatibility.TryResolve(WorldSession.SelectedWorldId, DemoSelection.CharacterId,
+            SpeciesRole.Selectable, out var entry, out diagnostic,
+            WorldSession.ActiveManifest?.WorldId)) return false;
+        return TryLoadAndAttach(fish, entry!, out diagnostic);
     }
 
     public static bool TryLoadAndAttach(FishController fish, CharacterEntry entry, out string diagnostic)
     {
+        if (!SpeciesCompatibility.TryResolve(WorldSession.SelectedWorldId, entry.Id,
+            SpeciesRole.Selectable, out var resolved, out diagnostic) || resolved != entry) return false;
         if (!CharacterCatalog.TryInstantiate(entry, out var visual, out var animation, out diagnostic))
             return false;
         fish.AddChild(visual!);

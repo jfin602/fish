@@ -40,6 +40,7 @@ public partial class FafAmbientReefLife : Node3D
     private readonly List<AnimationPlayer> _animations = new();
     private SeabedSurface? _seabed;
     private float _elapsed;
+    private string? _boundWorldId;
 
     public IReadOnlyList<AmbientFish> Population => _population;
     public int SchoolCount => _schools.Count;
@@ -51,10 +52,13 @@ public partial class FafAmbientReefLife : Node3D
             s.X, s.Z, s.Lift, s.RadiusX, s.RadiusZ, s.Speed, s.Yaw, _schoolFloors[i])).ToArray(),
         _population.ToArray());
 
-    public void RestoreBaked(BakedAmbient state, SeabedSurface seabed)
+    public void RestoreBaked(BakedAmbient state, SeabedSurface seabed, string worldId,
+        string? expectedBakedWorldId)
     {
         if (_population.Count != 0 || _schools.Count != 0 || state.Schools.Count != Templates.Length)
             throw new InvalidOperationException("Invalid baked ambient state");
+        if (!ValidateBakedSpecies(state, worldId, expectedBakedWorldId, out var diagnostic))
+            throw new InvalidOperationException($"FAF_AMBIENT_SPECIES_REJECTED {diagnostic}");
         foreach (var s in state.Schools)
         {
             _schools.Add(new School(s.Name, s.Zone, s.FishId, s.Count, s.X, s.Z,
@@ -64,9 +68,6 @@ public partial class FafAmbientReefLife : Node3D
         var visuals = GetNode<Node3D>("Visuals");
         foreach (var fish in state.Fish)
         {
-            if (fish.SchoolIndex < 0 || fish.SchoolIndex >= _schools.Count ||
-                fish.SchoolName != _schools[fish.SchoolIndex].Name)
-                throw new InvalidOperationException("Invalid baked ambient fish index");
             var actor = visuals.GetNode<Node3D>($"{fish.SchoolName}_{fish.MemberIndex + 1}");
             var player = actor.GetNode<AnimationPlayer>("Rig/AnimationPlayer");
             if (!player.HasAnimation(fish.Clip)) throw new InvalidOperationException("Missing baked fish animation");
@@ -76,10 +77,28 @@ public partial class FafAmbientReefLife : Node3D
             player.Play(fish.Clip);
         }
         _seabed = seabed;
+        _boundWorldId = worldId;
+    }
+
+    public static bool ValidateBakedSpecies(BakedAmbient state, string worldId,
+        string? expectedBakedWorldId, out string diagnostic)
+    {
+        foreach (var school in state.Schools)
+            if (!SpeciesCompatibility.TryResolve(worldId, school.FishId, SpeciesRole.Ambient,
+                out _, out diagnostic, expectedBakedWorldId)) return false;
+        foreach (var fish in state.Fish)
+            if (!SpeciesCompatibility.TryResolve(worldId, fish.Id, SpeciesRole.Ambient,
+                out _, out diagnostic, expectedBakedWorldId)) return false;
+            else if (fish.SchoolIndex < 0 || fish.SchoolIndex >= state.Schools.Count ||
+                fish.Id != state.Schools[fish.SchoolIndex].FishId ||
+                fish.SchoolName != state.Schools[fish.SchoolIndex].Name)
+            { diagnostic = "FAF_AMBIENT_INDEX_INVALID action=repair-baked-population"; return false; }
+        diagnostic = "";
+        return true;
     }
 
     public bool TryBuild(SeabedSurface seabed, IReadOnlyList<GeneratedFafInstance> placements,
-        GeneratedWorldRoutes routes, out string diagnostic)
+        GeneratedWorldRoutes routes, out string diagnostic, string worldId)
     {
         var visuals = GetNodeOrNull<Node3D>("Visuals");
         if (visuals is null || visuals.GetChildCount() != 0 || _population.Count != 0)
@@ -87,7 +106,6 @@ public partial class FafAmbientReefLife : Node3D
             diagnostic = "FAF_AMBIENT_INVALID action=check-empty-visual-root";
             return false;
         }
-        var packedFish = new Dictionary<string, PackedScene>();
         for (var schoolIndex = 0; schoolIndex < Templates.Length; schoolIndex++)
         {
             var template = Templates[schoolIndex];
@@ -109,46 +127,36 @@ public partial class FafAmbientReefLife : Node3D
                 Yaw = selected.Yaw };
             _schools.Add(school);
             _schoolFloors.Add(selected.Position.Y);
-            var entry = CharacterCatalog.Find(school.FishId);
-            if (entry.Id != school.FishId || entry.Id == "FAF-FISH-005")
+            if (!TrySpawnEntry(worldId, school.FishId, out var entry, out var packed,
+                out diagnostic))
             {
-                diagnostic = $"FAF_AMBIENT_INVALID school={school.Name} action=check-nonpredator-catalog-id";
                 return false;
             }
-            if (!packedFish.TryGetValue(entry.Id, out var packed))
-            {
-                packed = ResourceLoader.Load<PackedScene>(entry.ModelPath);
-                if (packed is null)
-                {
-                    diagnostic = $"FAF_AMBIENT_INVALID id={entry.Id} action=load-catalog-visual";
-                    return false;
-                }
-                packedFish.Add(entry.Id, packed);
-            }
+            var species = entry!;
             for (var member = 0; member < school.Count; member++)
             {
-                var model = packed.Instantiate<Node3D>();
+                var model = packed!.Instantiate<Node3D>();
                 var animation = model.GetNodeOrNull<AnimationPlayer>("AnimationPlayer");
-                if (animation is null || !animation.HasAnimation(entry.GlideClip) ||
-                    !animation.HasAnimation(entry.SwimClip) || !animation.HasAnimation(entry.FastClip) ||
+                if (animation is null || !animation.HasAnimation(species.GlideClip) ||
+                    !animation.HasAnimation(species.SwimClip) || !animation.HasAnimation(species.FastClip) ||
                     HasPhysics(model))
                 {
                     model.Free();
-                    diagnostic = $"FAF_AMBIENT_INVALID id={entry.Id} action=check-animation-and-visual-only-import";
+                    diagnostic = $"FAF_AMBIENT_INVALID id={species.Id} action=check-animation-and-visual-only-import";
                     return false;
                 }
                 var actor = new Node3D { Name = $"{school.Name}_{member + 1}" };
-                actor.SetMeta("faf_id", entry.Id);
+                actor.SetMeta("faf_id", species.Id);
                 actor.SetMeta("zone", school.Zone);
                 actor.SetMeta("school", school.Name);
                 visuals.AddChild(actor);
                 model.Name = "Rig";
-                model.Transform = new Transform3D(entry.PresentationTransform.Basis.Scaled(Vector3.One * .56f), Vector3.Zero);
+                model.Transform = new Transform3D(species.PresentationTransform.Basis.Scaled(Vector3.One * .56f), Vector3.Zero);
                 actor.AddChild(model);
-                var clip = member % 5 == 0 ? entry.GlideClip : member % 4 == 0 ? entry.FastClip : entry.SwimClip;
+                var clip = member % 5 == 0 ? species.GlideClip : member % 4 == 0 ? species.FastClip : species.SwimClip;
                 animation.Play(clip);
                 animation.SpeedScale = .72f + .07f * ((member + schoolIndex) % 4);
-                _population.Add(new AmbientFish(entry.Id, school.Zone, school.Name, schoolIndex, member, clip));
+                _population.Add(new AmbientFish(species.Id, school.Zone, school.Name, schoolIndex, member, clip));
                 _actors.Add(actor);
                 _animations.Add(animation);
                 actor.Transform = GetPose(_population.Count - 1, 0, seabed);
@@ -161,6 +169,7 @@ public partial class FafAmbientReefLife : Node3D
         }
         diagnostic = "";
         _seabed = seabed;
+        _boundWorldId = worldId;
         GD.Print($"FAF_AMBIENT_READY schools={SchoolCount} fish={FishCount} " +
             string.Join(' ', new[] { "shallow", "upper", "middle", "lower", "deep" }
                 .Select(zone => $"{zone}={_population.Count(f => f.Zone == zone)}")));
@@ -186,6 +195,8 @@ public partial class FafAmbientReefLife : Node3D
 
     public override void _Process(double delta)
     {
+        if (_boundWorldId is not null && _boundWorldId != WorldSession.SelectedWorldId)
+        { ClearPopulation(); return; }
         if (delta <= 0 || GetTree().Paused || _population.Count == 0) return;
         if (_seabed is not { } seabed) return;
         _elapsed += (float)delta;
@@ -201,6 +212,39 @@ public partial class FafAmbientReefLife : Node3D
     }
 
     private static float SchoolIndexPhase(int index) => .37f * index;
+
+    /// <summary>Explicit spawn-entry gate for ambient and later ecological callers.</summary>
+    public static bool TrySpawnEntry(string worldId, string speciesId,
+        out CharacterEntry? entry, out PackedScene? model, out string diagnostic,
+        SpeciesRole role = SpeciesRole.Ambient, string? bakedWorldId = null)
+    {
+        model = null;
+        if (!SpeciesCompatibility.TryResolve(worldId, speciesId, role, out entry,
+            out diagnostic, bakedWorldId)) return false;
+        model = ResourceLoader.Load<PackedScene>(entry!.ModelPath);
+        if (model is not null) return true;
+        entry = null;
+        diagnostic = "SPECIES_MODEL_MISSING action=restore-and-import-model";
+        return false;
+    }
+
+    public void ClearPopulation()
+    {
+        foreach (var actor in _actors)
+            if (GodotObject.IsInstanceValid(actor))
+            {
+                actor.GetParent()?.RemoveChild(actor);
+                actor.QueueFree();
+            }
+        _population.Clear();
+        _schools.Clear();
+        _schoolFloors.Clear();
+        _actors.Clear();
+        _animations.Clear();
+        _seabed = null;
+        _boundWorldId = null;
+        _elapsed = 0;
+    }
     private static int ZoneRank(string zone) => zone switch
     { "shallow" => 0, "upper" => 1, "middle" => 2, "lower" => 3, _ => 4 };
 

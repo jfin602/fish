@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_wood_piece.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/faf/pond/wood/wood_002a_hero_hollow_trunk.glb" id="2_visual"]
+
+[node name="wood_002a_hero_hollow_trunk" type="Node3D"]
+script = ExtResource("1_script")
+faf_id = "FAF-WOOD-002A"
+family = "hollow_trunk"
+length_m = 10.0
+radius_m = 2.52
+inner_radius_m = 2.12
+
+[node name="Visual" parent="." instance=ExtResource("2_visual")]

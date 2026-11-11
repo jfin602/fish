@@ -37,6 +37,11 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        if (OS.GetCmdlineUserArgs().Contains("--species-check"))
+        {
+            SpeciesCompatibilityChecks.Run(this);
+            return;
+        }
         if (OS.GetCmdlineUserArgs().Contains("--world-catalog-check"))
         {
             try { WorldCatalogChecks.Run(); GetTree().Quit(); }

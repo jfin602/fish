@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3]
+
+[sub_resource type="SphereMesh" id="fixture_sphere"]
+radius = 0.3
+height = 0.6
+
+[node name="PondSpeciesFixtureOnly" type="Node3D"]
+
+[node name="PrimitiveFixtureOnly" type="MeshInstance3D" parent="."]
+mesh = SubResource("fixture_sphere")
