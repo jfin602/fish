@@ -8,7 +8,7 @@ New Life enters World Select, chooses Ocean or Pond, chooses a native fish, then
 
 ## Current reality and prerequisites
 
-The documented root is still `0.3.6`; P3 C3 seed-42 candidate was not accepted; alternate seeds/route reliability, generated geology and world aesthetics failed; V25 visibility remains unqualified. Four manual repairs M1–M4 and native re-review precede P4. P2 G2.3/V20 remains a historically accepted open gap. **No new P4 phase baseline may be inferred from these documents.** At execution inspect local HEAD/dirty tree and verify a reviewed P3→P4 handoff, retained Ocean bake and deliberate `0.4.0` root baseline.
+GitHub main now records the **deliberate `0.4.0` P4 baseline** and progression-approved Ocean Base World `ocean-m4-42` (generator `c3-full-12`), with failed/unobserved P3/C3 visual/native checks preserved in the owner-closed P3 record. P2 G2.3/V20 and V25 remain open. The local P4 runner may have an unpushed P1–P3 completed prefix; inspect its actual HEAD, worktree and checkpoint subjects before any P4 prompt update or continuation. Never treat baseline entry as proof that native Ocean gaps passed.
 
 Existing reusable source (recheck at execution):
 - `WorldGeneration`, `BakedWorldContract`, `BakedWorldLoader`, `FullWorldPackage`, `GeneratedBasin`, terrain/geology/route/dressing compiler.
@@ -36,9 +36,9 @@ Exact current paths and method ownership are to be traced, not assumed unchanged
 | P3 | One fail-closed compatibility policy | T2 |
 | P4 | Seeded Pond formation, shoreline and baked resources | T2 |
 | P5 | Habitat-specific water/light/fog profiles | T2 |
-| P6 | Lean freshwater environment FAF/placement | T2 |
+| P6 | **Integrate independently produced** wood/hollow-log, foliage and ground FAF packs with deterministic placement, support and collision | T2 |
 | P7 | Native world-art and traversal review | T3 / manual |
-| P8 | Rigged freshwater player fish and bounded ambient life | T2 |
+| P8 | **Integrate independent existing** Bluegill, Bass, Catfish, Carp and Pike assets (all 25 life-stage GLBs), frog/snake/turtle bases and water-insect variants | T2 |
 | P9 | Authoritative near-surface swim/partial breach | T2 |
 | P10 | Follow camera air–water transition and screen state | T2 |
 | P11 | Generated shoreline/sky plus cheap surface ripples | T2 |
@@ -55,13 +55,17 @@ Exact current paths and method ownership are to be traced, not assumed unchanged
 - **Pond becomes a recolored Ocean reef:** own biome settings, structural wood/mud/lily assets and distinct native review.
 - **Pond is too dark:** three-depth near/mid/far readability native owner checkpoint and adjustable independent profile.
 - **Terrain and log collision lie:** real surface projection/support and fish-camera sweep/route-clearance tests.
-- **Assets block execution:** first cheap primitive/placeholder in P4/P5, then original tracked FAF minimal pack in P6/P8; never claim placeholders as accepted final models.
+- **Assets block execution:** the owner is independently creating the [complete Pond FAF roster](pond-faf-integration.md). P6/P8 must inventory, validate and import what actually exists: five species × five life stages, wood, foliage, ground, amphibian/reptile and insect families. **Never generate or substitute models inside P4.** P4/P5 may retain honest developer-only environmental fixtures before intake; missing required P6/P8 assets are exact BLOCKED handoffs to FAF, not a reason to shrink scope or duplicate Blender work.
 - **Surface invisible ceiling or fish launch:** explicit body shape clearance and physically enforced surface cap; repeated upward glide, turn and pause tests.
 - **Camera oscillates between air/water:** hysteresis/interpolation/continuous sampled water height with no root movement; repeated crossing and frame pacing test.
 - **UI/sky/underwater wrong blend:** camera-only immersion state, independent per-world presets, restoration after reentry, no full screen flicker.
 - **Ocean surface accidentally claimed:** Pond V32 is required; Ocean above-water remains separately unqualified.
 - **Fourteen prompts become unbounded:** narrow changed owners, focused T1/T2 probes, manual checkpoints at P7/P12; stop and record blockers rather than smuggling scope or inventing progress.
 - **Runner history corrupted:** exact `0.4.0` entry, sequential `0.4.1–0.4.14`, no self-commits/pushes inside prompts; human review at final closeout.
+
+## FAF ownership and intake
+
+The owner reports all five freshwater fish species already modeled and the foliage pack complete, with other creatures nearly complete; this is not proof that all 25 stages or every GLB/rig/import has passed. At P6/P8, inspect real current files/manifests and record per-asset completion. The earlier illustrative minnow/sunfish two-fish P4 scope is superseded by the owner's Bluegill/Bass/Catfish/Carp/Pike roster. The 25 stage exports are technically qualified for future growth while actual stage-changing gameplay remains P5. Frog, water snake, turtle, larva and water-bug assets are presentation/ambient-only in P4. Missing essentials block the corresponding integration task; P7 and P14 validate actual game views rather than isolated Blender proof.
 
 ## Acceptance evidence
 
