@@ -1,0 +1,29 @@
+TASK: Phase 4 / P7 — Native Pond visual review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.4.7`.
+
+GOAL
+Run a real native Godot visual/hand-controlled qualification checkpoint for the first Pond world before investing in freshwater animal art and surface-camera complexity. This checkpoint is intentional: do not continue automatically without owner review.
+
+ENTRY / READ
+AGENTS.md, BOOT.md, P4 README/plan P7, P4 design, FAF Pond contract/reference images if truly available, docs/validation.md V28/V29, actual current Pond bake and qualification/implementation.md. Require P6 version 0.4.6 and correct Fish Godot Editor MCP identity. Check source revision and dirty source before native run.
+
+NATIVE PLAY MATRIX
+1. Launch the actual World Select, enter Ocean with at least one current FAF marine fish; confirm the old Ocean remains traversable and visually unchanged.
+2. Return/back; enter Pond using a clearly labeled temporary freshwater test body if no finished fish exists yet. Never treat an Ocean fish as an eligible freshwater species. If that fixture cannot be rendered without breaking the contract, test camera via a debug fixture and record the gameplay fish gap.
+3. Physically swim near shoreline shallows, through a root/log passage, across a middle area, into the deep basin and back; inspect actual bank geometry/support, routes/clearance, plant density and camera obstruction.
+4. Compare overcast lily canopy and limited sunlight, muddy floor, roots and green water against the supplied reference and written style. Establish beautiful-but-ominous look without making immediate hazards unreadable.
+5. Verify one real generated seed and a different seed with reliable route access; screenshot near/mid/far shallow and deep, cave/log cover and representative shore views. Record Forward+ graphics settings, measured frame pacing, import/runtime errors and visual defects.
+6. Return to Ocean; verify its blue-water, caustic, character selection and input state restored with no leaked Pond effect.
+
+EVIDENCE
+Create p4/qualification/native-pond.md with source/dirty ID, OS/Godot/renderer, bake seed/manifest, locations/actions, owner visual feedback, screenshots with durable paths, PASS/FAIL/NOT OBSERVED and defects. Do not invent screenshots or infer owner acceptance from a Codex opinion. Repair only bounded defects within this prompt and rerun affected matrix if code changes.
+
+SCOPE
+This is native world/art/traversal qualification, not final P4. Species content, swim-surface and above-water immersion are future prompts; do not fail them as already implemented. If no native tools/owner observation is available, leave BLOCKED, do not claim PASS, and do not advance version.
+
+DONE / VERSION
+Only after actual observations, written evidence and owner checkpoint decision may this task set 0.4.7. A failed review remains NOT GREEN and blocks P8 until repaired/explicitly scoped. Leave changes for runner/manual checkpoint procedure; do not self-commit/push. Report next P8 when authorized.
