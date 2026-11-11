@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_insect_proof.gd" id="1_proof"]
+
+[node name="FAFPondInsectProof" type="Node3D"]
+script = ExtResource("1_proof")
+
+[node name="Camera" type="Camera3D" parent="."]
+current = true
+fov = 38.0
+near = 0.005
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="FilteredSun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.68, 0.32, -0.08)
+light_color = Color(0.94, 0.84, 0.59, 1)
+light_energy = 1.36
+
+[node name="SoftFill" type="OmniLight3D" parent="."]
+position = Vector3(-0.2, 1.4, 0.5)
+light_color = Color(0.58, 0.72, 0.51, 1)
+light_energy = 0.3
+omni_range = 5.0

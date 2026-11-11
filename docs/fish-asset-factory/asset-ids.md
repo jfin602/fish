@@ -1,6 +1,6 @@
 # Asset IDs and names
 
-Assign a stable ID when an original asset is registered for production: `FAF-<CATEGORY>-<NNN>` with categories `FISH`, `CORAL`, `ROCK`, `PLANT`, `TERRAIN`, `DETAIL`, `CREATURE`, `WOOD` and three or more digits, for example `FAF-FISH-001`. Keep an assigned ID even if the display name or generator changes. Never recycle or casually renumber it. The ID describes identity; a variant/revision is separate metadata.
+Assign a stable ID when an original asset is registered for production: `FAF-<CATEGORY>-<NNN>` with categories `FISH`, `CORAL`, `ROCK`, `PLANT`, `TERRAIN`, `DETAIL`, `CREATURE`, `WOOD`, `INSECT` and three or more digits, for example `FAF-FISH-001`. Keep an assigned ID even if the display name or generator changes. Never recycle or casually renumber it. The ID describes identity; a variant/revision is separate metadata.
 
 | Item | Convention and example |
 | --- | --- |
@@ -37,3 +37,5 @@ The first Pond wood families reserve **FAF-WOOD-001–004**: fallen logs (A/B/C)
 The first small-detail families have canonical IDs **FAF-DETAIL-001–004**, each with A/B variants. They cover shell, rubble, pebble and sponge forms; stems include `detail_001a_fan_shell` and `detail_004b_cup_sponge`. The [detail pack record](detail-pack-001/README.md) owns the eight candidates and their seeds.
 
 The first Pond ground-dressing families reserve **FAF-TERRAIN-002A/B** for eroded bank shoulders and **FAF-DETAIL-005A/B, 006A/B, 007A/B** for algae-coated stones, pebble clusters and leaf-litter clusters. The number is the stable family identity and the letter is the variant; each GLB carries `faf_habitat=pond`. The [Pond ground pack record](pond-ground-pack-001/README.md) and [manifest](../../assets/faf/pond/ground/pond_ground_001_manifest.json) own the eight recipes and paths. Ocean TERRAIN-001 and DETAIL-001–004 stay assigned.
+
+The first Pond insect families reserve **FAF-INSECT-001A/B** for common green darner nymphs and **FAF-INSECT-002A/B** for *Notonecta undulata* backswimmers. The number is the stable family identity, and the letter is its shape variant. Every GLB carries `faf_habitat=pond`; the [insect pack record](pond-insect-pack-001/README.md) owns the exact inventory and proof.

@@ -3,13 +3,13 @@
 import re
 
 
-CATEGORIES = frozenset({"FISH", "CORAL", "ROCK", "PLANT", "TERRAIN", "DETAIL", "CREATURE", "WOOD"})
+CATEGORIES = frozenset({"FISH", "CORAL", "ROCK", "PLANT", "TERRAIN", "DETAIL", "CREATURE", "WOOD", "INSECT"})
 ACTION_ROLES = frozenset({
     "Idle", "Glide", "SwimSlow", "Swim", "SwimFast", "TurnLeft", "TurnRight",
     "IdleShore", "SurfaceFloat", "Hop", "Dive", "IdleFloat", "SurfaceSwim",
-    "UnderwaterSwim", "ShoreCrawl", "IdleBottom", "BottomWalk",
+    "UnderwaterSwim", "ShoreCrawl", "IdleBottom", "BottomWalk", "Crawl", "Row",
 })
-_ID = re.compile(r"^FAF-(FISH|CORAL|ROCK|PLANT|TERRAIN|DETAIL|CREATURE|WOOD)-([0-9]{3,})$")
+_ID = re.compile(r"^FAF-(FISH|CORAL|ROCK|PLANT|TERRAIN|DETAIL|CREATURE|WOOD|INSECT)-([0-9]{3,})$")
 _SLUG = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
 _PART = re.compile(r"^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$")
 

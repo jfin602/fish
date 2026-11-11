@@ -1,0 +1,363 @@
+{
+  "pack": "Pond FAF insects 001",
+  "habitat": "pond",
+  "source_reference": "owner /home/jfin/best-pond-faf.png style only",
+  "blender_version": "5.2.3 LTS",
+  "assets": [
+    {
+      "faf_id": "FAF-INSECT-001A",
+      "faf_family_id": "FAF-INSECT-001",
+      "variant": "A",
+      "category": "INSECT",
+      "habitat": "pond",
+      "role": "ambient_only",
+      "common_name": "Common green darner nymph",
+      "scientific_name": "Anax junius",
+      "placement_zone": "submerged shallow silt, wood, plant roots",
+      "stem": "insect_001a_green_darner_nymph",
+      "dimensions_m": [
+        0.036954,
+        0.04074,
+        0.032543
+      ],
+      "triangles": 468,
+      "materials": 3,
+      "material_names": [
+        "mat__insect_001a_green_darner_nymph_0",
+        "mat__insect_001a_green_darner_nymph_1",
+        "mat__insect_001a_green_darner_nymph_2"
+      ],
+      "bones": 11,
+      "bone_names": [
+        "root",
+        "thorax",
+        "head",
+        "abdomen_01",
+        "abdomen_02",
+        "leg_1_L",
+        "leg_2_L",
+        "leg_3_L",
+        "leg_1_R",
+        "leg_2_R",
+        "leg_3_R"
+      ],
+      "actions": [
+        "insect_001a_green_darner_nymph__Crawl"
+      ],
+      "loop_roles": [
+        "Crawl"
+      ],
+      "source": "assets/faf/pond/insects/insect_001a_green_darner_nymph.blend",
+      "glb": "game/assets/faf/pond/insects/insect_001a_green_darner_nymph.glb",
+      "generator": "insects.build_pond_insects.v1",
+      "parameters": {
+        "length": 0.042,
+        "width": 0.014,
+        "leg_spread": 0.018,
+        "wing": 0.008,
+        "phase": 0
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "technical_review": "passed_focused_source_export_godot_import",
+      "visual_review": "native_candidate_close_readable_game_distance_limited",
+      "placement_orientation": "Blender -Y forward; Godot -Z forward; supported on shallow silt",
+      "collision": "none",
+      "evidence": [
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_above_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_above_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_waterline_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_waterline_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_underwater_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_0_underwater_game.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-INSECT-001B",
+      "faf_family_id": "FAF-INSECT-001",
+      "variant": "B",
+      "category": "INSECT",
+      "habitat": "pond",
+      "role": "ambient_only",
+      "common_name": "Common green darner nymph",
+      "scientific_name": "Anax junius",
+      "placement_zone": "submerged shallow silt, wood, plant roots",
+      "stem": "insect_001b_green_darner_nymph",
+      "dimensions_m": [
+        0.04689,
+        0.05044,
+        0.032288
+      ],
+      "triangles": 468,
+      "materials": 3,
+      "material_names": [
+        "mat__insect_001b_green_darner_nymph_0",
+        "mat__insect_001b_green_darner_nymph_1",
+        "mat__insect_001b_green_darner_nymph_2"
+      ],
+      "bones": 11,
+      "bone_names": [
+        "root",
+        "thorax",
+        "head",
+        "abdomen_01",
+        "abdomen_02",
+        "leg_1_L",
+        "leg_2_L",
+        "leg_3_L",
+        "leg_1_R",
+        "leg_2_R",
+        "leg_3_R"
+      ],
+      "actions": [
+        "insect_001b_green_darner_nymph__Crawl"
+      ],
+      "loop_roles": [
+        "Crawl"
+      ],
+      "source": "assets/faf/pond/insects/insect_001b_green_darner_nymph.blend",
+      "glb": "game/assets/faf/pond/insects/insect_001b_green_darner_nymph.glb",
+      "generator": "insects.build_pond_insects.v1",
+      "parameters": {
+        "length": 0.052,
+        "width": 0.0125,
+        "leg_spread": 0.023,
+        "wing": 0.01,
+        "phase": 0.13
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "technical_review": "passed_focused_source_export_godot_import",
+      "visual_review": "native_candidate_close_readable_game_distance_limited",
+      "placement_orientation": "Blender -Y forward; Godot -Z forward; supported on shallow silt",
+      "collision": "none",
+      "evidence": [
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_above_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_above_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_waterline_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_waterline_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_underwater_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_1_underwater_game.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-INSECT-002A",
+      "faf_family_id": "FAF-INSECT-002",
+      "variant": "A",
+      "category": "INSECT",
+      "habitat": "pond",
+      "role": "ambient_only",
+      "common_name": "Backswimmer",
+      "scientific_name": "Notonecta undulata",
+      "placement_zone": "inverted just below shallow water surface",
+      "stem": "insect_002a_backswimmer",
+      "dimensions_m": [
+        0.0323,
+        0.01395,
+        0.02076
+      ],
+      "triangles": 396,
+      "materials": 4,
+      "material_names": [
+        "mat__insect_002a_backswimmer_0",
+        "mat__insect_002a_backswimmer_1",
+        "mat__insect_002a_backswimmer_2",
+        "mat__insect_002a_backswimmer_3"
+      ],
+      "bones": 10,
+      "bone_names": [
+        "root",
+        "body",
+        "head",
+        "abdomen",
+        "oar_L",
+        "foreleg_L",
+        "midleg_L",
+        "oar_R",
+        "foreleg_R",
+        "midleg_R"
+      ],
+      "actions": [
+        "insect_002a_backswimmer__Row"
+      ],
+      "loop_roles": [
+        "Row"
+      ],
+      "source": "assets/faf/pond/insects/insect_002a_backswimmer.blend",
+      "glb": "game/assets/faf/pond/insects/insect_002a_backswimmer.glb",
+      "generator": "insects.build_pond_insects.v1",
+      "parameters": {
+        "length": 0.015,
+        "width": 0.006,
+        "leg_spread": 0.014,
+        "wing": 0.0035,
+        "phase": 0
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "technical_review": "passed_focused_source_export_godot_import",
+      "visual_review": "native_candidate_close_readable_game_distance_limited",
+      "placement_orientation": "Blender -Y forward; Godot -Z forward; inverted roll PI and pitch -0.25 in proof",
+      "collision": "none",
+      "evidence": [
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_above_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_above_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_waterline_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_waterline_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_underwater_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_2_underwater_game.png"
+      ]
+    },
+    {
+      "faf_id": "FAF-INSECT-002B",
+      "faf_family_id": "FAF-INSECT-002",
+      "variant": "B",
+      "category": "INSECT",
+      "habitat": "pond",
+      "role": "ambient_only",
+      "common_name": "Backswimmer",
+      "scientific_name": "Notonecta undulata",
+      "placement_zone": "inverted just below shallow water surface",
+      "stem": "insect_002b_backswimmer",
+      "dimensions_m": [
+        0.0419,
+        0.01581,
+        0.019924
+      ],
+      "triangles": 396,
+      "materials": 4,
+      "material_names": [
+        "mat__insect_002b_backswimmer_0",
+        "mat__insect_002b_backswimmer_1",
+        "mat__insect_002b_backswimmer_2",
+        "mat__insect_002b_backswimmer_3"
+      ],
+      "bones": 10,
+      "bone_names": [
+        "root",
+        "body",
+        "head",
+        "abdomen",
+        "oar_L",
+        "foreleg_L",
+        "midleg_L",
+        "oar_R",
+        "foreleg_R",
+        "midleg_R"
+      ],
+      "actions": [
+        "insect_002b_backswimmer__Row"
+      ],
+      "loop_roles": [
+        "Row"
+      ],
+      "source": "assets/faf/pond/insects/insect_002b_backswimmer.blend",
+      "glb": "game/assets/faf/pond/insects/insect_002b_backswimmer.glb",
+      "generator": "insects.build_pond_insects.v1",
+      "parameters": {
+        "length": 0.017,
+        "width": 0.0042,
+        "leg_spread": 0.019,
+        "wing": 0.003,
+        "phase": 0.11
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "technical_review": "passed_focused_source_export_godot_import",
+      "visual_review": "native_candidate_close_readable_game_distance_limited",
+      "placement_orientation": "Blender -Y forward; Godot -Z forward; inverted roll PI and pitch -0.25 in proof",
+      "collision": "none",
+      "evidence": [
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_above_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_above_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_waterline_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_waterline_game.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_underwater_close.png",
+        "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_3_underwater_game.png"
+      ]
+    }
+  ],
+  "godot_version": "4.7.2 stable .NET",
+  "native_renderer": "Forward+ Vulkan, AMD Radeon 880M",
+  "source_revision_at_start": "c3f6b38",
+  "repository_head_at_native_review": "6f4301a",
+  "proof_scene": "game/scenes/faf_pond_insect_proof.tscn",
+  "validation": [
+    "Blender source evaluated skin/loop seam",
+    "GLB skin/metadata/action/root checks",
+    "Godot imported skin/material/dimension/clip/loop checks",
+    "native Forward+ close and 3.8m fish-camera proof"
+  ],
+  "density_review": {
+    "sparse_instances": 4,
+    "sparse_visible_triangles": 1728,
+    "sparse_draw_calls_sample": 27,
+    "dense_instances": 20,
+    "dense_visible_triangles": 8640,
+    "dense_draw_calls_sample": 83,
+    "camera_distance_m": 3.8,
+    "camera_fov_deg": 68,
+    "finding": "individual insects are tiny at fish-camera distance; 20 is a stress sample, not a placement recommendation"
+  },
+  "view_matrix": "docs/fish-asset-factory/pond-insect-pack-001/evidence/matrix_<index>_<above|waterline|underwater>_<close|game>.png"
+}
