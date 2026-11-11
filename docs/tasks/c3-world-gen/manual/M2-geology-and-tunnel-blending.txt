@@ -1,0 +1,143 @@
+MANUAL TASK: c3-world-gen R1 / M2 — Terrain-conditioned geology and tunnel blending
+
+PROJECT STATE
+- Required root version: `0.3.6`.
+- Run only after M1's large shoreline-first basin/depth architecture is accepted enough to continue.
+- This is a MANUAL prompt. Do not proceed to M3 automatically.
+- Preserve deterministic compilation, baked-world loading, movement/camera authority, Character Select and Forward+.
+
+GOAL
+Stop placing caves/tunnels at fixed world coordinates and stop exposing the generated structural shells as giant dark tubes/slabs.
+
+Choose geology locations **from the finished terrain**, build the functional cave/tunnel geometry there, then visually bury/blend the structural geometry into the surrounding basin using generated ridge mass plus FAF surface geology.
+
+READ FIRST
+AGENTS.md
+BOOT.md
+docs/tasks/c3-world-gen/manual/M1-body-shape-scale-and-depth.txt
+docs/tasks/c3-world-gen/qualification/native-world-gen.md
+docs/tasks/c3-world-gen/qualification/evidence/probe/cave-chamber.png
+docs/tasks/c3-world-gen/qualification/evidence/probe/west-swim-through.png
+docs/tasks/c3-world-gen/qualification/evidence/probe/stone-arch.png
+game/scripts/GeneratedBasin.cs
+game/scripts/GeologicalRegionGenerator.cs
+game/scripts/WorldEnvironmentAnalysis.cs
+game/scripts/GeneratedFafPlacement.cs
+current M1-generated terrain/world source
+
+IMPLEMENT
+
+A — SELECT GEOLOGY SITES FROM TERRAIN
+
+1. Remove the current hard-coded geology coordinates/specs as the normal production strategy.
+2. Analyze the finished M1 terrain for candidate geological sites:
+   - thick ridges;
+   - steep banks;
+   - elevated shoulders;
+   - rock-dominant slopes;
+   - terrain masses with sufficient width/depth to contain a passage;
+   - transitions that connect useful depth bands.
+3. Score candidate sites for:
+   - available terrain mass;
+   - slope/ridge geometry;
+   - relationship to shallow/middle/deep areas;
+   - future route usefulness;
+   - distance from shoreline fail-safe;
+   - enough surrounding surface area to visually bury the structure.
+4. Choose deterministic sites from those candidates per seed.
+5. If a requested geology type has no credible site, generate/modify a suitable macro ridge before creating the tunnel rather than placing a floating shell in open water.
+
+B — GENERATE LESS-GEOMETRIC FUNCTIONAL PASSAGES
+
+6. Keep generated cave/tunnel geometry as actual floor/walls/ceiling/collision.
+7. Stop using visually clean circular/oval tube cross-sections as the dominant visible shape.
+8. Vary along the centerline:
+   - width;
+   - roof height;
+   - left/right wall asymmetry;
+   - floor slope;
+   - horizontal curvature;
+   - vertical curvature;
+   - entrance width;
+   - occasional chamber bulges;
+   - local ceiling drops/rises.
+9. Introduce irregular but bounded low-frequency cross-section distortion, not noisy jagged surfaces.
+10. Cave chambers should feel excavated/formed inside terrain mass, not like standalone hollow cylinders.
+11. Ensure all passages remain comfortably traversable by the accepted fish/camera.
+
+C — BURY THE STRUCTURAL SHELL
+
+12. The functional shell is collision/structural geometry, not the finished visual landmark.
+13. Build/generated terrain mass around it so the shell appears to pass **through a hill/ridge/bank**.
+14. Overlap/blend entrances heavily with:
+    - generated ridge/terrain mass;
+    - embedded FAF terrain accents;
+    - large FAF rocks;
+    - rocky-floor pieces;
+    - rubble/detail pieces;
+    - coral/vegetation where depth allows.
+15. Target: from ordinary approach angles, only about **20–40% of the structural tunnel shell** should read as a distinct exposed object. The rest should disappear into connected geology.
+16. Do not achieve this by simply covering the opening. Preserve clear entrance and route volume.
+17. Entrance blending should extend several meters outward along the surrounding hillside so the geology transition is broad, not a one-ring prop halo.
+18. Remove material/lighting contrast that makes structural geology read as one giant dark object. Reuse appropriate generated terrain/geology material language so the mass belongs to the world.
+
+D — MULTIPLE GEOLOGY TYPES
+
+19. Produce at minimum:
+    - one broad/easy tunnel;
+    - one tighter/curvier tunnel;
+    - one cave chamber with at least one clear entrance and preferably a second exit where terrain permits;
+    - one natural arch/overhang;
+    - one canyon/ridge route.
+20. Their location/shape must derive from seed-specific terrain, not the old fixed coordinates.
+
+E — VALIDATION
+
+Add focused checks for:
+
+- selected geology sites have sufficient surrounding terrain mass;
+- entrances/exits lie inside valid water-domain terrain;
+- shell floor/wall/ceiling exist;
+- clearance remains valid;
+- structural shell is embedded/buried by surrounding terrain mass beyond a minimum envelope;
+- entrance blend geometry does not block protected passage;
+- same seed reproduces site selection and geometry;
+- alternate seeds choose valid but different sites;
+- no geology region is created as an isolated floating object in open water.
+
+M2 should also re-run M1 basin/depth checks to ensure geology does not destroy shoreline/depth behavior.
+
+MANUAL VISUAL CHECKPOINT
+
+Generate/bake one candidate and capture each geology feature:
+
+- far approach;
+- medium approach;
+- entrance;
+- inside;
+- exit/reverse approach where applicable.
+
+Specifically compare against the failed P7 screenshots. The new result must no longer read as:
+- giant dark tube;
+- huge dark slab;
+- simple cylinder;
+- roof balanced on terrain;
+- obvious standalone generated mesh.
+
+At least one tunnel should visibly read as **a passage through a reef ridge**, not as a tunnel model placed in a basin.
+
+DONE WHEN
+
+Stop when terrain-conditioned geology site selection and broad visual blending are implemented and visually reviewed.
+
+REPORT
+For each geology feature report:
+- chosen terrain/site reason;
+- depth band;
+- dimensions/clearance;
+- blending/coverage method;
+- exposed-shell estimate or equivalent diagnostic;
+- screenshots/evidence;
+- remaining route integration issues for M3.
+
+Do NOT proceed to M3 automatically.

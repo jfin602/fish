@@ -1,0 +1,154 @@
+MANUAL TASK: c3-world-gen R1 / M1 — Body-of-water shape, scale and depth field
+
+PROJECT STATE
+- Repository: jfin602/fish
+- Required root version: `0.3.6`
+- This is a MANUAL repair prompt, not a phase-runner task.
+- Preserve the existing deterministic compiler/bake/manifest pipeline, Character Select, FishController/camera/controls and Forward+ water/light systems.
+- Do not proceed to M2 automatically. Stop with evidence and a review handoff.
+
+GOAL
+Replace the current compact radial bowl with a much larger natural body of water whose **2D shoreline/body shape is generated first**, and whose depth is then derived inward from that shoreline.
+
+The failed seed-42 world is too small, too bowl-like, and does not contain genuinely shallow or genuinely deep environments. Fix the world-shaping foundation before touching tunnel placement or vegetation density.
+
+READ FIRST
+AGENTS.md
+BOOT.md
+docs/workflow.md
+docs/tasks/c3-world-gen/README.md
+docs/tasks/c3-world-gen/closeout.md
+docs/tasks/c3-world-gen/qualification/native-world-gen.md
+docs/planning/p3/procedural-world-generation.md
+game/scripts/WorldGeneration.cs
+game/scripts/GeneratedBasin.cs
+game/scripts/WorldEnvironmentAnalysis.cs
+current compiler/bake/load tooling under tools/dev
+
+Inspect the actual current source/dirty state before editing. Preserve compatible pushed work. Do not reset the repository.
+
+IMPLEMENT
+
+A — GENERATE THE BODY-OF-WATER FOOTPRINT FIRST
+
+1. Replace the current approximately 35 m radial perimeter model as the master world shape.
+2. Generate a deterministic irregular **2D water-domain / shoreline footprint** before computing terrain elevation.
+3. The first serious target world should be approximately **250–350 m across**, with X/Z extents and local widths varying by seed.
+4. The outline must contain broad natural irregularity:
+   - lobes;
+   - coves/inlets;
+   - pinched/narrower regions;
+   - wider bays;
+   - asymmetric extensions;
+   - uneven curvature.
+5. It must not read as:
+   - a square;
+   - a perfect circle;
+   - a slightly noisy circle;
+   - a regular starburst.
+6. Use low-frequency deterministic shape variation. Favor a small number of broad features over high-frequency coastline noise.
+7. Provide a query such as distance-inside-domain / signed-distance-to-shore or equivalent. This becomes the authoritative input for depth generation.
+
+B — GENERATE DEPTH INWARD FROM THE SHORELINE
+
+8. Stop making radial distance from world origin the primary depth driver.
+9. Compute an approximate **distance-to-shore field** over the generated water domain.
+10. Convert that field into a broad water-depth profile so the exterior is naturally shallow and the interior trends deeper.
+11. Initial target depth bands:
+    - shoreline shallows: **0.5–2 m water depth**;
+    - shallow reef: **2–6 m**;
+    - middle water: **6–15 m**;
+    - deep basin: **15–30 m**;
+    - selected trenches/deep pockets: **30–45 m**.
+12. These are art/gameplay targets, not exact physical simulation. The output must contain substantial usable area in multiple bands.
+13. The deepest useful area should generally occur somewhere in the broad central portion of the body, but it must not be forced to the exact geometric center.
+14. Keep enough genuinely shallow water near parts of the shoreline that the surface is visually close and future vegetation can become dense.
+
+C — ADD MACRO TERRAIN AFTER THE DEPTH FIELD
+
+15. Once the baseline shore-derived depth exists, add large terrain structure:
+    - ridges;
+    - channels;
+    - shelves;
+    - deep holes;
+    - sandy flats;
+    - rocky slopes;
+    - secondary depressions.
+16. These features may distort local depth, but they must not destroy the high-level shallow-edge -> deeper-interior relationship.
+17. Avoid giant vertical bank walls. Shoreline approaches should usually transition through broad shallow shelves/slopes, with some steeper geological sections allowed as local features.
+18. Keep the natural perimeter itself as terrain. Fail-safe containment may remain well outside/behind it, but should not be visible or reachable in ordinary play.
+
+D — SCALE THE SUPPORT SYSTEMS
+
+19. Update world/grid/domain constants, analysis extents, baked metadata and any terrain sampling assumptions that still hard-code the old ~80–100 m world.
+20. Do not blindly scale every old constant by 4x. Re-evaluate:
+    - terrain sampling resolution;
+    - environmental analysis grid;
+    - route-planner search bounds;
+    - water-surface coverage;
+    - camera/depth reference metadata;
+    - bake serialization sizes.
+21. Keep generation within the existing <=120 second total target. Basin/shore/depth generation itself should remain cheap compared with dressing.
+
+E — DO NOT DO YET
+
+Do not redesign tunnels/caves in this prompt.
+Do not generate routes from hard-coded shallow/deep coordinates in this prompt beyond the minimum needed for existing smoke checks.
+Do not increase vegetation/coral quotas yet.
+Do not tune c3-visibility yet.
+Do not promote a new Base World yet.
+
+VALIDATION
+
+Create/extend focused checks proving at least:
+
+- same seed reproduces identical shoreline/domain and depth field;
+- different seeds produce meaningfully different broad body shapes;
+- overall target footprint is roughly 250–350 m across for representative settings;
+- perimeter width/radius/shape varies broadly and non-periodically enough to avoid a noisy-circle read;
+- distance-to-shore increases inward from multiple shoreline samples;
+- shallow/middle/deep/trench bands all contain meaningful area;
+- the deepest useful region lies in the broad interior rather than on the shoreline;
+- terrain generally shallows toward all sampled boundary approaches;
+- open terrain/collision remain continuous;
+- generator/baked manifest records the new world-shape/depth identity;
+- existing movement/Character Select/Forward+ source authority is unchanged.
+
+Run at least seed 42 plus two alternate seeds for structural checks.
+
+MANUAL VISUAL CHECKPOINT
+
+Generate one candidate from seed 42 (or a clearly recorded replacement qualification seed) and capture native/Forward+ screenshots from:
+
+- a true shoreline shallow with the surface visibly near;
+- shallow reef looking inward;
+- middle depth;
+- deep basin;
+- deepest/trench region;
+- at least four widely separated perimeter approaches;
+- one elevated/debug overview if tooling can provide it without changing gameplay.
+
+The result should already feel like a **large irregular body of water**, even before dense reef dressing.
+
+DONE WHEN
+
+Stop when:
+- the water footprint and shore-derived depth architecture are implemented;
+- the world is materially larger;
+- real shallow and real deep regions exist;
+- the old compact radial bowl is gone;
+- structural checks pass for representative seeds;
+- screenshots/evidence are ready for owner review.
+
+REPORT
+Summarize:
+- new world dimensions and shoreline-generation method;
+- distance-to-shore/depth mapping;
+- depth-band area metrics;
+- deepest-region metrics;
+- generation cost;
+- seed 42/43/44 structural results;
+- exact evidence paths/screenshots;
+- remaining M2 work.
+
+Do NOT proceed to M2 automatically.

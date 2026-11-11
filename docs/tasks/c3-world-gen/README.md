@@ -48,6 +48,17 @@ The planned order was **c3-world-gen before c3-visibility**. Actual local histor
 
 P7 is the sole final closeout.
 
+## Manual R1 repair prompts
+
+The pushed P7 result is not GREEN. Use the targeted manual repair sequence in [manual/README.md](manual/README.md) before rerunning the formal native closeout:
+
+1. M1 — large irregular shoreline-first body shape + inward depth field;
+2. M2 — terrain-conditioned cave/tunnel placement + heavy surface blending;
+3. M3 — generated route anchors + multi-seed reliability;
+4. M4 — dense habitat regions + aggressive depth-dependent reef composition.
+
+Run them manually and stop for review after each. Do not chain all four automatically. Keep c3-visibility on hold until the generated world is visually accepted enough to tune visibility.
+
 ## Acceptance boundary
 
 The correction is GREEN only with applicable evidence that:

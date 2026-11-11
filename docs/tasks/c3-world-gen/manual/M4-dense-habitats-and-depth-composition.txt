@@ -1,0 +1,221 @@
+MANUAL TASK: c3-world-gen R1 / M4 — Dense habitats and aggressive depth-dependent reef composition
+
+PROJECT STATE
+- Required root version: `0.3.6`.
+- Run after M1–M3 are accepted enough to continue.
+- This is the final MANUAL visual repair prompt in this sequence.
+- Preserve the new large body shape, shore-derived depth field, terrain-conditioned geology and generated routes.
+- Do not run c3-visibility until this prompt has produced an owner-reviewable world.
+
+GOAL
+Replace the sparse "quota per asset variant" world with large habitat regions filled at area scale, so shallow banks feel genuinely alive and deep areas feel genuinely sparse, dark and difficult to see.
+
+The failed seed-42 world placed only about 138 environment instances over the entire world. The new larger world needs **thousands of decorative instances** where appropriate, while keeping draw calls and collision bounded through MultiMesh/shared resources and habitat-level generation.
+
+READ FIRST
+AGENTS.md
+BOOT.md
+docs/tasks/c3-world-gen/closeout.md
+docs/tasks/c3-world-gen/qualification/native-world-gen.md
+docs/tasks/c3-world-gen/manual/M1-body-shape-scale-and-depth.txt
+docs/tasks/c3-world-gen/manual/M2-geology-and-tunnel-blending.txt
+docs/tasks/c3-world-gen/manual/M3-generated-routes-and-multiseed.txt
+docs/fish-asset-factory/art-style.md
+all FAF coral/plant/detail/rock/terrain pack records
+game/scripts/GeneratedFafPlacement.cs
+game/scripts/WorldEnvironmentAnalysis.cs
+current ambient-life implementation
+current bake/load packaging
+
+IMPLEMENT
+
+A — GENERATE HABITAT REGIONS FIRST
+
+1. Stop treating "place N of each variant" as the primary composition strategy.
+2. Generate large deterministic habitat regions from the final terrain/depth/route/geology fields.
+3. Include a useful mix such as:
+   - shallow sea-grass meadow;
+   - branching-coral reef;
+   - mixed coral garden;
+   - rocky shallow shelf;
+   - sandy clearing;
+   - cave-entrance reef;
+   - rocky middle slope;
+   - drop-off reef;
+   - rubble field;
+   - deep rock field;
+   - deep sparse fan/tube coral zone;
+   - open-water corridor.
+4. Habitat regions should cover real areas of the world, not a few anchor points.
+5. Region selection should respond to:
+   - water depth;
+   - distance to shore;
+   - slope/normal;
+   - terrain/geology type;
+   - shelter/exposure;
+   - cave/tunnel proximity;
+   - route exclusions;
+   - local openness.
+
+B — DENSE LOCAL FILL
+
+6. Inside each habitat, generate many decorative instances with deterministic clustered variation.
+7. Do not use one global quota per asset variant.
+8. Initial visual targets for a substantial shallow coral-garden region may include roughly:
+   - **100–300 grass/plant instances**;
+   - **30–80 coral instances**;
+   - multiple rocks/terrain accents;
+   - many small details/rubble/shells;
+   - deliberate open gaps and sandy lanes.
+9. Exact counts should scale with region area and measured performance.
+10. Across the whole 250–350 m world, expect **thousands of decorative instances**, not ~138.
+11. Use MultiMesh/shared resources for non-colliding repeated coral/plants/details where practical so instance count does not become draw-call count.
+12. Keep collision only on structural terrain/geology and selected large obstacles. Decorative vegetation/coral/details should normally have no collision.
+
+C — AGGRESSIVE DEPTH COMPOSITION
+
+13. Make depth bands visually unmistakable.
+
+SHORELINE / VERY SHALLOW (approximately 0.5–2 m water depth)
+- surface visibly close;
+- bright sunlight and caustics;
+- sand;
+- dense grass/plant life where suitable;
+- colorful coral pockets;
+- smaller fish activity;
+- high local detail.
+
+SHALLOW REEF (2–6 m)
+- highest overall living density;
+- broad vegetation patches;
+- dense mixed coral gardens;
+- vivid color;
+- frequent reef structure with preserved swim lanes.
+
+MIDDLE (6–15 m)
+- mixed coral + geology;
+- less tall vegetation;
+- larger exposed rock/terrain intervals;
+- caves/ridges increasingly important.
+
+DEEP (15–30 m)
+- sparse plants;
+- isolated coral/fans/tubes;
+- broad geology and open sediment/rock;
+- fewer ambient fish;
+- darker/cooler water.
+
+VERY DEEP / TRENCH (30–45 m)
+- very sparse living cover;
+- large negative-space geology;
+- rubble/rock/fan accents;
+- significantly reduced useful visibility;
+- surface should feel far away;
+- this region should feel materially different from the shallow world even before c3-visibility final tuning.
+
+14. The current failure where `DepthShallow` looks dark and rock-dominated must become impossible under generation rules.
+15. Validate habitat by actual water depth, not old named coordinate bands.
+
+D — TUNNEL / CAVE SURFACE BLENDING
+
+16. M2 provides structural blending; M4 finishes the visual integration.
+17. Around entrances and exposed geology:
+   - add rock clusters;
+   - terrain accents;
+   - rubble;
+   - coral;
+   - vegetation appropriate to depth;
+   - small detail transitions.
+18. Do not ring entrances uniformly.
+19. Use asymmetric clusters and nearby open patches so entrances feel naturally embedded.
+20. Structural tunnel shell should visually recede into the habitat/geology and not dominate a normal screenshot.
+
+E — PERFORMANCE / GENERATION COST
+
+21. The prior placement stage consumed ~43 seconds for only 138 instances. Do not multiply that algorithm naively.
+22. Optimize placement around habitat-level cached candidate cells / spatial indexes / precomputed suitability fields.
+23. Batch surface queries and support checks by region/family where possible.
+24. Generate MultiMesh transforms directly for dense non-colliding families.
+25. Keep total full generation target <=120 seconds on the identified development machine.
+26. Record:
+   - habitat planning time;
+   - dense placement time;
+   - serialization time;
+   - instance counts;
+   - render-node/draw-call estimates or measured counters;
+   - triangle counts where useful.
+
+F — BAKE / REPLACE PROVISIONAL WORLD
+
+27. Bake a new qualification candidate after M1–M4.
+28. Do not silently overwrite the old provisional seed-42 Base World.
+29. Use a new candidate/base-world ID or explicitly replace it only through the existing guarded promotion workflow after owner approval.
+30. Preserve deterministic manifest and generator-version identity. Bump generator algorithm/version identifiers when necessary so old baked worlds cannot be confused with the R1 architecture.
+
+VALIDATION
+
+Automated/source checks should prove:
+
+- required FAF variants still participate meaningfully;
+- habitat areas and counts are deterministic;
+- shallow living density greatly exceeds deep living density;
+- no decorative placement enters protected routes;
+- no unresolved floating/support failures for structural/large accents;
+- thousands of decorative instances do not create thousands of render nodes;
+- cave/tunnel mouths remain clear;
+- seeds 42/43/44 still compile/bake successfully;
+- generation remains <=120 seconds or any miss is explicitly reported;
+- baked load still invokes zero generation stages.
+
+FINAL MANUAL VISUAL CHECKPOINT
+
+For one qualification candidate, capture/play at minimum:
+
+1. shoreline / very shallow;
+2. shallow dense coral/vegetation garden;
+3. shallow-to-middle transition;
+4. middle mixed reef/geology;
+5. cave entrance from far/medium/near;
+6. tunnel interior and exit;
+7. deep basin;
+8. very deep/trench area;
+9. at least two natural perimeter approaches;
+10. one wide scene showing foreground/midground/background layering.
+
+Owner-facing visual expectations:
+
+- the world should feel much larger than the failed seed-42 candidate;
+- shallow regions must immediately look lush and bright;
+- deep regions must immediately look sparse/dark/distant;
+- coral/vegetation should form convincing habitat masses, not scattered individual props;
+- structural tunnel geometry should be hard to visually isolate from surrounding geology;
+- no giant naked dark slab should dominate ordinary views;
+- the surface should be clearly nearer in shallow water and far away in deep water;
+- the world should invite exploration because different depth/habitat areas look genuinely different.
+
+Do not tune c3-visibility until this world structure is accepted. Existing visibility code may remain active, but do not use extra fog to hide bad geometry or sparse composition.
+
+DONE WHEN
+
+Stop with:
+- a new baked qualification candidate;
+- full generation timings;
+- seeds 42/43/44 reliability;
+- native screenshots;
+- habitat/depth metrics;
+- performance counters;
+- clear PASS/FAIL owner-review checklist.
+
+Do not mark c3-world-gen GREEN automatically. The owner decides whether the repaired world is good enough to rerun the formal native closeout.
+
+REPORT
+Summarize:
+- world dimensions/depth ranges inherited from M1;
+- habitat region types and area/counts;
+- total decorative instance counts;
+- shallow/mid/deep density metrics;
+- generation/load timing;
+- render-node/MultiMesh strategy;
+- geology entrance blending result;
+- screenshots/evidence paths;
+- remaining failures before formal c3-world-gen P7 rerun.

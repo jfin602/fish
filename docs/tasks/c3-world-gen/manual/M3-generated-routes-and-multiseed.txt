@@ -1,0 +1,123 @@
+MANUAL TASK: c3-world-gen R1 / M3 — Generated route anchors and multi-seed reliability
+
+PROJECT STATE
+- Required root version: `0.3.6`.
+- Run after M1 and M2.
+- This is a MANUAL prompt. Do not proceed to M4 automatically.
+- Preserve the accepted M1 shoreline/depth field and M2 terrain-conditioned geology.
+
+GOAL
+Replace fixed route coordinates with route anchors selected from the generated basin and geology, and make full generation reliable across representative seeds.
+
+The pushed failure shows seeds 43/44 dying because fixed goals such as middle/deep/shallow are blocked. Routes must follow the generated world rather than requiring the generated world to accommodate old coordinates.
+
+READ FIRST
+AGENTS.md
+BOOT.md
+docs/tasks/c3-world-gen/closeout.md
+docs/tasks/c3-world-gen/qualification/native-world-gen.md
+docs/tasks/c3-world-gen/manual/M1-body-shape-scale-and-depth.txt
+docs/tasks/c3-world-gen/manual/M2-geology-and-tunnel-blending.txt
+game/scripts/GeneratedWorldRoutes.cs
+game/scripts/WorldEnvironmentAnalysis.cs
+current M1/M2 terrain/geology source
+current route planner/check tooling
+
+IMPLEMENT
+
+A — REMOVE FIXED WORLD-SPACE ANCHORS
+
+1. Remove hard-coded production route goals such as fixed:
+   - shallow at a particular X/Z;
+   - middle at `(8, ..., -3)`;
+   - west/east-open at fixed coordinates;
+   - fixed shallow-return coordinates.
+2. The only fixed coordinate allowed should be a deliberately selected/generated spawn if justified; preferably even spawn should be selected from terrain criteria.
+
+B — SELECT ROUTE ANCHORS FROM GENERATED REGIONS
+
+3. Derive candidate navigation regions from the finished world:
+   - safe shallow spawn shelf;
+   - one or more shallow zones;
+   - middle shelf/transition zones;
+   - central/deep basin zone;
+   - deepest/trench landmark;
+   - open-water corridors;
+   - M2 cave/tunnel/arch/canyon entrances/exits;
+   - return/alternate-route candidates.
+4. Score anchors for:
+   - terrain clearance;
+   - water depth;
+   - fish/camera clearance;
+   - route usefulness;
+   - distance from natural perimeter;
+   - connection to other depth bands;
+   - visual/landmark quality where applicable.
+5. Select anchors deterministically from those candidates for each seed.
+
+C — BUILD ROUTES AFTER ANCHOR SELECTION
+
+6. Build the route graph from selected generated anchors.
+7. Require:
+   - spawn -> shallow;
+   - shallow -> middle;
+   - middle -> deep;
+   - deep -> shallow return;
+   - at least one alternate path;
+   - connection to all intended M2 tunnel/cave/canyon entrances;
+   - reconnection after true swim-throughs where terrain permits.
+8. If a generated tunnel's far exit is blocked by surrounding terrain, repair the local terrain/geology or reject/reselect the tunnel site. Do not normalize an out-and-back "swim-through" as acceptable.
+9. Use the expanded world size to give the pathfinder more room, but reduce search cost with coarse-to-fine routing, spatial bounds, region graphs, or similar measured optimizations where needed.
+10. Route protection volumes should follow the generated graph before M4 dressing.
+
+D — MULTI-SEED RELIABILITY
+
+11. Seed 42 alone is insufficient.
+12. At minimum fully generate and validate seeds 42, 43 and 44 after the new route system.
+13. All three must reach bake with:
+    - valid shallow/middle/deep routes;
+    - valid return and alternate;
+    - required geology connections;
+    - no blocked route goal;
+    - no route through land/collision.
+14. Add several additional cheap structural seeds if practical (for example 5–10 seeds) to measure failure rate without requiring native screenshots for each.
+15. If a seed fails, report whether the failure came from shoreline/depth, geology-site selection, route-anchor selection, or pathfinding. Do not special-case seed IDs.
+
+E — VALIDATION
+
+Add/extend checks proving:
+
+- anchors lie in intended generated depth/terrain bands;
+- anchors are clear before pathfinding;
+- graph connectivity holds;
+- generated routes avoid shoreline/terrain/geology collision;
+- cave/tunnel routes enter and exit actual passages;
+- same seed produces same anchor IDs/positions and route graph;
+- different seeds produce materially different route positions consistent with their world;
+- seeds 42/43/44 all compile and bake successfully;
+- route repair/search timings remain reasonable inside the total <=120 second generation budget.
+
+MANUAL CHECKPOINT
+
+For seed 42, render/debug or play a route from:
+shallow -> middle -> deep -> alternate return -> one tunnel/cave -> open water.
+
+Capture a simple route overlay/debug image if tooling exists, plus a normal gameplay screenshot at representative anchor regions.
+
+You do not need to do the full habitat visual pass yet; M4 owns that.
+
+DONE WHEN
+
+Stop when routes are terrain-derived and representative seeds reliably compile/bake without blocked fixed goals.
+
+REPORT
+Include:
+- anchor-selection rules;
+- route graph summary per seed;
+- seeds tested and pass/fail;
+- route-repair timing;
+- any world/geology rejection/reselection behavior;
+- evidence paths;
+- exact M4 protected-route inputs.
+
+Do NOT proceed to M4 automatically.
