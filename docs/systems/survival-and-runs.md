@@ -12,9 +12,15 @@ A **run** has a stable identity from hatching until death. A **session** is one 
 
 The intended initial interface offers **Continue** for a living saved fish and **New life** when no living fish exists. Multiple simultaneous living save slots are an open design choice. Starting another life while one exists must have an explicit policy; it must not silently erase or narrate the existing fish as dead.
 
+## Habitat and world identity (P4/P6 boundary)
+
+**P4 planned; persistence implementation deferred until P6.** A new life starts with World Select (Ocean or Freshwater Pond), then a compatible species. World Select is not available as a way to move a living fish across habitats. On persistent runs store an authoritative stable **habitat/world ID**, species ID, and the exact generated/baked Base World identity (including any seed/settings/version data needed to reload it), alongside existing fish, encounter and resource state. These values must survive save/close/resume unchanged.
+
+**Continue** must reopen the stored world directly. Do not let menu navigation or failed loading switch a fish from Pond to Ocean or the reverse; an incompatible species/world or missing resource is an explicit save/load/recovery error, never automatic migration, death, or a reset of danger/food. Historical Life History entries retain enough habitat identity to label a completed life truthfully without claiming cross-habitat travel. Exact save format remains a P6 choice.
+
 ## Suspend and resume
 
-A supported save captures a coherent game state. Relevant fields include the run identity, fish state, location, elapsed simulation time, consumed food/prey, and the world and encounter state needed to continue fairly. The exact representation is a technical choice.
+A supported save captures a coherent game state. Relevant fields include the run identity, native species ID, habitat/world ID, baked-world identity, fish state, location, elapsed simulation time, consumed food/prey, and the world and encounter state needed to continue fairly. The exact representation is a technical choice.
 
 No offline simulation is applied. Hunger, predators, growth, cooldowns, and event timestamps must follow the selected game-time rules rather than elapsed wall-clock time while closed. The history may record real-world creation and completion dates separately from time survived.
 
@@ -59,7 +65,7 @@ Discarding a living save is not a predation event. Whether abandoned lives recei
 
 ## Acceptance targets
 
-- Save a living fish, close the game, resume, and compare identity, growth, location, and relevant threat/resource state.
+- Save a living fish, close the game, resume, and compare identity, habitat/world and baked-world identity, growth, location, and relevant threat/resource state.
 - Advance real-world time while closed and demonstrate no offline survival simulation.
 - Die, reopen the game, and verify that **Continue** cannot revive that run.
 - Interrupt each material death/archive persistence boundary and recover one terminal run with one history record.
