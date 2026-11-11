@@ -24,11 +24,16 @@ public partial class SeabedSurface : StaticBody3D
         Basin = new GeneratedBasin(seed);
     }
 
-    public void RestoreBakedSeed(ulong seed) => Basin = new GeneratedBasin(seed);
-
-    public void InstallBaked(ArrayMesh mesh, ConcavePolygonShape3D collision, ulong seed)
+    public void RestoreBakedSeed(ulong seed, bool legacy, bool m1Baked = false)
     {
-        RestoreBakedSeed(seed);
+        Basin = new GeneratedBasin(seed, legacy, m1Baked);
+        ConfigureLimits(legacy);
+    }
+
+    public void InstallBaked(ArrayMesh mesh, ConcavePolygonShape3D collision, ulong seed, bool legacy,
+        bool m1Baked = false)
+    {
+        RestoreBakedSeed(seed, legacy, m1Baked);
         GetNode<MeshInstance3D>("Mesh").Mesh = mesh;
         GetNode<CollisionShape3D>("Collision").Shape = collision;
         _waterMaterial = mesh.SurfaceGetMaterial(0) as ShaderMaterial;
@@ -45,6 +50,7 @@ public partial class SeabedSurface : StaticBody3D
     public bool Build(StandardMaterial3D[] materials)
     {
         WorldGenerationAudit.MarkStage();
+        ConfigureLimits(false);
         if (materials.Length != HabitatPalette.Names.Length) return false;
         var shader = ResourceLoader.Load<Shader>("res://shaders/seabed_blend.gdshader");
         if (shader is null) return false;
@@ -105,6 +111,26 @@ public partial class SeabedSurface : StaticBody3D
         builder.SetNormal(Basin.NormalAt(point.X, point.Z));
         builder.SetUV(new Vector2(point.X, point.Z) * 0.24f);
         builder.AddVertex(point);
+    }
+
+    private void ConfigureLimits(bool legacy)
+    {
+        var limits = GetParent().GetNode<StaticBody3D>("HiddenLimits");
+        var extent = legacy ? 47f : HalfExtent + 1f;
+        var span = legacy ? 96f : HalfExtent * 2f + 4f;
+        foreach (var (name, x, z) in new[] {
+            ("West", -extent, 0f), ("East", extent, 0f),
+            ("North", 0f, -extent), ("South", 0f, extent) })
+        {
+            var node = limits.GetNode<CollisionShape3D>(name);
+            node.Position = new Vector3(x, 0f, z);
+            node.Shape = new BoxShape3D { Size = new Vector3(x != 0f ? .8f : span,
+                legacy ? 31f : 80f, z != 0f ? .8f : span) };
+        }
+        var upper = limits.GetNode<CollisionShape3D>("Upper");
+        upper.Position = new Vector3(0f, legacy ? 9.75f : 11.2f, 0f);
+        upper.Shape = new BoxShape3D { Size = new Vector3(legacy ? 77f : span,
+            .6f, legacy ? 77f : span) };
     }
 
 }

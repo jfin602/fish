@@ -65,6 +65,24 @@ public partial class Main : Node3D
             catch (Exception error) { GD.PushError($"WORLD_COMPILER_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
+        if (OS.GetCmdlineUserArgs().Contains("--shore-field-check"))
+        {
+            try { BasinChecks.RunStructural(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"SHORE_FIELD_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+        if (OS.GetCmdlineUserArgs().Contains("--geology-site-check"))
+        {
+            try { GeologicalRegionChecks.RunSites(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"GEOLOGY_SITE_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+        if (OS.GetCmdlineUserArgs().Contains("--route-anchor-check"))
+        {
+            try { RouteAnchorChecks.Run(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"ROUTE_ANCHOR_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         if (OS.GetCmdlineUserArgs().Contains("--control-preset-check"))
         {
             try { ControlPresetChecks.Run(); GetTree().Quit(); }
@@ -180,7 +198,9 @@ public partial class Main : Node3D
     private void VerifySmoke()
     {
         var fish = GetNode<FishController>("Fish");
-        if (!fish.IsInsideTree() || fish.GlobalPosition.Y < -3.0f || fish.GlobalPosition.Y > 3.0f)
+        var spawn = GetNodeOrNull<Marker3D>("Habitat/Spawn");
+        if (!fish.IsInsideTree() || !fish.GlobalPosition.IsFinite() || spawn is null ||
+            fish.GlobalPosition.DistanceTo(spawn.GlobalPosition) > 1.5f)
         {
             GD.PushError("FISH_SMOKE_FAILED C# fish was not initialized within habitat");
             GetTree().Quit(1);

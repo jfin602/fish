@@ -2,6 +2,12 @@
 
 **Disposition: FAIL / not accepted at root `0.3.6`.** P1–P6 built a deterministic seed-42 compiler and a fast, generator-free baked loader. [P7 native evidence](qualification/native-world-gen.md) shows that the present world still fails the required natural visual reading, and seeds 43/44 cannot complete full generation because route goals are blocked. Human owner exploration/acceptance and complete swim-through qualification remain open. No P3 Gate is marked GREEN. This closeout is left uncommitted for human review.
 
+Subsequent manual [R1/M1 shore and depth repair](qualification/m1-shore-depth.md) and [R1/M2 geology/blending repair](qualification/m2-geology-blending.md) are separate progression candidates. M2's final seed-42 package compiled in 58.273 s, loaded without generation, and passed direct passage clearance. Its Forward+ review shows improved connected geology, with sparse accent coverage and no measured exposed-shell percentage. The old route graph now blocks the `stone-arch:link-out` camera connector; M3 is clear to repair that graph and establish multi-seed full-world reliability. This P7 disposition remains the historical result until repeat qualification and owner review.
+
+The later [R1/M3 generated-route evidence](qualification/m3-routes.md) records terrain-derived routes and valid baked collision paths for seeds 42/43/44. Seed 44's final compile logs a Godot/.NET finalizer error even though the package is hash-valid and loads. Native route review remains open. The M2 route blocker above is historical, not the present route state; this P7 disposition remains failed until repeat qualification.
+
+The subsequent [R1/M4 dense-habitat evidence](qualification/m4-habitats.md) records 7,960 seed-42 placements across 12 habitat roles, clean full seed-42/43/44 bakes in 9.695/10.658/9.555 s, generator-free baked reloads, and native Forward+ depth/habitat screenshots. The prior seed-44 finalizer error did not recur in these M4 bakes. M4 improves broad shallow vegetation and depth contrast but leaves exposed dark geology in one ordinary shallow view and conspicuous angular cave/shell transitions. The M4 candidates are separate from the provisional Base World. Human owner acceptance, full fish-controlled native route/perimeter review, and formal P7 rerun are still open. This historical P7 disposition is not silently converted to GREEN.
+
 ## V26 and V27
 
 | Scenario | Result | Evidence and unresolved part |

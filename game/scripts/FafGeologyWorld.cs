@@ -67,6 +67,9 @@ public partial class FafGeologyWorld : Node3D
         var regions = GeologicalRegionGenerator.Generate(seabed.Basin);
         foreach (var region in regions)
         {
+            // Share the terrain's actual palette and depth response. A separate
+            // flat shell material made these connected ridges read as dark props.
+            region.Mesh.SurfaceSetMaterial(0, seabed.GeneratedMesh!.SurfaceGetMaterial(0));
             var body = new StaticBody3D
             {
                 Name = region.Id, CollisionLayer = 1, CollisionMask = 0,
@@ -84,11 +87,13 @@ public partial class FafGeologyWorld : Node3D
                 var marker = new Marker3D { Name = name, Position = region.Centerline[i] };
                 marker.SetMeta("fish_probe_radius", .48f);
                 marker.SetMeta("camera_probe_radius", .22f);
+                marker.SetMeta("nominal_fish_side_room", region.NominalFishSideRoom);
                 if (region.NominalCameraHeadroom is { } headroom)
                     marker.SetMeta("nominal_camera_headroom", headroom);
                 else marker.SetMeta("open_top", true);
                 centerline.AddChild(marker);
             }
+            AddBlendVisuals(body, region, seabed.Basin);
             generated.AddChild(body);
         }
         GeneratedRegions = regions;
@@ -167,11 +172,47 @@ public partial class FafGeologyWorld : Node3D
                 else marker.SetMeta("open_top", true);
                 centerline.AddChild(marker);
             }
+            AddBlendVisuals(body, region, seabed.Basin);
             generated.AddChild(body);
         }
         GeneratedRegions = regions;
         diagnostic = "";
         GD.Print($"FAF_GEOLOGY_READY pieces={PieceCount} generated={regions.Count} collision={PieceCount + regions.Count} routes=west-tunnel,east-cave,deep-corridor,generated-centerlines");
         return true;
+    }
+
+    private static void AddBlendVisuals(StaticBody3D body, GeologicalRegion region, GeneratedBasin basin)
+    {
+        var site = System.Linq.Enumerable.FirstOrDefault(basin.GeologySites, s => s.Id == region.Id);
+        if (site is null) return;
+        var group = new Node3D { Name = "BlendVisuals" };
+        body.AddChild(group);
+        var side = new Vector2(-site.Axis.Y, site.Axis.X);
+        var assets = new[] { "FAF-TERRAIN-001F", "FAF-ROCK-001C", "FAF-ROCK-001D",
+            "FAF-ROCK-001A", "FAF-DETAIL-002B" };
+        for (var bank = -1; bank <= 1; bank += 2)
+        for (var step = 0; step < 7; step++)
+        {
+            var along = (step / 6f - .5f) * (site.Length + 10f);
+            var across = site.HalfWidth + 7f + (step % 3) * 1.6f;
+            var p = site.Center + site.Axis * along + side * (bank * across);
+            if (basin.DistanceToShore(p.X, p.Y) < 8f) continue;
+            var asset = FafRuntimeCatalog.GetEnvironment(assets[(step + (bank + 1) / 2) % assets.Length]);
+            var visual = asset.CreateVisual();
+            visual.Name = $"Blend_{(bank < 0 ? "L" : "R")}_{step}";
+            var scale = asset.Family switch
+            {
+                FafEnvironmentFamily.Rock => 2.3f,
+                FafEnvironmentFamily.Terrain => .72f,
+                _ => 3f,
+            };
+            visual.Position = new Vector3(p.X, basin.HeightAt(p.X, p.Y) -
+                (asset.Family == FafEnvironmentFamily.Rock ? 1.35f :
+                    asset.Family == FafEnvironmentFamily.Terrain ? .48f : .1f), p.Y);
+            visual.Rotation = new Vector3(0f, site.Axis.Angle() + step * .73f, 0f);
+            visual.Scale = Vector3.One * scale;
+            visual.SetMeta("geology_blend", site.Id);
+            group.AddChild(visual);
+        }
     }
 }

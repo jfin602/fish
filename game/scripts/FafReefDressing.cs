@@ -12,6 +12,12 @@ public partial class FafReefDressing : Node3D
     private GeneratedFafPlacement? _plan;
     public IReadOnlyList<GeneratedFafInstance> Placements => _plan?.Instances ?? Array.Empty<GeneratedFafInstance>();
     public WorldPlacementScore? WorldScore => _plan?.Score;
+    public IReadOnlyDictionary<HabitatRole, float> HabitatArea =>
+        _plan?.HabitatArea ?? new Dictionary<HabitatRole, float>();
+    public IReadOnlyDictionary<HabitatRole, int> HabitatPatches =>
+        _plan?.HabitatPatches ?? new Dictionary<HabitatRole, int>();
+    public long HabitatPlanningMilliseconds => _plan?.PlanningMilliseconds ?? 0;
+    public long DensePlacementMilliseconds => _plan?.PlacementMilliseconds ?? 0;
     public int PlacementCount => Placements.Count;
     public int ClusterCount => _plan?.AnchorCount ?? 0;
     public string GetPlacementId(int index) => Placements[index].Asset.Id;
@@ -82,7 +88,7 @@ public partial class FafReefDressing : Node3D
         }
         _plan = plan;
         diagnostic = "";
-        GD.Print($"FAF_DRESSING_READY seed={seed} anchors={plan.AnchorCount} {plan.Score}");
+        GD.Print($"FAF_DRESSING_READY seed={seed} habitat_roles={plan.AnchorCount} habitat_patches={plan.HabitatPatches.Values.Sum()} {plan.Score}");
         return true;
     }
 

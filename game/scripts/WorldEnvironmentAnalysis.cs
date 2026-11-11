@@ -12,14 +12,15 @@ public readonly record struct WorldEnvironmentSample(Vector3 Surface, Vector3 No
     float Slope, float Concavity, float PerimeterDistance, float DeepCoreDistance,
     float RouteDistance, float CaveDistance, float EntranceDistance, float Shelter,
     float Exposure, float GeologyDistance);
+public readonly record struct WorldEntrance(Vector3 Center, Vector3 Outward);
 
-/// <summary>Two metre placement grid plus exact on-demand ray queries of generated mesh triangles.</summary>
+/// <summary>Four metre placement grid plus exact on-demand ray queries of generated mesh triangles.</summary>
 public sealed class WorldEnvironmentAnalysis
 {
-    public const float CellSize = 2f;
-    public const int CellsPerSide = 41;
-    public const float GridMin = -40f;
-    public const float WaterSurfaceY = 10.39f;
+    public const float CellSize = 4f;
+    public const int CellsPerSide = 89;
+    public const float GridMin = -176f;
+    public const float WaterSurfaceY = GeneratedBasin.WaterSurfaceY;
     private readonly GeneratedBasin _basin;
     private readonly GeneratedWorldRoutes _routes;
     private readonly IReadOnlyList<GeologicalRegion> _regions;
@@ -31,6 +32,8 @@ public sealed class WorldEnvironmentAnalysis
         string Id, string Kind, Vector3 Min, Vector3 Max);
     public int CachedSampleCount => _grid.Length;
     public int TriangleCount => _triangles.Count;
+    public IReadOnlyList<WorldEntrance> Entrances { get; }
+    public float DistanceToShore(float x, float z) => _basin.DistanceToShore(x, z);
 
     public WorldEnvironmentAnalysis(GeneratedBasin basin, IReadOnlyList<GeologicalRegion> regions,
         GeneratedWorldRoutes routes)
@@ -39,6 +42,14 @@ public sealed class WorldEnvironmentAnalysis
         _basin = basin;
         _regions = regions;
         _routes = routes;
+        var entrances = new List<WorldEntrance>();
+        foreach (var region in regions)
+        {
+            var line = region.Centerline;
+            entrances.Add(new WorldEntrance(line[0], (line[0] - line[1]).Normalized()));
+            entrances.Add(new WorldEntrance(line[^1], (line[^1] - line[^2]).Normalized()));
+        }
+        Entrances = entrances;
         foreach (var region in regions)
         {
             var vertices = region.Collision.Data;
@@ -131,7 +142,7 @@ public sealed class WorldEnvironmentAnalysis
         return found;
     }
 
-    public WorldSurfaceHit ProjectDown(Vector3 origin) => RaycastSurface(origin, Vector3.Down, 100f);
+    public WorldSurfaceHit ProjectDown(Vector3 origin) => RaycastSurface(origin, Vector3.Down, 150f);
 
     private IEnumerable<int> AllTriangleIndices()
     {
@@ -188,9 +199,7 @@ public sealed class WorldEnvironmentAnalysis
     private WorldEnvironmentSample FieldsAt(WorldSurfaceHit hit, float concavity)
     {
         var surface = hit.Position;
-        var radius = new Vector2(surface.X, surface.Z).Length();
-        var angle = Mathf.Atan2(surface.Z, surface.X);
-        var perimeter = Mathf.Max(0f, _basin.PerimeterRadius(angle) - radius);
+        var perimeter = Mathf.Max(0f, _basin.DistanceToShore(surface.X, surface.Z));
         var core = new Vector2(surface.X, surface.Z).DistanceTo(_basin.DeepCore);
         var entrance = float.PositiveInfinity;
         foreach (var region in _regions)

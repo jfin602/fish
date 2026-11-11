@@ -128,7 +128,6 @@ public partial class ReefComposition : Node3D
         stage?.Invoke("geology-mesh-collision", timer.ElapsedMilliseconds);
         timer.Restart();
         // The route reservation and terrain analysis precede all decorative instances.
-        GeneratedRoutes = new GeneratedWorldRoutes(seabed.Basin, geology.GeneratedRegions, Vector3.Zero);
         var fish = GetNodeOrNull<FishController>("../../../Fish");
         if (fish is null)
         {
@@ -137,6 +136,11 @@ public partial class ReefComposition : Node3D
         }
         try
         {
+            using var anchorPlanner = new WorldRoutePlanner(GetWorld3D().DirectSpaceState,
+                fish.GetRid(), seabed.Basin, geology.GeneratedRegions);
+            GeneratedRoutes = new GeneratedWorldRoutes(seabed.Basin, geology.GeneratedRegions,
+                anchorPlanner.PointClear);
+            GetNode<Marker3D>("../../Spawn").Position = GeneratedRoutes.Nodes["spawn"].Position;
             var repaired = GeneratedRoutes.RepairOpenConnectors(GetWorld3D().DirectSpaceState,
                 fish.GetRid(), seabed.Basin, geology.GeneratedRegions);
             GD.Print($"WORLD_ROUTES_READY nodes={GeneratedRoutes.Nodes.Count} edges={GeneratedRoutes.Edges.Count} repaired={repaired}");
@@ -153,7 +157,11 @@ public partial class ReefComposition : Node3D
         timer.Restart();
         if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
             !dressing.TryBuild(EnvironmentAnalysis, GeneratedRoutes, seabed.Basin.Seed, out diagnostic)) return false;
-        stage?.Invoke("placement-dressing", timer.ElapsedMilliseconds);
+        var dressingMilliseconds = timer.ElapsedMilliseconds;
+        stage?.Invoke("habitat-planning", dressing.HabitatPlanningMilliseconds);
+        stage?.Invoke("dense-placement", dressing.DensePlacementMilliseconds);
+        stage?.Invoke("dressing-install", Math.Max(0L,
+            dressingMilliseconds - dressing.HabitatPlanningMilliseconds - dressing.DensePlacementMilliseconds));
         timer.Restart();
         if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
             !ambient.TryBuild(seabed, dressing.Placements, GeneratedRoutes, out diagnostic)) return false;

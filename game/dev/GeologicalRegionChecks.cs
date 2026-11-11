@@ -8,6 +8,52 @@ namespace Fish;
 
 public static class GeologicalRegionChecks
 {
+    public static void RunSites()
+    {
+        var changed = 0;
+        Vector2? first = null;
+        foreach (var seed in new ulong[] { 42, 43, 44 })
+        {
+            var basin = new GeneratedBasin(seed);
+            var repeat = new GeneratedBasin(seed);
+            var regions = GeologicalRegionGenerator.Generate(basin);
+            Require(basin.GeologySites.Count == 5 && regions.Count == 5, "site inventory");
+            foreach (var site in basin.GeologySites)
+            {
+                var same = repeat.GeologySites.Single(s => s.Id == site.Id);
+                Require(site == same, "nondeterministic site " + site.Id);
+                var region = regions.Single(r => r.Id == site.Id);
+                var entry = region.Centerline[0]; var exit = region.Centerline[^1];
+                Require(basin.DistanceToShore(entry.X, entry.Z) > 12f &&
+                    basin.DistanceToShore(exit.X, exit.Z) > 12f,
+                    "entrance outside water domain " + site.Id);
+                var side = new Vector2(-site.Axis.Y, site.Axis.X);
+                var middle = basin.HeightAt(site.Center.X, site.Center.Y);
+                var left = basin.HeightAt((site.Center + side * (site.HalfWidth + 3f)).X,
+                    (site.Center + side * (site.HalfWidth + 3f)).Y);
+                var right = basin.HeightAt((site.Center - side * (site.HalfWidth + 3f)).X,
+                    (site.Center - side * (site.HalfWidth + 3f)).Y);
+                Require(left > middle + 1.6f && right > middle + 1.6f,
+                    "passage lacks connected terrain shoulders " + site.Id);
+                Require(site.TerrainScore > -1f && site.Depth is > 8f and < 24f &&
+                    site.Axis.Length() > .99f && region.NominalFishSideRoom > 2f &&
+                    (region.NominalCameraHeadroom is null || region.NominalCameraHeadroom > 1.5f),
+                    "site mass/clearance " + site.Id);
+                var vertices = region.Collision.Data;
+                var buried = vertices.Count(v => v.Y < basin.HeightAt(v.X, v.Z) - .5f);
+                Require(buried > vertices.Length / 25, "floating geology " + site.Id);
+                GD.Print($"GEOLOGY_SITE seed={seed} id={site.Id} center={site.Center} " +
+                    $"depth={site.Depth:F1} score={site.TerrainScore:F2} shoulders={left - middle:F1}/{right - middle:F1} " +
+                    $"length={site.Length:F1} half_width={site.HalfWidth:F1} buried={buried}/{vertices.Length}");
+            }
+            var at = basin.GeologySites[0].Center;
+            if (first is { } old && old.DistanceTo(at) > 5f) changed++;
+            first = at;
+        }
+        Require(changed > 0, "different seeds retained same site");
+        GD.Print("GEOLOGY_SITE_CHECK_OK seeds=42,43,44 sites=5 deterministic=true terrain_mass=true");
+    }
+
     public static void Run(Main main)
     {
         var seabed = main.GetNode<SeabedSurface>("Habitat/Seabed");

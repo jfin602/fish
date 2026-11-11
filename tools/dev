@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|inspect-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|inspect-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -139,12 +139,27 @@ world_compiler_check() {
 generated_geology_check() {
   local profile
   profile=$(mktemp -d "$ROOT/artifacts/generated-geology.XXXXXX")
-  logged generated-geology-mesh 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --geology-mesh-check
+  logged generated-geology-mesh 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --geology-mesh-check
   grep -Fq 'GEOLOGY_MESH_OK' "$LOGS/generated-geology-mesh.log" || { echo 'Generated geology mesh marker missing' >&2; return 1; }
   logged generated-geology-clearance 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/generated_geology_check.gd
   grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
+  inspect-shore-field)
+    need_tools
+    logged shore-field 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --shore-field-check
+    grep -Fq 'SHORE_FIELD_CHECK_OK' "$LOGS/shore-field.log" || { echo 'Shore field marker missing' >&2; exit 1; }
+    ;;
+  inspect-geology-sites)
+    need_tools
+    logged geology-sites 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --geology-site-check
+    grep -Fq 'GEOLOGY_SITE_CHECK_OK' "$LOGS/geology-sites.log" || { echo 'Geology site marker missing' >&2; exit 1; }
+    ;;
+  inspect-route-anchors)
+    need_tools
+    logged route-anchors 120 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --route-anchor-check
+    grep -Fq 'ROUTE_ANCHOR_CHECK_OK' "$LOGS/route-anchors.log" || { echo 'Route anchor marker missing' >&2; exit 1; }
+    ;;
   inspect-character-select)
     need_tools
     profile=$(mktemp -d "$ROOT/artifacts/character-select.XXXXXX")

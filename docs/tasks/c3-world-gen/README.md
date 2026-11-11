@@ -1,6 +1,6 @@
 # c3-world-gen — deterministic procedural reef world correction
 
-**State:** P1–P6 IMPLEMENTED / P7 NATIVE REVIEW FAILED, human owner acceptance pending. Seed 42 compiles in 51.687 s and reloads in 149 ms without generation, but [native review](qualification/native-world-gen.md) finds artificial dark slab/tube geology and weak reef composition; full seeds 43/44 fail route repair. The [closeout](closeout.md) leaves the correction not accepted. Seed 42 remains a provisional qualification Base World, not a shipping decision.
+**State:** P1–P6 IMPLEMENTED / P7 NATIVE REVIEW FAILED, human owner acceptance pending. Manual [R1/M1 shore/depth](qualification/m1-shore-depth.md) and [R1/M2 terrain-conditioned geology](qualification/m2-geology-blending.md) are progression candidates. [R1/M3 generated routes](qualification/m3-routes.md) replaced fixed goals; its earlier seed-44 finalizer error did not recur in the clean M4 full bakes, but native fish-controlled route review remains open. [R1/M4 dense habitats](qualification/m4-habitats.md) produced separate clean seed-42/43/44 candidates, density/timing measurements and Forward+ screenshots. Cave-mouth integration and one dark shallow geological view still fail the owner-facing visual checkpoint. Repeat P7 remains open. The historical [P7 native review](qualification/native-world-gen.md) and [closeout](closeout.md) remain failed evidence.
 **Type:** Correction 3.  
 **Authoring baseline:** GitHub main at `4c9b601df7c8aa97f983b02bea216aee13af2748`, root `0.3.0`.  
 **Execution version:** every prompt requires **unchanged `0.3.6`**, the owner-selected P3 P6 checkpoint. This is a strict preflight for the intended local execution point, not an instruction to bump/downgrade GitHub main or fabricate P3 checkpoints.
@@ -57,7 +57,7 @@ The pushed P7 result is not GREEN. Use the targeted manual repair sequence in [m
 3. M3 — generated route anchors + multi-seed reliability;
 4. M4 — dense habitat regions + aggressive depth-dependent reef composition.
 
-Run them manually and stop for review after each. Do not chain all four automatically. Keep c3-visibility on hold until the generated world is visually accepted enough to tune visibility.
+M1 and M2 completed their manual progression handoffs. M3 route implementation is in place, and M4 was explicitly requested as a manual task. M4's [qualification note](qualification/m4-habitats.md) records owner-reviewable candidates and remaining visual failures. Keep c3-visibility on hold until the generated world is visually accepted enough to tune visibility.
 
 ## Acceptance boundary
 
@@ -84,6 +84,7 @@ The 120-second target is not pre-approved evidence. Measure it.
 Execution records:
 
 - [implementation evidence](qualification/implementation.md) — P1 source, commands, deterministic checks and fixture phase timings; later P2–P6 results belong here when executed;
+- [M1 shore/depth repair](qualification/m1-shore-depth.md), [M2 geology/blending repair](qualification/m2-geology-blending.md), [M3 generated routes](qualification/m3-routes.md) and [M4 dense habitats](qualification/m4-habitats.md) — manual R1 implementation evidence and remaining qualification issues;
 - `qualification/native-world-gen.md` — P7 native world inspection/play, generation/load measurements and owner judgment;
 - `closeout.md` — V26/V27 and correction disposition.
 

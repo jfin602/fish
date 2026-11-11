@@ -16,13 +16,15 @@ public sealed record FullWorldManifest(int FormatVersion, string WorldId, ulong 
     int SettingsVersion, string GeneratorVersion, string CatalogSha256, string ContentSha256,
     IReadOnlyList<FullWorldResource> Resources, IReadOnlyList<WorldStageTiming> Timings,
     int RouteNodes, int RouteEdges, int EnvironmentSamples, int Placements,
-    int GeologyRegions, int AmbientFish);
+    int GeologyRegions, int AmbientFish, string? BasinAlgorithm = null,
+    float[]? ShoreBounds = null, float? DeepestDepth = null);
 public sealed record BakedRouteNode(string Id, float[] Position, string Role,
     float FishRadius, float CameraRadius, float CameraOffsetY);
 public sealed record BakedRouteEdge(string Id, string From, string To, string Kind,
     float[][] Points, float ProtectedRadius, float CameraProtectedRadius);
 public sealed record BakedPlacement(string AssetId, string Role, string DepthBand,
-    float[] Position, float Radius);
+    float[] Position, float Radius, float[]? Normal = null, float? Yaw = null,
+    float? Scale = null);
 public sealed record FullWorldData(IReadOnlyList<BakedRouteNode> Nodes,
     IReadOnlyList<BakedRouteEdge> Edges, IReadOnlyList<float[]> Environment,
     IReadOnlyList<BakedPlacement> Placements, FafAmbientReefLife.BakedAmbient Ambient);
@@ -36,7 +38,7 @@ public static class WorldGenerationAudit
 /// <summary>Finite scene and analysis snapshot. Loading never calls a world generator.</summary>
 public static class FullWorldPackage
 {
-    public const string GeneratorVersion = "c3-full-1";
+    public const string GeneratorVersion = "c3-full-12";
     public const int SettingsVersion = 1;
     public const string MeshFile = "seabed-mesh.res";
     public const string CollisionFile = "seabed-collision.res";
@@ -45,7 +47,7 @@ public static class FullWorldPackage
     public const string AmbientFile = "ambient.scn";
     public const string DataFile = "world-data.json";
     public const string ManifestFile = "manifest.json";
-    public const string DefaultBase = "res://worlds/base/qualification-42";
+    public const string DefaultBase = "res://worlds/base/ocean-m4-42";
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
 
     public static FullWorldManifest Bake(Node3D habitat, ulong seed, string directory,
@@ -65,7 +67,7 @@ public static class FullWorldPackage
         var environment = reef.EnvironmentAnalysis ?? throw new InvalidDataException("Missing environment analysis");
         if (seabed.Basin.Seed != seed || geology.GeneratedRegions.Count != 5 ||
             dressing.Placements.Count < 100 || routes.Nodes.Count < 20 ||
-            environment.CachedSampleCount != 1681)
+            environment.CachedSampleCount != WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide)
             throw new InvalidDataException("Incomplete full world cannot be baked");
         var data = new FullWorldData(
             routes.Nodes.Values.OrderBy(n => n.Id, StringComparer.Ordinal)
@@ -78,7 +80,8 @@ public static class FullWorldPackage
                 .Select(i => Field(environment.SampleGrid(i % WorldEnvironmentAnalysis.CellsPerSide,
                     i / WorldEnvironmentAnalysis.CellsPerSide))).ToArray(),
             dressing.Placements.Select(p => new BakedPlacement(p.Asset.Id, p.Role.ToString(),
-                p.DepthBand, Vec(p.Position), p.Radius)).ToArray(), ambient.ExportBaked());
+                p.DepthBand, Vec(p.Position), p.Radius, Vec(p.Normal), p.Yaw, p.Scale)).ToArray(),
+            ambient.ExportBaked());
         var dataBytes = JsonSerializer.SerializeToUtf8Bytes(data, Json);
         System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(directory + "/" + DataFile), dataBytes);
         var dataMilliseconds = timer.ElapsedMilliseconds;
@@ -105,7 +108,11 @@ public static class FullWorldPackage
             seed, SettingsVersion, GeneratorVersion, catalogHash,
             BakedWorldContract.Hash(string.Join("|", resources.Select(r => r.Sha256))),
             resources, timings, data.Nodes.Count, data.Edges.Count, data.Environment.Count,
-            data.Placements.Count, geology.GeneratedRegions.Count, data.Ambient.Fish.Count);
+            data.Placements.Count, geology.GeneratedRegions.Count, data.Ambient.Fish.Count,
+            GeneratedBasin.AlgorithmVersion,
+            new[] { seabed.Basin.ShoreMin.X, seabed.Basin.ShoreMin.Y,
+                seabed.Basin.ShoreMax.X, seabed.Basin.ShoreMax.Y },
+            GeneratedBasin.WaterSurfaceY - seabed.Basin.DeepFloorY);
         System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(directory + "/" + ManifestFile),
             JsonSerializer.SerializeToUtf8Bytes(manifest, Json));
         return manifest;
@@ -120,10 +127,17 @@ public static class FullWorldPackage
             System.IO.File.ReadAllBytes(System.IO.Path.Combine(path, ManifestFile)))
             ?? throw new InvalidDataException("Empty full-world manifest");
         var catalogHash = WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment);
-        if (manifest.FormatVersion != 1 || manifest.GeneratorVersion != GeneratorVersion ||
+        var legacy = manifest.GeneratorVersion == "c3-full-1";
+        var m1Baked = manifest.GeneratorVersion == "c3-full-3";
+        if (manifest.FormatVersion != 1 || (!legacy && !m1Baked &&
+            manifest.GeneratorVersion != "c3-full-8" && manifest.GeneratorVersion != "c3-full-9" &&
+            manifest.GeneratorVersion != "c3-full-11" &&
+            manifest.GeneratorVersion != GeneratorVersion) ||
             manifest.SettingsVersion != SettingsVersion || manifest.CatalogSha256 != catalogHash ||
-            manifest.WorldId != BakedWorldContract.WorldId(GeneratorVersion, SettingsVersion,
+            manifest.WorldId != BakedWorldContract.WorldId(manifest.GeneratorVersion, SettingsVersion,
             manifest.Seed, catalogHash) || manifest.Resources.Count != 6 ||
+            (!legacy && (manifest.BasinAlgorithm != GeneratedBasin.AlgorithmVersion ||
+                manifest.ShoreBounds is not { Length: 4 } || manifest.DeepestDepth is null or < 30f or > 45f)) ||
             !manifest.Resources.Select(r => r.Path).SequenceEqual(
                 new[] { MeshFile, CollisionFile, GeologyFile, DressingFile, AmbientFile, DataFile }))
             throw new InvalidDataException("Incompatible full-world manifest");
@@ -141,14 +155,15 @@ public static class FullWorldPackage
         if (data.Nodes.Count != manifest.RouteNodes || data.Edges.Count != manifest.RouteEdges ||
             data.Environment.Count != manifest.EnvironmentSamples ||
             data.Placements.Count != manifest.Placements || data.Ambient.Fish.Count != manifest.AmbientFish ||
-            manifest.GeologyRegions != 5 || manifest.EnvironmentSamples != 1681)
+            manifest.GeologyRegions != 5 || manifest.EnvironmentSamples !=
+                (legacy ? 1681 : WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide))
             throw new InvalidDataException("Full-world data summary mismatch");
         var seabed = habitat.GetNode<SeabedSurface>("Seabed");
         var mesh = ResourceLoader.Load<ArrayMesh>(directory + "/" + MeshFile)
             ?? throw new InvalidDataException("Baked basin mesh missing");
         var collision = ResourceLoader.Load<ConcavePolygonShape3D>(directory + "/" + CollisionFile)
             ?? throw new InvalidDataException("Baked basin collision missing");
-        seabed.InstallBaked(mesh, collision, manifest.Seed);
+        seabed.InstallBaked(mesh, collision, manifest.Seed, legacy, m1Baked);
         var reef = habitat.GetNode<ReefComposition>("Composition/ReefComposition");
         var geology = reef.GetNode<FafGeologyWorld>("Geology");
         var dressing = reef.GetNode<FafReefDressing>("Dressing");
@@ -156,6 +171,8 @@ public static class FullWorldPackage
         geology.AddChild(LoadSubscene(directory, GeologyFile));
         ReplaceVisuals(dressing, LoadSubscene(directory, DressingFile));
         ReplaceVisuals(ambient, LoadSubscene(directory, AmbientFile));
+        if (manifest.GeneratorVersion is "c3-full-11" or GeneratorVersion)
+            RestoreDecorationBatches(dressing, data.Placements);
         if (seabed.GeneratedMesh is null || seabed.GeneratedCollision is null ||
             geology.GetNode<Node3D>("GeneratedRegions").GetChildCount() != 5 ||
             dressing.GetNode<Node3D>("Visuals").GetChildCount() < 30 ||
@@ -163,11 +180,50 @@ public static class FullWorldPackage
             throw new InvalidDataException("Full-world geometry or collision is missing");
         ambient.RestoreBaked(data.Ambient, seabed);
         reef.InstallBakedData(data);
+        if (manifest.GeneratorVersion is "c3-full-9" or "c3-full-11" or GeneratorVersion)
+        {
+            var spawn = data.Nodes.Single(n => n.Id == "spawn");
+            habitat.GetNode<Marker3D>("Spawn").Position = new Vector3(spawn.Position[0],
+                spawn.Position[1], spawn.Position[2]);
+        }
         var generationDuringLoad = WorldGenerationAudit.StageInvocations - generationBefore;
         if (generationDuringLoad != 0)
             throw new InvalidOperationException($"World generator ran during baked load: {generationDuringLoad} stages");
         GD.Print($"WORLD_BAKED_LOAD_OK id={manifest.WorldId} seed={manifest.Seed} content={manifest.ContentSha256} elapsed_ms={timer.ElapsedMilliseconds} generator_invocations={generationDuringLoad}");
         return (manifest, data);
+    }
+
+    // Headless Godot's dummy renderer does not retain MultiMesh transform buffers in
+    // packed scenes. The manifest-authenticated data is the authoritative transform
+    // source; applying it on load is data restoration, not world generation.
+    private static void RestoreDecorationBatches(FafReefDressing dressing,
+        IReadOnlyList<BakedPlacement> placements)
+    {
+        var visuals = dressing.GetNode<Node3D>("Visuals");
+        foreach (var group in placements.Where(p => FafRuntimeCatalog.GetEnvironment(p.AssetId).Family is
+            not (FafEnvironmentFamily.Terrain or FafEnvironmentFamily.Rock))
+            .GroupBy(p => p.AssetId, StringComparer.Ordinal))
+        {
+            var node = visuals.GetNodeOrNull<MultiMeshInstance3D>(group.Key.Replace('-', '_'))
+                ?? throw new InvalidDataException($"Missing baked decoration batch: {group.Key}");
+            var batch = node.Multimesh ?? throw new InvalidDataException("Empty decoration MultiMesh");
+            var items = group.ToArray();
+            if (batch.InstanceCount != items.Length)
+                throw new InvalidDataException($"Decoration batch count mismatch: {group.Key}");
+            var asset = FafRuntimeCatalog.GetEnvironment(group.Key);
+            for (var i = 0; i < items.Length; i++)
+            {
+                var p = items[i];
+                if (p.Normal is not { Length: 3 } || p.Yaw is null || p.Scale is null)
+                    throw new InvalidDataException($"Missing decoration transform: {group.Key}");
+                var instance = new GeneratedFafInstance(asset,
+                    Enum.Parse<HabitatRole>(p.Role), p.DepthBand,
+                    new Vector3(p.Position[0], p.Position[1], p.Position[2]),
+                    new Vector3(p.Normal[0], p.Normal[1], p.Normal[2]),
+                    p.Yaw.Value, p.Scale.Value, p.Radius, 0f, 0f);
+                batch.SetInstanceTransform(i, instance.Transform);
+            }
+        }
     }
 
     private static void SaveResource(Resource resource, string path)

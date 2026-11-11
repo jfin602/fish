@@ -7,8 +7,17 @@ public partial class FishController : CharacterBody3D
 {
     [Export] public SwimTuning Tuning { get; set; } = new();
     // Safety clamp sits just inside the physical wall (inner face 37.2 m, fish radius .48 m).
-    private const float HorizontalLimit = 36.7f;
-    private const float VerticalLimit = 9.0f;
+    private float _horizontalLimit = 36.7f;
+    private float _minimumY = -9f;
+    private float _maximumY = 9f;
+    public void ConfigureWorldBounds(float horizontalLimit, float minimumY, float maximumY)
+    {
+        if (horizontalLimit < 36.7f || minimumY >= maximumY)
+            throw new System.ArgumentOutOfRangeException(nameof(horizontalLimit));
+        _horizontalLimit = horizontalLimit;
+        _minimumY = minimumY;
+        _maximumY = maximumY;
+    }
     private readonly ProfileSwimInput _input = new();
     private SwimState _state;
     private bool _inputArmed = true;
@@ -110,9 +119,9 @@ public partial class FishController : CharacterBody3D
 
         // Collision and the existing habitat bounds remain authoritative.
         var clamped = new Vector3(
-            Mathf.Clamp(Position.X, -HorizontalLimit, HorizontalLimit),
-            Mathf.Clamp(Position.Y, -VerticalLimit, VerticalLimit),
-            Mathf.Clamp(Position.Z, -HorizontalLimit, HorizontalLimit));
+            Mathf.Clamp(Position.X, -_horizontalLimit, _horizontalLimit),
+            Mathf.Clamp(Position.Y, _minimumY, _maximumY),
+            Mathf.Clamp(Position.Z, -_horizontalLimit, _horizontalLimit));
         var effective = Velocity;
         if (!Mathf.IsEqualApprox(clamped.X, Position.X)) effective.X = 0;
         if (!Mathf.IsEqualApprox(clamped.Y, Position.Y)) effective.Y = 0;

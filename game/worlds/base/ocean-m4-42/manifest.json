@@ -1,0 +1,99 @@
+{
+  "FormatVersion": 1,
+  "WorldId": "world-6cba9a67e6275297",
+  "Seed": 42,
+  "SettingsVersion": 1,
+  "GeneratorVersion": "c3-full-12",
+  "CatalogSha256": "d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a",
+  "ContentSha256": "ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879",
+  "Resources": [
+    {
+      "Path": "seabed-mesh.res",
+      "Sha256": "4257b5548341c7ca27d5a9bbf7dad6c2e29c191a399bc05c2d9896aa4a3f733d"
+    },
+    {
+      "Path": "seabed-collision.res",
+      "Sha256": "7e2fd8e3cc810a43e2b8d5ffe725796168cd260378f567ca16073c01791d483d"
+    },
+    {
+      "Path": "geology.scn",
+      "Sha256": "07b3d785872398ddf5ac071cfb5dd43d2a5b9d48478a2f7a2bc02b2499f26c7a"
+    },
+    {
+      "Path": "dressing.scn",
+      "Sha256": "f253127062a0f71b8817b8efb5245a82d677687b74f4593ed7a3abffe1ead298"
+    },
+    {
+      "Path": "ambient.scn",
+      "Sha256": "6d9d3205628256feb707b33ca1520a22278436e40b6eb00648cabcdf442ea91f"
+    },
+    {
+      "Path": "world-data.json",
+      "Sha256": "f0f1019c1e6d9752326f4289710373a62f8c813f164339548b20f354672f2f39"
+    }
+  ],
+  "Timings": [
+    {
+      "Stage": "palette-player",
+      "ElapsedMilliseconds": 218
+    },
+    {
+      "Stage": "basin-mesh-collision",
+      "ElapsedMilliseconds": 1134
+    },
+    {
+      "Stage": "legacy-source-prepare",
+      "ElapsedMilliseconds": 2431
+    },
+    {
+      "Stage": "geology-mesh-collision",
+      "ElapsedMilliseconds": 20
+    },
+    {
+      "Stage": "route-repair",
+      "ElapsedMilliseconds": 4221
+    },
+    {
+      "Stage": "environment-analysis",
+      "ElapsedMilliseconds": 383
+    },
+    {
+      "Stage": "habitat-planning",
+      "ElapsedMilliseconds": 6
+    },
+    {
+      "Stage": "dense-placement",
+      "ElapsedMilliseconds": 68
+    },
+    {
+      "Stage": "dressing-install",
+      "ElapsedMilliseconds": 261
+    },
+    {
+      "Stage": "ambient-life",
+      "ElapsedMilliseconds": 544
+    },
+    {
+      "Stage": "data-serialization",
+      "ElapsedMilliseconds": 130
+    },
+    {
+      "Stage": "scene-serialization",
+      "ElapsedMilliseconds": 265
+    }
+  ],
+  "RouteNodes": 31,
+  "RouteEdges": 37,
+  "EnvironmentSamples": 7921,
+  "Placements": 7960,
+  "GeologyRegions": 5,
+  "AmbientFish": 31,
+  "BasinAlgorithm": "c3-shore-depth-3",
+  "ShoreBounds": [
+    -140.92186,
+    -152.2159,
+    112.159546,
+    153.5259
+  ],
+  "DeepestDepth": 39.462975
+}

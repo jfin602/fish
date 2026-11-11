@@ -84,7 +84,7 @@ func _run() -> void:
 		var center: Vector3 = points[points.size() / 2]
 		var down := ray(space, center, center + Vector3.DOWN * 8.0, fish)
 		if down.is_empty() or down.collider != body:
-			fail(body.name + " generated floor is not first below center; hit=" + str(down.get("collider", "none")))
+			fail(body.name + " generated floor is not first below center; hit=" + str(down.get("collider", "none").get_path() if down.has("collider") else "none"))
 			return
 		var tangent: Vector3 = (points[9] - points[7]).normalized()
 		var side := Vector3(-tangent.z, 0.0, tangent.x).normalized()

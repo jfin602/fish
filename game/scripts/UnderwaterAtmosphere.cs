@@ -371,8 +371,8 @@ public partial class UnderwaterAtmosphere : Node3D
         for (var shaft = 0; shaft < centers.Length; shaft++)
         {
             var seed = decal.ToLocal(new Vector3(centers[shaft].X, 0, centers[shaft].Y));
-            var pixelX = Mathf.Clamp(Mathf.RoundToInt((seed.X / 100f + 0.5f) * 255f), 10, 245);
-            var pixelY = Mathf.Clamp(Mathf.RoundToInt((seed.Z / 100f + 0.5f) * 255f), 10, 245);
+            var pixelX = Mathf.Clamp(Mathf.RoundToInt((seed.X / decal.Size.X + 0.5f) * 255f), 10, 245);
+            var pixelY = Mathf.Clamp(Mathf.RoundToInt((seed.Z / decal.Size.Z + 0.5f) * 255f), 10, 245);
             var strongest = -1f;
             var bestX = -1;
             var bestY = -1;
@@ -383,8 +383,8 @@ public partial class UnderwaterAtmosphere : Node3D
                 var sy = Mathf.Clamp(pixelY + dy, 3, 252);
                 var sample = image.GetPixel(sx, sy).A;
                 if (sample <= Mathf.Max(strongest, 0.02f)) continue;
-                var candidate = decal.ToGlobal(new Vector3(((sx + 0.5f) / 256f - 0.5f) * 100f, 0,
-                    ((sy + 0.5f) / 256f - 0.5f) * 100f));
+                var candidate = decal.ToGlobal(new Vector3(((sx + 0.5f) / 256f - 0.5f) * decal.Size.X, 0,
+                    ((sy + 0.5f) / 256f - 0.5f) * decal.Size.Z));
                 var floorY = seabed.GetHeightAt(candidate.X, candidate.Z) + 0.3f;
                 if (floorY < decal.GlobalPosition.Y - decal.Size.Y * 0.5f + 0.3f ||
                     floorY > _surfaceHeight - 1f) continue;
@@ -402,8 +402,8 @@ public partial class UnderwaterAtmosphere : Node3D
             var tangentLocal = new Vector3(-gy, 0, gx).Normalized();
             if (tangentLocal.LengthSquared() < 0.01f) tangentLocal = Vector3.Right;
             var tangent = (decal.GlobalTransform.Basis * tangentLocal).Normalized();
-            var localFloor = new Vector3(((bestX + 0.5f) / 256f - 0.5f) * 100f, 0,
-                ((bestY + 0.5f) / 256f - 0.5f) * 100f);
+            var localFloor = new Vector3(((bestX + 0.5f) / 256f - 0.5f) * decal.Size.X, 0,
+                ((bestY + 0.5f) / 256f - 0.5f) * decal.Size.Z);
             var worldFloor = decal.ToGlobal(localFloor);
             var bottom = new Vector3(worldFloor.X, seabed.GetHeightAt(worldFloor.X, worldFloor.Z) + 0.3f, worldFloor.Z);
             var top = bottom + sunUp * ((_surfaceHeight - 0.08f - bottom.Y) / sunUp.Y);
@@ -447,15 +447,18 @@ public partial class UnderwaterAtmosphere : Node3D
     private void AddCaustics()
     {
         var texture = MakeCausticTexture();
+        var planeWidth = (_surface?.Mesh as PlaneMesh)?.Size.X ?? 100f;
+        var largeWorld = planeWidth > 100f;
+        var horizontal = largeWorld ? planeWidth : 100f;
+        var vertical = largeWorld ? Mathf.Max(22f, _surfaceHeight - _deepReferenceHeight + 20f) : 22f;
         for (var index = 0; index < _caustics.Length; index++)
         {
             var decal = new Decal
             {
                 Name = $"CausticProjection{index + 1}",
-                Position = new Vector3(0, 3, 0),
+                Position = new Vector3(0, largeWorld ? 14f - vertical * .5f : 3f, 0),
                 Rotation = new Vector3(0, 0.12f, 0),
-                // 100 m covers the 84 m habitat after the small off-axis rotation and drift.
-                Size = new Vector3(100, 22, 100),
+                Size = new Vector3(horizontal, vertical, horizontal),
                 TextureAlbedo = texture,
                 AlbedoMix = 0,
                 TextureEmission = texture,

@@ -10,39 +10,33 @@ public sealed record GeologicalRegion(string Id, string Kind, ArrayMesh Mesh,
     ConcavePolygonShape3D Collision, Vector3[] Centerline, float NominalFishSideRoom,
     float? NominalCameraHeadroom);
 
-/// <summary>Seeded lofts with buried outer skirts. No runtime CSG or placed rock supports.</summary>
+/// <summary>Terrain-selected passages lofted through continuous seabed shoulders.</summary>
 public static class GeologicalRegionGenerator
 {
-    public const string AlgorithmVersion = "c3-geology-loft-1";
+    public const string AlgorithmVersion = "c3-geology-terrain-4";
     private const int Sides = 20;
     private const int Stations = 16;
     private const float RouteLift = 1.8f;
 
-    private readonly record struct Spec(string Id, string Kind, Vector2 Start, Vector2 Control,
-        Vector2 End, float HalfWidth, float Height, float Mass, float Bulge);
-
-    private static readonly Spec[] Shells =
-    {
-        new("cave-chamber", "cave", new(-6, 10.5f), new(1, 12), new(8, 10.5f), 3.3f, 6.6f, 3.2f, 2.1f),
-        new("west-swim-through", "tunnel", new(-17, -3), new(-16, 3), new(-14, 9), 2.8f, 6.0f, 2.8f, .25f),
-        new("east-swim-through", "tunnel", new(19, -8), new(16, -1), new(18, 7), 2.6f, 5.8f, 3.0f, .1f),
-        new("stone-arch", "arch", new(-6, -4), new(-3, -3), new(0, -4), 4.4f, 7.2f, 2.7f, .1f),
-    };
-
     public static IReadOnlyList<GeologicalRegion> Generate(GeneratedBasin basin)
     {
         WorldGenerationAudit.MarkStage();
-        var result = new List<GeologicalRegion>(Shells.Length + 1);
-        foreach (var spec in Shells) result.Add(BuildShell(basin, spec));
-        result.Add(BuildCanyon(basin));
+        var result = new List<GeologicalRegion>(5);
+        foreach (var site in basin.GeologySites)
+            result.Add(site.Kind == "canyon" ? BuildCanyon(basin, site) : BuildShell(basin, site));
         return result;
     }
 
-    private static GeologicalRegion BuildShell(GeneratedBasin basin, Spec spec)
+    private static GeologicalRegion BuildShell(GeneratedBasin basin, GeologySite site)
     {
         var random = new WorldCompileContext(new WorldGenerationSettings(basin.Seed))
-            .Stream("geology", spec.Id + "|" + AlgorithmVersion);
+            .Stream("geology", site.Id + "|" + AlgorithmVersion);
         var phase = (float)(random.Next() % 6283) / 1000f;
+        var sideways = new Vector2(-site.Axis.Y, site.Axis.X);
+        var start = site.Center - site.Axis * site.Length * .5f;
+        var end = site.Center + site.Axis * site.Length * .5f;
+        var bend = site.Kind == "arch" ? .7f : site.Id == "east-swim-through" ? 2.4f : 1.3f;
+        var control = site.Center + sideways * bend * Mathf.Sin(phase);
         var inner = new Vector3[Stations, Sides];
         var outer = new Vector3[Stations, Sides];
         var route = new Vector3[Stations];
@@ -51,13 +45,15 @@ public static class GeologicalRegionGenerator
         for (var station = 0; station < Stations; station++)
         {
             var t = station / (float)(Stations - 1);
-            var p = Bezier(spec.Start, spec.Control, spec.End, t);
-            var tangent = (BezierDerivative(spec.Start, spec.Control, spec.End, t)).Normalized();
+            var p = Bezier(start, control, end, t);
+            var tangent = (BezierDerivative(start, control, end, t)).Normalized();
             var side = new Vector2(-tangent.Y, tangent.X);
             var swell = Mathf.Pow(Mathf.Sin(Mathf.Pi * t), 2f);
-            var floorLift = .24f + .38f * swell;
-            var width = spec.HalfWidth + spec.Bulge * swell + .16f * swell * Mathf.Sin(phase + t * 8f);
-            var height = spec.Height + spec.Bulge * .35f * swell;
+            var floorLift = .95f + .12f * Mathf.Sin(phase + t * 5f) * swell;
+            var bulge = site.Kind == "cave" ? 1.8f : .3f;
+            var width = site.HalfWidth + bulge * swell + .24f * Mathf.Sin(phase + t * 7f);
+            var height = (site.Kind == "arch" ? 6.8f : 6.6f) +
+                (site.Kind == "cave" ? .8f : .3f) * swell + .25f * Mathf.Sin(phase * .7f + t * 9f);
             var floor = basin.HeightAt(p.X, p.Y) + floorLift;
             route[station] = new Vector3(p.X, floor + RouteLift, p.Y);
             minimumWidth = Mathf.Min(minimumWidth, width);
@@ -67,20 +63,20 @@ public static class GeologicalRegionGenerator
                 var angle = ring * Mathf.Tau / Sides;
                 var cosine = Mathf.Cos(angle);
                 var sine = Mathf.Sin(angle);
-                var sideWarp = 1f + .045f * Mathf.Sin(angle * 3f + phase + t * 4f) * swell;
-                var innerU = width * cosine * sideWarp;
+                var sideWarp = 1f + .08f * Mathf.Sin(angle * 3f + phase + t * 3f) * swell;
+                var innerU = width * cosine * sideWarp + .14f * Mathf.Sin(phase + t * 4f) * swell;
                 var innerXZ = p + side * innerU;
                 var innerFloor = basin.HeightAt(innerXZ.X, innerXZ.Y) + floorLift;
                 inner[station, ring] = new Vector3(innerXZ.X,
                     innerFloor + height * (sine + 1f) * .5f, innerXZ.Y);
-                var outerU = (width + spec.Mass) * cosine;
+                var outerU = (width + 2.5f + .2f * Mathf.Sin(phase + t * 4f)) * cosine;
                 var outerXZ = p + side * outerU;
                 var outerFloor = basin.HeightAt(outerXZ.X, outerXZ.Y) - 1.7f;
                 outer[station, ring] = new Vector3(outerXZ.X,
                     outerFloor + (height + 2.7f) * (sine + 1f) * .5f, outerXZ.Y);
             }
         }
-        var mesh = NewMesh(spec.Id);
+        var mesh = NewMesh(site.Id);
         using var tool = Begin(mesh);
         for (var station = 0; station < Stations - 1; station++)
         for (var ring = 0; ring < Sides; ring++)
@@ -107,11 +103,11 @@ public static class GeologicalRegionGenerator
         }
         tool.Commit(mesh);
         var shape = MakeCollision(mesh);
-        return new GeologicalRegion(spec.Id, spec.Kind, mesh, shape, route,
+        return new GeologicalRegion(site.Id, site.Kind, mesh, shape, route,
             minimumWidth - .48f, minimumHeight - RouteLift - 2f - .22f);
     }
 
-    private static GeologicalRegion BuildCanyon(GeneratedBasin basin)
+    private static GeologicalRegion BuildCanyon(GeneratedBasin basin, GeologySite site)
     {
         const int columns = 13;
         var offsets = new[] { -9f, -7f, -5f, -3.8f, -3.1f, -2.6f, 0f,
@@ -124,13 +120,12 @@ public static class GeologicalRegionGenerator
         for (var station = 0; station < Stations; station++)
         {
             var t = station / (float)(Stations - 1);
-            var z = 21f + t * 8f;
-            var x = .5f * Mathf.Sin(t * Mathf.Pi);
-            var p = new Vector2(x, z);
-            var tangent = new Vector2(.5f * Mathf.Pi * Mathf.Cos(t * Mathf.Pi) / 8f, 1f).Normalized();
+            var p = site.Center + site.Axis * ((t - .5f) * site.Length) +
+                new Vector2(-site.Axis.Y, site.Axis.X) * (.8f * Mathf.Sin(t * Mathf.Pi));
+            var tangent = site.Axis;
             var side = new Vector2(tangent.Y, -tangent.X);
-            route[station] = new Vector3(x,
-                basin.HeightAt(x, z) + heights[6] * (.55f + .45f * Mathf.Sin(Mathf.Pi * t)) + RouteLift, z);
+            route[station] = new Vector3(p.X,
+                basin.HeightAt(p.X, p.Y) + heights[6] * (.55f + .45f * Mathf.Sin(Mathf.Pi * t)) + RouteLift, p.Y);
             for (var column = 0; column < columns; column++)
             {
                 var q = p + side * offsets[column];
@@ -142,6 +137,8 @@ public static class GeologicalRegionGenerator
         }
         var mesh = NewMesh("canyon-ridge");
         using var tool = Begin(mesh);
+        var outward = new Vector3(site.Axis.Y, 0f, -site.Axis.X);
+        var forward = new Vector3(site.Axis.X, 0f, site.Axis.Y);
         for (var station = 0; station < Stations - 1; station++)
         for (var column = 0; column < columns - 1; column++)
         {
@@ -153,16 +150,16 @@ public static class GeologicalRegionGenerator
         for (var station = 0; station < Stations - 1; station++)
         {
             Quad(tool, top[station, 0], bottom[station, 0], bottom[station + 1, 0],
-                top[station + 1, 0], Vector3.Left);
+                top[station + 1, 0], -outward);
             Quad(tool, top[station, columns - 1], top[station + 1, columns - 1],
-                bottom[station + 1, columns - 1], bottom[station, columns - 1], Vector3.Right);
+                bottom[station + 1, columns - 1], bottom[station, columns - 1], outward);
         }
         for (var column = 0; column < columns - 1; column++)
         {
             Quad(tool, top[0, column], top[0, column + 1], bottom[0, column + 1],
-                bottom[0, column], Vector3.Forward);
+                bottom[0, column], -forward);
             Quad(tool, top[Stations - 1, column], bottom[Stations - 1, column],
-                bottom[Stations - 1, column + 1], top[Stations - 1, column + 1], Vector3.Back);
+                bottom[Stations - 1, column + 1], top[Stations - 1, column + 1], forward);
         }
         tool.Commit(mesh);
         return new GeologicalRegion("canyon-ridge", "canyon", mesh, MakeCollision(mesh), route, 2.6f, null);
@@ -177,7 +174,7 @@ public static class GeologicalRegionGenerator
         tool.SetMaterial(new StandardMaterial3D
         {
             ResourceName = "Generated cool reef geology",
-            AlbedoColor = new Color(.35f, .44f, .49f),
+            AlbedoColor = new Color(.56f, .65f, .62f),
             Roughness = .95f,
             CullMode = BaseMaterial3D.CullModeEnum.Disabled,
         });

@@ -24,6 +24,8 @@ public static class P2HabitatWorld
                 var bakedHabitat = main.GetNode<Node3D>("Habitat");
                 var (manifest, _) = FullWorldPackage.Load(source, bakedHabitat);
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
+                if (manifest.GeneratorVersion != "c3-full-1")
+                    fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 fish.Position = bakedHabitat.GetNode<Marker3D>("Spawn").Position;
                 diagnostic = "";
                 GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} world={manifest.WorldId} mode=baked");
@@ -63,6 +65,7 @@ public static class P2HabitatWorld
         Stage("palette-player", stage.ElapsedMilliseconds);
         stage.Restart();
         seabed.SetBasinSeed(seed);
+        fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
         if (!seabed.Build(palette))
         {
             diagnostic = "FISH_HABITAT_INVALID action=build-continuous-seabed-and-collision";

@@ -38,13 +38,9 @@ Generate one continuous open seabed basin.
 
 The useful deepest region is near the world's center, with broad terrain generally rising toward the perimeter, but the world must not read as a mathematically perfect circle, concentric bowl, square room or parallel terrace stack.
 
-Construct a deterministic low-frequency basin domain using:
+The M1 correction now constructs a deterministic low-frequency **2D shoreline polygon first**. Its signed distance field drives a broad shallow-edge to deep-interior water-depth profile. Large folds, shelves, channels, ridges and a deep pocket are layered afterward; local changes fade near the shoreline. The finite mesh extends beyond the water domain so the natural perimeter is terrain, with fail-safe collision outside it. See the [M1 evidence](../../tasks/c3-world-gen/qualification/m1-shore-depth.md).
 
-- an irregular angular/perimeter radius;
-- warped X/Z coordinates or equivalent broad domain distortion;
-- a smooth center-to-perimeter elevation curve;
-- large folds, shoulders, channels and ridges layered after the base basin;
-- bounded small contour variation.
+The M2 correction selects five seed-specific geology sites from that finished terrain, adds connected ridge mass around passages, varies their cross-sections and centerlines, and blends their surfaces with the basin material and FAF rocks/terrain. The [M2 evidence](../../tasks/c3-world-gen/qualification/m2-geology-blending.md) records the structural and native review limits. M3 now selects route anchors from generated terrain and reconnects both sides of each passage; its [qualification evidence](../../tasks/c3-world-gen/qualification/m3-routes.md) records a remaining seed-44 compile-log error and native review gap.
 
 The deepest useful sample should remain in the central region, while local secondary depressions/ridges can break symmetry.
 

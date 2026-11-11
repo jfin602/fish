@@ -13,6 +13,8 @@ The existing deterministic compiler, manifest, bake/load boundary, Base World wo
 3. [M3 — Generated route anchors and multi-seed reliability](M3-generated-routes-and-multiseed.txt)
 4. [M4 — Dense habitats and depth-dependent reef composition](M4-dense-habitats-and-depth-composition.txt)
 
+[M1](../qualification/m1-shore-depth.md) and [M2](../qualification/m2-geology-blending.md) are implemented and documented for progression. [M3](../qualification/m3-routes.md) implemented terrain-derived routes; its historical seed-44 finalizer error did not recur in the later M4 full bakes, while native fish-controlled review remains open. The owner explicitly requested [M4](../qualification/m4-habitats.md), which produced new qualification candidates and native screenshots. M4 cave blending and one dark shallow view still fail the visual checkpoint; formal P7 remains open.
+
 ## Shared repair target
 
 The next candidate should no longer resemble a compact bowl filled with a few dark slabs.

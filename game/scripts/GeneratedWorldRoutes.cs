@@ -46,29 +46,40 @@ public sealed class GeneratedWorldRoutes
     }
 
     public GeneratedWorldRoutes(GeneratedBasin basin, IReadOnlyList<GeologicalRegion> regions,
-        Vector3 spawn)
+        Func<Vector3, bool>? clear = null)
     {
-        AddNode("spawn", spawn, "safe-spawn");
-        AddNode("middle", new Vector3(8, -2f, -3), "middle");
-        AddNode("shallow", new Vector3(0, 4.5f, 24), "shallow");
-        AddOpen("deep", basin.DeepCore.X, basin.DeepCore.Y, "deep");
-        AddOpen("west-open", -23, 0, "open-water");
-        AddOpen("east-open", 24, 0, "open-water");
-        AddNode("west-return", new Vector3(-10, 6.5f, 21), "return");
-        AddNode("east-return", new Vector3(10, 6.5f, 21), "alternate");
-        AddOpen("deep-west", -13, -18, "landmark-approach");
-        AddNode("shallow-east", new Vector3(12, 6.5f, 24), "landmark-approach");
-        Add("spawn-middle", "spawn", "middle", "open-water");
-        Add("middle-shallow", "middle", "shallow", "shallow-middle");
+        var random = new WorldCompileContext(new WorldGenerationSettings(basin.Seed))
+            .Stream("route-anchors", "terrain-1");
+        var angle = (random.Next() % 6283) / 1000f;
+        var forward = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        var side = new Vector2(-forward.Y, forward.X);
+        var chosen = new List<Vector3>();
+        AddSelected("spawn", "safe-spawn", 6f, basin.DeepCore + forward * 58f);
+        AddSelected("shallow", "shallow", 7f, basin.DeepCore + forward * 49f + side * 10f);
+        AddSelected("middle", "middle", 14f, basin.DeepCore + forward * 34f);
+        AddSelected("deep", "deep", 27f, basin.DeepCore + forward * 8f);
+        AddSelected("trench", "deepest-landmark", 35f, basin.DeepCore);
+        var middleAt = new Vector2(_nodes["middle"].Position.X, _nodes["middle"].Position.Z);
+        var shallowAt = new Vector2(_nodes["shallow"].Position.X, _nodes["shallow"].Position.Z);
+        var deepAt = new Vector2(_nodes["deep"].Position.X, _nodes["deep"].Position.Z);
+        AddSelected("west-open", "open-water", 16f, middleAt - side * 20f);
+        AddSelected("east-open", "open-water", 16f, middleAt + side * 20f);
+        AddSelected("west-return", "return", 8f, shallowAt - side * 20f);
+        AddSelected("east-return", "alternate", 8f, shallowAt + side * 20f);
+        AddSelected("deep-west", "landmark-approach", 24f, deepAt - side * 15f);
+        AddSelected("shallow-east", "landmark-approach", 8f, shallowAt + side * 20f);
+        Add("spawn-shallow", "spawn", "shallow", "open-water");
+        Add("shallow-middle", "shallow", "middle", "shallow-middle");
         Add("middle-deep", "middle", "deep", "middle-deep");
-        AddHigh("middle-west", "middle", "west-open", "open-water");
-        AddHigh("middle-east", "middle", "east-open", "open-water");
+        Add("middle-west", "middle", "west-open", "open-water");
+        Add("middle-east", "middle", "east-open", "open-water");
         Add("west-return", "west-open", "west-return", "return");
         Add("return-shallow", "west-return", "shallow", "return");
         Add("east-return", "east-open", "east-return", "alternate");
         Add("alternate-shallow", "east-return", "shallow", "alternate");
         Add("deep-landmark", "deep", "deep-west", "landmark-approach");
         Add("shallow-landmark", "shallow", "shallow-east", "landmark-approach");
+        Add("trench-landmark", "deep", "trench", "landmark-approach");
         foreach (var region in regions.OrderBy(r => r.Id, StringComparer.Ordinal))
         {
             var line = region.Centerline;
@@ -78,41 +89,54 @@ public sealed class GeneratedWorldRoutes
             AddNode(exit, line[^1], region.Kind + "-entrance");
             _edges.Add(new WorldRouteEdge(region.Id, entry, exit, region.Kind,
                 (Vector3[])line.Clone(), EnclosedExclusionRadius, CameraExclusionRadius));
-            if (region.Kind == "canyon")
-            {
-                Add(region.Id + ":link-in", "shallow", entry, "open-water");
-                Add(region.Id + ":link-out", exit, "shallow", "open-water");
-                continue;
-            }
             var before = line[0] + (line[0] - line[1]).Normalized() * 4f;
             var after = line[^1] + (line[^1] - line[^2]).Normalized() * 4f;
             var approach = region.Id + ":approach";
             var departure = region.Id + ":departure";
             AddNode(approach, before, "entrance-approach");
             Add(region.Id + ":in", approach, entry, "entrance");
-            var hub = region.Id switch
-            {
-                "west-swim-through" => "west-open",
-                "east-swim-through" => "east-open",
-                "canyon-ridge" => "shallow",
-                "stone-arch" => "middle",
-                _ => "shallow",
-            };
+            var hubs = new[] { "middle", "shallow", "deep", "west-open", "east-open",
+                "west-return", "east-return", "deep-west", "shallow-east" };
+            var hub = hubs
+                .OrderBy(id => _nodes[id].Position.DistanceTo(before)).First();
             Add(region.Id + ":link-in", hub, approach, "open-water");
-            // The generated basin still seals the east tunnel's far mouth. Keep
-            // its traversable centreline as an out-and-back branch for this seed.
-            if (region.Id != "east-swim-through")
-            {
-                AddNode(departure, after, "entrance-approach");
-                Add(region.Id + ":out", exit, departure, "entrance");
-                Add(region.Id + ":link-out", departure, hub, "open-water");
-            }
+            AddNode(departure, after, "entrance-approach");
+            Add(region.Id + ":out", exit, departure, "entrance");
+            var farHub = hubs.OrderBy(id => _nodes[id].Position.DistanceTo(after) +
+                (id == hub ? 18f : 0f)).First();
+            Add(region.Id + ":link-out", departure, farHub, "open-water");
         }
 
-        void AddOpen(string id, float x, float z, string role)
+        void AddSelected(string id, string role, float targetDepth, Vector2 target)
         {
-            var y = Mathf.Clamp(basin.HeightAt(x, z) + 3f, -8f, 6.5f);
-            AddNode(id, new Vector3(x, y, z), role);
+            var best = Vector3.Zero;
+            var bestScore = float.NegativeInfinity;
+            for (var z = -120; z <= 120; z += 4)
+            for (var x = -120; x <= 120; x += 4)
+            {
+                var shore = basin.DistanceToShore(x, z);
+                if (shore < 13f) continue;
+                var floor = basin.HeightAt(x, z);
+                var depth = GeneratedBasin.WaterSurfaceY - floor;
+                if (depth < targetDepth - 5f || depth > targetDepth + 5f) continue;
+                var y = Mathf.Min(floor + 2.4f, 5.5f);
+                if (y < floor + FishRadius + .12f || y > 6.2f) continue;
+                var position = new Vector3(x, y, z);
+                var score = -new Vector2(x, z).DistanceTo(target) * .16f -
+                    Mathf.Abs(depth - targetDepth) * 1.2f +
+                    Mathf.Min(shore, 32f) * .025f;
+                if (score <= bestScore) continue;
+                if (chosen.Any(p => p.DistanceTo(position) < 7f) ||
+                    regions.Any(r => r.Centerline.Any(p =>
+                        new Vector2(p.X - x, p.Z - z).Length() < 10f)) ||
+                    (clear is not null && !clear(position))) continue;
+                bestScore = score;
+                best = position;
+            }
+            if (!float.IsFinite(bestScore))
+                throw new InvalidOperationException($"No clear terrain anchor for {id} depth={targetDepth}");
+            chosen.Add(best);
+            AddNode(id, best, role);
         }
     }
 
@@ -123,15 +147,6 @@ public sealed class GeneratedWorldRoutes
         _edges.Add(new WorldRouteEdge(id, from, to, kind,
             new[] { _nodes[from].Position, _nodes[to].Position }, OpenExclusionRadius,
             CameraExclusionRadius));
-
-    private void AddHigh(string id, string from, string to, string kind)
-    {
-        var a = _nodes[from].Position;
-        var b = _nodes[to].Position;
-        _edges.Add(new WorldRouteEdge(id, from, to, kind,
-            new[] { a, new Vector3(a.X, 5.5f, a.Z), new Vector3(b.X, 5.5f, b.Z), b },
-            OpenExclusionRadius, CameraExclusionRadius));
-    }
 
     public float DistanceToRoute(Vector3 position)
     {
@@ -169,7 +184,7 @@ public sealed class GeneratedWorldRoutes
 
 internal sealed class WorldRoutePlanner : IDisposable
 {
-    private const float Step = 1.75f;
+    private const float Step = 3.5f;
     private readonly PhysicsDirectSpaceState3D _space;
     private readonly SphereShape3D _shape = new();
     private readonly PhysicsShapeQueryParameters3D _query;
@@ -216,7 +231,7 @@ internal sealed class WorldRoutePlanner : IDisposable
 
     private bool LineClear(Vector3 a, Vector3 b)
     {
-        var count = Mathf.Max(1, Mathf.CeilToInt(a.DistanceTo(b) / .7f));
+        var count = Mathf.Max(1, Mathf.CeilToInt(a.DistanceTo(b) / .3f));
         for (var i = 0; i <= count; i++)
             if (!Clear(a.Lerp(b, i / (float)count))) return false;
         return true;
@@ -224,8 +239,10 @@ internal sealed class WorldRoutePlanner : IDisposable
 
     private bool Clear(Vector3 point)
     {
-        if (Mathf.Abs(point.X) > 35f || Mathf.Abs(point.Z) > 35f ||
-            point.Y < -11.5f || point.Y > 7.15f) return false;
+        if (_basin.DistanceToShore(point.X, point.Z) < 2f ||
+            point.Y < -40f || point.Y > GeneratedBasin.WaterSurfaceY -
+            GeneratedWorldRoutes.CameraOffsetY - GeneratedWorldRoutes.CameraRadius - .05f)
+            return false;
         var key = new Vector3I(Mathf.RoundToInt(point.X * 100),
             Mathf.RoundToInt(point.Y * 100), Mathf.RoundToInt(point.Z * 100));
         if (_clearCache.TryGetValue(key, out var cached)) return cached;
@@ -241,7 +258,9 @@ internal sealed class WorldRoutePlanner : IDisposable
 
     private bool StaticClear(Vector3 point, float radius)
     {
-        if (point.Y < _basin.HeightAt(point.X, point.Z) + radius + .08f) return false;
+        // The seabed collider is a 2 m triangulated mesh; its linear surface can
+        // sit above the analytic height between samples near a steep ridge.
+        if (point.Y < _basin.HeightAt(point.X, point.Z) + radius + .7f) return false;
         var limit = radius * radius;
         foreach (var t in _geometry)
         {
@@ -273,6 +292,16 @@ internal sealed class WorldRoutePlanner : IDisposable
     public Vector3[]? Find(Vector3 start, Vector3 goal)
     {
         if (!Clear(start) || !Clear(goal)) return null;
+        foreach (var lift in new[] { 2f, 4f, 7f, 10f })
+        {
+            var curved = FindCurved(start, goal, lift);
+            if (curved is not null) return curved;
+        }
+        foreach (var height in new[] { 5.5f, 3.5f, 1.5f, -1f, -4f })
+        {
+            var level = FindAtHeight(start, goal, height);
+            if (level is not null) return level;
+        }
         var origin = start;
         var first = new Cell(0, 0, 0);
         var queue = new PriorityQueue<Cell, float>();
@@ -280,7 +309,7 @@ internal sealed class WorldRoutePlanner : IDisposable
         var parent = new Dictionary<Cell, Cell>();
         queue.Enqueue(first, start.DistanceTo(goal));
         var expansions = 0;
-        while (queue.Count > 0 && expansions++ < 5500)
+        while (queue.Count > 0 && expansions++ < 3500)
         {
             var current = queue.Dequeue();
             var here = Position(current);
@@ -319,6 +348,138 @@ internal sealed class WorldRoutePlanner : IDisposable
         return null;
 
         Vector3 Position(Cell c) => origin + new Vector3(c.X * Step, c.Y * Step, c.Z * Step);
+    }
+
+    private Vector3[]? FindCurved(Vector3 start, Vector3 goal, float lift)
+    {
+        var delta = new Vector2(goal.X - start.X, goal.Z - start.Z);
+        var lengthSquared = Mathf.Max(delta.LengthSquared(), 1f);
+        var maxY = GeneratedBasin.WaterSurfaceY - GeneratedWorldRoutes.CameraOffsetY -
+            GeneratedWorldRoutes.CameraRadius - .05f;
+        Vector3 At(float x, float z)
+        {
+            var t = Mathf.Clamp(new Vector2(x - start.X, z - start.Z).Dot(delta) /
+                lengthSquared, 0f, 1f);
+            return new Vector3(x, Mathf.Min(maxY,
+                Mathf.Lerp(start.Y, goal.Y, t) + lift * Mathf.Sin(Mathf.Pi * t)), z);
+        }
+        var direct = new[] { start, At(Mathf.Lerp(start.X, goal.X, .25f),
+            Mathf.Lerp(start.Z, goal.Z, .25f)), At(Mathf.Lerp(start.X, goal.X, .5f),
+            Mathf.Lerp(start.Z, goal.Z, .5f)), At(Mathf.Lerp(start.X, goal.X, .75f),
+            Mathf.Lerp(start.Z, goal.Z, .75f)), goal };
+        if (LineClear(direct)) return direct;
+        const float grid = 4f;
+        var first = Vector2I.Zero;
+        var queue = new PriorityQueue<Vector2I, float>();
+        var cost = new Dictionary<Vector2I, float> { [first] = 0f };
+        var parent = new Dictionary<Vector2I, Vector2I>();
+        queue.Enqueue(first, start.DistanceTo(goal));
+        var lowX = Mathf.Min(start.X, goal.X) - 32f;
+        var highX = Mathf.Max(start.X, goal.X) + 32f;
+        var lowZ = Mathf.Min(start.Z, goal.Z) - 32f;
+        var highZ = Mathf.Max(start.Z, goal.Z) + 32f;
+        var expansions = 0;
+        while (queue.Count > 0 && expansions++ < 2400)
+        {
+            var cell = queue.Dequeue();
+            var here = At(start.X + cell.X * grid, start.Z + cell.Y * grid);
+            if (here.DistanceTo(goal) < 6f && LineClear(here, goal))
+            {
+                var reverse = new List<Vector3> { goal, here };
+                while (parent.TryGetValue(cell, out var previous))
+                {
+                    cell = previous;
+                    reverse.Add(At(start.X + cell.X * grid, start.Z + cell.Y * grid));
+                }
+                reverse.Reverse();
+                var smooth = new List<Vector3> { start };
+                for (var k = 1; k < reverse.Count;)
+                {
+                    var next = reverse.Count - 1;
+                    while (next > k && !LineClear(smooth[^1], reverse[next])) next--;
+                    smooth.Add(reverse[next]);
+                    k = next + 1;
+                }
+                return smooth.ToArray();
+            }
+            for (var dz = -1; dz <= 1; dz++)
+            for (var dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dz == 0) continue;
+                var next = cell + new Vector2I(dx, dz);
+                var at = At(start.X + next.X * grid, start.Z + next.Y * grid);
+                if (at.X < lowX || at.X > highX || at.Z < lowZ || at.Z > highZ ||
+                    !Clear(at) || !LineClear(here, at)) continue;
+                var candidate = cost[cell] + here.DistanceTo(at);
+                if (cost.TryGetValue(next, out var old) && candidate >= old - .0001f) continue;
+                cost[next] = candidate;
+                parent[next] = cell;
+                queue.Enqueue(next, candidate + at.DistanceTo(goal));
+            }
+        }
+        return null;
+    }
+
+    private Vector3[]? FindAtHeight(Vector3 start, Vector3 goal, float height)
+    {
+        var aboveStart = new Vector3(start.X, height, start.Z);
+        var aboveGoal = new Vector3(goal.X, height, goal.Z);
+        if (!LineClear(start, aboveStart) || !LineClear(aboveGoal, goal)) return null;
+        if (LineClear(aboveStart, aboveGoal))
+            return new[] { start, aboveStart, aboveGoal, goal };
+        const float grid = 4f;
+        var first = Vector2I.Zero;
+        var queue = new PriorityQueue<Vector2I, float>();
+        var cost = new Dictionary<Vector2I, float> { [first] = 0f };
+        var parent = new Dictionary<Vector2I, Vector2I>();
+        queue.Enqueue(first, aboveStart.DistanceTo(aboveGoal));
+        var lowX = Mathf.Min(start.X, goal.X) - 36f;
+        var highX = Mathf.Max(start.X, goal.X) + 36f;
+        var lowZ = Mathf.Min(start.Z, goal.Z) - 36f;
+        var highZ = Mathf.Max(start.Z, goal.Z) + 36f;
+        var expansions = 0;
+        while (queue.Count > 0 && expansions++ < 3500)
+        {
+            var cell = queue.Dequeue();
+            var here = At(cell);
+            if (here.DistanceTo(aboveGoal) < 6f && LineClear(here, aboveGoal))
+            {
+                var reverse = new List<Vector3> { aboveGoal, here };
+                while (parent.TryGetValue(cell, out var previous))
+                {
+                    cell = previous;
+                    reverse.Add(At(cell));
+                }
+                reverse.Reverse();
+                var smooth = new List<Vector3> { start, aboveStart };
+                for (var k = 1; k < reverse.Count;)
+                {
+                    var next = reverse.Count - 1;
+                    while (next > k && !LineClear(smooth[^1], reverse[next])) next--;
+                    smooth.Add(reverse[next]);
+                    k = next + 1;
+                }
+                smooth.Add(goal);
+                return smooth.ToArray();
+            }
+            for (var dz = -1; dz <= 1; dz++)
+            for (var dx = -1; dx <= 1; dx++)
+            {
+                if (dx == 0 && dz == 0) continue;
+                var next = cell + new Vector2I(dx, dz);
+                var at = At(next);
+                if (at.X < lowX || at.X > highX || at.Z < lowZ || at.Z > highZ ||
+                    !Clear(at) || !LineClear(here, at)) continue;
+                var candidate = cost[cell] + here.DistanceTo(at);
+                if (cost.TryGetValue(next, out var old) && candidate >= old - .0001f) continue;
+                cost[next] = candidate;
+                parent[next] = cell;
+                queue.Enqueue(next, candidate + at.DistanceTo(aboveGoal));
+            }
+        }
+        return null;
+
+        Vector3 At(Vector2I cell) => aboveStart + new Vector3(cell.X * grid, 0f, cell.Y * grid);
     }
 
     private static Cell[] BuildDirections()

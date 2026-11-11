@@ -1,92 +1,125 @@
 #nullable enable
 using System;
+using System.Diagnostics;
 using Fish;
 using Godot;
 
 public static class BasinChecks
 {
+    public static void RunStructural()
+    {
+        var previous = new GeneratedBasin(42);
+        foreach (var seed in new ulong[] { 42, 43, 44 })
+        {
+            var timer = Stopwatch.StartNew();
+            var basin = seed == 42 ? previous : new GeneratedBasin(seed);
+            var copy = new GeneratedBasin(seed);
+            Require(basin.ShoreMin == copy.ShoreMin && basin.ShoreMax == copy.ShoreMax &&
+                basin.DeepCore == copy.DeepCore && basin.DeepFloorY == copy.DeepFloorY,
+                "same seed metadata changed");
+            var width = basin.ShoreMax.X - basin.ShoreMin.X;
+            var height = basin.ShoreMax.Y - basin.ShoreMin.Y;
+            Require(width >= 245f && width <= 355f && height >= 245f && height <= 355f,
+                $"footprint outside target: {width:F1}x{height:F1}");
+            Require(basin.MaxPerimeterRadius - basin.MinPerimeterRadius > 25f,
+                "shoreline lacks broad radius variation");
+            var radialDifference = 0f;
+            for (var i = 0; i < basin.ShorePointCount; i++)
+            {
+                var point = basin.ShorePoint(i);
+                Require(point == copy.ShorePoint(i), "shoreline changed for same seed");
+                if (seed != 42) radialDifference += point.DistanceTo(previous.ShorePoint(i));
+            }
+            if (seed != 42) Require(radialDifference / basin.ShorePointCount > 10f,
+                "seed produces too similar an outline");
+            var leastPeriodicDifference = float.PositiveInfinity;
+            for (var symmetry = 2; symmetry <= 6; symmetry++)
+            {
+                var difference = 0f;
+                var offset = basin.ShorePointCount / symmetry;
+                for (var i = 0; i < basin.ShorePointCount; i++)
+                    difference += Mathf.Abs(basin.ShorePoint(i).Length() -
+                        basin.ShorePoint(i + offset).Length());
+                leastPeriodicDifference = Mathf.Min(leastPeriodicDifference,
+                    difference / basin.ShorePointCount);
+            }
+            Require(leastPeriodicDifference > 9f,
+                $"outline has a periodic angular read: {leastPeriodicDifference:F1}");
+
+            var approaches = 0;
+            for (var i = 0; i < basin.ShorePointCount; i += 32)
+            {
+                var point = basin.ShorePoint(i);
+                var tangent = (basin.ShorePoint(i + 2) - basin.ShorePoint(i - 2)).Normalized();
+                var inward = new Vector2(-tangent.Y, tangent.X);
+                if (basin.DistanceToShore(point.X + inward.X * 4f, point.Y + inward.Y * 4f) < 0f)
+                    inward = -inward;
+                var d4 = basin.DistanceToShore(point.X + inward.X * 4f, point.Y + inward.Y * 4f);
+                var d20 = basin.DistanceToShore(point.X + inward.X * 20f, point.Y + inward.Y * 20f);
+                var h4 = basin.HeightAt(point.X + inward.X * 4f, point.Y + inward.Y * 4f);
+                var h20 = basin.HeightAt(point.X + inward.X * 20f, point.Y + inward.Y * 20f);
+                Require(d4 > 1f && d20 > d4 + 6f && h4 > h20 + 1f,
+                    $"shore approach did not deepen: bearing={i} distances={d4:F1}/{d20:F1} heights={h4:F1}/{h20:F1}");
+                approaches++;
+            }
+            var counts = new int[5];
+            var wet = 0; var maxStep = 0f; var maxDepth = 0f;
+            for (var z = -176; z <= 176; z += 2)
+            for (var x = -176; x <= 176; x += 2)
+            {
+                var shore = basin.DistanceToShore(x, z);
+                if (shore <= 0f) continue;
+                wet++;
+                var y = basin.HeightAt(x, z);
+                var depth = GeneratedBasin.WaterSurfaceY - y;
+                Require(float.IsFinite(y) && y == copy.HeightAt(x, z) &&
+                    shore == copy.DistanceToShore(x, z), "field changed for same seed");
+                var band = depth < 2f ? 0 : depth < 6f ? 1 : depth < 15f ? 2 : depth < 30f ? 3 : 4;
+                counts[band]++;
+                maxDepth = Mathf.Max(maxDepth, depth);
+                if (basin.DistanceToShore(x + 2f, z) > 0f)
+                    maxStep = Mathf.Max(maxStep, Mathf.Abs(y - basin.HeightAt(x + 2f, z)));
+            }
+            Require(counts[0] > wet / 100 && counts[1] > wet / 50 &&
+                counts[2] > wet / 10 && counts[3] > wet / 10 && counts[4] > wet / 200,
+                $"insufficient depth area: {string.Join(',', counts)} of {wet}");
+            Require(basin.DistanceToShore(basin.DeepCore.X, basin.DeepCore.Y) > 35f &&
+                maxDepth >= 30f && maxDepth <= 45f && maxStep < 3.5f,
+                $"core/continuity failed: core={basin.DeepCore} depth={maxDepth:F1} step={maxStep:F1}");
+            GD.Print($"SHORE_FIELD_SEED seed={seed} size={width:F1}x{height:F1} " +
+                $"shore_radius={basin.MinPerimeterRadius:F1}..{basin.MaxPerimeterRadius:F1} " +
+                $"inside_max={basin.MaximumInsideDistance:F1} core={basin.DeepCore} " +
+                $"core_shore={basin.DistanceToShore(basin.DeepCore.X, basin.DeepCore.Y):F1} " +
+                $"max_depth={maxDepth:F1} area_m2={string.Join(',', Array.ConvertAll(counts, c => c * 4))} " +
+                $"max_2m_step={maxStep:F2} symmetry_difference={leastPeriodicDifference:F1} " +
+                $"approaches={approaches} elapsed_ms={timer.ElapsedMilliseconds}");
+        }
+        GD.Print($"SHORE_FIELD_CHECK_OK version={GeneratedBasin.AlgorithmVersion} seeds=42,43,44");
+    }
+
     public static void Run(Main main)
     {
+        RunStructural();
         var seabed = main.GetNode<SeabedSurface>("Habitat/Seabed");
-        var field = seabed.Basin;
-        var same = new GeneratedBasin(field.Seed);
-        var other = new GeneratedBasin(field.Seed + 1);
-        Require(field.DeepCore == same.DeepCore && field.DeepFloorY == same.DeepFloorY &&
-            field.MinPerimeterRadius == same.MinPerimeterRadius &&
-            field.MaxPerimeterRadius == same.MaxPerimeterRadius, "same seed metadata changed");
-        Require(field.DeepCore.Length() < 9f && field.DeepFloorY < -8f,
-            "useful minimum escaped central deep core");
-        Require(field.MaxPerimeterRadius - field.MinPerimeterRadius > 5f,
-            "angular domain is too circular");
-
-        var min = float.PositiveInfinity;
-        var maxStep = 0f;
-        var deepSum = 0f;
-        var edgeSum = 0f;
-        var deepCount = 0;
-        var edgeCount = 0;
-        var changed = false;
-        for (var z = -80; z <= 80; z++)
-        for (var x = -80; x <= 80; x++)
-        {
-            var px = x * 0.5f;
-            var pz = z * 0.5f;
-            var y = field.HeightAt(px, pz);
-            Require(float.IsFinite(y), "nonfinite basin sample");
-            min = Mathf.Min(min, y);
-            if (x < 80) maxStep = Mathf.Max(maxStep, Mathf.Abs(y - field.HeightAt(px + 0.5f, pz)));
-            if (z < 80) maxStep = Mathf.Max(maxStep, Mathf.Abs(y - field.HeightAt(px, pz + 0.5f)));
-            var distance = Mathf.Sqrt(px * px + pz * pz);
-            if (distance <= 8f) { deepSum += y; deepCount++; }
-            if (distance is >= 34f and <= 36f) { edgeSum += y; edgeCount++; }
-            if (x % 7 == 0 && z % 9 == 0 && field.HeightAt(px, pz) != other.HeightAt(px, pz)) changed = true;
-            Require(y == same.HeightAt(px, pz), "same seed dense sample changed");
-        }
-        Require(Mathf.Abs(min - field.DeepFloorY) < 0.02f && maxStep < 2.5f &&
-            edgeSum / edgeCount > deepSum / deepCount + 14f && changed,
-            $"deep ordering, continuity, outward rise or seed variation failed min={min:F2} core={field.DeepFloorY:F2} step={maxStep:F2} deep={deepSum / deepCount:F2} edge={edgeSum / edgeCount:F2} changed={changed}");
-
-        var playableLow = float.PositiveInfinity;
-        var playableHigh = 0f;
-        for (var i = 0; i < 144; i++)
-        {
-            var angle = i * Mathf.Tau / 144f;
-            var direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
-            var exit = 0f;
-            for (var radius = 18f; radius <= 37f; radius += 0.25f)
-                if (field.HeightAt(direction.X * radius, direction.Y * radius) >= 9f)
-                { exit = radius; break; }
-            Require(exit > 23f && exit < 36.7f &&
-                field.HeightAt(direction.X * 36.7f, direction.Y * 36.7f) > 9f,
-                $"ordinary route could reach a square clamp before terrain bank angle={angle:F2} exit={exit:F2} y={field.HeightAt(direction.X * 36.7f, direction.Y * 36.7f):F2}");
-            playableLow = Mathf.Min(playableLow, exit);
-            playableHigh = Mathf.Max(playableHigh, exit);
-        }
-        Require(playableHigh - playableLow > 3f, "usable perimeter is too regular");
-
         var mesh = seabed.GeneratedMesh ?? throw new Exception("generated mesh missing");
         var collision = seabed.GeneratedCollision ?? throw new Exception("generated collision missing");
         Require(mesh.GetSurfaceCount() == 1 && collision.BackfaceCollision,
-            "open seabed must have one two-sided mesh/collision pair");
+            "seabed must have one two-sided mesh/collision pair");
         var vertices = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array();
         var triangles = collision.Data;
         Require(vertices.Length == GeneratedBasin.CellsPerSide * GeneratedBasin.CellsPerSide * 6 &&
-            triangles.Length == vertices.Length, "mesh and collision triangle inventory differs");
+            triangles.Length == vertices.Length, "mesh/collision inventory differs");
         for (var i = 0; i < vertices.Length; i++)
-            Require(vertices[i].DistanceTo(triangles[i]) < 0.0001f,
+            Require(vertices[i].DistanceTo(triangles[i]) < .0001f,
                 "collision triangle differs from visual triangle");
-
         var limits = main.GetNode<StaticBody3D>("Habitat/HiddenLimits");
         foreach (var name in new[] { "West", "East", "North", "South" })
-            Require(Mathf.Abs(limits.GetNode<CollisionShape3D>(name).Position.X) >= 46f ||
-                Mathf.Abs(limits.GetNode<CollisionShape3D>(name).Position.Z) >= 46f,
-                "fail-safe wall is inside natural bank");
-
-        GD.Print($"BASIN_CHECK_OK seed={field.Seed} version={GeneratedBasin.AlgorithmVersion} " +
-            $"core=({field.DeepCore.X:F1},{field.DeepCore.Y:F1}) min_y={min:F2} " +
-            $"domain_radius={field.MinPerimeterRadius:F2}..{field.MaxPerimeterRadius:F2} " +
-            $"usable_radius={playableLow:F2}..{playableHigh:F2} max_half_step={maxStep:F2} " +
-            $"triangles={vertices.Length / 3} same_seed=true collision=identical walls=safety-only");
+            Require(Mathf.Abs(limits.GetNode<CollisionShape3D>(name).Position.X) >
+                seabed.Basin.ShoreMax.X + 10f ||
+                Mathf.Abs(limits.GetNode<CollisionShape3D>(name).Position.Z) >
+                seabed.Basin.ShoreMax.Y + 10f,
+                "fail-safe wall inside natural shoreline");
+        GD.Print($"BASIN_CHECK_OK seed={seabed.Basin.Seed} triangles={vertices.Length / 3} collision=identical");
     }
 
     private static void Require(bool condition, string reason)

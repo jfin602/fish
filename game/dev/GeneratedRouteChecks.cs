@@ -18,8 +18,9 @@ public static class GeneratedRouteChecks
         Require(routes.Nodes.Count >= 20 && routes.Edges.Count >= 30, "route inventory incomplete");
         Require(routes.Nodes["spawn"].Position.DistanceTo(main.GetNode<Marker3D>("Habitat/Spawn").Position) < .001f,
             "spawn route differs from playable spawn");
-        foreach (var id in new[] { "shallow", "middle", "deep", "west-return", "east-return",
-            "deep-west", "shallow-east" }) Require(routes.Nodes.ContainsKey(id), "missing route node " + id);
+        foreach (var id in new[] { "shallow", "middle", "deep", "trench", "west-return",
+            "east-return", "deep-west", "shallow-east" })
+            Require(routes.Nodes.ContainsKey(id), "missing route node " + id);
         var seen = new HashSet<string>(StringComparer.Ordinal) { "spawn" };
         var queue = new Queue<string>(); queue.Enqueue("spawn");
         while (queue.Count > 0)
@@ -37,9 +38,19 @@ public static class GeneratedRouteChecks
             "shallow/middle/deep fish depths are unordered");
         Require(Reachable("shallow", "deep", Array.Empty<string>()) &&
             Reachable("deep", "shallow", Array.Empty<string>()), "deep route has no return");
-        Require(Reachable("spawn", "shallow", new[] { "middle-shallow", "west-return" }) &&
-            Reachable("spawn", "shallow", new[] { "middle-shallow", "east-return" }),
+        Require(Reachable("middle", "shallow", new[] { "shallow-middle", "west-return" }) &&
+            Reachable("middle", "shallow", new[] { "shallow-middle", "east-return" }),
             "alternate shallow paths missing");
+        var roles = new[] { ("spawn", 6f), ("shallow", 7f), ("middle", 14f),
+            ("deep", 27f), ("trench", 35f), ("west-return", 8f), ("east-return", 8f) };
+        foreach (var (id, target) in roles)
+        {
+            var position = routes.Nodes[id].Position;
+            var depth = GeneratedBasin.WaterSurfaceY - seabed.Basin.HeightAt(position.X, position.Z);
+            Require(Mathf.Abs(depth - target) <= 5.01f &&
+                seabed.Basin.DistanceToShore(position.X, position.Z) >= 13f,
+                "route anchor outside intended generated band " + id);
+        }
         foreach (var region in geology.GeneratedRegions)
         {
             var edge = routes.Edges.Single(e => e.Id == region.Id);
@@ -49,6 +60,9 @@ public static class GeneratedRouteChecks
                 "geology route differs from generated centerline " + region.Id);
             Require(routes.Edges.Any(e => e.Id == region.Id + ":link-in"),
                 "missing cave approach " + region.Id);
+            Require(routes.Edges.Any(e => e.Id == region.Id + ":link-out") &&
+                routes.Edges.Any(e => e.Id == region.Id + ":out"),
+                "missing far-side reconnection " + region.Id);
         }
         var fish = main.GetNode<FishController>("Fish");
         var space = main.GetWorld3D().DirectSpaceState;
@@ -65,7 +79,7 @@ public static class GeneratedRouteChecks
                 "route exclusion smaller than fish/camera envelope " + edge.Id);
             var a = edge.Points[segment - 1];
             var b = edge.Points[segment];
-            var count = Mathf.Max(1, Mathf.CeilToInt(a.DistanceTo(b) / .75f));
+            var count = Mathf.Max(1, Mathf.CeilToInt(a.DistanceTo(b) / .3f));
             for (var step = 0; step <= count; step++)
             {
                 var point = a.Lerp(b, step / (float)count);
@@ -82,10 +96,13 @@ public static class GeneratedRouteChecks
         }
         foreach (var (id, cause) in blocked) GD.Print($"ROUTE_BLOCKED edge={id} {cause}");
         Require(blocked.Count == 0, $"{blocked.Count} route edges blocked");
-        var repeat = new GeneratedWorldRoutes(new GeneratedBasin(seabed.Basin.Seed),
-            GeologicalRegionGenerator.Generate(new GeneratedBasin(seabed.Basin.Seed)), Vector3.Zero);
-        repeat.RepairOpenConnectors(space, fish.GetRid(), new GeneratedBasin(seabed.Basin.Seed),
-            GeologicalRegionGenerator.Generate(new GeneratedBasin(seabed.Basin.Seed)));
+        var repeatBasin = new GeneratedBasin(seabed.Basin.Seed);
+        var repeatRegions = GeologicalRegionGenerator.Generate(repeatBasin);
+        using var repeatPlanner = new WorldRoutePlanner(space, fish.GetRid(), repeatBasin,
+            repeatRegions);
+        var repeat = new GeneratedWorldRoutes(repeatBasin, repeatRegions,
+            repeatPlanner.PointClear);
+        repeat.RepairOpenConnectors(space, fish.GetRid(), repeatBasin, repeatRegions);
         Require(routes.Nodes.Keys.SequenceEqual(repeat.Nodes.Keys) &&
             routes.Edges.Select(e => e.Id).SequenceEqual(repeat.Edges.Select(e => e.Id)), "route order varies");
         foreach (var id in routes.Nodes.Keys)
@@ -134,13 +151,15 @@ public static class GeneratedRouteChecks
         var center = cave.Centerline[8];
         var down = analysis.RaycastSurface(center, Vector3.Down, 8);
         var up = analysis.RaycastSurface(center, Vector3.Up, 8);
-        var wall = analysis.RaycastSurface(center, Vector3.Back, 10);
+        var tangent = (cave.Centerline[9] - cave.Centerline[7]).Normalized();
+        var sideways = new Vector3(-tangent.Z, 0f, tangent.X).Normalized();
+        var wall = analysis.RaycastSurface(center, sideways, 10);
         Require(down.SurfaceId == cave.Id && up.SurfaceId == cave.Id &&
             wall.SurfaceId == cave.Id &&
             down.Position.Y < center.Y && up.Position.Y > center.Y &&
-            wall.Position.Z > center.Z,
+            wall.Position.DistanceTo(center) > 1f,
             "arbitrary 3D cave projection failed");
-        foreach (var direction in new[] { Vector3.Down, Vector3.Up, Vector3.Back })
+        foreach (var direction in new[] { Vector3.Down, Vector3.Up, sideways })
         {
             var projected = analysis.SampleProjected(center, direction, 10);
             var repeated = other.SampleProjected(center, direction, 10);
