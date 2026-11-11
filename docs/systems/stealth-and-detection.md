@@ -2,7 +2,7 @@
 
 ## Status, owner decision, and boundaries
 
-**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. **Mechanics in this document are working designs, not implemented or qualified P5 behavior.** P4 supplies physically usable cover networks, not predator sensing or gameplay stealth state.
+**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. **Mechanics in this document are working designs, not implemented or qualified P5 behavior.** **Owner scheduling clarification S21:** P4 was already on its seventh prompt when stealth was adopted; the new stealth-specific world/cover changes are deferred to P5. P4 retains only its previously-authored asset, hollow passage, geometry, collision and traversal requirements.
 
 > Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.
 
@@ -14,7 +14,7 @@ Every movement should have a meaningful exposure tradeoff. Shelter can preserve 
 - **Soft cover:** weeds, reeds, roots, suspended sediment and partially obscuring structures may weaken visual evidence, but aren't automatically safe. A predator may still see motion, approach, or investigate.
 - **Open water:** increases exposure when visual clarity and lighting permit, especially when travelling between cover areas to feed.
 - **Water clarity and lighting:** distance extinction, depth, contrast and silhouette change visual information for both hunter and prey. Darkness and murk should not grant supernatural certainty or turn every nearby obstacle into an unreadable collision hazard.
-- **Cover networks:** the world should offer linked resting/hiding locations and exposed crossings with multiple credible escape routes where geometry allows. This is a world/placement affordance; P4 does not need stealth-state flags.
+- **Cover networks (P5):** evaluate existing Pond/Ocean cover, then add or adjust linked resting/hiding locations and exposed crossings with multiple credible escape routes where geometry allows. Do not retroactively require a new P4 placement algorithm or stealth-state flags.
 
 Physical size and life stage change which gaps and shelters remain accessible. No purely decorative foliage volume may guarantee invulnerability.
 
@@ -55,8 +55,8 @@ A player should generally understand why a predator saw them, why a hiding place
 
 ## Implementation and scope sequence
 
-- **P4 — Environment only:** keep Pond and Ocean independent; integrate real hollow-log passages, wood/rock occlusion, plant cover, exposed lanes, size-appropriate gaps and camera/collider clearance. No predator AI, sensor scoring, attacks or stealth HUD.
-- **P5 — Small playable proof:** one compatible player, food, prey, predator and cover network. Prove sensing, visual obstruction, local movement evidence, suspicion/investigation, genuine hiding/escape, readable pursuit/strike, stealth hunting, and feeding/growth changes. Start with reversible parameters and record actual native observations.
+- **P4 — Existing in-flight stack only:** finish Pond and World Select against already-authored native assets, hollow passages, waterline, collision, camera, placement and regression requirements. No new stealth-specific geometry, cover-link design, predator AI, sensor scoring, attacks or stealth HUD is required for P4 closeout; don't edit or restart its in-flight prompts for S20.
+- **P5 — Cover retrofit and playable proof:** first inspect the actually delivered Pond and Ocean geometry, body/camera envelopes and cover clearance. Reuse existing hollow logs, rock occlusion and vegetation; add or refine any missing hard/soft cover, exposed crossings and viable escape links without replacing completed P4 asset work. Then prove one compatible player, food, prey, predator and cover network with sensing, visual obstruction, local movement evidence, suspicion/investigation, genuine hiding/escape, readable pursuit/strike, stealth hunting, and feeding/growth changes. Start with reversible parameters and record actual native observations.
 - **P6 — Continuity:** persist relevant encounter, suspicion and last-known-location state with the living fish. Closing and reopening cannot be used to reset a predator or convert a pending attack into safety. No offline simulation.
 - **Later:** optional sophisticated species senses, schooling, bird hunting at the surface, silt effects, richer ecosystem interactions and detailed sound/chemical behavior.
 

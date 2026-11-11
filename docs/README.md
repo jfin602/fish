@@ -43,7 +43,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.3/V20 remains an accepted open gap. P3 is also **owner-closed for progression / NOT GREEN**, with corrected Ocean `ocean-m4-42` at completed `0.3.6`, documented visual/native/visibility gaps and [direct closeout](tasks/p3/closeout.md). Do not convert accepted gaps into PASS.
 
-**P4 is ready but not implemented at `0.4.0`:** [Freshwater Pond and World Select](planning/p4/freshwater-world.md) preserves the Ocean and its five marine FAF fish, adds Pond, ensures compatible species and prepares physical shelter/cover networks without predator AI. Future gameplay is **P5 naturalistic stealth, feeding and growth; P6 saves/death; P7 Life History; P8 integrated qualification**. The previously selected Movement abilities remain a later enhancement. Planning does not bump version or establish qualification.
+**P4 is in progress at recorded checkpoint `0.4.6` (P7 native review next):** [Freshwater Pond and World Select](planning/p4/freshwater-world.md) preserves the Ocean and marine fish while adding the separate Pond. Its already-running 14-prompt stack remains unchanged. **All additional stealth-specific cover-network composition/refinement moves to P5**, after inspecting P4's actual delivered hollow logs, foliage and traversal. Future gameplay is **P5 naturalistic stealth, cover improvements, feeding and growth; P6 saves/death; P7 Life History; P8 integrated qualification**. The previously selected Movement abilities remain a later enhancement. Planning does not bump version or establish qualification.
 
 ## Status language
 

@@ -198,7 +198,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 **Result: NOT OBSERVED.**
 
-- The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance. Real hard shelter and soft concealment form traversable cover networks with exposed lanes; P4 does not simulate predator detection.
+- The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance. Existing authored hollow-trunk/cover requirements remain in P4; stealth-specific linked-cover-network improvements and perception tests move to P5 (S21).
 - Per-habitat Forward+ green-water lighting/fog creates limited distant visibility while retaining near-field readability; ocean appearance remains unchanged.
 - Deterministic generate/bake/load, stable world identity, performance and native owner visual review are evidenced.
 - A fish can swim just under the Pond surface with limited partial breach, without hitting an invisible ceiling, escaping the water or destabilizing the existing motor.
@@ -241,6 +241,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 - A predator uses sensed visual/movement evidence, cover occlusion and bounded last-known-target memory; it cannot track a concealed fish with perfect knowledge.
 - Native play demonstrates suspicion, investigation, a credible concealment/escape, loss of contact and searching/disengagement, alongside a readable successful predator strike or lethal encounter.
+- P5 evaluates the completed P4 Pond and Ocean spaces, then reuses or improves real hard-shelter passages, soft vegetation and open-water links into a testable network of cover and exposure; these are not retroactive P4 blockers.
 - Physical shelter and soft cover have different effects; moving rapidly or leaving cover creates fair exposure risk. Threat cues, commitment and failure cause remain understandable even outside the immediate forward view.
 - Death, genuine pursuit, escape and predation events have authoritative causes/stable identities for later persistence/story use; don't fabricate an escape from every chase.
 - New test lives reset intended prototype state; durable multi-session behavior is not claimed yet.

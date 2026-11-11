@@ -16,7 +16,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
 | Root version | **`0.4.6`** — the reachable P6 `0.4.6` subject is followed by a separate metadata/evidence repair because that checkpoint omitted the root version. P3 stopped at implemented checkpoint `0.3.6`; no `0.3.7`/`0.3.8` runner checkpoints were created. |
 | Next design phase | **P4 P6 IMPLEMENTED, P7 NATIVE REVIEW NEXT:** [Freshwater Pond + World Select](docs/planning/p4/freshwater-world.md) and [14-step P4 stack](docs/tasks/p4/README.md) preserve the Ocean and route remaining Pond assets, native review and later surface camera work. [P1–P6 evidence](docs/tasks/p4/qualification/implementation.md) records the import and source checks. |
-| Later gameplay | P5 introduces naturalistic sensing, hiding, predator investigation/pursuit, stealth hunting, feeding and growth; persistence/death P6; Life History P7; integrated qualification P8. No P5 stealth gameplay is yet implemented or qualified. |
+| Later gameplay | **Owner scheduling decision S21:** P4 is at prompt 7 by owner report, so its current stack remains frozen; newly proposed stealth-specific cover networks and world adjustments join P5 alongside sensing, hiding, predator investigation/pursuit, stealth hunting, feeding and growth. Persistence/death P6; Life History P7; integrated qualification P8. No P5 stealth gameplay is implemented or qualified. |
 
 ## Product contract to preserve
 
