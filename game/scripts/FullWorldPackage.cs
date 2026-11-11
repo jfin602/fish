@@ -304,6 +304,7 @@ public static class FullWorldPackage
         habitat.GetNode<Marker3D>("Spawn").Position = new Vector3(spawn.Position[0],
             spawn.Position[1], spawn.Position[2]);
         InstallPondLandmarks(habitat, data);
+        PondFafEnvironment.Install(habitat, data, manifest.Seed);
         habitat.GetNode<ReefComposition>("Composition/ReefComposition").InstallBakedData(data);
         var generationDuringLoad = WorldGenerationAudit.StageInvocations - generationBefore;
         if (generationDuringLoad != 0)

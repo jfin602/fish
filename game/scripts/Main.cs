@@ -130,8 +130,7 @@ public partial class Main : Node3D
             arg.StartsWith("--pond-inspect=", StringComparison.Ordinal));
         if (pondInspect is not null)
         {
-            try { PondWorldChecks.Run(this, pondInspect["--pond-inspect=".Length..]); GetTree().Quit(); }
-            catch (Exception error) { GD.PushError($"POND_WORLD_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            _ = InspectPondAfterPhysics(pondInspect["--pond-inspect=".Length..]);
             return;
         }
 
@@ -199,6 +198,12 @@ public partial class Main : Node3D
             CallDeferred(MethodName.VerifyRouteFields);
         if (OS.GetCmdlineUserArgs().Contains("--placement-check"))
             CallDeferred(MethodName.VerifyPlacement);
+    }
+
+    private async System.Threading.Tasks.Task InspectPondAfterPhysics(string directory)
+    {
+        try { await PondWorldChecks.Run(this, directory); GetTree().Quit(); }
+        catch (Exception error) { GD.PushError($"POND_WORLD_CHECK_FAILED {error}"); GetTree().Quit(1); }
     }
 
     public override void _ExitTree() => WorldSession.Unload();

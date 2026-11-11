@@ -1,6 +1,6 @@
 # P4 — Freshwater Pond and World Select
 
-**State: P5 IMPLEMENTED at root `0.4.5` / P6 NEXT.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 Gate or native GREEN result is claimed. Ocean Base World `ocean-m4-42` remains intact; independent Pond Base World `pond-p4-71` and a scene-local Forward+ atmosphere profile are installed. The complete 14-prompt stack validated from the `0.4.0` baseline. [P1–P5 implementation evidence](qualification/implementation.md) records the checks and native limits.
+**State: P5 IMPLEMENTED at root `0.4.5` / P6 integration candidate pending clean editor import.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 Gate or native GREEN result is claimed. Ocean Base World `ocean-m4-42` remains intact; independent Pond Base World `pond-p4-71` and a scene-local Forward+ atmosphere profile are installed. The complete 14-prompt stack validated from the `0.4.0` baseline. [P1–P6 implementation evidence](qualification/implementation.md) records the checks and native limits.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [Owner Pond FAF integration inventory](pond-faf-integration.md) · [P4 design](../../planning/p4/freshwater-world.md) · [Roadmap](../../roadmap.md) · [Runner contract](../../phase-runner.md) · [Validation V28–V32](../../validation.md)
 

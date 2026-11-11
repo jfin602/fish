@@ -8,13 +8,90 @@ using System.Linq;
 
 public static class PondWorldChecks
 {
-    public static void Run(Main main, string directory)
+    public static async System.Threading.Tasks.Task Run(Main main, string directory)
     {
         var habitat = main.GetNode<Node3D>("Habitat");
         var fish = main.GetNode<FishController>("Fish");
         var before = WorldGenerationAudit.StageInvocations;
         var (manifest, data) = FullWorldPackage.Load(directory, habitat, WorldCatalog.PondId);
+        await main.ToSignal(main.GetTree(), SceneTree.SignalName.PhysicsFrame);
+        await main.ToSignal(main.GetTree(), SceneTree.SignalName.PhysicsFrame);
         Require(WorldGenerationAudit.StageInvocations == before, "generator ran on baked load");
+        var faf = habitat.GetNode<Node3D>("PondFafEnvironment");
+        var catalog = PondFafEnvironment.LoadCatalog();
+        var bakedBasin = habitat.GetNode<SeabedSurface>("Seabed").Basin;
+        var firstPlan = PondFafEnvironment.Plan(data, bakedBasin, catalog);
+        var secondPlan = PondFafEnvironment.Plan(data, bakedBasin, catalog);
+        Require(firstPlan.SequenceEqual(secondPlan) && firstPlan.Select(p => p.Id).Distinct().Count() == 33 &&
+            (int)faf.GetMeta("placement_count") == firstPlan.Count,
+            "Pond FAF placement identity or determinism failed");
+        Require(firstPlan.Where(p => p.Zone is "lily_pad" or "floating_muck")
+            .All(p => Mathf.Abs(p.Position.Y - GeneratedBasin.WaterSurfaceY) < .001f) &&
+            firstPlan.Where(p => p.Zone is "cattail" or "reed" or "submerged_algae")
+                .All(p => p.Position.Y < GeneratedBasin.WaterSurfaceY),
+            "Pond FAF waterline or rooted placement failed");
+        Require(habitat.GetNode<MeshInstance3D>("Seabed/Mesh").MaterialOverride is ShaderMaterial
+            { ResourceName: "Pond silt/mud basin" }, "Pond FAF mud/silt palette missing");
+        Require(faf.GetChildren().OfType<Node3D>().Count() > 0 &&
+            !faf.GetChildren().Any(n => n.Name.ToString().Contains("FAF_CORAL")),
+            "Pond FAF habitat restriction failed");
+        var hero = faf.GetChildren().OfType<Node3D>()
+            .Single(n => n.Name.ToString().StartsWith("FAF_WOOD_002A_", StringComparison.Ordinal));
+        Require(hero.GetNode<StaticBody3D>("SimpleWoodCollision").GetChildCount() == 16,
+            "hero log collision lacks open segmented inner passage");
+        var space = habitat.GetWorld3D().DirectSpaceState;
+        var staticBodies = faf.GetChildren().OfType<Node3D>()
+            .SelectMany(n => n.GetChildren().OfType<StaticBody3D>()).ToArray();
+        var excluded = new Godot.Collections.Array<Rid> { fish.GetRid(),
+            habitat.GetNode<StaticBody3D>("HiddenLimits").GetRid() };
+        foreach (var body in staticBodies) excluded.Add(body.GetRid());
+        var supportMax = 0f;
+        foreach (var piece in faf.GetChildren().OfType<Node3D>())
+        {
+            var asset = catalog.Single(a => piece.Name.ToString().StartsWith(
+                a.Id.Replace('-', '_') + "_", StringComparison.Ordinal));
+            var id = asset.Id;
+            var halfX = asset.Size[0] * .35f;
+            var halfZ = asset.Size[2] * .35f;
+            foreach (var offset in new[] { Vector3.Zero,
+                new Vector3(halfX, 0, halfZ), new Vector3(-halfX, 0, halfZ),
+                new Vector3(halfX, 0, -halfZ), new Vector3(-halfX, 0, -halfZ) })
+            {
+                var site = piece.ToGlobal(offset);
+                var ray = PhysicsRayQueryParameters3D.Create(site + Vector3.Up * 15f,
+                    site + Vector3.Down * 40f, 1, excluded);
+                ray.HitBackFaces = true;
+                var hit = space.IntersectRay(ray);
+                Require(hit.Count > 0, $"unsupported Pond structure {id} site={site} offset={offset}");
+                var y = hit["position"].AsVector3().Y;
+                supportMax = Mathf.Max(supportMax, Mathf.Abs(y - piece.GlobalPosition.Y));
+            }
+        }
+        Require(supportMax < 1.5f, $"Pond structures lack terrain support: {supportMax:F3}");
+        var fishQuery = new PhysicsShapeQueryParameters3D
+        {
+            Shape = fish.GetNode<CollisionShape3D>("Collision").Shape,
+            CollisionMask = 1,
+            Exclude = new Godot.Collections.Array<Rid> { fish.GetRid() },
+        };
+        var cameraQuery = new PhysicsShapeQueryParameters3D
+        {
+            Shape = new SphereShape3D { Radius = GeneratedWorldRoutes.CameraRadius },
+            CollisionMask = 1,
+            Exclude = new Godot.Collections.Array<Rid> { fish.GetRid() },
+        };
+        for (var z = -5.4f; z <= 5.4f; z += .3f)
+        {
+            var center = hero.ToGlobal(new Vector3(0, 2.52f, z));
+            fishQuery.Transform = new Transform3D(Basis.Identity, center);
+            cameraQuery.Transform = new Transform3D(Basis.Identity, center + Vector3.Up * 1.15f);
+            Require(space.IntersectShape(fishQuery, 1).Count == 0,
+                $"hero fish passage blocked at z={z:F2}");
+            Require(space.IntersectShape(cameraQuery, 1).Count == 0,
+                $"hero camera passage blocked at z={z:F2}");
+        }
+        GD.Print($"POND_FAF_CHECK assets=33 placements={firstPlan.Count} hero={hero.GlobalPosition} " +
+            $"hero_yaw={hero.Rotation.Y:F3} fish_camera_probes=74 support_max={supportMax:F3} ocean_assets=0");
         var seabed = habitat.GetNode<SeabedSurface>("Seabed");
         var basin = seabed.Basin;
         Require(basin.IsPond && manifest.BasinAlgorithm == basin.AlgorithmIdentity,

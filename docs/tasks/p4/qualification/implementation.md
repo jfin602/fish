@@ -113,3 +113,65 @@ The Ocean default/Soft lighting values, sky/shader defaults, `lighting-presets.j
 | `./tools/dev import` | **BLOCKED in this sandbox:** editor-mode Godot could not open the IDE/MCP listener sockets and could not save `/home/jfin/.config/godot/editor_settings-4.7.tres`. Runtime scene/material loads and C# build passed. The Godot MCP bridge also reported disconnected. |
 
 No native screenshot, real-player Pond entry, frame-time sample, shoreline/sky crossing or owner readability judgment is claimed. P7/P8 and later P9/P10 own those observations. P4 Gates remain unqualified; P6 FAF environment integration is next. `git diff --check` passed for the final working tree.
+
+## P6 — Pond FAF environment integration candidate (2026-11-11)
+
+**Pre-task:** clean `main` at `c3f6b3892e8d44f2b17287a3f294622864f9ffe1`, root `0.4.5`. The implementation is uncommitted for the phase runner. Root remains `0.4.5` because the required clean editor import cannot complete in this sandbox. The 33 existing FAF exports and 21 compressed Blender sources were tracked and readable; no FAF master, export, or Ocean asset was changed.
+
+The Pond-only Godot adapter at `game/assets/faf/pond/pond_environment_catalog.json` records exact manifest IDs, variants, roles, source/export hashes, Godot dimensions, costs, anchors, wrappers, and candidate style state. It is derived from the current three FAF manifests. The runtime checks export hashes and imports before placement, then builds 917 stable seed-71 placements from the baked surface/route fields and the Pond basin height queries. Lily pads and floating muck use `GeneratedBasin.WaterSurfaceY`; rooted plants use the sampled ground. Wood and bank wrappers use the owner-provided simplified collision; decoration uses MultiMesh batches without collision. The supplied `FAF-WOOD-002A` wrapper retains 16 radial wall shapes and open ends. The existing Pond base package `pond-p4-71` remains byte-identical; its baked fields and seed drive the placement. Ocean catalog, GLBs, scenes, light profile, five marine fish, and `ocean-m4-42` identity were untouched.
+
+### Intake inventory
+
+`FOUND` means the path is tracked, the compressed source decompresses to a Blender header, the GLB header/length and embedded Pond ID validate, and the pre-existing Godot import checker instantiates the GLB with expected mesh/material/triangle data. This is technical intake, not fresh Blender reopening or owner style approval.
+
+| Family | FAF ID / variant | Blender source | Godot GLB | Intake |
+| --- | --- | --- | --- | --- |
+| fallen_log | FAF-WOOD-001A / A | `assets/faf/pond/wood/wood_001a_bent_fallen_log.blend` | `game/assets/faf/pond/wood/wood_001a_bent_fallen_log.glb` | FOUND |
+| fallen_log | FAF-WOOD-001B / B | `assets/faf/pond/wood/wood_001b_forked_fallen_log.blend` | `game/assets/faf/pond/wood/wood_001b_forked_fallen_log.glb` | FOUND |
+| fallen_log | FAF-WOOD-001C / C | `assets/faf/pond/wood/wood_001c_broken_fallen_log.blend` | `game/assets/faf/pond/wood/wood_001c_broken_fallen_log.glb` | FOUND |
+| hollow_trunk | FAF-WOOD-002A / A | `assets/faf/pond/wood/wood_002a_hero_hollow_trunk.blend` | `game/assets/faf/pond/wood/wood_002a_hero_hollow_trunk.glb` | FOUND |
+| hollow_trunk | FAF-WOOD-002B / B | `assets/faf/pond/wood/wood_002b_curved_hollow_trunk.blend` | `game/assets/faf/pond/wood/wood_002b_curved_hollow_trunk.glb` | FOUND |
+| hollow_trunk | FAF-WOOD-002C / C | `assets/faf/pond/wood/wood_002c_root_flared_hollow.blend` | `game/assets/faf/pond/wood/wood_002c_root_flared_hollow.glb` | FOUND |
+| stump | FAF-WOOD-003A / A | `assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.blend` | `game/assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.glb` | FOUND |
+| stump | FAF-WOOD-003B / B | `assets/faf/pond/wood/wood_003b_broken_stump.blend` | `game/assets/faf/pond/wood/wood_003b_broken_stump.glb` | FOUND |
+| cluster | FAF-WOOD-004A / A | `assets/faf/pond/wood/wood_004a_sparse_sticks.blend` | `game/assets/faf/pond/wood/wood_004a_sparse_sticks.glb` | FOUND |
+| cluster | FAF-WOOD-004B / B | `assets/faf/pond/wood/wood_004b_forked_branches.blend` | `game/assets/faf/pond/wood/wood_004b_forked_branches.glb` | FOUND |
+| cluster | FAF-WOOD-004C / C | `assets/faf/pond/wood/wood_004c_tangled_roots.blend` | `game/assets/faf/pond/wood/wood_004c_tangled_roots.glb` | FOUND |
+| cluster | FAF-WOOD-004D / D | `assets/faf/pond/wood/wood_004d_heavy_branch_cover.blend` | `game/assets/faf/pond/wood/wood_004d_heavy_branch_cover.glb` | FOUND |
+| lily_pad | FAF-PLANT-004A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_004a_lily_pad.glb` | FOUND |
+| lily_pad | FAF-PLANT-004B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_004b_lily_pad.glb` | FOUND |
+| lily_pad | FAF-PLANT-004C / C | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_004c_lily_pad.glb` | FOUND |
+| tall_grass | FAF-PLANT-005A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_005a_tall_grass.glb` | FOUND |
+| tall_grass | FAF-PLANT-005B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_005b_tall_grass.glb` | FOUND |
+| cattail | FAF-PLANT-006A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_006a_cattail.glb` | FOUND |
+| cattail | FAF-PLANT-006B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_006b_cattail.glb` | FOUND |
+| reed | FAF-PLANT-007A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_007a_reed.glb` | FOUND |
+| reed | FAF-PLANT-007B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_007b_reed.glb` | FOUND |
+| submerged_algae | FAF-PLANT-008A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_008a_submerged_algae.glb` | FOUND |
+| submerged_algae | FAF-PLANT-008B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_008b_submerged_algae.glb` | FOUND |
+| floating_muck | FAF-PLANT-009A / A | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_009a_floating_muck.glb` | FOUND |
+| floating_muck | FAF-PLANT-009B / B | `assets/faf/pond/plants/pond_foliage_001.blend` | `game/assets/faf/pond/plants/plant_009b_floating_muck.glb` | FOUND |
+| eroded_bank | FAF-TERRAIN-002A / A | `assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.blend` | `game/assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.glb` | FOUND |
+| eroded_bank | FAF-TERRAIN-002B / B | `assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.blend` | `game/assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.glb` | FOUND |
+| algae_stone | FAF-DETAIL-005A / A | `assets/faf/pond/ground/detail_005a_algae_stone_low.blend` | `game/assets/faf/pond/ground/detail_005a_algae_stone_low.glb` | FOUND |
+| algae_stone | FAF-DETAIL-005B / B | `assets/faf/pond/ground/detail_005b_algae_stone_upright.blend` | `game/assets/faf/pond/ground/detail_005b_algae_stone_upright.glb` | FOUND |
+| pebbles | FAF-DETAIL-006A / A | `assets/faf/pond/ground/detail_006a_pebble_scatter.blend` | `game/assets/faf/pond/ground/detail_006a_pebble_scatter.glb` | FOUND |
+| pebbles | FAF-DETAIL-006B / B | `assets/faf/pond/ground/detail_006b_pebble_chain.blend` | `game/assets/faf/pond/ground/detail_006b_pebble_chain.glb` | FOUND |
+| leaf_litter | FAF-DETAIL-007A / A | `assets/faf/pond/ground/detail_007a_leaf_litter_broad.blend` | `game/assets/faf/pond/ground/detail_007a_leaf_litter_broad.glb` | FOUND |
+| leaf_litter | FAF-DETAIL-007B / B | `assets/faf/pond/ground/detail_007b_leaf_litter_windrow.blend` | `game/assets/faf/pond/ground/detail_007b_leaf_litter_windrow.glb` | FOUND |
+
+Shared Pond ground resources are `game/assets/faf/pond/materials/pond_{silt,mud,wet_bank,algae_stone}.tres` and `pond_basin_variation.gdshader`. The basin now uses the existing silt/mud shader only in Pond. The [owner style target](../../../../docs/fish-asset-factory/references/pond/pond-style-target.png) and five candidate Pond references are accessible; no near/mid/far native game-view comparison or owner art lock was performed here. All three pack manifests still describe candidate style status.
+
+### Checks and limits
+
+| Check | Outcome |
+| --- | --- |
+| Binary/source intake | **PASS:** 21/21 tracked Zstandard Blender sources decompress to Blender headers; 33/33 tracked GLBs have valid GLB v2 envelopes, Pond IDs and Pond metadata; adapter records SHA-256 for both files. This does not repeat the owners' Blender visual review. |
+| Godot asset checkers | **PASS:** existing headless checkers instantiate 12/12 wood (3,950 triangles), 13/13 foliage (including three stems), and 8/8 ground (478 triangles plus four shared materials). Imported sizes, components and materials match the pack checks. |
+| `tools/dev build` | **PASS:** Godot 4.7.2 .NET / SDK 10.0.403, zero warnings or errors. |
+| `tools/dev inspect-pond-candidate p6-inspect-71` | **PASS:** actual copy of accepted `pond-p4-71` bake, 33 registered Pond IDs, 917 deterministic placements, 23 MultiMesh asset groups, estimated 171,146 instanced triangles, 74 fish/camera shape probes through the hero opening, 364 existing route probes, 1.208 m maximum sampled structural footprint variation, zero generator calls at load. An initial test exposed a terrain-blocked hero site; the accepted site filter was repaired and the check rerun. |
+| `tools/dev inspect-pond-atmosphere` | **PASS:** Pond→Ocean→Pond loads, stable identities, independent Forward+ profiles and unchanged fish state. |
+| `tools/dev import` | **BLOCKED by sandbox:** Godot editor startup cannot create local IDE/MCP listener sockets; the editor-mode import reports engine errors. A direct recovery-mode import exits 0 but still emits .NET socket errors. The headless Godot import checkers above did load all 33 existing GLBs. A clean editor import remains unverified. |
+| Native game view, draw calls, frame time, owner art review | **NOT OBSERVED:** editor bridge is disconnected. The instance/triangle figures above are estimates from actual manifest costs and placements, not a measured native frame. P7 owns real near/mid/far composition, visual clearance, and performance judgment. |
+
+The in-world passage checks use the accepted fish's collision shape plus the follow-camera probe radius along the actual hero opening after two physics frames. They establish static clearance at the tested trajectory; real controller steering through the installed Pond and owner-visible camera feel remain for P7. The widest structural footprint height variation is recorded for native support inspection.
