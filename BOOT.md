@@ -22,7 +22,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 
 One fish's life is one run. The fish grows by feeding while avoiding predators, with third person as the primary perspective and first person as an optional view. Closing the game suspends the living run; death ends it permanently. Each dead life produces a short factual recounting retained under **Life History** in the main menu, independent of later runs.
 
-The [decision register](docs/decisions-and-questions.md) separates confirmed behavior from unsettled final player species, production biome, balance, long-life pacing and later presentation choices. P2 establishes a convincing reef-like underwater environment for the current slice without claiming the final production biome or world-generation strategy.
+The [decision register](docs/decisions-and-questions.md) separates confirmed Ocean/Pond habitat selection from unresolved native species rosters, feeding balance, long-life pacing and later presentation choices. P2 and P3 establish the Ocean prototype and shared deterministic world compiler; P4 adds Pond without erasing that work.
 
 ## P1 completion boundary
 
