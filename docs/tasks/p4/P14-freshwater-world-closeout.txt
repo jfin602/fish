@@ -1,0 +1,34 @@
+TASK: Phase 4 / P14 — Freshwater world closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.4.14`.
+
+GOAL
+Perform the **sole Phase 4 closeout**, with final real/native owner check of both Ocean and Pond after the P13 integration candidate. Preserve failed/unobserved evidence and only mark G4.1–G4.4 GREEN when their required results actually passed.
+
+ENTRY / READ
+AGENTS.md, BOOT.md, docs/workflow.md, runner guide, P4 README/assessment/implementation plan, P4 design, docs/roadmap.md, docs/validation.md V28–V32, P4 qualification/implementation, native-pond, native-surface, integration records, FAF catalog and P3/C3 closeout. Require clean/reconciled P13 0.4.13 source and inspect HEAD/dirty tree, actual generated Ocean and Pond manifests, Godot/X11 display, Fish-only editor identity. Preserve older P2 G2.3/V20 evidence gap and P3 historical failures honestly.
+
+FINAL NATIVE REVIEW
+1. Launch from the actual first screen, compare both World Select previews, enter Ocean; inspect all five marine player choices and selected fish's actual model, controls, camera, reef art and underwater atmosphere. Return/back safely without leak.
+2. Enter Pond; inspect at least both finished native freshwater selectable fish, ambient freshwater-only population, faceted mud/log/root/lily/reed assets, natural banks and dense shallow/middle/deep environment. Confirm native camera/route/collision and darkness/readability from actual swimming, with owner aesthetic judgment against supplied references if accessible.
+3. Check negative cross-world selection and population behavior for representative incompatible/unknown species, repeated world changes, resource-loading error and correct reset. Do not attribute source-only full matrix to native tests unless performed.
+4. Revisit V32: swim surface/partial breach, camera orbit/zoom from green water into overcast air and back, nearby generated bank/sky/cattails, smooth fog/light/waterline, ripples/wake, pause/refocus and at least representative actual controls including Adaptive Follow. Record observed presets and unobserved cells. Ocean above-water remains optional/unqualified.
+5. Record actual version/commit/dirty identity, Pond/Marine seed and Base World resource hashes, native OS/Godot/resolution/renderer/GFX profile, actions, screenshots/video provenance, measured performance, errors, owner PASS/FAIL/NOT OBSERVED judgment and explicit surviving concerns.
+
+EVIDENCE AND CLOSEOUT
+- Map **G4.1** World Select and independent baked loading to V28 and negative loader tests.
+- Map **G4.2** Pond procedural terrain, atmosphere, surface fish/camera/shoreline and performance to V29 + V32.
+- Map **G4.3** original freshwater FAF models/rigs/vegetation/ambient and native art integration to V30.
+- Map **G4.4** eligibility, no cross-biome spawns and two-world native regression to V28/V31 + relevant V32.
+- Each Gate PASS only if source-bound and native owner evidence cover the acceptance contract. If missing evidence, mark FAIL/NOT OBSERVED/BLOCKED with precise reason; no fabricated GREEN or progression.
+- Write docs/tasks/p4/closeout.md with file/record mapping, source identity, actual version, qualified limits and next action. Reconcile docs/roadmap.md, BOOT.md, MODULES.md, P4 design, FAF records, current UX/technical and index links once for implemented facts, preserving historical task/source evidence.
+- Route later feeding/predator/growth to **P5**, save/death P6, Life History P7 and whole-life qualification P8. Do not implement those features in this closeout.
+
+VALIDATE
+T3 actual native walkthrough and owner judgment plus T1 documentation link/diff and required focused regression verification if closeout edits behavior. Inspect git diff --check and the actual version chosen. Record any failure rather than hiding it; stop.
+
+DONE / VERSION / REPORT
+This prompt's **assigned** closeout version is 0.4.14. As allowed by the runner closeout contract, retain 0.4.13 if the owner has not approved the final version/progression, or set 0.4.14 only after qualified review. Leave closeout changes uncommitted for human review. Do not self-commit or push. Report Gate matrix, native observations, provenance, missing criteria, pending edits and whether P5 is authorized.
