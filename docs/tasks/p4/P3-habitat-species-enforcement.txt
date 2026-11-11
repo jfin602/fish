@@ -1,0 +1,29 @@
+TASK: Phase 4 / P3 — Habitat species enforcement
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.3`.
+
+GOAL
+Enforce native Ocean/Pond creature separation from one authoritative catalog policy used by selectable characters, ambient life and reserved future ecological spawns.
+
+READ / ENTRY
+P4 README/plan P3, P4 design/species contract, current CharacterCatalog/CharacterSelect/DemoSelection, PlayerArt, reef ambient fish creation and asset registry, relevant FAF fish IDs, P3 character qualification, Godot scene/resource checks. Verify P2 0.4.2 evidence/version and inspect HEAD/dirty scope.
+
+IMPLEMENT
+1. Define explicit species ID and habitat eligibility with selectable/ambient eligibility. Reuse the existing FAF marine IDs, ensure all five are Ocean-only. Do not infer eligibility from display names or folder paths.
+2. Implement one reusable fail-closed compatibility resolver shared by UI and ambient/scene spawning. Unknown tags/IDs, missing models, non-native entries and incompatible baked-world requests must return a bounded diagnostic and never default to 'all worlds'.
+3. Filter Character Select by selected world, including animated previews, focus wrap, selected-index reset, back navigation, changing habitats and scene reload. Keep selection playable with all five marine fish in Ocean.
+4. Before real Pond FAF fish arrive at P8, support a clear empty/not-installed freshwater state; if testing needs a temporary primitive placeholder, label it fixture-only and never make it a production FAF or Ocean fish masquerading as freshwater.
+5. Apply the same check to current reef ambient population and future explicit spawn-entry API. Remove no marine assets. Prevent old ambient nodes from leaking when switching worlds.
+6. Add positive/negative tests for every current marine ID, a fixture Pond species, invalid identifiers, ambient population and world-switch reset; keep stable deterministic spawn seed handling. Record results honestly.
+
+SCOPE / DEFERRALS
+No predator AI, nutrition, species mechanics, life identity, persistence or full freshwater fish asset production. Do not clone two separate fish controllers or collider rules.
+
+VALIDATE
+T2 focused catalog/spawn/filter tests, Godot build and scene smoke using actual commands, negative paths and git diff --check; no full native acceptance claimed. Write findings to qualification/implementation.md.
+
+DONE / VERSION / REPORT
+Ocean offers only its five fish; Pond accepts only explicitly eligible freshwater identities/fixtures and never silently falls back. Set version 0.4.3 after checks. No self-commit/push.
