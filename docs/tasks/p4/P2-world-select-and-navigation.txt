@@ -1,0 +1,29 @@
+TASK: Phase 4 / P2 — World Select and navigation
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.2`.
+
+GOAL
+Make World Select the first selection page in the P4 tech demo, upstream of the existing P3 Character Select, while preserving eventual Main Menu/New Life/Continue semantics as design-only future work.
+
+READ / ENTRY
+AGENTS.md, BOOT.md, workflow, P4 README/plan P2, UX and P4 design, P3 Character Select/PlayShell docs, MODULES.md, actual game/project.godot startup, CharacterSelect/DemoSelection/PlayShell/main scene, input capture and display preferences. Confirm valid P1 0.4.1 checkpoint, current HEAD/dirty state and Fish-only project identity.
+
+IMPLEMENT
+1. Add World Select scene/controller showing clearly distinct Ocean and Freshwater Pond cards, names, thumbnail or honest placeholder, selected/focus indication not solely by color, keyboard/pointer navigation, Choose, Back and loading/error states.
+2. Route clean new demo session: World Select -> Character Select -> Play. Retain Ocean's five FAF fish route; a not-yet-baked Pond must show a clear unavailable/load error until P4, rather than route to Ocean or crash. Do not silently choose Ocean when Pond was requested.
+3. Add Back from Character Select to World Select; update in-play Return to selection to a safe world-first selection path while retaining P3 nonterminal semantics. Restore mouse pointer, clear held thrust/brake and captured input, unload prior play, and avoid time progression while menus open.
+4. Keep a small session selection object. Do not invent persistent save slots, New Life abandonment, gameplay deaths or archive events. Menu labels reflect current implementation only.
+5. Add checks for keyboard/mouse focus, selecting each world, invalid/unavailable world, Back/re-enter, focus loss/rearm, repeated Ocean selection, world-scene cleanup and no leak into active movement.
+6. Retain full screen/windowed-fullscreen adaptability.
+
+SCOPE / DEFERRALS
+No new fish art, no Pond construction, no new main menu implementation beyond needed navigation, no save/Continue/History changes, no collider or movement-tuning changes.
+
+VALIDATE
+T2 actual scene import, build, focused menu routing/focus/input checks and short real-scene smoke where available; git diff --check. A headless selection test does not prove native feel. Record evidence in qualification/implementation.md.
+
+DONE / VERSION / REPORT
+World Select and Back/Return routes work without altering Ocean fish behavior or inventing Pond resources. Set version 0.4.2 after checks; report next P3, failures, and native gaps. No self-commit/push.
