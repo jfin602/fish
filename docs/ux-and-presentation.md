@@ -6,7 +6,7 @@ This document separates confirmed interface requirements from working presentati
 
 ## Confirmed perspective and continuity
 
-Third person is the main experience in a realistic 3D ocean world. The player sees the same fish grow from hatchling to large fish. Optional first person offers another view of that life. Camera changes must not reset survival state or encounters.
+Third person is the main experience in a stylized 3D aquatic world: the existing Ocean and a planned freshwater Pond are distinct habitats. The player sees the same fish grow from hatchling to large fish. Optional first person offers another view of that life. Camera changes must not reset survival state or encounters.
 
 A living fish can be continued across sessions. Death ends that life permanently. The main menu contains a history section for all completed fish stories, and death presents a brief recounting of the life that just ended.
 
@@ -22,12 +22,20 @@ Character choice is session-local. It is not yet a saved fish identity, New Life
 
 The Pause/Game Menu includes **Return to Character Select**. That action clears gameplay input and mouse capture, exits the current ephemeral P3 play scene and returns to the selection page. It must not be represented as death, archive a story, save/abandon a living run or invoke later persistence rules. After return, the last selected fish may remain highlighted in memory, and the player can choose another fish and start a clean session.
 
+## P4 World Select and habitat-filtered characters
+
+**Owner-selected for P4 — 2026-11-11; not yet implemented.** Preserve P3's five-fish marine Character Select for Ocean; add a World Select step before Character Select for a fresh demo/new-life entry. The screen offers **Ocean** and **Freshwater Pond** with readable previews, selection/focus, Back and Start/Choose behavior; each world loads its own environment and compatible character list. Marine fish cannot be selected in Pond and freshwater fish cannot be selected in Ocean. The same restriction also governs ambient/spawned populations.
+
+Proposed New Life path: **Main Menu → World Select → Character Select → Play**. In the current tech demo World Select may be the first gameplay selection screen. Character Select → Back returns to World Select; session-only Pause → Return to selection must clear held input and mouse capture. Neither navigation nor switching demo worlds is a death, save, archived life or gameplay world migration. A failed load stays visible as an error, not an implicit fallback to the other world.
+
+When saved lives are implemented in P6, **Continue** goes directly to the fish's stored world and species; World Select is only for starting a new life. Main-menu Life History remains global across habitats. [P4 plan](planning/p4/freshwater-world.md) owns the full proposed UI and native acceptance.
+
 ## Main menu
 
 | Action | Intended behavior |
 | --- | --- |
 | Continue | Available for a valid living save; resumes that fish and its current situation. |
-| New life | Starts a new hatchling under the explicit active-save replacement policy. |
+| New life | Opens World Select, then compatible Character Select, to start a new hatchling under the explicit active-save replacement policy. |
 | Life History | Opens the saved collection of completed-life stories, including a truthful empty state. |
 | Settings | Provides the controls, display, audio, and accessibility options implemented for the current scope. |
 | Quit | Leaves without advancing the world while closed. |
@@ -40,7 +48,7 @@ Prioritize the fish, nearby food, useful shelter, and threats. Size differences 
 
 The approved [swimming presentation](systems/swimming-and-camera.md) places the camera behind and slightly above the fish at a moderate distance, showing its whole body and useful space ahead. It follows direction and depth changes smoothly, adjusts near obstacles to keep the fish visible, and keeps a steady horizon while the body bends and leans into turns. Visible tail and body motion eases during a glide.
 
-Plants, rocks, depth changes, and lighting provide spatial cues. The visual direction uses realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns selected sources and preparation checks. P2 now owns the first deliberate underwater-world treatment; exact final production biome/art/audio treatment remains later work.
+Plants, rocks, depth changes, and lighting provide spatial cues. Ocean retains its vibrant low-poly reef contract; Pond adds murky-green freshwater lighting, mud, logs and vegetation. [FAF style](fish-asset-factory/art-style.md) owns shared/habitat look, and [art and assets](art-and-assets.md) owns sources and preparation checks. P2 remains the historical first underwater-world treatment.
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 
