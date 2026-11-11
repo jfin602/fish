@@ -47,6 +47,7 @@ This map distinguishes implemented source from planned boundaries. Inspect the c
 | `game/resources/swim_tuning.tres` | Tracked owner-accepted P1 movement/camera/animation baseline; [exact values](docs/tasks/p1/qualification/accepted-tuning.md). |
 | `game/assets/vendor-local/` | Ignored working copies of acquired third-party assets. Public source must not embed restricted payloads. |
 | `game/dev/`, `tools/dev` | Focused scene/runtime checks and repository-relative developer commands, including `inspect-terrain` for six live FAF variants and route-floor agreement, `inspect-geology` for rock coverage, route/cave/corridor and camera recovery, plus P2 habitat/reef/depth/atmosphere and preserved P1 fixture checks. R1's reef check measures the actual fish clamp and authored-marker margin; native physical-key evidence verifies traversal. |
+| `game/scripts/WorldGeneration.cs`, `BakedWorldContract.cs`, `BakedWorldLoader.cs`, `game/dev/WorldCompilerChecks.cs` | C3/P1 deterministic fixture compiler, versioned manifest/resource schema and generator-independent baked loader. `tools/dev inspect-world-compiler` checks repeatability and corruption; `compile-world-fixture <seed>` writes an ignored candidate. Normal play still uses the P2/P3 authored habitat. |
 | `game/addons/godot_mcp/` | Matched upstream editor bridge/runtime probe, separate from gameplay. |
 
 ## P2 composition/effects boundaries

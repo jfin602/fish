@@ -1,6 +1,6 @@
 # c3-world-gen — deterministic procedural reef world correction
 
-**State:** AUTHORED / NOT EXECUTED / NOT QUALIFIED.  
+**State:** P1 IMPLEMENTED / P2–P7 NOT EXECUTED / NOT QUALIFIED.
 **Type:** Correction 3.  
 **Authoring baseline:** GitHub main at `4c9b601df7c8aa97f983b02bea216aee13af2748`, root `0.3.0`.  
 **Execution version:** every prompt requires **unchanged `0.3.6`**, the owner-selected P3 P6 checkpoint. This is a strict preflight for the intended local execution point, not an instruction to bump/downgrade GitHub main or fabricate P3 checkpoints.
@@ -32,7 +32,7 @@ The owner's active local P3 state is not visible from GitHub. Before execution:
 
 If root is not exactly `0.3.6`, **stop and reconcile actual P3 progress**.
 
-Run **c3-world-gen before c3-visibility**. The visibility correction must tune against the generated/baked world rather than obsolete placed geometry.
+The planned order was **c3-world-gen before c3-visibility**. Actual local history already contains c3-visibility P1–P3; preserve those commits and revisit visibility against the generated/baked world rather than obsolete placed geometry.
 
 ## Prompt order
 
@@ -70,9 +70,9 @@ The 120-second target is not pre-approved evidence. Measure it.
 
 ## Evidence
 
-Create only after execution:
+Execution records:
 
-- `qualification/implementation.md` — P1–P6 source, commands, deterministic checks, phase timings and failures/repairs;
+- [implementation evidence](qualification/implementation.md) — P1 source, commands, deterministic checks and fixture phase timings; later P2–P6 results belong here when executed;
 - `qualification/native-world-gen.md` — P7 native world inspection/play, generation/load measurements and owner judgment;
 - `closeout.md` — V26/V27 and correction disposition.
 

@@ -36,6 +36,34 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        foreach (var argument in OS.GetCmdlineUserArgs())
+        {
+            if (!argument.StartsWith("--compile-world-fixture=", StringComparison.Ordinal)) continue;
+            var seedText = argument["--compile-world-fixture=".Length..];
+            if (!ulong.TryParse(seedText, out var seed))
+            {
+                GD.PushError($"WORLD_COMPILE_FAILED invalid seed: {seedText}");
+                GetTree().Quit(2);
+                return;
+            }
+            try
+            {
+                var folder = System.IO.Path.Combine(WorldCompiler.CandidateRoot, $"fixture-{seed}");
+                var manifest = WorldCompiler.CompileFixture(new WorldGenerationSettings(seed), folder,
+                    FafRuntimeCatalog.Environment,
+                    p => GD.Print($"WORLD_COMPILE_STAGE {p.Stage} {p.Completed}/{p.Total} elapsed_ms={p.ElapsedMilliseconds}"));
+                GD.Print($"WORLD_COMPILE_OK id={manifest.WorldId} manifest={System.IO.Path.Combine(folder, BakedWorldContract.ManifestFileName)}");
+                GetTree().Quit();
+            }
+            catch (Exception error) { GD.PushError($"WORLD_COMPILE_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+        if (OS.GetCmdlineUserArgs().Contains("--world-compiler-check"))
+        {
+            try { WorldCompilerChecks.Run(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"WORLD_COMPILER_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         if (OS.GetCmdlineUserArgs().Contains("--control-preset-check"))
         {
             try { ControlPresetChecks.Run(); GetTree().Quit(); }

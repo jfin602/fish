@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|compile-world-fixture <seed>|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -118,6 +118,12 @@ faf_runtime_check() {
   logged faf-runtime 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --faf-runtime-check
   grep -Fq 'FAF_RUNTIME_CHECK_OK environment=38 terrain=6 rock=4 coral=12 plant=8 detail=8 fish=5' "$LOGS/faf-runtime.log" || { echo 'FAF runtime marker missing' >&2; return 1; }
 }
+world_compiler_check() {
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/world-compiler.XXXXXX")
+  logged world-compiler 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --world-compiler-check
+  grep -Fq 'WORLD_COMPILER_CHECK_OK' "$LOGS/world-compiler.log" || { echo 'World compiler check marker missing' >&2; return 1; }
+}
 case "${1:-help}" in
   doctor)
     need_tools
@@ -213,6 +219,15 @@ case "${1:-help}" in
   inspect-depth) need_tools; depth_check ;;
   inspect-water) need_tools; water_reaction_check ;;
   inspect-faf) need_tools; faf_runtime_check ;;
+  inspect-world-compiler) need_tools; world_compiler_check ;;
+  compile-world-fixture)
+    need_tools
+    [[ ${2:-} =~ ^[0-9]+$ ]] || { usage >&2; exit 2; }
+    profile="$ROOT/artifacts/world-data"
+    mkdir -p "$profile"
+    logged compile-world-fixture 60 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- "--compile-world-fixture=$2"
+    grep -Fq 'WORLD_COMPILE_OK' "$LOGS/compile-world-fixture.log" || { echo 'World fixture compile marker missing' >&2; return 1; }
+    ;;
   automation-smoke) need_tools; scene_tool automation-smoke automation-smoke ;;
   help|-h|--help) usage ;;
   *) usage >&2; exit 2 ;;
