@@ -8,7 +8,7 @@ Expand Fish from the current ocean/reef prototype into a two-habitat aquatic sur
 
 Ocean creatures cannot be player-selectable, ambient-spawned or ecological-spawned in the Pond, and freshwater creatures cannot appear in the Ocean. A documented development-only fixture may deliberately bypass those rules for tests, but never as the normal gameplay fallback.
 
-P4 creates a usable new habitat and distinct species/content catalog. Feeding, predator AI, growth, per-species mechanics, and persistence remain subsequent phases.
+P4 creates a usable new habitat and distinct species/content catalog, including **stealth-ready physical cover routes** that later gameplay can use. The owner selected naturalistic stealth survival as the core Fish identity (S20), but feeding, predator sensing/AI, stealth-state gameplay, growth, per-species mechanics and persistence remain subsequent phases. [Stealth and detection](../../systems/stealth-and-detection.md) owns future behavior.
 
 ## Entry and sequencing
 
@@ -51,6 +51,8 @@ First visual target: a temperate freshwater habitat with muddy olive-green water
 - Visibility should reveal areas progressively rather than exposing the far bank immediately. Make nearby obstacles, the fish, routes, menu and key silhouettes readable in motion. Water color alone is insufficient; preserve overhead cues and depth/distance extinction.
 - Reuse performance-conscious Forward+ rendering and shared water/light systems through independently tunable per-habitat profiles; the pond must not permanently mutate the ocean's saved appearance/settings.
 - Every solid object's visible bounds, simplified collision and camera clearance need usable agreement. Do not recreate P3's floating collision/terrain issues.
+- Compose **connected cover networks**: real hollow logs, rooted overhangs, occluding wood/rock and vegetation patches separated by visible open-water feeding/crossing lanes. A small fish should have several credible routes between shelters, with meaningful changes in exposure and more than one escape option where geometry permits. Plants that visually conceal but do not physically block should remain traversable and distinguishable from solid shelter; do not invent invisible safe-zone collision or change the currently accepted motor.
+- Keep practical geometry, scale, occlusion and habitat tags ready for later P5 sensors and AI, without implementing sensor data, predator encounters or stealth scoring in P4.
 
 ## Surface swimming and air–water camera transition (P4 requirement)
 
@@ -94,7 +96,7 @@ P4 character selection exposes the five native freshwater identities in their ac
 
 ### G4.2 — Freshwater terrain and presentation
 
-- Pond has recognizable irregular banks, coherent underwater depth, supported natural geometry, roots/logs/vegetation clusters, open routes and believable hiding spaces.
+- Pond has recognizable irregular banks, coherent underwater depth, supported natural geometry, roots/logs/vegetation clusters, open routes and believable hiding spaces, including distinct hard-shelter and soft-cover examples connected by exposed swim lanes.
 - Shallow/middle/deep views are distinct; murky visibility hides distant bounds without obscuring close obstacles or player.
 - Route/collision/camera validation and bounded performance pass on real native Forward+ play.
 - The generator and baked load remain deterministic and repeatable for an explicit seed/settings/version.
@@ -131,4 +133,4 @@ At P6, a living run stores both stable species identity and **selected habitat p
 
 ## Explicit deferrals and open implementation choices
 
-No P4 feeding economy, predator combat (including bird attacks/hunting), aerial fish movement/jumping, terrestrial exploration, advanced fluid simulation, species stats, growth balance, breeding, full wildlife behavior, living-save implementation or history system. Those remain later scoped work. Implementation may begin with a small freshwater species subset and expand after native visual review. Exact fish roster, biome size/visibility numerical presets and creature density remain tuning/asset-planning choices, not unreviewed production commitments.
+No P4 feeding economy, predator sensing/investigation/pursuit or combat (including bird attacks/hunting), stealth scoring/gameplay state, aerial fish movement/jumping, terrestrial exploration, advanced fluid simulation, species stats, growth balance, breeding, full wildlife behavior, living-save implementation or history system. Those remain later scoped work. Implementation may begin with a small freshwater species subset and expand after native visual review. Exact fish roster, biome size/visibility numerical presets and creature density remain tuning/asset-planning choices, not unreviewed production commitments.

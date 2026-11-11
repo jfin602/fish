@@ -17,6 +17,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [P3 procedural world generation](planning/p3/procedural-world-generation.md) | Deterministic finite world compiler: irregular basin, true 3D geology, terrain-aware placement, baked candidate/Base World lifecycle and generation-time target. |
 | [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Approved future Ocean/Pond World Select, distinct visual habitats, habitat-compatible species, surface camera and shared loading/FAF requirements; [authored P4 stack](tasks/p4/README.md) is unexecuted. |
 | [Underwater visibility and discovery](systems/underwater-visibility.md) | Owner-selected distance/depth extinction, progressive reef reveal, near-field readability, tuning controls, and pending native acceptance. |
+| [Stealth and detection](systems/stealth-and-detection.md) | Owner-approved naturalistic stealth core; physical shelter, exposure, sensory detection, investigation, escape, stealth hunting and P4/P5 boundary. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
@@ -40,9 +41,9 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 ## Current sequence
 
-P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.1/G2.2 pass while G2.3/V20 remains an accepted open gap. P3 is **IN PROGRESS at `0.3.6`**, not GREEN: the initial C3 generated Ocean candidate failed native composition and alternate-seed routes. Complete manual [M1–M4 C3 world-generation repairs](tasks/c3-world-gen/manual/README.md) sequentially with visual review, then re-qualify the world and revisit [C3 visibility](tasks/c3-visibility/README.md).
+P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.3/V20 remains an accepted open gap. P3 is also **owner-closed for progression / NOT GREEN**, with corrected Ocean `ocean-m4-42` at completed `0.3.6`, documented visual/native/visibility gaps and [direct closeout](tasks/p3/closeout.md). Do not convert accepted gaps into PASS.
 
-**P4 is owner-selected but not started:** [Freshwater Pond and World Select](planning/p4/freshwater-world.md) preserves the Ocean and its five marine FAF fish as one world; adds Pond as another, with strict species eligibility; and reuses the compiler/Forward+/controls. Future gameplay is now **P5 feeding/growth, P6 saves/death, P7 Life History, P8 integrated qualification**. The previously selected Movement abilities remain a later enhancement. Planning does not bump version or establish qualification.
+**P4 is ready but not implemented at `0.4.0`:** [Freshwater Pond and World Select](planning/p4/freshwater-world.md) preserves the Ocean and its five marine FAF fish, adds Pond, ensures compatible species and prepares physical shelter/cover networks without predator AI. Future gameplay is **P5 naturalistic stealth, feeding and growth; P6 saves/death; P7 Life History; P8 integrated qualification**. The previously selected Movement abilities remain a later enhancement. Planning does not bump version or establish qualification.
 
 ## Status language
 

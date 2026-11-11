@@ -6,7 +6,7 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 
 | Area | Actual state |
 | --- | --- |
-| Product | Owner-approved 3D fish survival across **Ocean and Freshwater Pond** (Pond planned): one living fish across sessions, permanent death, factual life recounting and a main-menu Life History archive; marine and freshwater species must stay in their own habitats. |
+| Product | Owner-approved **naturalistic stealth-survival** across Ocean and Freshwater Pond (Pond planned): exposure, real hiding and feeding risk are central; one living fish persists across sessions, death is permanent, and each life produces a factual history. Habitat-native species remain separate. |
 | Foundation | P0 is complete on the observed Linux/X11 desktop; the Godot .NET project, developer CLI, and isolated Godot Editor MCP path are implemented and qualified for the foundation scope. |
 | Current gameplay | **P1 COMPLETE.** The owner accepted the current post-c1 controls, swimming, third-person camera/body and starter course as sufficient for progression. [P1 closeout](docs/tasks/p1/closeout.md) maps G1.1–G1.4 and evidence limits; [accepted tuning](docs/tasks/p1/qualification/accepted-tuning.md) is P2's exact baseline. |
 | Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
@@ -16,11 +16,11 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
 | Root version | **`0.4.5`** — P4 P5 checkpoint is at HEAD; P6 integration changes are uncommitted and have no `0.4.6` checkpoint. P3 stopped at implemented checkpoint `0.3.6`; no `0.3.7`/`0.3.8` runner checkpoints were created. |
 | Next design phase | **P4 P5 IMPLEMENTED, P6 INTEGRATION CANDIDATE:** [Freshwater Pond + World Select](docs/planning/p4/freshwater-world.md) and [14-step P4 stack](docs/tasks/p4/README.md) preserve the Ocean and route remaining Pond assets, native review and later surface camera work. [P1–P6 evidence](docs/tasks/p4/qualification/implementation.md) records the current implementation and import limit. |
-| Later gameplay | Feeding/predators/growth move to P5; persistence/death P6; life recounting/history P7; integrated qualification P8. |
+| Later gameplay | P5 introduces naturalistic sensing, hiding, predator investigation/pursuit, stealth hunting, feeding and growth; persistence/death P6; Life History P7; integrated qualification P8. No P5 stealth gameplay is yet implemented or qualified. |
 
 ## Product contract to preserve
 
-One fish's life is one run. The fish grows by feeding while avoiding predators, with third person as the primary perspective and first person as an optional view. Closing the game suspends the living run; death ends it permanently. Each dead life produces a short factual recounting retained under **Life History** in the main menu, independent of later runs.
+**Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.** Stealth survival with natural mechanics is the primary gameplay identity; [stealth and detection](docs/systems/stealth-and-detection.md) owns the future rules. One fish's life is one run. The fish grows by feeding while avoiding predators, with third person as the primary perspective and first person as an optional view. Closing the game suspends the living run; death ends it permanently. Each dead life produces a short factual recounting retained under **Life History** in the main menu, independent of later runs.
 
 The [decision register](docs/decisions-and-questions.md) separates confirmed Ocean/Pond habitat selection from unresolved native species rosters, feeding balance, long-life pacing and later presentation choices. P2 and P3 establish the Ocean prototype and shared deterministic world compiler; P4 adds Pond without erasing that work.
 

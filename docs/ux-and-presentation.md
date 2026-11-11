@@ -54,6 +54,12 @@ Plants, rocks, depth changes, and lighting provide spatial cues. Ocean retains i
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 
+## Stealth and threat readability (P5 working design)
+
+Naturalistic stealth is the game's owner-approved central identity. Communicate what creatures actually sensed, not an invented omniscient player-detection overlay. Prioritize predator orientation, investigation movement, prey scattering, disturbed vegetation/water, attack commitment and loss of pursuit. Threats above, behind or outside the camera's view need subtle directional/non-color-only cues, but those cues should only disclose information the player's fish could plausibly perceive. [Stealth and detection](systems/stealth-and-detection.md) owns sensor authority and fair outcomes; UI and camera cannot write to AI awareness state.
+
+Do not make a permanent numeric 'hidden percentage' or exaggerated detection cone the default presentation. Optional clarity/accessibility presets and development diagnostics may expose more detail without altering actual perception or physical rules. Native review must demonstrate that both a successful hidden escape and an unsuccessful exposure are understandable, including the cause of detection. This is future P5 behavior, not an implemented P4 HUD feature.
+
 ## Underwater world presentation
 
 **Owner-selected for P2 — 2026-11-09:** normal play should stop looking like a flat test course and instead read immediately as a natural underwater environment. Use a layered presentation: varied seabed/reef geometry, depth/distance haze, underwater color/contrast, light from above, moving caustic-style illumination, sparse suspended matter and a restrained whole-view water treatment. A uniform blue overlay by itself is insufficient.

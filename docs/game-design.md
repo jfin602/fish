@@ -8,7 +8,7 @@ This document organizes the Fish concept approved in the project discussion. [De
 
 - Control a fish in a stylized 3D aquatic environment, primarily in third person. Ocean and freshwater Pond are separate supported habitats.
 - Begin as a hatchling and survive long enough to grow into a large fish.
-- Find food and eat suitable smaller fish while avoiding being eaten.
+- Practice naturalistic stealth survival as the central gameplay: manage exposure, use cover and movement to avoid detection, take risks to feed, and hunt prey under consistent ecological sensing rules.
 - Continue the same fish across multiple play sessions.
 - Permanently end that life on death; begin the next run as a hatchling.
 - Recount the dead fish's actual life briefly, then retain the story in a main-menu history section.
@@ -24,7 +24,11 @@ World choice is a new-life choice, not an ability to transfer an existing fish b
 
 ### Immediate survival
 
-Read the surroundings, choose a feeding opportunity, move out from shelter, feed or pursue, react to predators, and return to a viable position. Growth increases capability and changes which opportunities are useful.
+Observe the water and nearby creatures; identify shelter and potential threats; decide whether food justifies an exposed crossing; approach quietly or stalk prey; respond to suspicion with concealment or evasive movement; then recover a safer position. A predator can investigate imperfect evidence rather than automatically know the player's location. Growth changes shelter access, hunting capability and the risks worth taking.
+
+### Exposure, cover and ecological stealth
+
+The owner-approved guiding principle is: **Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.** Stealth is the normal survival interaction in both Pond and Ocean, including when the player becomes a hunter. A physical obstruction may block sight or access, dense plants can provide partial visual concealment, low visibility can protect and endanger, and movement can create nearby detectable disturbances. A fish is not automatically safe merely because it crossed a decorative foliage boundary. Both predator and prey decisions should be grounded in sensed information and bounded memory, not perfect knowledge. See the [stealth and detection contract](systems/stealth-and-detection.md) for scoped working rules.
 
 ### A fish's life
 
@@ -76,11 +80,11 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 [P2](tasks/p2/README.md) then replaces the visible test-course presentation with a natural reef-like habitat, locks a renderer from measured Compatibility/Forward+ testing, makes the world read convincingly underwater, and adds movement-reactive water presentation. The P1 course remains a regression fixture. [Art and assets](art-and-assets.md) owns source/provenance boundaries; the P2 slice does not settle the final species or production biome.
 
-After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 feeding-and-growth prototype then uses small food, one prey type, and one predator type. It should prove a readable escape, visible growth, and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
+After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 stealth/feed/escape/grow prototype then uses small food, one prey type, one predator type and a real cover network. It should prove concealment before detection, suspicion and investigation, fair pursuit and loss of contact, stealth hunting, readable escape, visible growth and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 
-The current P3 correction is still underway at `0.3.6`; the P4 design is approved but not implemented. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
+P3 was owner-closed for progression at `0.3.6` with documented non-GREEN gaps; P4 is the unimplemented `0.4.0` entry baseline. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
 
 ## Deferred choices
 

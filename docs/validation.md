@@ -27,7 +27,10 @@ P0 can record configuration success before a client reload, but B03/B04 remain u
 | V02 | Observe the same course and several minutes of free swimming in both desktop modes. Verify accepted third-person framing, smooth follow, obstacle visibility, swimming/gliding body motion, turning lean and a steady camera horizon. Record focus/viewport behavior and the owner's judgment of comfort, natural feel, nimbleness and ease of control. | G1.2 |
 | V03 | Consume food/prey, repeat callbacks or competing contacts, reject ineligible prey, and account for one removal/reward per entity. | G5.1 |
 | V04 | Cross growth thresholds while near geometry; verify continuous identity, visible/body changes, usable shelter changes and a food-chain reversal. | G5.1 |
-| V05 | Observe a predator's detection/attack, a legitimate escape and a lethal encounter; each event's cause agrees with authoritative state. | G5.2 |
+| V05 | Observe a predator's grounded detection, readable commitment/attack, legitimate escape and lethal encounter. Record sensory evidence, occlusion or exposure conditions and actual outcome; no omniscient tracking, fabricated escape or unexplained attack. | G5.2 |
+| V33 | In native 3D play, compare stationary/slow/fast movement in open water, behind solid wood and within soft vegetation under reproducible light/clarity. Verify that realistic distance/occlusion and bounded water disturbance change what a predator senses; visible plant overlap is not automatic invulnerability. Record the stimuli and native perception results. | G5.2 |
+| V34 | Present a disturbance near a hollow shelter: predator becomes suspicious/investigates, player breaks sight or retreats inside, predator checks last-known information without tracking through opaque collision, then can disengage; repeat with an exposed player who is caught. Verify understandable threat cues and performance. | G5.2 |
+| V35 | In native play, approach prey using slow motion and real cover, then compare to an exposed approach. Observe prey's sensing, fleeing or failure to notice under explainable rules and one legitimate feeding attempt; ensure growth eligibility and one-time reward do not depend on the camera or HUD. | G5.3 |
 | V06 | Save during ordinary play and active danger; close/reopen; compare run ID, native species, selected habitat, exact baked-world identity, resources, consumed prey, position, time and pursuit state. Advance wall-clock time while closed without simulation progress; Continue restores that same world without switching habitats. | G6.1 |
 | V07 | Record terminal death, close/reopen and use supported recovery; dead run remains unavailable for Continue. Start new life with fresh identity and preserved history. | G6.2 |
 | V08 | Inject interruption at each material death/archive persistence boundary and retry finalization; converge to one terminal outcome and one completed-life record with no resurrection. | G6.2 |
@@ -108,6 +111,7 @@ V28–V31 establish world routing, habitat identity, natural freshwater generati
 | Confirmed requirement | Planned evidence |
 | --- | --- |
 | C01–C04: 3D fish, growth/feeding/predation and camera choice | B04; V01–V05; V13. |
+| C63–C65: naturalistic stealth-survival identity, exposure/cover/feeding risk and ecologically grounded detection | V05, V33–V35 (P5 not started). |
 | C05–C07: one life across sessions, permanent death, no offline simulation | V06–V09; V14. |
 | C08–C10: brief factual recounting and all stories in main-menu history | V08; V10–V12; V14. |
 | C11–C13: reference workflow, Godot/MCP starter and honest setup boundary | Starter content/link/diff and runner checks; B01–B04 after p0. |

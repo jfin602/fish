@@ -15,7 +15,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
 | **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at implemented `0.3.6`; [direct closeout](tasks/p3/closeout.md) preserves failed and unobserved criteria, with no P7/P8 runner checkpoints. |
 | **P4 — Freshwater Pond and World Select** | Add Ocean and Pond as distinct selectable worlds, compatible fish/ambient populations, freshwater assets, bank/sky and surface-swimming/camera immersion. | **IN PROGRESS:** P5 scene-local Pond atmosphere implemented at root `0.4.5`; P6 FAF environment integration next. No P4 Gate qualified. [Evidence](tasks/p4/qualification/implementation.md), [design](planning/p4/freshwater-world.md), [P4 prompts](tasks/p4/README.md). |
-| P5 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop in compatible habitats. | NOT STARTED; formerly P4. |
+| P5 — Stealth, feed, escape and grow | Naturalistic detection, concealment, investigation, pursuit/escape and stealth hunting anchor the feeding/growth loop in compatible habitats. | NOT STARTED; formerly P4. |
 | P6 — A life across sessions | Continue one living fish in its original world; death permanently ends it with recoverable durable records. | NOT STARTED; formerly P5. |
 | P7 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED; formerly P6. |
 | P8 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation across the selected habitat scope. | NOT STARTED; formerly P7. |
@@ -198,7 +198,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 **Result: NOT OBSERVED.**
 
-- The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance.
+- The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance. Real hard shelter and soft concealment form traversable cover networks with exposed lanes; P4 does not simulate predator detection.
 - Per-habitat Forward+ green-water lighting/fog creates limited distant visibility while retaining near-field readability; ocean appearance remains unchanged.
 - Deterministic generate/bake/load, stable world identity, performance and native owner visual review are evidenced.
 - A fish can swim just under the Pond surface with limited partial breach, without hitting an invisible ceiling, escaping the water or destabilizing the existing motor.
@@ -222,9 +222,9 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Cross-habitat positive/negative tests and native entry/return/re-entry trials prove species never cross ecosystems in normal play.
 - Both environments are traversable with shared controls/camera; prior P1–P3 assets, ocean rendering, world generation and controls remain usable.
 
-## P5 — Feed, escape and grow
+## P5 — Stealth, feed, escape and grow
 
-**Status: NOT STARTED.** Scenarios V03–V05. [Ecology contract](systems/ecology-and-growth.md).
+**Status: NOT STARTED.** Scenarios V03–V05 and proposed V33–V35. [Ecology contract](systems/ecology-and-growth.md) and [stealth contract](systems/stealth-and-detection.md). Owner-approved identity: naturalistic stealth is the primary gameplay mechanic, not a secondary ability.
 
 ### G5.1 — Feeding and visible growth
 
@@ -235,14 +235,23 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Growth visibly updates the same fish and relevant body/collision/camera behavior without clipping, invalid spawning or new identity.
 - Demonstrate a meaningful food-chain reversal using a documented species/size rule; growth changes habitat use and hunting opportunity.
 
-### G5.2 — Readable predation and meaningful events
+### G5.2 — Detection, concealment and escape
 
 **Result: NOT OBSERVED.**
 
-- A predator can detect, pursue and catch the player; an observable escape route/timing works in a separate scenario.
-- Threat cues, attack commitment and failure cause are understandable in native play, including danger outside the immediate forward view.
-- Death and key growth/hunt/escape events have authoritative causes/stable identities for later persistence/story use.
+- A predator uses sensed visual/movement evidence, cover occlusion and bounded last-known-target memory; it cannot track a concealed fish with perfect knowledge.
+- Native play demonstrates suspicion, investigation, a credible concealment/escape, loss of contact and searching/disengagement, alongside a readable successful predator strike or lethal encounter.
+- Physical shelter and soft cover have different effects; moving rapidly or leaving cover creates fair exposure risk. Threat cues, commitment and failure cause remain understandable even outside the immediate forward view.
+- Death, genuine pursuit, escape and predation events have authoritative causes/stable identities for later persistence/story use; don't fabricate an escape from every chase.
 - New test lives reset intended prototype state; durable multi-session behavior is not claimed yet.
+
+### G5.3 — Stealth hunting and ecosystem consistency
+
+**Result: NOT OBSERVED.**
+
+- The player can approach prey through usable cover/slow movement, and careless exposure can alert prey to flee toward reachable shelter.
+- Player and NPC outcomes share coherent movement, sight, obstruction, distance, body-size/cover and prey-eligibility rules; gameplay cannot derive knowledge from a hidden UI or camera-only state.
+- At least one native stealth-hunt encounter demonstrates a fair approach and prey response. More sophisticated species sensors and full ecosystem simulation are later scope.
 
 ## P6 — A life across sessions
 

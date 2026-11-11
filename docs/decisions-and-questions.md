@@ -30,6 +30,8 @@
 
 - **S19 — Multi-habitat direction and Phase 4 (2026-11-11):** The owner chose to finish `c3-world-gen` M1–M4 manual corrections before P4, then preserve the existing Ocean as one selectable world and build a separate dark/murky freshwater Pond world as Phase 4. A new World Select comes before Character Select. Marine fish must not be selectable or spawned in freshwater; freshwater fish must not be selectable or spawned in the ocean. Share existing movement/camera, Forward+ and procedural compiler rather than replacing the Ocean. Original feeding/growth P4 and subsequent phases shift to P5–P8. [P4 plan](planning/p4/freshwater-world.md) details scoped implementation; approval is not implementation or native qualification.
 
+- **S20 — Stealth survival as Fish's core identity (2026-11-11):** The owner chose naturalistic ecosystem stealth (option B) over arcade stealth, explicitly made stealth survival with natural mechanics the main goal, and approved the guiding principle: “Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.” This is a game-wide player-experience decision for both Ocean and Pond, not proof of implemented sensing, stealth AI or qualification. [Vision](vision.md) owns the principle; [stealth and detection](systems/stealth-and-detection.md) owns future mechanical design. P4 supplies physical hiding opportunities; P5 is the first stealth-survival gameplay implementation.
+
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
 ## Confirmed requirements
@@ -99,6 +101,9 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C60 | Marine fish are ocean-only and freshwater fish are pond-only, for player selection and normal ambient/ecological spawning. Missing compatibility data never defaults to cross-habitat eligibility. | S19 |
 | C61 | P4 preserves the accepted FAF ocean assets, ocean lighting/renderer, existing controls/camera and deterministic generated/baked world pipeline. Freshwater receives independent art, environment and compatible wildlife/plant catalogs, using shared infrastructure. | S19 |
 | C62 | The originally planned feeding/predator/growth phase moves to P5; persistence/death, life stories/history and integrated qualification move to P6, P7 and P8 respectively. World and species identity must be retained when lives become persistent. | S19 |
+| C63 | Fish's main gameplay identity is **naturalistic stealth survival**, not optional hiding attached to ordinary chase/combat gameplay. | S20 |
+| C64 | Guiding principle: **Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.** | S20 |
+| C65 | Survival should depend on meaningful movement exposure, genuine hiding opportunities and calculated feeding risk in an active aquatic environment; detailed sensor formulas and AI tuning are working designs. | S20 |
 
 ## Working designs
 
@@ -118,6 +123,8 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | W12 | Fish-reactive water is a rendering/particle/shader presentation effect driven read-only from movement state, not a fluid simulation or alternate movement authority. | [P2 underwater-world plan](planning/p2/underwater-world.md) |
 | W13 | P3 uses FAF-FISH-001–004 as bounded presentation-only ambient reef life when practical. All five FAF fish, including FAF-FISH-005 Blacktip Reef Shark, are selectable player visuals; shark selection remains visual-only and does not imply predator behavior. | [P3 reef-world plan](planning/p3/reef-world-rebuild.md) |
 | W14 | P4 uses a stable habitat/world manifest and shared fish compatibility policy; Pond and Ocean keep separate baked resources and atmosphere while sharing core engine code. | [P4 freshwater plan](planning/p4/freshwater-world.md) |
+| W15 | A naturalistic sensing model combines sight/occlusion/clarity with local motion disturbance, bounded memory, suspicion, investigation, attack commitment, last-known search and disengagement. No omniscient target tracking. | [Stealth and detection](systems/stealth-and-detection.md) |
+| W16 | Pond cover networks, subtle/non-color-only threat cues, and shared prey/predator sensing become the first P5 prototype focus; additional audio/chemical sensing and species complexity remain deferred. | [Stealth and detection](systems/stealth-and-detection.md); [P4 plan](planning/p4/freshwater-world.md) |
 
 Engineering invariants in the system documents preserve confirmed behavior: stable run identity, idempotent feeding/death/archive operations, no offline simulation, factual story provenance, and separation of active saves from history. Their exact code and storage format remain unimplemented.
 
@@ -137,6 +144,7 @@ Resolve choices when they affect the next concrete task. A reversible prototype 
 | Q08 | Narrative length, fish naming, portraits, narration, filtering, sorting, and optional archive deletion. | Before the first polished history flow. |
 | Q09 | Cross-run discovery persistence, cosmetics, unlocks, or permanent stat progression. | Before implementing any carryover beyond saved stories. |
 | Q10 | **Resolved for P2:** use Forward+ from the owner's real desktop trial. Ocean and Pond are now selected habitat directions (S19), while audio, production performance budgets, exact asset treatment and broader platform qualification remain open; the shared low-poly language is retained. | Revisit the renderer only for a concrete Forward+ blocker or platform requirement. |
+| Q11 | P5 sensory strengths, awareness thresholds/timing, species differences, feedback/accessibility settings, and limits of perception memory; naturalistic stealth as the core identity is already decided in S20. | Before P5 implementation/tuning and native qualification. |
 
 ## Design approval and actual core acceptance
 
