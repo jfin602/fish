@@ -35,6 +35,7 @@ public sealed class WorldEnvironmentAnalysis
     public WorldEnvironmentAnalysis(GeneratedBasin basin, IReadOnlyList<GeologicalRegion> regions,
         GeneratedWorldRoutes routes)
     {
+        WorldGenerationAudit.MarkStage();
         _basin = basin;
         _regions = regions;
         _routes = routes;

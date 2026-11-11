@@ -17,8 +17,12 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|inspect-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
 }
+world_profile="$ROOT/artifacts/world-data"
+world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
+candidate_resource() { echo "user://world-candidates/$1"; }
+candidate_disk() { echo "$world_profile/godot/app_userdata/Fish/world-candidates/$1"; }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
   command -v "$DOTNET_BIN" >/dev/null || { echo "Missing .NET SDK executable: $DOTNET_BIN" >&2; exit 2; }
@@ -141,6 +145,48 @@ generated_geology_check() {
   grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
+  inspect-character-select)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/character-select.XXXXXX")
+    logged character-select 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/character_select.tscn -- --character-check
+    grep -Fq 'CHARACTER_CHECK_OK' "$LOGS/character-select.log" || { echo 'Character Select marker missing' >&2; exit 1; }
+    ;;
+  generate-world)
+    need_tools
+    [[ ${2:-} =~ ^[0-9]+$ ]] || { usage >&2; exit 2; }
+    world_name "${3:-}"
+    (( $# == 3 )) || { usage >&2; exit 2; }
+    mkdir -p "$world_profile"
+    logged generate-world 300 env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- "--world-generate=$2" "--world-output=$(candidate_resource "$3")"
+    grep -Fq 'WORLD_FULL_COMPILE_OK' "$LOGS/generate-world.log" || { echo 'Full-world compile marker missing' >&2; exit 1; }
+    ;;
+  inspect-candidate|smoke-baked-candidate|run-baked-candidate)
+    need_tools
+    world_name "${2:-}"
+    (( $# == 2 )) || { usage >&2; exit 2; }
+    mkdir -p "$world_profile"
+    case "$1" in
+      inspect-candidate) logged inspect-candidate 120 env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- "--world-package=$(candidate_resource "$2")" --world-inspect ;;
+      smoke-baked-candidate) logged smoke-baked-candidate 120 env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- "--world-package=$(candidate_resource "$2")" --smoke ;;
+      run-baked-candidate) exec env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --path "$PROJECT" --scene res://scenes/main.tscn -- "--world-package=$(candidate_resource "$2")" ;;
+    esac
+    grep -Fq 'WORLD_BAKED_LOAD_OK' "$LOGS/$1.log" || { echo 'Baked load marker missing' >&2; exit 1; }
+    ;;
+  promote-world)
+    need_tools
+    world_name "${2:-}"
+    world_name "${3:-}"
+    [[ $# -eq 3 || ( $# -eq 4 && $4 == --dry-run ) ]] || { usage >&2; exit 2; }
+    "$0" inspect-candidate "$2"
+    source_dir=$(candidate_disk "$2")
+    target_dir="$PROJECT/worlds/base/$3"
+    [[ -d "$source_dir" ]] || { echo "Candidate missing: $source_dir" >&2; exit 1; }
+    [[ ! -e "$target_dir" ]] || { echo "Base World already exists: $target_dir" >&2; exit 1; }
+    if (( $# == 4 )); then echo "PROMOTION_DRY_RUN source=$source_dir target=$target_dir"; exit 0; fi
+    mkdir -p "$PROJECT/worlds/base"
+    cp -a -- "$source_dir" "$target_dir"
+    echo "BASE_WORLD_PROMOTED source=$source_dir target=$target_dir"
+    ;;
   smoke-world) need_tools; smoke ;;
   doctor)
     need_tools

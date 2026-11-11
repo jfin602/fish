@@ -24,6 +24,16 @@ public partial class SeabedSurface : StaticBody3D
         Basin = new GeneratedBasin(seed);
     }
 
+    public void RestoreBakedSeed(ulong seed) => Basin = new GeneratedBasin(seed);
+
+    public void InstallBaked(ArrayMesh mesh, ConcavePolygonShape3D collision, ulong seed)
+    {
+        RestoreBakedSeed(seed);
+        GetNode<MeshInstance3D>("Mesh").Mesh = mesh;
+        GetNode<CollisionShape3D>("Collision").Shape = collision;
+        _waterMaterial = mesh.SurfaceGetMaterial(0) as ShaderMaterial;
+    }
+
     public void SetWaterColumn(float surfaceY, float deepY)
     {
         if (!float.IsFinite(surfaceY) || !float.IsFinite(deepY) || deepY >= surfaceY)
@@ -34,6 +44,7 @@ public partial class SeabedSurface : StaticBody3D
 
     public bool Build(StandardMaterial3D[] materials)
     {
+        WorldGenerationAudit.MarkStage();
         if (materials.Length != HabitatPalette.Names.Length) return false;
         var shader = ResourceLoader.Load<Shader>("res://shaders/seabed_blend.gdshader");
         if (shader is null) return false;

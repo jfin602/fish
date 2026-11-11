@@ -9,6 +9,11 @@ namespace Fish;
 /// <summary>Visual-only fish loops rooted at generated habitat sites.</summary>
 public partial class FafAmbientReefLife : Node3D
 {
+    public sealed record BakedSchool(string Name, string Zone, string FishId, int Count,
+        float X, float Z, float Lift, float RadiusX, float RadiusZ, float Speed, float Yaw,
+        float Floor);
+    public sealed record BakedAmbient(IReadOnlyList<BakedSchool> Schools,
+        IReadOnlyList<AmbientFish> Fish);
     private readonly record struct School(string Name, string Zone, string FishId, int Count,
         float X, float Z, float Lift, float RadiusX, float RadiusZ, float Speed, float Yaw);
     public readonly record struct AmbientFish(string Id, string Zone, string SchoolName,
@@ -40,6 +45,38 @@ public partial class FafAmbientReefLife : Node3D
     public int SchoolCount => _schools.Count;
     public int FishCount => _population.Count;
     public float Elapsed => _elapsed;
+
+    public BakedAmbient ExportBaked() => new(
+        _schools.Select((s, i) => new BakedSchool(s.Name, s.Zone, s.FishId, s.Count,
+            s.X, s.Z, s.Lift, s.RadiusX, s.RadiusZ, s.Speed, s.Yaw, _schoolFloors[i])).ToArray(),
+        _population.ToArray());
+
+    public void RestoreBaked(BakedAmbient state, SeabedSurface seabed)
+    {
+        if (_population.Count != 0 || _schools.Count != 0 || state.Schools.Count != Templates.Length)
+            throw new InvalidOperationException("Invalid baked ambient state");
+        foreach (var s in state.Schools)
+        {
+            _schools.Add(new School(s.Name, s.Zone, s.FishId, s.Count, s.X, s.Z,
+                s.Lift, s.RadiusX, s.RadiusZ, s.Speed, s.Yaw));
+            _schoolFloors.Add(s.Floor);
+        }
+        var visuals = GetNode<Node3D>("Visuals");
+        foreach (var fish in state.Fish)
+        {
+            if (fish.SchoolIndex < 0 || fish.SchoolIndex >= _schools.Count ||
+                fish.SchoolName != _schools[fish.SchoolIndex].Name)
+                throw new InvalidOperationException("Invalid baked ambient fish index");
+            var actor = visuals.GetNode<Node3D>($"{fish.SchoolName}_{fish.MemberIndex + 1}");
+            var player = actor.GetNode<AnimationPlayer>("Rig/AnimationPlayer");
+            if (!player.HasAnimation(fish.Clip)) throw new InvalidOperationException("Missing baked fish animation");
+            _population.Add(fish);
+            _actors.Add(actor);
+            _animations.Add(player);
+            player.Play(fish.Clip);
+        }
+        _seabed = seabed;
+    }
 
     public bool TryBuild(SeabedSurface seabed, IReadOnlyList<GeneratedFafInstance> placements,
         GeneratedWorldRoutes routes, out string diagnostic)

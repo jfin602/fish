@@ -1,6 +1,8 @@
 #nullable enable
 using Godot;
 using System.Collections.Generic;
+using System;
+using System.Diagnostics;
 
 namespace Fish;
 
@@ -9,6 +11,8 @@ public partial class ReefComposition : Node3D
 {
     public GeneratedWorldRoutes? GeneratedRoutes { get; private set; }
     public WorldEnvironmentAnalysis? EnvironmentAnalysis { get; private set; }
+    public FullWorldData? BakedData { get; private set; }
+    public void InstallBakedData(FullWorldData data) => BakedData = data;
     private sealed record Source(string Path, Vector3 BottomCenterOffset, string GltfStem = "");
 
     private const string Vendor = "res://assets/vendor-local/";
@@ -26,9 +30,11 @@ public partial class ReefComposition : Node3D
         ["montipora_danae"] = new(P2 + "smithsonian/montipora-danae/usnm_307-100k-2048_std.glb", new(0, 0.04827f, 0)),
     };
 
-    public bool TryBuild(SeabedSurface seabed, out string diagnostic)
+    public bool TryBuild(SeabedSurface seabed, out string diagnostic, Action<string, long>? stage = null)
     {
+        WorldGenerationAudit.MarkStage();
         diagnostic = "";
+        var timer = Stopwatch.StartNew();
         var loaded = new Dictionary<string, PackedScene>();
         foreach (var (id, source) in Sources)
         {
@@ -105,6 +111,8 @@ public partial class ReefComposition : Node3D
             diagnostic = "FISH_REEF_INVALID action=keep-hero-cliff-and-raw-coral-count-bounded";
             return false;
         }
+        stage?.Invoke("legacy-source-prepare", timer.ElapsedMilliseconds);
+        timer.Restart();
         // Route markers are authored in X/Z and follow the same floor as the models.
         foreach (var child in GetNode<Node3D>("Routes").GetChildren())
         {
@@ -117,6 +125,8 @@ public partial class ReefComposition : Node3D
         }
         if (GetNodeOrNull<FafGeologyWorld>("Geology") is not { } geology ||
             !geology.TryBuildGenerated(seabed, out diagnostic)) return false;
+        stage?.Invoke("geology-mesh-collision", timer.ElapsedMilliseconds);
+        timer.Restart();
         // The route reservation and terrain analysis precede all decorative instances.
         GeneratedRoutes = new GeneratedWorldRoutes(seabed.Basin, geology.GeneratedRegions, Vector3.Zero);
         var fish = GetNodeOrNull<FishController>("../../../Fish");
@@ -136,11 +146,18 @@ public partial class ReefComposition : Node3D
             diagnostic = $"WORLD_ROUTE_INVALID {error.Message}";
             return false;
         }
+        stage?.Invoke("route-repair", timer.ElapsedMilliseconds);
+        timer.Restart();
         EnvironmentAnalysis = new WorldEnvironmentAnalysis(seabed.Basin, geology.GeneratedRegions, GeneratedRoutes);
+        stage?.Invoke("environment-analysis", timer.ElapsedMilliseconds);
+        timer.Restart();
         if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
             !dressing.TryBuild(EnvironmentAnalysis, GeneratedRoutes, seabed.Basin.Seed, out diagnostic)) return false;
+        stage?.Invoke("placement-dressing", timer.ElapsedMilliseconds);
+        timer.Restart();
         if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
             !ambient.TryBuild(seabed, dressing.Placements, GeneratedRoutes, out diagnostic)) return false;
+        stage?.Invoke("ambient-life", timer.ElapsedMilliseconds);
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;

@@ -31,6 +31,7 @@ public static class GeologicalRegionGenerator
 
     public static IReadOnlyList<GeologicalRegion> Generate(GeneratedBasin basin)
     {
+        WorldGenerationAudit.MarkStage();
         var result = new List<GeologicalRegion>(Shells.Length + 1);
         foreach (var spec in Shells) result.Add(BuildShell(basin, spec));
         result.Add(BuildCanyon(basin));

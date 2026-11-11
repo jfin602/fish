@@ -126,3 +126,33 @@ The east swim-through remains an out-and-back branch: removing P3 authored terra
 | 44 | `93e8a5d4f02e4266` | 14/51/7/43/23 | 14/50/7/25/0 | 703/1212/948 | 0/0/0 | 0.50 m | 7 |
 
 Every seed places 138 instances across all 38 variants with 48 selected anchors and a 46-render-node estimate. The score's conservative triangle estimate is 58,680; P6 must replace it with measured imported/baked totals. Living counts are concentrated in the shallower two bands relative to lower/deep on all three seeds; seed 43 has no eligible site in the narrowest `shallow` band and uses the adjacent `upper` band. `inspect-route-fields` passes 795 seed-42 fish/camera clearance probes on 27 nodes and 32 edges after the new static collision is installed. `inspect-ambient` passes nine visual-only schools, 31 fish, four species and animation replay; `smoke-world` passes `FISH_MOTOR_CHECK_OK` and `FISH_SMOKE_OK`.
+# P6 — full bake, load and Base World workflow (2026-11-10)
+
+**Pre-task state:** clean `main` at `4330dfa0d68bdd9c123a25e6c95315d0bd461ce0`, root `0.3.6`. The runner owns the implementation commit; this task makes none. Fish's Godot MCP server `2026.11.04` was reachable but its editor bridge was disconnected, so C# and resource changes were made on disk and validated with the pinned local CLI. The current desktop reported AMD Ryzen AI 9 465 w/ Radeon 880M, 20 logical CPUs, 30 GiB RAM, Godot `4.7.2.stable.mono`, and .NET SDK `10.0.403` under Linux/X11 (`DISPLAY=:0`). The full compile timing below is **headless on this identified desktop**, not native-play timing acceptance.
+
+`./tools/dev generate-world 42 qualification-42-final` compiled the full seed-42 P3 world with settings `1` and generator `c3-full-1` and baked a 3.8 MiB candidate under ignored `artifacts/world-data/.../world-candidates/qualification-42-final/`. The world ID is `world-76d44405d319640d`, catalog SHA-256 `d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a`, and baked content SHA-256 `5b62157809953d93eeb0dfb3888540e3070b12512561ab6e3cdd1042750f4b9f`.
+
+| Stage | Measured milliseconds |
+| --- | ---: |
+| Palette/player preparation | 1,147 |
+| Basin mesh and collision | 79 |
+| Historical source preparation | 2,459 |
+| Geological mesh and collision | 15 |
+| Route repair | 3,311 |
+| Environment analysis | 294 |
+| Placement and dressing | **43,396** |
+| Ambient life | 20 |
+| **Generation total** | **50,726** |
+| Data serialization | 28 |
+| Scene/resource serialization | 198 |
+| **Full compile and bake total** | **50,967** |
+
+The measured full compile is below the 120-second development-machine target. Placement/dressing is the dominant measured hotspot and is retained in the timing and P7 handoff; no quality reductions were made. Earlier first-pass generation was 50,868 ms and the initial whole-habitat pack failed validation because Godot did not include generated children of an instanced subscene. The final bake explicitly saves the generated components. Godot also emitted random local resource and packed node IDs; the baker now assigns stable resource IDs and normalizes the pinned 4.7.2 packed node-ID array. Two independent seed-42 packages were byte-identical after normalization, and the final end-to-end compiler output matched their content hash. The failed ignored package was never promoted.
+
+The candidate `manifest.json` records seed/settings/generator/catalog/content identity, resource hashes, stage timings and counts. `seabed-mesh.res` and `seabed-collision.res` hold the matching open floor, `geology.scn` holds five generated mesh/collision regions, `dressing.scn` holds 138 placements and their mesh/collision nodes, `ambient.scn` holds 31 visual fish, and `world-data.json` holds 27 route nodes, 32 route edges, 1,681 field samples, placement records and ambient motion data. The package references existing FAF assets; it does not copy original source payloads. Baked loading reads/verifies every hash and count, installs the resources into the existing authored Habitat shell, restores ambient animation, and asserts the generation-stage counter did not change. It does not fall back to generation on error.
+
+`./tools/dev inspect-candidate qualification-42-final` passed and reported a cold baked load of **917 ms**, with a separate smoke run at **638 ms**; `generator_invocations=0`. This is materially faster than the measured 50.97-second compile. `./tools/dev smoke-baked-candidate qualification-42-final` passed `FISH_MOTOR_CHECK_OK` and `FISH_SMOKE_OK`. `./tools/dev promote-world qualification-42-v2 qualification-42 --dry-run` showed the exact ignored candidate and tracked destination. After the deterministic-byte correction, the earlier provisional package was removed by an exact-manifest guarded operation and `./tools/dev promote-world qualification-42-final qualification-42` created the final reviewable `game/worlds/base/qualification-42/` package. An existing destination is rejected. Normal play now loads that package by default and fails visibly if its manifest/assets are missing or corrupt. It is marked a **provisional P7 qualification Base World, not a shipping decision**.
+
+**T2/T3 preparation:** `./tools/dev build` passed with zero warnings/errors. `inspect-world-compiler` passed deterministic fixture/reordered-catalog/different-seed/corruption checks. `inspect-basin`, `inspect-generated-geology`, `inspect-route-fields` and `inspect-placement` emitted their passing geometry, route and multi-seed markers on the final source. An ignored copy with one appended corrupt byte in `world-data.json` was rejected with a hash mismatch and no regeneration. `./tools/dev smoke-world` passed against the promoted baked default. `./tools/dev inspect-character-select` passed all five fish and `CHARACTER_ROUTE_OK` after the baked switch, preserving selected fish, pause/return and new selection routing. `git diff --check` passed. These are headless checks; P7 still needs hand-controlled visual, collision and performance judgment in native play.
+
+**P7 handoff:** use seed `42`, settings `1`, generator `c3-full-1`, `./tools/dev run-baked-candidate qualification-42-final` or normal `./tools/dev run` for native traversal. For a fresh timed compilation use a new candidate name with `./tools/dev generate-world 42 <new-name>`, inspect it with `./tools/dev inspect-candidate <new-name>`, compare its manifest/content hashes with this candidate, and record native machine/display/method and observed load/visual behavior in `qualification/native-world-gen.md`. Seeds `43` and `44` remain deterministic placement comparison settings, not promoted Base Worlds. P7 decides whether to retain or revise the provisional seed-42 package; no P3 Gate is closed here.

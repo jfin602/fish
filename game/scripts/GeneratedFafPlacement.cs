@@ -73,6 +73,7 @@ public sealed class GeneratedFafPlacement
 
     public bool Build(out string diagnostic)
     {
+        WorldGenerationAudit.MarkStage();
         if (_placed.Count != 0) { diagnostic = "WORLD_PLACEMENT_INVALID action=single-build"; return false; }
         SelectAnchors();
         if (_anchors.Count < 12) { diagnostic = $"WORLD_PLACEMENT_INVALID anchors={_anchors.Count}"; return false; }

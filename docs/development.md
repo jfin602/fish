@@ -70,6 +70,22 @@ Generated command logs live under ignored `artifacts/logs/`; relevant UID sideca
 
 Exports are later qualification scope. When introduced, use named platform presets and matching .NET export templates, retain the associated .NET runtime output, and test each claimed target separately. A configured preset is not a successful export or target-OS run.
 
+### C3 full-world candidates and baked normal play
+
+The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate packages live under ignored `artifacts/world-data/godot/app_userdata/Fish/world-candidates/<name>/`; `tools/dev` passes a stable `XDG_DATA_HOME` so the `user://` paths match across commands. Names use lowercase letters, digits and hyphens. Settings version is `1`, generator version is `c3-full-1`, and root application version stays `0.3.6`.
+
+| Command | Result |
+| --- | --- |
+| `./tools/dev generate-world 42 <new-name>` | Compile the full seed-42 world and bake a new candidate directory; print stage and total times. A name cannot be reused. |
+| `./tools/dev inspect-candidate <new-name>` | Verify manifest/version/catalog, resource hashes, data counts and loaded geometry/collision; assert zero generator-stage invocations. |
+| `./tools/dev smoke-baked-candidate <new-name>` | Run the candidate through the normal main scene and motor smoke. |
+| `./tools/dev run-baked-candidate <new-name>` | Open the candidate for native play through the main scene. |
+| `./tools/dev promote-world <new-name> <base-name> --dry-run` | Validate and show the exact source/destination without writing. |
+| `./tools/dev promote-world <new-name> <base-name>` | Validate and copy to `game/worlds/base/<base-name>/`. Existing destinations fail; no command stages or commits files. |
+| `./tools/dev inspect-character-select` | Exercise all five Character Select fish and the return/select route against the baked default. |
+
+Normal P3 play loads `res://worlds/base/qualification-42` and fails visibly if the package or a referenced asset is missing/corrupt; it does not regenerate. The authored Habitat shell, Fish motor, Character Select and water presentation remain the scene owners. The qualification package is a provisional review target, not a shipping-world declaration. `manifest.json` and package resources are tracked for ordinary diffs; no raw FAF source package is copied into a Base World.
+
 ## Godot Editor MCP
 
 Fish uses [hybridindie/godot-mcp](https://github.com/hybridindie/godot-mcp), with installed Python server package `2026.11.04` and the matching [2026.11.04 release addon](https://github.com/hybridindie/godot-mcp/releases/tag/2026.11.04) under `game/addons/godot_mcp/`. The plugin and `MCPRuntimeProbe` autoload are enabled in `project.godot`; the addon license and UID files are retained. MCP reports C# read/write support but no C# build capability; `tools/dev build` remains the compiler check.

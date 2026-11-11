@@ -1,0 +1,83 @@
+{
+  "FormatVersion": 1,
+  "WorldId": "world-76d44405d319640d",
+  "Seed": 42,
+  "SettingsVersion": 1,
+  "GeneratorVersion": "c3-full-1",
+  "CatalogSha256": "d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a",
+  "ContentSha256": "5b62157809953d93eeb0dfb3888540e3070b12512561ab6e3cdd1042750f4b9f",
+  "Resources": [
+    {
+      "Path": "seabed-mesh.res",
+      "Sha256": "4c97b19574ca5f0a0837b721b034e610bef6324eec813abe3a1d0c7188458f56"
+    },
+    {
+      "Path": "seabed-collision.res",
+      "Sha256": "183ef586b6cc79941c70bdcb3775349c78c279084a4c007203a8b720af05d26f"
+    },
+    {
+      "Path": "geology.scn",
+      "Sha256": "591a9a5f3394d4de63f720c8cc05c1c3652702177319086a736564d659f16bf4"
+    },
+    {
+      "Path": "dressing.scn",
+      "Sha256": "9ba8adced372ee699563b2705518d50434c2a4cb2d22fb367d4b8f921d2482f6"
+    },
+    {
+      "Path": "ambient.scn",
+      "Sha256": "6d2df2c55fdd933cc464fd7477958ebc08d9a45a6995671c3d341ce1cde33949"
+    },
+    {
+      "Path": "world-data.json",
+      "Sha256": "d9a631cae623db4b334c0e0738263cf4ebb44065941aadaa36d8203acb41fd3a"
+    }
+  ],
+  "Timings": [
+    {
+      "Stage": "palette-player",
+      "ElapsedMilliseconds": 1147
+    },
+    {
+      "Stage": "basin-mesh-collision",
+      "ElapsedMilliseconds": 79
+    },
+    {
+      "Stage": "legacy-source-prepare",
+      "ElapsedMilliseconds": 2459
+    },
+    {
+      "Stage": "geology-mesh-collision",
+      "ElapsedMilliseconds": 15
+    },
+    {
+      "Stage": "route-repair",
+      "ElapsedMilliseconds": 3311
+    },
+    {
+      "Stage": "environment-analysis",
+      "ElapsedMilliseconds": 294
+    },
+    {
+      "Stage": "placement-dressing",
+      "ElapsedMilliseconds": 43396
+    },
+    {
+      "Stage": "ambient-life",
+      "ElapsedMilliseconds": 20
+    },
+    {
+      "Stage": "data-serialization",
+      "ElapsedMilliseconds": 28
+    },
+    {
+      "Stage": "scene-serialization",
+      "ElapsedMilliseconds": 204
+    }
+  ],
+  "RouteNodes": 27,
+  "RouteEdges": 32,
+  "EnvironmentSamples": 1681,
+  "Placements": 138,
+  "GeologyRegions": 5,
+  "AmbientFish": 31
+}

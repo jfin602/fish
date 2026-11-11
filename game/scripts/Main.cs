@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq;
 
 namespace Fish;
 
@@ -123,6 +124,13 @@ public partial class Main : Node3D
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish));
+        }
+
+        if (OS.GetCmdlineUserArgs().Any(arg => arg.StartsWith("--world-generate=", StringComparison.Ordinal) ||
+            arg == "--world-inspect"))
+        {
+            GetTree().Quit(populated ? 0 : 1);
+            return;
         }
 
         if (OS.GetCmdlineUserArgs().Contains("--smoke"))

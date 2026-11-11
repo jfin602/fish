@@ -28,6 +28,7 @@ public sealed class GeneratedWorldRoutes
     public int RepairOpenConnectors(PhysicsDirectSpaceState3D space, Rid fishRid,
         GeneratedBasin basin, IReadOnlyList<GeologicalRegion> regions)
     {
+        WorldGenerationAudit.MarkStage();
         using var planner = new WorldRoutePlanner(space, fishRid, basin, regions);
         var repaired = 0;
         for (var i = 0; i < _edges.Count; i++)
