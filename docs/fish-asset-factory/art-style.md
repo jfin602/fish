@@ -1,10 +1,10 @@
-# Fish visual art-style contract
+# Fish visual art-style contract — shared language and Ocean
 
 **Status:** Owner-approved visual direction, 2026-11-10. **Authority:** This document owns the *look* of Fish and is the visual acceptance contract for newly authored or substantially restyled art. [Art and assets](../art-and-assets.md) owns sourcing, licenses, manifests, and imports; [P2 world](../planning/p2/underwater-world.md) owns the current habitat's technical scope; [UX](../ux-and-presentation.md) owns readability. A style decision is not evidence that an asset or Roadmap Gate has passed.
 
 ## One-line identity
 
-**Bright stylized low-poly reef naturalism:** pronounced faceted geometry, recognizable marine life, lush layered reefs, natural proportions and spatial composition, and beautiful blue-water sunlight/atmosphere. Simple meshes should combine into scenes that feel rich, immersive, alive, and navigable.
+**Stylized low-poly aquatic naturalism** is the shared Fish language: legible faceted geometry, recognizable animals, cohesive palettes, natural proportions and rich layered but navigable spaces. The existing **bright stylized low-poly reef naturalism** palette and references remain the **Ocean habitat's** owner-approved contract: recognizable marine life, lush colorful reefs and blue-water sunlight. The freshwater Pond planned for P4 uses the same geometry and quality principles with an intentionally different water/material palette.
 
 This **supersedes the earlier realistic/photoreal-looking rendering direction** in the 2026-11-09 ocean-art shortlist while preserving credible ocean species, natural anatomy/behavior, and marine ecology. Quaternius was accepted as P1 prototype art; low-poly itself is now the intended production language. Future *custom* assets should follow this contract. The exact playable fish species, production biome, and larger-world strategy remain open. The current P2 assets can remain as transitional content until purpose-built replacements are ready.
 
@@ -28,6 +28,16 @@ Two earlier owner-supplied screenshots from the Fish art-planning conversation r
 5. **Natural composition and useful 3D space.** Every reef area needs negative/open water, visual landmarks, broad navigation, tighter shelter, depth/elevation changes and believable terrain transitions. Favor a layered foreground, midground and distance. Avoid box-room walls, floating props, featureless flat floor, or decorative clutter that masks traversable routes.
 6. **Water and light provide the finish.** Bright top-down sunlight, restrained moving caustics, water-blue distance fade, soft volumetric feeling and subtle motes make the scene immediately read as submerged. The finish is depth-structured: shallow water remains bright and colorful; middle depths become cooler and hazier; deep water is darker blue/green with substantially shorter visibility. Warm/red-orange contribution falls before blue/green, and caustic/shaft presence weakens as depth increases. Preserve legible near-field fish and obstacles while distant reef masses dissolve through detail -> silhouette -> water. Water effects must not obscure the UI, become constant screen wobble, or modify movement physics.
 7. **Gameplay readability is a style constraint.** A player fish must separate from its background at the actual follow-camera distance. Prey, predator, edible food, shelter and collision passage must read from silhouette, size, motion, placement and contrast—not color alone. Keep third-person camera clearance through arches and overhangs.
+
+## Habitat-specific visual extension — Freshwater Pond (P4 planned)
+
+**Owner-selected 2026-11-11; design, not asset acceptance.** Preserve every existing ocean reference, finished marine fish, coral palette and Forward+ water treatment. Do not restyle Ocean into a pond. [P4 plan](../planning/p4/freshwater-world.md) owns the new world/content boundaries.
+
+- **Pond visual identity:** muddy green/olive water and golden-green bank shallows; silty brown/tan sediment, eroded banks, algae-covered rocks, fallen wood, submerged tangled roots, lilies, reeds/cattails, pondweed and duckweed. Deeper areas become darker, less vegetated and less visually transparent.
+- **Shared shape language:** intentional low-poly facets and clean readable animal silhouettes, natural anatomy/rigging, reusable clustered variants, economical materials, gameplay-readable foreground/camera and cohesive depth lighting.
+- **Pond palette:** muted olive/emerald water, algae green, dark peat/mud browns, ochre-sand shallows and restrained sunlight. Avoid painting the entire world one flat green or obscuring near-field fish/solid collisions.
+- **Freshwater species:** each fish/insect/frog/snake/turtle should retain anatomy-specific silhouettes and rigging; the same fish-breathing standards apply where anatomically appropriate. Do not recolor a marine reef model and call it a freshwater species.
+- **Visual boundaries:** the reef target image, vivid coral accents, blue water and ocean-specific tables below remain authoritative for Ocean, not literal requirements to add reef coral or blue water to Pond. Review a Pond candidate against pond-specific gameplay frames and the shared standards.
 
 ## Shape and material language
 
@@ -80,6 +90,6 @@ A style pass is **not** P2 qualification or full game QA. Record the asset ID, B
 
 Put this line in the prerequisites of Blender/MCP/Codex art prompts:
 
-> Read `docs/fish-asset-factory/art-style.md` (authoritative visual contract), inspect `docs/fish-asset-factory/references/reef-style-target.png` (primary world target), and read `docs/art-and-assets.md` (asset provenance/import policy). Produce testable Blender masters, glTF exports and observed Godot Forward+ integration. Call out any exception; do not silently replace the style.
+> Read `docs/fish-asset-factory/art-style.md` (shared rules and selected habitat's visual contract); for Ocean inspect `docs/fish-asset-factory/references/reef-style-target.png`, and for Pond use its own freshwater references; read `docs/art-and-assets.md` for provenance/import policy. Produce testable Blender masters, glTF exports and observed Godot Forward+ integration. Call out any exception; do not silently replace the style.
 
 **Change policy:** New styles or major departures require explicit owner approval and a revised dated contract. Small species-appropriate material/shape variations that still pass this contract are allowed without a new design decision. Use the [FAF visual review](visual-review.md) for individual assets.
