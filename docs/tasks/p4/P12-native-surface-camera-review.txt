@@ -1,0 +1,31 @@
+TASK: Phase 4 / P12 — Native surface camera review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.4.12`.
+
+GOAL
+Complete the required **V32 native** waterline/air–water camera/surface-swimming checkpoint with actual user input, representative render captures and explicit owner comfort/visual judgment. This cannot be replaced by headless source checks.
+
+ENTRY / READ
+AGENTS.md, BOOT.md, P4 README/plan P12, P4 design surface section, docs/validation.md V32, last successful P7 native Pond record, current P9–P11 implementation evidence and accepted renderer/control/preset contracts. Confirm version 0.4.11, correct Fish Godot editor/desktop peer, selected Pond manifest/seed, OS/display, and current HEAD/dirty state. Require a native capable session and owner observation.
+
+NATIVE TEST MATRIX
+1. Start World Select→Pond with at least one finished native freshwater fish; confirm correct actual model/rig and eligibility.
+2. Swim from well below to near the waterline at low and high effort. Continue upward demand, skim horizontally, pitch/yaw/turn, glide and brake. Fins/back/mouth may breach as allowed but entire fish cannot fly, bounce, hit invisible ceiling or stick/jitter. Observe interaction with a real generated bank and log/root cover.
+3. Orbit/zoom/follow camera from under water to above and back repeatedly, particularly when fish remains below. Compare fixed fish location before/after camera-only movement. Check selected control presets (Keyboard, Mouse Only, Hybrid Swim, Hybrid 2 and Adaptive Follow) without claiming unsampled cells.
+4. At waterline observe smooth green absorption to sky/air lighting, fog/screen transition, refraction/caustic/shaft restoration, no flashes, clipped fish/shore, oscillation, violent exposure jump, sudden zoom, horizon snap or UI distortion.
+5. Confirm actual nearby generated banks, cattails/reeds/roots/lily pads/overcast sky, natural water surface and distance obscuring far bounds. Sample light vs overcast preset only if present; record both honestly.
+6. Observe bounded velocity-driven ripples and tail wake at rest/cruise/turn/glide/partial breach; confirm no excessive overdraw, ghost trails after pause/refocus/reset, scene leaks or movement changes.
+7. Repeat Pond→Ocean→Pond and verify Ocean's underwater renderer/controls/five fish intact. Ocean above-surface is **not** qualified by the Pond result.
+8. Capture meaningful native screenshots/video and frame pacing/perf/errors for above and below view, shoreline, swim-under-canopy, tunnel and deep return. Document source hash/seed/world manifest, display, GFX settings and any real owner acceptance.
+
+EVIDENCE / REPAIR
+Write p4/qualification/native-surface.md, explicitly mapping each V32 criterion to actual observations PASS/FAIL/NOT OBSERVED/BLOCKED. If issues exist, make only scoped repair/retest within this prompt and preserve failures. If real native tooling or owner judgment is unavailable, report BLOCKED; never attribute unsupported PASS to owner or a screenshot.
+
+SCOPE
+No P5 predator AI, fish jumping or migration, land world. This is the visual/control qualifying gate before P13 integration.
+
+DONE / VERSION
+Only after actual native waterline pass and owner checkpoint approval, assign version 0.4.12; otherwise remain NOT GREEN and do not skip review to advance the runner. Do not self-commit/push; follow manual checkpoint handoff and report gaps precisely.
