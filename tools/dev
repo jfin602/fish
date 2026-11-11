@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -65,7 +65,9 @@ animation_scene_check() {
   grep -Fq 'ANIMATION_SCENE_OK' "$LOGS/animation-scene.log" || { echo 'Animation scene marker missing' >&2; return 1; }
 }
 habitat_check() {
-  logged habitat-check 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/habitat_check.gd
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/habitat-check.XXXXXX")
+  logged habitat-check 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/habitat_check.gd
   grep -Fq 'HABITAT_CHECK_OK' "$LOGS/habitat-check.log" || { echo 'Habitat assertion marker missing' >&2; return 1; }
 }
 reef_check() {
@@ -79,6 +81,10 @@ terrain_world_check() {
 geology_check() {
   logged geology-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_geology_check.gd
   grep -Fq 'FAF_GEOLOGY_OK' "$LOGS/geology-check.log" || { echo 'FAF geology marker missing' >&2; return 1; }
+}
+collision_check() {
+  logged world-collision 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/world_collision_check.gd
+  grep -Fq 'WORLD_COLLISION_OK' "$LOGS/world-collision.log" || { echo 'World collision marker missing' >&2; return 1; }
 }
 dressing_check() {
   logged dressing-check 45 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_reef_dressing_check.gd
@@ -130,7 +136,7 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; terrain_world_check; geology_check; dressing_check; ambient_check; atmosphere_check; water_reaction_check ;;
+  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; terrain_world_check; geology_check; collision_check; dressing_check; ambient_check; atmosphere_check; water_reaction_check ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
@@ -144,6 +150,18 @@ case "${1:-help}" in
     need_tools
     do_build
     exec "${GODOT_CMD[@]}" --path "$PROJECT" "${display_arg[@]}"
+    ;;
+  collision-debug)
+    need_tools
+    do_build
+    exec "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --debug-collisions
+    ;;
+  prepare-faf-collision)
+    need_tools
+    do_import
+    do_build
+    logged prepare-faf-geology-collision 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/prepare_faf_collision.gd
+    logged prepare-faf-terrain-collision 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/prepare_faf_terrain_collision.gd -- --prepare-faf-terrain-collision
     ;;
   compare)
     (( $# == 2 || $# == 3 )) || { usage >&2; exit 2; }
@@ -188,6 +206,7 @@ case "${1:-help}" in
   inspect-reef) need_tools; reef_check ;;
   inspect-terrain) need_tools; terrain_world_check ;;
   inspect-geology) need_tools; geology_check ;;
+  inspect-collision) need_tools; collision_check ;;
   inspect-dressing) need_tools; dressing_check ;;
   inspect-ambient) need_tools; ambient_check ;;
   inspect-atmosphere) need_tools; atmosphere_check ;;

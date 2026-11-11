@@ -1,0 +1,178 @@
+[
+  {
+    "faf_id": "FAF-FISH-001",
+    "life_stage": "larva",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00037022,
+      "gill_R": 0.00037022
+    },
+    "swim_body_motion_m": 0.0008918,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-001",
+    "life_stage": "juvenile",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00049193,
+      "gill_R": 0.00049193
+    },
+    "swim_body_motion_m": 0.00896768,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-001",
+    "life_stage": "subadult",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00078216,
+      "gill_R": 0.00078216
+    },
+    "swim_body_motion_m": 0.01407071,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-002",
+    "life_stage": "larva",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00031357,
+      "gill_R": 0.00031357
+    },
+    "swim_body_motion_m": 0.00034878,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-002",
+    "life_stage": "juvenile",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00046311,
+      "gill_R": 0.00046311
+    },
+    "swim_body_motion_m": 0.00235018,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-002",
+    "life_stage": "subadult",
+    "neutral_error_m": 2e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00076102,
+      "gill_R": 0.00076102
+    },
+    "swim_body_motion_m": 0.00303152,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-003",
+    "life_stage": "larva",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.0002931,
+      "gill_R": 0.0002931
+    },
+    "swim_body_motion_m": 0.00058688,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-003",
+    "life_stage": "juvenile",
+    "neutral_error_m": 0.0,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00035327,
+      "gill_R": 0.00035327
+    },
+    "swim_body_motion_m": 0.00180021,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-003",
+    "life_stage": "subadult",
+    "neutral_error_m": 0.0,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00062375,
+      "gill_R": 0.00062375
+    },
+    "swim_body_motion_m": 0.00611862,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-004",
+    "life_stage": "larva",
+    "neutral_error_m": 0.0,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00033198,
+      "gill_R": 0.00033198
+    },
+    "swim_body_motion_m": 0.0025349,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-004",
+    "life_stage": "juvenile",
+    "neutral_error_m": 2e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.0003874,
+      "gill_R": 0.0003874
+    },
+    "swim_body_motion_m": 0.004808,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-004",
+    "life_stage": "subadult",
+    "neutral_error_m": 1e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.0007154,
+      "gill_R": 0.0007154
+    },
+    "swim_body_motion_m": 0.00950945,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-005",
+    "life_stage": "newborn_pup",
+    "neutral_error_m": 1.7e-08,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00638635,
+      "gill_R": 0.00638635
+    },
+    "swim_body_motion_m": 0.00433544,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-005",
+    "life_stage": "early_juvenile",
+    "neutral_error_m": 1.9e-08,
+    "strong_gill_motion_m": {
+      "gill_L": 0.00902885,
+      "gill_R": 0.00902885
+    },
+    "swim_body_motion_m": 0.0124599,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-005",
+    "life_stage": "juvenile",
+    "neutral_error_m": 4e-09,
+    "strong_gill_motion_m": {
+      "gill_L": 0.01129241,
+      "gill_R": 0.01129241
+    },
+    "swim_body_motion_m": 0.0293015,
+    "eye_motion_m": 0.0
+  },
+  {
+    "faf_id": "FAF-FISH-005",
+    "life_stage": "subadult",
+    "neutral_error_m": 6e-08,
+    "strong_gill_motion_m": {
+      "gill_L": 0.01324989,
+      "gill_R": 0.01324989
+    },
+    "swim_body_motion_m": 0.03431764,
+    "eye_motion_m": 0.0
+  }
+]

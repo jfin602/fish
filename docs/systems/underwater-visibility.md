@@ -1,7 +1,7 @@
 # Underwater Visibility & Discovery
 
 **Decision date:** 2026-11-10  
-**Status:** Owner-selected experience contract; C3/P1–P2 implemented, native qualification pending.
+**Status:** Owner-selected experience contract; C3/P1–P3 implemented, P4 native qualification incomplete with a failed clearance check. See [C3 closeout](../tasks/c3-visibility/closeout.md).
 **Applies to:** Fish's normal-play Forward+ water presentation, including P3's FAF reef.
 
 ## Player experience
@@ -55,4 +55,4 @@ Use the existing five-depth normal-play world (or the completed P3 FAF rebuild) 
 6. Record native same-scene performance comparisons with the effect changed, noting frame times, settings, renderer, errors, source revision, and hardware. Do not claim a speed gain just because fog hides distant objects.
 7. Capture representative before/after views and owner gameplay judgment. Automated or headless checks can verify parameter bounds and isolation, but not the actual feeling of progressive discovery.
 
-The C3 visibility correction has implemented P1–P2; integration and native judgment remain pending. Existing P2 V18/V19 accepted evidence and unresolved V20/G2.3 are historical facts, not changed by this contract. Reference [P3 plan](../planning/p3/reef-world-rebuild.md), [UX](../ux-and-presentation.md), and [validation V25](../validation.md).
+The C3 visibility correction has implemented P1–P3. The [P4 native matrix](../tasks/c3-visibility/qualification/native-visibility.md#v25-and-visibility-contract-matrix) records a collision-clearance failure, incomplete route/view and preset observations, and measured same-scene cost; owner fog acceptance remains open. Existing P2 V18/V19 accepted evidence and unresolved V20/G2.3 are historical facts, not changed by this contract. Reference [P3 plan](../planning/p3/reef-world-rebuild.md), [UX](../ux-and-presentation.md), and [validation V25](../validation.md).

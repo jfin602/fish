@@ -109,11 +109,12 @@ func _run() -> void:
 		fail("fish or camera spawn volume blocked")
 		return
 	var excluded: Array[RID] = [fish.get_rid(), limits.get_rid()]
-	for rock in main.get_node("Habitat/Composition/ReefComposition/Rocks").get_children():
-		excluded.append(rock.get_rid())
-	# The heightfield-only ray grid must ignore P3 route-defining geology above it.
-	for body in main.get_node("Habitat/Composition/ReefComposition/Geology/Collision").get_children():
+	# The heightfield-only ray grid ignores visible FAF geology above the seabed.
+	for wrapper in main.get_node("Habitat/Composition/ReefComposition/Geology/Visuals").get_children():
+		var body: StaticBody3D = wrapper.get_node("Solid")
 		excluded.append(body.get_rid())
+	var draped_terrain: StaticBody3D = main.get_node("Habitat/Composition/ReefComposition/Terrain/DrapedTerrainSolid")
+	excluded.append(draped_terrain.get_rid())
 	for x in range(-30, 31, 6):
 		for z in range(-30, 31, 6):
 			var hit := seabed_hit(space, excluded, x, z)
@@ -154,12 +155,12 @@ func _run() -> void:
 	var floor_y: float = seabed.call("GetHeightAt", 0.0, 0.0)
 	fish.global_position = Vector3(0, floor_y + 5.0, 0)
 	var down := fish.move_and_collide(Vector3(0, -10, 0))
-	if down == null or down.get_collider() != seabed or fish.global_position.y < floor_y + 0.4:
+	if down == null or (down.get_collider() != seabed and down.get_collider() != draped_terrain) or fish.global_position.y < floor_y + 0.4:
 		fail("fish escaped through seabed from above")
 		return
 	fish.global_position = Vector3(0, floor_y - 5.0, 0)
 	var underside := fish.move_and_collide(Vector3(0, 10, 0))
-	if underside == null or underside.get_collider() != seabed or fish.global_position.y > floor_y - 0.4:
+	if underside == null or (underside.get_collider() != seabed and underside.get_collider() != draped_terrain) or fish.global_position.y > floor_y - 0.4:
 		fail("seabed underside did not block upward passage")
 		return
 	fish.global_position = Vector3(0, 2, -27)

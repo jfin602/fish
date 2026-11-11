@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-10. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass, while G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition; P3/P1–P6 are implemented at `0.3.6`, and the first P7 native review found world-art defects requiring repair.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-10. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass, while G2.3/V20 remains an explicitly accepted evidence gap. The owner authorized the deliberate `0.3.0` transition; P3/P1–P6 are implemented at `0.3.6`, and the first P7 native review found world-art defects requiring repair. C3/P1–P3 visibility source is implemented, but [P4 native review](tasks/c3-visibility/qualification/native-visibility.md) failed clearance and left V25 unqualified.** This is the single Phase/Gate progress authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
@@ -13,7 +13,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | P0 — Godot and MCP foundation | The real 3D project builds, opens, runs and can be inspected through the correct editor connection. | COMPLETE on Linux/X11; [closeout](tasks/p0/closeout.md). |
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
-| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **IN PROGRESS** at root `0.3.6`; P1–P6 implementation checked. First P7 native review repaired Character Select but found target-style failure; owner acceptance and full traversal remain open. [Design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md), [native review](tasks/p3/qualification/native-world-art.md). |
+| **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **IN PROGRESS** at root `0.3.6`; P1–P6 implementation checked. First P7 native review found target-style failure; C3/P4 reproduced misleading collision clearance and left V25 unqualified. [Collision repair](tasks/collision-repair/README.md) is implemented with sampled native clearance, while full hand-controlled traversal and owner acceptance remain open. [Design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md), [native art](tasks/p3/qualification/native-world-art.md), [visibility](tasks/c3-visibility/closeout.md). |
 | P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
 | P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
 | P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
@@ -131,13 +131,13 @@ P5 established the Forward+ atmosphere foundation, and the owner-green [c2 water
 
 ## P3 — Rebuild and dress the reef
 
-**Status: IN PROGRESS at root `0.3.6` under owner transition S16.** P1 runtime integration, P2 depth-world terrain, P3 caves/tunnels/geology, P4 depth-based dressing, P5 Character Select/session routing and P6 ambient life/finish are implemented with focused source/runtime checks. The first P7 [native review](tasks/p3/qualification/native-world-art.md) found visible terrain joins, flat geology and weak shallow/middle richness against the target; Character Select layout/focus was repaired, five short native selection/return cycles passed, and representative counters were captured. Full route traversal and owner judgment remain open; P7 and all G3 gates are not qualified. P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md); [implementation evidence](tasks/p3/qualification/implementation.md). Scenarios V21–V23.
+**Status: IN PROGRESS at root `0.3.6` under owner transition S16.** P1 runtime integration, P2 depth-world terrain, P3 caves/tunnels/geology, P4 depth-based dressing, P5 Character Select/session routing and P6 ambient life/finish are implemented with focused source/runtime checks. The first P7 [native review](tasks/p3/qualification/native-world-art.md) found visible terrain joins, flat geology and weak shallow/middle richness against the target; Character Select layout/focus was repaired, five short native selection/return cycles passed, and representative counters were captured. C3/P1–P3 implemented visibility fog, but [C3/P4 native review](tasks/c3-visibility/qualification/native-visibility.md) reproduced a misleading movement stop and records the owner's report of collision mismatch at rocks, ground pieces and walls; V25 remains unqualified. Full route traversal and owner judgment remain open; P7 and all G3 gates are not qualified. P2 remains NOT GREEN on G2.3/V20, but the owner explicitly accepted that gap for progression. [P3 design](planning/p3/reef-world-rebuild.md); [execution stack](tasks/p3/README.md); [implementation evidence](tasks/p3/qualification/implementation.md). Scenarios V21–V25.
 
 P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the original authored/modular terrain assumption:** the P3 world is compiled deterministically as an irregular basin with generated geology, protected routes and terrain-aware FAF placement, then baked for fast loading. Ecology remains later scope.
 
 ### G3.1 — Procedural basin, geology and baked world
 
-**Result: NOT OBSERVED.**
+**Result: FAIL for current `0.3.6` candidate.** The [P3 native art review](tasks/p3/qualification/native-world-art.md) found visible joins and slab-like geology; [C3/P4 native play](tasks/c3-visibility/qualification/native-visibility.md) reproduced a misleading movement stop, and the owner reported rock, ground and wall collision mismatch. Complete route/cave traversal remains unobserved.
 
 - Compile a deterministic irregular basin whose useful deepest region is near the center and which rises toward a visibly non-circular natural perimeter.
 - Normal play does not perceive square/four-wall containment or a perfect circular rim; fail-safe collision remains outside/behind natural terrain.
@@ -148,7 +148,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 
 ### G3.2 — Natural terrain-aware reef composition
 
-**Result: NOT OBSERVED.**
+**Result: FAIL for current `0.3.6` candidate.** The [P3 native art review](tasks/p3/qualification/native-world-art.md) found insufficient shallow and middle reef richness and visible terrain seams. Full traversal remains unobserved.
 
 - All required FAF environment variants participate meaningfully through habitat/cluster rules rather than checklist/random XYZ placement.
 - Placement is derived from generated terrain/geology fields, projected to real surfaces and spaced non-uniformly; route/cave clearances are protected before dressing.
@@ -159,7 +159,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 
 ### G3.3 — Target style, ambient life and performance
 
-**Result: NOT OBSERVED.**
+**Result: FAIL for current `0.3.6` candidate.** The [P3 native art review](tasks/p3/qualification/native-world-art.md) rejected the current world composition against the target. C3's [V25 native matrix](tasks/c3-visibility/qualification/native-visibility.md#v25-and-visibility-contract-matrix) also fails near-route clearance and lacks owner fog acceptance. Representative visibility cost was measured, but does not qualify the Gate.
 
 - Near, mid and distant gameplay-camera views belong beside the owner-approved FAF reef target and materially improve on style-proof 001: intentional faceting, warm sand/cool stone base, vivid controlled coral colors, green vegetation, layered blue-water composition and readable negative swim space.
 - Where used, FAF-FISH-001–004 provide bounded non-gameplay ambient reef life; FAF-FISH-005 shark remains deferred to ecology by default.

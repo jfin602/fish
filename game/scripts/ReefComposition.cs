@@ -75,16 +75,10 @@ public partial class ReefComposition : Node3D
                     diagnostic = $"FISH_REEF_INVALID item={id} action=use-prepared-source-id";
                     return false;
                 }
-                if ((sectionName == "Rocks") != (piece is StaticBody3D) ||
+                if (piece is CollisionObject3D || piece.GetNodeOrNull<CollisionShape3D>("Collision") is not null ||
                     piece.GetNodeOrNull<Node3D>("Visual") is not { } visual || visual.GetChildCount() != 0)
                 {
                     diagnostic = $"FISH_REEF_INVALID item={id} anchor={piece.Name} action=check-visual-and-collision-owner";
-                    return false;
-                }
-                if (piece is StaticBody3D rock && (rock.CollisionLayer != 1 ||
-                    rock.GetNodeOrNull<CollisionShape3D>("Collision")?.Shape is null))
-                {
-                    diagnostic = $"FISH_REEF_INVALID item={id} anchor={piece.Name} action=check-simplified-rock-collision";
                     return false;
                 }
                 var height = piece.HasMeta("height_above_floor")
@@ -96,8 +90,8 @@ public partial class ReefComposition : Node3D
                 visual.AddChild(model);
                 model.Name = "PreparedVisual";
                 model.Position = Sources[id].BottomCenterOffset;
-                // P2 collision and source anchors remain for the accepted routes.
-                // FAF terrain, geology and dressing now own the visible reef art.
+                // Historical P2 source anchors remain for provenance only.
+                // FAF geology owns the visible solid geometry and its collision.
                 model.Visible = false;
                 counts[id] = counts.GetValueOrDefault(id) + 1;
             }

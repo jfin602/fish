@@ -54,6 +54,23 @@ func _run() -> void:
 		return
 
 	Engine.max_fps = 0
+	var rest_scene := _new_course()
+	var rest_fish: CharacterBody3D = rest_scene.get_node("Fish")
+	for tick in range(3):
+		await physics_frame
+	var rest_start := rest_fish.global_position
+	_key(KEY_S, true)
+	for tick in range(2):
+		await physics_frame
+	if not _require(rest_fish.velocity.z > 0.05 and
+			rest_fish.global_position.z > rest_start.z + 0.001,
+			"S from stationary did not start swimming backward immediately"):
+		return
+	_key(KEY_S, false)
+	current_scene = null
+	rest_scene.queue_free()
+	await process_frame
+
 	var scene := _new_course()
 	var fish: CharacterBody3D = scene.get_node("Fish")
 	for tick in range(3):
@@ -62,12 +79,25 @@ func _run() -> void:
 	for tick in range(30):
 		await physics_frame
 	_key(KEY_S, true)
-	for tick in range(30):
+	for tick in range(60):
 		await physics_frame
+		if fish.velocity.length() < 0.01:
+			break
+	var stopped := fish.global_position
+	for tick in range(14):
+		await physics_frame
+	if not _require(fish.velocity.length() < 0.02 and fish.global_position.distance_to(stopped) < 0.02,
+			"held S did not pause for 250 ms after forward stop"):
+		return
+	for tick in range(16):
+		await physics_frame
+	if not _require(fish.velocity.z > 0.1 and fish.global_position.z > stopped.z + 0.05,
+			"continued S did not swim backward after the 250 ms stop"):
+		return
 	_key(KEY_W, false)
 	_key(KEY_S, false)
-	if not _require(fish.velocity.length() < 0.02 and fish.global_position.z < -0.5,
-			"S failed to slow W without reversing"):
+	if not _require(fish.global_position.z < -0.5,
+			"S reverse path left the course spawn unexpectedly"):
 		return
 	fish.call("ClearAndDisarmInput")
 	for tick in range(3):
@@ -149,15 +179,15 @@ func _run() -> void:
 		await physics_frame
 	_key(KEY_W, false)
 	var gap_z := fish.global_position.z
-	if not _require(gap_z < -6.1 and gap_z >= -24.9,
+	if not _require(gap_z < -6.1 and gap_z >= -36.7,
 			"fish failed to traverse the passage within bounds"):
 		return
 	_key(KEY_W, true)
 	for tick in range(360):
 		await physics_frame
 	_key(KEY_W, false)
-	if not _require(fish.global_position.z >= -24.9001 and fish.global_position.z <= -24.89,
-			"fish exceeded the north habitat bound"):
+	if not _require(fish.global_position.z >= -36.7001 and fish.global_position.z < -24.9,
+			"fish failed to advance beyond the obsolete 24.9 m clamp or exceeded the north habitat bound: " + str(fish.global_position.z)):
 		return
 	print("MOTOR_SCENE_OK render_position_difference=%.4f rock_z=%.3f gap_z=%.3f bound_z=%.3f" % [
 		low.distance_to(high), rock_z, gap_z, fish.global_position.z])

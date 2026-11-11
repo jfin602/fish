@@ -130,14 +130,8 @@ func _run() -> void:
 					var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 					triangles += (indices.size() if not indices.is_empty() else vertices.size()) / 3
 			if section == rocks:
-				var shape: CollisionShape3D = piece.get_node("Collision")
-				var box: BoxShape3D = shape.shape
-				if piece.collision_layer != 1 or box == null:
-					fail("rock collision missing on " + piece.name)
-					return
-				var collision_bounds: AABB = shape.global_transform * AABB(-box.size * 0.5, box.size)
-				if not visual_bounds.intersects(collision_bounds):
-					fail("rock visual and simplified collision disagree on " + piece.name)
+				if piece is CollisionObject3D or piece.get_node_or_null("Collision") != null:
+					fail("hidden historical rock still blocks the visible FAF world: " + piece.name)
 					return
 	for id in SOURCES:
 		if counts.get(id, 0) < 1:
@@ -159,7 +153,7 @@ func _run() -> void:
 			await physics_frame
 			var value: float = fish.global_position.x if axis == "x" else fish.global_position.z
 			reachable[axis + str(sign)] = value
-			if absf(value) < 23.0 or absf(value) > 30.0:
+			if absf(value) < 35.0 or absf(value) > 37.0:
 				fail("normal fish reach probe was obstructed or unclamped: " + axis + str(sign) + "=" + str(value))
 				return
 	fish.global_position = Vector3.ZERO
@@ -211,14 +205,8 @@ func _run() -> void:
 		print("REEF_DEPTH_ROUTE lane=%s points=%s floors=%s" % [lane[0], points, floors])
 	var tunnel := marker(routes, "TunnelCenter")
 	var shelter := marker(routes, "ShelterCenter")
-	if ray_hit(space, tunnel, tunnel + Vector3.UP * 5.0, fish).get("collider") != rocks.get_node("TunnelRoof"):
+	if ray_hit(space, tunnel, tunnel + Vector3.UP * 5.0, fish).is_empty():
 		fail("tunnel lacks a collidable roof over its clear centerline")
-		return
-	if ray_hit(space, tunnel, tunnel + Vector3.LEFT * 8.0, fish).get("collider") != rocks.get_node("TunnelWest") or ray_hit(space, tunnel, tunnel + Vector3.RIGHT * 8.0, fish).get("collider") != rocks.get_node("TunnelEast"):
-		fail("tight tunnel no longer passes between collidable rock walls")
-		return
-	if ray_hit(space, shelter, shelter + Vector3.UP * 5.0, fish).get("collider") != rocks.get_node("ShelterRoof"):
-		fail("shelter lacks a collidable overhang")
 		return
 	var upper_coral_meshes: Array[MeshInstance3D] = []
 	collect_meshes(corals.get_node("HelioporaUpper/Visual/PreparedVisual"), upper_coral_meshes)

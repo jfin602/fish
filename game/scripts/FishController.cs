@@ -6,7 +6,8 @@ namespace Fish;
 public partial class FishController : CharacterBody3D
 {
     [Export] public SwimTuning Tuning { get; set; } = new();
-    private const float HorizontalLimit = 24.9f;
+    // Safety clamp sits just inside the physical wall (inner face 37.2 m, fish radius .48 m).
+    private const float HorizontalLimit = 36.7f;
     private const float VerticalLimit = 9.0f;
     private readonly ProfileSwimInput _input = new();
     private SwimState _state;
@@ -96,7 +97,9 @@ public partial class FishController : CharacterBody3D
         var previousYaw = _state.Yaw;
         _state = SwimMotor.Step(_state, intent, (float)delta, Tuning);
         MotorStepCount++;
-        PresentationEffort = intent.Slow > 0 ? 0 : Mathf.Clamp(intent.Thrust, 0, 1);
+        PresentationEffort = _state.Reversing
+            ? Mathf.Clamp(intent.Slow, 0, 1)
+            : intent.Slow > 0 ? 0 : Mathf.Clamp(intent.Thrust, 0, 1);
         PresentationTurn = delta > 0 && Tuning.YawRateDegrees > 0
             ? Mathf.Clamp(Mathf.Wrap(_state.Yaw - previousYaw, -Mathf.Pi, Mathf.Pi) /
                 (Mathf.DegToRad(Tuning.YawRateDegrees) * (float)delta), -1, 1)
@@ -134,7 +137,15 @@ public partial class FishController : CharacterBody3D
         {
             _state.Speed = 0;
             _state.Velocity = Vector3.Zero;
+            _state.Reversing = false;
+            _state.WaitingToReverse = false;
+            _state.ReverseTransitionWaitSeconds = 0;
             Velocity = Vector3.Zero;
+        }
+        else
+        {
+            _state.WaitingToReverse = false;
+            _state.ReverseTransitionWaitSeconds = 0;
         }
         var camera = GetNodeOrNull<FollowCamera>("CameraRig");
         camera?.ClearQueuedMouseMotion();

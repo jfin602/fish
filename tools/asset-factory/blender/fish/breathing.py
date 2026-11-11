@@ -13,7 +13,8 @@ import math
 
 OPERCULATE = "operculate_bony"
 EXPOSED_SLITS = "exposed_gill_slits_pending"
-ANATOMY_TYPES = {OPERCULATE, EXPOSED_SLITS}
+SLIT_RIGGED = "exposed_gill_slits_rigged"
+ANATOMY_TYPES = {OPERCULATE, EXPOSED_SLITS, SLIT_RIGGED}
 GILL_NAMES = ("gill_L", "gill_R")
 
 
@@ -48,11 +49,11 @@ def classify_breathing(armature, anatomy: str):
         raise ValueError(f"missing or unknown breathing anatomy: {anatomy!r}")
     armature["faf_breathing_anatomy"] = anatomy
     armature["faf_breathing_status"] = (
-        "rigged" if anatomy == OPERCULATE else "pending_specialized_deformation")
+        "pending_specialized_deformation" if anatomy == EXPOSED_SLITS else "rigged")
 
 
-def add_operculum_rig(armature, spec: OperculumSpec):
-    """Add two deform bones behind the eye, parented to the chosen forebody."""
+def add_gill_region_rig(armature, spec: OperculumSpec, anatomy: str):
+    """Add paired surface deform bones without prescribing visible gill geometry."""
     import bpy
 
     spec.validate()
@@ -78,7 +79,18 @@ def add_operculum_rig(armature, spec: OperculumSpec):
             bone.use_deform = True
     finally:
         bpy.ops.object.mode_set(mode="OBJECT")
-    classify_breathing(armature, OPERCULATE)
+    if anatomy not in (OPERCULATE, SLIT_RIGGED):
+        raise ValueError(f"unsupported rigged breathing anatomy: {anatomy}")
+    classify_breathing(armature, anatomy)
+
+
+def add_operculum_rig(armature, spec: OperculumSpec):
+    add_gill_region_rig(armature, spec, OPERCULATE)
+
+
+def add_slit_rig(armature, spec: OperculumSpec):
+    """Shark surface controls: no operculum plates or external-gill geometry."""
+    add_gill_region_rig(armature, spec, SLIT_RIGGED)
 
 
 def _smooth_cap(distance: float) -> float:
@@ -144,7 +156,7 @@ def validate_breathing_rig(armature, meshes, spec: OperculumSpec | None = None,
             raise ValueError("exposed-gill breathing deformation is still pending")
         return {"anatomy": anatomy, "complete": False, "status": "pending"}
     if spec is None:
-        raise ValueError("operculate validation requires anatomical parameters")
+        raise ValueError("rigged breathing validation requires anatomical parameters")
     spec.validate()
     if armature.get("faf_breathing_status") != "rigged":
         raise ValueError("operculum rig is not marked rigged")
@@ -227,7 +239,7 @@ def validate_exported_breathing(glb_path, anatomy: str, *, parent_bone="spine_01
     if len(skins) != 1:
         raise ValueError("fish GLB requires exactly one export skin")
     names = {nodes[index].get("name") for index in skins[0]["joints"]}
-    if anatomy == OPERCULATE:
+    if anatomy in (OPERCULATE, SLIT_RIGGED):
         if not set(GILL_NAMES) <= names:
             raise ValueError("GLB skin omits required gill bones")
         parent_indices = {i for i, node in enumerate(nodes)
@@ -246,4 +258,4 @@ def validate_exported_breathing(glb_path, anatomy: str, *, parent_bone="spine_01
             raise ValueError("exposed-gill breathing deformation is still pending")
     return {"anatomy": anatomy, "skin_joints": len(names),
             "gill_bones_exported": sorted(set(GILL_NAMES) & names),
-            "complete": anatomy == OPERCULATE}
+            "complete": anatomy != EXPOSED_SLITS}

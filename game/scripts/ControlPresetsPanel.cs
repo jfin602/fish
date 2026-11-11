@@ -455,7 +455,7 @@ public partial class ControlPresetsPanel : PanelContainer
     }
     public static string ActionName(ControlAction action) => action switch
     {
-        ControlAction.Thrust => "Swim / thrust", ControlAction.Slow => "Slow / brake",
+        ControlAction.Thrust => "Swim / thrust", ControlAction.Slow => "Slow / reverse",
         ControlAction.YawLeft => "Turn left", ControlAction.YawRight => "Turn right",
         ControlAction.PitchUp => "Pitch up", ControlAction.PitchDown => "Pitch down",
         _ => "Pause / Options"

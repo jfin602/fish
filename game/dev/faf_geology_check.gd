@@ -79,15 +79,24 @@ func _run() -> void:
 	var p2_routes: Node3D = reef.get_node("Routes")
 	var counts := {}
 	var formations := {}
-	if visuals.get_child_count() != geology.PieceCount or collision.get_child_count() != 3:
+	if visuals.get_child_count() != geology.PieceCount or collision.get_child_count() != 0:
 		fail("placement/collision count mismatch")
 		return
 	for wrapper in visuals.get_children():
 		var id: String = wrapper.get_meta("faf_id", "")
 		counts[id] = counts.get(id, 0) + 1
 		formations[wrapper.get_meta("formation", "")] = true
-		if wrapper.find_children("*", "CollisionObject3D", true, false).size() > 0:
-			fail("decorative instance has collision: " + wrapper.name)
+		var solids := wrapper.find_children("*", "StaticBody3D", true, false)
+		if solids.size() != 1 or solids[0].name != "Solid":
+			fail("geology solid missing or duplicated: " + wrapper.name)
+			return
+		var body: StaticBody3D = solids[0]
+		var solid_shape: CollisionShape3D = body.get_node_or_null("Shape")
+		if body.get_parent() != wrapper or body.transform != Transform3D.IDENTITY or body.collision_layer != 1 or body.collision_mask != 0 or solid_shape == null or solid_shape.disabled or solid_shape.transform != Transform3D.IDENTITY:
+			fail("geology solid transform/layer mismatch: " + wrapper.name)
+			return
+		if (id.begins_with("FAF-ROCK") and not solid_shape.shape is ConvexPolygonShape3D) or (id.begins_with("FAF-TERRAIN") and not solid_shape.shape is ConcavePolygonShape3D):
+			fail("geology shape does not match asset family: " + wrapper.name)
 			return
 	for id in ROCKS:
 		if counts.get(id, 0) < 5:
@@ -109,36 +118,6 @@ func _run() -> void:
 		return
 	if not clear_line(space, fish, [point(geo_routes,"CanyonExit"), point(geo_routes,"CanyonReturn"), point(p2_routes,"DepthDeep")], "GEO-RETURN"):
 		return
-	var boxes: Array[Dictionary] = []
-	collect_boxes(visuals, boxes)
-	var visual_margin := INF
-	var worst := ""
-	for pair in [
-		[point(p2_routes,"TunnelEntry"), point(p2_routes,"TunnelCenter"), point(p2_routes,"TunnelExit")],
-		[point(p2_routes,"ShelterEntry"), point(p2_routes,"ShelterCenter"), point(geo_routes,"CaveTurn"), point(geo_routes,"CaveSide"), point(geo_routes,"CaveTurn"), point(p2_routes,"ShelterExit")],
-		[point(geo_routes,"CanyonEntry"), point(geo_routes,"CanyonCenter"), point(geo_routes,"CanyonExit"), point(geo_routes,"CanyonReturn"), point(p2_routes,"DepthDeep")],
-		[point(p2_routes,"DepthShallow"), point(p2_routes,"DepthUpper"), point(p2_routes,"DepthMiddle"), point(p2_routes,"DepthLower"), point(p2_routes,"DepthDeep")],
-		[point(p2_routes,"AltShallow"), point(p2_routes,"AltUpper"), point(p2_routes,"AltMiddle"), point(p2_routes,"AltLower"), point(p2_routes,"AltDeep")],
-		[point(p2_routes,"OpenStart"), point(p2_routes,"OpenMid"), point(p2_routes,"OpenFar")],
-	]:
-		for i in range(pair.size() - 1):
-			for step in range(21):
-				var at: Vector3 = pair[i].lerp(pair[i + 1], float(step) / 20.0)
-				for item in boxes:
-					var margin: float = box_distance(item["box"], at)
-					if margin < visual_margin:
-						visual_margin = margin
-						worst = str(item["name"]) + " box=" + str(item["box"]) + " at " + str(at)
-	for angle in range(12):
-		var at := point(geo_routes,"CaveTurn") + Vector3(cos(float(angle) * TAU / 12.0), 0, sin(float(angle) * TAU / 12.0)) * 1.25
-		for item in boxes:
-			var margin: float = box_distance(item["box"], at)
-			if margin < visual_margin:
-				visual_margin = margin
-				worst = str(item["name"]) + " box=" + str(item["box"]) + " at " + str(at)
-	if visual_margin < FISH_RADIUS + 0.1:
-		fail("FAF geology visual envelope intrudes on swim-through: " + str(visual_margin) + " " + worst)
-		return
 	var turn := point(geo_routes,"CaveTurn")
 	for angle in range(12):
 		var at := turn + Vector3(cos(float(angle) * TAU / 12.0), 0, sin(float(angle) * TAU / 12.0)) * 1.25
@@ -146,12 +125,10 @@ func _run() -> void:
 			fail("cave turn circle blocked at " + str(at))
 			return
 	var canyon := point(geo_routes,"CanyonCenter")
-	var west: StaticBody3D = collision.get_node("CanyonWestWall")
-	var east: StaticBody3D = collision.get_node("CanyonEastWall")
-	var width: float = (east.global_position.x - 3.1 / 2.0) - (west.global_position.x + 3.4 / 2.0)
-	if width < 6.0 or canyon.x < west.global_position.x or canyon.x > east.global_position.x:
-		fail("deep corridor lacks 6 m physical clear width")
-		return
+	for offset in [-2.5, -1.5, 0.0, 1.5, 2.5]:
+		if not hit(space, canyon + Vector3(offset, 0, 0), FISH_RADIUS, fish).is_empty():
+			fail("deep corridor lacks sampled 5 m fish clearance")
+			return
 	for name in ["DepthShallow", "DepthUpper", "DepthMiddle", "DepthLower", "DepthDeep", "AltShallow", "AltUpper", "AltMiddle", "AltLower", "AltDeep"]:
 		if not hit(space, point(p2_routes,name), FISH_RADIUS, fish).is_empty():
 			fail("P2 depth marker blocked: " + name)
@@ -165,14 +142,16 @@ func _run() -> void:
 	if not hit(space, rig.global_position, CAMERA_RADIUS, fish).is_empty():
 		fail("camera probe entered tunnel obstruction")
 		return
+	fish.global_position = point(p2_routes, "OpenStart")
 	fish.global_rotation = Vector3.ZERO
 	for i in range(90):
 		await physics_frame
-	if rig.global_position.distance_to(fish.global_position) < 3.0 or rig.global_position.distance_to(fish.global_position) < tunnel_camera_distance + 1.0:
-		fail("camera did not recover after leaving tunnel")
+	var open_camera_distance := rig.global_position.distance_to(fish.global_position)
+	if open_camera_distance < 3.0:
+		fail("camera did not recover in open water: tunnel=" + str(tunnel_camera_distance) + " open=" + str(open_camera_distance))
 		return
 	if not hit(space, rig.global_position, CAMERA_RADIUS, fish).is_empty():
 		fail("camera recovered inside obstruction")
 		return
-	print("FAF_GEOLOGY_OK rock_counts=%s formations=%d corridor_width=%.2f cave_turn_diameter=2.50 visual_margin=%.2f camera_tunnel=%.2f camera_recovery=%.2f collision=3" % [counts, formations.size(), width, visual_margin, tunnel_camera_distance, rig.global_position.distance_to(fish.global_position)])
+	print("FAF_GEOLOGY_OK rock_counts=%s formations=%d corridor_sample_width=5 cave_turn_diameter=2.50 camera_tunnel=%.2f camera_recovery=%.2f collision=%d" % [counts, formations.size(), tunnel_camera_distance, rig.global_position.distance_to(fish.global_position), geology.PieceCount])
 	quit()

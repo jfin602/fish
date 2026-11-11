@@ -24,11 +24,40 @@ public static class MotorChecks
         }
         Require(state.Speed > 2.9f && state.Speed < atRelease, "visible coast interval");
         var coastSpeed = state.Speed;
-        for (var i = 0; i < 30; i++) state = SwimMotor.Step(state, new SwimIntent(0, 1, 0, 0), dt, tuning);
-        Require(state.Speed == 0 && state.Velocity.Length() == 0 && coastSpeed > state.Speed,
-            "keyboard braking without reversal");
-        for (var i = 0; i < 30; i++) state = SwimMotor.Step(state, new SwimIntent(1, 1, 0, 0), dt, tuning);
-        Require(state.Speed == 0, "braking priority over simultaneous thrust");
+        var brake = new SwimIntent(1, 1, 0, 0);
+        for (var i = 0; i < 60 && state.Speed > 0; i++) state = SwimMotor.Step(state, brake, dt, tuning);
+        Require(state.Speed == 0 && state.Velocity.Length() == 0 && coastSpeed > state.Speed &&
+                !state.Reversing && state.WaitingToReverse,
+            "slow stops before reversing and wins over thrust");
+        for (var i = 0; i < 14; i++) state = SwimMotor.Step(state, brake, dt, tuning);
+        Require(state.Speed == 0 && state.Velocity.Length() == 0 && !state.Reversing &&
+                state.WaitingToReverse, "forward-to-reverse pauses for 250 ms");
+        for (var i = 0; i < 3; i++) state = SwimMotor.Step(state, brake, dt, tuning);
+        Require(state.Reversing && state.Speed > 0 && state.Velocity.Z > 0,
+            "continued slow starts backward swim after transition pause");
+        var reverseSpeed = state.Speed;
+        state = SwimMotor.Step(state, default, dt, tuning);
+        Require(state.Reversing && state.Speed < reverseSpeed && state.Velocity.Z > 0,
+            "releasing slow coasts backward without direction snap");
+        for (var i = 0; i < 90 && state.Reversing; i++)
+            state = SwimMotor.Step(state, new SwimIntent(1, 0, 0, 0), dt, tuning);
+        Require(!state.Reversing && state.Speed == 0, "forward thrust brakes reverse before switching");
+        state = SwimMotor.Step(state, new SwimIntent(1, 0, 0, 0), dt, tuning);
+        Require(state.Speed > 0 && state.Velocity.Z < 0, "forward thrust resumes after reverse stop");
+
+        state = new SwimState();
+        state = SwimMotor.Step(state, new SwimIntent(0, 1, 0, 0), dt, tuning);
+        Require(state.Reversing && state.Speed > 0 && state.Velocity.Z > 0 &&
+                !state.WaitingToReverse, "slow from stationary reverses immediately");
+
+        state = new SwimState();
+        for (var i = 0; i < 30; i++) state = SwimMotor.Step(state, new SwimIntent(1, 0, 0, 0), dt, tuning);
+        for (var i = 0; i < 60 && state.Speed > 0; i++) state = SwimMotor.Step(state, brake, dt, tuning);
+        for (var i = 0; i < 8; i++) state = SwimMotor.Step(state, brake, dt, tuning);
+        state = SwimMotor.Step(state, default, dt, tuning);
+        Require(!state.WaitingToReverse && state.Speed == 0, "release cancels transition pause");
+        state = SwimMotor.Step(state, new SwimIntent(0, 1, 0, 0), dt, tuning);
+        Require(state.Reversing && state.Speed > 0, "new slow press from rest has no old pause");
 
         state = new SwimState();
         for (var i = 0; i < 30; i++) state = SwimMotor.Step(state, new SwimIntent(1, 0, 0, 0), dt, tuning);

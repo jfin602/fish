@@ -259,7 +259,14 @@ func _run() -> void:
 		return
 	await _tick(27)
 	if not _require(fish.velocity.length() < 0.1 and not paused,
-			"right-button slowing failed to stop without reverse swimming"):
+			"right-button slowing failed to reach the stop before reverse delay"):
+		return
+	var reverse_start := fish.global_position
+	var backward := fish.global_transform.basis.z
+	await _tick(40)
+	if not _require(fish.velocity.dot(backward) > 0.2 and
+			(fish.global_position - reverse_start).dot(backward) > 0.05 and not paused,
+			"held right-button slow did not swim backward after the stop"):
 		return
 	_mouse_button(MOUSE_BUTTON_RIGHT, false)
 	_mouse_button(MOUSE_BUTTON_MIDDLE, true)

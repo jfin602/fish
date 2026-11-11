@@ -1,40 +1,10 @@
-[gd_scene load_steps=15 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/ReefComposition.cs" id="1_reef"]
 [ext_resource type="Script" path="res://scripts/FafTerrainWorld.cs" id="2_terrain"]
 [ext_resource type="Script" path="res://scripts/FafGeologyWorld.cs" id="3_geology"]
 [ext_resource type="Script" path="res://scripts/FafReefDressing.cs" id="4_dressing"]
 [ext_resource type="Script" path="res://scripts/FafAmbientReefLife.cs" id="5_ambient"]
-
-[sub_resource type="BoxShape3D" id="tunnel_west"]
-size = Vector3(5.8, 5.3, 7.0)
-
-[sub_resource type="BoxShape3D" id="tunnel_east"]
-size = Vector3(6.5, 5.9, 5.1)
-
-[sub_resource type="BoxShape3D" id="tunnel_roof"]
-size = Vector3(11.0, 1.25, 1.4)
-
-[sub_resource type="BoxShape3D" id="outer_wall"]
-size = Vector3(5.7, 3.8, 5.4)
-
-[sub_resource type="BoxShape3D" id="shelter_pillar"]
-size = Vector3(5.7, 5.1, 4.5)
-
-[sub_resource type="BoxShape3D" id="shelter_roof"]
-size = Vector3(6.2, 4.3, 4.8)
-
-[sub_resource type="BoxShape3D" id="vertical_base"]
-size = Vector3(8.0, 5.8, 6.2)
-
-[sub_resource type="BoxShape3D" id="vertical_cap"]
-size = Vector3(3.8, 3.4, 3.0)
-
-[sub_resource type="BoxShape3D" id="boulder_marker"]
-size = Vector3(3.8, 3.0, 5.5)
-
-[sub_resource type="BoxShape3D" id="seam_boulder"]
-size = Vector3(2.8, 2.2, 4.1)
 
 [node name="ReefComposition" type="Node3D"]
 script = ExtResource("1_reef")
@@ -107,7 +77,7 @@ metadata/height_above_floor = 1.9
 
 [node name="Rocks" type="Node3D" parent="."]
 
-[node name="TunnelWest" type="StaticBody3D" parent="Rocks"]
+[node name="TunnelWest" type="Node3D" parent="Rocks"]
 position = Vector3(-12.8, 0, -13.5)
 collision_layer = 1
 collision_mask = 0
@@ -117,11 +87,7 @@ metadata/source_id = "rock_face_01"
 rotation = Vector3(0, 1.5707964, 0)
 scale = Vector3(1.5, 1.5, 1.5)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/TunnelWest"]
-position = Vector3(0, 2.65, 0)
-shape = SubResource("tunnel_west")
-
-[node name="TunnelEast" type="StaticBody3D" parent="Rocks"]
+[node name="TunnelEast" type="Node3D" parent="Rocks"]
 position = Vector3(-3.2, 0, -13.5)
 collision_layer = 1
 collision_mask = 0
@@ -130,11 +96,7 @@ metadata/source_id = "rock_face_02"
 [node name="Visual" type="Node3D" parent="Rocks/TunnelEast"]
 scale = Vector3(2.4, 2.4, 2.4)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/TunnelEast"]
-position = Vector3(0, 2.95, 0)
-shape = SubResource("tunnel_east")
-
-[node name="TunnelRoof" type="StaticBody3D" parent="Rocks"]
+[node name="TunnelRoof" type="Node3D" parent="Rocks"]
 position = Vector3(-8, 0, -13.5)
 collision_layer = 1
 collision_mask = 0
@@ -145,11 +107,7 @@ metadata/height_above_floor = 4.75
 rotation = Vector3(0, 0, -0.0698132)
 scale = Vector3(0.12, 0.12, 0.12)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/TunnelRoof"]
-position = Vector3(0, 0.625, 0)
-shape = SubResource("tunnel_roof")
-
-[node name="OuterWall" type="StaticBody3D" parent="Rocks"]
+[node name="OuterWall" type="Node3D" parent="Rocks"]
 position = Vector3(-17, 0, -20)
 collision_layer = 1
 collision_mask = 0
@@ -159,11 +117,7 @@ metadata/source_id = "rock_face_01"
 rotation = Vector3(0, 0.7330383, 0)
 scale = Vector3(1.05, 1.05, 1.05)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/OuterWall"]
-position = Vector3(0, 1.9, 0)
-shape = SubResource("outer_wall")
-
-[node name="ShelterPillar" type="StaticBody3D" parent="Rocks"]
+[node name="ShelterPillar" type="Node3D" parent="Rocks"]
 position = Vector3(13.8, 0, -13.2)
 collision_layer = 1
 collision_mask = 0
@@ -173,11 +127,7 @@ metadata/source_id = "rock_face_02"
 rotation = Vector3(0, 0.2617994, 0)
 scale = Vector3(2.1, 2.1, 2.1)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/ShelterPillar"]
-position = Vector3(0, 2.55, 0)
-shape = SubResource("shelter_pillar")
-
-[node name="ShelterRoof" type="StaticBody3D" parent="Rocks"]
+[node name="ShelterRoof" type="Node3D" parent="Rocks"]
 position = Vector3(10.1, 0, -13.2)
 collision_layer = 1
 collision_mask = 0
@@ -188,11 +138,7 @@ metadata/height_above_floor = 5.2
 rotation = Vector3(0, 0.1745329, 0)
 scale = Vector3(1.25, 1.25, 1.25)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/ShelterRoof"]
-position = Vector3(0, 2.15, 0)
-shape = SubResource("shelter_roof")
-
-[node name="VerticalBase" type="StaticBody3D" parent="Rocks"]
+[node name="VerticalBase" type="Node3D" parent="Rocks"]
 position = Vector3(16, 0, -1)
 collision_layer = 1
 collision_mask = 0
@@ -202,11 +148,7 @@ metadata/source_id = "rock_face_01"
 rotation = Vector3(0, -0.2094395, 0)
 scale = Vector3(1.65, 1.65, 1.65)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/VerticalBase"]
-position = Vector3(0, 2.9, 0)
-shape = SubResource("vertical_base")
-
-[node name="VerticalCap" type="StaticBody3D" parent="Rocks"]
+[node name="VerticalCap" type="Node3D" parent="Rocks"]
 position = Vector3(16, 0, -1)
 collision_layer = 1
 collision_mask = 0
@@ -217,11 +159,7 @@ metadata/height_above_floor = 5.8
 rotation = Vector3(0, 0.3665191, 0)
 scale = Vector3(1.4, 1.4, 1.4)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/VerticalCap"]
-position = Vector3(0, 1.7, 0)
-shape = SubResource("vertical_cap")
-
-[node name="BoulderMarker" type="StaticBody3D" parent="Rocks"]
+[node name="BoulderMarker" type="Node3D" parent="Rocks"]
 position = Vector3(17.5, 0, 6)
 collision_layer = 1
 collision_mask = 0
@@ -231,11 +169,7 @@ metadata/source_id = "boulder_01"
 rotation = Vector3(0, -0.5235988, 0)
 scale = Vector3(3, 3, 3)
 
-[node name="Collision" type="CollisionShape3D" parent="Rocks/BoulderMarker"]
-position = Vector3(0, 1.5, 0)
-shape = SubResource("boulder_marker")
-
-[node name="SeamBoulder" type="StaticBody3D" parent="Rocks"]
+[node name="SeamBoulder" type="Node3D" parent="Rocks"]
 position = Vector3(-1, 0, -22)
 collision_layer = 1
 collision_mask = 0
@@ -244,10 +178,6 @@ metadata/source_id = "boulder_01"
 [node name="Visual" type="Node3D" parent="Rocks/SeamBoulder"]
 rotation = Vector3(0, 0.6283185, 0)
 scale = Vector3(2.2, 2.2, 2.2)
-
-[node name="Collision" type="CollisionShape3D" parent="Rocks/SeamBoulder"]
-position = Vector3(0, 1.1, 0)
-shape = SubResource("seam_boulder")
 
 [node name="Corals" type="Node3D" parent="."]
 
@@ -327,12 +257,15 @@ scale = Vector3(11, 11, 11)
 
 [node name="OpenStart" type="Marker3D" parent="Routes"]
 position = Vector3(0, 0, 0)
+metadata/height_above_floor = 2.35
 
 [node name="OpenMid" type="Marker3D" parent="Routes"]
 position = Vector3(3, -1, -7)
+metadata/height_above_floor = 2.35
 
 [node name="OpenFar" type="Marker3D" parent="Routes"]
 position = Vector3(3, -1.5, -18)
+metadata/height_above_floor = 2.35
 
 [node name="TunnelEntry" type="Marker3D" parent="Routes"]
 position = Vector3(-7.9, -3.7, -8)

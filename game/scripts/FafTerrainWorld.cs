@@ -5,14 +5,15 @@ using System.Collections.Generic;
 
 namespace Fish;
 
-/// <summary>Authored FAF cover draped over the unchanged P2 collision/depth surface.</summary>
+/// <summary>Authored FAF cover and prepared matching collision over the unchanged P2 seabed.</summary>
 public partial class FafTerrainWorld : Node3D
 {
     private readonly record struct Placement(char Variant, float X, float Z, float SX, float SZ,
         float Yaw, float Relief, string Zone);
 
     // Unequal overlapping sand fields continue beyond the fish's reachable +/-29 m area.
-    // Relief is deliberately below a fish radius on paths; geology gets its own collision in P3.
+    // Relief stays below a fish radius on paths. The prepared draped collision
+    // matches these rendered chunks while the continuous P2 seabed remains solid.
     private static readonly Placement[] Layout =
     {
         new('A', -30, -29, 1.70f, 1.67f, -.31f, .12f, "deep-west"),
@@ -106,8 +107,24 @@ public partial class FafTerrainWorld : Node3D
             marker.Position = new Vector3(marker.Position.X,
                 seabed.GetHeightAt(marker.Position.X, marker.Position.Z), marker.Position.Z);
         }
+        var preparingCollision = false;
+        foreach (var argument in OS.GetCmdlineUserArgs())
+            if (argument == "--prepare-faf-terrain-collision") preparingCollision = true;
+        if (!preparingCollision)
+        {
+            var shape = ResourceLoader.Load<ConcavePolygonShape3D>(
+                "res://assets/faf/collision/faf_draped_terrain.res");
+            if (shape is null)
+            {
+                diagnostic = "FAF_TERRAIN_INVALID action=run-prepare-faf-terrain-collision";
+                return false;
+            }
+            var body = new StaticBody3D { Name = "DrapedTerrainSolid", CollisionLayer = 1, CollisionMask = 0 };
+            body.AddChild(new CollisionShape3D { Name = "Shape", Shape = shape });
+            AddChild(body);
+        }
         diagnostic = "";
-        GD.Print($"FAF_TERRAIN_READY chunks={ChunkCount} ids=A,B,C,D,E,F collision=P2-Seabed seam_zones=authored");
+        GD.Print($"FAF_TERRAIN_READY chunks={ChunkCount} ids=A,B,C,D,E,F collision={(preparingCollision ? "preparing" : "draped-mesh+P2-Seabed")} seam_zones=authored");
         return true;
     }
 

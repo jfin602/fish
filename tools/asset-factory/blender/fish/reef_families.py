@@ -6,7 +6,7 @@ Tang station map nor a universal fish silhouette is reused here.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict, replace
 import math
 
 import bpy
@@ -15,8 +15,8 @@ from mathutils import Vector
 
 from fish.rig import skin_body_at_stations, skin_report
 from fish.animation import make_wave_action, reset_pose
-from fish.breathing import (OPERCULATE, EXPOSED_SLITS, OperculumSpec,
-                            add_operculum_rig, classify_breathing,
+from fish.breathing import (OPERCULATE, EXPOSED_SLITS, SLIT_RIGGED, OperculumSpec,
+                            add_operculum_rig, add_slit_rig, classify_breathing,
                             weight_operculum_region, validate_breathing_rig)
 
 
@@ -37,10 +37,13 @@ class Blueprint:
     frames: tuple[int, int, int]
     wave: tuple[tuple[str, float, float], ...]
     breathing_anatomy: str
+    life_stage: str = "adult"
+    development: object | None = None
 
     @property
     def stem(self):
-        return f"fish_{self.number:03d}_{self.slug}"
+        base = f"fish_{self.number:03d}_{self.slug}"
+        return base if self.life_stage == "adult" else base + "__" + self.life_stage
 
     @property
     def faf_id(self):
@@ -104,16 +107,19 @@ def breathing_spec(bp: Blueprint) -> OperculumSpec | None:
     """Derive local cover dimensions from a species' own head and loft profile."""
     if bp.breathing_anatomy == EXPOSED_SLITS:
         return None
-    if bp.breathing_anatomy != OPERCULATE:
+    if bp.breathing_anatomy not in (OPERCULATE, SLIT_RIGGED):
         raise ValueError(f"{bp.faf_id} missing valid breathing anatomy")
     length = bp.shape[-1][0] - bp.shape[0][0]
     # Sit behind the eye and ahead of the pectoral root (eye_y + .013), so a
     # raised cover never swallows the nearby fin in side view.
-    center_y = bp.eye_y + min(length * .055, .007)
+    center_y = (bp.eye_y + length*.12 if bp.breathing_anatomy == SLIT_RIGGED
+                else bp.eye_y + min(length * .055, .007))
     width, height, z = _shape_at(bp.shape, center_y)
     return OperculumSpec(center_y=center_y, center_z=z,
-                         half_width=width, region_y=length * .105,
-                         region_z=height * .90, parent_bone="spine_01")
+                         half_width=width, region_y=length * (.18 if bp.life_stage == "larva" else
+                                                               .15 if bp.breathing_anatomy == SLIT_RIGGED else .105),
+                         region_z=height * (1.1 if bp.life_stage == "larva" else .90),
+                         parent_bone="spine_02" if bp.breathing_anatomy == SLIT_RIGGED else "spine_01")
 
 
 def _material(name, hex_color):
@@ -138,6 +144,19 @@ def _shape_at(shape, y):
 
 
 def _stripe_material(bp, y, vertical):
+    if bp.number==1:
+        return 1 if vertical > .66 and bp.life_stage not in ("larva",) else 0
+    if bp.development is not None:
+        # Match developmental markings to the corresponding adult body station.
+        from fish.life_stages import inverse_stage_y
+        y = inverse_stage_y(bp.development, y)
+        if bp.life_stage == "larva":
+            return 1 if bp.number == 3 and vertical < -.28 else 0
+        if bp.number == 2 and bp.life_stage == "juvenile":
+            if abs(y + .034) < .012: return 1
+            return 2 if abs(y + .034) < .016 else 0
+        if bp.number == 4 and bp.life_stage == "juvenile":
+            return 2 if abs(y + .051) < .014 else 0
     if bp.number==2:
         for center,width in ((-.034,.010),(.002,.012),(.043,.008)):
             if abs(y-center) < width*.5: return 1
@@ -167,11 +186,20 @@ def _mesh_object(name, vertices, faces, material_ids, materials, collection):
 def _body(bp, materials, collection):
     y0,y1=bp.shape[0][0],bp.shape[-1][0]
     samples={y0+(y1-y0)*i/bp.body_steps for i in range(bp.body_steps+1)}
-    if bp.number==2:
+    if bp.number==2 and bp.development is None:
         for center,width in ((-.034,.010),(.002,.012),(.043,.008)):
             samples.update((center-width*.5-.004,center-width*.5,center+width*.5,center+width*.5+.004))
-    if bp.number==4:
+    if bp.number==4 and bp.development is None:
         samples.update((-.059,-.043,.042,.056,.030))
+    if bp.development is not None:
+        from fish.life_stages import stage_y
+        if bp.number == 2 and bp.life_stage in ("juvenile", "subadult"):
+            centers = ((-.034,.010),) if bp.life_stage == "juvenile" else ((-.034,.010),(.002,.012),(.043,.008))
+            for center,width in centers:
+                samples.update(stage_y(bp.development, edge) for edge in
+                               (center-width*.5-.004,center-width*.5,center+width*.5,center+width*.5+.004))
+        if bp.number == 4 and bp.life_stage in ("juvenile", "subadult"):
+            samples.update(stage_y(bp.development, edge) for edge in (-.059,-.043,.042,.056,.030))
     samples=sorted(y for y in samples if y0<=y<=y1)
     vertices=[];faces=[];regions=[]
     for y in samples:
@@ -208,9 +236,9 @@ def _prism_parts(name, polygons, axis, thickness, material, collection):
     return _mesh_object(name,vertices,faces,[0]*len(faces),[material],collection)
 
 
-def _eye(name, center, radius, material, collection):
+def _eye(name, center, radius, material, collection, subdivisions=1):
     mesh=bpy.data.meshes.new(name+'__geometry')
-    bm=bmesh.new();bmesh.ops.create_icosphere(bm,subdivisions=1,radius=radius)
+    bm=bmesh.new();bmesh.ops.create_icosphere(bm,subdivisions=subdivisions,radius=radius)
     for vert in bm.verts: vert.co+=Vector(center)
     bm.to_mesh(mesh);bm.free();mesh.update()
     mesh.materials.append(material)
@@ -222,7 +250,12 @@ def _fin_parts(bp, mats, collection):
     yrear=bp.shape[-1][0]
     if bp.number==5:
         return _shark_fins(bp,mats,collection)
-    if bp.number==2:
+    if bp.number==1:
+        dorsal=[(0,-.045,.026),(0,-.025,.071),(0,.024,.069),(0,.057,.026)]
+        anal=[(0,-.037,-.028),(0,-.014,-.069),(0,.027,-.061),(0,.058,-.022)]
+        tail_height=.049;tail_length=.046
+        fin_mat=mats[0]
+    elif bp.number==2:
         dorsal=[(0,-.033,.025),(0,-.023,.047),(0,.006,.053),(0,.043,.028)]
         anal=[(0,-.015,-.029),(0,.014,-.049),(0,.043,-.022)]
         tail_height=.034;tail_length=.035
@@ -273,6 +306,18 @@ def _shark_fins(bp,mats,collection):
         parts['pectoral_'+label]=_prism_parts(bp.stem+'__pectoral_'+label,[wing],2,.013,grey,collection)
         dark=[(sign*.30,-.030,-.080),(tipx,.025,-.09),(sign*.27,.115,-.065)]
         parts['pectoral_'+label+'_tip']=_prism_parts(bp.stem+'__pectoral_'+label+'_tip',[dark],2,.016,black,collection)
+        if bp.development is not None:
+            # Four shallow, broad marks on each side identify exposed shark
+            # gill slits. They move with the local gill region, not an operculum.
+            slits=[]
+            for index in range(4):
+                y=-.365+index*.026
+                surface=_shape_at(bp.shape,y)[0]
+                x=sign*(surface+.001)
+                slits.append([(x,y,-.025),(x,y+.004,-.025),
+                              (x,y+.004,.028),(x,y,.028)])
+            parts['gill_slits_'+label]=_prism_parts(
+                bp.stem+'__gill_slits_'+label,slits,0,.0025,black,collection)
     upper=[(0,.62,0),(0,.74,.11),(0,.91,.29),(0,.87,.14),(0,.76,.005)]
     lower=[(0,.62,0),(0,.76,.005),(0,.87,-.17),(0,.73,-.085)]
     parts['tail_fin']=_prism_parts(bp.stem+'__tail_fin',[upper,lower],0,.012,grey,collection)
@@ -305,18 +350,19 @@ def _armature(bp, collection):
     # farther forward and remain relatively steady during the body wave.
     pectoral_parent=data.edit_bones[bp.chain_names[1]]
     dorsal_parent=data.edit_bones[bp.chain_names[2]]
-    anchor_y=bp.eye_y+(.20 if bp.number==5 else .015)
+    size = bp.development.size if bp.development is not None else 1.0
+    anchor_y=bp.eye_y+(.20 if bp.number==5 else .015)*size
     anchor_width=_shape_at(bp.shape,anchor_y)[0]*.78
     for sign,label in ((1,'l'),(-1,'r')):
         bone=data.edit_bones.new('pectoral_'+label)
         bone.head=(sign*anchor_width,anchor_y,0)
-        bone.tail=(sign*(anchor_width+(.13 if bp.number==5 else .013)),
-                   anchor_y+(.055 if bp.number==5 else .009),-.008)
+        bone.tail=(sign*(anchor_width+(.13 if bp.number==5 else .013)*size),
+                   anchor_y+(.055 if bp.number==5 else .009)*size,-.008*size)
         bone.parent=pectoral_parent
     for name,base,tip in (('dorsal',(.00,.00,.02),(.00,.01,.055)),
                           ('anal',(.00,.01,-.02),(.00,.02,-.055))):
         bone=data.edit_bones.new(name)
-        factor=4.0 if bp.number==5 else 1.0
+        factor=(4.0 if bp.number==5 else 1.0)*size
         bone.head=(base[0],base[1]*factor,base[2]*factor)
         bone.tail=(tip[0],tip[1]*factor,tip[2]*factor)
         bone.parent=dorsal_parent
@@ -337,24 +383,38 @@ def _bind(obj, armature, bone=None, stations=None):
 
 def create_fish(bp: Blueprint, scene):
     """Build one species in an empty scene; return runtime objects and report."""
-    if bp.breathing_anatomy not in (OPERCULATE, EXPOSED_SLITS):
+    if bp.breathing_anatomy not in (OPERCULATE, EXPOSED_SLITS, SLIT_RIGGED):
         raise ValueError(f"{bp.faf_id} missing valid breathing anatomy")
-    collection=bpy.data.collections.new(bp.faf_id+' Source')
+    collection=bpy.data.collections.new(bp.faf_id+' '+bp.life_stage+' Source')
     scene.collection.children.link(collection)
     scene.unit_settings.system='METRIC'
     scene.unit_settings.scale_length=1
     materials=[_material(f'mat__{bp.stem}_{role}',color) for role,color in bp.colors]
     body=_body(bp,materials,collection)
-    fins=_fin_parts(bp,materials,collection)
+    if bp.development is None:
+        fins=_fin_parts(bp,materials,collection)
+    else:
+        from fish.life_stages import base_blueprint, warp_fin_point
+        base=base_blueprint(bp.number)
+        fins=_fin_parts(replace(base,development=bp.development),materials,collection)
+        for part,obj in fins.items():
+            obj.name=bp.stem+'__'+part
+            obj.data.name=obj.name+'__geometry'
+            for vertex in obj.data.vertices:
+                vertex.co=warp_fin_point(bp.development,base,part,vertex.co)
+            obj.data.update()
     width=_shape_at(bp.shape,bp.eye_y)[0]
     eyes={}
     for sign,label in ((1,'l'),(-1,'r')):
         center=(sign*(width+bp.eye_radius*.12),bp.eye_y,bp.eye_z)
-        eyes[label]=_eye(bp.stem+'__eye_'+label,center,bp.eye_radius,materials[-1],collection)
+        eyes[label]=_eye(bp.stem+'__eye_'+label,center,bp.eye_radius,materials[-1],collection,
+                         subdivisions=0 if bp.life_stage=="larva" else 1)
     armature=_armature(bp,collection)
     breathing=breathing_spec(bp)
-    if breathing is not None:
+    if bp.breathing_anatomy == OPERCULATE:
         add_operculum_rig(armature,breathing)
+    elif bp.breathing_anatomy == SLIT_RIGGED:
+        add_slit_rig(armature,breathing)
     else:
         classify_breathing(armature,EXPOSED_SLITS)
     # Mid-bone stations preserve a rigid head and blend each adjacent body
@@ -367,6 +427,8 @@ def create_fish(bp: Blueprint, scene):
     for name,obj in fins.items():
         if name.startswith('pectoral_l'): bone='pectoral_l'
         elif name.startswith('pectoral_r'): bone='pectoral_r'
+        elif name.startswith('gill_slits_l'): bone='gill_L'
+        elif name.startswith('gill_slits_r'): bone='gill_R'
         elif name.startswith('dorsal'): bone='dorsal'
         elif name.startswith('anal'): bone='anal'
         else: bone='tail_fin'
@@ -386,7 +448,7 @@ def create_fish(bp: Blueprint, scene):
     reset_pose(armature)
     bpy.context.view_layer.update()
     breathing_check=validate_breathing_rig(armature,meshes,breathing,
-        require_complete=bp.breathing_anatomy==OPERCULATE)
+        require_complete=bp.breathing_anatomy!=EXPOSED_SLITS)
     return armature,meshes,inspect_fish(bp,armature,meshes,breathing_check)
 
 
@@ -395,18 +457,23 @@ def inspect_fish(bp: Blueprint, armature, meshes, breathing_check=None):
     coordinates=[tuple(vertex.co) for obj in meshes for vertex in obj.data.vertices]
     bounds=[(min(v[i] for v in coordinates),max(v[i] for v in coordinates)) for i in range(3)]
     triangles=sum(sum(max(0,len(p.vertices)-2) for p in obj.data.polygons) for obj in meshes)
+    used_materials=sorted({obj.data.materials[polygon.material_index].name
+                           for obj in meshes for polygon in obj.data.polygons
+                           if obj.data.materials[polygon.material_index] is not None})
     report={
-        'faf_id':bp.faf_id,'species':bp.slug,'body_family':bp.family,
+        'faf_id':bp.faf_id,'life_stage':bp.life_stage,
+        'species':bp.slug,'body_family':bp.family,
         'dimensions_m':[round(b-a,5) for a,b in bounds],
-        'triangles':triangles,'materials':len(bp.colors),
-        'material_names':[f'mat__{bp.stem}_{role}' for role,_ in bp.colors],
+        'triangles':triangles,'materials':len(used_materials),
+        'material_names':used_materials,
         'meshes':len(meshes),'bones':len(armature.data.bones),
         'bone_names':[b.name for b in armature.data.bones],
         'actions':[bp.stem+'__'+role for role in ('Glide','Swim','SwimFast')],
         'frames':dict(zip(('Glide','Swim','SwimFast'),bp.frames)),
         'origin_m':[0,0,0],'rotation_rad':[0,0,0],'scale':[1,1,1],
         'front_blender':'-Y','up_blender':'+Z',
-        'root_translation_animated':False,'source_generator':'fish.reef_families.v2',
+        'root_translation_animated':False,
+        'source_generator':'fish.life_stages.v1' if bp.development else 'fish.reef_families.v2',
         'breathing_anatomy':bp.breathing_anatomy,
         'breathing_validation':breathing_check,
         'generator_config':{
@@ -415,6 +482,7 @@ def inspect_fish(bp: Blueprint, armature, meshes, breathing_check=None):
             'wave_profile':bp.wave,'frames':bp.frames,
             'colors':bp.colors,'deterministic':True,
             'breathing_anatomy':bp.breathing_anatomy,
+            'development':asdict(bp.development) if bp.development else None,
         },
     }
     return report

@@ -117,5 +117,10 @@ func _run() -> void:
 	if habitat.get_node("HiddenLimits").get_child_count() != 5 or habitat.get_node("Seabed/Collision").shape == null or atmosphere.SurfaceHeight <= atmosphere.DeepReferenceHeight:
 		fail("P2 bounds or water anchors changed")
 		return
-	print("FAF_TERRAIN_WORLD_OK chunks=%d ids=%s seam_zones=%d route_samples=%d visible=%d max_delta=%.3f collision=P2 camera=shared" % [visuals.get_child_count(), counts, zones.size(), samples, distinct, max_delta])
+	var draped_solid: StaticBody3D = terrain.get_node_or_null("DrapedTerrainSolid")
+	var draped_shape: CollisionShape3D = draped_solid.get_node_or_null("Shape") if draped_solid != null else null
+	if draped_solid == null or draped_shape == null or draped_solid.collision_layer != 1 or draped_solid.collision_mask != 0 or not draped_shape.shape is ConcavePolygonShape3D or (draped_shape.shape as ConcavePolygonShape3D).data.size() != 58752 * 3:
+		fail("prepared draped terrain collision missing or stale")
+		return
+	print("FAF_TERRAIN_WORLD_OK chunks=%d ids=%s seam_zones=%d route_samples=%d visible=%d max_underlay_delta=%.3f collision=draped-mesh+P2 camera=shared" % [visuals.get_child_count(), counts, zones.size(), samples, distinct, max_delta])
 	quit()

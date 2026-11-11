@@ -384,16 +384,16 @@ public partial class PlayShell : Node
             ? $"{profile.Name}  Hold Left Shift + mouse: 360 free-look  " +
               $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
               $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
-              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)} (hold to reverse)  " +
               $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
               (CanQuickCycle() ? "  Debug: F6 cycles presets" : "")
             : profile.CameraControl == CameraControlPolicy.MouseOrbit360
             ? $"{profile.Name}  Mouse: 360 camera  Pitch up/down: {Keys(ControlAction.PitchUp)}/{Keys(ControlAction.PitchDown)}  " +
               $"Turn left/right: {Keys(ControlAction.YawLeft)}/{Keys(ControlAction.YawRight)}  " +
-              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+              $"Thrust: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)} (hold to reverse)  " +
               $"Wheel: zoom  Options: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
               (CanQuickCycle() ? "  Debug: F6 cycles presets" : "")
-            : $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)}  " +
+            : $"{profile.Name}  Swim: {Keys(ControlAction.Thrust)}  Slow: {Keys(ControlAction.Slow)} (hold to reverse)  " +
               $"Turn: {Steering(ControlAction.YawLeft, ControlAction.YawRight, SteeringAxis.Yaw)}  " +
               $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
               $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +

@@ -14,3 +14,5 @@ These ranges guide consistent construction and performance reviews. They are **t
 | Small reef-floor details | 20–150 |
 
 Terrain varies with chunk size, distance and collision needs; set a per-chunk target after a representative view is measured. Start with one to three simple materials for a small asset and a few shared palette materials for a hero; explain extra slots. Prefer flat/vertex color or compact textures to high-resolution maps, and avoid extra transparent layers unless their silhouette benefit survives in Godot. Track material count, texture dimensions and actual draw cost in the candidate record. A hero may exceed these numbers with documented visual value and measured performance.
+
+For the first [fish developmental family](life-stages-001/README.md), the four egg meshes are 40 triangles each and the swimming non-adults range from 320 to 972 triangles. These are measured candidate costs, not new universal caps. Tiny eggs and larvae need review at the intended game camera distance before placement or spawning density is chosen.

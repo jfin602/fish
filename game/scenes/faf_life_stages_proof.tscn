@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_life_stages_proof.gd" id="1_proof"]
+
+[node name="FAFLifeStagesProof" type="Node3D"]
+script = ExtResource("1_proof")
+
+[node name="Camera" type="Camera3D" parent="."]
+current = true
+fov = 40.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.35, 1.57, 0.0)
+light_energy = 0.8
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

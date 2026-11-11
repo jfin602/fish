@@ -16,6 +16,8 @@ The former **FAF-001 Yellow Tang** prototype is registered as [FAF-FISH-001](fis
 
 The first varied original reef-fish library is [FAF-FISH-001–005](reef-fish-pack-001/README.md): the preserved Yellow Tang plus four new compact, schooling, highly compressed, and shark body-family candidates. Four separate GLBs, a reusable multi-scene Blender source/recipe, deformation evidence, and individual Godot proofs are recorded there. Reef-context style approval remains open; no fish replaced the player.
 
+The [life-stage family](life-stages-001/README.md) adds 20 developmental representations to those five identities, alongside their preserved canonical adults. Four bony-fish species have Egg, Larva, Juvenile, Subadult and Adult; the live-bearing shark has NewbornPup, EarlyJuvenile, Juvenile, Subadult and Adult. Stage-specific geometry, proportions, markings, color and swim motion are recorded in a separate source, manifest, GLBs and isolated Godot viewer. These assets do not change gameplay growth or the current player.
+
 The first original rock family is [FAF-ROCK-001](rock-001/README.md): four deterministic boulder variants with a shared generator, Blender review collection, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.
 
 The first original coral pack is [FAF-CORAL-001–004](coral-pack-001/README.md): twelve deterministic assets in branching, rounded, tube and fan families, with Blender family review, separate GLBs and isolated Godot import/native proof. It has not been placed into the live P2 habitat.

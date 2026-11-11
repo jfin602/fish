@@ -1,0 +1,4238 @@
+{
+  "family": "FAF-FISH-001\u2013005 developmental stages",
+  "generator": "fish.life_stages.v1",
+  "blender_version": "5.2.3 LTS",
+  "source": "assets/faf/fish/life_stages_001_to_005.blend",
+  "adult_policy": "canonical existing adult Blender/GLB files are unchanged",
+  "assets": [
+    {
+      "faf_id": "FAF-FISH-001",
+      "species": "yellow_tang",
+      "life_stage": "egg",
+      "stem": "fish_001_yellow_tang__egg",
+      "dimensions_m": [
+        0.002981,
+        0.002232,
+        0.00336
+      ],
+      "triangles": 40,
+      "materials": 2,
+      "bones": 0,
+      "actions": [],
+      "breathing_anatomy": "not_applicable_egg",
+      "generator_config": {
+        "diameter_m": 0.0032,
+        "shell": "#D9C989",
+        "embryo": "#A48B5B",
+        "deterministic": true
+      },
+      "glb": "game/assets/faf/fish/fish_001_yellow_tang__egg.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-002",
+      "species": "ocellaris_clownfish",
+      "life_stage": "egg",
+      "stem": "fish_002_ocellaris_clownfish__egg",
+      "dimensions_m": [
+        0.002422,
+        0.001814,
+        0.00273
+      ],
+      "triangles": 40,
+      "materials": 2,
+      "bones": 0,
+      "actions": [],
+      "breathing_anatomy": "not_applicable_egg",
+      "generator_config": {
+        "diameter_m": 0.0026,
+        "shell": "#D8B6A2",
+        "embryo": "#9C765D",
+        "deterministic": true
+      },
+      "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish__egg.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-003",
+      "species": "blue_green_chromis",
+      "life_stage": "egg",
+      "stem": "fish_003_blue_green_chromis__egg",
+      "dimensions_m": [
+        0.002049,
+        0.001535,
+        0.00231
+      ],
+      "triangles": 40,
+      "materials": 2,
+      "bones": 0,
+      "actions": [],
+      "breathing_anatomy": "not_applicable_egg",
+      "generator_config": {
+        "diameter_m": 0.0022,
+        "shell": "#A5D0C8",
+        "embryo": "#648A80",
+        "deterministic": true
+      },
+      "glb": "game/assets/faf/fish/fish_003_blue_green_chromis__egg.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-004",
+      "species": "reef_butterflyfish",
+      "life_stage": "egg",
+      "stem": "fish_004_reef_butterflyfish__egg",
+      "dimensions_m": [
+        0.002608,
+        0.001953,
+        0.00294
+      ],
+      "triangles": 40,
+      "materials": 2,
+      "bones": 0,
+      "actions": [],
+      "breathing_anatomy": "not_applicable_egg",
+      "generator_config": {
+        "diameter_m": 0.0028,
+        "shell": "#DCD2AE",
+        "embryo": "#93856C",
+        "deterministic": true
+      },
+      "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish__egg.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-001",
+      "life_stage": "larva",
+      "species": "yellow_tang",
+      "body_family": "laterally_compressed",
+      "dimensions_m": [
+        0.00459,
+        0.02994,
+        0.01068
+      ],
+      "triangles": 332,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_001_yellow_tang__larva_eye",
+        "mat__fish_001_yellow_tang__larva_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_001_yellow_tang__larva__Glide",
+        "fish_001_yellow_tang__larva__Swim",
+        "fish_001_yellow_tang__larva__SwimFast"
+      ],
+      "frames": {
+        "Glide": 39,
+        "Swim": 25,
+        "SwimFast": 15
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 10,
+          "gill_R": 10
+        },
+        "neutral_error_m": 9.313225746154785e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.01656,
+            0.00043875,
+            0.0009672,
+            0.0
+          ],
+          [
+            -0.0126,
+            0.0013767538775510204,
+            0.003983407885714285,
+            0.0
+          ],
+          [
+            -0.0081,
+            0.0021711667959183677,
+            0.005278915346938775,
+            0.0
+          ],
+          [
+            -0.0026999999999999997,
+            0.00230922,
+            0.0053450745599999995,
+            0.0
+          ],
+          [
+            0.0024000000000000002,
+            0.0019141739999999998,
+            0.004580584800000001,
+            0.0
+          ],
+          [
+            0.00576,
+            0.0013297499999999998,
+            0.003151211999999999,
+            0.0
+          ],
+          [
+            0.008280000000000001,
+            0.0006351119999999999,
+            0.0015750777599999998,
+            0.0
+          ],
+          [
+            0.009960000000000002,
+            0.0002925,
+            0.0006045,
+            0.0
+          ]
+        ],
+        "radial_sides": 8,
+        "body_steps": 14,
+        "chain_stations": [
+          -0.01656,
+          -0.011159999999999998,
+          -0.0061200000000000004,
+          -0.0014399999999999999,
+          0.0027600000000000003,
+          0.00648,
+          0.009960000000000002
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.020800000000000003,
+            0.34
+          ],
+          [
+            "spine_03",
+            0.045500000000000006,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.0975,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.18200000000000002,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.28600000000000003,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.14300000000000002,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.0364,
+            0.25
+          ],
+          [
+            "pectoral_r",
+            -0.0364,
+            0.25
+          ],
+          [
+            "dorsal",
+            0.015600000000000001,
+            0.17
+          ],
+          [
+            "anal",
+            -0.015600000000000001,
+            0.17
+          ]
+        ],
+        "frames": [
+          39,
+          25,
+          15
+        ],
+        "colors": [
+          [
+            "yellow",
+            "#9DA487"
+          ],
+          [
+            "sunlit",
+            "#BDB993"
+          ],
+          [
+            "eye",
+            "#273039"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "larva",
+          "size": 0.15,
+          "head_length": 0.2,
+          "head_fullness": 0.3,
+          "peduncle_fullness": -0.35,
+          "depth": 0.62,
+          "width": 0.75,
+          "eye_ratio": 1.55,
+          "fin": 0.38,
+          "caudal": 0.62,
+          "cadence": 0.82,
+          "wave": 1.3
+        }
+      },
+      "stem": "fish_001_yellow_tang__larva",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_001_yellow_tang__larva.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-001",
+      "life_stage": "juvenile",
+      "species": "yellow_tang",
+      "body_family": "laterally_compressed",
+      "dimensions_m": [
+        0.01581,
+        0.09231,
+        0.04431
+      ],
+      "triangles": 660,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_001_yellow_tang__juvenile_eye",
+        "mat__fish_001_yellow_tang__juvenile_sunlit",
+        "mat__fish_001_yellow_tang__juvenile_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_001_yellow_tang__juvenile__Glide",
+        "fish_001_yellow_tang__juvenile__Swim",
+        "fish_001_yellow_tang__juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 42,
+        "Swim": 26,
+        "SwimFast": 16
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 12,
+          "gill_R": 12
+        },
+        "neutral_error_m": 8.335059033861241e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.045742399999999996,
+            0.001359072,
+            0.003624192,
+            0.0
+          ],
+          [
+            -0.034804,
+            0.004365963525224491,
+            0.015280872338285718,
+            0.0
+          ],
+          [
+            -0.022373999999999995,
+            0.007109836696555103,
+            0.020911284401632656,
+            0.0
+          ],
+          [
+            -0.007457999999999999,
+            0.007931962368000001,
+            0.022209494630400006,
+            0.0
+          ],
+          [
+            0.0076560000000000005,
+            0.007066883225599999,
+            0.020456767232,
+            0.0
+          ],
+          [
+            0.0183744,
+            0.005289926399999999,
+            0.015164455679999998,
+            0.0
+          ],
+          [
+            0.0264132,
+            0.0027076988928000003,
+            0.008123096678400001,
+            0.0
+          ],
+          [
+            0.031772400000000006,
+            0.00131648,
+            0.0032912,
+            0.0
+          ]
+        ],
+        "radial_sides": 12,
+        "body_steps": 22,
+        "chain_stations": [
+          -0.045742399999999996,
+          -0.030826399999999997,
+          -0.0169048,
+          -0.0039775999999999995,
+          0.0088044,
+          0.0206712,
+          0.031772400000000006
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.01856,
+            0.34
+          ],
+          [
+            "spine_03",
+            0.040600000000000004,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.087,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.16240000000000002,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.2552,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.1276,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.032479999999999995,
+            0.25
+          ],
+          [
+            "pectoral_r",
+            -0.032479999999999995,
+            0.25
+          ],
+          [
+            "dorsal",
+            0.01392,
+            0.17
+          ],
+          [
+            "anal",
+            -0.01392,
+            0.17
+          ]
+        ],
+        "frames": [
+          42,
+          26,
+          16
+        ],
+        "colors": [
+          [
+            "yellow",
+            "#B9B45E"
+          ],
+          [
+            "sunlit",
+            "#D2CA79"
+          ],
+          [
+            "eye",
+            "#253039"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "juvenile",
+          "size": 0.44,
+          "head_length": 0.13,
+          "head_fullness": 0.17,
+          "peduncle_fullness": -0.15,
+          "depth": 0.88,
+          "width": 0.88,
+          "eye_ratio": 1.2,
+          "fin": 0.72,
+          "caudal": 0.84,
+          "cadence": 0.88,
+          "wave": 1.16
+        }
+      },
+      "stem": "fish_001_yellow_tang__juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_001_yellow_tang__juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-001",
+      "life_stage": "subadult",
+      "species": "yellow_tang",
+      "body_family": "laterally_compressed",
+      "dimensions_m": [
+        0.03154,
+        0.1695,
+        0.09777
+      ],
+      "triangles": 660,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_001_yellow_tang__subadult_eye",
+        "mat__fish_001_yellow_tang__subadult_sunlit",
+        "mat__fish_001_yellow_tang__subadult_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_001_yellow_tang__subadult__Glide",
+        "fish_001_yellow_tang__subadult__Swim",
+        "fish_001_yellow_tang__subadult__SwimFast"
+      ],
+      "frames": {
+        "Glide": 46,
+        "Swim": 29,
+        "SwimFast": 17
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 9,
+          "gill_R": 9
+        },
+        "neutral_error_m": 9.657574444564378e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.07463040000000001,
+            0.002381184,
+            0.006349824000000001,
+            0.0
+          ],
+          [
+            -0.056784000000000015,
+            0.007826684990693878,
+            0.02739339746742857,
+            0.0
+          ],
+          [
+            -0.036504,
+            0.013101483053975512,
+            0.03853377368816328,
+            0.0
+          ],
+          [
+            -0.012168,
+            0.015141814271999999,
+            0.0423970799616,
+            0.0
+          ],
+          [
+            0.014976,
+            0.0141047322624,
+            0.040829488128000004,
+            0.0
+          ],
+          [
+            0.0359424,
+            0.0109714176,
+            0.031451397119999995,
+            0.0
+          ],
+          [
+            0.0516672,
+            0.0057898893312,
+            0.0173696679936,
+            0.0
+          ],
+          [
+            0.0621504,
+            0.002875392,
+            0.00718848,
+            0.0
+          ]
+        ],
+        "radial_sides": 12,
+        "body_steps": 22,
+        "chain_stations": [
+          -0.07463040000000001,
+          -0.0502944,
+          -0.027580800000000003,
+          -0.006489600000000001,
+          0.0172224,
+          0.0404352,
+          0.0621504
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.016640000000000002,
+            0.34
+          ],
+          [
+            "spine_03",
+            0.0364,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.078,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.1456,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.2288,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.1144,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.02912,
+            0.25
+          ],
+          [
+            "pectoral_r",
+            -0.02912,
+            0.25
+          ],
+          [
+            "dorsal",
+            0.012480000000000002,
+            0.17
+          ],
+          [
+            "anal",
+            -0.012480000000000002,
+            0.17
+          ]
+        ],
+        "frames": [
+          46,
+          29,
+          17
+        ],
+        "colors": [
+          [
+            "yellow",
+            "#DEC14D"
+          ],
+          [
+            "sunlit",
+            "#EBD26A"
+          ],
+          [
+            "eye",
+            "#222C35"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "subadult",
+          "size": 0.78,
+          "head_length": 0.04,
+          "head_fullness": 0.06,
+          "peduncle_fullness": -0.04,
+          "depth": 0.96,
+          "width": 0.96,
+          "eye_ratio": 1.06,
+          "fin": 0.92,
+          "caudal": 0.95,
+          "cadence": 0.96,
+          "wave": 1.04
+        }
+      },
+      "stem": "fish_001_yellow_tang__subadult",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_001_yellow_tang__subadult.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-002",
+      "life_stage": "larva",
+      "species": "ocellaris_clownfish",
+      "body_family": "compact_oval",
+      "dimensions_m": [
+        0.00572,
+        0.02103,
+        0.00793
+      ],
+      "triangles": 320,
+      "materials": 2,
+      "material_names": [
+        "mat__fish_002_ocellaris_clownfish__larva_black",
+        "mat__fish_002_ocellaris_clownfish__larva_orange"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_002_ocellaris_clownfish__larva__Glide",
+        "fish_002_ocellaris_clownfish__larva__Swim",
+        "fish_002_ocellaris_clownfish__larva__SwimFast"
+      ],
+      "frames": {
+        "Glide": 37,
+        "Swim": 19,
+        "SwimFast": 14
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 13,
+          "gill_R": 13
+        },
+        "neutral_error_m": 5.247848283020338e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.010368,
+            0.0004979520000000001,
+            0.0005617920000000001,
+            0.0
+          ],
+          [
+            -0.008064,
+            0.0018895580689655175,
+            0.0031977136551724137,
+            0.0
+          ],
+          [
+            -0.0042239999999999995,
+            0.002721974068965518,
+            0.004000310068965517,
+            0.0
+          ],
+          [
+            0.000768,
+            0.002590977103448276,
+            0.0035495437241379315,
+            0.0
+          ],
+          [
+            0.0038399999999999997,
+            0.0018077495172413795,
+            0.0025193975172413795,
+            0.0
+          ],
+          [
+            0.006656,
+            0.0006350168275862069,
+            0.0009211233103448275,
+            0.0
+          ],
+          [
+            0.007936,
+            0.00033446400000000003,
+            0.00042451199999999994,
+            0.0
+          ]
+        ],
+        "radial_sides": 8,
+        "body_steps": 14,
+        "chain_stations": [
+          -0.010368,
+          -0.0057599999999999995,
+          -0.001536,
+          0.0019199999999999998,
+          0.004736000000000001,
+          0.006912000000000001,
+          0.008448
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.03105,
+            0.32
+          ],
+          [
+            "spine_03",
+            0.07425000000000001,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.1215,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.243,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.36450000000000005,
+            0.04
+          ],
+          [
+            "tail_fin",
+            0.2025,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.04725000000000001,
+            0.22
+          ],
+          [
+            "pectoral_r",
+            -0.04725000000000001,
+            0.22
+          ],
+          [
+            "dorsal",
+            0.02025,
+            0.2
+          ],
+          [
+            "anal",
+            -0.02025,
+            0.2
+          ]
+        ],
+        "frames": [
+          37,
+          19,
+          14
+        ],
+        "colors": [
+          [
+            "orange",
+            "#A98B76"
+          ],
+          [
+            "white",
+            "#C4B4A4"
+          ],
+          [
+            "black",
+            "#303038"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "larva",
+          "size": 0.16,
+          "head_length": 0.2,
+          "head_fullness": 0.33,
+          "peduncle_fullness": -0.33,
+          "depth": 0.66,
+          "width": 0.78,
+          "eye_ratio": 1.55,
+          "fin": 0.35,
+          "caudal": 0.56,
+          "cadence": 0.78,
+          "wave": 1.35
+        }
+      },
+      "stem": "fish_002_ocellaris_clownfish__larva",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish__larva.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-002",
+      "life_stage": "juvenile",
+      "species": "ocellaris_clownfish",
+      "body_family": "compact_oval",
+      "dimensions_m": [
+        0.01677,
+        0.06134,
+        0.02818
+      ],
+      "triangles": 720,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_002_ocellaris_clownfish__juvenile_black",
+        "mat__fish_002_ocellaris_clownfish__juvenile_orange",
+        "mat__fish_002_ocellaris_clownfish__juvenile_white"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_002_ocellaris_clownfish__juvenile__Glide",
+        "fish_002_ocellaris_clownfish__juvenile__Swim",
+        "fish_002_ocellaris_clownfish__juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 41,
+        "Swim": 20,
+        "SwimFast": 14
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 21,
+          "gill_R": 21
+        },
+        "neutral_error_m": 5.167870242793402e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.026470800000000003,
+            0.0013815899999999998,
+            0.001780716,
+            0.0
+          ],
+          [
+            -0.020588400000000003,
+            0.005346287657550534,
+            0.010336156137931032,
+            0.0
+          ],
+          [
+            -0.010784400000000001,
+            0.008007250879904875,
+            0.01344375279310345,
+            0.0
+          ],
+          [
+            0.0022188,
+            0.008182468466111772,
+            0.01280621255172414,
+            0.0
+          ],
+          [
+            0.011094,
+            0.006191144090368609,
+            0.009857272551724137,
+            0.0
+          ],
+          [
+            0.0192296,
+            0.0023961362693222356,
+            0.0039707401034482755,
+            0.0
+          ],
+          [
+            0.0229276,
+            0.0013312799999999998,
+            0.0019303559999999998,
+            0.0
+          ]
+        ],
+        "radial_sides": 12,
+        "body_steps": 21,
+        "chain_stations": [
+          -0.026470800000000003,
+          -0.014706000000000002,
+          -0.0039216,
+          0.005547,
+          0.0136826,
+          0.0199692,
+          0.024406800000000003
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.0276,
+            0.32
+          ],
+          [
+            "spine_03",
+            0.066,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.108,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.216,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.324,
+            0.04
+          ],
+          [
+            "tail_fin",
+            0.18,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.042,
+            0.22
+          ],
+          [
+            "pectoral_r",
+            -0.042,
+            0.22
+          ],
+          [
+            "dorsal",
+            0.018,
+            0.2
+          ],
+          [
+            "anal",
+            -0.018,
+            0.2
+          ]
+        ],
+        "frames": [
+          41,
+          20,
+          14
+        ],
+        "colors": [
+          [
+            "orange",
+            "#BF704C"
+          ],
+          [
+            "white",
+            "#D8D2C5"
+          ],
+          [
+            "black",
+            "#252B32"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "juvenile",
+          "size": 0.43,
+          "head_length": 0.14,
+          "head_fullness": 0.19,
+          "peduncle_fullness": -0.14,
+          "depth": 0.87,
+          "width": 0.9,
+          "eye_ratio": 1.22,
+          "fin": 0.74,
+          "caudal": 0.85,
+          "cadence": 0.85,
+          "wave": 1.2
+        }
+      },
+      "stem": "fish_002_ocellaris_clownfish__juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish__juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-002",
+      "life_stage": "subadult",
+      "species": "ocellaris_clownfish",
+      "body_family": "compact_oval",
+      "dimensions_m": [
+        0.03922,
+        0.11587,
+        0.07019
+      ],
+      "triangles": 912,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_002_ocellaris_clownfish__subadult_black",
+        "mat__fish_002_ocellaris_clownfish__subadult_orange",
+        "mat__fish_002_ocellaris_clownfish__subadult_white"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_002_ocellaris_clownfish__subadult__Glide",
+        "fish_002_ocellaris_clownfish__subadult__Swim",
+        "fish_002_ocellaris_clownfish__subadult__SwimFast"
+      ],
+      "frames": {
+        "Glide": 46,
+        "Swim": 23,
+        "SwimFast": 15
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 22,
+          "gill_R": 22
+        },
+        "neutral_error_m": 2.0955611534190246e-09
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.04345109999999999,
+            0.0023863455,
+            0.003148992,
+            0.0
+          ],
+          [
+            -0.0337953,
+            0.009427245688466111,
+            0.018660115177170034,
+            0.0
+          ],
+          [
+            -0.0177023,
+            0.014631597818668251,
+            0.025150787785969082,
+            0.0
+          ],
+          [
+            0.0044120999999999995,
+            0.015754652111771704,
+            0.025244567743162905,
+            0.0
+          ],
+          [
+            0.022060499999999997,
+            0.012493780851367419,
+            0.0203658477431629,
+            0.0
+          ],
+          [
+            0.0382382,
+            0.0050561966110285374,
+            0.008578407210463733,
+            0.0
+          ],
+          [
+            0.0455917,
+            0.0028680959999999997,
+            0.004257791999999999,
+            0.0
+          ]
+        ],
+        "radial_sides": 12,
+        "body_steps": 21,
+        "chain_stations": [
+          -0.04345109999999999,
+          -0.024139499999999998,
+          -0.0064372000000000006,
+          0.011030249999999998,
+          0.027207949999999998,
+          0.0397089,
+          0.0485331
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.02415,
+            0.32
+          ],
+          [
+            "spine_03",
+            0.05775,
+            0.25
+          ],
+          [
+            "spine_04",
+            0.0945,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.189,
+            0.1
+          ],
+          [
+            "tail_02",
+            0.28350000000000003,
+            0.04
+          ],
+          [
+            "tail_fin",
+            0.1575,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.036750000000000005,
+            0.22
+          ],
+          [
+            "pectoral_r",
+            -0.036750000000000005,
+            0.22
+          ],
+          [
+            "dorsal",
+            0.01575,
+            0.2
+          ],
+          [
+            "anal",
+            -0.01575,
+            0.2
+          ]
+        ],
+        "frames": [
+          46,
+          23,
+          15
+        ],
+        "colors": [
+          [
+            "orange",
+            "#D67F49"
+          ],
+          [
+            "white",
+            "#E7E4D7"
+          ],
+          [
+            "black",
+            "#222832"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "subadult",
+          "size": 0.77,
+          "head_length": 0.045,
+          "head_fullness": 0.065,
+          "peduncle_fullness": -0.04,
+          "depth": 0.96,
+          "width": 0.97,
+          "eye_ratio": 1.06,
+          "fin": 0.93,
+          "caudal": 0.96,
+          "cadence": 0.95,
+          "wave": 1.05
+        }
+      },
+      "stem": "fish_002_ocellaris_clownfish__subadult",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish__subadult.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-003",
+      "life_stage": "larva",
+      "species": "blue_green_chromis",
+      "body_family": "schooling",
+      "dimensions_m": [
+        0.00471,
+        0.02093,
+        0.00545
+      ],
+      "triangles": 328,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_003_blue_green_chromis__larva_black",
+        "mat__fish_003_blue_green_chromis__larva_pale",
+        "mat__fish_003_blue_green_chromis__larva_teal"
+      ],
+      "meshes": 8,
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_003_blue_green_chromis__larva__Glide",
+        "fish_003_blue_green_chromis__larva__Swim",
+        "fish_003_blue_green_chromis__larva__SwimFast"
+      ],
+      "frames": {
+        "Glide": 32,
+        "Swim": 15,
+        "SwimFast": 14
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 11,
+          "gill_R": 11
+        },
+        "neutral_error_m": 9.553876739284587e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.0098294,
+            0.00033150000000000003,
+            0.00043095000000000004,
+            0.0
+          ],
+          [
+            -0.0078234,
+            0.0015837065458579882,
+            0.0019215639423076926,
+            0.0
+          ],
+          [
+            -0.004012,
+            0.002307519896449704,
+            0.0027497945432692307,
+            0.0
+          ],
+          [
+            0.0008364000000000002,
+            0.0021178615245931952,
+            0.002483296454326923,
+            0.0
+          ],
+          [
+            0.0040426,
+            0.0012832875000000003,
+            0.0015755918750000003,
+            0.0
+          ],
+          [
+            0.006551800000000001,
+            0.0003718473372781065,
+            0.00048340153846153843,
+            0.0
+          ],
+          [
+            0.007667000000000001,
+            0.0002601,
+            0.00030056,
+            0.0
+          ]
+        ],
+        "radial_sides": 8,
+        "body_steps": 14,
+        "chain_stations": [
+          -0.0098294,
+          -0.0058174,
+          -0.001003,
+          0.0030668,
+          0.0061336,
+          0.007945800000000001
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.041600000000000005,
+            0.3
+          ],
+          [
+            "spine_03",
+            0.10400000000000001,
+            0.2
+          ],
+          [
+            "tail_01",
+            0.24700000000000003,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.377,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.22100000000000003,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.0325,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.0325,
+            0.2
+          ],
+          [
+            "dorsal",
+            0.015600000000000001,
+            0.2
+          ],
+          [
+            "anal",
+            -0.015600000000000001,
+            0.2
+          ]
+        ],
+        "frames": [
+          32,
+          15,
+          14
+        ],
+        "colors": [
+          [
+            "teal",
+            "#71958D"
+          ],
+          [
+            "pale",
+            "#A3BCAD"
+          ],
+          [
+            "black",
+            "#24373B"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "larva",
+          "size": 0.17,
+          "head_length": 0.18,
+          "head_fullness": 0.3,
+          "peduncle_fullness": -0.32,
+          "depth": 0.65,
+          "width": 0.75,
+          "eye_ratio": 1.43,
+          "fin": 0.35,
+          "caudal": 0.6,
+          "cadence": 0.77,
+          "wave": 1.3
+        }
+      },
+      "stem": "fish_003_blue_green_chromis__larva",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 13,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_003_blue_green_chromis__larva.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-003",
+      "life_stage": "juvenile",
+      "species": "blue_green_chromis",
+      "body_family": "schooling",
+      "dimensions_m": [
+        0.01439,
+        0.05824,
+        0.01985
+      ],
+      "triangles": 404,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_003_blue_green_chromis__juvenile_black",
+        "mat__fish_003_blue_green_chromis__juvenile_pale",
+        "mat__fish_003_blue_green_chromis__juvenile_teal"
+      ],
+      "meshes": 8,
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_003_blue_green_chromis__juvenile__Glide",
+        "fish_003_blue_green_chromis__juvenile__Swim",
+        "fish_003_blue_green_chromis__juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 35,
+        "Swim": 17,
+        "SwimFast": 14
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 9,
+          "gill_R": 9
+        },
+        "neutral_error_m": 4.771752292140373e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.023387700000000004,
+            0.0008854559999999999,
+            0.0012979979999999999,
+            0.0
+          ],
+          [
+            -0.0186147,
+            0.004304621863905325,
+            0.005889505368343194,
+            0.0
+          ],
+          [
+            -0.009546,
+            0.006523767136094674,
+            0.008766312089127218,
+            0.0
+          ],
+          [
+            0.0022962,
+            0.006423682505177515,
+            0.00849334491660503,
+            0.0
+          ],
+          [
+            0.0110983,
+            0.004231458,
+            0.005858325375000002,
+            0.0
+          ],
+          [
+            0.0179869,
+            0.0013345653017751479,
+            0.0019563514082840236,
+            0.0
+          ],
+          [
+            0.0210485,
+            0.0009762719999999998,
+            0.001272112,
+            0.0
+          ]
+        ],
+        "radial_sides": 10,
+        "body_steps": 15,
+        "chain_stations": [
+          -0.023387700000000004,
+          -0.013841700000000002,
+          -0.0023865,
+          0.0084194,
+          0.0168388,
+          0.0218139
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.03776,
+            0.3
+          ],
+          [
+            "spine_03",
+            0.0944,
+            0.2
+          ],
+          [
+            "tail_01",
+            0.22419999999999998,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.34219999999999995,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.2006,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.0295,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.0295,
+            0.2
+          ],
+          [
+            "dorsal",
+            0.014159999999999999,
+            0.2
+          ],
+          [
+            "anal",
+            -0.014159999999999999,
+            0.2
+          ]
+        ],
+        "frames": [
+          35,
+          17,
+          14
+        ],
+        "colors": [
+          [
+            "teal",
+            "#4B9A96"
+          ],
+          [
+            "pale",
+            "#78B5AC"
+          ],
+          [
+            "black",
+            "#21353B"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "juvenile",
+          "size": 0.43,
+          "head_length": 0.11,
+          "head_fullness": 0.17,
+          "peduncle_fullness": -0.14,
+          "depth": 0.86,
+          "width": 0.88,
+          "eye_ratio": 1.18,
+          "fin": 0.77,
+          "caudal": 0.88,
+          "cadence": 0.84,
+          "wave": 1.18
+        }
+      },
+      "stem": "fish_003_blue_green_chromis__juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 13,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_003_blue_green_chromis__juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-003",
+      "life_stage": "subadult",
+      "species": "blue_green_chromis",
+      "body_family": "schooling",
+      "dimensions_m": [
+        0.03254,
+        0.10805,
+        0.0475
+      ],
+      "triangles": 424,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_003_blue_green_chromis__subadult_black",
+        "mat__fish_003_blue_green_chromis__subadult_pale",
+        "mat__fish_003_blue_green_chromis__subadult_teal"
+      ],
+      "meshes": 8,
+      "bones": 13,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_003_blue_green_chromis__subadult__Glide",
+        "fish_003_blue_green_chromis__subadult__Swim",
+        "fish_003_blue_green_chromis__subadult__SwimFast"
+      ],
+      "frames": {
+        "Glide": 39,
+        "Swim": 19,
+        "SwimFast": 14
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 9,
+          "gill_R": 9
+        },
+        "neutral_error_m": 1.7469442947958927e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.0385434,
+            0.0015321600000000003,
+            0.00229824,
+            0.0
+          ],
+          [
+            -0.030677399999999997,
+            0.0075913207100591715,
+            0.01062784899408284,
+            0.0
+          ],
+          [
+            -0.015732,
+            0.011940842982248522,
+            0.016418659100591714,
+            0.0
+          ],
+          [
+            0.0044004,
+            0.012402110591715976,
+            0.016779326094674554,
+            0.0
+          ],
+          [
+            0.0212686,
+            0.008585568,
+            0.012162888,
+            0.0
+          ],
+          [
+            0.0344698,
+            0.0028197960710059176,
+            0.0042296941065088755,
+            0.0
+          ],
+          [
+            0.040337000000000005,
+            0.002101248,
+            0.002801664,
+            0.0
+          ]
+        ],
+        "radial_sides": 10,
+        "body_steps": 15,
+        "chain_stations": [
+          -0.0385434,
+          -0.0228114,
+          -0.003933,
+          0.016134799999999998,
+          0.032269599999999996,
+          0.0418038
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.033600000000000005,
+            0.3
+          ],
+          [
+            "spine_03",
+            0.084,
+            0.2
+          ],
+          [
+            "tail_01",
+            0.1995,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.3045,
+            0.03
+          ],
+          [
+            "tail_fin",
+            0.17850000000000002,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.026250000000000002,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.026250000000000002,
+            0.2
+          ],
+          [
+            "dorsal",
+            0.0126,
+            0.2
+          ],
+          [
+            "anal",
+            -0.0126,
+            0.2
+          ]
+        ],
+        "frames": [
+          39,
+          19,
+          14
+        ],
+        "colors": [
+          [
+            "teal",
+            "#4BADAA"
+          ],
+          [
+            "pale",
+            "#85C8C2"
+          ],
+          [
+            "black",
+            "#1F333A"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "subadult",
+          "size": 0.76,
+          "head_length": 0.035,
+          "head_fullness": 0.05,
+          "peduncle_fullness": -0.04,
+          "depth": 0.96,
+          "width": 0.96,
+          "eye_ratio": 1.05,
+          "fin": 0.93,
+          "caudal": 0.97,
+          "cadence": 0.94,
+          "wave": 1.05
+        }
+      },
+      "stem": "fish_003_blue_green_chromis__subadult",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 13,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_003_blue_green_chromis__subadult.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-004",
+      "life_stage": "larva",
+      "species": "reef_butterflyfish",
+      "body_family": "highly_compressed",
+      "dimensions_m": [
+        0.00491,
+        0.02954,
+        0.01028
+      ],
+      "triangles": 352,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_004_reef_butterflyfish__larva_black",
+        "mat__fish_004_reef_butterflyfish__larva_cream",
+        "mat__fish_004_reef_butterflyfish__larva_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_004_reef_butterflyfish__larva__Glide",
+        "fish_004_reef_butterflyfish__larva__Swim",
+        "fish_004_reef_butterflyfish__larva__SwimFast"
+      ],
+      "frames": {
+        "Glide": 44,
+        "Swim": 25,
+        "SwimFast": 16
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 9,
+          "gill_R": 9
+        },
+        "neutral_error_m": 1.5468898073209348e-10
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.01296,
+            0.00035776000000000004,
+            0.00045760000000000006,
+            0.0
+          ],
+          [
+            -0.010223999999999999,
+            0.00101432182081405,
+            0.0011892726775048457,
+            -0.00017600000000000002
+          ],
+          [
+            -0.007343999999999999,
+            0.0017467450509077963,
+            0.0034528681238875044,
+            0.0
+          ],
+          [
+            -0.003888,
+            0.0023455935749377,
+            0.004969044528301886,
+            0.0
+          ],
+          [
+            0.0007040000000000001,
+            0.002489623181361497,
+            0.005195602844824177,
+            0.0
+          ],
+          [
+            0.005456000000000001,
+            0.001999966497527788,
+            0.003912383162058463,
+            0.0
+          ],
+          [
+            0.009504,
+            0.0009572933399786402,
+            0.001836667454610182,
+            0.0
+          ],
+          [
+            0.012144000000000002,
+            0.000396288,
+            0.0006336000000000001,
+            0.0
+          ]
+        ],
+        "radial_sides": 8,
+        "body_steps": 14,
+        "chain_stations": [
+          -0.01296,
+          -0.007488,
+          -0.0036000000000000003,
+          0.0007040000000000001,
+          0.005984000000000001,
+          0.010032000000000003,
+          0.012672
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.015,
+            0.31
+          ],
+          [
+            "spine_03",
+            0.04,
+            0.23
+          ],
+          [
+            "spine_04",
+            0.08,
+            0.15
+          ],
+          [
+            "tail_01",
+            0.1625,
+            0.09
+          ],
+          [
+            "tail_02",
+            0.25,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.1375,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.056249999999999994,
+            0.23
+          ],
+          [
+            "pectoral_r",
+            -0.056249999999999994,
+            0.23
+          ],
+          [
+            "dorsal",
+            0.0175,
+            0.18
+          ],
+          [
+            "anal",
+            -0.0175,
+            0.18
+          ]
+        ],
+        "frames": [
+          44,
+          25,
+          16
+        ],
+        "colors": [
+          [
+            "cream",
+            "#AFA98B"
+          ],
+          [
+            "yellow",
+            "#B8AD80"
+          ],
+          [
+            "black",
+            "#33363A"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "larva",
+          "size": 0.16,
+          "head_length": -0.1,
+          "head_fullness": 0.3,
+          "peduncle_fullness": -0.28,
+          "depth": 0.55,
+          "width": 0.86,
+          "eye_ratio": 1.48,
+          "fin": 0.3,
+          "caudal": 0.6,
+          "cadence": 0.82,
+          "wave": 1.25
+        }
+      },
+      "stem": "fish_004_reef_butterflyfish__larva",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish__larva.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-004",
+      "life_stage": "juvenile",
+      "species": "reef_butterflyfish",
+      "body_family": "highly_compressed",
+      "dimensions_m": [
+        0.01507,
+        0.08547,
+        0.03914
+      ],
+      "triangles": 896,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_004_reef_butterflyfish__juvenile_black",
+        "mat__fish_004_reef_butterflyfish__juvenile_cream",
+        "mat__fish_004_reef_butterflyfish__juvenile_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_004_reef_butterflyfish__juvenile__Glide",
+        "fish_004_reef_butterflyfish__juvenile__Swim",
+        "fish_004_reef_butterflyfish__juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 49,
+        "Swim": 27,
+        "SwimFast": 18
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 23,
+          "gill_R": 23
+        },
+        "neutral_error_m": 1.862645149230957e-09
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.03722399999999999,
+            0.000963424,
+            0.0015708,
+            0.0
+          ],
+          [
+            -0.029365599999999995,
+            0.0027824108375459834,
+            0.004158494458288833,
+            -0.00066
+          ],
+          [
+            -0.021093599999999997,
+            0.004902550237095051,
+            0.012353263937344252,
+            0.0
+          ],
+          [
+            -0.011167199999999999,
+            0.006803383820576717,
+            0.01837190943396226,
+            0.0
+          ],
+          [
+            0.0018656000000000002,
+            0.0076128398724734,
+            0.020251547715675805,
+            0.0
+          ],
+          [
+            0.0144584,
+            0.006478040611684665,
+            0.016153681832206,
+            0.0
+          ],
+          [
+            0.025185600000000002,
+            0.003290773251690993,
+            0.008048086756852972,
+            0.0
+          ],
+          [
+            0.032181600000000005,
+            0.0014248960000000001,
+            0.002904,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 22,
+        "chain_stations": [
+          -0.03722399999999999,
+          -0.021507199999999997,
+          -0.01034,
+          0.0018656000000000002,
+          0.015857600000000003,
+          0.026584800000000002,
+          0.0335808
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.01368,
+            0.31
+          ],
+          [
+            "spine_03",
+            0.03648,
+            0.23
+          ],
+          [
+            "spine_04",
+            0.07296,
+            0.15
+          ],
+          [
+            "tail_01",
+            0.1482,
+            0.09
+          ],
+          [
+            "tail_02",
+            0.22799999999999998,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.12539999999999998,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.05129999999999999,
+            0.23
+          ],
+          [
+            "pectoral_r",
+            -0.05129999999999999,
+            0.23
+          ],
+          [
+            "dorsal",
+            0.01596,
+            0.18
+          ],
+          [
+            "anal",
+            -0.01596,
+            0.18
+          ]
+        ],
+        "frames": [
+          49,
+          27,
+          18
+        ],
+        "colors": [
+          [
+            "cream",
+            "#CEC3A0"
+          ],
+          [
+            "yellow",
+            "#C5B16C"
+          ],
+          [
+            "black",
+            "#2E3338"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "juvenile",
+          "size": 0.44,
+          "head_length": -0.06,
+          "head_fullness": 0.19,
+          "peduncle_fullness": -0.12,
+          "depth": 0.75,
+          "width": 0.92,
+          "eye_ratio": 1.19,
+          "fin": 0.66,
+          "caudal": 0.82,
+          "cadence": 0.9,
+          "wave": 1.14
+        }
+      },
+      "stem": "fish_004_reef_butterflyfish__juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish__juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-004",
+      "life_stage": "subadult",
+      "species": "reef_butterflyfish",
+      "body_family": "highly_compressed",
+      "dimensions_m": [
+        0.0289,
+        0.15536,
+        0.1035
+      ],
+      "triangles": 896,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_004_reef_butterflyfish__subadult_black",
+        "mat__fish_004_reef_butterflyfish__subadult_cream",
+        "mat__fish_004_reef_butterflyfish__subadult_yellow"
+      ],
+      "meshes": 8,
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_004_reef_butterflyfish__subadult__Glide",
+        "fish_004_reef_butterflyfish__subadult__Swim",
+        "fish_004_reef_butterflyfish__subadult__SwimFast"
+      ],
+      "frames": {
+        "Glide": 53,
+        "Swim": 29,
+        "SwimFast": 20
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "operculate_bony",
+      "breathing_validation": {
+        "anatomy": "operculate_bony",
+        "complete": true,
+        "parent": "spine_01",
+        "weighted_vertices": {
+          "gill_L": 24,
+          "gill_R": 24
+        },
+        "neutral_error_m": 1.041250292910165e-09
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.069147,
+            0.0016205280000000002,
+            0.003075696000000001,
+            0.0
+          ],
+          [
+            -0.054549299999999995,
+            0.0047977814994660025,
+            0.00834716066998932,
+            -0.0014508000000000004
+          ],
+          [
+            -0.0391833,
+            0.008680587900320396,
+            0.025461984175151307,
+            0.0
+          ],
+          [
+            -0.020744099999999998,
+            0.01244030658027768,
+            0.03910604026415095,
+            0.0
+          ],
+          [
+            0.0031668,
+            0.014516947443218228,
+            0.04495419922534711,
+            0.0
+          ],
+          [
+            0.024542699999999997,
+            0.01281356363545746,
+            0.03719471413029548,
+            0.0
+          ],
+          [
+            0.04275179999999999,
+            0.006713989977928089,
+            0.01911431840655038,
+            0.0
+          ],
+          [
+            0.054627300000000004,
+            0.002965872,
+            0.007036380000000001,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 22,
+        "chain_stations": [
+          -0.069147,
+          -0.0399516,
+          -0.019207500000000002,
+          0.0031668,
+          0.0269178,
+          0.045126900000000005,
+          0.05700239999999999
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.012360000000000001,
+            0.31
+          ],
+          [
+            "spine_03",
+            0.03296,
+            0.23
+          ],
+          [
+            "spine_04",
+            0.06592,
+            0.15
+          ],
+          [
+            "tail_01",
+            0.13390000000000002,
+            0.09
+          ],
+          [
+            "tail_02",
+            0.20600000000000002,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.1133,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.04635,
+            0.23
+          ],
+          [
+            "pectoral_r",
+            -0.04635,
+            0.23
+          ],
+          [
+            "dorsal",
+            0.01442,
+            0.18
+          ],
+          [
+            "anal",
+            -0.01442,
+            0.18
+          ]
+        ],
+        "frames": [
+          53,
+          29,
+          20
+        ],
+        "colors": [
+          [
+            "cream",
+            "#E2DCC0"
+          ],
+          [
+            "yellow",
+            "#DAC15C"
+          ],
+          [
+            "black",
+            "#282E35"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "operculate_bony",
+        "development": {
+          "stage": "subadult",
+          "size": 0.78,
+          "head_length": -0.015,
+          "head_fullness": 0.06,
+          "peduncle_fullness": -0.03,
+          "depth": 0.93,
+          "width": 0.98,
+          "eye_ratio": 1.05,
+          "fin": 0.9,
+          "caudal": 0.95,
+          "cadence": 0.98,
+          "wave": 1.03
+        }
+      },
+      "stem": "fish_004_reef_butterflyfish__subadult",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "operculate_bony",
+        "skin_joints": 14,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish__subadult.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-005",
+      "life_stage": "newborn_pup",
+      "species": "blacktip_reef_shark",
+      "body_family": "fusiform_shark",
+      "dimensions_m": [
+        0.21504,
+        0.47606,
+        0.09475
+      ],
+      "triangles": 944,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_005_blacktip_reef_shark__newborn_pup_belly",
+        "mat__fish_005_blacktip_reef_shark__newborn_pup_black",
+        "mat__fish_005_blacktip_reef_shark__newborn_pup_slate"
+      ],
+      "meshes": 14,
+      "bones": 16,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "tail_01",
+        "tail_02",
+        "tail_03",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_005_blacktip_reef_shark__newborn_pup__Glide",
+        "fish_005_blacktip_reef_shark__newborn_pup__Swim",
+        "fish_005_blacktip_reef_shark__newborn_pup__SwimFast"
+      ],
+      "frames": {
+        "Glide": 65,
+        "Swim": 43,
+        "SwimFast": 27
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "exposed_gill_slits_rigged",
+      "breathing_validation": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "complete": true,
+        "parent": "spine_02",
+        "weighted_vertices": {
+          "gill_L": 31,
+          "gill_R": 31
+        },
+        "neutral_error_m": 1.6670644245152355e-08
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.24076800000000007,
+            0.005999616000000001,
+            0.006824960000000001,
+            0.0
+          ],
+          [
+            -0.21158400000000002,
+            0.023021847272727273,
+            0.017998898776859503,
+            0.0
+          ],
+          [
+            -0.14592000000000002,
+            0.04166480528925619,
+            0.0290698359302112,
+            0.0
+          ],
+          [
+            -0.07296000000000001,
+            0.04558804046280991,
+            0.031243169807162532,
+            0.0
+          ],
+          [
+            0.005504,
+            0.038795237553719004,
+            0.027552773818181813,
+            0.0
+          ],
+          [
+            0.0688,
+            0.025077314181818185,
+            0.01970963510009183,
+            0.0
+          ],
+          [
+            0.118336,
+            0.013862549752066114,
+            0.01152930578145087,
+            0.0
+          ],
+          [
+            0.15136000000000002,
+            0.0074202,
+            0.0061450248888888885,
+            0.0
+          ],
+          [
+            0.18163200000000002,
+            0.004015872,
+            0.003883072,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 25,
+        "chain_stations": [
+          -0.24076800000000007,
+          -0.156864,
+          -0.07296000000000001,
+          0.011008,
+          0.07430400000000001,
+          0.12384000000000002,
+          0.15411200000000003,
+          0.17888,
+          0.200896
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.0035399999999999997,
+            0.4
+          ],
+          [
+            "spine_03",
+            0.01062,
+            0.32
+          ],
+          [
+            "spine_04",
+            0.028319999999999998,
+            0.24
+          ],
+          [
+            "spine_05",
+            0.056639999999999996,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.10619999999999999,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.17109999999999997,
+            0.06
+          ],
+          [
+            "tail_03",
+            0.24189999999999998,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.1888,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.014159999999999999,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.014159999999999999,
+            0.2
+          ]
+        ],
+        "frames": [
+          65,
+          43,
+          27
+        ],
+        "colors": [
+          [
+            "slate",
+            "#8C928B"
+          ],
+          [
+            "belly",
+            "#C0BCAE"
+          ],
+          [
+            "black",
+            "#30373B"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "exposed_gill_slits_rigged",
+        "development": {
+          "stage": "newborn_pup",
+          "size": 0.32,
+          "head_length": 0.14,
+          "head_fullness": 0.24,
+          "peduncle_fullness": -0.17,
+          "depth": 0.86,
+          "width": 1.08,
+          "eye_ratio": 1.2,
+          "fin": 0.79,
+          "caudal": 0.78,
+          "cadence": 0.9,
+          "wave": 1.18
+        }
+      },
+      "stem": "fish_005_blacktip_reef_shark__newborn_pup",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "skin_joints": 16,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark__newborn_pup.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-005",
+      "life_stage": "early_juvenile",
+      "species": "blacktip_reef_shark",
+      "body_family": "fusiform_shark",
+      "dimensions_m": [
+        0.33342,
+        0.7254,
+        0.1609
+      ],
+      "triangles": 944,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_005_blacktip_reef_shark__early_juvenile_belly",
+        "mat__fish_005_blacktip_reef_shark__early_juvenile_black",
+        "mat__fish_005_blacktip_reef_shark__early_juvenile_slate"
+      ],
+      "meshes": 14,
+      "bones": 16,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "tail_01",
+        "tail_02",
+        "tail_03",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_005_blacktip_reef_shark__early_juvenile__Glide",
+        "fish_005_blacktip_reef_shark__early_juvenile__Swim",
+        "fish_005_blacktip_reef_shark__early_juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 66,
+        "Swim": 44,
+        "SwimFast": 28
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "exposed_gill_slits_rigged",
+      "breathing_validation": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "complete": true,
+        "parent": "spine_02",
+        "weighted_vertices": {
+          "gill_L": 33,
+          "gill_R": 33
+        },
+        "neutral_error_m": 1.8636872022183818e-08
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.34848000000000007,
+            0.008107008,
+            0.00991104,
+            0.0
+          ],
+          [
+            -0.30624,
+            0.03132152242424242,
+            0.026316649785123967,
+            0.0
+          ],
+          [
+            -0.21120000000000003,
+            0.057600442975206605,
+            0.04318978269972452,
+            0.0
+          ],
+          [
+            -0.10560000000000001,
+            0.06422504815426996,
+            0.04730320578512396,
+            0.0
+          ],
+          [
+            0.00864,
+            0.055877793851239664,
+            0.04264892945454545,
+            0.0
+          ],
+          [
+            0.108,
+            0.0370222193939394,
+            0.03127101548209366,
+            0.0
+          ],
+          [
+            0.18576,
+            0.02088818082644628,
+            0.018669927435261708,
+            0.0
+          ],
+          [
+            0.2376,
+            0.011340333333333334,
+            0.010092896666666665,
+            0.0
+          ],
+          [
+            0.28512000000000004,
+            0.006220032,
+            0.006463536000000001,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 25,
+        "chain_stations": [
+          -0.34848000000000007,
+          -0.22704000000000002,
+          -0.10560000000000001,
+          0.01728,
+          0.11664,
+          0.1944,
+          0.24192000000000005,
+          0.2808,
+          0.31536
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.0033600000000000006,
+            0.4
+          ],
+          [
+            "spine_03",
+            0.01008,
+            0.32
+          ],
+          [
+            "spine_04",
+            0.026880000000000005,
+            0.24
+          ],
+          [
+            "spine_05",
+            0.05376000000000001,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.1008,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.16240000000000002,
+            0.06
+          ],
+          [
+            "tail_03",
+            0.2296,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.17920000000000003,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.013440000000000002,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.013440000000000002,
+            0.2
+          ]
+        ],
+        "frames": [
+          66,
+          44,
+          28
+        ],
+        "colors": [
+          [
+            "slate",
+            "#87969A"
+          ],
+          [
+            "belly",
+            "#C9C6B8"
+          ],
+          [
+            "black",
+            "#29333A"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "exposed_gill_slits_rigged",
+        "development": {
+          "stage": "early_juvenile",
+          "size": 0.48,
+          "head_length": 0.1,
+          "head_fullness": 0.16,
+          "peduncle_fullness": -0.11,
+          "depth": 0.89,
+          "width": 1.04,
+          "eye_ratio": 1.13,
+          "fin": 0.85,
+          "caudal": 0.85,
+          "cadence": 0.92,
+          "wave": 1.12
+        }
+      },
+      "stem": "fish_005_blacktip_reef_shark__early_juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "skin_joints": 16,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark__early_juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-005",
+      "life_stage": "juvenile",
+      "species": "blacktip_reef_shark",
+      "body_family": "fusiform_shark",
+      "dimensions_m": [
+        0.46078,
+        0.98094,
+        0.24186
+      ],
+      "triangles": 972,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_005_blacktip_reef_shark__juvenile_belly",
+        "mat__fish_005_blacktip_reef_shark__juvenile_black",
+        "mat__fish_005_blacktip_reef_shark__juvenile_slate"
+      ],
+      "meshes": 14,
+      "bones": 16,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "tail_01",
+        "tail_02",
+        "tail_03",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_005_blacktip_reef_shark__juvenile__Glide",
+        "fish_005_blacktip_reef_shark__juvenile__Swim",
+        "fish_005_blacktip_reef_shark__juvenile__SwimFast"
+      ],
+      "frames": {
+        "Glide": 68,
+        "Swim": 46,
+        "SwimFast": 28
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "exposed_gill_slits_rigged",
+      "breathing_validation": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "complete": true,
+        "parent": "spine_02",
+        "weighted_vertices": {
+          "gill_L": 31,
+          "gill_R": 31
+        },
+        "neutral_error_m": 3.725290298461914e-09
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.44985600000000003,
+            0.009954560000000003,
+            0.013094400000000003,
+            0.0
+          ],
+          [
+            -0.39532799999999996,
+            0.03868018424242425,
+            0.03496883623140497,
+            0.0
+          ],
+          [
+            -0.27264,
+            0.07206445157024793,
+            0.058140824859504135,
+            0.0
+          ],
+          [
+            -0.13632,
+            0.08153783087603304,
+            0.0646175067768595,
+            0.0
+          ],
+          [
+            0.011968000000000001,
+            0.07210421051239671,
+            0.05921536581818183,
+            0.0
+          ],
+          [
+            0.1496,
+            0.04859712327272728,
+            0.04416670532231406,
+            0.0
+          ],
+          [
+            0.25731200000000004,
+            0.027787904628099176,
+            0.02672407725619835,
+            0.0
+          ],
+          [
+            0.3291200000000001,
+            0.015220700000000002,
+            0.014575704000000002,
+            0.0
+          ],
+          [
+            0.3949440000000001,
+            0.008416128,
+            0.009410112,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 25,
+        "chain_stations": [
+          -0.44985600000000003,
+          -0.29308799999999996,
+          -0.13632,
+          0.023936000000000002,
+          0.16156800000000002,
+          0.26928,
+          0.33510400000000007,
+          0.3889600000000001,
+          0.43683200000000005
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.00321,
+            0.4
+          ],
+          [
+            "spine_03",
+            0.00963,
+            0.32
+          ],
+          [
+            "spine_04",
+            0.02568,
+            0.24
+          ],
+          [
+            "spine_05",
+            0.05136,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.0963,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.15515,
+            0.06
+          ],
+          [
+            "tail_03",
+            0.21935,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.17120000000000002,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.01284,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.01284,
+            0.2
+          ]
+        ],
+        "frames": [
+          68,
+          46,
+          28
+        ],
+        "colors": [
+          [
+            "slate",
+            "#81959D"
+          ],
+          [
+            "belly",
+            "#CFCCC0"
+          ],
+          [
+            "black",
+            "#253038"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "exposed_gill_slits_rigged",
+        "development": {
+          "stage": "juvenile",
+          "size": 0.64,
+          "head_length": 0.065,
+          "head_fullness": 0.1,
+          "peduncle_fullness": -0.07,
+          "depth": 0.93,
+          "width": 1.01,
+          "eye_ratio": 1.08,
+          "fin": 0.91,
+          "caudal": 0.91,
+          "cadence": 0.95,
+          "wave": 1.07
+        }
+      },
+      "stem": "fish_005_blacktip_reef_shark__juvenile",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "skin_joints": 16,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark__juvenile.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    },
+    {
+      "faf_id": "FAF-FISH-005",
+      "life_stage": "subadult",
+      "species": "blacktip_reef_shark",
+      "body_family": "fusiform_shark",
+      "dimensions_m": [
+        0.61557,
+        1.27628,
+        0.34603
+      ],
+      "triangles": 972,
+      "materials": 3,
+      "material_names": [
+        "mat__fish_005_blacktip_reef_shark__subadult_belly",
+        "mat__fish_005_blacktip_reef_shark__subadult_black",
+        "mat__fish_005_blacktip_reef_shark__subadult_slate"
+      ],
+      "meshes": 14,
+      "bones": 16,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "tail_01",
+        "tail_02",
+        "tail_03",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "actions": [
+        "fish_005_blacktip_reef_shark__subadult__Glide",
+        "fish_005_blacktip_reef_shark__subadult__Swim",
+        "fish_005_blacktip_reef_shark__subadult__SwimFast"
+      ],
+      "frames": {
+        "Glide": 71,
+        "Swim": 47,
+        "SwimFast": 29
+      },
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "root_translation_animated": false,
+      "source_generator": "fish.life_stages.v1",
+      "breathing_anatomy": "exposed_gill_slits_rigged",
+      "breathing_validation": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "complete": true,
+        "parent": "spine_02",
+        "weighted_vertices": {
+          "gill_L": 34,
+          "gill_R": 34
+        },
+        "neutral_error_m": 6.007115200838818e-08
+      },
+      "generator_config": {
+        "shape_stations": [
+          [
+            -0.55473,
+            0.011939199999999999,
+            0.016544319999999998,
+            0.0
+          ],
+          [
+            -0.48748999999999987,
+            0.04668781818181817,
+            0.044463780297520655,
+            0.0
+          ],
+          [
+            -0.3362,
+            0.0882373791322314,
+            0.07499336870247932,
+            0.0
+          ],
+          [
+            -0.1681,
+            0.10143484146005509,
+            0.08468146395661157,
+            0.0
+          ],
+          [
+            0.015989999999999997,
+            0.09127199752066115,
+            0.0789626119090909,
+            0.0
+          ],
+          [
+            0.199875,
+            0.06263345587121212,
+            0.059965433335399436,
+            0.0
+          ],
+          [
+            0.34378499999999995,
+            0.03631578176652892,
+            0.03679192201635675,
+            0.0
+          ],
+          [
+            0.439725,
+            0.020075052083333336,
+            0.020251712541666668,
+            0.0
+          ],
+          [
+            0.52767,
+            0.011192999999999998,
+            0.013183755,
+            0.0
+          ]
+        ],
+        "radial_sides": 14,
+        "body_steps": 25,
+        "chain_stations": [
+          -0.55473,
+          -0.36141499999999993,
+          -0.1681,
+          0.031979999999999995,
+          0.215865,
+          0.359775,
+          0.44772,
+          0.519675,
+          0.5836349999999999
+        ],
+        "wave_profile": [
+          [
+            "spine_02",
+            0.0030900000000000003,
+            0.4
+          ],
+          [
+            "spine_03",
+            0.009269999999999999,
+            0.32
+          ],
+          [
+            "spine_04",
+            0.024720000000000002,
+            0.24
+          ],
+          [
+            "spine_05",
+            0.049440000000000005,
+            0.17
+          ],
+          [
+            "tail_01",
+            0.0927,
+            0.11
+          ],
+          [
+            "tail_02",
+            0.14934999999999998,
+            0.06
+          ],
+          [
+            "tail_03",
+            0.21115,
+            0.02
+          ],
+          [
+            "tail_fin",
+            0.1648,
+            -0.02
+          ],
+          [
+            "pectoral_l",
+            0.012360000000000001,
+            0.2
+          ],
+          [
+            "pectoral_r",
+            -0.012360000000000001,
+            0.2
+          ]
+        ],
+        "frames": [
+          71,
+          47,
+          29
+        ],
+        "colors": [
+          [
+            "slate",
+            "#7E959F"
+          ],
+          [
+            "belly",
+            "#D3D0C3"
+          ],
+          [
+            "black",
+            "#222E35"
+          ]
+        ],
+        "deterministic": true,
+        "breathing_anatomy": "exposed_gill_slits_rigged",
+        "development": {
+          "stage": "subadult",
+          "size": 0.82,
+          "head_length": 0.025,
+          "head_fullness": 0.04,
+          "peduncle_fullness": -0.025,
+          "depth": 0.97,
+          "width": 1.0,
+          "eye_ratio": 1.03,
+          "fin": 0.96,
+          "caudal": 0.97,
+          "cadence": 0.98,
+          "wave": 1.03
+        }
+      },
+      "stem": "fish_005_blacktip_reef_shark__subadult",
+      "loop_checks": {
+        "Glide": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "Swim": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        },
+        "SwimFast": {
+          "seam_max_rad": 0.0,
+          "root_translation": false,
+          "loop": true
+        }
+      },
+      "breathing_export": {
+        "anatomy": "exposed_gill_slits_rigged",
+        "skin_joints": 16,
+        "gill_bones_exported": [
+          "gill_L",
+          "gill_R"
+        ],
+        "complete": true
+      },
+      "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark__subadult.glb",
+      "blender_source": "assets/faf/fish/life_stages_001_to_005.blend",
+      "technical_validation_state": "source_and_export_passed",
+      "style_review_state": "pending_native_review"
+    }
+  ],
+  "adult_assets": [
+    {
+      "faf_id": "FAF-FISH-001",
+      "life_stage": "adult",
+      "stem": "fish_001_yellow_tang",
+      "glb": "game/assets/faf/fish/fish_001_yellow_tang.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-002",
+      "life_stage": "adult",
+      "stem": "fish_002_ocellaris_clownfish",
+      "glb": "game/assets/faf/fish/fish_002_ocellaris_clownfish.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-003",
+      "life_stage": "adult",
+      "stem": "fish_003_blue_green_chromis",
+      "glb": "game/assets/faf/fish/fish_003_blue_green_chromis.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-004",
+      "life_stage": "adult",
+      "stem": "fish_004_reef_butterflyfish",
+      "glb": "game/assets/faf/fish/fish_004_reef_butterflyfish.glb"
+    },
+    {
+      "faf_id": "FAF-FISH-005",
+      "life_stage": "adult",
+      "stem": "fish_005_blacktip_reef_shark",
+      "glb": "game/assets/faf/fish/fish_005_blacktip_reef_shark.glb"
+    }
+  ]
+}

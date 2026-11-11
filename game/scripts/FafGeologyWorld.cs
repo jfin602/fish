@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Fish;
 
-/// <summary>Fixed P3 geological formations over the P2 floor and route authority.</summary>
+/// <summary>Fixed P3 geological formations with prepared, mesh-aligned static collision.</summary>
 public partial class FafGeologyWorld : Node3D
 {
     private readonly record struct Piece(string Name, char Family, char Variant, float X, float Z,
@@ -62,7 +62,7 @@ public partial class FafGeologyWorld : Node3D
         var visuals = GetNodeOrNull<Node3D>("Visuals");
         var collisions = GetNodeOrNull<Node3D>("Collision");
         var routes = GetNodeOrNull<Node3D>("Routes");
-        if (visuals is null || collisions is null || routes is null || visuals.GetChildCount() != 0)
+        if (visuals is null || collisions is null || routes is null || visuals.GetChildCount() != 0 || collisions.GetChildCount() != 0)
         {
             diagnostic = "FAF_GEOLOGY_INVALID action=check-authored-roots";
             return false;
@@ -76,13 +76,19 @@ public partial class FafGeologyWorld : Node3D
             wrapper.Rotation = new Vector3(0, piece.Yaw, 0);
             wrapper.Scale = piece.Scale;
             wrapper.SetMeta("formation", piece.Formation);
+            var shapePath = $"res://assets/faf/collision/{id.ToLowerInvariant().Replace('-', '_')}.tres";
+            var shape = ResourceLoader.Load<Shape3D>(shapePath);
+            if (shape is null)
+            {
+                wrapper.Free();
+                diagnostic = $"FAF_GEOLOGY_INVALID id={id} action=run-prepare-faf-collision";
+                return false;
+            }
+            var body = new StaticBody3D { Name = "Solid", CollisionLayer = 1, CollisionMask = 0 };
+            body.AddChild(new CollisionShape3D { Name = "Shape", Shape = shape });
+            wrapper.AddChild(body);
             visuals.AddChild(wrapper);
         }
-        // Only these route-defining solids affect physics. The west tunnel and
-        // original shelter retain their accepted P2 simplified collision.
-        AddBox(collisions, seabed, "CanyonWestWall", -14.5f, -22.2f, 3.4f, 5.0f, 4.0f);
-        AddBox(collisions, seabed, "CanyonEastWall", -3.5f, -21.5f, 3.1f, 5.0f, 2.5f);
-        AddBox(collisions, seabed, "CaveOuterLip", 14.0f, -17.6f, 2.2f, 4.2f, 2.0f);
         foreach (var child in routes.GetChildren())
         {
             if (child is not Marker3D marker) continue;
@@ -92,18 +98,7 @@ public partial class FafGeologyWorld : Node3D
                 marker.Position.Z);
         }
         diagnostic = "";
-        GD.Print($"FAF_GEOLOGY_READY pieces={PieceCount} collision=3 routes=west-tunnel,east-cave,deep-corridor");
+        GD.Print($"FAF_GEOLOGY_READY pieces={PieceCount} collision={PieceCount} routes=west-tunnel,east-cave,deep-corridor");
         return true;
-    }
-
-    private static void AddBox(Node3D root, SeabedSurface seabed, string name,
-        float x, float z, float width, float height, float depth)
-    {
-        var body = new StaticBody3D { Name = name, CollisionLayer = 1, CollisionMask = 0,
-            Position = new Vector3(x, seabed.GetHeightAt(x, z), z) };
-        body.AddChild(new CollisionShape3D { Name = "Shape",
-            Position = new Vector3(0, height / 2, 0),
-            Shape = new BoxShape3D { Size = new Vector3(width, height, depth) } });
-        root.AddChild(body);
     }
 }

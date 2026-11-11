@@ -7,7 +7,7 @@ from .validation import inspect_objects
 
 def export_selected_glb(
     output_path: str, *, include_animations: bool = True, overwrite: bool = False,
-    animation_mode: str = "ACTIONS",
+    animation_mode: str = "ACTIONS", export_metadata: bool = False,
 ) -> dict:
     """Validate selection and export GLB; caller must save/review the .blend separately."""
     import bpy
@@ -32,6 +32,7 @@ def export_selected_glb(
         export_animations=include_animations,
         export_animation_mode=animation_mode,
         export_rest_position_armature=True,
+        export_extras=export_metadata,
     )
     if "FINISHED" not in result:
         raise RuntimeError(f"Blender GLB export did not finish: {result}")
