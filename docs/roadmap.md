@@ -1,12 +1,12 @@
 # Fish roadmap
 
-**Status: 2026-11-11. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass for the earlier accepted source, while G2.3/V20 remains an explicitly accepted evidence gap. P3/P1–P6 are implemented at `0.3.6`. C3 world generation P7 [native review](tasks/c3-world-gen/qualification/native-world-gen.md) fails natural visual composition and full alternate-seed generation; seed-42 timing and baked reload pass. V26/V27 and G3.1–G3.3 remain FAIL / not GREEN, with human owner acceptance pending. C3/P1–P3 visibility source is implemented, but [P4 native review](tasks/c3-visibility/qualification/native-visibility.md) failed clearance and left V25 unqualified.** This is the single Phase/Gate status authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
+**Status: 2026-11-11. P0 and P1 are COMPLETE. P2 is OWNER CLOSED FOR PROGRESSION / NOT GREEN: G2.1/V18 and G2.2/V19 pass for the earlier accepted source, while G2.3/V20 remains an explicitly accepted evidence gap. P3/P1–P6 are implemented at `0.3.6`. C3 world generation P7 [native review](tasks/c3-world-gen/qualification/native-world-gen.md) fails natural visual composition and full alternate-seed generation; seed-42 timing and baked reload pass. V26/V27 and G3.1–G3.3 remain FAIL / not GREEN, with human owner acceptance pending. C3/P1–P3 visibility source is implemented, but [P4 native review](tasks/c3-visibility/qualification/native-visibility.md) failed clearance and left V25 unqualified.** **2026-11-11 planning addition:** P4 is now the unimplemented freshwater Pond + World Select phase after P3; prior P4–P7 mechanics shift to P5–P8 with existing evidence unchanged. This is the single Phase/Gate status authority. [P1 closeout](tasks/p1/closeout.md) distinguishes source checks, native observations, owner acceptance and deferred refinement.
 
 A Gate passes only with source-bound evidence for all of its criteria. A Phase passes only when all required Gates pass. [Validation](validation.md) defines scenarios; task qualification records hold actual results.
 
 ## Delivery direction
 
-Build one small, complete fish life in deliberate layers: first make swimming enjoyable, then make the place worth swimming through, then add the food chain, persistence/death, remembered lives, and full integrated qualification. The current P2 decision intentionally puts the underwater world before ecology so feeding and predator behavior are designed inside useful terrain rather than around the flat P1 movement laboratory.
+Build one small, complete fish life in deliberate layers: first make swimming enjoyable, then make the place worth swimming through, then add the food chain, persistence/death, remembered lives, and full integrated qualification. The current P2 decision intentionally puts the underwater world before ecology. The owner then selected P4 to add World Select and a freshwater Pond alongside the preserved Ocean; feeding/predators/growth move to P5 after both habitats are established.
 
 | Phase | Observable outcome | State |
 | --- | --- | --- |
@@ -14,10 +14,11 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | P1 — Swim through a habitat | Settle core swimming, third-person camera/body motion, selected starter assets and fullscreen/input lifecycle. | **COMPLETE; [closeout](tasks/p1/closeout.md).** |
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
 | **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **IN PROGRESS** at root `0.3.6`; P1–P6 implementation checked. C3 world generation [P7 closeout](tasks/c3-world-gen/closeout.md) fails natural visual reading and alternate-seed routes despite passing seed-42 timing/load. [Collision repair](tasks/collision-repair/README.md) is implemented with sampled clearance, while full hand-controlled traversal and owner acceptance remain open. V25 stays unqualified. [Design](planning/p3/reef-world-rebuild.md), [stack](tasks/p3/README.md), [native art](tasks/p3/qualification/native-world-art.md), [visibility](tasks/c3-visibility/closeout.md). |
-| P4 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop inside the finished reef habitat. | NOT STARTED. |
-| P5 — A life across sessions | Continue one living fish; death permanently ends it with recoverable durable records. | NOT STARTED. |
-| P6 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED. |
-| P7 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation. | NOT STARTED. |
+| **P4 — Freshwater Pond and World Select** | Add Ocean and Pond as distinct selectable worlds, compatible fish/ambient populations, a new freshwater environment and reusable loading/art contracts. | **PLANNED / NOT STARTED**; [design](planning/p4/freshwater-world.md). |
+| P5 — Feed, escape and grow | Food, prey, predators and growth produce the first changing food-chain loop in compatible habitats. | NOT STARTED; formerly P4. |
+| P6 — A life across sessions | Continue one living fish in its original world; death permanently ends it with recoverable durable records. | NOT STARTED; formerly P5. |
+| P7 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED; formerly P6. |
+| P8 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation across the selected habitat scope. | NOT STARTED; formerly P7. |
 
 ## P0 — Godot and MCP foundation
 
@@ -179,11 +180,49 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Pause/Game Menu → Return to Character Select clears held/queued input and pointer capture, unloads/resets the current ephemeral session and returns to selection without death, save/resume, abandonment or Life History side effects.
 - After returning, selecting a different fish starts a clean new P3 session with the newly selected visual and no stale player/input state.
 
-## P4 — Feed, escape and grow
+## P4 — Freshwater Pond and World Select
+
+**Status: PLANNED / NOT STARTED, targeted for `0.4.x`.** The owner selected this direction on 2026-11-11; no P4 implementation, native qualification, or version increment has occurred. [P4 design](planning/p4/freshwater-world.md) is the scope authority; planned scenarios V28–V31. Finish the existing [C3 manual M1–M4 world-generation repair](tasks/c3-world-gen/manual/README.md) and qualify the Ocean candidate first. Do not reinterpret the failed P3 G3.1–G3.3/V25–V27 as passed or erase past ocean investments.
+
+P4 adds a World Select step that offers **Ocean** (the existing reef project) and **Freshwater Pond** (a new dark-green, banked environment). New Life routes through World Select and then a habitat-filtered Character Select. Both worlds retain their own baked data, art, atmosphere and permissible fish while sharing the compiler, loading framework, swimming/camera/controls, Forward+, and FAF tooling. Marine species are never eligible or spawned in the Pond; freshwater species never in the Ocean.
+
+### G4.1 — World Select and independent loading
+
+**Result: NOT OBSERVED.**
+
+- Both worlds are selectable and load matching baked resources without runtime generation; the Ocean remains playable and visually intact.
+- Navigation and back/return behavior maintain correct input focus, capture, selected world, and character scope.
+- Missing resources fail visibly rather than silently loading the other habitat; repeated switches do not leak state.
+
+### G4.2 — Natural freshwater world and atmosphere
+
+**Result: NOT OBSERVED.**
+
+- The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance.
+- Per-habitat Forward+ green-water lighting/fog creates limited distant visibility while retaining near-field readability; ocean appearance remains unchanged.
+- Deterministic generate/bake/load, stable world identity, performance and native owner visual review are evidenced.
+
+### G4.3 — Freshwater FAF assets
+
+**Result: NOT OBSERVED.**
+
+- Original freshwater fish plus a representative pond terrain/wood/plant/ambient-life library are made, registered and integrated without overwriting marine assets.
+- Blender/GLB, rigging, material, manifest/provenance and Godot native review follow FAF contracts.
+- Wildlife may be ambient-only; predator AI, feeding and growth are later scope.
+
+### G4.4 — Habitat-restricted species and native regression
+
+**Result: NOT OBSERVED.**
+
+- Character Select filters ocean-only and freshwater-only species correctly; ambient and later ecological spawns use the same fail-closed habitat compatibility policy.
+- Cross-habitat positive/negative tests and native entry/return/re-entry trials prove species never cross ecosystems in normal play.
+- Both environments are traversable with shared controls/camera; prior P1–P3 assets, ocean rendering, world generation and controls remain usable.
+
+## P5 — Feed, escape and grow
 
 **Status: NOT STARTED.** Scenarios V03–V05. [Ecology contract](systems/ecology-and-growth.md).
 
-### G4.1 — Feeding and visible growth
+### G5.1 — Feeding and visible growth
 
 **Result: NOT OBSERVED.**
 
@@ -192,7 +231,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Growth visibly updates the same fish and relevant body/collision/camera behavior without clipping, invalid spawning or new identity.
 - Demonstrate a meaningful food-chain reversal using a documented species/size rule; growth changes habitat use and hunting opportunity.
 
-### G4.2 — Readable predation and meaningful events
+### G5.2 — Readable predation and meaningful events
 
 **Result: NOT OBSERVED.**
 
@@ -201,11 +240,11 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Death and key growth/hunt/escape events have authoritative causes/stable identities for later persistence/story use.
 - New test lives reset intended prototype state; durable multi-session behavior is not claimed yet.
 
-## P5 — A life across sessions
+## P6 — A life across sessions
 
 **Status: NOT STARTED.** Scenarios V06–V09. [Run/persistence contract](systems/survival-and-runs.md).
 
-### G5.1 — Suspend and resume one living fish
+### G6.1 — Suspend and resume one living fish
 
 **Result: NOT OBSERVED.**
 
@@ -214,7 +253,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Continue/New Life follows an explicitly chosen active-slot/checkpoint policy; replacing a living save cannot silently erase it.
 - Storage incompatibility/corruption is reported with recoverable data preserved, separately from in-world death.
 
-### G5.2 — Durable death and independent history records
+### G6.2 — Durable death and independent history records
 
 **Result: NOT OBSERVED.**
 
@@ -223,11 +262,11 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Interruption/retry at material death/archive boundaries converges to one terminal outcome and one completed-life record.
 - A new hatchling receives a new run identity without clearing prior completed-life records.
 
-## P6 — Remember every life
+## P7 — Remember every life
 
 **Status: NOT STARTED.** Scenarios V10–V12. [Story/archive contract](systems/life-stories-and-history.md).
 
-### G6.1 — Brief, factual recounting
+### G7.1 — Brief, factual recounting
 
 **Result: NOT OBSERVED.**
 
@@ -235,7 +274,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Short and eventful lives produce appropriate accounts without fabricated achievements, intent or attacker identity.
 - Skipping presentation preserves the final saved narrative; presentation failure cannot reverse death.
 
-### G6.2 — Main-menu Life History
+### G7.2 — Main-menu Life History
 
 **Result: NOT OBSERVED.**
 
@@ -243,11 +282,11 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Open/read/return/start another life/restart: prior entries and text remain intact and dead fish remain unplayable.
 - A representative larger archive preserves reachability/readability with no silent truncation or duplicate lives.
 
-## P7 — Qualify the complete experience
+## P8 — Qualify the complete experience
 
 **Status: NOT STARTED.** Scenarios V13–V15.
 
-### G7.1 — Optional first person and presentation
+### G8.1 — Optional first person and presentation
 
 **Result: NOT OBSERVED.**
 
@@ -255,7 +294,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 - Observe camera clipping, input/focus, threat feedback, text readability and recap navigation across the implemented size range.
 - Keep the primary third-person experience readable and record the selected visual/performance scope from measured play.
 
-### G7.2 — Full life and platform qualification
+### G8.2 — Full life and platform qualification
 
 **Result: NOT OBSERVED.**
 
@@ -266,4 +305,4 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 
 ## After this slice
 
-Use observed play to choose the final species/biome, larger habitat strategy, additional species/vegetation, long-life pacing, art/audio depth, discovery/cosmetic carryover and production performance budgets. Do not turn the first style-proving reef into an obligation to solve procedural world generation or every future content family.
+Use observed play to refine Ocean and Pond species rosters, future habitats (rivers, marshes, additional marine regions), long-life pacing, art/audio depth, discovery/cosmetic carryover and production performance budgets. Ocean and Pond are two distinct supported habitats, not a claim that every future ecosystem is built.
