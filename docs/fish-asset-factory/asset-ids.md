@@ -1,6 +1,6 @@
 # Asset IDs and names
 
-Assign a stable ID when an original asset is registered for production: `FAF-<CATEGORY>-<NNN>` with categories `FISH`, `CORAL`, `ROCK`, `PLANT`, `TERRAIN`, `DETAIL` and three or more digits, for example `FAF-FISH-001`. Keep an assigned ID even if the display name or generator changes. Never recycle or casually renumber it. The ID describes identity; a variant/revision is separate metadata.
+Assign a stable ID when an original asset is registered for production: `FAF-<CATEGORY>-<NNN>` with categories `FISH`, `CORAL`, `ROCK`, `PLANT`, `TERRAIN`, `DETAIL`, `CREATURE` and three or more digits, for example `FAF-FISH-001`. Keep an assigned ID even if the display name or generator changes. Never recycle or casually renumber it. The ID describes identity; a variant/revision is separate metadata.
 
 | Item | Convention and example |
 | --- | --- |
@@ -29,5 +29,7 @@ The first four coral families have canonical IDs **FAF-CORAL-001–004**. Each h
 The first vegetation families have canonical IDs **FAF-PLANT-001–003**. Sea grass and broad seaweed use A/B/C; reef algae uses A/B. Stems include `plant_001a_sea_grass`, `plant_002a_broad_seaweed`, and `plant_003a_reef_algae`. The [vegetation pack record](plant-pack-001/README.md) lists all eight variants and seeds.
 
 The first Pond-only foliage families reserve **FAF-PLANT-004–009**: lily pad (A/B/C), tall grass (A/B), cattail (A/B), reed (A/B), submerged algae (A/B), and floating muck (A/B). The family ID stays stable while its letter denotes the variant. All GLBs carry `faf_habitat=pond`; [the Pond foliage record](pond-foliage-pack-001/README.md) and [manifest](../../assets/faf/pond/plants/pond_foliage_001_manifest.json) own the 13 stems, seeds, costs and placement anchors. The Ocean 001–003 identities are unchanged.
+
+The first Pond creature identities are **FAF-CREATURE-001–003**: `creature_001_northern_leopard_frog`, `creature_002_northern_water_snake`, and `creature_003_common_snapping_turtle`. Each is one original rigged base with its own Action set, Pond habitat metadata and separate source/GLB. The [creature pack record](pond-creature-pack-001/README.md) and [manifest](../../assets/faf/pond/creatures/pond_creature_001_manifest.json) own these IDs; no variants are assigned yet.
 
 The first small-detail families have canonical IDs **FAF-DETAIL-001–004**, each with A/B variants. They cover shell, rubble, pebble and sponge forms; stems include `detail_001a_fan_shell` and `detail_004b_cup_sponge`. The [detail pack record](detail-pack-001/README.md) owns the eight candidates and their seeds.

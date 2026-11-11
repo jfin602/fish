@@ -1,0 +1,253 @@
+{
+  "pack": "Pond FAF creatures 001",
+  "habitat": "pond",
+  "generator": "creatures.pond_creatures.v1",
+  "blender_version": "5.2.3 LTS",
+  "source_reference": "owner-supplied /home/jfin/best-pond-faf.png; style only",
+  "assets": [
+    {
+      "faf_id": "FAF-CREATURE-001",
+      "category": "CREATURE",
+      "habitat": "pond",
+      "common_name": "Northern leopard frog",
+      "scientific_name": "Lithobates pipiens",
+      "stem": "creature_001_northern_leopard_frog",
+      "placement": "shallow bank and surface",
+      "dimensions_m": [
+        0.1915,
+        0.25,
+        0.07945
+      ],
+      "triangles": 700,
+      "materials": 5,
+      "material_names": [
+        "mat__creature_001_northern_leopard_frog_0",
+        "mat__creature_001_northern_leopard_frog_1",
+        "mat__creature_001_northern_leopard_frog_2",
+        "mat__creature_001_northern_leopard_frog_3",
+        "mat__creature_001_northern_leopard_frog_4"
+      ],
+      "bones": 15,
+      "bone_names": [
+        "root",
+        "body",
+        "head",
+        "fore_upper_L",
+        "fore_lower_L",
+        "fore_foot_L",
+        "hind_upper_L",
+        "hind_lower_L",
+        "hind_foot_L",
+        "fore_upper_R",
+        "fore_lower_R",
+        "fore_foot_R",
+        "hind_upper_R",
+        "hind_lower_R",
+        "hind_foot_R"
+      ],
+      "actions": [
+        "creature_001_northern_leopard_frog__IdleShore",
+        "creature_001_northern_leopard_frog__SurfaceFloat",
+        "creature_001_northern_leopard_frog__Swim",
+        "creature_001_northern_leopard_frog__TurnLeft",
+        "creature_001_northern_leopard_frog__TurnRight",
+        "creature_001_northern_leopard_frog__Hop",
+        "creature_001_northern_leopard_frog__Dive"
+      ],
+      "loop_roles": [
+        "IdleShore",
+        "SurfaceFloat",
+        "Swim",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "one_shot_roles": [
+        "Hop",
+        "Dive"
+      ],
+      "source": "assets/faf/pond/creatures/creature_001_northern_leopard_frog.blend",
+      "generator": "creatures.pond_creatures.v1",
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "technical_review": "pending_export_check",
+      "visual_review": "pending_native_review",
+      "glb": "game/assets/faf/pond/creatures/creature_001_northern_leopard_frog.glb"
+    },
+    {
+      "faf_id": "FAF-CREATURE-002",
+      "category": "CREATURE",
+      "habitat": "pond",
+      "common_name": "Northern water snake",
+      "scientific_name": "Nerodia sipedon",
+      "stem": "creature_002_northern_water_snake",
+      "placement": "shoreline, surface and shallow water",
+      "dimensions_m": [
+        0.093988,
+        0.973321,
+        0.089388
+      ],
+      "triangles": 1040,
+      "materials": 4,
+      "material_names": [
+        "mat__creature_002_northern_water_snake_0",
+        "mat__creature_002_northern_water_snake_1",
+        "mat__creature_002_northern_water_snake_2",
+        "mat__creature_002_northern_water_snake_4"
+      ],
+      "bones": 12,
+      "bone_names": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "spine_06",
+        "spine_07",
+        "spine_08",
+        "spine_09",
+        "spine_10",
+        "head"
+      ],
+      "actions": [
+        "creature_002_northern_water_snake__IdleFloat",
+        "creature_002_northern_water_snake__SurfaceSwim",
+        "creature_002_northern_water_snake__UnderwaterSwim",
+        "creature_002_northern_water_snake__ShoreCrawl",
+        "creature_002_northern_water_snake__TurnLeft",
+        "creature_002_northern_water_snake__TurnRight",
+        "creature_002_northern_water_snake__Dive"
+      ],
+      "loop_roles": [
+        "IdleFloat",
+        "SurfaceSwim",
+        "UnderwaterSwim",
+        "ShoreCrawl",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "one_shot_roles": [
+        "Dive"
+      ],
+      "source": "assets/faf/pond/creatures/creature_002_northern_water_snake.blend",
+      "generator": "creatures.pond_creatures.v1",
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "technical_review": "pending_export_check",
+      "visual_review": "pending_native_review",
+      "glb": "game/assets/faf/pond/creatures/creature_002_northern_water_snake.glb"
+    },
+    {
+      "faf_id": "FAF-CREATURE-003",
+      "category": "CREATURE",
+      "habitat": "pond",
+      "common_name": "Common snapping turtle",
+      "scientific_name": "Chelydra serpentina",
+      "stem": "creature_003_common_snapping_turtle",
+      "placement": "pond bottom and surface",
+      "dimensions_m": [
+        0.428497,
+        0.750238,
+        0.220806
+      ],
+      "triangles": 910,
+      "materials": 5,
+      "material_names": [
+        "mat__creature_003_common_snapping_turtle_0",
+        "mat__creature_003_common_snapping_turtle_1",
+        "mat__creature_003_common_snapping_turtle_2",
+        "mat__creature_003_common_snapping_turtle_3",
+        "mat__creature_003_common_snapping_turtle_4"
+      ],
+      "bones": 14,
+      "bone_names": [
+        "root",
+        "body",
+        "neck",
+        "head",
+        "fore_upper_L",
+        "fore_lower_L",
+        "hind_upper_L",
+        "hind_lower_L",
+        "fore_upper_R",
+        "fore_lower_R",
+        "hind_upper_R",
+        "hind_lower_R",
+        "tail_01",
+        "tail_02"
+      ],
+      "actions": [
+        "creature_003_common_snapping_turtle__IdleBottom",
+        "creature_003_common_snapping_turtle__BottomWalk",
+        "creature_003_common_snapping_turtle__SurfaceFloat",
+        "creature_003_common_snapping_turtle__Swim",
+        "creature_003_common_snapping_turtle__TurnLeft",
+        "creature_003_common_snapping_turtle__TurnRight",
+        "creature_003_common_snapping_turtle__Dive"
+      ],
+      "loop_roles": [
+        "IdleBottom",
+        "BottomWalk",
+        "SurfaceFloat",
+        "Swim",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "one_shot_roles": [
+        "Dive"
+      ],
+      "source": "assets/faf/pond/creatures/creature_003_common_snapping_turtle.blend",
+      "generator": "creatures.pond_creatures.v1",
+      "front_blender": "-Y",
+      "up_blender": "+Z",
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "technical_review": "pending_export_check",
+      "visual_review": "pending_native_review",
+      "glb": "game/assets/faf/pond/creatures/creature_003_common_snapping_turtle.glb"
+    }
+  ]
+}

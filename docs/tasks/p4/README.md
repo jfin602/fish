@@ -1,6 +1,6 @@
 # P4 — Freshwater Pond and World Select
 
-**State: READY TO EXECUTE at clean root `0.4.0` / NOT IMPLEMENTED.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 checkpoint, native evidence or GREEN result is claimed. P4 inherits accepted progression Ocean Base World `ocean-m4-42`: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`. The old `qualification-42` package remains intact. The complete 14-prompt stack validates from this baseline.
+**State: P1 IMPLEMENTED at root `0.4.1` / P2 NEXT.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 Gate or native GREEN result is claimed. P4 inherits accepted progression Ocean Base World `ocean-m4-42`: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`. The old `qualification-42` package remains intact. The complete 14-prompt stack validated from the `0.4.0` baseline. [P1 implementation evidence](qualification/implementation.md) records the new catalog and loader; Pond remains uninstalled.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [P4 design](../../planning/p4/freshwater-world.md) · [Roadmap](../../roadmap.md) · [Runner contract](../../phase-runner.md) · [Validation V28–V32](../../validation.md)
 

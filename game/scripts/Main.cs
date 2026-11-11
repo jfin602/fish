@@ -37,6 +37,12 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        if (OS.GetCmdlineUserArgs().Contains("--world-catalog-check"))
+        {
+            try { WorldCatalogChecks.Run(); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"WORLD_CATALOG_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
         foreach (var argument in OS.GetCmdlineUserArgs())
         {
             if (!argument.StartsWith("--compile-world-fixture=", StringComparison.Ordinal)) continue;
@@ -120,6 +126,12 @@ public partial class Main : Node3D
         if (!populated)
         {
             GD.PushError(assetDiagnostic);
+            if (!isCourseFixture)
+            {
+                WorldSession.Unload();
+                GetTree().Quit(1);
+                return;
+            }
             var label = new Label
             {
                 Name = "AssetDiagnostic",
@@ -164,6 +176,8 @@ public partial class Main : Node3D
         if (OS.GetCmdlineUserArgs().Contains("--placement-check"))
             CallDeferred(MethodName.VerifyPlacement);
     }
+
+    public override void _ExitTree() => WorldSession.Unload();
 
     private void VerifyBasin()
     {

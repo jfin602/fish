@@ -118,14 +118,18 @@ public static class FullWorldPackage
         return manifest;
     }
 
+    public static FullWorldManifest ReadManifest(string directory) =>
+        JsonSerializer.Deserialize<FullWorldManifest>(
+            System.IO.File.ReadAllBytes(System.IO.Path.Combine(
+                ProjectSettings.GlobalizePath(directory), ManifestFile)))
+        ?? throw new InvalidDataException("Empty full-world manifest");
+
     public static (FullWorldManifest Manifest, FullWorldData Data) Load(string directory, Node3D habitat)
     {
         var generationBefore = WorldGenerationAudit.StageInvocations;
         var timer = Stopwatch.StartNew();
         var path = ProjectSettings.GlobalizePath(directory);
-        var manifest = JsonSerializer.Deserialize<FullWorldManifest>(
-            System.IO.File.ReadAllBytes(System.IO.Path.Combine(path, ManifestFile)))
-            ?? throw new InvalidDataException("Empty full-world manifest");
+        var manifest = ReadManifest(directory);
         var catalogHash = WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment);
         var legacy = manifest.GeneratorVersion == "c3-full-1";
         var m1Baked = manifest.GeneratorVersion == "c3-full-3";

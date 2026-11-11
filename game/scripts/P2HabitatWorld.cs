@@ -14,25 +14,33 @@ public static class P2HabitatWorld
         var args = OS.GetCmdlineUserArgs();
         var generation = args.FirstOrDefault(a => a.StartsWith("--world-generate=", StringComparison.Ordinal));
         var baked = args.FirstOrDefault(a => a.StartsWith("--world-package=", StringComparison.Ordinal));
+        var selected = args.FirstOrDefault(a => a.StartsWith("--world-id=", StringComparison.Ordinal));
         var legacyCheck = args.Any(a => a is "--basin-check" or "--geology-mesh-check" or
             "--route-field-check" or "--placement-check" or "--depth-check");
         if (generation is null && !legacyCheck)
         {
+            WorldSession.Unload();
             try
             {
-                var source = baked is null ? FullWorldPackage.DefaultBase : baked["--world-package=".Length..];
+                if (selected is not null) WorldSession.Select(selected["--world-id=".Length..]);
+                if (baked is not null && WorldSession.SelectedWorldId != WorldCatalog.OceanId)
+                    throw new System.IO.InvalidDataException("WORLD_DIAGNOSTIC_CONFLICT action=remove-world-package-override");
                 var bakedHabitat = main.GetNode<Node3D>("Habitat");
-                var (manifest, _) = FullWorldPackage.Load(source, bakedHabitat);
+                var manifest = baked is null
+                    ? WorldCatalog.Load(WorldSession.SelectedWorldId, bakedHabitat)
+                    : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat).Manifest;
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 fish.Position = bakedHabitat.GetNode<Marker3D>("Spawn").Position;
+                WorldSession.Bind(bakedHabitat, manifest);
                 diagnostic = "";
                 GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} world={manifest.WorldId} mode=baked");
                 return true;
             }
             catch (Exception error)
             {
+                WorldSession.Unload();
                 diagnostic = $"WORLD_BAKED_LOAD_FAILED {error.Message}";
                 return false;
             }
