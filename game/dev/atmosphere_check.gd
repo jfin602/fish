@@ -203,8 +203,10 @@ func _run() -> void:
 			if absf(position.x) > 49.5 or absf(position.z) > 49.5:
 				fail("prepared rock/coral anchor falls outside caustic footprint")
 				return
-	if caustic.to_local(Vector3(0, main.get_node("Habitat/Seabed").GetHeightAt(0.0, -21.0), -21)).y >= -caustic.size.y * 0.5:
-		fail("deep shelf still receives projected caustics")
+	var seabed: StaticBody3D = main.get_node("Habitat/Seabed")
+	var core: Vector2 = seabed.DeepCore
+	if caustic.to_local(Vector3(core.x, seabed.DeepFloorY, core.y)).y >= -caustic.size.y * 0.5:
+		fail("generated deep core still receives projected caustics")
 		return
 	if screen.layer >= main.get_node("PrototypeHelp").layer or screen.layer >= shell_canvas.layer or rect.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 		fail("water screen can distort or intercept UI")

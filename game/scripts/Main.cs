@@ -129,6 +129,14 @@ public partial class Main : Node3D
             CallDeferred(MethodName.VerifySmoke);
         if (OS.GetCmdlineUserArgs().Contains("--depth-check"))
             CallDeferred(MethodName.VerifyDepth);
+        if (OS.GetCmdlineUserArgs().Contains("--basin-check"))
+            CallDeferred(MethodName.VerifyBasin);
+    }
+
+    private void VerifyBasin()
+    {
+        try { BasinChecks.Run(this); GetTree().Quit(); }
+        catch (Exception error) { GD.PushError($"BASIN_CHECK_FAILED {error}"); GetTree().Quit(1); }
     }
 
     private void VerifyDepth()

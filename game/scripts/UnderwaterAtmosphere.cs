@@ -187,10 +187,9 @@ public partial class UnderwaterAtmosphere : Node3D
             GD.PushError("FISH_ATMOSPHERE_MISSING_DEPTH_ANCHOR");
             return;
         }
-        // A camera two metres above the authored deep shelf reaches full extinction.
-        _deepReferenceHeight = seabed.ToGlobal(new Vector3(0,
-            seabed.GetHeightAt(0, SeabedSurface.DeepShelfReferenceZ) + 2f,
-            SeabedSurface.DeepShelfReferenceZ)).Y;
+        // Generated deep-core metadata anchors the accepted water-column response.
+        _deepReferenceHeight = seabed.ToGlobal(new Vector3(seabed.DeepCore.X,
+            seabed.DeepReferenceY, seabed.DeepCore.Y)).Y;
         if (_deepReferenceHeight >= _surfaceHeight || !float.IsFinite(_deepReferenceHeight))
         {
             GD.PushError("FISH_ATMOSPHERE_INVALID_DEPTH_ANCHOR");
@@ -375,16 +374,28 @@ public partial class UnderwaterAtmosphere : Node3D
             var pixelX = Mathf.Clamp(Mathf.RoundToInt((seed.X / 100f + 0.5f) * 255f), 10, 245);
             var pixelY = Mathf.Clamp(Mathf.RoundToInt((seed.Z / 100f + 0.5f) * 255f), 10, 245);
             var strongest = -1f;
-            var bestX = pixelX;
-            var bestY = pixelY;
-            for (var dy = -8; dy <= 8; dy++)
-            for (var dx = -8; dx <= 8; dx++)
+            var bestX = -1;
+            var bestY = -1;
+            for (var dy = -32; dy <= 32; dy++)
+            for (var dx = -32; dx <= 32; dx++)
             {
-                var sample = image.GetPixel(pixelX + dx, pixelY + dy).A;
-                if (sample <= strongest) continue;
+                var sx = Mathf.Clamp(pixelX + dx, 3, 252);
+                var sy = Mathf.Clamp(pixelY + dy, 3, 252);
+                var sample = image.GetPixel(sx, sy).A;
+                if (sample <= Mathf.Max(strongest, 0.02f)) continue;
+                var candidate = decal.ToGlobal(new Vector3(((sx + 0.5f) / 256f - 0.5f) * 100f, 0,
+                    ((sy + 0.5f) / 256f - 0.5f) * 100f));
+                var floorY = seabed.GetHeightAt(candidate.X, candidate.Z) + 0.3f;
+                if (floorY < decal.GlobalPosition.Y - decal.Size.Y * 0.5f + 0.3f ||
+                    floorY > _surfaceHeight - 1f) continue;
                 strongest = sample;
-                bestX = pixelX + dx;
-                bestY = pixelY + dy;
+                bestX = sx;
+                bestY = sy;
+            }
+            if (bestX < 0)
+            {
+                GD.PushError("FISH_ATMOSPHERE_NO_LIT_BASIN_SHAFT_ANCHOR");
+                return;
             }
             var gx = image.GetPixel(bestX + 2, bestY).A - image.GetPixel(bestX - 2, bestY).A;
             var gy = image.GetPixel(bestX, bestY + 2).A - image.GetPixel(bestX, bestY - 2).A;

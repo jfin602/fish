@@ -178,10 +178,10 @@ func _run() -> void:
 	if floor_hit.get("collider") != seabed and floor_hit.get("collider") != terrain_body:
 		fail("visible terrain/seabed floor ray missed")
 		return
-	for pair in [[Vector3(-35, 8.5, 0), Vector3(-40, 8.5, 0), limits],
-		[Vector3(35, 8.5, 0), Vector3(40, 8.5, 0), limits],
-		[Vector3(0, 8.5, -35), Vector3(0, 8.5, -40), limits],
-		[Vector3(0, 8.5, 35), Vector3(0, 8.5, 40), limits],
+	for pair in [[Vector3(-45, 8.5, 0), Vector3(-48, 8.5, 0), limits],
+		[Vector3(45, 8.5, 0), Vector3(48, 8.5, 0), limits],
+		[Vector3(0, 8.5, -45), Vector3(0, 8.5, -48), limits],
+		[Vector3(0, 8.5, 45), Vector3(0, 8.5, 48), limits],
 		[Vector3(0, 8.5, 0), Vector3(0, 11, 0), limits]]:
 		if ray(space, pair[0], pair[1]).get("collider") != pair[2]:
 			fail("terrain or boundary ray missed: " + str(pair[0]))

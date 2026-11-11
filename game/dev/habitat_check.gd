@@ -24,8 +24,8 @@ func sphere_hits(space: PhysicsDirectSpaceState3D, at: Vector3, radius: float, f
 
 func seabed_hit(space: PhysicsDirectSpaceState3D, excluded: Array[RID], x: float, z: float) -> Dictionary:
 	var query := PhysicsRayQueryParameters3D.new()
-	query.from = Vector3(x, 14, z)
-	query.to = Vector3(x, -16, z)
+	query.from = Vector3(x, 60, z)
+	query.to = Vector3(x, -20, z)
 	query.collision_mask = 1
 	query.exclude = excluded
 	query.hit_back_faces = true
@@ -87,10 +87,11 @@ func _run() -> void:
 	if not is_finite(water_surface_y) or not is_finite(water_deep_y) or absf(water_surface_y - atmosphere.SurfaceHeight) > 0.001 or absf(water_deep_y - atmosphere.DeepReferenceHeight) > 0.001 or water_deep_y >= water_surface_y or not material.shader.code.contains("world_position.y"):
 		fail("seabed water-depth anchors are invalid")
 		return
-	var upper_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, 21.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
-	var lower_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, -21.0)) / (water_surface_y - water_deep_y), 0.0, 1.0)
-	if lower_depth - upper_depth < 0.5:
-		fail("upper/lower ledges cannot receive distinct world-depth treatment")
+	var core: Vector2 = seabed.DeepCore
+	var core_depth := clampf((water_surface_y - seabed.GetHeightAt(core.x, core.y)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	var bank_depth := clampf((water_surface_y - seabed.GetHeightAt(0.0, 36.7)) / (water_surface_y - water_deep_y), 0.0, 1.0)
+	if core_depth - bank_depth < 0.5:
+		fail("generated core/bank cannot receive distinct world-depth treatment")
 		return
 	for prefix in ["coast", "shell", "gravel", "rock"]:
 		for map_name in ["color", "normal", "roughness"]:
@@ -132,19 +133,11 @@ func _run() -> void:
 				fail("off-grid seabed collision hole or height mismatch at %s,%s expected=%s hit=%s" % [sample_x, sample_z, expected, hit])
 				return
 	var bands: Array[float] = []
-	for z in [21, 11, 0, -11, -21]:
-		bands.append(seabed.call("GetHeightAt", 0.0, float(z)))
-	for i in range(4):
-		if bands[i] - bands[i + 1] < 2.2:
-			fail("five ordered depth bands collapsed: " + str(bands))
-			return
-	for x in [3.0, 21.0]:
-		for z in range(-21, 21):
-			var a: float = seabed.call("GetHeightAt", x, float(z))
-			var b: float = seabed.call("GetHeightAt", x, float(z + 1))
-			if absf(b - a) > 1.0:
-				fail("depth route has an impassable one-meter rise at %s,%s" % [x, z])
-				return
+	for radius in [0.0, 8.0, 16.0, 24.0, 31.0]:
+		bands.append(seabed.call("GetHeightAt", radius, 0.0))
+	if bands[4] - bands[0] < 12.0:
+		fail("generated basin lacks outward rise: " + str(bands))
+		return
 	key(KEY_W, true)
 	await tick(30)
 	key(KEY_W, false)
@@ -163,10 +156,10 @@ func _run() -> void:
 	if underside == null or (underside.get_collider() != seabed and underside.get_collider() != draped_terrain) or fish.global_position.y > floor_y - 0.4:
 		fail("seabed underside did not block upward passage")
 		return
-	fish.global_position = Vector3(0, 2, -27)
-	var edge := fish.move_and_collide(Vector3(0, 0, -15))
-	if edge == null or fish.global_position.z < -37.2:
-		fail("basin rim did not block horizontal edge escape")
+	fish.global_position = Vector3(0, 8, -16)
+	var edge := fish.move_and_collide(Vector3(0, 0, -22))
+	if edge == null or edge.get_collider() == limits or fish.global_position.z < -36.7:
+		fail("natural basin bank did not block horizontal edge escape")
 		return
 	fish.global_position = Vector3(0, 8, 0)
 	var upper := fish.move_and_collide(Vector3(0, 4, 0))
@@ -178,5 +171,5 @@ func _run() -> void:
 		fail("P1 course fixture lost saved qualification geometry")
 		return
 	fixture.free()
-	print("HABITAT_CHECK_OK scene=p2_habitat palette=4 spawn=clear seabed_samples=202 bands=" + str(bands) + " underside=blocked rim=blocked upper=blocked fixture=preserved")
+	print("HABITAT_CHECK_OK scene=p2_habitat palette=4 spawn=clear seabed_samples=202 radial_samples=" + str(bands) + " underside=blocked bank=blocked upper=blocked fixture=preserved")
 	quit()

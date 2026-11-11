@@ -32,9 +32,9 @@ public static class WaterColumnChecks
         var surfaceY = upper.GlobalPosition.Y + upperBox.Size.Y * 0.5f + 0.34f;
         Require(Mathf.Abs(surfaceY - atmosphere.SurfaceHeight) < 0.001f &&
             Mathf.Abs(surfaceY - surface.GlobalPosition.Y) < 0.001f, "surface depth zero drifted");
-        var deepY = seabed.GetHeightAt(0, SeabedSurface.DeepShelfReferenceZ) + 2f;
+        var deepY = seabed.DeepReferenceY;
         Require(Mathf.Abs(deepY - atmosphere.DeepReferenceHeight) < 0.001f &&
-            deepY < surfaceY - 10f, "deep shelf reference drifted");
+            deepY < surfaceY - 10f, "generated deep-core reference drifted");
         Require(Mathf.Abs(env.FogHeight - (surfaceY - 0.6f * (surfaceY - deepY) + atmosphere.LowerFogStartHeight)) < 0.001f,
             "height fog not anchored to water column");
 
