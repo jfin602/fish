@@ -1,0 +1,29 @@
+TASK: Phase 4 / P8 — Freshwater fish and wildlife
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.8`.
+
+GOAL
+Create a small, genuine freshwater creature library for the Pond and integrate it as selectable/ambient life with strict native habitat tags. This is not the full feeding/predator/growth phase.
+
+READ / ENTRY
+P4 README/plan P8, P4 design, FAF art style, fish/gill rigging, animation, budgets, ID/naming, Blender-Godot export and candidate records, existing reef fish life stages, actual P3 CharacterCatalog/PlayerArt and P3 selection tests, P7 native Pond findings. Confirm reviewed P7 checkpoint/version 0.4.7 and source/dirty work.
+
+IMPLEMENT
+1. Produce at least **two original freshwater fish** in meaningful contrasting silhouettes: a small minnow-like body and a sunfish/bluegill-like laterally compressed body are suggested. Give each stable unique freshwater FAF ID, editable .blend source, exported .glb, clean skeleton/deformation, tail/fin swimming/gliding action clips and anatomically suitable gill breathing rigs per standard. Do not repurpose a marine tang as a freshwater fish.
+2. Normalize each visual into the existing shared FishController/demo-collider envelope; fish choice is still a visual-only P4 session feature, not new speed/hitbox/species stats. Preserve correct model proportions in previews and actual follow camera.
+3. Add at least **one** inexpensive passive freshwater ambient creature (tadpole, crayfish or aquatic insect), with a readable silhouette and bounded non-gameplay motion. Snakes/turtles/frogs and true predators can be later content; don't invent aggressive AI as P4.
+4. Register species with pond-only habitat eligibility and ambient/selectable roles. Positive Pond/negative Ocean checks on every freshwater ID; all five marine FAF remain Ocean-only. Add no fail-open fallback if a resource is missing.
+5. Verify Blender rigs by actual bone/skin/action data, Godot import/animation playback, scale, clipping, group counts and scene-load memory; documentation is not substitute for exported assets. Any missing art tooling is a blocker, not permission to fabricate.
+6. Update FAF catalog/manifests/provenance and p4 implementation evidence; capture proof images only if actually generated.
+
+SCOPE / DEFERRALS
+No feeding/combat/growth/save/history, no universal species stats, no full wildlife catalog, no mandatory shark/bass predation. No destruction of existing marine fish.
+
+VALIDATE
+T2 Blender technical checks plus Godot import/build, focused character/ambient eligibility and two-species preview/player tests, actual input/collider invariants and git diff --check. Real owner style acceptance remains P12/P14.
+
+DONE / VERSION
+At least two native freshwater fish genuinely exist as technical candidates and are selectable only in Pond; ambient content is bounded and truthful. Set 0.4.8 after checks, report assets, rigs, animation/GLB evidence and gaps. No self-commit/push.
