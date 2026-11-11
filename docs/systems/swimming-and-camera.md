@@ -45,6 +45,18 @@ The C1 correction adds built-in Keyboard Only, Mouse Only and Hybrid Swim profil
 
 **Adaptive Follow, pending owner feel testing:** `builtin:adaptive-follow` adds a fifth built-in choice. Mouse X/Y steer fish yaw/pitch as in Hybrid Swim; W/S and Up/Down pitch the fish up/down, A/D yaw left/right, left mouse thrusts, and right mouse slows. Holding Left Shift temporarily routes captured mouse motion to an independent 360° camera look without steering the fish; releasing Left Shift smoothly returns the view behind the fish. Normal follow lags turns by about 0.25 seconds, limits temporary heading separation to about 35°, and recenters while swimming straight or gliding. A 2px cumulative mouse noise gate and about 0.12-second steering filter apply only to this preset; keyboard steering takes priority on its axis. The existing motor, zoom, pause, obstacle avoidance, and steady horizon are unchanged. Left Shift is reserved for free-look in Adaptive Follow and copies of it. Existing custom profiles and saved selections retain their camera policy. Headless checks cover behavior and lifecycle; the owner still needs to judge native steering and camera feel.
 
+## Planned P4 — Pond surface swimming and camera transition
+
+The owner-approved [P4 Pond plan](../planning/p4/freshwater-world.md#surface-swimming-and-airwater-camera-transition-p4-requirement) extends the already accepted P1 underwater baseline. This is a **planned requirement, not implemented or qualified P1 behavior**.
+
+- The motor keeps one authoritative waterborne fish position/collision body. Fish may skim the waterline with a partial dorsal/back/mouth breach, but normal thrust cannot propel the whole body into the air; jumping and land movement are deferred.
+- Third-person follow/orbit/zoom, including existing bindings and Adaptive Follow, may place the **camera** above the surface without lifting the fish. Crossing back and forth must avoid snapping, clipping, unstable horizon, jitter and obstacle-avoidance errors at banks/cattails.
+- The camera's immersion state drives air–water fog/filter/lighting transitions, not movement or simulation. Repeated crossings, pause/focus and scene reload must return to correct underwater treatment and preserve fish/camera control.
+- Surface wakes/ripples respond to actual fish depth/velocity as visual-only effects. Shoreline geometry and vegetation are drawn from the real generated Pond banks; existing Ocean systems stay intact through shared habitat-specific presentation settings.
+- Bird silhouettes/audio/shadows are possible future scene consumers, not P4 predator AI.
+
+Qualify the above in native Forward+ play via [V32](../validation.md#gameplay-scenarios) and G4.2. Do not retroactively mark earlier P1/P2 underwater tests as having qualified above-water camera behavior.
+
 ## Core acceptance and work order
 
 Implement and tune normal swimming, turning, vertical travel, and slowing first, with the selected camera and body motion. The owner-approved [core acceptance criteria](../validation.md#core-movement-acceptance) cover predictable starting/slowing, curved navigation, depth control, camera comfort, pause/resume, both desktop modes, and enjoyable free swimming.

@@ -52,6 +52,19 @@ First visual target: a temperate freshwater habitat with muddy olive-green water
 - Reuse performance-conscious Forward+ rendering and shared water/light systems through independently tunable per-habitat profiles; the pond must not permanently mutate the ocean's saved appearance/settings.
 - Every solid object's visible bounds, simplified collision and camera clearance need usable agreement. Do not recreate P3's floating collision/terrain issues.
 
+## Surface swimming and air–water camera transition (P4 requirement)
+
+The pond waterline must be an explorable visual boundary, **not an invisible ceiling**. A swimming fish stays waterborne, but its existing third-person camera can rise into the air while following it. This is a required part of Pond presentation and native qualification, not a separate terrestrial biome.
+
+- **Swimming and contact:** the fish can swim immediately beneath the surface without an abrupt vertical stop, ceiling penetration, jitter or camera glitch. Dorsal fin, back or mouth may partially breach where anatomy allows; ordinary controls cannot launch the whole fish into air. Keep one authoritative underwater motor and physical collision policy. Jumping, full breaches and land travel are later features.
+- **Camera:** the follow/orbit/zoom camera crosses the waterline smoothly without snapping, teleporting, jerky rotations, forced reframing or lost fish visibility. Preserve the existing control presets (including Adaptive Follow), obstacle avoidance and steady horizon. Camera movement cannot displace the fish or bypass geometry.
+- **Air–water transition:** smoothly change underwater green fog, distance absorption, screen distortion and lighting to above-water air/sky rendering using a stable transition band. Repeated skimming/crossing and pausing must not cause flicker, popping, clipping or harsh exposure shifts. On submersion, restore the existing caustics, shafts, underwater depth effects and legible UI. Immersion state is presentation-only.
+- **Fish-reactive surface:** reuse water-reaction effects where practical for small position/velocity-driven ripples, a bounded trailing wake and optional light splashes during partial breaches. Do not require expensive fluid simulation or feed visual impulses into authoritative motion. Effects must behave correctly across pause, focus and session reset.
+- **Visible shoreline:** above the water, render a believable near section of the **actual generated shoreline**, including mud/grassy banks, cattails, reeds, floating leaves/lily pads, atmospheric sky and daylight/cloud cover. Use distance atmosphere to hide far/unfinished bounds; no second artificial perimeter or fully explorable land world. Bank/plant visual bounds and physical clearance should agree.
+- **Future bird encounters:** allow later bird silhouettes, shadows, ambient calls and diving/hunting encounters to attach to the surface scene, without implementing bird detection, attacks, damage, pursuit or full predator AI in P4.
+- **Habitat reuse:** Pond is the first required surface qualification. Camera crossing, immersion profiles and surface reactions should be shared/configurable rather than duplicated. Keep Ocean's underwater controls, lighting and water intact; optional Ocean above-surface scenery is a separate future qualification, not automatically complete.
+- **Performance:** favor existing Forward+ and inexpensive surface effects; avoid gratuitous secondary scene rendering. Native qualification must include frame pacing and errors during waterline crossing.
+
 ## Freshwater Fish Asset Factory
 
 Preserve the marine reef style contract as Ocean's style. Extend the **shared stylized low-poly aquatic naturalism** geometry/rigging/export rules with a freshwater palette and species-specific anatomy. Build original Blender masters/GLBs and provenance records under new, unambiguous FAF identities rather than overwriting existing ocean assets.
@@ -82,6 +95,10 @@ Animal movement should be plausible for each body type; don't turn every turtle/
 - Shallow/middle/deep views are distinct; murky visibility hides distant bounds without obscuring close obstacles or player.
 - Route/collision/camera validation and bounded performance pass on real native Forward+ play.
 - The generator and baked load remain deterministic and repeatable for an explicit seed/settings/version.
+- Fish can cruise just below the surface, with limited fin/back/mouth breach but no ordinary airborne swimming; no invisible ceiling or camera snap occurs.
+- The third-person camera crosses above and below the surface smoothly, preserving fish visibility, camera collision, control presets and underwater restoration.
+- Fish-reactive ripples/wakes remain bounded and believable; nearby generated banks, cattails/reeds, floating plants and sky are visible above water while distant bounds remain concealed.
+- Repeated waterline crossings preserve readable UI, stable native Forward+ performance and ocean rendering without regression. Qualify these with V32.
 
 ### G4.3 — Original freshwater asset pack
 
@@ -99,7 +116,7 @@ Animal movement should be plausible for each body type; don't turn every turtle/
 
 ## Validation outline
 
-Add four P4 scenarios in `docs/validation.md`: world routing/loading/reloading, pond world traversal/atmosphere, FAF asset+performance proof, and cross-habitat positive/negative species population checks. Use focused manifest/registry tests followed by native gameplay and owner visual judgment. HEAD/source revision, test seeds, viewport/settings, performance/error information and observed gaps must be recorded. No authored plan alone qualifies G4.x.
+Add five P4 scenarios (V28–V32) in `docs/validation.md`: world routing/loading/reloading, pond world traversal/atmosphere, FAF asset+performance proof, cross-habitat species checks, and a dedicated native surface-swimming/air–water camera transition trial. Use focused manifest/registry tests followed by native gameplay and owner visual judgment. HEAD/source revision, test seeds, viewport/settings, performance/error information and observed gaps must be recorded. No authored plan alone qualifies G4.x.
 
 ## Subsequent phases and save boundary
 
@@ -109,4 +126,4 @@ At P6, a living run stores both stable species identity and **selected habitat p
 
 ## Explicit deferrals and open implementation choices
 
-No P4 feeding economy, predator combat, species stats, growth balance, breeding, full wildlife behavior, living-save implementation or history system. Those remain later scoped work. Implementation may begin with a small freshwater species subset and expand after native visual review. Exact fish roster, biome size/visibility numerical presets and creature density remain tuning/asset-planning choices, not unreviewed production commitments.
+No P4 feeding economy, predator combat (including bird attacks/hunting), aerial fish movement/jumping, terrestrial exploration, advanced fluid simulation, species stats, growth balance, breeding, full wildlife behavior, living-save implementation or history system. Those remain later scoped work. Implementation may begin with a small freshwater species subset and expand after native visual review. Exact fish roster, biome size/visibility numerical presets and creature density remain tuning/asset-planning choices, not unreviewed production commitments.

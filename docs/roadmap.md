@@ -182,7 +182,7 @@ P3 is the first style-proving world-art phase. **S18/c3-world-gen supersedes the
 
 ## P4 — Freshwater Pond and World Select
 
-**Status: PLANNED / NOT STARTED, targeted for `0.4.x`.** The owner selected this direction on 2026-11-11; no P4 implementation, native qualification, or version increment has occurred. [P4 design](planning/p4/freshwater-world.md) is the scope authority; planned scenarios V28–V31. Finish the existing [C3 manual M1–M4 world-generation repair](tasks/c3-world-gen/manual/README.md) and qualify the Ocean candidate first. Do not reinterpret the failed P3 G3.1–G3.3/V25–V27 as passed or erase past ocean investments.
+**Status: PLANNED / NOT STARTED, targeted for `0.4.x`.** The owner selected this direction on 2026-11-11; no P4 implementation, native qualification, or version increment has occurred. [P4 design](planning/p4/freshwater-world.md) is the scope authority; planned scenarios V28–V32. Finish the existing [C3 manual M1–M4 world-generation repair](tasks/c3-world-gen/manual/README.md) and qualify the Ocean candidate first. Do not reinterpret the failed P3 G3.1–G3.3/V25–V27 as passed or erase past ocean investments.
 
 P4 adds a World Select step that offers **Ocean** (the existing reef project) and **Freshwater Pond** (a new dark-green, banked environment). New Life routes through World Select and then a habitat-filtered Character Select. Both worlds retain their own baked data, art, atmosphere and permissible fish while sharing the compiler, loading framework, swimming/camera/controls, Forward+, and FAF tooling. Marine species are never eligible or spawned in the Pond; freshwater species never in the Ocean.
 
@@ -201,6 +201,10 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - The Pond has irregular shallow banks, muddy sediment, submerged logs/roots, vegetation zones, deeper areas and valid routes/collision/camera clearance.
 - Per-habitat Forward+ green-water lighting/fog creates limited distant visibility while retaining near-field readability; ocean appearance remains unchanged.
 - Deterministic generate/bake/load, stable world identity, performance and native owner visual review are evidenced.
+- A fish can swim just under the Pond surface with limited partial breach, without hitting an invisible ceiling, escaping the water or destabilizing the existing motor.
+- Its third-person camera smoothly crosses above/below the waterline across the accepted presets, with correct air–water atmosphere restoration, obstacle clearance and readable fish/UI.
+- Actual generated banks, nearby cattails/reeds, floating plants and sky appear above water with hidden far bounds; modest fish-reactive ripples/wakes remain visual-only and performant.
+- V32 native repeated-crossing evidence demonstrates no clipping, snapping, flicker or ceiling glitch. Preserve Ocean underwater behavior; bird hunting and airborne fish gameplay remain later scope.
 
 ### G4.3 — Freshwater FAF assets
 
