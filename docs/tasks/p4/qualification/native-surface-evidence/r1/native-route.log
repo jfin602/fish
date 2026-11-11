@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.318 - Forward+ - Using Device #0: AMD - AMD Radeon 880M (RADV GFX1150)
+
+FISH_DISPLAY_MODE requested=fullscreen source=world-select effective=ExclusiveFullscreen
+FISH_WORLD_SELECT_READY entries=2
+FISH_DISPLAY_MODE requested=fullscreen source=character-select effective=ExclusiveFullscreen
+FISH_CHARACTER_SELECT_READY world=pond entries=5
+P12_ROUTE selected_world=pond scene=CharacterSelect
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=ExclusiveFullscreen
+FISH_FOUNDATION_READY
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1653 generator_invocations=0
+POND_AMBIENT_READY actors=12 creatures=3 insects=4 fish=5
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.078 upper_collision=disabled
+FISH_HABITAT_READY player=FAF-FISH-006 world=world-5e3b4fee759acbe3 mode=baked
+POND_SURFACE_READY vertices=16176 build_ms=22.76 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+P12_ROUTE entered=Bluegill scene=Main renderer=forward_plus
+P12_ROUTE_CAPTURE label=route_pond_first fish=(-42.0, 7.89, 0.0) camera=(-42.0, 9.89, 3.8) immersion=1.000 fog_density=0.180
+FISH_DISPLAY_MODE requested=fullscreen source=world-select effective=ExclusiveFullscreen
+FISH_WORLD_SELECT_READY entries=2
+P12_ROUTE returned_scene=WorldSelect
+FISH_DISPLAY_MODE requested=fullscreen source=character-select effective=ExclusiveFullscreen
+FISH_CHARACTER_SELECT_READY world=ocean entries=5
+P12_ROUTE selected_world=ocean scene=CharacterSelect
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=ExclusiveFullscreen
+FISH_FOUNDATION_READY
+WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=980 generator_invocations=0
+FISH_HABITAT_READY player=FAF-FISH-001 world=world-6cba9a67e6275297 mode=baked
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=32.6 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+P12_ROUTE entered=Yellow Tang scene=Main renderer=forward_plus
+P12_ROUTE_CAPTURE label=route_ocean fish=(76.0, 5.5, -16.0) camera=(76.0, 7.5, -12.2) immersion=1.000 fog_density=0.960
+FISH_DISPLAY_MODE requested=fullscreen source=world-select effective=ExclusiveFullscreen
+FISH_WORLD_SELECT_READY entries=2
+P12_ROUTE returned_scene=WorldSelect
+FISH_DISPLAY_MODE requested=fullscreen source=character-select effective=ExclusiveFullscreen
+FISH_CHARACTER_SELECT_READY world=pond entries=5
+P12_ROUTE selected_world=pond scene=CharacterSelect
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=ExclusiveFullscreen
+FISH_FOUNDATION_READY
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=966 generator_invocations=0
+POND_AMBIENT_READY actors=12 creatures=3 insects=4 fish=5
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.078 upper_collision=disabled
+FISH_HABITAT_READY player=FAF-FISH-006 world=world-5e3b4fee759acbe3 mode=baked
+POND_SURFACE_READY vertices=16176 build_ms=17.52 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+P12_ROUTE entered=Bluegill scene=Main renderer=forward_plus
+P12_ROUTE_CAPTURE label=route_pond_return fish=(-42.0, 7.89, 0.0) camera=(-42.0, 9.89, 3.8) immersion=1.000 fog_density=0.180
+P12_ROUTE_OK pond_ocean_pond=1 rapid_enter=3

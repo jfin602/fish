@@ -53,16 +53,16 @@ public sealed class LightingPresetStore
             {
                 SurfaceWaveHeight = 0.45f, SurfaceWaveSpeed = 0.65f, SurfaceWaveDetail = 0.35f,
                 CausticEnergy = 0.08f, CausticDrift = 0.08f, CausticTravel = 0.25f,
-                ShaftCount = 2, ShaftBrightness = 0.32f, SunEnergy = 0.72f,
-                AmbientEnergy = 0.32f, VolumetricDensity = 0.029f,
+                ShaftCount = 2, ShaftBrightness = 0.32f, SunEnergy = 1.35f,
+                AmbientEnergy = 0.78f, VolumetricDensity = 0.029f,
                 VisibilityDistanceMeters = 25f, MoteCount = 72, ScreenWarpPixels = 0.04f,
             }));
             _presets.Add(PondShallowsId, new LightingPreset(PondShallowsId, "Pond · Brighter Shallows", new LightingSettings
             {
                 SurfaceWaveHeight = 0.50f, SurfaceWaveSpeed = 0.7f, SurfaceWaveDetail = 0.4f,
                 CausticEnergy = 0.16f, CausticDrift = 0.11f, CausticTravel = 0.35f,
-                ShaftCount = 3, ShaftBrightness = 0.55f, SunEnergy = 1.08f,
-                AmbientEnergy = 0.43f, VolumetricDensity = 0.024f,
+                ShaftCount = 3, ShaftBrightness = 0.55f, SunEnergy = 1.65f,
+                AmbientEnergy = 0.88f, VolumetricDensity = 0.024f,
                 VisibilityDistanceMeters = 32f, MoteCount = 64, ScreenWarpPixels = 0.04f,
             }));
             CurrentId = PondCloudyId;

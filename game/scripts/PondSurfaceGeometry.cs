@@ -24,10 +24,11 @@ public static class PondSurfaceGeometry
             var b = new Vector2(x + 2, z);
             var c = new Vector2(x, z + 2);
             var d = new Vector2(x + 2, z + 2);
-            // X/Z positive winding faces downward in 3D. Match PlaneMesh's
-            // upward front face so FRONT_FACING selects the air treatment.
-            EmitTriangle(a, c, b);
-            EmitTriangle(b, c, d);
+            // Godot's spatial FRONT_FACING treats this X/Z winding as the
+            // air-facing side. The reverse winding selected the opaque
+            // underwater treatment when the camera was above the Pond.
+            EmitTriangle(a, b, c);
+            EmitTriangle(b, d, c);
         }
         var mesh = new ArrayMesh();
         tool.Commit(mesh);

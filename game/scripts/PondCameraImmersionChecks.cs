@@ -52,7 +52,8 @@ public static class PondCameraImmersionChecks
                     "signed depth did not follow actual eye");
             }
             At(water - 2f, 120);
-            Require(atmosphere.CameraImmersion01 > .999f && env.FogDensity > .95f &&
+            Require(atmosphere.CameraImmersion01 > .999f &&
+                env.FogDensity > .15f && env.FogDensity < .30f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") < .001f,
                 "submerged profile did not restore");
             var previous = atmosphere.CameraImmersion01;

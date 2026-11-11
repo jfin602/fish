@@ -19,6 +19,7 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "18,60,1")] public float VisibilityRangeMeters { get; set; } = 35f;
     private const float FogNearMeters = 5f;
     private const float FogExtinction = 0.96f;
+    private const float PondFogExtinction = 0.18f;
     private const float FogCurve = 1.2f;
     [Export(PropertyHint.Range, "0,0.05,0.001")] public float LowerWaterFog { get; set; } = 0.018f;
     [Export(PropertyHint.Range, "-8,8,0.1")] public float LowerFogStartHeight { get; set; } = -1.0f;
@@ -124,15 +125,18 @@ public partial class UnderwaterAtmosphere : Node3D
     {
         if (_environment is null) throw new InvalidOperationException("Atmosphere is not initialized");
         _visibilityBypass = bypass;
-        _environment.FogDensity = bypass ? 0f : FogExtinction * _immersion;
+        _environment.FogDensity = bypass ? 0f :
+            Mathf.Lerp(_profile.AirFogDensity,
+                _profile.Id == WorldEnvironmentProfile.Pond ? PondFogExtinction : FogExtinction, _immersion);
     }
 
     /// <summary>Approximate engine depth-fog scene retention before height/volumetric fog.</summary>
-    public static float EstimateDistanceRetention(float distanceMeters, float usefulRangeMeters)
+    public static float EstimateDistanceRetention(float distanceMeters, float usefulRangeMeters,
+        float extinction = FogExtinction)
     {
         var position = Mathf.Clamp((distanceMeters - FogNearMeters) /
             (usefulRangeMeters - FogNearMeters), 0f, 1f);
-        return 1f - FogExtinction * Mathf.Pow(position, FogCurve);
+        return 1f - extinction * Mathf.Pow(position, FogCurve);
     }
 
     public LightingSettings CaptureLighting() => new()
@@ -348,7 +352,8 @@ public partial class UnderwaterAtmosphere : Node3D
         EffectiveUsefulRange = EffectiveBaseVisibilityRange * Mathf.Lerp(1f, _profile.DeepRangeFactor, depth);
         _environment.FogDepthBegin = Mathf.Lerp(_profile.AirFogBegin, FogNearMeters, _immersion);
         _environment.FogDepthEnd = Mathf.Lerp(_profile.AirFogEnd, EffectiveUsefulRange, _immersion);
-        _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, FogExtinction, _immersion);
+        var waterFog = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogExtinction : FogExtinction;
+        _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, waterFog, _immersion);
         _environment.FogHeightDensity = LowerWaterFog * _immersion;
         _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion;
         _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));

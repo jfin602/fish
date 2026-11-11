@@ -1,0 +1,50 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.318 - Forward+ - Using Device #0: AMD - AMD Radeon 880M (RADV GFX1150)
+
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=ExclusiveFullscreen
+FISH_FOUNDATION_READY
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1045 generator_invocations=0
+POND_AMBIENT_READY actors=12 creatures=3 insects=4 fish=5
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.078 upper_collision=disabled
+FISH_HABITAT_READY player=FAF-FISH-006 world=world-5e3b4fee759acbe3 mode=baked
+POND_SURFACE_READY vertices=16176 build_ms=15.95 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+P12_DIAG label=A_normal fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=P_forced_alpha fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=P_path_visual fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=P_facing_visual fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=B_no_surface fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=false fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=C_simple_surface fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=D_no_screen_sample fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=E_no_depth_height_fog fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=false fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=E_no_volume fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=false volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=F_diagnostic_fish fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 12.01, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=U_normal fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_fog_density_035 fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.350 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_no_depth_height_fog fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=false fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_no_volume fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=false volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_no_height_fog fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0000 volume=true volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_ambient_one fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0307 ambient=1.000 sun=1.279
+P12_DIAG label=U_sun_two fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.748 sun=2.000
+P12_DIAG label=U_no_screen fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.748 sun=1.279
+P12_DIAG label=U_combined_trial fish=(-19.64, 8.79, 23.96) camera=(-19.64, 8.49, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0307 ambient=0.780 sun=1.350
+P12_DIAG label=R_shallow_bank fish=(-40.0, 7.517146, -8.0) camera=(-40.0, 9.517146, -4.2) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0294 ambient=0.773 sun=1.334
+P12_DIAG label=R_hero_exterior fish=(-19.64, 3.51, 23.96) camera=(-19.64, 5.51, 27.76) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0378 ambient=0.616 sun=0.985
+P12_DIAG label=R_hero_interior fish=(-15.33, 3.51, 14.54) camera=(-15.33, 4.972362, 17.1018) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0393 ambient=0.589 sun=0.923
+P12_DIAG label=R_hero_interior_ambient_lift fish=(-15.33, 3.51, 14.54) camera=(-15.33, 4.972362, 17.1018) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0393 ambient=0.589 sun=0.923
+P12_DIAG label=R_middle fish=(-28.0, 5.154334, 0.0) camera=(-28.0, 7.154334, 3.8) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0335 ambient=0.697 sun=1.164
+P12_DIAG label=R_deep fish=(-14.0, 1.023225, 0.0) camera=(-14.0, 3.023225, 3.8) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0443 ambient=0.496 sun=0.716
+P12_DIAG label=R_deep_ambient_lift fish=(-14.0, 1.023225, 0.0) camera=(-14.0, 3.023225, 3.8) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.180 height_density=0.0240 volume=true volume_density=0.0443 ambient=0.496 sun=0.716
+P12_DIAG label=R_bank_foliage fish=(-54.96267, 9.69215, -0.244098) camera=(-54.96269, 11.69214, 3.555903) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=X0_below fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 9.510001, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0294 ambient=0.773 sun=1.333
+P12_DIAG label=X0_above fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 11.16, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_DIAG label=X1_below fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 9.510001, 28.06) surface_y=10.390 immersion=1.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.181 height_density=0.0240 volume=true volume_density=0.0294 ambient=0.773 sun=1.333
+P12_DIAG label=X1_above fish=(-19.64, 9.910001, 23.96) camera=(-19.64, 11.16, 28.06) surface_y=10.390 immersion=0.000 renderer=forward_plus surface_visible=true fog=true fog_density=0.939 height_density=0.0000 volume=true volume_density=0.0000 ambient=0.750 sun=1.000
+P12_SWEEP frame=0 camera_y=9.890 immersion=1.000
+P12_SWEEP frame=20 camera_y=10.223 immersion=0.886
+P12_SWEEP frame=30 camera_y=10.390 immersion=0.658
+P12_SWEEP frame=40 camera_y=10.557 immersion=0.394
+P12_SWEEP frame=60 camera_y=10.890 immersion=0.055
+P12_SWEEP_DONE max_immersion_step=0.1222
+P12_DIAG_DONE fish_meshes=11

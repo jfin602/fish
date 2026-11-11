@@ -39,7 +39,7 @@ public static class PondSurfaceSceneryChecks
         }
         Require(outside == 0, $"water covers dry bank at {outside} vertices");
         for (var i = 0; i < vertices.Length; i += 3)
-            Require((vertices[i + 1] - vertices[i]).Cross(vertices[i + 2] - vertices[i]).Y >= -.0001f,
+            Require((vertices[i + 1] - vertices[i]).Cross(vertices[i + 2] - vertices[i]).Y <= .0001f,
                 "air-facing water triangle has reversed winding");
         var covered = 0;
         for (var i = 0; i < basin.ShorePointCount; i += 16)

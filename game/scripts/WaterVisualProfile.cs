@@ -33,7 +33,7 @@ public sealed record WaterVisualProfile(
 
     public static WaterVisualProfile Pond { get; } = new(
         WorldEnvironmentProfile.Pond,
-        new(0.065f, 0.115f, 0.052f), new(0.43f, 0.46f, 0.28f),
+        new(0.065f, 0.115f, 0.052f), new(0.82f, 0.82f, 0.65f),
         new(0.22f, 0.28f, 0.105f), new(0.32f, 0.38f, 0.15f),
         new(0.78f, 0.72f, 0.43f), new(0.76f, 0.71f, 0.34f),
         new(0.66f, 0.59f, 0.31f, 0.25f),

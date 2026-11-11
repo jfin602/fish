@@ -18,6 +18,7 @@ uniform float air_fog_begin = 27.0;
 uniform float air_fog_end = 105.0;
 uniform vec3 air_fog_color = vec3(0.43, 0.48, 0.46);
 uniform sampler2D air_scene : hint_screen_texture, filter_linear;
+uniform sampler2D air_depth : hint_depth_texture, filter_nearest;
 
 varying vec3 surface_world;
 varying vec3 surface_normal;
@@ -72,12 +73,21 @@ void fragment() {
         vec2 bend = vec2(normal.x, -normal.z) * 0.003;
         vec3 refracted = texture(air_scene, clamp(SCREEN_UV + bend,
             vec2(0.002), vec2(0.998))).rgb;
+        float scene_depth = texture(air_depth, SCREEN_UV).r;
+        vec4 scene_view = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, scene_depth, 1.0);
+        vec4 surface_view = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, FRAGCOORD.z, 1.0);
+        float water_path = scene_depth <= 0.0001 ? 30.0 :
+            max(0.0, surface_view.z / surface_view.w - scene_view.z / scene_view.w);
         vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple)
                         + vec3(0.13, 0.15, 0.11) * air_fresnel;
-        ALBEDO = mix(refracted, water_tint, mix(0.24, 0.52, air_fresnel));
+        ALBEDO = mix(refracted, water_tint, mix(0.16, 0.50, air_fresnel));
         float air_distance = distance(CAMERA_POSITION_WORLD, surface_world);
         float air_fog = smoothstep(air_fog_begin, air_fog_end, air_distance);
         ALBEDO = mix(ALBEDO, air_fog_color, air_fog * 0.94);
-        ALPHA = 0.90 * edge_fade * smoothstep(0.0, 0.55, shore_blend);
+        // The depth buffer contains the opaque fish/terrain behind this transparent
+        // interface. Short water paths transmit them; open/deep water keeps its sheen.
+        float absorption = 1.0 - exp(-water_path * 0.22);
+        float air_opacity = clamp(mix(0.14, 0.86, absorption) + 0.18 * air_fresnel, 0.14, 0.92);
+        ALPHA = air_opacity * edge_fade * smoothstep(0.0, 0.55, shore_blend);
     }
 }

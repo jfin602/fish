@@ -167,11 +167,13 @@ public static class PondAtmosphereChecks
         var shallow = At(surfaceY);
         var middle = At((surfaceY + deepY) * 0.5f);
         var deep = At(deepY);
+        var extinction = env.FogDensity;
         Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 8f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep) > 0.95f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow) >
-                UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep) &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(25f, deep) < 0.1f,
+            extinction > .15f && extinction < .30f &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction) > 0.95f &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction) >
+                UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction) &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(25f, deep, extinction) < .85f,
             "Pond depth/distance extinction lost near-to-far progression");
         Require(Mathf.Abs(At(surfaceY + 0.001f) - At(surfaceY - 0.001f)) < 0.01f &&
             Mathf.Abs(At(deepY + 0.001f) - At(deepY - 0.001f)) < 0.01f,
