@@ -120,6 +120,15 @@ public partial class Main : Node3D
 
         GD.Print("FISH_FOUNDATION_READY");
 
+        var pondInspect = OS.GetCmdlineUserArgs().FirstOrDefault(arg =>
+            arg.StartsWith("--pond-inspect=", StringComparison.Ordinal));
+        if (pondInspect is not null)
+        {
+            try { PondWorldChecks.Run(this, pondInspect["--pond-inspect=".Length..]); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"POND_WORLD_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+
         AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences)
         {
             Name = "PlayShell",
@@ -162,6 +171,7 @@ public partial class Main : Node3D
         }
 
         if (OS.GetCmdlineUserArgs().Any(arg => arg.StartsWith("--world-generate=", StringComparison.Ordinal) ||
+            arg.StartsWith("--pond-generate=", StringComparison.Ordinal) ||
             arg == "--world-inspect"))
         {
             GetTree().Quit(populated ? 0 : 1);

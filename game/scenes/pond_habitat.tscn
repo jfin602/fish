@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/SeabedSurface.cs" id="1_seabed"]
+[ext_resource type="Script" path="res://scripts/ReefComposition.cs" id="2_composition"]
+
+[sub_resource type="BoxShape3D" id="east_west_limit"]
+size = Vector3(0.8, 80, 372)
+
+[sub_resource type="BoxShape3D" id="north_south_limit"]
+size = Vector3(372, 80, 0.8)
+
+[sub_resource type="BoxShape3D" id="upper_limit"]
+size = Vector3(372, 0.6, 372)
+
+[node name="Habitat" type="Node3D"]
+
+[node name="Spawn" type="Marker3D" parent="."]
+
+[node name="Seabed" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_seabed")
+
+[node name="Mesh" type="MeshInstance3D" parent="Seabed"]
+
+[node name="Collision" type="CollisionShape3D" parent="Seabed"]
+
+[node name="HiddenLimits" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="West" type="CollisionShape3D" parent="HiddenLimits"]
+position = Vector3(-185, 0, 0)
+shape = SubResource("east_west_limit")
+
+[node name="East" type="CollisionShape3D" parent="HiddenLimits"]
+position = Vector3(185, 0, 0)
+shape = SubResource("east_west_limit")
+
+[node name="North" type="CollisionShape3D" parent="HiddenLimits"]
+position = Vector3(0, 0, -185)
+shape = SubResource("north_south_limit")
+
+[node name="South" type="CollisionShape3D" parent="HiddenLimits"]
+position = Vector3(0, 0, 185)
+shape = SubResource("north_south_limit")
+
+[node name="Upper" type="CollisionShape3D" parent="HiddenLimits"]
+position = Vector3(0, 11.2, 0)
+shape = SubResource("upper_limit")
+
+[node name="Composition" type="Node3D" parent="."]
+
+[node name="ReefComposition" type="Node3D" parent="Composition"]
+script = ExtResource("2_composition")

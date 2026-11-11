@@ -49,7 +49,12 @@ public static class WorldCatalog
         new WorldDefinition(PondId, "Freshwater Pond", WorldHabitat.Freshwater,
             new WorldPreview("Overgrown freshwater banks", new Color(0.32f, 0.36f, 0.13f)),
             WorldEnvironmentProfile.Pond, new WorldSpawn("spawn", "safe-spawn"),
-            WorldAssetCatalog.FreshwaterFaf, null, null),
+            WorldAssetCatalog.FreshwaterFaf, "res://scenes/pond_habitat.tscn",
+            new BakedWorldIdentity("res://worlds/base/pond-p4-71", "world-5e3b4fee759acbe3",
+                71, 2, "pond-full-1",
+                "d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a",
+                "d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347",
+                "966a70f784c5398e0071ca098ec07c3765d70fc03c2e0bae4e8c82f3bd2f2173")),
     };
 
     public static WorldDefinition Resolve(string? id)
@@ -75,6 +80,7 @@ public static class WorldCatalog
             throw new InvalidDataException($"WORLD_MANIFEST_INVALID world={world.Id} action=restore-baked-package", error);
         }
         if (manifest.WorldId != bake.WorldId || manifest.Seed != bake.Seed ||
+            (manifest.HabitatId is not null && manifest.HabitatId != world.Id) ||
             manifest.SettingsVersion != bake.SettingsVersion ||
             manifest.GeneratorVersion != bake.GeneratorVersion ||
             manifest.CatalogSha256 != bake.CatalogSha256 ||

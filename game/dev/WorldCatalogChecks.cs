@@ -18,20 +18,30 @@ public static class WorldCatalogChecks
         var pond = WorldCatalog.Resolve(WorldCatalog.PondId);
         if (ocean.Habitat != WorldHabitat.Marine || pond.Habitat != WorldHabitat.Freshwater ||
             ocean.AssetCatalog == pond.AssetCatalog || ocean.EnvironmentProfile == pond.EnvironmentProfile ||
-            ocean.Bake is null || pond.Bake is not null || pond.HabitatScenePath is not null ||
-            ocean.SelectedManifestId == pond.SelectedManifestId ||
-            pond.SelectedManifestId != "pond:not-installed")
+            ocean.Bake is null || pond.Bake is null || pond.HabitatScenePath is null ||
+            ocean.SelectedManifestId == pond.SelectedManifestId)
             throw new InvalidDataException("World catalog routing is incomplete");
         var manifest = WorldCatalog.VerifyInstalledManifest(ocean);
         if (manifest.WorldId != "world-6cba9a67e6275297" ||
             manifest.ContentSha256 != "ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879")
             throw new InvalidDataException("Accepted Ocean identity changed");
         Reject(() => WorldCatalog.Resolve("lake"), "unknown ID");
-        Reject(() => WorldCatalog.VerifyInstalledManifest(pond), "uninstalled Pond");
+        var pondManifest = WorldCatalog.VerifyInstalledManifest(pond);
+        if (pondManifest.WorldId != "world-5e3b4fee759acbe3" ||
+            pondManifest.GeneratorVersion != FullWorldPackage.PondGeneratorVersion ||
+            pondManifest.ContentSha256 != "d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347")
+            throw new InvalidDataException("Installed Pond identity changed");
         WorldSession.Select(WorldCatalog.PondId);
-        var missingHabitat = new Node3D();
-        try { Reject(() => WorldCatalog.Load(WorldSession.SelectedWorldId, missingHabitat), "Pond load"); }
-        finally { missingHabitat.Free(); }
+        var pondHabitat = pond.LoadHabitatScene().Instantiate<Node3D>();
+        try
+        {
+            var loaded = WorldCatalog.Load(WorldSession.SelectedWorldId, pondHabitat);
+            if (loaded.WorldId != pondManifest.WorldId ||
+                pondHabitat.GetNode<SeabedSurface>("Seabed").Basin.IsPond == false ||
+                pondHabitat.GetNode<Node3D>("PondLandmarks").GetChildCount() != 6)
+                throw new InvalidDataException("Installed Pond load is incomplete");
+        }
+        finally { pondHabitat.Free(); }
         if (WorldSession.SelectedWorldId != WorldCatalog.PondId || DemoSelection.CharacterId != fish)
             throw new InvalidDataException("World selection changed fish or fell back");
         WorldSession.Select(WorldCatalog.OceanId);
@@ -81,7 +91,7 @@ public static class WorldCatalogChecks
         }
         if (WorldGenerationAudit.StageInvocations != stages)
             throw new InvalidDataException("Generator ran during world catalog checks");
-        GD.Print($"WORLD_CATALOG_CHECK_OK ocean={manifest.WorldId} manifest={ocean.Bake.ManifestSha256} content={manifest.ContentSha256} pond=not-installed repeats=2 generator_invocations=0");
+        GD.Print($"WORLD_CATALOG_CHECK_OK ocean={manifest.WorldId} pond={pondManifest.WorldId} repeats=2 generator_invocations=0");
     }
 
     private static void Reject(Action action, string reason)

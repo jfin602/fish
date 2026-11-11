@@ -1,0 +1,7 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[resource]
+resource_name = "mat__pond_silt"
+albedo_color = Color(0.04851, 0.03968, 0.01984, 1)
+metallic = 0.0
+roughness = 0.94

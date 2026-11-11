@@ -28,12 +28,17 @@ public static class WorldSelectChecks
             pond.GrabFocus();
             Require(pond.HasFocus() && pond.Text.Contains("SELECTED"), "pointer/keyboard focus state");
             choose.EmitSignal(Button.SignalName.Pressed);
-            await Frames(tree, 3);
-            Require(tree.CurrentScene == initial && Status(initial).Contains("WORLD_BAKE_NOT_INSTALLED") &&
-                WorldSession.SelectedWorldId == WorldCatalog.PondId && DemoSelection.CharacterId is null,
-                "uninstalled Pond must display error without Ocean fallback");
-            pond.EmitSignal(Control.SignalName.MouseEntered);
-            Require(Status(initial).Contains("WORLD_BAKE_NOT_INSTALLED"), "hover erased unavailable error");
+            await Scene(tree);
+            var pondCharacters = tree.CurrentScene as CharacterSelect;
+            Require(pondCharacters is not null && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                pondCharacters.FindChild("Character_0", true, false) is null &&
+                pondCharacters.FindChild("EnterWorldButton", true, false) is Button { Disabled: true },
+                "Pond should reach empty native-fish selection before P8");
+            FindButton(pondCharacters!, "BackToWorldButton").EmitSignal(Button.SignalName.Pressed);
+            await Scene(tree);
+            initial = tree.CurrentScene as WorldSelect ?? throw new Exception("Pond Back did not return to World Select");
+            ocean = FindButton(initial, "World_ocean");
+            choose = FindButton(initial, "ChooseWorldButton");
             try { WorldSession.Select("not-a-world"); throw new Exception("unknown world accepted"); }
             catch (InvalidDataException) { }
             Require(WorldSession.SelectedWorldId == WorldCatalog.PondId, "invalid world changed session");
@@ -98,7 +103,7 @@ public static class WorldSelectChecks
             returned = tree.CurrentScene as WorldSelect;
             Require(returned is not null && FindButton(returned, "WorldBackButton").Text.Contains("Quit demo"),
                 "World Select Back action missing");
-            GD.Print("WORLD_SELECT_CHECK_OK pond=unavailable ocean=repeated back=clean return=clean");
+            GD.Print("WORLD_SELECT_CHECK_OK pond=baked-empty-species ocean=repeated back=clean return=clean");
             FindButton(returned!, "WorldBackButton").EmitSignal(Button.SignalName.Pressed);
         }
         catch (Exception error)

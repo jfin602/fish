@@ -1,0 +1,64 @@
+{
+  "FormatVersion": 1,
+  "WorldId": "world-5e3b4fee759acbe3",
+  "Seed": 71,
+  "SettingsVersion": 2,
+  "GeneratorVersion": "pond-full-1",
+  "CatalogSha256": "d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a",
+  "ContentSha256": "d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347",
+  "Resources": [
+    {
+      "Path": "seabed-mesh.res",
+      "Sha256": "bb4758b15f760dc6572f3cf443a0044420b6fa2994f04fa2d16d2eee4b62cb1e"
+    },
+    {
+      "Path": "seabed-collision.res",
+      "Sha256": "514bd1bc9c425a5c3859ab80de8deee3b3048c165b1cbd691956e8ab769d616d"
+    },
+    {
+      "Path": "world-data.json",
+      "Sha256": "62b46b8ab7f74e374e5f383a953bae290f5e4005ced1532dc9d57d8708fe0856"
+    }
+  ],
+  "Timings": [
+    {
+      "Stage": "palette",
+      "ElapsedMilliseconds": 315
+    },
+    {
+      "Stage": "basin-mesh-collision",
+      "ElapsedMilliseconds": 993
+    },
+    {
+      "Stage": "route-repair",
+      "ElapsedMilliseconds": 16
+    },
+    {
+      "Stage": "environment-analysis",
+      "ElapsedMilliseconds": 34
+    },
+    {
+      "Stage": "data-serialization",
+      "ElapsedMilliseconds": 40
+    },
+    {
+      "Stage": "resource-serialization",
+      "ElapsedMilliseconds": 23
+    }
+  ],
+  "RouteNodes": 6,
+  "RouteEdges": 7,
+  "EnvironmentSamples": 7921,
+  "Placements": 0,
+  "GeologyRegions": 0,
+  "AmbientFish": 0,
+  "BasinAlgorithm": "pond-shore-depth-1",
+  "ShoreBounds": [
+    -67.7658,
+    -59.06282,
+    67.65028,
+    54.09764
+  ],
+  "DeepestDepth": 12.222501,
+  "HabitatId": "pond"
+}

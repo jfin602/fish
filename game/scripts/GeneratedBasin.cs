@@ -12,6 +12,7 @@ public sealed record GeologySite(string Id, string Kind, Vector2 Center, Vector2
 public sealed class GeneratedBasin
 {
     public const string AlgorithmVersion = "c3-shore-depth-3";
+    public const string PondAlgorithmVersion = "pond-shore-depth-1";
     public const ulong DefaultSeed = 42;
     public const float HalfExtent = 184f;
     public const float CellSize = 2f;
@@ -24,6 +25,8 @@ public sealed class GeneratedBasin
     private readonly float[] _phase = new float[9];
     private readonly bool _legacy;
     private readonly bool _m1Baked;
+    public bool IsPond { get; }
+    public string AlgorithmIdentity => IsPond ? PondAlgorithmVersion : AlgorithmVersion;
     private readonly List<GeologySite> _geologySites = new();
     public IReadOnlyList<GeologySite> GeologySites => _geologySites;
 
@@ -38,13 +41,16 @@ public sealed class GeneratedBasin
     public float MaximumInsideDistance { get; }
     public int ShorePointCount => ShoreCount;
 
-    public GeneratedBasin(ulong seed, bool legacy = false, bool m1Baked = false)
+    public GeneratedBasin(ulong seed, bool legacy = false, bool m1Baked = false, bool pond = false)
     {
         Seed = seed;
         _legacy = legacy;
         _m1Baked = m1Baked;
-        var random = new WorldCompileContext(new WorldGenerationSettings(seed)).Stream("basin",
-            legacy ? "c3-basin-1" : AlgorithmVersion);
+        IsPond = pond;
+        var random = new WorldCompileContext(pond
+            ? new WorldGenerationSettings(seed, 2, "pond-full-1")
+            : new WorldGenerationSettings(seed)).Stream("basin",
+            legacy ? "c3-basin-1" : AlgorithmIdentity);
         for (var i = 0; i < _phase.Length; i++)
             _phase[i] = (float)((random.Next() >> 11) * (Math.Tau / 9007199254740992.0));
         if (legacy)
@@ -72,23 +78,25 @@ public sealed class GeneratedBasin
 
         // Construct the water domain before evaluating any elevations. Unequal
         // lobes and coves at seeded bearings avoid a regular angular starburst.
-        var axis = 1.04f + .11f * Mathf.Sin(_phase[0]);
-        var center = new Vector2(7f * Mathf.Sin(_phase[1]), 6f * Mathf.Sin(_phase[2]));
+        var axis = pond ? 1.17f + .08f * Mathf.Sin(_phase[0]) : 1.04f + .11f * Mathf.Sin(_phase[0]);
+        var center = pond ? new Vector2(3f * Mathf.Sin(_phase[1]), 4f * Mathf.Sin(_phase[2]))
+            : new Vector2(7f * Mathf.Sin(_phase[1]), 6f * Mathf.Sin(_phase[2]));
         var min = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
         var max = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
         var minR = float.PositiveInfinity; var maxR = 0f; var sumR = 0f;
         for (var i = 0; i < ShoreCount; i++)
         {
             var a = i * Mathf.Tau / ShoreCount;
-            var radius = 126f + 8f * Mathf.Sin(a + _phase[0]);
+            var radius = (pond ? 54f : 126f) + (pond ? 5f : 8f) * Mathf.Sin(a + _phase[0]);
             var rotation = _phase[3];
-            radius += 37f * Bump(a, rotation, .47f);
-            radius += 27f * Bump(a, rotation + 1.62f + .18f * Mathf.Sin(_phase[4]), .64f);
-            radius += 35f * Bump(a, rotation + 4.02f + .21f * Mathf.Sin(_phase[5]), .53f);
-            radius -= 38f * Bump(a, rotation + .88f + .13f * Mathf.Sin(_phase[6]), .37f);
-            radius -= 30f * Bump(a, rotation + 2.92f + .16f * Mathf.Sin(_phase[7]), .48f);
-            radius -= 41f * Bump(a, rotation + 5.34f + .12f * Mathf.Sin(_phase[8]), .40f);
-            radius = Mathf.Clamp(radius, 78f, 165f);
+            var scale = pond ? .43f : 1f;
+            radius += scale * 37f * Bump(a, rotation, .47f);
+            radius += scale * 27f * Bump(a, rotation + 1.62f + .18f * Mathf.Sin(_phase[4]), .64f);
+            radius += scale * 35f * Bump(a, rotation + 4.02f + .21f * Mathf.Sin(_phase[5]), .53f);
+            radius -= scale * 38f * Bump(a, rotation + .88f + .13f * Mathf.Sin(_phase[6]), .37f);
+            radius -= scale * 30f * Bump(a, rotation + 2.92f + .16f * Mathf.Sin(_phase[7]), .48f);
+            radius -= scale * 41f * Bump(a, rotation + 5.34f + .12f * Mathf.Sin(_phase[8]), .40f);
+            radius = pond ? Mathf.Clamp(radius, 32f, 73f) : Mathf.Clamp(radius, 78f, 165f);
             var p = center + new Vector2(Mathf.Cos(a) * radius * axis,
                 Mathf.Sin(a) * radius / axis);
             _shore[i] = p;
@@ -111,7 +119,7 @@ public sealed class GeneratedBasin
             maxDistance = Mathf.Max(maxDistance, d);
         }
         MaximumInsideDistance = maxDistance;
-        if (!m1Baked) SelectGeologySites();
+        if (!m1Baked && !pond) SelectGeologySites();
         var deepest = float.PositiveInfinity; var deepAt = Vector2.Zero;
         for (var z = 12; z < FieldSide - 12; z++) for (var x = 12; x < FieldSide - 12; x++)
         {
@@ -167,6 +175,22 @@ public sealed class GeneratedBasin
     private float BaseHeightAt(float x, float z)
     {
         var shore = DistanceToShore(x, z);
+        if (IsPond)
+        {
+            if (shore <= 0f)
+                return WaterSurfaceY + 2.8f * Smooth(0f, 17f, -shore) +
+                    2.2f * Smooth(15f, 47f, -shore);
+            var pondDepth = .15f + 1.2f * Smooth(0f, 5f, shore) +
+                2.1f * Smooth(4f, 17f, shore) +
+                3.4f * Smooth(14f, 34f, shore) +
+                4.3f * Smooth(28f, 53f, shore);
+            var ripple = Smooth(3f, 14f, shore) *
+                (.38f * Mathf.Sin(x * .14f + _phase[0]) * Mathf.Sin(z * .11f + _phase[1]) +
+                 .55f * Mathf.Sin(x * .052f - z * .071f + _phase[2]));
+            var core = 2.8f * Gaussian(x, z, 6f * Mathf.Sin(_phase[5]),
+                7f * Mathf.Sin(_phase[6]), 18f, 21f);
+            return WaterSurfaceY - Mathf.Clamp(pondDepth + ripple + core, .15f, 15f);
+        }
         if (shore <= 0f) return WaterSurfaceY - .7f + 11f * Smooth(0f, 21f, -shore);
         var depth = .7f + 1.3f * Smooth(0f, 6f, shore)
             + 4f * Smooth(4f, 24f, shore)

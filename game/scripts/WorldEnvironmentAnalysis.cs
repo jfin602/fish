@@ -11,7 +11,20 @@ public readonly record struct WorldProjectedSample(WorldSurfaceHit Hit, WorldEnv
 public readonly record struct WorldEnvironmentSample(Vector3 Surface, Vector3 Normal, float Depth,
     float Slope, float Concavity, float PerimeterDistance, float DeepCoreDistance,
     float RouteDistance, float CaveDistance, float EntranceDistance, float Shelter,
-    float Exposure, float GeologyDistance);
+    float Exposure, float GeologyDistance)
+{
+    // Generic, terrain-derived placement hints; later habitat dressing can use these
+    // without coupling the compiler to a particular wood or plant asset catalog.
+    public float BankShelfSuitability => Mathf.Clamp((PerimeterDistance - 2f) / 10f, 0f, 1f) *
+        (1f - Mathf.Clamp((Depth - 6f) / 5f, 0f, 1f)) * (1f - Mathf.Clamp(Slope / .45f, 0f, 1f));
+    public float SubmergedWoodSuitability => Mathf.Clamp((Depth - 2f) / 4f, 0f, 1f) *
+        (1f - Mathf.Clamp((Depth - 12f) / 8f, 0f, 1f)) *
+        Mathf.Clamp((RouteDistance - 3f) / 11f, 0f, 1f) * (1f - Mathf.Clamp(Slope / .65f, 0f, 1f));
+    public float EmergentPlantSuitability => Mathf.Clamp((PerimeterDistance - 1f) / 5f, 0f, 1f) *
+        (1f - Mathf.Clamp((Depth - 2f) / 3f, 0f, 1f)) * (1f - Mathf.Clamp(Slope / .5f, 0f, 1f));
+    public float FloatingPlantSuitability => Mathf.Clamp((PerimeterDistance - 4f) / 7f, 0f, 1f) *
+        (1f - Mathf.Clamp((Depth - 10f) / 8f, 0f, 1f));
+}
 public readonly record struct WorldEntrance(Vector3 Center, Vector3 Outward);
 
 /// <summary>Four metre placement grid plus exact on-demand ray queries of generated mesh triangles.</summary>
@@ -201,7 +214,7 @@ public sealed class WorldEnvironmentAnalysis
         var surface = hit.Position;
         var perimeter = Mathf.Max(0f, _basin.DistanceToShore(surface.X, surface.Z));
         var core = new Vector2(surface.X, surface.Z).DistanceTo(_basin.DeepCore);
-        var entrance = float.PositiveInfinity;
+        var entrance = _regions.Count == 0 ? 12f : float.PositiveInfinity;
         foreach (var region in _regions)
         {
             var line = region.Centerline;

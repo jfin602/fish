@@ -48,6 +48,11 @@ public sealed class GeneratedWorldRoutes
     public GeneratedWorldRoutes(GeneratedBasin basin, IReadOnlyList<GeologicalRegion> regions,
         Func<Vector3, bool>? clear = null)
     {
+        if (basin.IsPond)
+        {
+            BuildPond(basin, clear);
+            return;
+        }
         var random = new WorldCompileContext(new WorldGenerationSettings(basin.Seed))
             .Stream("route-anchors", "terrain-1");
         var angle = (random.Next() % 6283) / 1000f;
@@ -136,6 +141,59 @@ public sealed class GeneratedWorldRoutes
             if (!float.IsFinite(bestScore))
                 throw new InvalidOperationException($"No clear terrain anchor for {id} depth={targetDepth}");
             chosen.Add(best);
+            AddNode(id, best, role);
+        }
+    }
+
+    private void BuildPond(GeneratedBasin basin, Func<Vector3, bool>? clear)
+    {
+        var random = new WorldCompileContext(new WorldGenerationSettings(basin.Seed, 2, "pond-full-1"))
+            .Stream("route-anchors", "pond-1");
+        var angle = (random.Next() % 6283) / 1000f;
+        var forward = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
+        var side = new Vector2(-forward.Y, forward.X);
+        var core = basin.DeepCore;
+        var selected = new List<Vector3>();
+        Choose("spawn", "safe-spawn", 3.2f, 5.5f, core + forward * 33f);
+        Choose("shallow", "bank-shallow", 2.4f, 4.8f, core + forward * 30f + side * 9f);
+        Choose("middle", "middle-shelf", 5.5f, 9f, core + forward * 17f);
+        Choose("deep", "deep-basin", 9f, 16f, core + forward * 4f);
+        Choose("return", "return-shelf", 5f, 9f, core + forward * 15f - side * 14f);
+        Choose("alternate", "alternate-safe", 4f, 8f, core + forward * 23f + side * 14f);
+        Add("spawn-shallow", "spawn", "shallow", "shore-approach");
+        Add("shallow-middle", "shallow", "middle", "shallow-middle");
+        Add("middle-deep", "middle", "deep", "middle-deep");
+        Add("deep-return", "deep", "return", "deep-return");
+        Add("return-shallow", "return", "shallow", "return");
+        Add("middle-alternate", "middle", "alternate", "alternate");
+        Add("alternate-shallow", "alternate", "shallow", "alternate");
+
+        void Choose(string id, string role, float minDepth, float maxDepth, Vector2 target)
+        {
+            var bestScore = float.NegativeInfinity;
+            var best = Vector3.Zero;
+            for (var z = -90; z <= 90; z += 2)
+            for (var x = -90; x <= 90; x += 2)
+            {
+                var bank = basin.DistanceToShore(x, z);
+                if (bank < 5f) continue;
+                var floor = basin.HeightAt(x, z);
+                var depth = GeneratedBasin.WaterSurfaceY - floor;
+                if (depth < minDepth || depth > maxDepth) continue;
+                var y = Mathf.Min(floor + 1.9f, GeneratedBasin.WaterSurfaceY - 2.5f);
+                var point = new Vector3(x, y, z);
+                if (selected.Exists(p => p.DistanceTo(point) < 6f) ||
+                    (clear is not null && !clear(point))) continue;
+                var score = -new Vector2(x, z).DistanceTo(target) -
+                    Mathf.Abs(depth - (minDepth + maxDepth) * .5f) * .5f +
+                    Mathf.Min(bank, 16f) * .03f;
+                if (score <= bestScore) continue;
+                best = point;
+                bestScore = score;
+            }
+            if (!float.IsFinite(bestScore))
+                throw new InvalidOperationException($"Pond route anchor impossible: {id}, seed={basin.Seed}");
+            selected.Add(best);
             AddNode(id, best, role);
         }
     }

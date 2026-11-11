@@ -11,9 +11,11 @@ for spec in RECIPES:
     stem = spec["stem"]
     prop = f'faf_id = "{spec["id"]}"\nfamily = "{spec["family"]}"\n'
     for key, attr in (("length", "length_m"), ("radius", "radius_m"),
-                      ("inner", "inner_radius_m"), ("height", "height_m")):
+                      ("inner", "inner_radius_m"), ("height", "height_m"),
+                      ("bend", "bend_m"), ("forks", "fork_count")):
         if key in spec:
-            prop += f"{attr} = {float(spec[key])}\n"
+            value = int(spec[key]) if key == "forks" else float(spec[key])
+            prop += f"{attr} = {value}\n"
     content = f'''[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://dev/faf_pond_wood_piece.gd" id="1_script"]

@@ -17,23 +17,23 @@ public partial class SeabedSurface : StaticBody3D
     public float DeepReferenceY => DeepFloorY + 2f;
     private ShaderMaterial? _waterMaterial;
 
-    public void SetBasinSeed(ulong seed)
+    public void SetBasinSeed(ulong seed, bool pond = false)
     {
         if (GeneratedMesh is not null)
             throw new System.InvalidOperationException("Basin seed must be selected before mesh construction");
-        Basin = new GeneratedBasin(seed);
+        Basin = new GeneratedBasin(seed, pond: pond);
     }
 
-    public void RestoreBakedSeed(ulong seed, bool legacy, bool m1Baked = false)
+    public void RestoreBakedSeed(ulong seed, bool legacy, bool m1Baked = false, bool pond = false)
     {
-        Basin = new GeneratedBasin(seed, legacy, m1Baked);
+        Basin = new GeneratedBasin(seed, legacy, m1Baked, pond);
         ConfigureLimits(legacy);
     }
 
     public void InstallBaked(ArrayMesh mesh, ConcavePolygonShape3D collision, ulong seed, bool legacy,
-        bool m1Baked = false)
+        bool m1Baked = false, bool pond = false)
     {
-        RestoreBakedSeed(seed, legacy, m1Baked);
+        RestoreBakedSeed(seed, legacy, m1Baked, pond);
         GetNode<MeshInstance3D>("Mesh").Mesh = mesh;
         GetNode<CollisionShape3D>("Collision").Shape = collision;
         _waterMaterial = mesh.SurfaceGetMaterial(0) as ShaderMaterial;
@@ -87,7 +87,8 @@ public partial class SeabedSurface : StaticBody3D
 
         var mesh = new ArrayMesh();
         builder.Commit(mesh);
-        var shape = mesh.CreateTrimeshShape() as ConcavePolygonShape3D;
+        var shape = Basin.IsPond ? BuildPondCollision() :
+            mesh.CreateTrimeshShape() as ConcavePolygonShape3D;
         if (shape is null) return false;
         shape.BackfaceCollision = true;
         GetNode<MeshInstance3D>("Mesh").Mesh = mesh;
@@ -98,6 +99,30 @@ public partial class SeabedSurface : StaticBody3D
     public float GetHeightAt(float x, float z) => Basin.HeightAt(x, z);
 
     private Vector3 Point(float x, float z) => new(x, GetHeightAt(x, z), z);
+
+    private ConcavePolygonShape3D BuildPondCollision()
+    {
+        // Visual terrain is sampled every 2 m; physical terrain uses the same
+        // analytical height field at a coarser uniform lattice.
+        var vertices = new System.Collections.Generic.List<Vector3>();
+        const int collisionCells = 138;
+        const float collisionCell = HalfExtent * 2f / collisionCells;
+        for (var z = 0; z < collisionCells; z++)
+        for (var x = 0; x < collisionCells; x++)
+        {
+            var left = -HalfExtent + x * collisionCell;
+            var near = -HalfExtent + z * collisionCell;
+            var right = -HalfExtent + (x + 1) * collisionCell;
+            var far = -HalfExtent + (z + 1) * collisionCell;
+            var a = Point(left, near);
+            var b = Point(left, far);
+            var c = Point(right, near);
+            var d = Point(right, far);
+            vertices.Add(a); vertices.Add(c); vertices.Add(b);
+            vertices.Add(c); vertices.Add(d); vertices.Add(b);
+        }
+        return new ConcavePolygonShape3D { Data = vertices.ToArray() };
+    }
 
     private void AddTriangle(SurfaceTool builder, Vector3 a, Vector3 b, Vector3 c)
     {

@@ -17,7 +17,7 @@ public sealed record FullWorldManifest(int FormatVersion, string WorldId, ulong 
     IReadOnlyList<FullWorldResource> Resources, IReadOnlyList<WorldStageTiming> Timings,
     int RouteNodes, int RouteEdges, int EnvironmentSamples, int Placements,
     int GeologyRegions, int AmbientFish, string? BasinAlgorithm = null,
-    float[]? ShoreBounds = null, float? DeepestDepth = null);
+    float[]? ShoreBounds = null, float? DeepestDepth = null, string? HabitatId = null);
 public sealed record BakedRouteNode(string Id, float[] Position, string Role,
     float FishRadius, float CameraRadius, float CameraOffsetY);
 public sealed record BakedRouteEdge(string Id, string From, string To, string Kind,
@@ -40,6 +40,8 @@ public static class FullWorldPackage
 {
     public const string GeneratorVersion = "c3-full-12";
     public const int SettingsVersion = 1;
+    public const string PondGeneratorVersion = "pond-full-1";
+    public const int PondSettingsVersion = 2;
     public const string MeshFile = "seabed-mesh.res";
     public const string CollisionFile = "seabed-collision.res";
     public const string GeologyFile = "geology.scn";
@@ -124,6 +126,63 @@ public static class FullWorldPackage
                 ProjectSettings.GlobalizePath(directory), ManifestFile)))
         ?? throw new InvalidDataException("Empty full-world manifest");
 
+    public static FullWorldManifest BakePond(Node3D habitat, ulong seed, string directory,
+        IReadOnlyList<WorldStageTiming> generationTimings)
+    {
+        var destination = ProjectSettings.GlobalizePath(directory);
+        if (System.IO.Directory.Exists(destination) && System.IO.Directory.EnumerateFileSystemEntries(destination).Any())
+            throw new IOException($"World package destination is not empty: {directory}");
+        System.IO.Directory.CreateDirectory(destination);
+        var timer = Stopwatch.StartNew();
+        var seabed = habitat.GetNode<SeabedSurface>("Seabed");
+        var reef = habitat.GetNode<ReefComposition>("Composition/ReefComposition");
+        var routes = reef.GeneratedRoutes ?? throw new InvalidDataException("Missing Pond routes");
+        var environment = reef.EnvironmentAnalysis ?? throw new InvalidDataException("Missing Pond analysis");
+        if (!seabed.Basin.IsPond || seabed.Basin.Seed != seed || routes.Nodes.Count < 6 ||
+            routes.Edges.Count < 7 || environment.CachedSampleCount !=
+                WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide)
+            throw new InvalidDataException("Incomplete Pond world cannot be baked");
+        var data = new FullWorldData(
+            routes.Nodes.Values.OrderBy(n => n.Id, StringComparer.Ordinal)
+                .Select(n => new BakedRouteNode(n.Id, Vec(n.Position), n.Role,
+                    n.FishRadius, n.CameraRadius, n.CameraOffsetY)).ToArray(),
+            routes.Edges.Select(e => new BakedRouteEdge(e.Id, e.From, e.To, e.Kind,
+                e.Points.Select(Vec).ToArray(), e.ProtectedRadius, e.CameraProtectedRadius)).ToArray(),
+            Enumerable.Range(0, WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide)
+                .Select(i => Field(environment.SampleGrid(i % WorldEnvironmentAnalysis.CellsPerSide,
+                    i / WorldEnvironmentAnalysis.CellsPerSide))).ToArray(),
+            Array.Empty<BakedPlacement>(), new FafAmbientReefLife.BakedAmbient(
+                Array.Empty<FafAmbientReefLife.BakedSchool>(), Array.Empty<FafAmbientReefLife.AmbientFish>()));
+        System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(directory + "/" + DataFile),
+            JsonSerializer.SerializeToUtf8Bytes(data, Json));
+        var dataMilliseconds = timer.ElapsedMilliseconds;
+        timer.Restart();
+        SaveResource(seabed.GeneratedMesh ?? throw new InvalidDataException("Missing Pond mesh"),
+            directory + "/" + MeshFile);
+        SaveResource(seabed.GeneratedCollision ?? throw new InvalidDataException("Missing Pond collision"),
+            directory + "/" + CollisionFile);
+        var resources = new[] { MeshFile, CollisionFile, DataFile }
+            .Select(name => new FullWorldResource(name, BakedWorldContract.Hash(
+                System.IO.File.ReadAllBytes(ProjectSettings.GlobalizePath(directory + "/" + name)))))
+            .ToArray();
+        var catalogHash = WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment);
+        var manifest = new FullWorldManifest(1,
+            BakedWorldContract.WorldId(PondGeneratorVersion, PondSettingsVersion, seed, catalogHash),
+            seed, PondSettingsVersion, PondGeneratorVersion, catalogHash,
+            BakedWorldContract.Hash(string.Join("|", resources.Select(r => r.Sha256))), resources,
+            generationTimings.Concat(new[] { new WorldStageTiming("data-serialization", dataMilliseconds),
+                new WorldStageTiming("resource-serialization", timer.ElapsedMilliseconds) }).ToArray(),
+            data.Nodes.Count, data.Edges.Count, data.Environment.Count, 0, 0, 0,
+            GeneratedBasin.PondAlgorithmVersion,
+            new[] { seabed.Basin.ShoreMin.X, seabed.Basin.ShoreMin.Y,
+                seabed.Basin.ShoreMax.X, seabed.Basin.ShoreMax.Y },
+            GeneratedBasin.WaterSurfaceY - seabed.Basin.DeepFloorY,
+            WorldCatalog.PondId);
+        System.IO.File.WriteAllBytes(ProjectSettings.GlobalizePath(directory + "/" + ManifestFile),
+            JsonSerializer.SerializeToUtf8Bytes(manifest, Json));
+        return manifest;
+    }
+
     public static (FullWorldManifest Manifest, FullWorldData Data) Load(string directory, Node3D habitat,
         string worldId, string? expectedBakedWorldId = null)
     {
@@ -133,6 +192,8 @@ public static class FullWorldPackage
         var manifest = ReadManifest(directory);
         if (expectedBakedWorldId is not null && manifest.WorldId != expectedBakedWorldId)
             throw new InvalidDataException("Full-world baked identity does not match selected world");
+        if (manifest.GeneratorVersion == PondGeneratorVersion)
+            return LoadPond(directory, habitat, worldId, manifest, generationBefore, timer);
         var catalogHash = WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment);
         var legacy = manifest.GeneratorVersion == "c3-full-1";
         var m1Baked = manifest.GeneratorVersion == "c3-full-3";
@@ -201,6 +262,85 @@ public static class FullWorldPackage
             throw new InvalidOperationException($"World generator ran during baked load: {generationDuringLoad} stages");
         GD.Print($"WORLD_BAKED_LOAD_OK id={manifest.WorldId} seed={manifest.Seed} content={manifest.ContentSha256} elapsed_ms={timer.ElapsedMilliseconds} generator_invocations={generationDuringLoad}");
         return (manifest, data);
+    }
+
+    private static (FullWorldManifest Manifest, FullWorldData Data) LoadPond(string directory,
+        Node3D habitat, string worldId, FullWorldManifest manifest, int generationBefore,
+        Stopwatch timer)
+    {
+        if (worldId != WorldCatalog.PondId || manifest.HabitatId != WorldCatalog.PondId ||
+            manifest.FormatVersion != 1 ||
+            manifest.SettingsVersion != PondSettingsVersion ||
+            manifest.BasinAlgorithm != GeneratedBasin.PondAlgorithmVersion ||
+            manifest.ShoreBounds is not { Length: 4 } || manifest.DeepestDepth is null or < 8f or > 16f ||
+            manifest.CatalogSha256 != WorldCompiler.CatalogIdentity(FafRuntimeCatalog.Environment) ||
+            manifest.WorldId != BakedWorldContract.WorldId(PondGeneratorVersion,
+                PondSettingsVersion, manifest.Seed, manifest.CatalogSha256) ||
+            !manifest.Resources.Select(r => r.Path).SequenceEqual(new[] { MeshFile, CollisionFile, DataFile }) ||
+            manifest.GeologyRegions != 0 || manifest.Placements != 0 || manifest.AmbientFish != 0 ||
+            manifest.EnvironmentSamples != WorldEnvironmentAnalysis.CellsPerSide * WorldEnvironmentAnalysis.CellsPerSide)
+            throw new InvalidDataException("Incompatible Pond manifest");
+        foreach (var resource in manifest.Resources)
+            if (BakedWorldContract.Hash(System.IO.File.ReadAllBytes(
+                ProjectSettings.GlobalizePath(directory + "/" + resource.Path))) != resource.Sha256)
+                throw new InvalidDataException($"Pond resource hash mismatch: {resource.Path}");
+        if (BakedWorldContract.Hash(string.Join("|", manifest.Resources.Select(r => r.Sha256))) != manifest.ContentSha256)
+            throw new InvalidDataException("Pond content identity mismatch");
+        var data = JsonSerializer.Deserialize<FullWorldData>(System.IO.File.ReadAllBytes(
+            ProjectSettings.GlobalizePath(directory + "/" + DataFile)))
+            ?? throw new InvalidDataException("Empty Pond data");
+        if (data.Nodes.Count != manifest.RouteNodes || data.Edges.Count != manifest.RouteEdges ||
+            data.Environment.Count != manifest.EnvironmentSamples || data.Placements.Count != 0 ||
+            data.Ambient.Fish.Count != 0 || data.Ambient.Schools.Count != 0 ||
+            !data.Nodes.Any(n => n.Id == "spawn" && n.Role == "safe-spawn"))
+            throw new InvalidDataException("Pond data summary mismatch");
+        var seabed = habitat.GetNode<SeabedSurface>("Seabed");
+        var mesh = ResourceLoader.Load<ArrayMesh>(directory + "/" + MeshFile)
+            ?? throw new InvalidDataException("Baked Pond mesh missing");
+        var collision = ResourceLoader.Load<ConcavePolygonShape3D>(directory + "/" + CollisionFile)
+            ?? throw new InvalidDataException("Baked Pond collision missing");
+        seabed.InstallBaked(mesh, collision, manifest.Seed, false, pond: true);
+        var spawn = data.Nodes.Single(n => n.Id == "spawn");
+        habitat.GetNode<Marker3D>("Spawn").Position = new Vector3(spawn.Position[0],
+            spawn.Position[1], spawn.Position[2]);
+        InstallPondLandmarks(habitat, data);
+        habitat.GetNode<ReefComposition>("Composition/ReefComposition").InstallBakedData(data);
+        var generationDuringLoad = WorldGenerationAudit.StageInvocations - generationBefore;
+        if (generationDuringLoad != 0)
+            throw new InvalidOperationException($"World generator ran during Pond load: {generationDuringLoad} stages");
+        GD.Print($"WORLD_BAKED_LOAD_OK id={manifest.WorldId} seed={manifest.Seed} content={manifest.ContentSha256} elapsed_ms={timer.ElapsedMilliseconds} generator_invocations=0");
+        return (manifest, data);
+    }
+
+    public static void InstallPondLandmarks(Node3D habitat, FullWorldData data)
+    {
+        var landmarks = new Node3D { Name = "PondLandmarks" };
+        habitat.AddChild(landmarks);
+        foreach (var id in new[] { "shallow", "middle", "deep", "return", "alternate" })
+        {
+            var route = data.Nodes.Single(n => n.Id == id);
+            var marker = new Marker3D
+            {
+                Name = id,
+                Position = new Vector3(route.Position[0], route.Position[1], route.Position[2]),
+            };
+            marker.SetMeta("route_role", route.Role);
+            marker.SetMeta("water_depth", GeneratedBasin.WaterSurfaceY - marker.Position.Y);
+            landmarks.AddChild(marker);
+        }
+        var basin = habitat.GetNode<SeabedSurface>("Seabed").Basin;
+        var shallow = data.Nodes.Single(n => n.Id == "shallow").Position;
+        var shallowXZ = new Vector2(shallow[0], shallow[2]);
+        var shore = Enumerable.Range(0, basin.ShorePointCount)
+            .Select(basin.ShorePoint).OrderBy(point => point.DistanceSquaredTo(shallowXZ)).First();
+        var bankXZ = shore + (shore - shallowXZ).Normalized() * 2f;
+        var bank = new Marker3D
+        {
+            Name = "BankApproach",
+            Position = new Vector3(bankXZ.X, basin.HeightAt(bankXZ.X, bankXZ.Y) + .4f, bankXZ.Y),
+        };
+        bank.SetMeta("shore_distance", basin.DistanceToShore(bankXZ.X, bankXZ.Y));
+        landmarks.AddChild(bank);
     }
 
     // Headless Godot's dummy renderer does not retain MultiMesh transform buffers in

@@ -40,6 +40,8 @@ func _ready() -> void:
 		if entry["faf_id"] == "FAF-WOOD-002A":
 			hero = _place(entry,Vector3.ZERO,0,1)
 			hero.name = "HeroPassage"
+			costs["instances"] += 1
+			costs["triangles"] += int(entry["triangle_count"])
 		costs["instances"] += 1
 		costs["triangles"] += int(entry["triangle_count"])
 	# Authored mixed cover beyond the hero route; rotations/scales are bounded.
@@ -51,8 +53,8 @@ func _ready() -> void:
 		costs["instances"] += 1
 		costs["triangles"] += int(entry["triangle_count"])
 	_setup_camera()
-	print("FAF_POND_WOOD_PROOF_READY assets=12 visible_instances=",costs["instances"],
-		" visible_triangles=",costs["triangles"]," renderer=",ProjectSettings.get_setting("rendering/renderer/rendering_method"))
+	print("FAF_POND_WOOD_PROOF_READY assets=12 instances=",costs["instances"],
+		" instanced_triangles=",costs["triangles"]," renderer=",ProjectSettings.get_setting("rendering/renderer/rendering_method"))
 	if do_traverse:
 		_traverse.call_deferred()
 	elif capture_dir != "":
@@ -132,6 +134,13 @@ func _make_water() -> void:
 	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
 	water.material_override = mat
 	add_child(water)
+	var tunnel_light := OmniLight3D.new()
+	tunnel_light.name = "FilteredInteriorLight"
+	tunnel_light.position = Vector3(0,3.55,0)
+	tunnel_light.light_color = Color("#b5a773")
+	tunnel_light.light_energy = .9
+	tunnel_light.omni_range = 7.5
+	add_child(tunnel_light)
 
 
 func _setup_camera() -> void:
@@ -139,8 +148,8 @@ func _setup_camera() -> void:
 		"hero_entrance": overview.position = Vector3(4.5,4.1,10); overview.look_at(Vector3(0,2.3,2.5))
 		"hero_inside": overview.position = Vector3(0,2.5,0); overview.look_at(Vector3(0,2.3,-8))
 		"hero_exit": overview.position = Vector3(-4.5,4.3,-9); overview.look_at(Vector3(0,2.3,-2))
-		"top": overview.position = Vector3(5,19,11); overview.look_at(Vector3(5,0,0))
-		_: overview.position = Vector3(23,17,26); overview.look_at(Vector3(5,0,0))
+		"top": overview.position = Vector3(10,38,14); overview.look_at(Vector3(10,0,0))
+		_: overview.position = Vector3(12,23,31); overview.look_at(Vector3(10,0,0))
 
 
 func _make_fish(start: Vector3) -> void:
@@ -223,4 +232,5 @@ func _capture(filename: String) -> void:
 	DirAccess.make_dir_recursive_absolute(capture_dir)
 	var path := capture_dir.path_join(filename)
 	get_viewport().get_texture().get_image().save_png(path)
-	print("FAF_POND_WOOD_CAPTURE=",path)
+	print("FAF_POND_WOOD_CAPTURE=",path," rendered_primitives=",
+		Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME))

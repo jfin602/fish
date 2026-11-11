@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.glb" id="1_glb"]
+
+[sub_resource type="BoxShape3D" id="BankCollision"]
+size = Vector3(1.2, 0.48, 1.1)
+
+[sub_resource type="BoxShape3D" id="BankShoulder"]
+size = Vector3(0.85, 0.22, 1.05)
+
+[node name="FAFTerrain002A" type="Node3D"]
+
+[node name="Render" parent="." instance=ExtResource("1_glb")]
+
+[node name="BankSolid" type="StaticBody3D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="Collision" type="CollisionShape3D" parent="BankSolid"]
+position = Vector3(0, 0.24, 0)
+shape = SubResource("BankCollision")
+
+[node name="LeftShoulder" type="CollisionShape3D" parent="BankSolid"]
+position = Vector3(-0.98, 0.11, 0)
+shape = SubResource("BankShoulder")
+
+[node name="RightShoulder" type="CollisionShape3D" parent="BankSolid"]
+position = Vector3(0.98, 0.11, 0)
+shape = SubResource("BankShoulder")

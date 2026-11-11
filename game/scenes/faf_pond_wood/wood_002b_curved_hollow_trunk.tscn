@@ -10,5 +10,6 @@ family = "hollow_trunk"
 length_m = 4.75
 radius_m = 1.35
 inner_radius_m = 0.98
+bend_m = 0.26
 
 [node name="Visual" parent="." instance=ExtResource("2_visual")]

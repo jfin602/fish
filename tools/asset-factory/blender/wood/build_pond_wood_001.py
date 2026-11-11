@@ -155,13 +155,13 @@ def hollow(mesh, spec, rng):
     for j in range(sections-1):
         for k in range(sides):
             n = (k+1)%sides
-            mesh.face((outer_rings[j][k], outer_rings[j][n], outer_rings[j+1][n], outer_rings[j+1][k]),
+            mesh.face((outer_rings[j][k], outer_rings[j+1][k], outer_rings[j+1][n], outer_rings[j][n]),
                       3 if (k+j*3)%29 == 0 else (1 if (k+j)%6 == 0 else 0))
-            mesh.face((inner_rings[j+1][k], inner_rings[j+1][n], inner_rings[j][n], inner_rings[j][k]), 0)
+            mesh.face((inner_rings[j][k], inner_rings[j][n], inner_rings[j+1][n], inner_rings[j+1][k]), 0)
     for k in range(sides):
         n = (k+1)%sides
-        mesh.face((outer_rings[0][n], outer_rings[0][k], inner_rings[0][k], inner_rings[0][n]), 2 if k%4 else 1)
-        mesh.face((outer_rings[-1][k], outer_rings[-1][n], inner_rings[-1][n], inner_rings[-1][k]), 2 if k%4 else 0)
+        mesh.face((outer_rings[0][k], outer_rings[0][n], inner_rings[0][n], inner_rings[0][k]), 2 if k%4 else 1)
+        mesh.face((outer_rings[-1][n], outer_rings[-1][k], inner_rings[-1][k], inner_rings[-1][n]), 2 if k%4 else 0)
     # Radial roots at the entrance/exit remain outside the opening.
     for end in (-1, 1):
         for side in (-1, 1):
@@ -259,7 +259,15 @@ def build(root):
                             triangle_count=check["triangle_count_source"],
                             material_count=check["material_count"],
                             blender_source=str(source.relative_to(root)),glb=str(output.relative_to(root)),
+                            godot_wrapper=f"game/scenes/faf_pond_wood/{spec['stem']}.tscn",
                             pivot="ground-contact origin; Blender +Z up, length along Y",
+                            placement_zone=("bank or submerged mud" if spec["family"] != "cluster" else "shallow bottom or bank gap"),
+                            scale_range=[0.9,1.1], rotation_y_range_degrees=[-35,35],
+                            collision=("none; decorative cover" if spec["family"] == "cluster" else
+                                       "segmented radial wall boxes, open ends" if spec["family"] == "hollow_trunk" else
+                                       "trunk cylinder plus major fork capsules" if spec["family"] == "fallen_log" and spec["forks"] else
+                                       "single conservative cylinder"),
+                            nominal_clear_diameter_m=(round(spec["inner"]*1.86,3) if "inner" in spec else None),
                             habitat="pond",transform="identity",technical_state="generated; Godot import pending",
                             style_state="native review pending"))
     out=source_dir/"pond_wood_001_manifest.json"

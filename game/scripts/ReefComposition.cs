@@ -13,6 +13,11 @@ public partial class ReefComposition : Node3D
     public WorldEnvironmentAnalysis? EnvironmentAnalysis { get; private set; }
     public FullWorldData? BakedData { get; private set; }
     public void InstallBakedData(FullWorldData data) => BakedData = data;
+    public void InstallPondAnalysis(GeneratedWorldRoutes routes, WorldEnvironmentAnalysis environment)
+    {
+        GeneratedRoutes = routes;
+        EnvironmentAnalysis = environment;
+    }
     private sealed record Source(string Path, Vector3 BottomCenterOffset, string GltfStem = "");
 
     private const string Vendor = "res://assets/vendor-local/";

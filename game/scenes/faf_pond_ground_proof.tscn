@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_ground_proof.gd" id="1_script"]
+
+[node name="FAFPondGroundProof" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Camera" type="Camera3D" parent="."]
+current = true
+fov = 66.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.75, 0.45, -0.2)
+light_color = Color(1, 0.84, 0.55, 1)
+light_energy = 1.65
+shadow_enabled = true
+
+[node name="Environment" type="WorldEnvironment" parent="."]

@@ -29,11 +29,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_001a_bent_fallen_log.blend",
       "glb": "game/assets/faf/pond/wood/wood_001a_bent_fallen_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_001a_bent_fallen_log.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "single conservative cylinder",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-001B",
@@ -61,11 +73,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_001b_forked_fallen_log.blend",
       "glb": "game/assets/faf/pond/wood/wood_001b_forked_fallen_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_001b_forked_fallen_log.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "trunk cylinder plus major fork capsules",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-001C",
@@ -93,11 +117,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_001c_broken_fallen_log.blend",
       "glb": "game/assets/faf/pond/wood/wood_001c_broken_fallen_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_001c_broken_fallen_log.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "trunk cylinder plus major fork capsules",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-002A",
@@ -125,11 +161,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_002a_hero_hollow_trunk.blend",
       "glb": "game/assets/faf/pond/wood/wood_002a_hero_hollow_trunk.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_002a_hero_hollow_trunk.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "segmented radial wall boxes, open ends",
+      "nominal_clear_diameter_m": 3.943,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified; centered hollow clearance passed; native two-direction fish/camera traversal passed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-002B",
@@ -157,11 +205,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_002b_curved_hollow_trunk.blend",
       "glb": "game/assets/faf/pond/wood/wood_002b_curved_hollow_trunk.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_002b_curved_hollow_trunk.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "segmented radial wall boxes, open ends",
+      "nominal_clear_diameter_m": 1.823,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified; centered hollow clearance passed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-002C",
@@ -189,11 +249,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_002c_root_flared_hollow.blend",
       "glb": "game/assets/faf/pond/wood/wood_002c_root_flared_hollow.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_002c_root_flared_hollow.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "segmented radial wall boxes, open ends",
+      "nominal_clear_diameter_m": 2.083,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified; centered hollow clearance passed",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-003A",
@@ -220,11 +292,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.blend",
       "glb": "game/assets/faf/pond/wood/wood_003a_rooted_leaning_trunk.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_003a_rooted_leaning_trunk.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "single conservative cylinder",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-003B",
@@ -251,11 +335,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_003b_broken_stump.blend",
       "glb": "game/assets/faf/pond/wood/wood_003b_broken_stump.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_003b_broken_stump.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "bank or submerged mud",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "single conservative cylinder",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-004A",
@@ -282,11 +378,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_004a_sparse_sticks.blend",
       "glb": "game/assets/faf/pond/wood/wood_004a_sparse_sticks.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_004a_sparse_sticks.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "shallow bottom or bank gap",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "none; decorative cover",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-004B",
@@ -313,11 +421,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_004b_forked_branches.blend",
       "glb": "game/assets/faf/pond/wood/wood_004b_forked_branches.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_004b_forked_branches.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "shallow bottom or bank gap",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "none; decorative cover",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-004C",
@@ -344,11 +464,23 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_004c_tangled_roots.blend",
       "glb": "game/assets/faf/pond/wood/wood_004c_tangled_roots.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_004c_tangled_roots.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "shallow bottom or bank gap",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "none; decorative cover",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     },
     {
       "faf_id": "FAF-WOOD-004D",
@@ -375,11 +507,38 @@
       "material_count": 4,
       "blender_source": "assets/faf/pond/wood/wood_004d_heavy_branch_cover.blend",
       "glb": "game/assets/faf/pond/wood/wood_004d_heavy_branch_cover.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood/wood_004d_heavy_branch_cover.tscn",
       "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "placement_zone": "shallow bottom or bank gap",
+      "scale_range": [
+        0.9,
+        1.1
+      ],
+      "rotation_y_range_degrees": [
+        -35,
+        35
+      ],
+      "collision": "none; decorative cover",
+      "nominal_clear_diameter_m": null,
       "habitat": "pond",
       "transform": "identity",
-      "technical_state": "generated; Godot import pending",
-      "style_state": "native review pending"
+      "technical_state": "GLB and Godot import verified",
+      "style_state": "native candidate review; owner approval open"
     }
-  ]
+  ],
+  "reference": "Owner-supplied best-pond-faf.png; local visual reference only, not redistributed",
+  "validation": {
+    "blender": "5.2.3 LTS",
+    "godot": "4.7.2 .NET Forward+",
+    "glb_check": "12/12 passed; 3950 total asset triangles",
+    "godot_import": "12/12 passed; dimensions, triangles, materials, Pond metadata and collision wrappers",
+    "hero_native_traversal": "both directions passed with real FishController and FollowCamera; no camera probe hits",
+    "owner_style_lock": "open",
+    "whole_project_build": "blocked by concurrent P3 GeneratedBasin.cs CS0136 at line 183; wood checks pass on existing assembly",
+    "editable_blender_sources": "12/12 reopened in Blender 5.2.3",
+    "flat_endpoint_contact_range_m": [
+      -0.12,
+      0.011
+    ]
+  }
 }

@@ -17,7 +17,8 @@ public sealed record WorldGenerationSettings(ulong Seed, int SettingsVersion = 1
 {
     public void Validate()
     {
-        if (SettingsVersion != 1 || GeneratorVersion != "c3-fixture-1")
+        if (!((SettingsVersion == 1 && GeneratorVersion == "c3-fixture-1") ||
+              (SettingsVersion == 2 && GeneratorVersion == "pond-full-1")))
             throw new InvalidDataException("Unsupported world generation settings or generator version");
     }
 }

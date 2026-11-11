@@ -1,0 +1,347 @@
+{
+  "pack": "pond-ground-001",
+  "asset_count": 8,
+  "shared_materials": [
+    "silt",
+    "mud",
+    "wet_bank",
+    "algae_stone"
+  ],
+  "assets": [
+    {
+      "faf_id": "FAF-TERRAIN-002A",
+      "family": "eroded_bank",
+      "stem": "terrain_002a_eroded_bank_undercut",
+      "habitat": "pond",
+      "seed": 2501,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-TERRAIN-002A",
+        "stem": "terrain_002a_eroded_bank_undercut",
+        "family": "eroded_bank",
+        "seed": 2501,
+        "length": 3.4,
+        "width": 1.7,
+        "height": 0.55,
+        "undercut": 0.23,
+        "scar": false,
+        "zone": "shallow bank shoulder",
+        "collision": "simple bank wedge"
+      },
+      "dimensions_m": [
+        3.5486,
+        1.4158,
+        0.543
+      ],
+      "triangle_count": 62,
+      "material_count": 2,
+      "materials": [
+        "mat__pond_mud",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        3.549,
+        1.416
+      ],
+      "placement_zone": "shallow bank shoulder",
+      "collision": "simple bank wedge",
+      "blender_source": "assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.blend",
+      "glb": "game/assets/faf/pond/ground/terrain_002a_eroded_bank_undercut.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-TERRAIN-002B",
+      "family": "eroded_bank",
+      "stem": "terrain_002b_eroded_bank_scarred",
+      "habitat": "pond",
+      "seed": 2502,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-TERRAIN-002B",
+        "stem": "terrain_002b_eroded_bank_scarred",
+        "family": "eroded_bank",
+        "seed": 2502,
+        "length": 2.65,
+        "width": 2.05,
+        "height": 0.72,
+        "undercut": 0.08,
+        "scar": true,
+        "zone": "mud bank or shelf edge",
+        "collision": "simple bank wedge"
+      },
+      "dimensions_m": [
+        2.8177,
+        1.8594,
+        0.7071
+      ],
+      "triangle_count": 80,
+      "material_count": 3,
+      "materials": [
+        "mat__pond_mud",
+        "mat__pond_silt",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        2.818,
+        1.859
+      ],
+      "placement_zone": "mud bank or shelf edge",
+      "collision": "simple bank wedge",
+      "blender_source": "assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.blend",
+      "glb": "game/assets/faf/pond/ground/terrain_002b_eroded_bank_scarred.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-005A",
+      "family": "algae_stone",
+      "stem": "detail_005a_algae_stone_low",
+      "habitat": "pond",
+      "seed": 5501,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-005A",
+        "stem": "detail_005a_algae_stone_low",
+        "family": "algae_stone",
+        "seed": 5501,
+        "radius": 0.58,
+        "height": 0.33,
+        "stretch": 1.28,
+        "zone": "shallow mud, sheltered stone contact",
+        "collision": "none in proof; conservative box if gameplay clearance requires"
+      },
+      "dimensions_m": [
+        1.5563,
+        1.2556,
+        0.33
+      ],
+      "triangle_count": 30,
+      "material_count": 3,
+      "materials": [
+        "mat__pond_algae_stone",
+        "mat__pond_silt",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        1.556,
+        1.256
+      ],
+      "placement_zone": "shallow mud, sheltered stone contact",
+      "collision": "none in proof; conservative box if gameplay clearance requires",
+      "blender_source": "assets/faf/pond/ground/detail_005a_algae_stone_low.blend",
+      "glb": "game/assets/faf/pond/ground/detail_005a_algae_stone_low.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-005B",
+      "family": "algae_stone",
+      "stem": "detail_005b_algae_stone_upright",
+      "habitat": "pond",
+      "seed": 5502,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-005B",
+        "stem": "detail_005b_algae_stone_upright",
+        "family": "algae_stone",
+        "seed": 5502,
+        "radius": 0.43,
+        "height": 0.55,
+        "stretch": 0.84,
+        "zone": "shallow bank, stone contact",
+        "collision": "none in proof; conservative box if gameplay clearance requires"
+      },
+      "dimensions_m": [
+        0.7152,
+        0.8936,
+        0.55
+      ],
+      "triangle_count": 30,
+      "material_count": 3,
+      "materials": [
+        "mat__pond_algae_stone",
+        "mat__pond_silt",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        0.715,
+        0.894
+      ],
+      "placement_zone": "shallow bank, stone contact",
+      "collision": "none in proof; conservative box if gameplay clearance requires",
+      "blender_source": "assets/faf/pond/ground/detail_005b_algae_stone_upright.blend",
+      "glb": "game/assets/faf/pond/ground/detail_005b_algae_stone_upright.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-006A",
+      "family": "pebbles",
+      "stem": "detail_006a_pebble_scatter",
+      "habitat": "pond",
+      "seed": 6601,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-006A",
+        "stem": "detail_006a_pebble_scatter",
+        "family": "pebbles",
+        "seed": 6601,
+        "count": 5,
+        "spread": 0.78,
+        "radius": 0.14,
+        "zone": "quiet shallow mud",
+        "collision": "none"
+      },
+      "dimensions_m": [
+        1.0273,
+        0.4892,
+        0.0755
+      ],
+      "triangle_count": 90,
+      "material_count": 2,
+      "materials": [
+        "mat__pond_silt",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        1.027,
+        0.489
+      ],
+      "placement_zone": "quiet shallow mud",
+      "collision": "none",
+      "blender_source": "assets/faf/pond/ground/detail_006a_pebble_scatter.blend",
+      "glb": "game/assets/faf/pond/ground/detail_006a_pebble_scatter.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-006B",
+      "family": "pebbles",
+      "stem": "detail_006b_pebble_chain",
+      "habitat": "pond",
+      "seed": 6602,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-006B",
+        "stem": "detail_006b_pebble_chain",
+        "family": "pebbles",
+        "seed": 6602,
+        "count": 7,
+        "spread": 1.05,
+        "radius": 0.11,
+        "zone": "wood or stone edge",
+        "collision": "none"
+      },
+      "dimensions_m": [
+        1.3252,
+        0.411,
+        0.0622
+      ],
+      "triangle_count": 126,
+      "material_count": 2,
+      "materials": [
+        "mat__pond_silt",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        1.325,
+        0.411
+      ],
+      "placement_zone": "wood or stone edge",
+      "collision": "none",
+      "blender_source": "assets/faf/pond/ground/detail_006b_pebble_chain.blend",
+      "glb": "game/assets/faf/pond/ground/detail_006b_pebble_chain.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-007A",
+      "family": "leaf_litter",
+      "stem": "detail_007a_leaf_litter_broad",
+      "habitat": "pond",
+      "seed": 7701,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-007A",
+        "stem": "detail_007a_leaf_litter_broad",
+        "family": "leaf_litter",
+        "seed": 7701,
+        "count": 4,
+        "spread": 0.8,
+        "leaf_length": 0.32,
+        "zone": "sheltered bank pocket",
+        "collision": "none"
+      },
+      "dimensions_m": [
+        1.0335,
+        0.7091,
+        0.055
+      ],
+      "triangle_count": 24,
+      "material_count": 2,
+      "materials": [
+        "mat__pond_mud",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        1.034,
+        0.709
+      ],
+      "placement_zone": "sheltered bank pocket",
+      "collision": "none",
+      "blender_source": "assets/faf/pond/ground/detail_007a_leaf_litter_broad.blend",
+      "glb": "game/assets/faf/pond/ground/detail_007a_leaf_litter_broad.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    },
+    {
+      "faf_id": "FAF-DETAIL-007B",
+      "family": "leaf_litter",
+      "stem": "detail_007b_leaf_litter_windrow",
+      "habitat": "pond",
+      "seed": 7702,
+      "generator": "ground_dressing.build_pack_001 v1",
+      "generator_config": {
+        "id": "FAF-DETAIL-007B",
+        "stem": "detail_007b_leaf_litter_windrow",
+        "family": "leaf_litter",
+        "seed": 7702,
+        "count": 6,
+        "spread": 1.14,
+        "leaf_length": 0.25,
+        "zone": "wood-adjacent mud pocket",
+        "collision": "none"
+      },
+      "dimensions_m": [
+        1.3426,
+        0.3768,
+        0.055
+      ],
+      "triangle_count": 36,
+      "material_count": 2,
+      "materials": [
+        "mat__pond_mud",
+        "mat__pond_wet_bank"
+      ],
+      "pivot": "ground contact, local +Z up",
+      "support_footprint_m": [
+        1.343,
+        0.377
+      ],
+      "placement_zone": "wood-adjacent mud pocket",
+      "collision": "none",
+      "blender_source": "assets/faf/pond/ground/detail_007b_leaf_litter_windrow.blend",
+      "glb": "game/assets/faf/pond/ground/detail_007b_leaf_litter_windrow.glb",
+      "technical_state": "generated; import check pending",
+      "style_state": "native review pending"
+    }
+  ]
+}

@@ -9,5 +9,7 @@ faf_id = "FAF-WOOD-001C"
 family = "fallen_log"
 length_m = 4.25
 radius_m = 0.77
+bend_m = 0.2
+fork_count = 1
 
 [node name="Visual" parent="." instance=ExtResource("2_visual")]

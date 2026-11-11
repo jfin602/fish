@@ -338,7 +338,10 @@ public partial class UnderwaterAtmosphere : Node3D
             MaterialOverride = _surfaceMaterial,
             CustomAabb = new Aabb(new Vector3(-(extent.X + 14.0f) * 0.5f, -0.35f, -(extent.Z + 14.0f) * 0.5f),
                 new Vector3(extent.X + 14.0f, 0.7f, extent.Z + 14.0f)),
-            Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0, extent.Y * 0.5f + 0.34f, 0),
+            Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0,
+                main.GetNode<SeabedSurface>("Habitat/Seabed").Basin.IsPond
+                    ? GeneratedBasin.WaterSurfaceY - upper.GlobalPosition.Y
+                    : extent.Y * 0.5f + 0.34f, 0),
         };
         _effects!.AddChild(_surface);
         _surfaceHeight = _surface.GlobalPosition.Y;

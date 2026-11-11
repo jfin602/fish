@@ -13,11 +13,12 @@ public static class P2HabitatWorld
     {
         var args = OS.GetCmdlineUserArgs();
         var generation = args.FirstOrDefault(a => a.StartsWith("--world-generate=", StringComparison.Ordinal));
+        var pondGeneration = args.FirstOrDefault(a => a.StartsWith("--pond-generate=", StringComparison.Ordinal));
         var baked = args.FirstOrDefault(a => a.StartsWith("--world-package=", StringComparison.Ordinal));
         var selected = args.FirstOrDefault(a => a.StartsWith("--world-id=", StringComparison.Ordinal));
         var legacyCheck = args.Any(a => a is "--basin-check" or "--geology-mesh-check" or
             "--route-field-check" or "--placement-check" or "--depth-check");
-        if (generation is null && !legacyCheck)
+        if (generation is null && pondGeneration is null && !legacyCheck)
         {
             WorldSession.Unload();
             try
@@ -26,6 +27,15 @@ public static class P2HabitatWorld
                 if (baked is not null && WorldSession.SelectedWorldId != WorldCatalog.OceanId)
                     throw new System.IO.InvalidDataException("WORLD_DIAGNOSTIC_CONFLICT action=remove-world-package-override");
                 var bakedHabitat = main.GetNode<Node3D>("Habitat");
+                if (WorldSession.SelectedWorldId == WorldCatalog.PondId)
+                {
+                    main.RemoveChild(bakedHabitat);
+                    bakedHabitat.Free();
+                    bakedHabitat = WorldCatalog.Resolve(WorldCatalog.PondId)
+                        .LoadHabitatScene().Instantiate<Node3D>();
+                    bakedHabitat.Name = "Habitat";
+                    main.AddChild(bakedHabitat);
+                }
                 var manifest = baked is null
                     ? WorldCatalog.Load(WorldSession.SelectedWorldId, bakedHabitat)
                     : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat,
@@ -47,6 +57,15 @@ public static class P2HabitatWorld
             }
         }
         var seed = GeneratedBasin.DefaultSeed;
+        if (pondGeneration is not null)
+        {
+            if (!ulong.TryParse(pondGeneration["--pond-generate=".Length..], out seed))
+            {
+                diagnostic = "POND_COMPILE_FAILED invalid seed";
+                return false;
+            }
+            return TryCompilePond(main, fish, seed, args, out diagnostic);
+        }
         if (generation is not null && !ulong.TryParse(generation["--world-generate=".Length..], out seed))
         {
             diagnostic = "WORLD_COMPILE_FAILED invalid seed";
@@ -108,5 +127,58 @@ public static class P2HabitatWorld
         diagnostic = "";
         GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} seabed=continuous palette=CoastSand01,Ground060,Gravel041,Rock063 course=fixture-only");
         return true;
+    }
+
+    private static bool TryCompilePond(Node3D main, FishController fish, ulong seed,
+        string[] args, out string diagnostic)
+    {
+        var output = args.FirstOrDefault(a => a.StartsWith("--world-output=", StringComparison.Ordinal));
+        if (output is null)
+        {
+            diagnostic = "POND_COMPILE_FAILED missing output package";
+            return false;
+        }
+        var total = Stopwatch.StartNew();
+        var stage = Stopwatch.StartNew();
+        var timings = new List<WorldStageTiming>();
+        void Stage(string name)
+        {
+            timings.Add(new WorldStageTiming(name, stage.ElapsedMilliseconds));
+            GD.Print($"POND_STAGE {name} elapsed_ms={stage.ElapsedMilliseconds} total_ms={total.ElapsedMilliseconds}");
+            stage.Restart();
+        }
+        try
+        {
+            var habitat = main.GetNode<Node3D>("Habitat");
+            var seabed = habitat.GetNode<SeabedSurface>("Seabed");
+            var reef = habitat.GetNode<ReefComposition>("Composition/ReefComposition");
+            if (!HabitatPalette.TryLoad(out var palette, out diagnostic)) return false;
+            Stage("palette");
+            seabed.SetBasinSeed(seed, pond: true);
+            if (!seabed.Build(palette)) throw new InvalidOperationException("Pond terrain mesh failed");
+            Stage("basin-mesh-collision");
+            using var planner = new WorldRoutePlanner(habitat.GetWorld3D().DirectSpaceState,
+                fish.GetRid(), seabed.Basin, Array.Empty<GeologicalRegion>());
+            var routes = new GeneratedWorldRoutes(seabed.Basin, Array.Empty<GeologicalRegion>(),
+                planner.PointClear);
+            routes.RepairOpenConnectors(habitat.GetWorld3D().DirectSpaceState,
+                fish.GetRid(), seabed.Basin, Array.Empty<GeologicalRegion>());
+            habitat.GetNode<Marker3D>("Spawn").Position = routes.Nodes["spawn"].Position;
+            Stage("route-repair");
+            var analysis = new WorldEnvironmentAnalysis(seabed.Basin,
+                Array.Empty<GeologicalRegion>(), routes);
+            reef.InstallPondAnalysis(routes, analysis);
+            Stage("environment-analysis");
+            var package = FullWorldPackage.BakePond(habitat, seed,
+                output["--world-output=".Length..], timings);
+            GD.Print($"WORLD_FULL_COMPILE_OK habitat=pond id={package.WorldId} seed={seed} content={package.ContentSha256} total_ms={total.ElapsedMilliseconds}");
+            diagnostic = "";
+            return true;
+        }
+        catch (Exception error)
+        {
+            diagnostic = $"POND_COMPILE_FAILED {error}";
+            return false;
+        }
     }
 }

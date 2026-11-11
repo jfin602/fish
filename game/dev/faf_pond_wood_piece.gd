@@ -8,6 +8,8 @@ extends Node3D
 @export var radius_m := 1.0
 @export var inner_radius_m := 0.0
 @export var height_m := 1.0
+@export var bend_m := 0.0
+@export var fork_count := 0
 
 
 func _ready() -> void:
@@ -46,6 +48,25 @@ func _ready() -> void:
 		node.position.y = radius_m
 		node.rotation.x = PI * 0.5
 		body.add_child(node)
+		# The two substantial broken forks on B/C are solid cover. Thin
+		# rootlets remain decoration so they cannot snag the player collider.
+		for i in range(fork_count):
+			var sign_value := 1.0 if i % 2 == 0 else -1.0
+			var t := .28 + .43 * float(i) / maxf(1.0,float(fork_count))
+			var source_y := length_m * (t - .5)
+			var source_x := bend_m * sin(PI * t)
+			var start := Vector3(source_x,radius_m * 1.65,-source_y)
+			var tip := Vector3(source_x + sign_value * (1.4 + float(i)*.25),
+				radius_m * 1.65 + .22 + float(i)*.2,-(source_y + .9))
+			var fork := CollisionShape3D.new()
+			fork.name = "MajorFork_%d" % i
+			var capsule := CapsuleShape3D.new()
+			capsule.radius = radius_m * .24
+			capsule.height = maxf(start.distance_to(tip),capsule.radius*2)
+			fork.shape = capsule
+			fork.position = (start + tip)*.5
+			fork.quaternion = Quaternion(Vector3.UP,(tip-start).normalized())
+			body.add_child(fork)
 	elif family == "stump":
 		var shape := CylinderShape3D.new()
 		shape.radius = radius_m * 0.8
