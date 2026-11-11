@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -217,7 +217,8 @@ case "${1:-help}" in
     ;;
   inspect-course)
     need_tools
-    logged course-check 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/course_check.gd
+    profile=$(mktemp -d "$ROOT/artifacts/course-check.XXXXXX")
+    logged course-check 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/course_check.gd
     grep -Fq 'COURSE_CHECK_OK' "$LOGS/course-check.log" || { echo 'Course assertion marker missing' >&2; exit 1; }
     ;;
   inspect-habitat) need_tools; habitat_check ;;
@@ -225,6 +226,12 @@ case "${1:-help}" in
   inspect-terrain) need_tools; terrain_world_check ;;
   inspect-geology) need_tools; geology_check ;;
   inspect-generated-geology) need_tools; generated_geology_check ;;
+  inspect-route-fields)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/route-fields.XXXXXX")
+    logged route-fields 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --route-field-check
+    grep -Fq 'ROUTE_FIELD_CHECK_OK' "$LOGS/route-fields.log" || { echo 'Route/field marker missing' >&2; exit 1; }
+    ;;
   inspect-collision) need_tools; collision_check ;;
   inspect-dressing) need_tools; dressing_check ;;
   inspect-ambient) need_tools; ambient_check ;;

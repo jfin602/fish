@@ -133,6 +133,8 @@ public partial class Main : Node3D
             CallDeferred(MethodName.VerifyBasin);
         if (OS.GetCmdlineUserArgs().Contains("--geology-mesh-check"))
             CallDeferred(MethodName.VerifyGeologyMesh);
+        if (OS.GetCmdlineUserArgs().Contains("--route-field-check"))
+            CallDeferred(MethodName.VerifyRouteFields);
     }
 
     private void VerifyBasin()
@@ -145,6 +147,12 @@ public partial class Main : Node3D
     {
         try { GeologicalRegionChecks.Run(this); GetTree().Quit(); }
         catch (Exception error) { GD.PushError($"GEOLOGY_MESH_FAILED {error}"); GetTree().Quit(1); }
+    }
+
+    private void VerifyRouteFields()
+    {
+        try { GeneratedRouteChecks.Run(this); GetTree().Quit(); }
+        catch (Exception error) { GD.PushError($"ROUTE_FIELD_CHECK_FAILED {error}"); GetTree().Quit(1); }
     }
 
     private void VerifyDepth()

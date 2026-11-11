@@ -1,3 +1,4 @@
+#nullable enable
 using Godot;
 using System.Collections.Generic;
 
@@ -6,6 +7,8 @@ namespace Fish;
 /// <summary>Installs the locally prepared models at scene-authored reef anchors.</summary>
 public partial class ReefComposition : Node3D
 {
+    public GeneratedWorldRoutes? GeneratedRoutes { get; private set; }
+    public WorldEnvironmentAnalysis? EnvironmentAnalysis { get; private set; }
     private sealed record Source(string Path, Vector3 BottomCenterOffset, string GltfStem = "");
 
     private const string Vendor = "res://assets/vendor-local/";
@@ -120,6 +123,26 @@ public partial class ReefComposition : Node3D
         }
         if (GetNodeOrNull<FafGeologyWorld>("Geology") is not { } geology ||
             !geology.TryBuild(seabed, out diagnostic)) return false;
+        // The route reservation and terrain analysis precede all decorative instances.
+        GeneratedRoutes = new GeneratedWorldRoutes(seabed.Basin, geology.GeneratedRegions, Vector3.Zero);
+        var fish = GetNodeOrNull<FishController>("../../../Fish");
+        if (fish is null)
+        {
+            diagnostic = "WORLD_ROUTE_INVALID action=missing-fish-collider";
+            return false;
+        }
+        try
+        {
+            var repaired = GeneratedRoutes.RepairOpenConnectors(GetWorld3D().DirectSpaceState,
+                fish.GetRid(), seabed.Basin, geology.GeneratedRegions);
+            GD.Print($"WORLD_ROUTES_READY nodes={GeneratedRoutes.Nodes.Count} edges={GeneratedRoutes.Edges.Count} repaired={repaired}");
+        }
+        catch (System.InvalidOperationException error)
+        {
+            diagnostic = $"WORLD_ROUTE_INVALID {error.Message}";
+            return false;
+        }
+        EnvironmentAnalysis = new WorldEnvironmentAnalysis(seabed.Basin, geology.GeneratedRegions, GeneratedRoutes);
         if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
             !dressing.TryBuild(seabed, terrain, out diagnostic)) return false;
         if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
