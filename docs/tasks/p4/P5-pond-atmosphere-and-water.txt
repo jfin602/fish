@@ -1,0 +1,29 @@
+TASK: Phase 4 / P5 — Pond atmosphere and water
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.5`.
+
+GOAL
+Create independently tunable Pond water/light/fog and overcast ambience using the existing Forward+ rendering system, while leaving Ocean's blue reef appearance and saved lighting presets unchanged.
+
+READ / ENTRY
+P4 README/plan P5, P4 design, FAF Pond/Ocean style contract, actual UnderwaterAtmosphere/LightingSettings/LightingPresetStore/shaders, pond world manifest/loader and accepted c2-water-light/c2-depth records. Confirm version 0.4.4 and current HEAD/dirty state. Inspect any owner-supplied Pond reference in its actual local/repo location; never invent one.
+
+IMPLEMENT
+1. Add per-habitat visual profile data for Pond: green/olive water absorption, golden-green shallows, deep murk, darker overcast top lighting, depth attenuation, sparse shafts/caustics and suspended silt. Preserve all Ocean light, sky, GFX and preset base values; Pond does not overwrite global settings on return.
+2. Apply actual world/camera depth and distance extinction smoothly. Nearby fish/obstacles/entry points stay visible; far banks and large objects dissolve from detail to silhouette to green haze. Avoid flat fullscreen tint, fog wall, full blackout or shimmering high-frequency noise.
+3. Reuse existing Forward+ surface shaders and atmosphere nodes through a profile switch with clean scene disposal. Distinguish underwater from above-water treatment as later P10 work; do not prematurely introduce a fake world ceiling.
+4. Use a low-cost cloudy-day initial preset and a brighter-shallow tunable option; both share one pond palette identity. No expensive additional viewport or fluid simulation.
+5. Add profile tests for independent world values, shallow/mid/deep attenuation, focus/pause initialization, camera/UI material separation, old lighting preset compatibility and Pond→Ocean→Pond reset.
+6. Record current shader/scene ownership and checks under p4/qualification/implementation.md.
+
+SCOPE
+No gameplay state or motor changes, no shore/sky transition qualification yet, no Ocean recolor, no new fish artwork.
+
+VALIDATE
+T2 scoped rendering/settings tests, actual Godot build/main smoke, representative headless material/resource assertions, git diff --check. A screenshot/probe does not prove final art or native readability; P7 owns that.
+
+DONE / VERSION
+Pond renders a distinct low-cost murky-green atmosphere, Ocean remains unchanged and presets do not leak. Set root 0.4.5 only after checks and report actual evidence/gaps. No self-commit/push.
