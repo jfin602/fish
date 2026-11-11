@@ -1,6 +1,6 @@
 # P3 — FAF reef world rebuild
 
-**Status: IN PROGRESS at root `0.3.6`; P1–P6 implemented, P7 native review found world-art defects requiring repair.** The owner explicitly authorized the P3 transition on 2026-11-10 while accepting P2 G2.3/V20 as a documented open gap. P3 rebuilds and dresses the accepted varying-depth P2 world with the completed original FAF library.
+**Status: OWNER CLOSED FOR PROGRESSION / NOT GREEN at implemented checkpoint `0.3.6`.** P1–P6 and C3 M1–M4 are implemented. On 2026-11-11 the owner approved P4 entry with the recorded P3/C3 failures and native gaps retained; see the [direct P3 closeout](closeout.md). P7 and P8 were not completed as runner checkpoints, and `0.3.7`/`0.3.8` were not created.
 
 Read the [phase design](../../planning/p3/reef-world-rebuild.md), [assessment](prompt-assessment.md), [implementation plan](implementation-plan.md), [FAF art style](../../fish-asset-factory/art-style.md), [style proof 001](../../fish-asset-factory/style-proof-001/README.md) and [runner contract](../../phase-runner.md).
 
@@ -21,7 +21,7 @@ Turn the accepted technical depth world into the first fully dressed Fish reef:
 
 ## World-generation architecture correction
 
-The original P3 P2–P4 prompt text was authored before S18 and may already exist in local runner history. **Do not rewrite/fabricate those checkpoints.** At the owner-selected P3 P6 / `0.3.6` pause, [c3-world-gen](../c3-world-gen/README.md) supersedes the old placed/modular world-formation assumptions with the deterministic compiler/bake architecture. Run c3-world-gen before c3-visibility and before P3 P7 native closeout. Character Select and later P3 art goals remain in force.
+The original P3 P2–P4 prompt text was authored before S18 and may already exist in local runner history. **Do not rewrite/fabricate those checkpoints.** At the owner-selected P3 P6 / `0.3.6` pause, [c3-world-gen](../c3-world-gen/README.md) superseded the old placed/modular world-formation assumptions with the deterministic compiler/bake architecture. C3 M1–M4 was completed before the [direct owner-closed progression decision](closeout.md). C3 visibility V25 and the formal P3 P7 native closeout remain unqualified history; Character Select and later P3 art goals remain available for future refinement.
 
 ## Entry and version
 
@@ -48,7 +48,7 @@ Before execution:
 | P7 | [Native style, character select and performance tuning](P7-native-style-character-select-and-performance-tuning.txt) | Owner/native world-art + five-character selection/return-flow + performance qualification | `0.3.7` | T3, mandatory manual handoff |
 | P8 | [FAF reef world closeout](P8-faf-reef-world-closeout.txt) | G3.1–G3.4 evidence review, owning-doc reconciliation and next-phase routing | `0.3.8` | T3/T1, final manual closeout |
 
-P8 is the sole final closeout. P7 is the main native owner checkpoint. The first P7 native review repaired Character Select layout/focus and observed five short selection/return cycles, but rejected the current reef presentation for exposed terrain joins, flat geology and weak shallow/middle layering. Full route traversal and owner acceptance are still open. See [native world-art review](qualification/native-world-art.md), [Character Select review](qualification/character-select.md) and [acceptance record](qualification/accepted-world-art.md). Do not advance to P8 or assign `0.3.7` until P7 is repaired and accepted.
+P8 is the authored final closeout and P7 the authored native checkpoint. The first P7 native review repaired Character Select layout/focus and observed five short selection/return cycles, but rejected the earlier reef presentation. C3 M1–M4 then corrected the Ocean, and the owner approved progression with remaining visual/native gaps. The [direct closeout](closeout.md) records that exception without fabricating P7/P8 execution or assigning `0.3.7`/`0.3.8`. See [native world-art review](qualification/native-world-art.md), [Character Select review](qualification/character-select.md), [M4 candidate](../c3-world-gen/qualification/m4-habitats.md) and [acceptance record](qualification/accepted-world-art.md).
 
 P1–P6 checks are in [implementation evidence](qualification/implementation.md); [Character Select evidence](qualification/character-select.md) records the P5 route and native-observation limits. The runner owns checkpoint commits.
 

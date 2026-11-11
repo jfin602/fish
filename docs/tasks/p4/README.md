@@ -1,6 +1,6 @@
 # P4 — Freshwater Pond and World Select
 
-**State: AUTHORED / NOT EXECUTED.** Owner-selected direction dated 2026-11-11. No P4 checkpoints, native evidence or GREEN results are claimed. The current documented P3 local checkpoint is `0.3.6` with C3 world-generation and visibility/owner qualification unresolved. P4 must **not** start until the corrected Ocean Base World and required P3 handoff are accepted (or a new explicit owner progression decision is recorded with all gaps intact).
+**State: READY TO EXECUTE at clean root `0.4.0` / NOT IMPLEMENTED.** The owner approved P4 progression on 2026-11-11 with P3/C3 visual and native-review gaps kept explicit in the [P3 direct closeout](../p3/closeout.md). No P4 checkpoint, native evidence or GREEN result is claimed. P4 inherits accepted progression Ocean Base World `ocean-m4-42`: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`. The old `qualification-42` package remains intact. The complete 14-prompt stack validates from this baseline.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [P4 design](../../planning/p4/freshwater-world.md) · [Roadmap](../../roadmap.md) · [Runner contract](../../phase-runner.md) · [Validation V28–V32](../../validation.md)
 
@@ -12,10 +12,10 @@ The Pond includes **surface swimming and camera air–water crossing**: fish can
 
 ## Non-negotiable entry dependency
 
-1. Finish `docs/tasks/c3-world-gen/manual/M1–M4` **in order**, one by one with owner review, at the actual local P3 checkpoint.
-2. Repeat required C3 generation/baked/route/perimeter/native visual tests and reconcile C3/P3 qualification. Do not convert previous failures to PASS, silently waive V25/V26/V27, or overwrite the accepted Ocean Base World.
-3. Inspect actual branch/HEAD, dirty changes, root `package.json`, Godot scene graph, latest Ocean bake manifest and P3 closeout. Record any accepted progression exception explicitly.
-4. **Deliberately set the root baseline to `0.4.0` only when entry is authorized and clean/reconciled.** Authoring this stack leaves the actual version untouched. No manual "make it 0.4.0" reset if P3 is incomplete.
+1. C3 manual M1–M4 completed; the owner approved progression with remaining visual/native gaps in the [P3 closeout](../p3/closeout.md). Preserve that disposition rather than converting previous failures to PASS or silently waiving V25/V26/V27.
+2. The corrected Ocean Base World was promoted under new `ocean-m4-42` without overwriting `qualification-42`; normal baked loading and five-fish Character Select passed focused checks. Complete fish-controlled native exploration remains an accepted progression gap.
+3. The deliberate root baseline is `0.4.0` after reconciled C3 source, owner-closed P3 handoff and clean phase-entry commit. Recheck branch/HEAD, package manifest, scene/world identity and working tree before the runner starts.
+4. Preserve the Ocean identity and package during P4. Do not create an artificial P3 P7/P8 or P4 checkpoint.
 5. Before running inspect the phase runner's exact command composition, Node/Codex model availability and selected Fish MCP project identity. Avoid concurrent P3/c3/P4 runners.
 
 ## Prompt order

@@ -8,6 +8,10 @@ The later [R1/M3 generated-route evidence](qualification/m3-routes.md) records t
 
 The subsequent [R1/M4 dense-habitat evidence](qualification/m4-habitats.md) records 7,960 seed-42 placements across 12 habitat roles, clean full seed-42/43/44 bakes in 9.695/10.658/9.555 s, generator-free baked reloads, and native Forward+ depth/habitat screenshots. The prior seed-44 finalizer error did not recur in these M4 bakes. M4 improves broad shallow vegetation and depth contrast but leaves exposed dark geology in one ordinary shallow view and conspicuous angular cave/shell transitions. The M4 candidates are separate from the provisional Base World. Human owner acceptance, full fish-controlled native route/perimeter review, and formal P7 rerun are still open. This historical P7 disposition is not silently converted to GREEN.
 
+## 2026-11-11 progression addendum
+
+The owner approved moving to P4 with the M4 visual and native-review gaps retained. This is an **owner-closed for progression / not GREEN** C3 disposition; the failed P7 matrix below remains historical evidence and V26/V27 are not relabeled PASS. The M4 seed-42 candidate was promoted under the new, no-overwrite `ocean-m4-42` Base World name: seed `42`, settings `1`, generator `c3-full-12`, world ID `world-6cba9a67e6275297`, content SHA-256 `ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879`. The prior `qualification-42` package remains intact. A clean source build, normal-play smoke and five-fish Character Select check loaded the new package with `generator_invocations=0`; those checks do not fill the missing hand-controlled passage/perimeter, sustained performance or V25 observations. [P3 direct closeout](../p3/closeout.md) maps the Gate consequences.
+
 ## V26 and V27
 
 | Scenario | Result | Evidence and unresolved part |

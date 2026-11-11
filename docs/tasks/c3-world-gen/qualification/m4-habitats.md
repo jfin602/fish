@@ -83,3 +83,7 @@ At the shallow garden, transition, and wide views, native point counters reporte
 | Explicit owner acceptance and formal P7 rerun | **OPEN**. Do not call C3 GREEN or tune c3-visibility. |
 
 The candidate is ready for owner inspection, but visual failures remain before formal P7 can be accepted. Keep the old provisional Base World untouched; the new candidates are separate ignored qualification artifacts.
+
+## 2026-11-11 owner progression decision
+
+The owner approved proceeding to P4 with the visual and full native-traversal gaps above retained. The hash-verified `m4-qualified-42` candidate was promoted through the guarded workflow to a **new** `ocean-m4-42` Base World; `qualification-42` was not overwritten. Normal-play smoke and five-fish Character Select then loaded `world-6cba9a67e6275297` with zero generator invocations. This is acceptance as the P4 Ocean foundation, not a retroactive PASS for M4 visual criteria, P3 G3.1–G3.4 or V25–V27. See the [P3 direct closeout](../../p3/closeout.md).

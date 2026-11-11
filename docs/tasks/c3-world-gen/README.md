@@ -1,6 +1,6 @@
 # c3-world-gen — deterministic procedural reef world correction
 
-**State:** P1–P6 IMPLEMENTED / P7 NATIVE REVIEW FAILED, human owner acceptance pending. Manual [R1/M1 shore/depth](qualification/m1-shore-depth.md) and [R1/M2 terrain-conditioned geology](qualification/m2-geology-blending.md) are progression candidates. [R1/M3 generated routes](qualification/m3-routes.md) replaced fixed goals; its earlier seed-44 finalizer error did not recur in the clean M4 full bakes, but native fish-controlled route review remains open. [R1/M4 dense habitats](qualification/m4-habitats.md) produced separate clean seed-42/43/44 candidates, density/timing measurements and Forward+ screenshots. Cave-mouth integration and one dark shallow geological view still fail the owner-facing visual checkpoint. Repeat P7 remains open. The historical [P7 native review](qualification/native-world-gen.md) and [closeout](closeout.md) remain failed evidence.
+**State:** OWNER CLOSED FOR P4 PROGRESSION / NOT GREEN. P1–P6 and manual [R1/M1–M4](manual/README.md) are implemented. M4's clean seed-42/43/44 bakes, density/timing measurements and Forward+ screenshots support the corrected Ocean Base World `ocean-m4-42`; its dark shallow geological view, cave integration and full native route review remain gaps. The owner approved progression on 2026-11-11 without converting the historical [P7 native review](qualification/native-world-gen.md) or [closeout](closeout.md) to PASS. V26/V27 are not GREEN.
 **Type:** Correction 3.  
 **Authoring baseline:** GitHub main at `4c9b601df7c8aa97f983b02bea216aee13af2748`, root `0.3.0`.  
 **Execution version:** every prompt requires **unchanged `0.3.6`**, the owner-selected P3 P6 checkpoint. This is a strict preflight for the intended local execution point, not an instruction to bump/downgrade GitHub main or fabricate P3 checkpoints.
@@ -20,9 +20,9 @@ The correction fixes the observed structural problems:
 
 The correction keeps Fish's bright stylized low-poly art, FAF asset library, Forward+ water/light/depth systems, accepted movement/camera/controls and Character Select.
 
-## Conflict-safe entry
+## Historical conflict-safe entry at `0.3.6`
 
-The owner's active local P3 state is not visible from GitHub. Before execution:
+The following was the preflight for the completed correction stack at the P3/P6 checkpoint. It is retained to explain its execution history, not as a command to downgrade the `0.4.0` P4 baseline. Before that execution:
 
 1. confirm the P3 runner's Git-proven completed prefix through P6;
 2. confirm root `package.json` is exactly `0.3.6`;
@@ -50,14 +50,14 @@ P7 is the sole final closeout.
 
 ## Manual R1 repair prompts
 
-The pushed P7 result is not GREEN. Use the targeted manual repair sequence in [manual/README.md](manual/README.md) before rerunning the formal native closeout:
+The pushed P7 result was not GREEN. The targeted manual repair sequence in [manual/README.md](manual/README.md) was:
 
 1. M1 — large irregular shoreline-first body shape + inward depth field;
 2. M2 — terrain-conditioned cave/tunnel placement + heavy surface blending;
 3. M3 — generated route anchors + multi-seed reliability;
 4. M4 — dense habitat regions + aggressive depth-dependent reef composition.
 
-M1 and M2 completed their manual progression handoffs. M3 route implementation is in place, and M4 was explicitly requested as a manual task. M4's [qualification note](qualification/m4-habitats.md) records owner-reviewable candidates and remaining visual failures. Keep c3-visibility on hold until the generated world is visually accepted enough to tune visibility.
+M1–M4 completed their manual implementation/evidence steps. M4's [qualification note](qualification/m4-habitats.md) records the accepted progression candidate and remaining visual failures. C3 visibility V25 remains unqualified and its further work is deferred by the owner-closed P3 progression decision.
 
 ## Acceptance boundary
 
@@ -90,7 +90,7 @@ Execution records:
 
 ## Commands
 
-After confirming actual local P3 P6 / `0.3.6` state:
+Historical correction execution from actual local P3 P6 / `0.3.6` state (do not rerun as part of P4 entry):
 
 ```bash
 npm run fish:phase:validate -- c3-world-gen

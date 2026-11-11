@@ -18,3 +18,7 @@ The historical P1–P6 [implementation evidence](implementation.md) qualifies as
 ## Repair boundary before acceptance
 
 Keep the full 38-variant environment inventory and five character choices. Rework the terrain/underlay transition and cave/arch masses first, then revisit shallow/middle dressing and depth color from the follow camera. Verify continuous native route/camera behavior and representative performance after those changes. Finally ask the owner to judge the revised Character Select and world-art captures during normal play. Do not assign `0.3.7` until the candidate is reproducible and both judgments are positive; P8 remains a later closeout.
+
+## 2026-11-11 progression note
+
+The earlier state above remains the P7 observation at its source. Subsequent C3 M1–M4 produced the corrected `c3-full-12` Ocean candidate. The owner approved progression to P4 with its exposed shallow geological face, angular cave transitions, incomplete full native traversal and V25 visibility qualification kept open. That decision accepts the Ocean as a P4 foundation; it does not mark this P7 art review PASS or create `0.3.7`/`0.3.8` checkpoints. See the [P3 direct closeout](../closeout.md) and [M4 evidence](../../c3-world-gen/qualification/m4-habitats.md).

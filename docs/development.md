@@ -72,7 +72,7 @@ Exports are later qualification scope. When introduced, use named platform prese
 
 ### C3 full-world candidates and baked normal play
 
-The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate packages live under ignored `artifacts/world-data/godot/app_userdata/Fish/world-candidates/<name>/`; `tools/dev` passes a stable `XDG_DATA_HOME` so the `user://` paths match across commands. Names use lowercase letters, digits and hyphens. Settings version is `1`, generator version is `c3-full-1`, and root application version stays `0.3.6`.
+The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate packages live under ignored `artifacts/world-data/godot/app_userdata/Fish/world-candidates/<name>/`; `tools/dev` passes a stable `XDG_DATA_HOME` so the `user://` paths match across commands. Names use lowercase letters, digits and hyphens. Settings version is `1`; the accepted Ocean Base World uses generator `c3-full-12`. Earlier M3 `c3-full-9`, M2 `c3-full-8`, M1 `c3-full-3`, and provisional `c3-full-1` packages remain available where supported. Root application version is `0.4.0` at the P4 entry baseline.
 
 | Command | Result |
 | --- | --- |
@@ -83,8 +83,10 @@ The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate pac
 | `./tools/dev promote-world <new-name> <base-name> --dry-run` | Validate and show the exact source/destination without writing. |
 | `./tools/dev promote-world <new-name> <base-name>` | Validate and copy to `game/worlds/base/<base-name>/`. Existing destinations fail; no command stages or commits files. |
 | `./tools/dev inspect-character-select` | Exercise all five Character Select fish and the return/select route against the baked default. |
+| `./tools/dev inspect-shore-field` | Check reproducible shoreline, shore-derived depth and area bands for seeds 42/43/44 without compiling complete worlds. |
+| `./tools/dev inspect-geology-sites` | Check deterministic terrain-conditioned sites, shoulder mass, water-domain entrances and structural burial for seeds 42/43/44. |
 
-Normal P3 play loads `res://worlds/base/qualification-42` and fails visibly if the package or a referenced asset is missing/corrupt; it does not regenerate. The authored Habitat shell, Fish motor, Character Select and water presentation remain the scene owners. The qualification package is a provisional review target, not a shipping-world declaration. `manifest.json` and package resources are tracked for ordinary diffs; no raw FAF source package is copied into a Base World.
+Normal play loads `res://worlds/base/ocean-m4-42` and fails visibly if the package or a referenced asset is missing/corrupt; it does not regenerate. The authored Habitat shell, Fish motor, Character Select and water presentation remain the scene owners. The historical `qualification-42` package remains a provisional P7 record. `manifest.json` and package resources are tracked for ordinary diffs; no raw FAF source package is copied into a Base World.
 
 ## Godot Editor MCP
 
