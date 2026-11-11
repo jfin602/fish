@@ -23,7 +23,7 @@ Keep authoritative fish/run/ecology state separate from input adapters, camera t
 
 Introduce stable run and significant event IDs when their first owning systems are added. Growth, consumption, health changes, escapes, and death must have inspectable real causes. An event journal should capture meaningful occurrences, not every rendered frame. [The module map](../MODULES.md) describes intended responsibilities without requiring empty frameworks.
 
-Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. P2 owns the first deliberate habitat/water treatment and renderer lock. **S18 now selects P3's larger-world direction: a finite deterministic world compiler with baked outputs and curated Base Worlds.** Final biome scale, player-facing generation UX and exact balance remain open. Asset selection alone does not change the renderer or establish runtime suitability.
+Use Godot scenes/resources for composition. Keep movement in appropriate physics updates and presentation independent of frame rate. A camera toggle changes viewpoint, not the fish identity, physics, health, or time. Begin with a small bounded habitat and simple native geometry for the foundation. The owner selected realistic ocean creatures and environments; [art and assets](art-and-assets.md) owns the approved source shortlist, first import set, and license/import checks. P2 owns the first deliberate habitat/water treatment and renderer lock. **S18 now selects P3's larger-world direction: a finite deterministic world compiler with baked outputs and curated Base Worlds.** Ocean and Pond are both selected habitats under P4; future world scale, player-facing generation UX and exact balance remain open. Asset selection alone does not change the renderer or establish runtime suitability.
 
 ## P2 worldbuilding and rendering boundary
 
@@ -86,7 +86,19 @@ After actual P1 close and deliberate root `0.2.0` entry, the [P2 stack](tasks/p2
 
 ## P3 world-art boundary
 
-After P2 is fully closed and root `0.3.0` is deliberately prepared, [P3](planning/p3/reef-world-rebuild.md) rebuilds the accepted varying-depth world's **visible** terrain and dressing with the completed FAF terrain/rock/coral/plant/detail library. It adds authored caves, tunnels, arches, geological landmarks, a shallow-lush to deep-sparse density gradient, and optional presentation-only ambient FAF reef fish while preserving P2 collision/depth/water and P1 movement/camera authority. P3 is art/world composition, not ecology; feeding/predators/growth begin in P4.
+After P2 is fully closed and root `0.3.0` is deliberately prepared, [P3](planning/p3/reef-world-rebuild.md) rebuilds the accepted varying-depth world's **visible** terrain and dressing with the completed FAF terrain/rock/coral/plant/detail library. It adds authored caves, tunnels, arches, geological landmarks, a shallow-lush to deep-sparse density gradient, and optional presentation-only ambient FAF reef fish while preserving P2 collision/depth/water and P1 movement/camera authority. P3 is art/world composition, not ecology; P4 adds Freshwater Pond and World Select, and feeding/predators/growth begin in P5.
+
+## P4 multi-habitat architecture (planned, not implemented)
+
+P4 preserves the P3 deterministic compiler, baked loader, Forward+ renderer and five marine fish while registering two independent, selectable **Ocean** and **Freshwater Pond** worlds. [P4 design](planning/p4/freshwater-world.md) owns the full acceptance contract.
+
+- Represent each world by a stable habitat/world ID, its compiled/baked resource identity, generator/settings version, spawn environment and per-habitat water/light/fog/art profile. Never duplicate an entire code path merely to make freshwater green.
+- Represent each creature with stable species ID and explicit native habitat eligibility. A single fail-closed compatibility policy must serve Character Select, normal ambient spawns and future ecology; unknown tags do not mean compatible.
+- New Life selects a world before a species; P4 selection is an ephemeral tech-demo session until persistent lives are added.
+- Load/unload ocean and pond without leaking cached visuals, selected fish, camera input, ambient populations or scene state. Missing resources never fall back into an incompatible habitat.
+- At P6 persistence, a run must bind species ID, habitat/world ID, baked-world identity and encounter/resource state; Continue must restore that run directly, with no in-world transfer exploit.
+
+The P4 decision changes future phase numbering but does not claim that any source implementation or qualification already exists.
 
 ## Source references
 
