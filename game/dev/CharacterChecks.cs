@@ -124,6 +124,7 @@ public static class CharacterChecks
         Require(first is not null && enter is not null, "route entry controls missing");
         first!.EmitSignal(Button.SignalName.Pressed);
         enter!.EmitSignal(Button.SignalName.Pressed);
+        enter.EmitSignal(Button.SignalName.Pressed);
         await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
         var world = tree.CurrentScene as Main;
         Require(world is not null && DemoSelection.CharacterId == "FAF-FISH-001",

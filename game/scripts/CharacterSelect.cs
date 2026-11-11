@@ -26,6 +26,7 @@ public partial class CharacterSelect : Control
     private string _clip = "";
     private int _selected;
     private bool _dragging;
+    private bool _transitioning;
     private bool _invalidDisplay;
     private string _shownWorldId = "";
 
@@ -68,6 +69,7 @@ public partial class CharacterSelect : Control
 
     private void RebuildForWorld()
     {
+        _transitioning = false;
         _shownWorldId = WorldSession.SelectedWorldId;
         _dragging = false;
         _model = null;
@@ -112,6 +114,7 @@ public partial class CharacterSelect : Control
 
     public override void _Input(InputEvent @event)
     {
+        if (_transitioning) return;
         if (@event is not InputEventKey { Pressed: true, Echo: false } key) return;
         if (_entries.Count > 0 && (key.Keycode is Key.Left or Key.A))
         {
@@ -329,26 +332,37 @@ public partial class CharacterSelect : Control
 
     private void EnterWorld()
     {
-        if (_enter.Disabled) return;
+        if (_transitioning || _enter.Disabled) return;
         if (_entries.Count == 0) return;
         if (!SpeciesCompatibility.TryResolve(WorldSession.SelectedWorldId,
             _entries[_selected].Id, SpeciesRole.Selectable, out _, out var diagnostic))
         { _status.Text = diagnostic; _enter.Disabled = true; return; }
         DemoSelection.CharacterId = _entries[_selected].Id;
+        _transitioning = true;
+        _enter.Disabled = true;
         _dragging = false;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GetTree().Paused = false;
-        GetTree().ChangeSceneToFile("res://scenes/main.tscn");
+        var result = GetTree().ChangeSceneToFile("res://scenes/main.tscn");
+        if (result == Error.Ok) return;
+        _transitioning = false;
+        _enter.Disabled = false;
+        _status.Text = $"Could not enter world ({result}).";
     }
 
     private void BackToWorldSelect()
     {
+        if (_transitioning) return;
+        _transitioning = true;
         _dragging = false;
         DemoSelection.Clear();
         WorldSession.Unload();
         Input.MouseMode = Input.MouseModeEnum.Visible;
         GetTree().Paused = false;
-        GetTree().ChangeSceneToFile("res://scenes/world_select.tscn");
+        var result = GetTree().ChangeSceneToFile("res://scenes/world_select.tscn");
+        if (result == Error.Ok) return;
+        _transitioning = false;
+        _status.Text = $"Could not return to World Select ({result}).";
     }
 
     private static Label Label(string text, int size, Color color)
