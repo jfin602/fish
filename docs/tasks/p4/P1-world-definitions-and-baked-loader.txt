@@ -1,0 +1,32 @@
+TASK: Phase 4 / P1 — World definitions and baked loader
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.1`.
+
+GOAL
+Create the minimal typed two-world contract and a world-indexed baked loader that preserves the current Ocean and can safely resolve a future Pond package, without compiling worlds on normal entry.
+
+PREFLIGHT / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p4/README.md and implementation-plan P1, docs/planning/p4/freshwater-world.md, MODULES.md, the accepted P3/C3 closeout and relevant current WorldGeneration/BakedWorldContract/BakedWorldLoader/FullWorldPackage, normal startup scenes, manifest and tools/dev implementation. Inspect branch, HEAD, dirty tree, version and selected Fish project identity.
+
+ENTRY IS STRICT
+Require owner-approved P3 correction/native qualification or an explicit documented owner progression exception preserving open Gates. Require deliberate root 0.4.0 before P1. If still 0.3.6, P3/c3 incomplete, or Ocean Base World unaccepted, STOP without updating version or resetting history.
+
+IMPLEMENT
+1. Introduce a small stable world ID/catalog for Ocean and Pond; each record names habitat type, display name/preview metadata, renderer environment profile ID, spawn metadata, selected baked manifest identity, generator/settings version, and eligible asset catalog route. Use real resource types/IDs rather than scene-path guesses. No invented Pond bake.
+2. Resolve current accepted Ocean baked package through the new contract, byte/manifest identity preserved; let the Pond entry be explicitly not-yet-installed with a clear diagnostic until P4 creates its package.
+3. Refactor existing loader minimally for world-selectable baked worlds; normal entry cannot generate anything or select another world on missing resources. Unrecognized ID, missing bake, version mismatch and incomplete/corrupt manifest must fail closed and surface actionable diagnostics.
+4. Add session-local selected-world state separate from selected fish and future living run state. Ensure a world unload invalidates prior cached scene/visual references without deleting any Base World file.
+5. Add focused world-manifest/loader checks including original Ocean hash identity, no generation invocations, valid/invalid world entries and deterministic repeat load.
+6. Record actual changed files, manifest IDs, checks and unknown local dependencies in docs/tasks/p4/qualification/implementation.md.
+
+SCOPE / DEFERRALS
+No UI yet, no Pond geometry/art, no fish species, no runtime save/death, no Ocean rewrite, no parallel world compiler. Preserve P1 fixture, existing Forward+, movement and controls.
+
+VALIDATE
+T2 focused manifest/loader tests and current Godot .NET build/appropriate smoke using actual inspected tools/dev commands; check git diff --check, no lockfile or unrelated files. Source-only checks cannot prove native image fidelity. Verify failure paths are truly non-fallback.
+
+DONE / VERSION / REPORT
+Two manifest identities can be described without generating Pond; accepted Ocean plays through the new baked loader and errors do not load wrong worlds. After checks set root package.json only to 0.4.1; report source revision, results, evidence limits, next P2. Do not self-commit or push; runner owns checkpoint.
