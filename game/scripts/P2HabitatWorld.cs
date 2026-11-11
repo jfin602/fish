@@ -47,6 +47,8 @@ public static class P2HabitatWorld
                         : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat,
                             WorldSession.SelectedWorldId).Manifest;
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
+                if (WorldSession.SelectedWorldId == WorldCatalog.PondId)
+                    FafAmbientPondLife.Install(bakedHabitat);
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 fish.Position = bakedHabitat.GetNode<Marker3D>("Spawn").Position;

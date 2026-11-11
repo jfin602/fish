@@ -14,8 +14,8 @@ public static class SpeciesCompatibilityChecks
         {
             WorldSession.Select(WorldCatalog.OceanId);
             var ocean = WorldCatalog.Resolve(WorldCatalog.OceanId);
-            Require(CharacterCatalog.All.Count == 5, "marine catalog count");
-            foreach (var candidate in CharacterCatalog.All)
+            Require(CharacterCatalog.All.Count == 10, "fish catalog count");
+            foreach (var candidate in CharacterCatalog.All.Where(e => e.NativeHabitat == WorldHabitat.Marine))
             {
                 Require(candidate.NativeHabitat == WorldHabitat.Marine && candidate.Selectable &&
                     candidate.Ecological && !candidate.FixtureOnly, "marine metadata " + candidate.Id);
@@ -30,9 +30,25 @@ public static class SpeciesCompatibilityChecks
                     "SPECIES_ROLE_INELIGIBLE");
             }
             Require(SpeciesCompatibility.Available(WorldCatalog.OceanId, SpeciesRole.Selectable).Count == 5 &&
-                SpeciesCompatibility.Available(WorldCatalog.PondId, SpeciesRole.Selectable).Count == 0 &&
+                SpeciesCompatibility.Available(WorldCatalog.PondId, SpeciesRole.Selectable).Count == 5 &&
                 SpeciesCompatibility.Available(WorldCatalog.OceanId, SpeciesRole.Ambient).Count == 4,
                 "filtered role catalogs");
+            foreach (var candidate in CharacterCatalog.All.Where(e => e.NativeHabitat == WorldHabitat.Freshwater))
+            {
+                Accept(WorldCatalog.PondId, candidate.Id, SpeciesRole.Selectable);
+                Accept(WorldCatalog.PondId, candidate.Id, SpeciesRole.Ambient);
+                Reject(WorldCatalog.OceanId, candidate.Id, SpeciesRole.Selectable,
+                    "SPECIES_HABITAT_INCOMPATIBLE");
+                Reject(WorldCatalog.OceanId, candidate.Id, SpeciesRole.Ambient,
+                    "SPECIES_HABITAT_INCOMPATIBLE");
+            }
+            foreach (var candidate in PondCreatureCatalog.Ambient)
+            {
+                Require(SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId,
+                    candidate.Id, null, SpeciesRole.Ambient, out _, out _), "Pond ambient rejected");
+                Require(!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.OceanId,
+                    candidate.Id, null, SpeciesRole.Ambient, out _, out _), "Pond ambient leaked to Ocean");
+            }
             Reject("lake", "FAF-FISH-001", SpeciesRole.Selectable, "SPECIES_WORLD_UNKNOWN");
             Reject(null, "FAF-FISH-001", SpeciesRole.Selectable, "SPECIES_WORLD_UNKNOWN");
             Reject(WorldCatalog.OceanId, null, SpeciesRole.Selectable, "SPECIES_ID_UNKNOWN");
@@ -77,13 +93,14 @@ public static class SpeciesCompatibilityChecks
             var selectionScene = GD.Load<PackedScene>("res://scenes/character_select.tscn");
             var pondSelect = selectionScene.Instantiate<CharacterSelect>();
             main.AddChild(pondSelect);
-            Require(pondSelect.FindChild("Character_0", true, false) is null &&
-                pondSelect.FindChild("EnterWorldButton", true, false) is Button { Disabled: true } &&
-                pondSelect.FindChild("BackToWorldButton", true, false) is Button back && back.HasFocus(),
-                "Pond empty selection state");
+            Require(pondSelect.FindChild("Character_0", true, false) is Button &&
+                pondSelect.FindChild("Character_4", true, false) is Button &&
+                pondSelect.FindChild("PreviewModel", true, false) is Node3D &&
+                pondSelect.FindChild("EnterWorldButton", true, false) is Button { Disabled: false },
+                "Pond populated selection state");
             pondSelect._Input(new InputEventKey { Keycode = Key.Right, Pressed = true });
-            Require(pondSelect.FindChild("Character_0", true, false) is null,
-                "Pond focus wrap created an Ocean choice");
+            Require(pondSelect.FindChild("Character_1", true, false) is Button next &&
+                next.Text.Contains("SELECTED"), "Pond focus did not advance");
             pondSelect.Free();
             WorldSession.Select(WorldCatalog.OceanId);
             var oceanSelect = selectionScene.Instantiate<CharacterSelect>();
@@ -100,10 +117,11 @@ public static class SpeciesCompatibilityChecks
             Require(first!.Text.Contains("SELECTED"), "Ocean focus wrap lost first fish");
             WorldSession.Select(WorldCatalog.PondId);
             oceanSelect._Process(0);
-            Require(oceanSelect.FindChild("Character_0", true, false) is null &&
-                oceanSelect.FindChild("PreviewModel", true, false) is null &&
-                oceanSelect.FindChild("EnterWorldButton", true, false) is Button { Disabled: true },
-                "live habitat change retained Ocean choices or preview");
+            Require(oceanSelect.FindChild("Character_0", true, false) is Button &&
+                oceanSelect.FindChild("Character_4", true, false) is Button &&
+                oceanSelect.FindChild("PreviewModel", true, false) is Node3D &&
+                oceanSelect.FindChild("EnterWorldButton", true, false) is Button { Disabled: false },
+                "live habitat change did not rebuild Pond choices or preview");
             WorldSession.Select(WorldCatalog.OceanId);
             oceanSelect._Process(0);
             Require(oceanSelect.FindChild("Character_0", true, false) is Button reset &&
@@ -168,7 +186,7 @@ public static class SpeciesCompatibilityChecks
                 finally { WorldSession.Unload(); habitat.Free(); }
             }
             WorldSession.Select(WorldCatalog.OceanId);
-            GD.Print("SPECIES_CHECK_OK marine=5 ocean-selectable=5 pond-selectable=0 ambient=31 fixture=isolated switch=cleared seed=42");
+            GD.Print("SPECIES_CHECK_OK marine=5 ocean-selectable=5 pond-selectable=5 ocean-ambient=31 pond-wildlife=7 fixture=isolated switch=cleared seed=42");
             main.GetTree().Quit();
         }
         catch (Exception error)

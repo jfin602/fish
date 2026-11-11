@@ -75,11 +75,17 @@ func _initialize() -> void:
 				_fail(stem, "imported triangles/materials/bones differ from manifest")
 				return
 			var dimensions: Array = record["dimensions_m"]
-			# Blender +Z up / -Y forward becomes Godot +Y up / -Z forward.
+			# Imported Pond geometry is nose-first toward +Z; player presentation corrects to -Z.
 			if absf(bounds.size.x - float(dimensions[0])) > 0.0001 or absf(bounds.size.y - float(dimensions[2])) > 0.0001 or absf(bounds.size.z - float(dimensions[1])) > 0.0001:
 				_fail(stem, "imported dimensions differ from manifest")
 				return
 			var roles: Array = EGG_ROLES if stage == "egg" else SWIM_ROLES
+			if stage != "egg":
+				var head_z: float = skeleton.get_bone_global_rest(skeleton.find_bone("spine_01")).origin.z
+				var tail_z: float = skeleton.get_bone_global_rest(skeleton.find_bone("tail_fin")).origin.z
+				if head_z <= tail_z:
+					_fail(stem, "imported nose is not +Z ahead of tail")
+					return
 			for role_value in roles:
 				var role: String = str(role_value)
 				var action_name: String = stem + "__" + role

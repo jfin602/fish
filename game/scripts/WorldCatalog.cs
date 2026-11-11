@@ -115,8 +115,11 @@ public static class WorldSession
     {
         WorldCatalog.Resolve(worldId);
         if (ActiveHabitat is { } habitat && worldId != SelectedWorldId)
+        {
             habitat.GetNodeOrNull<FafAmbientReefLife>(
                 "Composition/ReefComposition/AmbientLife")?.ClearPopulation();
+            habitat.GetNodeOrNull<FafAmbientPondLife>("PondAmbientLife")?.ClearPopulation();
+        }
         Unload();
         SelectedWorldId = worldId;
     }

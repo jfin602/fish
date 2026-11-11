@@ -37,6 +37,8 @@ public partial class Main : Node3D
     public override void _Ready()
     {
         if (_startupInvalid) return;
+        if (OS.GetCmdlineUserArgs().Contains("--pond-creature-check") &&
+            PondCreatureChecks.Start(this)) return;
         if (OS.GetCmdlineUserArgs().Contains("--pond-atmosphere-check"))
         {
             try { PondAtmosphereChecks.Run(this); GetTree().Quit(); }
@@ -176,7 +178,7 @@ public partial class Main : Node3D
                 var badge = new Label
                 {
                     Name = "PondVisualFixtureBadge",
-                    Text = "P7 POND CAMERA FIXTURE — NO FRESHWATER FISH INSTALLED",
+                    Text = "P7 POND CAMERA FIXTURE — PRIMITIVE BODY",
                     Position = new Vector2(18, 80),
                     MouseFilter = Control.MouseFilterEnum.Ignore,
                     Modulate = new Color(1f, .8f, .45f),

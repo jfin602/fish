@@ -1,0 +1,1484 @@
+{
+  "SourceManifests": [
+    {
+      "Path": "assets/faf/pond/fish/pond_fish_001_manifest.json",
+      "Sha256": "1f95883989ddd5aceca4e08abe3e2c9a7ab3f2116b73a69f0c060bc3e60999cc"
+    },
+    {
+      "Path": "assets/faf/pond/creatures/pond_creature_001_manifest.json",
+      "Sha256": "2fd69f1b67cff38e724e786373ef46302f0945aca2eb01b2783d0e0db4e00270"
+    },
+    {
+      "Path": "assets/faf/pond/insects/pond_insect_001_manifest.json",
+      "Sha256": "ebbf9b5fdbdaf83abfd0d066145d08118fe3c6c25441b93d3b1fdba0b7c9eebe"
+    }
+  ],
+  "FishStages": [
+    {
+      "Id": "FAF-FISH-006",
+      "Name": "Bluegill",
+      "Stage": "egg",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_006_bluegill__egg.glb",
+      "Sha256": "3569b74ababb5c7b66ae5e2d01b423be74726a8b3301195f139082eed58791a9",
+      "Dimensions": [
+        0.003662,
+        0.00287,
+        0.003595
+      ],
+      "Bones": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "Actions": [
+        "fish_006_bluegill__egg__Idle",
+        "fish_006_bluegill__egg__Hatch"
+      ],
+      "LoopRoles": [
+        "Idle"
+      ],
+      "Breathing": "not_applicable_egg",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-006",
+      "Name": "Bluegill",
+      "Stage": "larva",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_006_bluegill__larva.glb",
+      "Sha256": "f06bcc51307e113024660f9eb72ebadd1b43ca86b7a3dc66c6034824a9a87097",
+      "Dimensions": [
+        0.008098,
+        0.02477,
+        0.007968
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_006_bluegill__larva__Idle",
+        "fish_006_bluegill__larva__Glide",
+        "fish_006_bluegill__larva__SwimSlow",
+        "fish_006_bluegill__larva__Swim",
+        "fish_006_bluegill__larva__SwimFast",
+        "fish_006_bluegill__larva__TurnLeft",
+        "fish_006_bluegill__larva__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-006",
+      "Name": "Bluegill",
+      "Stage": "juvenile",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_006_bluegill__juvenile.glb",
+      "Sha256": "bb658268e2f16164b5852d3b235ce89eaa3158893bdd7c187e79a8c9f2ff026d",
+      "Dimensions": [
+        0.049256,
+        0.099684,
+        0.047545
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_006_bluegill__juvenile__Idle",
+        "fish_006_bluegill__juvenile__Glide",
+        "fish_006_bluegill__juvenile__SwimSlow",
+        "fish_006_bluegill__juvenile__Swim",
+        "fish_006_bluegill__juvenile__SwimFast",
+        "fish_006_bluegill__juvenile__TurnLeft",
+        "fish_006_bluegill__juvenile__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-006",
+      "Name": "Bluegill",
+      "Stage": "subadult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_006_bluegill__subadult.glb",
+      "Sha256": "09740d11686845df6890ebfe583e7eb017b14563441402680619af5458acbb5a",
+      "Dimensions": [
+        0.121811,
+        0.209363,
+        0.139965
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_006_bluegill__subadult__Idle",
+        "fish_006_bluegill__subadult__Glide",
+        "fish_006_bluegill__subadult__SwimSlow",
+        "fish_006_bluegill__subadult__Swim",
+        "fish_006_bluegill__subadult__SwimFast",
+        "fish_006_bluegill__subadult__TurnLeft",
+        "fish_006_bluegill__subadult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-006",
+      "Name": "Bluegill",
+      "Stage": "adult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_006_bluegill.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_006_bluegill__adult.glb",
+      "Sha256": "582d6a9cb0718a42177c7c33c63d6721964b7b990c5a7e4b870352e81c5005e5",
+      "Dimensions": [
+        0.190302,
+        0.309825,
+        0.23545
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_006_bluegill__adult__Idle",
+        "fish_006_bluegill__adult__Glide",
+        "fish_006_bluegill__adult__SwimSlow",
+        "fish_006_bluegill__adult__Swim",
+        "fish_006_bluegill__adult__SwimFast",
+        "fish_006_bluegill__adult__TurnLeft",
+        "fish_006_bluegill__adult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-007",
+      "Name": "Largemouth Bass",
+      "Stage": "egg",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_007_largemouth_bass__egg.glb",
+      "Sha256": "4169be308d8033a2a83d3c6a01cbb6a67cab74d390216d8c651c0b0396fd61c6",
+      "Dimensions": [
+        0.00429,
+        0.003362,
+        0.004211
+      ],
+      "Bones": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "Actions": [
+        "fish_007_largemouth_bass__egg__Idle",
+        "fish_007_largemouth_bass__egg__Hatch"
+      ],
+      "LoopRoles": [
+        "Idle"
+      ],
+      "Breathing": "not_applicable_egg",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-007",
+      "Name": "Largemouth Bass",
+      "Stage": "larva",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_007_largemouth_bass__larva.glb",
+      "Sha256": "5828d971495077fb9e911c5fbb0829489f8b2c1ab52f87b05754ff0733de3b12",
+      "Dimensions": [
+        0.01365,
+        0.058056,
+        0.007607
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_007_largemouth_bass__larva__Idle",
+        "fish_007_largemouth_bass__larva__Glide",
+        "fish_007_largemouth_bass__larva__SwimSlow",
+        "fish_007_largemouth_bass__larva__Swim",
+        "fish_007_largemouth_bass__larva__SwimFast",
+        "fish_007_largemouth_bass__larva__TurnLeft",
+        "fish_007_largemouth_bass__larva__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-007",
+      "Name": "Largemouth Bass",
+      "Stage": "juvenile",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_007_largemouth_bass__juvenile.glb",
+      "Sha256": "7a95165485c44305c52e9c4a068bf3132f032e22be33165e47d0f8002a80b818",
+      "Dimensions": [
+        0.077166,
+        0.235077,
+        0.043735
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_007_largemouth_bass__juvenile__Idle",
+        "fish_007_largemouth_bass__juvenile__Glide",
+        "fish_007_largemouth_bass__juvenile__SwimSlow",
+        "fish_007_largemouth_bass__juvenile__Swim",
+        "fish_007_largemouth_bass__juvenile__SwimFast",
+        "fish_007_largemouth_bass__juvenile__TurnLeft",
+        "fish_007_largemouth_bass__juvenile__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-007",
+      "Name": "Largemouth Bass",
+      "Stage": "subadult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_007_largemouth_bass__subadult.glb",
+      "Sha256": "07e7e6842fdb2687cbe3302def40f387d77e03a3fb989c3c8c55bc257ecaab0a",
+      "Dimensions": [
+        0.187781,
+        0.495288,
+        0.11787
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_007_largemouth_bass__subadult__Idle",
+        "fish_007_largemouth_bass__subadult__Glide",
+        "fish_007_largemouth_bass__subadult__SwimSlow",
+        "fish_007_largemouth_bass__subadult__Swim",
+        "fish_007_largemouth_bass__subadult__SwimFast",
+        "fish_007_largemouth_bass__subadult__TurnLeft",
+        "fish_007_largemouth_bass__subadult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-007",
+      "Name": "Largemouth Bass",
+      "Stage": "adult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_007_largemouth_bass.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_007_largemouth_bass__adult.glb",
+      "Sha256": "d3754c080771a675e78de6642a6e8272e02d77c72525e063c99e71452fafc5f6",
+      "Dimensions": [
+        0.292376,
+        0.7337,
+        0.19422
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_007_largemouth_bass__adult__Idle",
+        "fish_007_largemouth_bass__adult__Glide",
+        "fish_007_largemouth_bass__adult__SwimSlow",
+        "fish_007_largemouth_bass__adult__Swim",
+        "fish_007_largemouth_bass__adult__SwimFast",
+        "fish_007_largemouth_bass__adult__TurnLeft",
+        "fish_007_largemouth_bass__adult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-008",
+      "Name": "Channel Catfish",
+      "Stage": "egg",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_008_channel_catfish__egg.glb",
+      "Sha256": "7fe377f96060a404d44f7cebb9a4b85f62685bb9d29dfef7b803f459fac14af1",
+      "Dimensions": [
+        0.004185,
+        0.00328,
+        0.004109
+      ],
+      "Bones": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "Actions": [
+        "fish_008_channel_catfish__egg__Idle",
+        "fish_008_channel_catfish__egg__Hatch"
+      ],
+      "LoopRoles": [
+        "Idle"
+      ],
+      "Breathing": "not_applicable_egg",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-008",
+      "Name": "Channel Catfish",
+      "Stage": "larva",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_008_channel_catfish__larva.glb",
+      "Sha256": "81b771b5f9900941ad2a961adea0ffbb50dbae747b1d5fc98ed5a4f4ca127979",
+      "Dimensions": [
+        0.01572,
+        0.063752,
+        0.006441
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_008_channel_catfish__larva__Idle",
+        "fish_008_channel_catfish__larva__Glide",
+        "fish_008_channel_catfish__larva__SwimSlow",
+        "fish_008_channel_catfish__larva__Swim",
+        "fish_008_channel_catfish__larva__SwimFast",
+        "fish_008_channel_catfish__larva__TurnLeft",
+        "fish_008_channel_catfish__larva__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-008",
+      "Name": "Channel Catfish",
+      "Stage": "juvenile",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_008_channel_catfish__juvenile.glb",
+      "Sha256": "74dc560ff79d1b1eebcf9c61d46674a5e33017bd83298d6ec3d165ee92b98f3e",
+      "Dimensions": [
+        0.111756,
+        0.258049,
+        0.037123
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_008_channel_catfish__juvenile__Idle",
+        "fish_008_channel_catfish__juvenile__Glide",
+        "fish_008_channel_catfish__juvenile__SwimSlow",
+        "fish_008_channel_catfish__juvenile__Swim",
+        "fish_008_channel_catfish__juvenile__SwimFast",
+        "fish_008_channel_catfish__juvenile__TurnLeft",
+        "fish_008_channel_catfish__juvenile__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-008",
+      "Name": "Channel Catfish",
+      "Stage": "subadult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_008_channel_catfish__subadult.glb",
+      "Sha256": "14cd38cce478d2ccc8b57b7640f8f50fc42d51b2f13da56e913678f876cf2acb",
+      "Dimensions": [
+        0.272587,
+        0.543587,
+        0.101949
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_008_channel_catfish__subadult__Idle",
+        "fish_008_channel_catfish__subadult__Glide",
+        "fish_008_channel_catfish__subadult__SwimSlow",
+        "fish_008_channel_catfish__subadult__Swim",
+        "fish_008_channel_catfish__subadult__SwimFast",
+        "fish_008_channel_catfish__subadult__TurnLeft",
+        "fish_008_channel_catfish__subadult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-008",
+      "Name": "Channel Catfish",
+      "Stage": "adult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_008_channel_catfish.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_008_channel_catfish__adult.glb",
+      "Sha256": "b437226aa8986164aba0a7744cdc9b4f208de49ff8f1da387a600322a2f3bffa",
+      "Dimensions": [
+        0.422596,
+        0.8052,
+        0.1715
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_008_channel_catfish__adult__Idle",
+        "fish_008_channel_catfish__adult__Glide",
+        "fish_008_channel_catfish__adult__SwimSlow",
+        "fish_008_channel_catfish__adult__Swim",
+        "fish_008_channel_catfish__adult__SwimFast",
+        "fish_008_channel_catfish__adult__TurnLeft",
+        "fish_008_channel_catfish__adult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-009",
+      "Name": "Common Carp",
+      "Stage": "egg",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_009_common_carp__egg.glb",
+      "Sha256": "a36c1e227829ecfaacd4d05082f202165c25e78b83b067d0d1c28d2fdc64636a",
+      "Dimensions": [
+        0.005022,
+        0.003936,
+        0.00493
+      ],
+      "Bones": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "Actions": [
+        "fish_009_common_carp__egg__Idle",
+        "fish_009_common_carp__egg__Hatch"
+      ],
+      "LoopRoles": [
+        "Idle"
+      ],
+      "Breathing": "not_applicable_egg",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-009",
+      "Name": "Common Carp",
+      "Stage": "larva",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_009_common_carp__larva.glb",
+      "Sha256": "257dcdfa422eb08d7c00e3c4aefd7a2caafa4b134739191f05acf80346561423",
+      "Dimensions": [
+        0.015428,
+        0.058721,
+        0.010038
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_009_common_carp__larva__Idle",
+        "fish_009_common_carp__larva__Glide",
+        "fish_009_common_carp__larva__SwimSlow",
+        "fish_009_common_carp__larva__Swim",
+        "fish_009_common_carp__larva__SwimFast",
+        "fish_009_common_carp__larva__TurnLeft",
+        "fish_009_common_carp__larva__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-009",
+      "Name": "Common Carp",
+      "Stage": "juvenile",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_009_common_carp__juvenile.glb",
+      "Sha256": "9b326b1919d303dbdc2ffc79c9cb4cb6ec3ad6c704ffbdc59823f68d886852d6",
+      "Dimensions": [
+        0.08574,
+        0.23756,
+        0.058778
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_009_common_carp__juvenile__Idle",
+        "fish_009_common_carp__juvenile__Glide",
+        "fish_009_common_carp__juvenile__SwimSlow",
+        "fish_009_common_carp__juvenile__Swim",
+        "fish_009_common_carp__juvenile__SwimFast",
+        "fish_009_common_carp__juvenile__TurnLeft",
+        "fish_009_common_carp__juvenile__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-009",
+      "Name": "Common Carp",
+      "Stage": "subadult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_009_common_carp__subadult.glb",
+      "Sha256": "6c2c7d103b51c8a87f7464d8111b438d18e796e0faaa830f22d2cea6c23d0cd2",
+      "Dimensions": [
+        0.207204,
+        0.50029,
+        0.161104
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_009_common_carp__subadult__Idle",
+        "fish_009_common_carp__subadult__Glide",
+        "fish_009_common_carp__subadult__SwimSlow",
+        "fish_009_common_carp__subadult__Swim",
+        "fish_009_common_carp__subadult__SwimFast",
+        "fish_009_common_carp__subadult__TurnLeft",
+        "fish_009_common_carp__subadult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-009",
+      "Name": "Common Carp",
+      "Stage": "adult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_009_common_carp.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_009_common_carp__adult.glb",
+      "Sha256": "05278d82c4ef3bd950015ac51db82f8850fd259d3b9f01abbad12aa4c463ef6d",
+      "Dimensions": [
+        0.321671,
+        0.741,
+        0.26288
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_009_common_carp__adult__Idle",
+        "fish_009_common_carp__adult__Glide",
+        "fish_009_common_carp__adult__SwimSlow",
+        "fish_009_common_carp__adult__Swim",
+        "fish_009_common_carp__adult__SwimFast",
+        "fish_009_common_carp__adult__TurnLeft",
+        "fish_009_common_carp__adult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-010",
+      "Name": "Northern Pike",
+      "Stage": "egg",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_010_northern_pike__egg.glb",
+      "Sha256": "c55e0f94d1744cfa529f390adc850b02335c063f9edcbae47a6aed42d6892b2f",
+      "Dimensions": [
+        0.003976,
+        0.003116,
+        0.003903
+      ],
+      "Bones": [
+        "root",
+        "shell_l",
+        "shell_r",
+        "embryo"
+      ],
+      "Actions": [
+        "fish_010_northern_pike__egg__Idle",
+        "fish_010_northern_pike__egg__Hatch"
+      ],
+      "LoopRoles": [
+        "Idle"
+      ],
+      "Breathing": "not_applicable_egg",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-010",
+      "Name": "Northern Pike",
+      "Stage": "larva",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_010_northern_pike__larva.glb",
+      "Sha256": "e842418e90e3984fa76e3358c9bdc4b5b097d2ea3deafdca9a0d404a5143e9fa",
+      "Dimensions": [
+        0.011168,
+        0.085423,
+        0.006023
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_010_northern_pike__larva__Idle",
+        "fish_010_northern_pike__larva__Glide",
+        "fish_010_northern_pike__larva__SwimSlow",
+        "fish_010_northern_pike__larva__Swim",
+        "fish_010_northern_pike__larva__SwimFast",
+        "fish_010_northern_pike__larva__TurnLeft",
+        "fish_010_northern_pike__larva__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-010",
+      "Name": "Northern Pike",
+      "Stage": "juvenile",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_010_northern_pike__juvenile.glb",
+      "Sha256": "0c6f64f5e461eb72d350e015d7f408817a311f82220ef126643eeaf170ddf7b5",
+      "Dimensions": [
+        0.064741,
+        0.345059,
+        0.034665
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_010_northern_pike__juvenile__Idle",
+        "fish_010_northern_pike__juvenile__Glide",
+        "fish_010_northern_pike__juvenile__SwimSlow",
+        "fish_010_northern_pike__juvenile__Swim",
+        "fish_010_northern_pike__juvenile__SwimFast",
+        "fish_010_northern_pike__juvenile__TurnLeft",
+        "fish_010_northern_pike__juvenile__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-010",
+      "Name": "Northern Pike",
+      "Stage": "subadult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_010_northern_pike__subadult.glb",
+      "Sha256": "832cf2981f74d2380b7d7773be0a6b6e46516215c406d8b29ef65fa4b9452f6d",
+      "Dimensions": [
+        0.158766,
+        0.726109,
+        0.09003
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_010_northern_pike__subadult__Idle",
+        "fish_010_northern_pike__subadult__Glide",
+        "fish_010_northern_pike__subadult__SwimSlow",
+        "fish_010_northern_pike__subadult__Swim",
+        "fish_010_northern_pike__subadult__SwimFast",
+        "fish_010_northern_pike__subadult__TurnLeft",
+        "fish_010_northern_pike__subadult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    },
+    {
+      "Id": "FAF-FISH-010",
+      "Name": "Northern Pike",
+      "Stage": "adult",
+      "Variant": null,
+      "Source": "assets/faf/pond/fish/fish_010_northern_pike.blend",
+      "ModelPath": "res://assets/faf/pond/fish/fish_010_northern_pike__adult.glb",
+      "Sha256": "bb189e36f703afbae3d348830655048961cd41996c0a0e62bdaac313958095cc",
+      "Dimensions": [
+        0.24785,
+        1.0752,
+        0.15145
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "tail_01",
+        "tail_02",
+        "tail_fin",
+        "dorsal",
+        "anal",
+        "pectoral_l",
+        "pectoral_r",
+        "gill_L",
+        "gill_R"
+      ],
+      "Actions": [
+        "fish_010_northern_pike__adult__Idle",
+        "fish_010_northern_pike__adult__Glide",
+        "fish_010_northern_pike__adult__SwimSlow",
+        "fish_010_northern_pike__adult__Swim",
+        "fish_010_northern_pike__adult__SwimFast",
+        "fish_010_northern_pike__adult__TurnLeft",
+        "fish_010_northern_pike__adult__TurnRight"
+      ],
+      "LoopRoles": [
+        "Idle",
+        "Glide",
+        "SwimSlow",
+        "Swim",
+        "SwimFast"
+      ],
+      "Breathing": "operculate_bony",
+      "Habitat": "pond",
+      "TechnicalReview": "passed_source_glb_blender_deformation_godot_import_2026-11-11",
+      "VisualReview": "blender_multiview_and_representative_native_review; owner_pond_style_lock_pending",
+      "Role": "fish_stage"
+    }
+  ],
+  "Ambient": [
+    {
+      "Id": "FAF-CREATURE-001",
+      "Name": "Northern leopard frog",
+      "Stage": null,
+      "Variant": null,
+      "Source": "assets/faf/pond/creatures/creature_001_northern_leopard_frog.blend",
+      "ModelPath": "res://assets/faf/pond/creatures/creature_001_northern_leopard_frog.glb",
+      "Sha256": "30aa6bcbbe9ed9f46d341fcd9a9a1da2bb3ffc9f95c033f55af8fb69c94cd308",
+      "Dimensions": [
+        0.1915,
+        0.25,
+        0.07945
+      ],
+      "Bones": [
+        "root",
+        "body",
+        "head",
+        "fore_upper_L",
+        "fore_lower_L",
+        "fore_foot_L",
+        "hind_upper_L",
+        "hind_lower_L",
+        "hind_foot_L",
+        "fore_upper_R",
+        "fore_lower_R",
+        "fore_foot_R",
+        "hind_upper_R",
+        "hind_lower_R",
+        "hind_foot_R"
+      ],
+      "Actions": [
+        "creature_001_northern_leopard_frog__IdleShore",
+        "creature_001_northern_leopard_frog__SurfaceFloat",
+        "creature_001_northern_leopard_frog__Swim",
+        "creature_001_northern_leopard_frog__TurnLeft",
+        "creature_001_northern_leopard_frog__TurnRight",
+        "creature_001_northern_leopard_frog__Hop",
+        "creature_001_northern_leopard_frog__Dive"
+      ],
+      "LoopRoles": [
+        "IdleShore",
+        "SurfaceFloat",
+        "Swim",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "VisualReview": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-CREATURE-002",
+      "Name": "Northern water snake",
+      "Stage": null,
+      "Variant": null,
+      "Source": "assets/faf/pond/creatures/creature_002_northern_water_snake.blend",
+      "ModelPath": "res://assets/faf/pond/creatures/creature_002_northern_water_snake.glb",
+      "Sha256": "8821bf953b9d2f0f44079ad5b92b79b09bf67b427e954ee614ab71a7099ba382",
+      "Dimensions": [
+        0.093988,
+        0.973321,
+        0.089388
+      ],
+      "Bones": [
+        "root",
+        "spine_01",
+        "spine_02",
+        "spine_03",
+        "spine_04",
+        "spine_05",
+        "spine_06",
+        "spine_07",
+        "spine_08",
+        "spine_09",
+        "spine_10",
+        "head"
+      ],
+      "Actions": [
+        "creature_002_northern_water_snake__IdleFloat",
+        "creature_002_northern_water_snake__SurfaceSwim",
+        "creature_002_northern_water_snake__UnderwaterSwim",
+        "creature_002_northern_water_snake__ShoreCrawl",
+        "creature_002_northern_water_snake__TurnLeft",
+        "creature_002_northern_water_snake__TurnRight",
+        "creature_002_northern_water_snake__Dive"
+      ],
+      "LoopRoles": [
+        "IdleFloat",
+        "SurfaceSwim",
+        "UnderwaterSwim",
+        "ShoreCrawl",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "VisualReview": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-CREATURE-003",
+      "Name": "Common snapping turtle",
+      "Stage": null,
+      "Variant": null,
+      "Source": "assets/faf/pond/creatures/creature_003_common_snapping_turtle.blend",
+      "ModelPath": "res://assets/faf/pond/creatures/creature_003_common_snapping_turtle.glb",
+      "Sha256": "abf8ec449e899cc4db98e38ed63791eaa8ea0e662887aa7d2f51a07c27d02100",
+      "Dimensions": [
+        0.428497,
+        0.750238,
+        0.220806
+      ],
+      "Bones": [
+        "root",
+        "body",
+        "neck",
+        "head",
+        "fore_upper_L",
+        "fore_lower_L",
+        "hind_upper_L",
+        "hind_lower_L",
+        "fore_upper_R",
+        "fore_lower_R",
+        "hind_upper_R",
+        "hind_lower_R",
+        "tail_01",
+        "tail_02"
+      ],
+      "Actions": [
+        "creature_003_common_snapping_turtle__IdleBottom",
+        "creature_003_common_snapping_turtle__BottomWalk",
+        "creature_003_common_snapping_turtle__SurfaceFloat",
+        "creature_003_common_snapping_turtle__Swim",
+        "creature_003_common_snapping_turtle__TurnLeft",
+        "creature_003_common_snapping_turtle__TurnRight",
+        "creature_003_common_snapping_turtle__Dive"
+      ],
+      "LoopRoles": [
+        "IdleBottom",
+        "BottomWalk",
+        "SurfaceFloat",
+        "Swim",
+        "TurnLeft",
+        "TurnRight"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_blender_skin_glb_structure_and_godot_4_7_2_import",
+      "VisualReview": "native_forward_plus_candidate_reviewed_owner_pond_style_lock_open",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-INSECT-001A",
+      "Name": "Common green darner nymph",
+      "Stage": null,
+      "Variant": "A",
+      "Source": "assets/faf/pond/insects/insect_001a_green_darner_nymph.blend",
+      "ModelPath": "res://assets/faf/pond/insects/insect_001a_green_darner_nymph.glb",
+      "Sha256": "5a528722c0d4a8e4344df38f4b6fdf51a8faf04b4c5d18a44d6acbb8d6238841",
+      "Dimensions": [
+        0.036954,
+        0.04074,
+        0.032543
+      ],
+      "Bones": [
+        "root",
+        "thorax",
+        "head",
+        "abdomen_01",
+        "abdomen_02",
+        "leg_1_L",
+        "leg_2_L",
+        "leg_3_L",
+        "leg_1_R",
+        "leg_2_R",
+        "leg_3_R"
+      ],
+      "Actions": [
+        "insect_001a_green_darner_nymph__Crawl"
+      ],
+      "LoopRoles": [
+        "Crawl"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_focused_source_export_godot_import",
+      "VisualReview": "native_candidate_close_readable_game_distance_limited",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-INSECT-001B",
+      "Name": "Common green darner nymph",
+      "Stage": null,
+      "Variant": "B",
+      "Source": "assets/faf/pond/insects/insect_001b_green_darner_nymph.blend",
+      "ModelPath": "res://assets/faf/pond/insects/insect_001b_green_darner_nymph.glb",
+      "Sha256": "7b6cea6a2e2e9554fd98143d197434e5a2204f4789fea0d8fc64798b4122b0be",
+      "Dimensions": [
+        0.04689,
+        0.05044,
+        0.032288
+      ],
+      "Bones": [
+        "root",
+        "thorax",
+        "head",
+        "abdomen_01",
+        "abdomen_02",
+        "leg_1_L",
+        "leg_2_L",
+        "leg_3_L",
+        "leg_1_R",
+        "leg_2_R",
+        "leg_3_R"
+      ],
+      "Actions": [
+        "insect_001b_green_darner_nymph__Crawl"
+      ],
+      "LoopRoles": [
+        "Crawl"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_focused_source_export_godot_import",
+      "VisualReview": "native_candidate_close_readable_game_distance_limited",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-INSECT-002A",
+      "Name": "Backswimmer",
+      "Stage": null,
+      "Variant": "A",
+      "Source": "assets/faf/pond/insects/insect_002a_backswimmer.blend",
+      "ModelPath": "res://assets/faf/pond/insects/insect_002a_backswimmer.glb",
+      "Sha256": "5172973f750391be6150ad75e009167ea77d55a6ae0f06eb7b89fcc89a1dc4aa",
+      "Dimensions": [
+        0.0323,
+        0.01395,
+        0.02076
+      ],
+      "Bones": [
+        "root",
+        "body",
+        "head",
+        "abdomen",
+        "oar_L",
+        "foreleg_L",
+        "midleg_L",
+        "oar_R",
+        "foreleg_R",
+        "midleg_R"
+      ],
+      "Actions": [
+        "insect_002a_backswimmer__Row"
+      ],
+      "LoopRoles": [
+        "Row"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_focused_source_export_godot_import",
+      "VisualReview": "native_candidate_close_readable_game_distance_limited",
+      "Role": "ambient"
+    },
+    {
+      "Id": "FAF-INSECT-002B",
+      "Name": "Backswimmer",
+      "Stage": null,
+      "Variant": "B",
+      "Source": "assets/faf/pond/insects/insect_002b_backswimmer.blend",
+      "ModelPath": "res://assets/faf/pond/insects/insect_002b_backswimmer.glb",
+      "Sha256": "8a9a41962237d4a6a09c1826c6c5e6a5db9977efdff56339e954e3283a084dde",
+      "Dimensions": [
+        0.0419,
+        0.01581,
+        0.019924
+      ],
+      "Bones": [
+        "root",
+        "body",
+        "head",
+        "abdomen",
+        "oar_L",
+        "foreleg_L",
+        "midleg_L",
+        "oar_R",
+        "foreleg_R",
+        "midleg_R"
+      ],
+      "Actions": [
+        "insect_002b_backswimmer__Row"
+      ],
+      "LoopRoles": [
+        "Row"
+      ],
+      "Breathing": null,
+      "Habitat": "pond",
+      "TechnicalReview": "passed_focused_source_export_godot_import",
+      "VisualReview": "native_candidate_close_readable_game_distance_limited",
+      "Role": "ambient"
+    }
+  ]
+}

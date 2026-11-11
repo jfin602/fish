@@ -18,10 +18,11 @@ public static class CharacterChecks
             await Frame(tree);
             var expectedNames = new[] { "Yellow Tang", "Ocellaris Clownfish", "Blue-Green Chromis",
                 "Reef Butterflyfish", "Blacktip Reef Shark" };
-            Require(CharacterCatalog.All.Count == 5 &&
-                CharacterCatalog.All.Select(entry => entry.Id)
+            var marine = SpeciesCompatibility.Available(WorldCatalog.OceanId, SpeciesRole.Selectable);
+            Require(marine.Count == 5 &&
+                marine.Select(entry => entry.Id)
                     .SequenceEqual(Enumerable.Range(1, 5).Select(index => $"FAF-FISH-{index:000}")) &&
-                CharacterCatalog.All.Select(entry => entry.Name).SequenceEqual(expectedNames),
+                marine.Select(entry => entry.Name).SequenceEqual(expectedNames),
                 "selection catalog identity");
             selection._Input(new InputEventKey { Keycode = Key.Right, Pressed = true });
             Require((selection.FindChild("Character_1", true, false) as Button)?.Text.Contains("SELECTED") == true,
@@ -29,9 +30,9 @@ public static class CharacterChecks
             selection._Input(new InputEventKey { Keycode = Key.Left, Pressed = true });
             Require((selection.FindChild("Character_0", true, false) as Button)?.Text.Contains("SELECTED") == true,
                 "keyboard previous did not change selection");
-            for (var index = 0; index < CharacterCatalog.All.Count; index++)
+            for (var index = 0; index < marine.Count; index++)
             {
-                var entry = CharacterCatalog.All[index];
+                var entry = marine[index];
                 var tile = selection.FindChild("Character_" + index, true, false) as Button;
                 Require(tile is not null, $"{entry.Id} tile missing");
                 tile!.EmitSignal(Button.SignalName.Pressed);
@@ -105,7 +106,7 @@ public static class CharacterChecks
             DemoSelection.Clear();
             Input.MouseMode = Input.MouseModeEnum.Visible;
             await CheckRouting(selection, root);
-            GD.Print($"CHARACTER_CHECK_OK count={CharacterCatalog.All.Count} route=select-play-return-select-play");
+            GD.Print($"CHARACTER_CHECK_OK count={marine.Count} route=select-play-return-select-play");
             tree.Quit();
         }
         catch (Exception error)

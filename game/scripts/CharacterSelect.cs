@@ -92,10 +92,13 @@ public partial class CharacterSelect : Control
         else
         {
             _name.Text = WorldSession.SelectedWorldId == WorldCatalog.PondId
-                ? "Freshwater fish not installed" : "No native fish installed";
+                ? "Freshwater fish unavailable" : "No native fish installed";
             _category.Text = "NO SELECTABLE SPECIES";
             _description.Text = "This habitat has no installed native fish yet.";
-            _status.Text = "No compatible fish are available. Go back to World Select.";
+            _status.Text = WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                CharacterCatalog.PondIntakeDiagnostic.Length > 0
+                ? CharacterCatalog.PondIntakeDiagnostic
+                : "No compatible fish are available. Go back to World Select.";
             _enter.Disabled = true;
         }
         (_entries.Count > 0 ? _enter : FindChild("BackToWorldButton", true, false) as Button)?.GrabFocus();
