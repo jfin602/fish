@@ -98,8 +98,8 @@ public sealed class GeneratedWorldRoutes
                 _ => "shallow",
             };
             Add(region.Id + ":link-in", hub, approach, "open-water");
-            // The interim draped terrain still seals the east tunnel's far mouth.
-            // Its generated centreline remains a traversable out-and-back branch.
+            // The generated basin still seals the east tunnel's far mouth. Keep
+            // its traversable centreline as an out-and-back branch for this seed.
             if (region.Id != "east-swim-through")
             {
                 AddNode(departure, after, "entrance-approach");

@@ -2,10 +2,11 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Fish;
 
-/// <summary>Fixed visual-only fish loops. Nothing here owns simulation or run state.</summary>
+/// <summary>Visual-only fish loops rooted at generated habitat sites.</summary>
 public partial class FafAmbientReefLife : Node3D
 {
     private readonly record struct School(string Name, string Zone, string FishId, int Count,
@@ -13,9 +14,8 @@ public partial class FafAmbientReefLife : Node3D
     public readonly record struct AmbientFish(string Id, string Zone, string SchoolName,
         int SchoolIndex, int MemberIndex, string Clip);
 
-    // These shoulder pockets leave the open lanes, cave mouths and canyon quiet.
-    // Upper water carries the animation; the lower/deep reef has only passing accents.
-    private static readonly School[] Schools =
+    // The templates own population and motion only. X/Z/yaw come from the world plan.
+    private static readonly School[] Templates =
     {
         new("WestSun", "shallow", "FAF-FISH-001", 5, -24, 23, 2.7f, 1.35f, .72f, .35f, .3f),
         new("NorthChromis", "shallow", "FAF-FISH-003", 4, -14, 27, 2.9f, 1.1f, .65f, .4f, -.6f),
@@ -29,17 +29,20 @@ public partial class FafAmbientReefLife : Node3D
     };
 
     private readonly List<AmbientFish> _population = new();
+    private readonly List<School> _schools = new();
+    private readonly List<float> _schoolFloors = new();
     private readonly List<Node3D> _actors = new();
     private readonly List<AnimationPlayer> _animations = new();
     private SeabedSurface? _seabed;
     private float _elapsed;
 
     public IReadOnlyList<AmbientFish> Population => _population;
-    public int SchoolCount => Schools.Length;
+    public int SchoolCount => _schools.Count;
     public int FishCount => _population.Count;
     public float Elapsed => _elapsed;
 
-    public bool TryBuild(SeabedSurface seabed, out string diagnostic)
+    public bool TryBuild(SeabedSurface seabed, IReadOnlyList<GeneratedFafInstance> placements,
+        GeneratedWorldRoutes routes, out string diagnostic)
     {
         var visuals = GetNodeOrNull<Node3D>("Visuals");
         if (visuals is null || visuals.GetChildCount() != 0 || _population.Count != 0)
@@ -48,9 +51,27 @@ public partial class FafAmbientReefLife : Node3D
             return false;
         }
         var packedFish = new Dictionary<string, PackedScene>();
-        for (var schoolIndex = 0; schoolIndex < Schools.Length; schoolIndex++)
+        for (var schoolIndex = 0; schoolIndex < Templates.Length; schoolIndex++)
         {
-            var school = Schools[schoolIndex];
+            var template = Templates[schoolIndex];
+            var candidates = placements.Where(p =>
+                    p.Asset.Family is FafEnvironmentFamily.Coral or FafEnvironmentFamily.Plant or FafEnvironmentFamily.Rock)
+                .OrderBy(p => Mathf.Abs(ZoneRank(p.DepthBand) - ZoneRank(template.Zone)) * 3f -
+                    p.Suitability - .04f * Mathf.Min(
+                        routes.DistanceToRoute(p.Position + Vector3.Up * template.Lift), 6f))
+                .ToArray();
+            var selected = candidates.FirstOrDefault(p =>
+                !_schools.Any(s => new Vector2(s.X, s.Z).DistanceTo(new Vector2(p.Position.X, p.Position.Z)) < 2.5f));
+            if (selected is null)
+            {
+                diagnostic = $"FAF_AMBIENT_INVALID zone={template.Zone} action=no-safe-habitat-site";
+                return false;
+            }
+            var school = template with { Zone = selected.DepthBand,
+                X = selected.Position.X, Z = selected.Position.Z,
+                Yaw = selected.Yaw };
+            _schools.Add(school);
+            _schoolFloors.Add(selected.Position.Y);
             var entry = CharacterCatalog.Find(school.FishId);
             if (entry.Id != school.FishId || entry.Id == "FAF-FISH-005")
             {
@@ -103,21 +124,23 @@ public partial class FafAmbientReefLife : Node3D
         }
         diagnostic = "";
         _seabed = seabed;
-        GD.Print($"FAF_AMBIENT_READY schools={SchoolCount} fish={FishCount} shallow=13 upper=8 middle=6 lower=2 deep=2");
+        GD.Print($"FAF_AMBIENT_READY schools={SchoolCount} fish={FishCount} " +
+            string.Join(' ', new[] { "shallow", "upper", "middle", "lower", "deep" }
+                .Select(zone => $"{zone}={_population.Count(f => f.Zone == zone)}")));
         return true;
     }
 
     public Transform3D GetPose(int index, float time, SeabedSurface seabed)
     {
         var fish = _population[index];
-        var school = Schools[fish.SchoolIndex];
+        var school = _schools[fish.SchoolIndex];
         var phase = time * school.Speed + 2f * Mathf.Pi * fish.MemberIndex / school.Count
             + SchoolIndexPhase(fish.SchoolIndex);
         var c = Mathf.Cos(phase);
         var s = Mathf.Sin(phase);
         var local = new Vector2(school.RadiusX * c, school.RadiusZ * s).Rotated(school.Yaw);
         var tangent = new Vector2(-school.RadiusX * s, school.RadiusZ * c).Rotated(school.Yaw);
-        var floor = seabed.GetHeightAt(school.X, school.Z);
+        var floor = _schoolFloors[fish.SchoolIndex];
         var y = Mathf.Min(8.25f, floor + school.Lift) + .13f * Mathf.Sin(phase * 2f + fish.MemberIndex);
         var yaw = Mathf.Atan2(-tangent.X, -tangent.Y);
         return new Transform3D(new Basis(Vector3.Up, yaw),
@@ -141,6 +164,8 @@ public partial class FafAmbientReefLife : Node3D
     }
 
     private static float SchoolIndexPhase(int index) => .37f * index;
+    private static int ZoneRank(string zone) => zone switch
+    { "shallow" => 0, "upper" => 1, "middle" => 2, "lower" => 3, _ => 4 };
 
     private static bool HasPhysics(Node node)
     {

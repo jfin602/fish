@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|compile-world-fixture <seed>|automation-smoke'
 }
 need_tools() {
   command -v "${GODOT_CMD[0]}" >/dev/null || { echo "Missing Godot .NET executable: ${GODOT_CMD[0]}" >&2; exit 2; }
@@ -36,7 +36,9 @@ logged() {
 do_import() { logged import 120 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --import; }
 do_build() { (cd "$PROJECT" && logged build 180 "$DOTNET_BIN" build Fish.csproj --nologo); }
 smoke() {
-  logged smoke 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --smoke
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/smoke-world.XXXXXX")
+  logged smoke 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --smoke
   grep -Fq 'FISH_SMOKE_OK main scene and C# scripts executed' "$LOGS/smoke.log" || { echo 'C# smoke marker missing' >&2; return 1; }
 }
 scene_tool() { local label=$1; shift; logged "$label" 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- "$@"; }
@@ -95,7 +97,9 @@ dressing_check() {
   grep -Fq 'FAF_DRESSING_OK variants=28 clusters=28 placements=295' "$LOGS/dressing-check.log" || { echo 'FAF dressing marker missing' >&2; return 1; }
 }
 ambient_check() {
-  logged ambient-check 60 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_ambient_check.gd
+  local profile
+  profile=$(mktemp -d "$ROOT/artifacts/ambient-check.XXXXXX")
+  logged ambient-check 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/faf_ambient_check.gd
   grep -Fq 'FAF_AMBIENT_OK schools=9 fish=31' "$LOGS/ambient-check.log" || { echo 'FAF ambient marker missing' >&2; return 1; }
 }
 atmosphere_check() {
@@ -137,6 +141,7 @@ generated_geology_check() {
   grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
+  smoke-world) need_tools; smoke ;;
   doctor)
     need_tools
     version=$("${GODOT_CMD[@]}" --version)
@@ -154,7 +159,19 @@ case "${1:-help}" in
     ;;
   import) need_tools; do_import ;;
   build) need_tools; do_build ;;
-  check) need_tools; do_import; do_build; smoke; scene_tool automation-smoke automation-smoke; missing_scene_check; input_lifecycle_check; camera_scene_check; animation_scene_check; habitat_check; reef_check; terrain_world_check; geology_check; collision_check; dressing_check; ambient_check; atmosphere_check; water_reaction_check ;;
+  check)
+    need_tools
+    do_import
+    do_build
+    smoke
+    scene_tool automation-smoke automation-smoke
+    missing_scene_check
+    camera_scene_check
+    animation_scene_check
+    faf_runtime_check
+    "$0" inspect-route-fields
+    "$0" inspect-placement
+    ;;
   editor) need_tools; exec "${GODOT_CMD[@]}" --editor --path "$PROJECT" ;;
   run)
     display_arg=()
@@ -231,6 +248,12 @@ case "${1:-help}" in
     profile=$(mktemp -d "$ROOT/artifacts/route-fields.XXXXXX")
     logged route-fields 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --route-field-check
     grep -Fq 'ROUTE_FIELD_CHECK_OK' "$LOGS/route-fields.log" || { echo 'Route/field marker missing' >&2; exit 1; }
+    ;;
+  inspect-placement)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/placement-check.XXXXXX")
+    logged placement-check 240 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --placement-check
+    grep -Fq 'WORLD_PLACEMENT_CHECK_OK' "$LOGS/placement-check.log" || { echo 'Placement marker missing' >&2; exit 1; }
     ;;
   inspect-collision) need_tools; collision_check ;;
   inspect-dressing) need_tools; dressing_check ;;

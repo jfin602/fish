@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Fish;
 
-/// <summary>Installs the locally prepared models at scene-authored reef anchors.</summary>
+/// <summary>Installs the generated reef and preserves the historical P2 source probes.</summary>
 public partial class ReefComposition : Node3D
 {
     public GeneratedWorldRoutes? GeneratedRoutes { get; private set; }
@@ -28,13 +28,7 @@ public partial class ReefComposition : Node3D
 
     public bool TryBuild(SeabedSurface seabed, out string diagnostic)
     {
-        var terrain = GetNodeOrNull<FafTerrainWorld>("Terrain");
-        if (terrain is null)
-        {
-            diagnostic = "FAF_TERRAIN_INVALID action=missing-terrain-node";
-            return false;
-        }
-        if (!terrain.TryBuild(seabed, out diagnostic)) return false;
+        diagnostic = "";
         var loaded = new Dictionary<string, PackedScene>();
         foreach (var (id, source) in Sources)
         {
@@ -122,7 +116,7 @@ public partial class ReefComposition : Node3D
                 route.Position.Z);
         }
         if (GetNodeOrNull<FafGeologyWorld>("Geology") is not { } geology ||
-            !geology.TryBuild(seabed, out diagnostic)) return false;
+            !geology.TryBuildGenerated(seabed, out diagnostic)) return false;
         // The route reservation and terrain analysis precede all decorative instances.
         GeneratedRoutes = new GeneratedWorldRoutes(seabed.Basin, geology.GeneratedRegions, Vector3.Zero);
         var fish = GetNodeOrNull<FishController>("../../../Fish");
@@ -144,9 +138,9 @@ public partial class ReefComposition : Node3D
         }
         EnvironmentAnalysis = new WorldEnvironmentAnalysis(seabed.Basin, geology.GeneratedRegions, GeneratedRoutes);
         if (GetNodeOrNull<FafReefDressing>("Dressing") is not { } dressing ||
-            !dressing.TryBuild(seabed, terrain, out diagnostic)) return false;
+            !dressing.TryBuild(EnvironmentAnalysis, GeneratedRoutes, seabed.Basin.Seed, out diagnostic)) return false;
         if (GetNodeOrNull<FafAmbientReefLife>("AmbientLife") is not { } ambient ||
-            !ambient.TryBuild(seabed, out diagnostic)) return false;
+            !ambient.TryBuild(seabed, dressing.Placements, GeneratedRoutes, out diagnostic)) return false;
         diagnostic = "";
         GD.Print($"FISH_REEF_READY rocks={GetNode<Node3D>("Rocks").GetChildCount()} corals={GetNode<Node3D>("Corals").GetChildCount()} sources={Sources.Count} cliff=1 routes=open,tunnel,shelter,vertical,depth,alternate");
         return true;
