@@ -12,6 +12,12 @@ public sealed record WaterVisualProfile(
     Color ShaftColor, float DeepRangeFactor, float DeepLightFactor,
     float DeepAmbientFactor, float DeepVolumeFactor, float DeepFogLengthFactor)
 {
+    // Air and contact treatment are scene-local; graphics presets still own shared lighting knobs.
+    public float AirFogBegin { get; init; }
+    public float AirFogEnd { get; init; } = 100f;
+    public float AirFogDensity { get; init; }
+    public float SurfaceRippleInterval { get; init; } = .18f;
+    public float SurfaceWakeStrength { get; init; }
     public static WaterVisualProfile Ocean { get; } = new(
         WorldEnvironmentProfile.Ocean,
         new(0.035f, 0.17f, 0.22f), new(0.56f, 0.73f, 0.76f),
@@ -36,7 +42,11 @@ public sealed record WaterVisualProfile(
         new(0.15f, 0.22f, 0.095f), new(0.40f, 0.46f, 0.22f),
         new(0.055f, 0.12f, 0.060f), new(0.20f, 0.29f, 0.14f),
         new(0.13f, 0.28f, 0.12f), new(0.31f, 0.43f, 0.20f),
-        new(0.72f, 0.70f, 0.38f), 0.68f, 0.42f, 0.55f, 1.65f, 0.78f);
+        new(0.72f, 0.70f, 0.38f), 0.68f, 0.42f, 0.55f, 1.65f, 0.78f)
+    {
+        AirFogBegin = 27f, AirFogEnd = 105f, AirFogDensity = .94f,
+        SurfaceRippleInterval = .19f, SurfaceWakeStrength = .72f,
+    };
 
     public static WaterVisualProfile For(WorldEnvironmentProfile id) =>
         id == WorldEnvironmentProfile.Pond ? Pond : Ocean;

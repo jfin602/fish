@@ -67,7 +67,10 @@ public static class PondCameraImmersionChecks
                 previous = value;
             }
             At(water + 2f, 120);
-            Require(atmosphere.CameraImmersion01 < .001f && env.FogDensity < .001f &&
+            Require(atmosphere.CameraImmersion01 < .001f &&
+                Mathf.Abs(env.FogDensity - WaterVisualProfile.Pond.AirFogDensity) < .001f &&
+                Mathf.Abs(env.FogDepthBegin - WaterVisualProfile.Pond.AirFogBegin) < .001f &&
+                Mathf.Abs(env.FogDepthEnd - WaterVisualProfile.Pond.AirFogEnd) < .001f &&
                 env.VolumetricFogDensity < .001f &&
                 Mathf.Abs(sun.LightEnergy - 1f) < .001f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") > .999f,

@@ -129,7 +129,9 @@ public partial class Main : Node3D
         GD.Print("FISH_FOUNDATION_READY");
 
         if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check") ||
-            OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check"))
+            OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check") ||
+            OS.GetCmdlineUserArgs().Contains("--pond-scenery-check") ||
+            OS.GetCmdlineUserArgs().Contains("--pond-surface-probe"))
         {
             WorldSession.Select(WorldCatalog.PondId);
             DemoSelection.CharacterId = "FAF-FISH-006";
@@ -196,9 +198,12 @@ public partial class Main : Node3D
             var profile = WorldCatalog.Resolve(WorldSession.SelectedWorldId).EnvironmentProfile;
             GetNode<PlayShell>("PlayShell").ConfigureLighting(profile);
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").ConfigureProfile(profile);
-            GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
+            var atmosphere = GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere");
+            atmosphere.Initialize(this);
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
-            fish.AddChild(new WaterReaction(fish));
+            fish.AddChild(new WaterReaction(fish,
+                profile == WorldEnvironmentProfile.Pond ? WaterVisualProfile.Pond : null,
+                atmosphere.SurfaceHeight));
         }
 
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
@@ -210,6 +215,12 @@ public partial class Main : Node3D
         {
             try { PondCameraImmersionChecks.Run(this); GetTree().Quit(); }
             catch (Exception error) { GD.PushError($"POND_CAMERA_IMMERSION_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+        if (populated && OS.GetCmdlineUserArgs().Contains("--pond-scenery-check"))
+        {
+            try { PondSurfaceSceneryChecks.Run(this); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"POND_SCENERY_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
 
@@ -292,7 +303,8 @@ public partial class Main : Node3D
         if (fish.Tuning.ResourcePath != "res://resources/swim_tuning.tres" ||
             skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
-            (course is null && (water is null || water.GetChildCount() != 3 ||
+            (course is null && (water is null || water.GetChildCount() !=
+                (WorldSession.SelectedWorldId == WorldCatalog.PondId ? 3 + WaterReaction.PondRingCapacity + 1 : 3) ||
                 seabed?.GetNodeOrNull<MeshInstance3D>("Mesh")?.Mesh is null ||
                 seabed.GetNodeOrNull<CollisionShape3D>("Collision")?.Shape is null ||
                 GetNodeOrNull<StaticBody3D>("Habitat/HiddenLimits") is null ||

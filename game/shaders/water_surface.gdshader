@@ -13,17 +13,23 @@ uniform vec3 surface_dark = vec3(0.08, 0.42, 0.49);
 uniform vec3 surface_light = vec3(0.20, 0.66, 0.67);
 uniform float overcast = 0.0;
 uniform float air_surface_enabled = 0.0;
+uniform float shore_mask_enabled = 0.0;
+uniform float air_fog_begin = 27.0;
+uniform float air_fog_end = 105.0;
+uniform vec3 air_fog_color = vec3(0.43, 0.48, 0.46);
 uniform sampler2D air_scene : hint_screen_texture, filter_linear;
 
 varying vec3 surface_world;
 varying vec3 surface_normal;
+varying float shore_blend;
 
 void vertex() {
     float t = surface_time * wave_speed;
     float a = VERTEX.x * 0.19 + VERTEX.z * 0.07 + t * 0.34;
     float b = VERTEX.x * -0.11 + VERTEX.z * 0.17 - t * 0.27;
     float c = VERTEX.x * 0.31 - VERTEX.z * 0.24 + t * 0.47;
-    VERTEX.y += wave_height * (0.10 * sin(a) + 0.065 * sin(b) + wave_detail * 0.045 * sin(c));
+    shore_blend = mix(1.0, COLOR.r, shore_mask_enabled);
+    VERTEX.y += shore_blend * wave_height * (0.10 * sin(a) + 0.065 * sin(b) + wave_detail * 0.045 * sin(c));
     vec3 slope = vec3(wave_height * (0.019 * cos(a) - 0.00715 * cos(b) + wave_detail * 0.01395 * cos(c)),
                       1.0,
                       wave_height * (0.007 * cos(a) + 0.01105 * cos(b) - wave_detail * 0.0108 * cos(c)));
@@ -57,7 +63,7 @@ void fragment() {
     float edge_distance = max(abs(surface_world.x), abs(surface_world.z));
     float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
         surface_half_size - 2.0, edge_distance);
-    ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade;
+    ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade * mix(1.0, smoothstep(0.0, 0.55, shore_blend), shore_mask_enabled);
     // The same plane is visible from air. Keep it translucent so a fish just
     // beneath the interface remains readable when the camera looks down.
     if (FRONT_FACING && air_surface_enabled < 0.5) discard;
@@ -69,6 +75,9 @@ void fragment() {
         vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple)
                         + vec3(0.13, 0.15, 0.11) * air_fresnel;
         ALBEDO = mix(refracted, water_tint, mix(0.24, 0.52, air_fresnel));
-        ALPHA = 0.90 * edge_fade;
+        float air_distance = distance(CAMERA_POSITION_WORLD, surface_world);
+        float air_fog = smoothstep(air_fog_begin, air_fog_end, air_distance);
+        ALBEDO = mix(ALBEDO, air_fog_color, air_fog * 0.94);
+        ALPHA = 0.90 * edge_fade * smoothstep(0.0, 0.55, shore_blend);
     }
 }

@@ -83,6 +83,55 @@ public static class PondFafEnvironment
             }
             if (picked.Count == 0) throw new InvalidDataException($"Pond FAF placement failed: {asset.Id}");
         }
+        plan.AddRange(PlanSurfaceShore(basin, assets));
+        return plan;
+    }
+
+    // Every anchor projects onto the baked terrain; there is no second bank mesh.
+    public static IReadOnlyList<PondFafPlacement> PlanSurfaceShore(GeneratedBasin basin,
+        IReadOnlyList<PondFafAsset> assets)
+    {
+        var plan = new List<PondFafPlacement>();
+        var available = assets.Select(a => a.Id).ToHashSet(StringComparer.Ordinal);
+        foreach (var id in new[] { "FAF-PLANT-005A", "FAF-PLANT-006A", "FAF-PLANT-007B",
+            "FAF-WOOD-004B", "FAF-WOOD-003A", "FAF-TERRAIN-002A", "FAF-TERRAIN-002B" })
+            if (!available.Contains(id)) throw new InvalidDataException($"Pond shore asset missing: {id}");
+        for (var index = 0; index < basin.ShorePointCount; index += 4)
+        {
+            var shore = basin.ShorePoint(index);
+            var inward = new Vector2(
+                basin.DistanceToShore(shore.X + 1f, shore.Y) - basin.DistanceToShore(shore.X - 1f, shore.Y),
+                basin.DistanceToShore(shore.X, shore.Y + 1f) - basin.DistanceToShore(shore.X, shore.Y - 1f)).Normalized();
+            if (inward.LengthSquared() < .5f) continue;
+            var yaw = index * 2.3999632f;
+            var wet = shore + inward * 1.25f;
+            var dry = shore - inward * 2.0f;
+            var wetId = index % 8 == 0 ? "FAF-PLANT-006A" : "FAF-PLANT-007B";
+            plan.Add(new PondFafPlacement(wetId,
+                new Vector3(wet.X, basin.HeightAt(wet.X, wet.Y) - .018f, wet.Y), yaw, .95f,
+                "surface_shore"));
+            plan.Add(new PondFafPlacement("FAF-PLANT-005A",
+                new Vector3(dry.X, basin.HeightAt(dry.X, dry.Y) - .018f, dry.Y), yaw + .5f, 1f,
+                "surface_shore"));
+            if (index % 8 == 0)
+                plan.Add(new PondFafPlacement("FAF-WOOD-004B",
+                    new Vector3(dry.X, basin.HeightAt(dry.X, dry.Y) - .018f, dry.Y), yaw + 1f, .86f,
+                    "surface_shore"));
+            if (index % 16 == 0)
+            {
+                var trunk = shore - inward * 8f;
+                plan.Add(new PondFafPlacement("FAF-WOOD-003A",
+                    new Vector3(trunk.X, basin.HeightAt(trunk.X, trunk.Y) - .018f, trunk.Y), yaw, 1f,
+                    "surface_shore"));
+            }
+            if (index % 32 == 0)
+            {
+                var bank = shore - inward * 1.1f;
+                plan.Add(new PondFafPlacement(index % 64 == 0 ? "FAF-TERRAIN-002A" : "FAF-TERRAIN-002B",
+                    new Vector3(bank.X, basin.HeightAt(bank.X, bank.Y) - .10f, bank.Y),
+                    Mathf.Atan2(inward.X, inward.Y), .96f, "surface_shore"));
+            }
+        }
         return plan;
     }
 
@@ -204,6 +253,7 @@ public static class PondFafEnvironment
             source.Free();
         }
         root.SetMeta("placement_count", plan.Count);
+        root.SetMeta("surface_shore_count", plan.Count(p => p.Zone == "surface_shore"));
         root.SetMeta("catalog_count", assets.Count);
         GD.Print($"POND_FAF_READY assets={assets.Count} placements={plan.Count} batches={batches.Count} " +
             $"triangles_est={plan.Sum(p => byId[p.Id].Triangles)}");

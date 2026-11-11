@@ -297,6 +297,7 @@ public partial class UnderwaterAtmosphere : Node3D
         RefreshDepth(false, (float)delta);
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
+        _skyMaterial?.SetShaderParameter("sky_time", (float)_presentationSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
         _screenMaterial?.SetShaderParameter("screen_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
@@ -345,8 +346,9 @@ public partial class UnderwaterAtmosphere : Node3D
         // The depth mode gives a clear foreground and a continuous camera-distance
         // reveal. Camera depth never changes the saved surface-distance base.
         EffectiveUsefulRange = EffectiveBaseVisibilityRange * Mathf.Lerp(1f, _profile.DeepRangeFactor, depth);
-        _environment.FogDepthEnd = Mathf.Lerp(100f, EffectiveUsefulRange, _immersion);
-        _environment.FogDensity = _visibilityBypass ? 0f : FogExtinction * _immersion;
+        _environment.FogDepthBegin = Mathf.Lerp(_profile.AirFogBegin, FogNearMeters, _immersion);
+        _environment.FogDepthEnd = Mathf.Lerp(_profile.AirFogEnd, EffectiveUsefulRange, _immersion);
+        _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, FogExtinction, _immersion);
         _environment.FogHeightDensity = LowerWaterFog * _immersion;
         _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion;
         _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));
@@ -384,6 +386,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _skyMaterial.SetShaderParameter("shallow_zenith", new Vector3(_profile.SkyZenith.R, _profile.SkyZenith.G, _profile.SkyZenith.B));
         _skyMaterial.SetShaderParameter("deep_zenith", new Vector3(_profile.DeepSkyZenith.R, _profile.DeepSkyZenith.G, _profile.DeepSkyZenith.B));
         _skyMaterial.SetShaderParameter("overcast", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
+        _skyMaterial.SetShaderParameter("sky_time", 0f);
         _environment!.Sky = new Sky { SkyMaterial = _skyMaterial };
         _environment.BackgroundMode = Godot.Environment.BGMode.Sky;
     }
@@ -419,8 +422,16 @@ public partial class UnderwaterAtmosphere : Node3D
             SubdivideWidth = 48,
             SubdivideDepth = 48,
         };
+        var buildStart = Time.GetTicksUsec();
+        Mesh waterMesh = seabed.Basin.IsPond ? PondSurfaceGeometry.Build(seabed.Basin) : plane;
+        if (seabed.Basin.IsPond)
+            GD.Print($"POND_SURFACE_READY vertices={waterMesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array().Length} build_ms={(Time.GetTicksUsec() - buildStart) / 1000.0:F2} single_mesh=1");
         _surfaceMaterial = new ShaderMaterial { Shader = shader };
         _surfaceMaterial.SetShaderParameter("air_surface_enabled", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
+        _surfaceMaterial.SetShaderParameter("shore_mask_enabled", seabed.Basin.IsPond ? 1f : 0f);
+        _surfaceMaterial.SetShaderParameter("air_fog_begin", _profile.AirFogBegin);
+        _surfaceMaterial.SetShaderParameter("air_fog_end", _profile.AirFogEnd);
+        _surfaceMaterial.SetShaderParameter("air_fog_color", new Vector3(PondAirBackground.R, PondAirBackground.G, PondAirBackground.B));
         _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
         _surfaceMaterial.SetShaderParameter("surface_time", 0.0f);
         _surfaceMaterial.SetShaderParameter("wave_height", SurfaceWaveHeight);
@@ -433,7 +444,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _surface = new MeshInstance3D
         {
             Name = "OverheadSurface",
-            Mesh = plane,
+            Mesh = waterMesh,
             MaterialOverride = _surfaceMaterial,
             CustomAabb = new Aabb(new Vector3(-(extent.X + 14.0f) * 0.5f, -0.35f, -(extent.Z + 14.0f) * 0.5f),
                 new Vector3(extent.X + 14.0f, 0.7f, extent.Z + 14.0f)),
