@@ -13,6 +13,15 @@ public static class PlayerArt
         {
             if (WorldSession.SelectedWorldId == WorldCatalog.OceanId)
                 return TryLoadLegacy(fish, out diagnostic);
+            if (WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                OS.GetEnvironment("FISH_POND_VISUAL_FIXTURE") == "1")
+            {
+                // The primitive nodes already in main.tscn are a P7 camera fixture.
+                // This never registers a selectable or ecological freshwater species.
+                diagnostic = "";
+                GD.Print("FISH_POND_VISUAL_FIXTURE_ONLY primitive-body no-species-id");
+                return true;
+            }
             diagnostic = "SPECIES_SELECTION_REQUIRED action=choose-native-species";
             return false;
         }

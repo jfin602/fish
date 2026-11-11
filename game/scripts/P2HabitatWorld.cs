@@ -16,6 +16,8 @@ public static class P2HabitatWorld
         var pondGeneration = args.FirstOrDefault(a => a.StartsWith("--pond-generate=", StringComparison.Ordinal));
         var baked = args.FirstOrDefault(a => a.StartsWith("--world-package=", StringComparison.Ordinal));
         var selected = args.FirstOrDefault(a => a.StartsWith("--world-id=", StringComparison.Ordinal));
+        var pondVisualFixture = OS.GetEnvironment("FISH_POND_VISUAL_FIXTURE") == "1";
+        var fixturePackage = pondVisualFixture ? OS.GetEnvironment("FISH_POND_VISUAL_PACKAGE") : "";
         var legacyCheck = args.Any(a => a is "--basin-check" or "--geology-mesh-check" or
             "--route-field-check" or "--placement-check" or "--depth-check");
         if (generation is null && pondGeneration is null && !legacyCheck)
@@ -24,6 +26,8 @@ public static class P2HabitatWorld
             try
             {
                 if (selected is not null) WorldSession.Select(selected["--world-id=".Length..]);
+                else if (pondVisualFixture && DemoSelection.CharacterId is null)
+                    WorldSession.Select(WorldCatalog.PondId);
                 if (baked is not null && WorldSession.SelectedWorldId != WorldCatalog.OceanId)
                     throw new System.IO.InvalidDataException("WORLD_DIAGNOSTIC_CONFLICT action=remove-world-package-override");
                 var bakedHabitat = main.GetNode<Node3D>("Habitat");
@@ -36,17 +40,31 @@ public static class P2HabitatWorld
                     bakedHabitat.Name = "Habitat";
                     main.AddChild(bakedHabitat);
                 }
-                var manifest = baked is null
-                    ? WorldCatalog.Load(WorldSession.SelectedWorldId, bakedHabitat)
-                    : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat,
-                        WorldSession.SelectedWorldId).Manifest;
+                var manifest = fixturePackage.Length > 0 && WorldSession.SelectedWorldId == WorldCatalog.PondId
+                    ? FullWorldPackage.Load(fixturePackage, bakedHabitat, WorldCatalog.PondId).Manifest
+                    : baked is null
+                        ? WorldCatalog.Load(WorldSession.SelectedWorldId, bakedHabitat)
+                        : FullWorldPackage.Load(baked["--world-package=".Length..], bakedHabitat,
+                            WorldSession.SelectedWorldId).Manifest;
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 fish.Position = bakedHabitat.GetNode<Marker3D>("Spawn").Position;
+                if (pondVisualFixture && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                    OS.GetEnvironment("FISH_POND_VISUAL_START") == "hero")
+                {
+                    var hero = bakedHabitat.GetNode<Node3D>("PondFafEnvironment")
+                        .GetChildren().OfType<Node3D>().Single(piece =>
+                            piece.Name.ToString().StartsWith("FAF_WOOD_002A_", StringComparison.Ordinal));
+                    fish.Position = hero.ToGlobal(new Vector3(0, 2.52f, 8f));
+                    fish.Rotation = new Vector3(0, hero.Rotation.Y, 0);
+                    GD.Print($"FISH_POND_VISUAL_HERO_START position={fish.Position} yaw={fish.Rotation.Y:F3}");
+                }
                 WorldSession.Bind(bakedHabitat, manifest);
                 diagnostic = "";
-                GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} world={manifest.WorldId} mode=baked");
+                var playerLabel = pondVisualFixture && WorldSession.SelectedWorldId == WorldCatalog.PondId
+                    ? "P7-POND-CAMERA-FIXTURE" : DemoSelection.CharacterId ?? "legacy-Fish3";
+                GD.Print($"FISH_HABITAT_READY player={playerLabel} world={manifest.WorldId} mode=baked");
                 return true;
             }
             catch (Exception error)

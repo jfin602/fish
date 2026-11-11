@@ -170,6 +170,20 @@ public partial class Main : Node3D
 
         if (populated && !isCourseFixture && GetParent() is not RendererComparison)
         {
+            if (WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                OS.GetEnvironment("FISH_POND_VISUAL_FIXTURE") == "1")
+            {
+                var badge = new Label
+                {
+                    Name = "PondVisualFixtureBadge",
+                    Text = "P7 POND CAMERA FIXTURE — NO FRESHWATER FISH INSTALLED",
+                    Position = new Vector2(18, 80),
+                    MouseFilter = Control.MouseFilterEnum.Ignore,
+                    Modulate = new Color(1f, .8f, .45f),
+                };
+                badge.AddThemeFontSizeOverride("font_size", 18);
+                GetNode<CanvasLayer>("PrototypeHelp").AddChild(badge);
+            }
             var profile = WorldCatalog.Resolve(WorldSession.SelectedWorldId).EnvironmentProfile;
             GetNode<PlayShell>("PlayShell").ConfigureLighting(profile);
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").ConfigureProfile(profile);
