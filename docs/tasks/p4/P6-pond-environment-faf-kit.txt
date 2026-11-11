@@ -1,0 +1,32 @@
+TASK: Phase 4 / P6 — Pond environment FAF kit
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.6`.
+
+GOAL
+Create and integrate a small original first-pass freshwater environment art pack that gives the Pond its own shape language: muddy ground, algae rocks, fallen wood, tangled roots, lily pads, reeds and underwater plants.
+
+READ / ENTRY
+P4 README/plan P6, P4 design, FAF art-style/modeling/budgets/asset-IDs/Blender-Godot/visual-review contracts, FAF reference index and any actually accessible owner Pond images. Inspect tools/asset-factory and current Blender/MCP availability, existing geology/placement/route-analysis source. Verify P5 version 0.4.5, HEAD/dirty state and correct Fish project.
+
+DELIVER A BOUNDED PACK
+At minimum original reusable, visibly faceted variants for: (a) two muddy/silty stone/sediment roles; (b) two fallen-log/root forms plus a stump; (c) at least two lily-pad canopy/leaf variants; (d) a reed/cattail group; (e) submerged pondweed/algae clump. Variants may be generated from shared parameters and material palettes. Preserve the separate Ocean FAF GLBs and source. Favor compact variations over a large asset wishlist.
+
+IMPLEMENT
+1. Use Blender script/MCP or established FAF generator path to create editable first-party .blend masters and clean .glb exports with verified scale, origin, naming, orientation, materials and deterministic variant seeds. Preserve technical provenance/manifest and owning README.
+2. Define inexpensive materials: silt/mud peat browns, algae-dark green rocks, matte wet wood, broad graphic lily/reed/pondweed leaves. No photoreal scanned texture dependence.
+3. Register assets with explicit habitat applicability. Shared neutral rocks may opt in to multiple habitats; coral/marine-specific assets remain Ocean-only.
+4. Integrate terrain-aware deterministic cluster placements: stems grow from bottom near shallow banks, lily pads align with actual water surface, logs/resting roots contact sediment, support is checked against real geometry, route exclusions and camera/fish clearance are respected. Avoid random XYZ/uniform spacing.
+5. Use shared mesh/materials/instancing where helpful, cheap sway with anchored roots and no heavy collision on vegetation. Apply simplified, honest collision to route-constraining logs/roots; no floating invisible colliders.
+6. Include automated asset load/provenance, bounding/collider, deterministic placement/clearance and perf sampling checks. Record visual proof as candidate, not owner acceptance.
+
+SCOPE / DEFERRALS
+No full future Pond ecosystem kit, no new fish, no physics vegetation, no Ocean asset deletion, no wildlife AI.
+
+VALIDATE
+T2 run available Blender headless export/inspection and Godot import/build + focused placement/probe checks; if Blender/MCP cannot run, report missing dependency truthfully rather than fabricating exports. Check source/GLB manifests, git diff --check and no proprietary downloaded assets. P7 validates native look.
+
+DONE / VERSION
+Representative original Pond scenery exists and loads/places in the actual Pond without blocking generated routes. Set 0.4.6 only after factual checks; report files, asset IDs, triangle/draw-call evidence where available and remaining style gaps. No self-commit/push.
