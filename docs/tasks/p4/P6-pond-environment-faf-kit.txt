@@ -1,4 +1,4 @@
-TASK: Phase 4 / P6 — Pond environment FAF kit
+TASK: Phase 4 / P6 — Pond environment FAF integration
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
@@ -6,27 +6,35 @@ MODEL / REASONING / USAGE
 - This prompt's assigned project version is `0.4.6`.
 
 GOAL
-Create and integrate a small original first-pass freshwater environment art pack that gives the Pond its own shape language: muddy ground, algae rocks, fallen wood, tangled roots, lily pads, reeds and underwater plants.
+Integrate the independently authored **Pond FAF environment asset families** into the actual deterministic freshwater world. This is an **IMPORT / VALIDATE / REGISTER / PLACE** task, NOT an asset modeling/generation task. The owner is producing these assets in separate FAF work and expects them to exist by P6.
 
 READ / ENTRY
-P4 README/plan P6, P4 design, FAF art-style/modeling/budgets/asset-IDs/Blender-Godot/visual-review contracts, FAF reference index and any actually accessible owner Pond images. Inspect tools/asset-factory and current Blender/MCP availability, existing geology/placement/route-analysis source. Verify P5 version 0.4.5, HEAD/dirty state and correct Fish project.
+Read AGENTS.md, BOOT.md, docs/workflow.md, P4 README, implementation-plan P6, docs/tasks/p4/pond-faf-integration.md, P4 world plan, FAF source/export/rig/IDs/Blender-Godot/visual review conventions, owner Pond art references where actually available, and **current** FAF asset manifests/pack READMEs. Inspect current HEAD, branch, dirty state, exact package version `0.4.5`, actual Pond generator/bake, environment analysis, route exclusions, Godot import catalogs and tools/dev commands. Locate files in current source/worktree; do not invent or hardcode authoring-time GLB paths.
 
-DELIVER A BOUNDED PACK
-At minimum original reusable, visibly faceted variants for: (a) two muddy/silty stone/sediment roles; (b) two fallen-log/root forms plus a stump; (c) at least two lily-pad canopy/leaf variants; (d) a reed/cattail group; (e) submerged pondweed/algae clump. Variants may be generated from shared parameters and material palettes. Preserve the separate Ocean FAF GLBs and source. Favor compact variations over a large asset wishlist.
+INVENTORY BEFORE IMPLEMENTING
+Build an explicit per-family manifest/provenance table with actual source/export paths, IDs, variants and checks (FOUND / PARTIAL / MISSING / INVALID):
+- Wood/cover: three fallen-log shapes, three hollow-trunk openings, two trunk/stump forms, four stick/branch/root clusters.
+- Foliage: three lily-pad silhouettes plus stems; two tall-grass, two cattail, two reed, two submerged slime/algae and two floating muck/duckweed variants/patches.
+- Ground: silt/mud palette/material, pebbles, leaf litter, algae-coated stones, eroded bank/detail family.
+These are owner-selected intended FAF inputs, not permission to recreate any missing pieces. Respect actual FAF IDs and variants, including any already registered `WOOD`, `PLANT`, `DETAIL`, `TERRAIN` groups. Introduce integration adapters only as needed.
 
-IMPLEMENT
-1. Use Blender script/MCP or established FAF generator path to create editable first-party .blend masters and clean .glb exports with verified scale, origin, naming, orientation, materials and deterministic variant seeds. Preserve technical provenance/manifest and owning README.
-2. Define inexpensive materials: silt/mud peat browns, algae-dark green rocks, matte wet wood, broad graphic lily/reed/pondweed leaves. No photoreal scanned texture dependence.
-3. Register assets with explicit habitat applicability. Shared neutral rocks may opt in to multiple habitats; coral/marine-specific assets remain Ocean-only.
-4. Integrate terrain-aware deterministic cluster placements: stems grow from bottom near shallow banks, lily pads align with actual water surface, logs/resting roots contact sediment, support is checked against real geometry, route exclusions and camera/fish clearance are respected. Avoid random XYZ/uniform spacing.
-5. Use shared mesh/materials/instancing where helpful, cheap sway with anchored roots and no heavy collision on vegetation. Apply simplified, honest collision to route-constraining logs/roots; no floating invisible colliders.
-6. Include automated asset load/provenance, bounding/collider, deterministic placement/clearance and perf sampling checks. Record visual proof as candidate, not owner acceptance.
+IMPLEMENT — EXISTING ASSETS ONLY
+1. Validate supplied first-party .blend provenance, actual exported .glb contents, transform conventions, materials, scene import, dimensions, normals/pivots, source/manifest association, style-review status and habitat tags. If a source model or export is missing/invalid, note its exact path/issue and request FAF-side repair; **do not invoke Blender generation, produce new models, rebuild/export a different asset, silently replace with a primitive, or overwrite the FAF master**.
+2. Register every valid environment variant under its existing stable FAF ID and declared habitat role; Pond-only assets must not appear in Ocean. Explicit generic/neutral reuse is allowed only when metadata authorizes it.
+3. Use the existing accepted shoreline-first compiler, depth-to-shore, slope, real terrain normals/height/mesh queries, cave and route exclusion fields to place supplied assets deterministically. Lily pads and floating muck follow the real waterline; rooted vegetation anchors into shallow ground; fallen logs/stumps sit against actual geometry; submerged cover occupies plausible pond zones. Preserve open routes and negative water space.
+4. **Hero hollow-trunk route:** place a real supplied hollow-trunk GLB with open interior; build or attach honest simplified collision from actual outer bounds and inner opening, not a solid bounding box. Validate physical swim-through with the accepted fish and follow-camera clearance; no invisible blockers.
+5. Keep thousands of potential decorative foliage placements affordable using shared resources/MultiMesh or appropriate batching, capped transparency/overdraw and no decoration collision. Selected structural logs/banks receive colliders; test support and camera margins.
+6. Compare near/mid/far Pond views with owner-supplied `best-pond-faf.png` and registered Pond references **only if accessible**. Do not claim reference provenance or game-ready style approval from a picture alone.
+7. Preserve Ocean GLBs/scenes, existing five marine fish, Forward+ light profile and baked Base World identity. Write import/placement/clearance/performance evidence to docs/tasks/p4/qualification/implementation.md.
+
+MISSING/UNFINISHED FAF INPUT POLICY
+Do not consume an incomplete half-written GLB from the owner's parallel production session. If core environment inputs required for the P6/P7 world presentation are missing, corrupt, untracked or inaccessible, STOP as BLOCKED, list exact missing variants, leave existing model/source files untouched, and do not set version `0.4.6`. Never solve the blocker by authoring a new FAF kit. A focused integration defect may be repaired in Godot wrappers/placement code without changing FAF asset production ownership. Coordinate asset source commits before runner continuation.
 
 SCOPE / DEFERRALS
-No full future Pond ecosystem kit, no new fish, no physics vegetation, no Ocean asset deletion, no wildlife AI.
+No fish/creature generation (P8 integrates those), no wildlife AI, feeding, growth, saves, survival, full terrain rewrite, Ocean art redesign, or new Blender family generators.
 
 VALIDATE
-T2 run available Blender headless export/inspection and Godot import/build + focused placement/probe checks; if Blender/MCP cannot run, report missing dependency truthfully rather than fabricating exports. Check source/GLB manifests, git diff --check and no proprietary downloaded assets. P7 validates native look.
+T2. Run actual Godot import/build and focused asset-registry, habitat restriction, baked-world deterministic placement, support/raycast and fish+camera hollow-log clearance checks, plus sampled asset material/triangle/draw/instance costs and `git diff --check`. If required tools cannot access a model, report blocked; do not fabricate Blender/export test results. P7 supplies actual native owner art review.
 
-DONE / VERSION
-Representative original Pond scenery exists and loads/places in the actual Pond without blocking generated routes. Set 0.4.6 only after factual checks; report files, asset IDs, triangle/draw-call evidence where available and remaining style gaps. No self-commit/push.
+DONE / VERSION / REPORT
+Pond's existing owner-authored wood, foliage and ground assets are inventoried, imported and correctly placed; the hollow trunk can be traversed and no Ocean asset is altered. Advance root package.json from `0.4.5` to `0.4.6` only if required inputs and checks pass. Report precise FAF IDs/paths, coverage against the full inventory, actual native gaps and P7 readiness. Do not self-commit/push; runner owns checkpoint.

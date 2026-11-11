@@ -65,19 +65,22 @@ The pond waterline must be an explorable visual boundary, **not an invisible cei
 - **Habitat reuse:** Pond is the first required surface qualification. Camera crossing, immersion profiles and surface reactions should be shared/configurable rather than duplicated. Keep Ocean's underwater controls, lighting and water intact; optional Ocean above-surface scenery is a separate future qualification, not automatically complete.
 - **Performance:** favor existing Forward+ and inexpensive surface effects; avoid gratuitous secondary scene rendering. Native qualification must include frame pacing and errors during waterline crossing.
 
-## Freshwater Fish Asset Factory
+## Freshwater Fish Asset Factory — owner-selected complete roster
 
-Preserve the marine reef style contract as Ocean's style. Extend the **shared stylized low-poly aquatic naturalism** geometry/rigging/export rules with a freshwater palette and species-specific anatomy. Build original Blender masters/GLBs and provenance records under new, unambiguous FAF identities rather than overwriting existing ocean assets.
+Pond art is authored in a **separate ongoing FAF production workflow** using the shared stylized low-poly contract. The P4 runner **integrates existing owner-produced assets; it must not model, regenerate or replace FAF families**. Preserve Ocean fish/reef GLBs and materials. The [owner Pond FAF integration inventory](../../tasks/p4/pond-faf-integration.md) supersedes the earlier illustrative five-fish shortlist in this plan and specifies exact P6/P8 asset intake, checks and blockers.
 
-Initial pack families:
+The owner's required Pond base set comprises:
 
-1. **Terrain/details:** mud, sediment, pebbles, algae-coated rock, eroded banks, leaf litter.
-2. **Wood and cover:** fallen trees, hollow logs, stumps, exposed roots, branching cover.
-3. **Plants:** pondweed, reeds, cattails, lily pads, duckweed and freshwater algae.
-4. **Fish:** a small, deliberately bounded native roster such as minnow, bluegill/sunfish, largemouth bass, perch and catfish. These are candidate species, not all mandatory before an initial playable slice.
-5. **Non-fish life:** representative frog/tadpole, turtle, water snake, crayfish and aquatic insects, prioritized by visual/gameplay value and cost. Their P4 role may be ambient/presentation only.
+1. **Freshwater fish:** Bluegill, bass, catfish, carp and pike as five stable native species. Each has five separate stages — Egg, Larva, Juvenile, Subadult and Adult — for **25 total stage exports**. Stages have appropriate real rig/action metadata; Eggs have deliberately minimal egg-specific rigging rather than fake swimming. Stage graphics are imported and verified in P4, while growth and stage-changing gameplay begin in P5.
+2. **Other creatures:** frog, water snake and snapping turtle base models, with natural noncombat aquatic/surface/shore ambient movement. Existing valid variants may be used; no predator AI/attacks yet.
+3. **Insects:** submerged bug-larva family and surface/swimming water-bug family, **two variants each**, as lightweight presentation-only ambient wildlife.
+4. **Wood/cover:** three fallen logs, three hollow-trunk openings, two trunk/stump forms and four stick/branch/root clusters. The hero hollow trunk must be an actual fish/camera swim-through with accurate simplified outer and inner collision, not a solid blocking box.
+5. **Foliage:** three lily-pad silhouettes plus stems; two tall-grass, two cattail, two reed, two submerged slime/algae and two floating muck/duckweed variants/patches. Surface and sediment alignment, light swaying and cheap instancing matter more than sheer counts.
+6. **Ground:** mud/silt, pebbles, leaf litter, algae-coated stones and eroded-bank palette/detail assets, grounded in the actual procedural Pond terrain.
 
-Animal movement should be plausible for each body type; don't turn every turtle/snake/frog into a fish or silently give it full predator gameplay. Future fish assets must follow existing gill/breathing rigging standards where anatomically appropriate. Asset count, performance, collision and review evidence belong to the eventual P4 implementation stack.
+The owner reports all five fish species created and the foliage pack complete, with the creature pack nearly complete as of 2026-11-11. These are **progress reports, not GitHub-verified rig/GLB/import/qualification evidence**; at execution read the actual current FAF manifests and exports. If a required model is missing or invalid, record the exact gap and block the applicable P6/P8 checkpoint rather than generating a duplicate or silently shrinking the roster. New IDs (including WOOD/CREATURE/INSECT if the registry requires them) are assigned within the independent FAF pipeline, never by guessing from display names.
+
+P4 character selection exposes the five native freshwater identities in their actual available selected demo visual stage, sharing P3's existing authoritative motor/collider until gameplay ecology is introduced. Other stages remain importable technical resources ready for future growth, not new playable fish species. Pond-only tags are enforced for every fish and creature; explicit neutral assets may be shared between worlds.
 
 ## Proposed acceptance Gates
 
@@ -102,8 +105,10 @@ Animal movement should be plausible for each body type; don't turn every turtle/
 
 ### G4.3 — Original freshwater asset pack
 
-- A representative native freshwater player fish, coherent vegetation/terrain/wood kit and ambient life are present with source/rigging/GLB/manifest checks.
-- Reusable FAF construction rules are applied; assets remain identifiable, style-consistent and correctly placed.
+- Existing FAF materials for **all five freshwater fish and all 25 life stages** are inventoried, imported/registered and checked for genuine stage-specific rig/action and breathing evidence; actual stage-changing growth remains later scope.
+- Frog, water snake and snapping turtle bases plus two larva and two water-bug variants are registered as Pond-only ambient content with credible noncombat presentation.
+- The full owner wood/hollow-trunk, foliage and ground families are imported and placed in the Pond, with proven swim-through/camera clearance and natural surface/bank placement.
+- Asset source/GLB/provenance, technical rigging, in-engine readability and placement evidence are recorded. Missing required asset inputs are named blockers, not recreated in P4.
 - Ocean assets remain intact and available only in their compatible habitat (shared generic geometry may be explicitly marked habitat-neutral).
 
 ### G4.4 — Habitat-restricted characters and regression
