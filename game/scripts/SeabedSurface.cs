@@ -15,6 +15,14 @@ public partial class SeabedSurface : StaticBody3D
     public Vector2 DeepCore => Basin.DeepCore;
     public float DeepFloorY => Basin.DeepFloorY;
     public float DeepReferenceY => DeepFloorY + 2f;
+    /// <summary>The generated Pond's level water plane, available only after its baked geometry is loaded.</summary>
+    public bool TryGetPondWaterSurfaceHeight(out float height)
+    {
+        height = 0f;
+        if (!Basin.IsPond || GeneratedMesh is null || GeneratedCollision is null) return false;
+        height = ToGlobal(new Vector3(0f, GeneratedBasin.WaterSurfaceY, 0f)).Y;
+        return float.IsFinite(height) && GlobalTransform.Basis.Y.IsEqualApprox(Vector3.Up);
+    }
     private ShaderMaterial? _waterMaterial;
 
     public void SetBasinSeed(ulong seed, bool pond = false)
@@ -153,6 +161,9 @@ public partial class SeabedSurface : StaticBody3D
                 legacy ? 31f : 80f, z != 0f ? .8f : span) };
         }
         var upper = limits.GetNode<CollisionShape3D>("Upper");
+        // Pond swimming is limited by the motor at the real water plane. This
+        // legacy upper box remains only as a surface mesh size anchor.
+        upper.Disabled = Basin.IsPond;
         upper.Position = new Vector3(0f, legacy ? 9.75f : 11.2f, 0f);
         upper.Shape = new BoxShape3D { Size = new Vector3(legacy ? 77f : span,
             .6f, legacy ? 77f : span) };

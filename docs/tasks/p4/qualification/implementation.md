@@ -1,3 +1,29 @@
+# P4 P9 — Pond surface swimming boundary implementation
+
+**Entry:** clean `main` at pre-task HEAD `648ed065c15c8193765ab13bcf654da648479d36`, root `0.4.8`. **Result:** uncommitted `0.4.9` implementation for the phase runner. This is a T2 headless check, not a P4 Gate or V32 native pass. Godot Editor MCP `2026.11.04` reported the Fish bridge disconnected; no editor mutation or native play observation was made.
+
+## Waterline and movement policy
+
+- The selected baked Pond is `world-5e3b4fee759acbe3`, seed 71, content `d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347`. `SeabedSurface.TryGetPondWaterSurfaceHeight` exposes its generated level plane only after Pond mesh and collision load, in world coordinates. The presentation surface now uses this same query. The shader's small animated waves remain visual; P9 does not add buoyancy or a moving collision plane.
+- The actual fish `Collision/SphereShape3D` radius is **0.480 m**. The Pond body-center limit is `water_y - 0.65 × radius = 10.078 m` for water Y **10.390 m**. At that limit, the collider top is 0.168 m above the level plane and its bottom is 0.792 m below. The P8 adult Bluegill visual is scaled from its 0.309825 m imported length to 1 m; the measured visual top at shallow skim was **10.538 m**, a 0.148 m nominal partial breach. Native wave-phase appearance remains unobserved.
+- Within **0.35 m** of the center limit, upward motor velocity is smoothly reduced and its remaining speed projected into the horizontal water tangent. The remaining distance per physics step caps ascent before contact. Downward velocity, yaw, pitch, thrust, glide, braking, camera authority and the shared `SwimMotor` are unchanged. A last-resort position bound handles external collision recovery without normal per-frame teleporting. Missing/invalid generated Pond waterline or a changed/non-centered collider fails world entry with `POND_WATERLINE_INVALID` rather than a guessed height.
+- Only Pond disables `HiddenLimits/Upper` collision and configures this motor policy. The generated seabed/bank, placed solid cover and distant fail-safe walls remain ordinary physical colliders. Ocean retains its upper box and previous center bound of Y 9.
+
+## Actual headless checks
+
+`./tools/dev inspect-pond-surface` uses the normal baked Pond and actual `FAF-FISH-006` adult player. At 60 Hz it holds W + Up for 240 steps from each of two depths, turns during the shallow ascent and again at the surface, coasts, brakes, descends, oscillates through four repeated rise/dive cycles, pauses, resets on focus loss, exercises Adaptive Follow mouse thrust plus W depth control, and sweeps the body into generated bank geometry. Assertions cover center occupancy each step (≤10.080 m), speed ≤4.02 m/s, monotonic ascents, no upward frame step ≥0.07 m, no oscillation position step ≥0.09 m, maintained lateral travel during turn, and zero pause/focus movement. A direct tangent test confirms upward projection retains total speed and downward velocity passes through.
+
+| Observation | Measured result |
+| --- | --- |
+| Deep ascent | Start `(-10, 5.390, 0)`, end `(-10, 10.030, -13.326)`; no slide collision; maximum vertical step 0.0546 m. |
+| Shallow curved ascent | Start `(-10, 8.890, 0)`, end `(1.073, 10.045, -8.639)` after 25 rising frames of right turn; no slide collision; maximum vertical step 0.0546 m. |
+| Surface cruise/coast | Cruise speed 4.000 m/s; after 25 coast frames 3.333 m/s; braking reduced speed further; turn moved laterally while under limit. |
+| Repeated oscillation | Four rise/dive cycles; largest position step 0.0667 m and largest speed 4.000 m/s; no center-limit violation. |
+| Adaptive Follow | Mouse-left thrust and W depth control moved from `(-10, 9.390, 0)` to `(-5.283, 9.990, 4.322)` under the same center limit; the preset retained Adaptive Follow camera authority. |
+| Generated bank | A 12 m `CharacterBody3D.MoveAndCollide` test sweep hit `Seabed` after 2.086 m from Y 9.921, before the distant hidden wall. The sweep was test-only; it did not teleport the live fish. |
+
+`./tools/dev build` passed with zero compile errors; NuGet emitted two `NU1900` network vulnerability-index warnings in this sandbox. `./tools/dev smoke-world` loaded tracked Ocean `world-6cba9a67e6275297` and passed `FISH_MOTOR_CHECK_OK` plus `FISH_SMOKE_OK`. `./tools/dev inspect-ocean-equal-input` ran the same 30-step Ocean input route with presentation on/off and reported equal position, velocity and motor-step count. `./tools/dev inspect-pond-atmosphere` passed Pond→Ocean→Pond identity/profile isolation. `git diff --check` passed. A broader, unrelated `./tools/dev inspect-atmosphere` stopped at its legacy graphics-preview close assertion (`visibility preview did not restore on close`); the focused equal-input Ocean route passed separately. Native feel, the full preset matrix at the surface, wave-phase visual contact, camera crossing and frame pacing remain for P12.
+
 # P4 P1 — World definitions and baked loader implementation
 
 **Source before task:** `main` at `853de9c86b9798a0ce0c0ff36b43420f0d225e19`, root `0.4.0`, 2026-11-11. **Result:** implementation in the uncommitted working tree, root `0.4.1`; runner owns the checkpoint. P3 direct closeout explicitly authorized progression with G3/V25–V27 gaps retained. No P4 Gate is qualified by this source check.

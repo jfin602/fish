@@ -1,4 +1,5 @@
 using Godot;
+using System;
 
 namespace Fish;
 
@@ -10,6 +11,10 @@ public partial class FishController : CharacterBody3D
     private float _horizontalLimit = 36.7f;
     private float _minimumY = -9f;
     private float _maximumY = 9f;
+    private float? _pondSurfaceCenterLimit;
+    public float PondWaterlineHeight { get; private set; } = float.NaN;
+    public float PondColliderRadius { get; private set; }
+    public float PondSurfaceCenterLimit => _pondSurfaceCenterLimit ?? float.NaN;
     public void ConfigureWorldBounds(float horizontalLimit, float minimumY, float maximumY)
     {
         if (horizontalLimit < 36.7f || minimumY >= maximumY)
@@ -17,6 +22,39 @@ public partial class FishController : CharacterBody3D
         _horizontalLimit = horizontalLimit;
         _minimumY = minimumY;
         _maximumY = maximumY;
+    }
+
+    public void ConfigurePondWaterline(SeabedSurface seabed)
+    {
+        if (!seabed.TryGetPondWaterSurfaceHeight(out var waterline) ||
+            GetNodeOrNull<CollisionShape3D>("Collision") is not { Shape: SphereShape3D sphere } collision ||
+            !collision.Position.IsZeroApprox() || !collision.Scale.IsEqualApprox(Vector3.One) ||
+            !Scale.IsEqualApprox(Vector3.One) || !float.IsFinite(sphere.Radius) || sphere.Radius <= 0f)
+            throw new InvalidOperationException(
+                "POND_WATERLINE_INVALID action=check-generated-surface-and-fish-collider");
+        PondWaterlineHeight = waterline;
+        PondColliderRadius = sphere.Radius;
+        // The collider remains mostly submerged. At the level plane its top
+        // can emerge by 35% of its radius; dorsal anatomy can emerge farther.
+        _pondSurfaceCenterLimit = waterline - 0.65f * sphere.Radius;
+        GD.Print($"POND_WATERLINE_READY water_y={waterline:F3} radius={sphere.Radius:F3} center_max={_pondSurfaceCenterLimit:F3} upper_collision=disabled");
+    }
+
+    public static Vector3 ConstrainPondAscent(Vector3 velocity, float centerY,
+        float centerLimitY, float delta)
+    {
+        if (velocity.Y <= 0f || delta <= 0f) return velocity;
+        const float approachBand = 0.35f;
+        var remaining = Mathf.Max(0f, centerLimitY - centerY);
+        if (remaining >= approachBand) return velocity;
+        var vertical = Mathf.Min(velocity.Y * Mathf.SmoothStep(0f, 1f,
+            remaining / approachBand), remaining / delta);
+        var horizontal = new Vector2(velocity.X, velocity.Z);
+        if (horizontal.IsZeroApprox()) return new Vector3(0f, vertical, 0f);
+        var horizontalSpeed = Mathf.Sqrt(Mathf.Max(0f,
+            velocity.LengthSquared() - vertical * vertical));
+        var tangent = horizontal.Normalized() * horizontalSpeed;
+        return new Vector3(tangent.X, vertical, tangent.Y);
     }
     private readonly ProfileSwimInput _input = new();
     private SwimState _state;
@@ -114,13 +152,17 @@ public partial class FishController : CharacterBody3D
                 (Mathf.DegToRad(Tuning.YawRateDegrees) * (float)delta), -1, 1)
             : 0;
         Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
-        Velocity = _state.Velocity;
+        Velocity = _pondSurfaceCenterLimit is { } limit
+            ? ConstrainPondAscent(_state.Velocity, Position.Y, limit, (float)delta)
+            : _state.Velocity;
         MoveAndSlide();
 
         // Collision and the existing habitat bounds remain authoritative.
         var clamped = new Vector3(
             Mathf.Clamp(Position.X, -_horizontalLimit, _horizontalLimit),
-            Mathf.Clamp(Position.Y, _minimumY, _maximumY),
+            _pondSurfaceCenterLimit is { } surfaceLimit
+                ? Mathf.Clamp(Position.Y, _minimumY, surfaceLimit)
+                : Mathf.Clamp(Position.Y, _minimumY, _maximumY),
             Mathf.Clamp(Position.Z, -_horizontalLimit, _horizontalLimit));
         var effective = Velocity;
         if (!Mathf.IsEqualApprox(clamped.X, Position.X)) effective.X = 0;

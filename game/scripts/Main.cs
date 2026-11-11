@@ -128,6 +128,12 @@ public partial class Main : Node3D
 
         GD.Print("FISH_FOUNDATION_READY");
 
+        if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
+        {
+            WorldSession.Select(WorldCatalog.PondId);
+            DemoSelection.CharacterId = "FAF-FISH-006";
+        }
+
         var pondInspect = OS.GetCmdlineUserArgs().FirstOrDefault(arg =>
             arg.StartsWith("--pond-inspect=", StringComparison.Ordinal));
         if (pondInspect is not null)
@@ -192,6 +198,12 @@ public partial class Main : Node3D
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Initialize(this);
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish));
+        }
+
+        if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
+        {
+            PondSurfaceChecks.Start(this);
+            return;
         }
 
         if (OS.GetCmdlineUserArgs().Any(arg => arg.StartsWith("--world-generate=", StringComparison.Ordinal) ||

@@ -51,6 +51,8 @@ public static class P2HabitatWorld
                     FafAmbientPondLife.Install(bakedHabitat);
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
+                if (WorldSession.SelectedWorldId == WorldCatalog.PondId)
+                    fish.ConfigurePondWaterline(bakedHabitat.GetNode<SeabedSurface>("Seabed"));
                 fish.Position = bakedHabitat.GetNode<Marker3D>("Spawn").Position;
                 if (pondVisualFixture && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
                     OS.GetEnvironment("FISH_POND_VISUAL_START") == "hero")

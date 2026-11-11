@@ -335,7 +335,8 @@ public partial class UnderwaterAtmosphere : Node3D
 
     private void AddSurface(Node3D main)
     {
-        // The saved upper collision owns the boundary; this mesh has no physics shape.
+        // The mesh shares the generated Pond water plane with the swim boundary.
+        // The upper box is only a size anchor in Pond, with collision disabled.
         var upper = main.GetNode<CollisionShape3D>("Habitat/HiddenLimits/Upper");
         if (upper.Shape is not BoxShape3D box)
         {
@@ -350,6 +351,13 @@ public partial class UnderwaterAtmosphere : Node3D
             return;
         }
         var extent = box.Size;
+        var seabed = main.GetNode<SeabedSurface>("Habitat/Seabed");
+        var pondWaterHeight = 0f;
+        if (seabed.Basin.IsPond && !seabed.TryGetPondWaterSurfaceHeight(out pondWaterHeight))
+        {
+            GD.PushError("FISH_ATMOSPHERE_POND_WATERLINE_INVALID action=check-generated-surface");
+            return;
+        }
         var plane = new PlaneMesh
         {
             Size = new Vector2(extent.X + 14.0f, extent.Z + 14.0f),
@@ -374,8 +382,8 @@ public partial class UnderwaterAtmosphere : Node3D
             CustomAabb = new Aabb(new Vector3(-(extent.X + 14.0f) * 0.5f, -0.35f, -(extent.Z + 14.0f) * 0.5f),
                 new Vector3(extent.X + 14.0f, 0.7f, extent.Z + 14.0f)),
             Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0,
-                main.GetNode<SeabedSurface>("Habitat/Seabed").Basin.IsPond
-                    ? GeneratedBasin.WaterSurfaceY - upper.GlobalPosition.Y
+                seabed.Basin.IsPond
+                    ? pondWaterHeight - upper.GlobalPosition.Y
                     : extent.Y * 0.5f + 0.34f, 0),
         };
         _effects!.AddChild(_surface);
