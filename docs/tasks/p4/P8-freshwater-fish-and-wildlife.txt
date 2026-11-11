@@ -1,4 +1,4 @@
-TASK: Phase 4 / P8 — Freshwater fish and wildlife
+TASK: Phase 4 / P8 — Freshwater FAF creature integration
 
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
@@ -6,24 +6,35 @@ MODEL / REASONING / USAGE
 - This prompt's assigned project version is `0.4.8`.
 
 GOAL
-Create a small, genuine freshwater creature library for the Pond and integrate it as selectable/ambient life with strict native habitat tags. This is not the full feeding/predator/growth phase.
+Integrate the owner's **existing** full freshwater FAF fish, life-stage, creature and insect packages into the Pond. Verify actual rigs, exports and native character/ambient behavior. **Do not create models or use FAF generators**; asset authoring is occurring independently.
 
 READ / ENTRY
-P4 README/plan P8, P4 design, FAF art style, fish/gill rigging, animation, budgets, ID/naming, Blender-Godot export and candidate records, existing reef fish life stages, actual P3 CharacterCatalog/PlayerArt and P3 selection tests, P7 native Pond findings. Confirm reviewed P7 checkpoint/version 0.4.7 and source/dirty work.
+Read AGENTS.md, BOOT.md, docs/workflow.md, P4 README/plan P8, docs/tasks/p4/pond-faf-integration.md, P4 design, FAF rigging and stage/gill/action/IDs/Blender-Godot contracts, current local freshwater FAF package READMEs/manifests (not hypothetical filenames), actual P3 CharacterCatalog/PlayerArt/DemoSelection, species filtering, ambient spawn code, P7 Pond native evidence and relevant Godot import tools. Confirm P7 review/version `0.4.7`, current HEAD, branch and dirty scope. Never overwrite ongoing FAF outputs or import half-written files.
 
-IMPLEMENT
-1. Produce at least **two original freshwater fish** in meaningful contrasting silhouettes: a small minnow-like body and a sunfish/bluegill-like laterally compressed body are suggested. Give each stable unique freshwater FAF ID, editable .blend source, exported .glb, clean skeleton/deformation, tail/fin swimming/gliding action clips and anatomically suitable gill breathing rigs per standard. Do not repurpose a marine tang as a freshwater fish.
-2. Normalize each visual into the existing shared FishController/demo-collider envelope; fish choice is still a visual-only P4 session feature, not new speed/hitbox/species stats. Preserve correct model proportions in previews and actual follow camera.
-3. Add at least **one** inexpensive passive freshwater ambient creature (tadpole, crayfish or aquatic insect), with a readable silhouette and bounded non-gameplay motion. Snakes/turtles/frogs and true predators can be later content; don't invent aggressive AI as P4.
-4. Register species with pond-only habitat eligibility and ambient/selectable roles. Positive Pond/negative Ocean checks on every freshwater ID; all five marine FAF remain Ocean-only. Add no fail-open fallback if a resource is missing.
-5. Verify Blender rigs by actual bone/skin/action data, Godot import/animation playback, scale, clipping, group counts and scene-load memory; documentation is not substitute for exported assets. Any missing art tooling is a blocker, not permission to fabricate.
-6. Update FAF catalog/manifests/provenance and p4 implementation evidence; capture proof images only if actually generated.
+REQUIRED OWNER ASSET INVENTORY
+- Exactly five freshwater **species identities**: **Bluegill, Bass, Catfish, Carp, Pike**. Use working taxonomic designations only if manifests specify them; do not swap in minnow/perch or silently reduce the roster to two.
+- Every species has **Egg, Larva, Juvenile, Subadult, Adult** = **25 distinct stage exports in total**. Preserve each species' stable ID with a stage designation; stage assets are not 25 different species. Each stage should be checked for a real rig, skin/action setup and correct breathing classification where biologically appropriate. Egg has a minimal egg-specific rig and egg motion, NOT a fake swimming loop. Validate anatomically appropriate gill bones for swimming stages, fin/tail/barbel/body deformation as applicable, stage-specific proportions and correct GLB metadata.
+- Other creatures: **frog, water snake, snapping turtle** bases and any valid existing variants. Integrate as passive ambient characters with believable water/surface/shore placement and species-appropriate movement; no amphibian/reptile fish-swimming rig assumptions.
+- Insects: at least **submerged larva** and **surface/swimming water-bug** families, **two variants each**, with simple age/scale-appropriate ambient loops.
+- All assets are owner-produced FAF first-party materials, registered with actual source/GLB IDs and **Pond-only** creature habitat tags.
+
+IMPLEMENT — INTEGRATE AND VERIFY
+1. First inventory the entire set against live manifests: per species, enumerate 5 stages × named rigs/actions, real source and export paths, dimensions, deform bones/weights, animation clips and reviewed/unreviewed status; enumerate frog/snake/turtle and larva/water-bug variants. Distinguish present vs partial/missing/invalid. Do not assert the owner's "fish made" report proves all 25 exported/rigged stages.
+2. Import/attach existing Godot GLBs via a stable species ID + life-stage descriptor and actual animation map. Give each of the five identities a proper animated Character Select preview, and make all five native fish playable as **visual-only** P4 demo choices, defaulting to an available explicitly declared preview/player stage (typically Adult). Preserve existing SwimMotor, FishController, collision envelope, camera, preset and water effects; use presentation normalization without inventing species stats. No runtime egg→adult progression yet.
+3. Register and validate all 25 stage visual resources for future P5 growth: stage hierarchy, continuity within each species, stage-specific animation/breathing metadata, import readiness and correct non-adult presentation. Do not pretend that stage switching in a growing life is implemented.
+4. Introduce low-cost presentation-only ambient frogs, snakes, snapping turtles and two insect families at pond-appropriate shore/surface/underwater habitats, in bounded density. Use actual provided rig/animation clips; do not give snakes, frogs or turtles fish-like procedural swim loops unless their asset defines appropriate aquatic motion. No combat or prey/predator interactions.
+5. Apply the one fail-closed compatibility policy from P3 to every freshwater selectable, ambient and reserved future spawn type. Every Pond identity is rejected in Ocean; every FAF marine fish remains rejected in Pond. Missing tags/models fail clearly; never use a marine fish or invented placeholder for the missing freshwater identity.
+6. Sample character size, rig deformation, preview framing, true body silhouette, scale/pivot, animation at rest/cruise/turn, performance and absent-resource diagnostics in actual Godot imports. Capture images only if really produced.
+7. Update the **runtime registration/adapter** and P4 qualification evidence; do not edit independent Blender masters, regenerate missing GLBs, create a new fish family, silently shrink the roster, or claim technical validation without reading the real data.
+
+MISSING/UNFINISHED FAF INPUT POLICY
+If any of the five species, its required stage exports, essential rigs/Actions, frog/snake/turtle bases, or the two required insect families with variants are not yet available/valid, document exact blockers and **stop before assigning `0.4.8`**. Preserve all valid partial integration and notify the owner to finish the FAF pack in its separate workflow. Do not model or auto-generate replacement content. A purely optional color/scale variation outside the required inventory can remain explicitly deferred.
 
 SCOPE / DEFERRALS
-No feeding/combat/growth/save/history, no universal species stats, no full wildlife catalog, no mandatory shark/bass predation. No destruction of existing marine fish.
+No feeding, predator hunting, snake/turtle attacks, injury, growth implementation, species-specific gameplay size/stats, saves, death/history, invented fish species, new Blender-generated assets, or Ocean changes. Reuse P4's shared authoritative motor/camera and marine/freshwater isolation.
 
 VALIDATE
-T2 Blender technical checks plus Godot import/build, focused character/ambient eligibility and two-species preview/player tests, actual input/collider invariants and git diff --check. Real owner style acceptance remains P12/P14.
+T2. Verify actual Blender/GLB rigs and stage Actions with real available inspection tools, Godot import/build, five-species selection/preview/play, 25-stage resource registry, representative animated stage per species, 3 creature bases, 4 insect variants, ambient path bounding and Ocean/Pond negative/positive selection/spawn checks. Check `git diff --check`; record honest missing/unobserved native evidence. Owner final in-world visual acceptance belongs to P12/P14.
 
-DONE / VERSION
-At least two native freshwater fish genuinely exist as technical candidates and are selectable only in Pond; ambient content is bounded and truthful. Set 0.4.8 after checks, report assets, rigs, animation/GLB evidence and gaps. No self-commit/push.
+DONE / VERSION / REPORT
+All five Pond fish species, their 25 externally authored developmental assets and available required freshwater wildlife are accounted for and import-ready; native player choices and ambient presentation work without leaking into Ocean. Set `0.4.8` only after required integration and checks pass. Report an explicit inventory/evidence matrix with species/stage IDs and named paths, failures, pending FAF work and next P9. Do not self-commit/push; runner owns checkpoint.
