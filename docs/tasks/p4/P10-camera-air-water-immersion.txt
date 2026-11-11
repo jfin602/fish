@@ -1,0 +1,29 @@
+TASK: Phase 4 / P10 — Camera air–water immersion
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.4.10`.
+
+GOAL
+Allow the existing third-person follow/orbit/zoom camera to cross from Pond underwater to air and back smoothly while the fish stays physically waterborne; blend rendering by actual camera immersion without moving the fish.
+
+READ / ENTRY
+P4 README/plan P10, approved surface camera contract/V32, FollowCamera, FishController, camera obstruction/raycast, ControlPreset and all built-in mode behaviors (especially Adaptive Follow and Hybrid 2 orbit), UnderwaterAtmosphere/LightingSettings and underwater_screen shader, current Pond water-surface query. Confirm completed P9 version 0.4.9, HEAD/dirty, Fish MCP identity if using editor.
+
+IMPLEMENT
+1. Derive a **camera-specific signed immersion depth** from actual camera world-space eye relative to real water-surface height. Fish body/surface policy remains independent. Define stable transition band and hysteresis or equivalent smoothing for tiny repeated crossings and wave motion; no rapid threshold flicker.
+2. Modify camera follow/zoom/obstacle adjustment only where necessary to allow the eye to pass above surface smoothly while fish stays visible through its body position. Preserve accepted centered follow, steady horizon, yaw/pitch/orbit, no forced camera snap, no teleport or sudden zoom. Camera must not clip underwater logs/roots, shore, rocks, surface mesh or player.
+3. Blend per-habitat underwater fog/green absorption, post filter, screen distortion, waterline refraction cues, caustics and shafts to an above-air sky/light appearance. UI and menu render outside the underwater pass; no global environment settings leak to Ocean. Restore underwater profile and GFX sliders after re-entry, pause and world switch.
+4. Keep sky/exposure strategy inexpensive (single world/environment pipeline, not a redundant second scene camera unless proven necessary). Support overcast/daylight profile; avoid changing real fish motion/clock or water contact.
+5. Test submerged, exact transition, eye above/fish below, looking down at submerged fish, return below, repeated oscillations, manual orbit/zoom, focus/pause/re-entry, presets, a surface under changing terrain banks and absent height data.
+6. Add checks for frame-to-frame camera position/rotation continuity and fish root/velocity invariance when camera alone moves.
+
+SCOPE / DEFERRALS
+No fish flight, no aerial movement ability, no new player stat, no Ocean surface qualification, no expensive fluid renderer. P11 owns shoreline content and visible ripples/wake.
+
+VALIDATE
+T2 focused camera-transform/immersion-state tests plus actual Godot build/smoke and previous motor/controls regression; git diff --check. Record limits of nonnative checks and exact visual-profile changes in p4 implementation evidence.
+
+DONE / VERSION
+Pond camera crosses the surface continuously, switches appearance without abrupt discontinuity and cannot alter authoritative fish state. Set 0.4.10 after checks; P12 remains required for native comfort/readability. No self-commit/push.
