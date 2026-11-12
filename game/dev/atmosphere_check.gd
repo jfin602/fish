@@ -243,9 +243,16 @@ func _run() -> void:
 	var shaft_time_before: float = shaft_material.get_shader_parameter("shaft_time")
 	var screen_material: ShaderMaterial = rect.material
 	var screen_time_before: float = screen_material.get_shader_parameter("screen_time")
+	var clock: Node = main.get_node("EnvironmentClock")
+	var day_before: float = clock.DayFraction
+	var daylight_before: float = surface_material.get_shader_parameter("surface_daylight")
+	var surface_light_before: float = surface_material.get_shader_parameter("surface_illumination")
+	var sun_before: Vector3 = surface_material.get_shader_parameter("sun_direction")
+	var shaft_energy_before: float = shaft_material.get_shader_parameter("shaft_brightness")
+	var caustic_energy_before: float = caustic.emission_energy
 	paused = true
 	await create_timer(0.15).timeout
-	if caustic.position != caustic_before or shafts.position != shaft_position_before or surface_material.get_shader_parameter("surface_time") != surface_time_before or shaft_material.get_shader_parameter("shaft_time") != shaft_time_before or screen_material.get_shader_parameter("screen_time") != screen_time_before:
+	if caustic.position != caustic_before or shafts.position != shaft_position_before or surface_material.get_shader_parameter("surface_time") != surface_time_before or shaft_material.get_shader_parameter("shaft_time") != shaft_time_before or screen_material.get_shader_parameter("screen_time") != screen_time_before or clock.DayFraction != day_before or surface_material.get_shader_parameter("surface_daylight") != daylight_before or surface_material.get_shader_parameter("surface_illumination") != surface_light_before or surface_material.get_shader_parameter("sun_direction") != sun_before or shaft_material.get_shader_parameter("shaft_brightness") != shaft_energy_before or caustic.emission_energy != caustic_energy_before:
 		fail("presentation time advanced while paused")
 		return
 	paused = false

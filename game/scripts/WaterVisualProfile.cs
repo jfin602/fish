@@ -25,6 +25,11 @@ public sealed record WaterVisualProfile(
     public float SurfaceFineNormalStrength { get; init; } = 1f;
     public float SurfaceRippleInterval { get; init; } = .18f;
     public float SurfaceWakeStrength { get; init; }
+    // Illumination palette only; optical extinction and local turbidity are unchanged at night.
+    public Color NightAmbient { get; init; } = new(0.45f, 0.56f, 0.66f);
+    public Color NightSurfaceGlow { get; init; } = new(0.012f, 0.025f, 0.038f);
+    public Color NightFog { get; init; } = new(0.040f, 0.085f, 0.125f);
+    public float NightSaturation { get; init; } = 0.58f;
     public static WaterVisualProfile Ocean { get; } = new(
         WorldEnvironmentProfile.Ocean,
         new(0.035f, 0.17f, 0.22f), new(0.56f, 0.73f, 0.76f),
@@ -36,7 +41,10 @@ public sealed record WaterVisualProfile(
         new(0.06f, 0.28f, 0.34f), new(0.39f, 0.77f, 0.87f),
         new(0.025f, 0.095f, 0.18f), new(0.27f, 0.57f, 0.75f),
         new(0.08f, 0.42f, 0.49f), new(0.20f, 0.66f, 0.67f),
-        new(0.54f, 0.79f, 0.72f), 4f / 7f, 0.35f, 0.48f, 2.25f, 0.68f);
+        new(0.54f, 0.79f, 0.72f), 4f / 7f, 0.35f, 0.48f, 2.25f, 0.68f)
+    {
+        SurfaceReflectionStrength = 0.55f,
+    };
 
     public static WaterVisualProfile Pond { get; } = new(
         WorldEnvironmentProfile.Pond,
@@ -52,6 +60,9 @@ public sealed record WaterVisualProfile(
         new(0.72f, 0.70f, 0.38f), 0.68f, 0.42f, 0.55f, 1.65f, 0.78f)
     {
         AirFogBegin = 27f, AirFogEnd = 105f, AirFogDensity = .94f,
+        NightAmbient = new(0.58f, 0.63f, 0.46f),
+        NightSurfaceGlow = new(0.035f, 0.055f, 0.038f),
+        NightSaturation = 0.78f,
         SurfaceExtinctionPerMeter = .65f,
         SurfaceScatter = new(0.055f, 0.085f, 0.035f),
         SurfaceReflectionStrength = .95f,

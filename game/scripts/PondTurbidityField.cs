@@ -48,8 +48,8 @@ public sealed class PondTurbidityField
         var shallowOpen = 1f - Smooth(2.5f, 6f, waterDepth);
         var nearBed = 1f - Smooth(.25f, 2.2f, world.Y - bed);
         var shelter = Smooth(.10f, 4f, shore) * (1f - Smooth(8f, 19f, shore));
-        var density = .43f + .25f * broad + .10f * detail - .12f * shallowOpen
-            + .23f * nearBed * (.65f + .35f * broad) + .08f * shelter * (.5f + .5f * detail);
+        var density = .31f + .25f * broad + .11f * detail - .15f * shallowOpen
+            + .34f * nearBed * (.65f + .35f * broad) + .08f * shelter * (.5f + .5f * detail);
         var waterMask = Smooth(0f, .7f, SurfaceY - world.Y) *
             Smooth(0f, .35f, world.Y - bed) * Smooth(0f, 2f, shore);
         return Mathf.Clamp(density, .10f, .88f) * waterMask;

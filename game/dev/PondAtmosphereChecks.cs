@@ -55,6 +55,14 @@ public static class PondAtmosphereChecks
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
             CheckSpatialField(main, atmosphere, camera);
+#if DEBUG
+            var firstNoon = CheckSolarWater(main, atmosphere, environmentClock, 12);
+            var firstNight = CheckSolarWater(main, atmosphere, environmentClock, 0);
+            Require(firstNoon.Surface > firstNight.Surface &&
+                firstNoon.Shaft > firstNight.Shaft && firstNoon.Caustic > firstNight.Caustic,
+                "Pond water did not lose sunlight at night");
+            CheckSolarWater(main, atmosphere, environmentClock, 12);
+#endif
             var pausedRange = atmosphere.EffectiveUsefulRange;
             var uiLayer = new CanvasLayer { Layer = 10 };
             main.AddChild(uiLayer);
@@ -94,9 +102,19 @@ public static class PondAtmosphereChecks
             Require((float)oceanSky.GetShaderParameter("overcast") == 0f &&
                 (float)oceanSurface.GetShaderParameter("overcast") == 0f &&
                 (float)oceanSurface.GetShaderParameter("surface_extinction") == 0f &&
-                (float)oceanSurface.GetShaderParameter("reflection_strength") == 0f &&
-                (float)oceanSurface.GetShaderParameter("air_surface_enabled") == 0f,
+                (float)oceanSurface.GetShaderParameter("reflection_strength") ==
+                    WaterVisualProfile.Ocean.SurfaceReflectionStrength &&
+                (float)oceanSurface.GetShaderParameter("air_surface_enabled") == 1f,
                 "Pond material parameters leaked into Ocean");
+#if DEBUG
+            var oceanNoon = CheckSolarWater(main, atmosphere, environmentClock, 12);
+            var oceanNight = CheckSolarWater(main, atmosphere, environmentClock, 0);
+            Require(oceanNoon.Surface > oceanNight.Surface &&
+                oceanNoon.Horizon != firstNoon.Horizon &&
+                oceanNoon.Daylight != firstNoon.Daylight,
+                "Ocean water kept Pond solar response");
+            CheckSolarWater(main, atmosphere, environmentClock, 12);
+#endif
 
             LoadWorld(main, WorldCatalog.PondId);
             atmosphere = ReplaceAtmosphere(main);
@@ -108,6 +126,12 @@ public static class PondAtmosphereChecks
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
             CheckSpatialField(main, atmosphere, camera);
+#if DEBUG
+            var returnNoon = CheckSolarWater(main, atmosphere, environmentClock, 12);
+            var returnNight = CheckSolarWater(main, atmosphere, environmentClock, 0);
+            Require(returnNoon == firstNoon && returnNight == firstNight,
+                "Pond solar water response changed across Pond-Ocean-Pond");
+#endif
             Require(fish.GlobalPosition == fishPosition && fish.Velocity == fishVelocity &&
                 camera.GetInstanceId() != 0, "presentation changed fish state");
             GD.Print($"POND_ATMOSPHERE_CHECK_OK profile=pond ocean_reset=ok pond_reload=ok " +
@@ -122,6 +146,42 @@ public static class PondAtmosphereChecks
                 if (File.Exists(file)) File.Delete(file);
         }
     }
+
+#if DEBUG
+    private readonly record struct SolarWaterSnapshot(float Surface, float Daylight,
+        Vector3 Horizon, float Shaft, float Caustic);
+
+    private static SolarWaterSnapshot CheckSolarWater(Main main, UnderwaterAtmosphere atmosphere,
+        EnvironmentClock clock, double hour)
+    {
+        clock.SetTimeForDebug(hour);
+        atmosphere.RefreshSolar(true);
+        atmosphere.RefreshDepth(true, 2f);
+        var solar = clock.Solar;
+        var expectedLight = SolarLightingState.From(solar, atmosphere.ProfileId);
+        var expectedWater = SolarWaterState.From(solar, expectedLight,
+            WaterVisualProfile.For(atmosphere.ProfileId), atmosphere.SunEnergy);
+        var surface = (ShaderMaterial)main.GetNode<MeshInstance3D>(
+            "UnderwaterAtmosphere/WaterEffects/OverheadSurface").MaterialOverride;
+        var shaft = (ShaderMaterial)main.GetNode<MeshInstance3D>(
+            "UnderwaterAtmosphere/WaterEffects/SunShafts").MaterialOverride;
+        var decal = main.GetNode<Decal>("UnderwaterAtmosphere/WaterEffects/CausticProjection1");
+        var horizon = (Vector3)surface.GetShaderParameter("reflected_sky_horizon");
+        var daylight = (float)surface.GetShaderParameter("surface_daylight");
+        var illumination = (float)surface.GetShaderParameter("surface_illumination");
+        var shaftEnergy = (float)shaft.GetShaderParameter("shaft_brightness");
+        Require(horizon.DistanceTo(new Vector3(expectedLight.AirHorizon.R,
+                expectedLight.AirHorizon.G, expectedLight.AirHorizon.B)) < .0001f &&
+            Mathf.Abs(daylight - expectedWater.SurfaceDaylight) < .0001f &&
+            Mathf.Abs(illumination - expectedWater.SurfaceIllumination) < .0001f &&
+            Mathf.Abs(shaftEnergy - atmosphere.ShaftBrightness * atmosphere.CameraImmersion01 *
+                expectedWater.ShaftEnergy) < .0001f &&
+            Mathf.Abs(decal.EmissionEnergy - atmosphere.CausticEnergy * atmosphere.CameraImmersion01 *
+                expectedWater.CausticEnergy) < .0001f,
+            "profile solar water values diverged from the shared clock");
+        return new SolarWaterSnapshot(illumination, daylight, horizon, shaftEnergy, decal.EmissionEnergy);
+    }
+#endif
 
     private static void LoadWorld(Main main, string id)
     {

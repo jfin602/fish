@@ -6,6 +6,7 @@ uniform float warp_pixels : hint_range(0.0, 0.2) = 0.10;
 uniform float color_variation : hint_range(0.0, 0.04) = 0.007;
 uniform float screen_time = 0.0;
 uniform float immersion : hint_range(0.0, 1.0) = 1.0;
+uniform float night_saturation : hint_range(0.0, 1.0) = 1.0;
 
 void fragment() {
     vec2 wave = vec2(sin(SCREEN_UV.y * 38.0 + screen_time * 0.43),
@@ -15,5 +16,7 @@ void fragment() {
     vec3 scene = texture(screen_texture, uv).rgb;
     float shimmer = sin(SCREEN_UV.x * 19.0 + SCREEN_UV.y * 11.0 + screen_time * 0.31);
     scene *= 1.0 + color_variation * immersion * shimmer;
+    float luma = dot(scene, vec3(0.2126, 0.7152, 0.0722));
+    scene = mix(vec3(luma), scene, mix(1.0, night_saturation, immersion));
     COLOR = vec4(scene, 1.0);
 }

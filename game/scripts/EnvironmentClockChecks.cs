@@ -45,6 +45,10 @@ public static class EnvironmentClockChecks
                 midnight.Night > .99f && dawn.Twilight > .1f && sunset.Twilight > .1f &&
                 dawn.DirectionToSun.X > 0 && sunset.DirectionToSun.X < 0,
                 "representative solar samples");
+            var pondShoreView = new Vector3(-0.887818f, 0f, 0.460194f);
+            Require(sunset.DirectionToSun.Dot(pondShoreView) > .9999f &&
+                (-dawn.DirectionToSun).Dot(pondShoreView) > .9999f,
+                "sunset and moonset must line up with the Pond shore view");
             var beforeBoundary = SolarState.At(1 - 1e-7);
             var afterBoundary = SolarState.At(1e-7);
             Require(beforeBoundary.DirectionToSun.DistanceTo(afterBoundary.DirectionToSun) < .00001f &&

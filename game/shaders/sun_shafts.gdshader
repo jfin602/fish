@@ -10,10 +10,16 @@ uniform float water_surface_y = 10.0;
 uniform float water_deep_y = -8.0;
 uniform float deep_transmission = 0.12;
 uniform vec3 shaft_color = vec3(0.54, 0.79, 0.72);
+uniform vec3 sun_direction = vec3(0.0, 1.0, 0.0);
+uniform float shaft_lean = 1.0;
 varying float world_height;
 
 void vertex() {
     world_height = (MODEL_MATRIX * vec4(VERTEX, 1.0)).y;
+    float floor_y = mix(water_deep_y, water_surface_y, COLOR.b);
+    float height_above_floor = (1.0 - UV.y) * max(water_surface_y - floor_y, 0.0);
+    vec2 lean = sun_direction.xz / max(sun_direction.y, 0.32);
+    VERTEX.xz += clamp(lean, vec2(-1.2), vec2(1.2)) * height_above_floor * shaft_lean;
 }
 
 void fragment() {

@@ -1,6 +1,6 @@
 # c4-day-night — shared day/night environment correction
 
-**State:** **P1–P2 directly implemented and T2 checked; P3–P4 authored / not executed.** **Type:** Correction 4. **Required root version:** `0.4.11` unchanged. [P1 evidence](qualification/environment-time-p1.md) · [P2 evidence](qualification/solar-lighting-p2.md).
+**State:** **P1–P3 directly implemented and T2 checked; P4 native candidate NOT GREEN.** Native captures and performance checks are recorded. The owner accepted the solar-fog repair for the pale sunset shore. A [night readability and Pond shore alignment candidate](qualification/night-readability-candidate.md) is now implemented and captured, but the whole cycle has no owner acceptance. **Type:** Correction 4. **Required root version:** `0.4.11` unchanged. [P1 evidence](qualification/environment-time-p1.md) · [P2 evidence](qualification/solar-lighting-p2.md) · [P3 evidence](qualification/solar-water-p3.md) · [P4 native evidence](qualification/native-day-night-p4.md).
 
 ## Purpose
 
@@ -32,8 +32,8 @@ Normal gameplay pause already exists through the PlayShell path. The new environ
 | --- | --- | --- | --- |
 | P1 | [Environment clock and solar state](P1-environment-clock-and-solar-state.txt) | Directly implemented: one bounded pause-aware environment-time source and continuous solar-state mapping with deterministic debug set/accelerate hooks | T2 passed; [evidence](qualification/environment-time-p1.md) |
 | P2 | [Procedural sky and direct lighting](P2-procedural-sky-and-lighting.txt) | Directly implemented: dynamic sky/horizon plus real sun/ambient lighting driven from the shared solar state | T2 passed; [evidence](qualification/solar-lighting-p2.md) |
-| P3 | [Water and underwater daylight integration](P3-water-and-underwater-daylight.txt) | Reflection/daylight/shafts/caustics consume the same solar state with Pond/Ocean profile isolation and bounded cost | T2 |
-| P4 | [Native day/night closeout](P4-native-day-night-closeout.txt) | Real Forward+ sweep through representative times, pause/profile/performance checks and owner visual decision | T3 manual closeout |
+| P3 | [Water and underwater daylight integration](P3-water-and-underwater-daylight.txt) | Directly implemented: water reflection/daylight and underwater light/shafts/caustics consume the shared solar state with Pond/Ocean profile isolation | T2 passed; [evidence](qualification/solar-water-p3.md) |
+| P4 | [Native day/night closeout](P4-native-day-night-closeout.txt) | Native Forward+ fixed-time captures, accelerated sweep, pause/profile/performance checks recorded; night readability and owner decision remain open | T3 [evidence](qualification/native-day-night-p4.md), NOT GREEN |
 
 P4 is the sole final closeout. Its canonical `Browser required: yes.` metadata means the runner stops for native/manual observation.
 

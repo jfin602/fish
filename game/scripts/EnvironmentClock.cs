@@ -98,7 +98,10 @@ public readonly record struct SolarState(double DayFraction, double HourOfDay,
         var phase = (time - 0.25) * Math.Tau;
         var elevation = (float)Math.Sin(phase);
         var horizontal = (float)Math.Cos(phase);
-        var direction = new Vector3(horizontal * 0.9f, elevation, horizontal * 0.4358899f).Normalized();
+        // The west horizon follows the Pond bank approach, a fixed world direction.
+        // The opposite night direction lets the moon set along that same shore view at dawn.
+        var direction = new Vector3(horizontal * 0.887818f, elevation,
+            horizontal * -0.460194f).Normalized();
         var daylight = Smooth(-0.10f, 0.20f, elevation);
         var twilight = Smooth(-0.25f, -0.02f, elevation) * (1f - Smooth(0.02f, 0.30f, elevation));
         var night = 1f - Smooth(-0.20f, -0.04f, elevation);

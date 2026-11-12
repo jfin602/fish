@@ -8,6 +8,10 @@ public readonly record struct SolarLightingState(Color AirHorizon, Color AirZeni
     Color AirAmbient, Color DirectColor, Color WarmHorizon, float WarmStrength,
     float SunGlow, float AirAmbientEnergy, float DirectEnergyFactor, float VolumetricFactor)
 {
+    // A single restrained night direction reuses the sun light; no second light or shadow map.
+    public static float MoonVisibility(SolarState solar) => Mathf.SmoothStep(0f, 1f,
+        Mathf.Clamp((-solar.DirectionToSun.Y - 0.02f) / 0.30f, 0f, 1f));
+
     public static SolarLightingState From(SolarState solar, WorldEnvironmentProfile habitat)
     {
         var pond = habitat == WorldEnvironmentProfile.Pond;

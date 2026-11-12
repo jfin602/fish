@@ -19,6 +19,10 @@ uniform float air_fog_end = 105.0;
 uniform vec3 water_scatter = vec3(0.22, 0.28, 0.105);
 uniform float surface_extinction = 0.0;
 uniform float surface_daylight = 1.0;
+uniform float surface_illumination = 1.0;
+uniform vec3 night_surface_glow = vec3(0.0);
+uniform float reflection_sun_energy = 1.0;
+uniform vec3 reflection_sun_color = vec3(1.0, 0.9, 0.7);
 uniform float reflection_strength = 1.0;
 uniform float reflection_distortion = 1.0;
 uniform float ripple_strength = 1.0;
@@ -32,15 +36,12 @@ varying vec3 surface_world;
 varying vec3 surface_normal;
 varying float shore_blend;
 
-vec3 pond_sky(vec3 direction, float time) {
+vec3 pond_sky(vec3 direction) {
     float height = smoothstep(0.0, 0.9, direction.y);
-    float cloud = sin(direction.x * 19.0 + direction.z * 11.0 + time * 0.015)
-        * sin(direction.z * 27.0 - direction.x * 7.0 - time * 0.009);
-    cloud += 0.35 * sin(direction.x * 48.0 + direction.z * 32.0);
     vec3 base = mix(reflected_sky_horizon, reflected_sky_zenith, height);
-    vec3 cloudy = mix(vec3(0.29, 0.32, 0.32), vec3(0.72, 0.73, 0.68),
-        smoothstep(-0.75, 0.85, cloud));
-    return mix(base, cloudy, overcast * smoothstep(-0.1, 0.28, direction.y) * 0.72);
+    float solar = max(dot(direction, normalize(sun_direction)), 0.0);
+    return base + reflection_sun_color * reflection_sun_energy *
+        (0.24 * pow(solar, 28.0) + 0.46 * pow(solar, 180.0));
 }
 
 vec4 pond_screen_reflection(vec3 origin, vec3 direction, float water_y,
@@ -115,10 +116,13 @@ void fragment() {
     float deep_cue = camera_depth * upward;
     // Only the overhead interface keeps transmitted light through deep water.
     // Horizontal geometry uses the independently tuned water-column fog.
-    ALBEDO = turquoise + mix(vec3(0.22, 0.44, 0.40), vec3(0.025, 0.055, 0.020), overcast) * fresnel
-             + (1.0 - 0.95 * overcast) * (vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint)
+    ALBEDO = surface_illumination * (turquoise + mix(vec3(0.22, 0.44, 0.40), vec3(0.025, 0.055, 0.020), overcast) * fresnel
+             + reflection_sun_color * reflection_sun_energy * (1.0 - 0.95 * overcast) * (vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint)
              + deep_cue * (mix(vec3(0.09, 0.24, 0.25), vec3(0.08, 0.16, 0.06), overcast)
-             + mix(vec3(0.26, 0.31, 0.20), vec3(0.20, 0.22, 0.10), overcast) * halo);
+             + mix(vec3(0.26, 0.31, 0.20), vec3(0.20, 0.22, 0.10), overcast) * halo));
+    // A faint scattered night-sky cue belongs to the overhead interface only.
+    ALBEDO += night_surface_glow * upward * (1.0 - 0.55 * camera_depth)
+        * (0.78 + 0.22 * ripple);
     float edge_distance = max(abs(surface_world.x), abs(surface_world.z));
     float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
         surface_half_size - 2.0, edge_distance);
@@ -152,11 +156,11 @@ void fragment() {
         // A dry bank or overhanging branch must not be colored as submerged scenery.
         if (scene_depth > 0.0001 && !opaque_water_target) transmission = 1.0;
         vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple);
-        vec3 scattered = mix(water_scatter, water_tint, 0.03);
+        vec3 scattered = mix(water_scatter, water_tint, 0.03) * surface_illumination;
         vec3 transmitted = mix(scattered, refracted, transmission);
         vec3 reflected_direction = reflect(ray_up, air_normal);
         float reflect_mix = clamp(air_fresnel * reflection_strength, 0.0, 0.92);
-        vec3 reflected = pond_sky(reflected_direction, surface_time);
+        vec3 reflected = pond_sky(reflected_direction);
         if (reflect_mix > 0.06) {
             vec4 scene_reflection = pond_screen_reflection(surface_world + air_normal * 0.06,
                 normalize(mix(reflected_direction, reflect(ray_up, surface_normal),
@@ -167,7 +171,7 @@ void fragment() {
         // Overcast Pond light is subdued; preserve dark bank silhouettes while
         // letting open sky remain brighter than the absorbed water body.
         reflected = pow(max(reflected, vec3(0.0)), vec3(2.2))
-            * vec3(0.72, 0.77, 0.57) + water_scatter * 0.07;
+            * vec3(0.72, 0.77, 0.57) + water_scatter * (0.07 * surface_illumination);
         ALBEDO = mix(transmitted, reflected, reflect_mix);
         float air_distance = distance(CAMERA_POSITION_WORLD, surface_world);
         float air_fog = smoothstep(air_fog_begin, air_fog_end, air_distance);
