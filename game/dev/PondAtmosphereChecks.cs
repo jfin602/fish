@@ -10,6 +10,7 @@ public static class PondAtmosphereChecks
     public static void Run(Main main)
     {
         var tree = main.GetTree();
+        var environmentClock = main.GetNode<EnvironmentClock>("EnvironmentClock");
         var camera = main.GetNode<Camera3D>("Fish/CameraRig/Camera3D");
         var fish = main.GetNode<FishController>("Fish");
         var fishPosition = fish.GlobalPosition;
@@ -48,6 +49,9 @@ public static class PondAtmosphereChecks
             tree.Paused = true;
             atmosphere.ConfigureProfile(WorldEnvironmentProfile.Pond);
             atmosphere.Initialize(main);
+            Require(atmosphere.EnvironmentTime == environmentClock &&
+                atmosphere.Solar == environmentClock.Solar,
+                "Pond presentation did not bind shared clock");
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
             CheckSpatialField(main, atmosphere, camera);
@@ -70,6 +74,9 @@ public static class PondAtmosphereChecks
             atmosphere = ReplaceAtmosphere(main);
             atmosphere.ConfigureProfile(WorldEnvironmentProfile.Ocean);
             atmosphere.Initialize(main);
+            Require(atmosphere.EnvironmentTime == environmentClock &&
+                atmosphere.Solar == environmentClock.Solar,
+                "Ocean presentation did not retain shared clock");
             atmosphere.ApplyLighting(oceanStore.Current.Settings);
             Require(atmosphere.ProfileId == WorldEnvironmentProfile.Ocean &&
                 main.GetNodeOrNull<FogVolume>("UnderwaterAtmosphere/PondTurbidity") is null &&
@@ -95,6 +102,9 @@ public static class PondAtmosphereChecks
             atmosphere = ReplaceAtmosphere(main);
             atmosphere.ConfigureProfile(WorldEnvironmentProfile.Pond);
             atmosphere.Initialize(main);
+            Require(atmosphere.EnvironmentTime == environmentClock &&
+                atmosphere.Solar == environmentClock.Solar,
+                "Pond reload did not retain shared clock");
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
             CheckSpatialField(main, atmosphere, camera);

@@ -41,6 +41,7 @@ public partial class Main : Node3D
             PondCreatureChecks.Start(this)) return;
         if (OS.GetCmdlineUserArgs().Contains("--pond-atmosphere-check"))
         {
+            AddChild(new EnvironmentClock { Name = "EnvironmentClock" });
             try { PondAtmosphereChecks.Run(this); GetTree().Quit(); }
             catch (Exception error) { GD.PushError($"POND_ATMOSPHERE_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
@@ -114,6 +115,12 @@ public partial class Main : Node3D
             catch (Exception error) { GD.PushError($"FAF_RUNTIME_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
+        if (OS.GetCmdlineUserArgs().Contains("--environment-time-check"))
+        {
+            AddChild(new EnvironmentClock { Name = "EnvironmentClock" });
+            _ = EnvironmentClockChecks.Run(this);
+            return;
+        }
         var fish = GetNodeOrNull<FishController>("Fish");
         var camera = GetNodeOrNull<Camera3D>("Fish/CameraRig/Camera3D");
         var habitat = GetNodeOrNull<Node3D>("Habitat");
@@ -145,6 +152,7 @@ public partial class Main : Node3D
             return;
         }
 
+        AddChild(new EnvironmentClock { Name = "EnvironmentClock" });
         AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences)
         {
             Name = "PlayShell",
@@ -300,6 +308,8 @@ public partial class Main : Node3D
         var course = GetNodeOrNull<Node3D>("Habitat/MovementCourse");
         var seabed = GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
         var water = GetNodeOrNull<WaterReaction>("Fish/WaterReaction");
+        var atmosphere = GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere");
+        var environmentClock = GetNodeOrNull<EnvironmentClock>("EnvironmentClock");
         if (fish.Tuning.ResourcePath != "res://resources/swim_tuning.tres" ||
             skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
@@ -311,6 +321,14 @@ public partial class Main : Node3D
                 GetNodeOrNull<Node3D>("Habitat/Composition") is null)))
         {
             GD.PushError("FISH_SMOKE_FAILED world resources did not instantiate fully");
+            GetTree().Quit(1);
+            return;
+        }
+        if (environmentClock is null || !environmentClock.CanProcess() ||
+            (course is null && (atmosphere?.EnvironmentTime != environmentClock ||
+                atmosphere.Solar != environmentClock.Solar)))
+        {
+            GD.PushError("FISH_SMOKE_FAILED shared environment clock is not bound");
             GetTree().Quit(1);
             return;
         }

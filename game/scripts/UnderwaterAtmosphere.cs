@@ -76,9 +76,13 @@ public partial class UnderwaterAtmosphere : Node3D
     private bool _visibilityBypass;
     private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
+    private EnvironmentClock? _environmentClock;
     private WaterVisualProfile _profile = WaterVisualProfile.Ocean;
 
     public WorldEnvironmentProfile ProfileId => _profile.Id;
+    public EnvironmentClock? EnvironmentTime => _environmentClock;
+    public SolarState Solar => (_environmentClock ??
+        throw new InvalidOperationException("Environment clock is not bound")).Solar;
 
     /// <summary>Choose scene-local presentation before Initialize; never edits user presets.</summary>
     public void ConfigureProfile(WorldEnvironmentProfile id)
@@ -190,6 +194,7 @@ public partial class UnderwaterAtmosphere : Node3D
 
     public void Initialize(Node3D main)
     {
+        _environmentClock = main.GetNode<EnvironmentClock>("EnvironmentClock");
         if (RenderingServer.GetCurrentRenderingMethod() != "forward_plus")
         {
             GD.PushError("FISH_ATMOSPHERE_REQUIRES_FORWARD_PLUS");
