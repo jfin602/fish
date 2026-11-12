@@ -1,0 +1,14 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=Minimized
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=3375 generator_invocations=0
+POND_SURFACE_READY vertices=16176 build_ms=16.91 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=1651 generator_invocations=0
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=31.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2514 generator_invocations=0
+POND_SURFACE_READY vertices=16176 build_ms=15.72 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=23.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+POND_ATMOSPHERE_CHECK_OK profile=pond ocean_reset=ok pond_reload=ok base=25.0 deep=17.0 fish=unchanged presets=isolated

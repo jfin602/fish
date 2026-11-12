@@ -1,0 +1,18 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=Minimized
+FISH_FOUNDATION_READY
+WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=3234 generator_invocations=0
+ERROR: FISH_ASSET_MISSING item=Quaternius Fish3 path=res://assets/vendor-local/quaternius/Fish3.fbx action=prepare-source-under-game/assets/vendor-local
+   at: void Fish.Main._Ready() (res://scripts/Main.cs:158)
+   GDScript backtrace (most recent call first):
+       [0] _route (res://dev/atmosphere_movement_check.gd:16)
+       [1] _run (res://dev/atmosphere_movement_check.gd:51)
+   C# backtrace (most recent call first):
+       [0] void Godot.GD.PushError(string) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/GD.cs:366)
+       [1] void Fish.Main._Ready() (/workspace/scratch/d66dc362420b/fish-water-surface/game/scripts/Main.cs:158)
+       [2] bool Godot.Node.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node.cs:2660)
+       [3] bool Godot.Node3D.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Generated/GodotObjects/Node3D.cs:1127)
+       [4] bool Fish.Main.InvokeGodotClassMethod(Godot.NativeInterop.godot_string_name&, Godot.NativeInterop.NativeVariantPtrArgs, Godot.NativeInterop.godot_variant&) (/workspace/scratch/d66dc362420b/fish-water-surface/game/.godot/mono/temp/obj/Debug/Godot.SourceGenerators/Godot.SourceGenerators.ScriptMethodsGenerator/Fish.Main_ScriptMethods.generated.cs:120)
+       [5] Godot.NativeInterop.godot_bool Godot.Bridge.CSharpInstanceBridge.Call(nint, Godot.NativeInterop.godot_string_name*, Godot.NativeInterop.godot_variant**, int, Godot.NativeInterop.godot_variant_call_error*, Godot.NativeInterop.godot_variant*) (/root/godot/modules/mono/glue/GodotSharp/GodotSharp/Core/Bridge/CSharpInstanceBridge.cs:24)
+ocean-equal-input failed (exit 1; /workspace/scratch/d66dc362420b/fish-water-surface/artifacts/logs/ocean-equal-input.log)

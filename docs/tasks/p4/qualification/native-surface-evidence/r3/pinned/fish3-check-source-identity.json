@@ -1,0 +1,8 @@
+{
+  "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+  "observed_changes": [
+    " M game/dev/p12_surface_reflection_probe.gd"
+  ],
+  "native_probe_sha256": "cfbfd7e4b0a35b1666860acdcc729cf0cb67e1716c8b9b31ac8fcd5d3234d934",
+  "scope_note": "Only native probe modified by rendering work; this recovery made no tracked source changes."
+}

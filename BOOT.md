@@ -2,7 +2,7 @@
 
 Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs/roadmap.md) owns Phase/Gate progress and [development setup](docs/development.md) owns command availability and tool pins.
 
-## Current handoff — 2026-11-11
+## Current handoff — 2026-11-12
 
 | Area | Actual state |
 | --- | --- |
@@ -11,10 +11,10 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 | Current gameplay | **P1 COMPLETE.** The owner accepted the current post-c1 controls, swimming, third-person camera/body and starter course as sufficient for progression. [P1 closeout](docs/tasks/p1/closeout.md) maps G1.1–G1.4 and evidence limits; [accepted tuning](docs/tasks/p1/qualification/accepted-tuning.md) is P2's exact baseline. |
 | Controls correction | [c1-bindings](docs/tasks/c1-bindings/README.md) is implemented and reconciled into P1. Its [closeout](docs/tasks/c1-bindings/closeout.md) retains the partial advanced native matrix and the repaired help-layout failure. Further refinement is deferred. |
 | Adaptive Follow | A fifth built-in control preset combines mouse fish steering and W/S depth control with independent camera look while Left Shift is held, then returns smoothly. It is implemented with focused headless checks; native feel remains for owner observation. See [swimming and camera](docs/systems/swimming-and-camera.md). |
-| Next Phase | **P4 P12 remains NOT GREEN at `0.4.11`.** P12-R2 adds dark muddy-green depth transmission after the owner rejected pale/shiny trials; fixed native views show brown mud at a real shallow spot, fish fading with depth, and brighter light extending sight. Owner judgment of this final candidate, controlled surface swimming, camera/preset comfort and continuous deep/return routes remain open. [P12 evidence and R1/R2 addenda](docs/tasks/p4/qualification/native-surface.md) own V32; no P4 Gate passed. C3 V25 and P2 G2.3/V20 remain open. |
+| Next Phase | **P4 P12 remains NOT GREEN at `0.4.11`.** [P12-R3](docs/tasks/p4/qualification/r3-surface-reflections.md) is an experimental Pond surface/sky candidate after the owner requested a rollback checkpoint and supplied reflective-water references. It preserves R2 depth transmission. The pinned .NET build and four affected state checks pass; fifteen actual baked-Pond fixed-pose captures on software Forward+ show reflected shore structure and retained shallow fish. Owner-hardware cost, motion stability and controlled play remain open. [P12/R1/R2](docs/tasks/p4/qualification/native-surface.md) retains historical failures/evidence. No P4 Gate passed; C3 V25 and P2 G2.3/V20 remain open. |
 | Renderer | **Forward+ is the owner-selected and tracked P2 desktop renderer.** Normal main play uses `forward_plus`; [P2 decision evidence](docs/tasks/p2/qualification/renderer-decision.md) records the native lock. Compatibility remains a diagnostic compare path only. |
 | Assets | Quaternius Fish3/ClownFish, Rock Face 01, Coast Sand 01, and Smithsonian *Heliopora coerulea* are the P1 starter set. P2 may prepare efficient derivatives/instances and add only provenance-safe free environment assets when the approved habitat cannot be reached with the existing set. |
-| Root version | **`0.4.11`** — P12 did not pass or receive owner approval; do not assign `0.4.12` or advance the runner. The scoped Character Select guard is in the prior commit; R1 and R2 are non-checkpoint repairs. |
+| Root version | **`0.4.11`** — P12 did not pass or receive owner approval; do not assign `0.4.12` or advance the runner. R1/R2/R3 are non-checkpoint repairs; the R3 rollback branch preserves pushed source `cc8cbb9`. |
 | Next design phase | **P4 P12 remains pending while a bounded environment correction is prepared.** [c4-day-night](docs/tasks/c4-day-night/README.md) is AUTHORED / NOT EXECUTED at unchanged `0.4.11`: first establish a shared continuous solar clock, procedural sky and coherent above/below-water daylight; weather follows as a separate later correction. [P12 evidence](docs/tasks/p4/qualification/native-surface.md) remains authoritative and NOT GREEN. |
 | Later gameplay | P5 introduces naturalistic sensing, hiding, predator investigation/pursuit, stealth hunting, feeding and growth; persistence/death P6; Life History P7; integrated qualification P8. No P5 stealth gameplay is yet implemented or qualified. |
 

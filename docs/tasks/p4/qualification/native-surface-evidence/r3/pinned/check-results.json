@@ -1,0 +1,32 @@
+{
+  "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+  "status_before": "",
+  "scope": "Headless C#/state checks only; no visual or owner hardware performance qualification",
+  "checks": [
+    {
+      "command": "./tools/dev inspect-pond-atmosphere",
+      "exit_code": 1,
+      "seconds": 3.69,
+      "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/inspect-pond-atmosphere.log"
+    },
+    {
+      "command": "./tools/dev inspect-pond-scenery",
+      "exit_code": 1,
+      "seconds": 4.64,
+      "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/inspect-pond-scenery.log"
+    },
+    {
+      "command": "./tools/dev inspect-pond-camera-immersion",
+      "exit_code": 1,
+      "seconds": 3.97,
+      "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/inspect-pond-camera-immersion.log"
+    },
+    {
+      "command": "./tools/dev inspect-ocean-equal-input",
+      "exit_code": 1,
+      "seconds": 2.33,
+      "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/inspect-ocean-equal-input.log"
+    }
+  ],
+  "status_after": ""
+}

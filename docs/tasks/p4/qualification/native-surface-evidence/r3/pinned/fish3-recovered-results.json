@@ -1,0 +1,22 @@
+[
+  {
+    "command": "./tools/dev import",
+    "exit": 0,
+    "seconds": 7.93,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca+dirty",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/fish3-import-wrapper.log",
+    "markers": []
+  },
+  {
+    "command": "./tools/dev inspect-ocean-equal-input",
+    "exit": 0,
+    "seconds": 10.83,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca+dirty",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/fish3-inspect-ocean-equal-input.log",
+    "markers": [
+      "WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=3177 generator_invocations=0",
+      "WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=3162 generator_invocations=0",
+      "ATMOSPHERE_MOVEMENT_OK equal-physics-route enabled=disabled steps=30"
+    ]
+  }
+]

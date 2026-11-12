@@ -1,0 +1,191 @@
+{
+  "run_status": "CAPTURED_REQUIRES_VISUAL_REVIEW",
+  "exit_code": 0,
+  "capture_count": 15,
+  "all_capture_sizes": [
+    "[960, 540]"
+  ],
+  "samples_per_capture": 30,
+  "warmup_frames": 30,
+  "source_identity": {
+    "observed_head": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+    "observed_status": " M game/dev/p12_surface_reflection_probe.gd\n",
+    "probe_sha256": "cfbfd7e4b0a35b1666860acdcc729cf0cb67e1716c8b9b31ac8fcd5d3234d934",
+    "shader_sha256": {
+      "pond_water_surface.gdshader": "1abef7b9c088819ef4ad69443034a8a88e427fd30f4634ce622b46ce5a494f15",
+      "pond_sky.gdshader": "ad83cceccdb1b4eecd9fbdaa158777d76a5991f4564f54b6116837b4e25f7fe2",
+      "pond_air_sky.gdshaderinc": "c4081915d9a906e336e9e6859d36eb6155b41327a49dbf3688c2e975a94f59bf"
+    }
+  },
+  "underwater_image_deltas": {
+    "legacy_vs_candidate": {
+      "changed_pixels": 962,
+      "total_pixels": 518400,
+      "maximum_channel_delta_8bit": 1,
+      "mean_absolute_channel_delta_8bit": 0.00046392746913580246,
+      "changed_pixel_fraction": 0.0018557098765432099
+    },
+    "candidate_vs_sky_only": {
+      "changed_pixels": 4,
+      "total_pixels": 518400,
+      "maximum_channel_delta_8bit": 1,
+      "mean_absolute_channel_delta_8bit": 1.9290123456790124e-06,
+      "changed_pixel_fraction": 7.71604938271605e-06
+    },
+    "legacy_vs_sky_only": {
+      "changed_pixels": 958,
+      "total_pixels": 518400,
+      "maximum_channel_delta_8bit": 1,
+      "mean_absolute_channel_delta_8bit": 0.00046199845679012344,
+      "changed_pixel_fraction": 0.0018479938271604938
+    }
+  },
+  "log_scan": {
+    "regex_policy": "Lines beginning ERROR:, SCRIPT ERROR:, Unhandled exception, FATAL:, WARNING:; full raw logs retained.",
+    "error_count": 0,
+    "warning_count": 0,
+    "errors": [],
+    "warnings": []
+  },
+  "files_sha256": {
+    "../probe-guard-failure/comparison.json": "b963bec9fbb45789ee4856ad5755076a1e905fa7590dabb6c9675401e4000a9a",
+    "../probe-guard-failure/exit-code.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "../probe-guard-failure/invocation.json": "da6544634aab5b88c88ab5d3d704a5c623a79c789110f3b07d978878e4527174",
+    "../probe-guard-failure/pinned-mono-capability.log": "17c064e2b2e6d2442fc47a722805fda3928708570116efb138a74c376469b405",
+    "../probe-guard-failure/probe.log": "55346eba9b96d175b527a5823ce4e66ebfce3843a243b95c99c35f0e47f7e243",
+    "../probe-guard-failure/source-identity.json": "15ac5af372c8b7de60756d0e6088478618369abf39ca6dece60be7d049ec0719",
+    "../probe-guard-failure/standard-capability.log": "bf17f90e8d3354c4a8c6a67ebc64860e7a14c604b8bc9723dfe4915f7c4f124e",
+    "../probe-guard-failure/xvfb.log": "097ccb597eaf2ddecb1c88abec6348ff7c8fccc8c5e68514fa98783af97853bb",
+    "captures/comparison.json": "2effb357b5a4094e5a7f95d28cf061f9f6f4992994f754052571c6692caaaab1",
+    "captures/fish_050cm_candidate.png": "981af0993ab4ec0b14efbd326cb9bac00abd1e470f303d57bf1df38add1cefa5",
+    "captures/fish_050cm_legacy.png": "a325c624e11b64f1757486175230c45b3bc63a3be55a9bd7ea1d6cbe4f9ab8c3",
+    "captures/fish_050cm_sky_only.png": "981af0993ab4ec0b14efbd326cb9bac00abd1e470f303d57bf1df38add1cefa5",
+    "captures/fish_400cm_candidate.png": "251d948a1129968eb5d90e4cce324b567082b16e291c49241626f342f56128eb",
+    "captures/fish_400cm_legacy.png": "727e1e57bfca92c53a1bd1cfd7fdddc8e82518fc35578ee5d008d0b7a854cd49",
+    "captures/fish_400cm_sky_only.png": "251d948a1129968eb5d90e4cce324b567082b16e291c49241626f342f56128eb",
+    "captures/low_bank_candidate.png": "b17caf6ccee625fdf56108499e41dea0d656f270082d705a93cf1d72fff7f9ff",
+    "captures/low_bank_legacy.png": "163d04500907205f8d6975d0d9015955c57a53413ad40819352d1ff5f9ddc7d6",
+    "captures/low_bank_sky_only.png": "0850a5aebb095516c1ed0249f1b25ba7770a2e5b0e19dcbe5cbab327984a9e0d",
+    "captures/oblique_bank_candidate.png": "cb87d9cf7ffc83f5f22d8eb9b3119f5e65ced8aee65b60d3bbf638bda8f1b472",
+    "captures/oblique_bank_legacy.png": "42c6a29a018bd555401cc774a87a76ebb33cecddc57df9e607e6e014db7bf564",
+    "captures/oblique_bank_sky_only.png": "6179c1d2df490be534f3da1dc92eb102662ec63412a75e18edb535c15ede380a",
+    "captures/underwater_candidate.png": "4131673c034005de909a68ec3dae9823b01779c4b9e9e5e95dba418fe45d1ba7",
+    "captures/underwater_legacy.png": "7620fdaa68cfba8dbda6ee3b8d66e5d2eb8b75e989cb063dcd651ede3c96a260",
+    "captures/underwater_sky_only.png": "91fdef1613cfc35f804224fde4563f4d30959bb579eb49ec31f65faea232cc0e",
+    "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "invocation.json": "e3e1fc1bf3db828aa826f662f5e6cc7789e8f23fbe2fbc4555b8754da2085568",
+    "probe.log": "539a45daeb5dcba6cd796f140502d9a44706decbf5a10f129ee42348b74c81f0",
+    "source-identity.json": "ead3a99ac429e8d7122cd4bb75495750569272c8bd5a166b69e282d2b5fc3fa8",
+    "xvfb.log": "097ccb597eaf2ddecb1c88abec6348ff7c8fccc8c5e68514fa98783af97853bb"
+  },
+  "frame_metrics": [
+    {
+      "pose": "low_bank",
+      "mode": "legacy",
+      "median_ms": 125.3205,
+      "p95_ms": 140.862,
+      "median_draw_calls": 71.0
+    },
+    {
+      "pose": "low_bank",
+      "mode": "candidate",
+      "median_ms": 132.907,
+      "p95_ms": 183.214,
+      "median_draw_calls": 71.0
+    },
+    {
+      "pose": "low_bank",
+      "mode": "sky_only",
+      "median_ms": 128.3705,
+      "p95_ms": 145.411,
+      "median_draw_calls": 71.0
+    },
+    {
+      "pose": "oblique_bank",
+      "mode": "legacy",
+      "median_ms": 130.736,
+      "p95_ms": 163.905,
+      "median_draw_calls": 74.0
+    },
+    {
+      "pose": "oblique_bank",
+      "mode": "candidate",
+      "median_ms": 158.9345,
+      "p95_ms": 195.751,
+      "median_draw_calls": 74.0
+    },
+    {
+      "pose": "oblique_bank",
+      "mode": "sky_only",
+      "median_ms": 130.56,
+      "p95_ms": 150.839,
+      "median_draw_calls": 74.0
+    },
+    {
+      "pose": "fish_050cm",
+      "mode": "legacy",
+      "median_ms": 124.839,
+      "p95_ms": 148.258,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "fish_050cm",
+      "mode": "candidate",
+      "median_ms": 132.978,
+      "p95_ms": 177.493,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "fish_050cm",
+      "mode": "sky_only",
+      "median_ms": 126.304,
+      "p95_ms": 140.497,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "fish_400cm",
+      "mode": "legacy",
+      "median_ms": 123.487,
+      "p95_ms": 142.409,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "fish_400cm",
+      "mode": "candidate",
+      "median_ms": 137.141,
+      "p95_ms": 197.892,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "fish_400cm",
+      "mode": "sky_only",
+      "median_ms": 133.9035,
+      "p95_ms": 176.637,
+      "median_draw_calls": 83.0
+    },
+    {
+      "pose": "underwater",
+      "mode": "legacy",
+      "median_ms": 178.805,
+      "p95_ms": 233.873,
+      "median_draw_calls": 187.0
+    },
+    {
+      "pose": "underwater",
+      "mode": "candidate",
+      "median_ms": 169.452,
+      "p95_ms": 212.723,
+      "median_draw_calls": 187.0
+    },
+    {
+      "pose": "underwater",
+      "mode": "sky_only",
+      "median_ms": 162.544,
+      "p95_ms": 175.615,
+      "median_draw_calls": 187.0
+    }
+  ],
+  "timing_scope": "30 paused process/render intervals per capture after30 warmupframes, software llvmpipe at960x540, includes scheduler/presentation; not GPU-only or owner performance.",
+  "asset_scope": "Approved original Coast Sand maps match tracked hashes; approved ambientCG asset IDs and2K-JPG source selection recovered from official versioned packages, original historical byte parity unverified because ignored inventory absent.",
+  "archival_note": "Hash keys rebased to this retained evidence layout; hashes and observed raw logs/reports/images are unchanged. The raw comparison report retains original absolute execution paths."
+}

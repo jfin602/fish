@@ -1,0 +1,30 @@
+{
+  "command": [
+    "/workspace/scratch/d66dc362420b/fish-native-runtime/godot/Godot_v4.7.2-stable_mono_linux_x86_64/Godot_v4.7.2-stable_mono_linux.x86_64",
+    "--path",
+    "/workspace/scratch/d66dc362420b/fish-water-surface/game",
+    "--rendering-method",
+    "forward_plus",
+    "--audio-driver",
+    "Dummy",
+    "--accessibility",
+    "disabled",
+    "--disable-vsync",
+    "--resolution",
+    "960x540",
+    "--script",
+    "res://dev/p12_surface_reflection_probe.gd",
+    "--",
+    "--pond-surface-probe",
+    "--surface-samples=30",
+    "--surface-output=/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run1/captures",
+    "--surface-source=e93ecf5e6bc2d00d6738fce9766d98f17585a4ca; approved-source texture restoration, ambientCG historical bytes unverified"
+  ],
+  "virtual_display": "960x540x24",
+  "environment": {
+    "DOTNET_ROOT": "/workspace/scratch/d66dc362420b/fish-native-runtime/dotnet",
+    "XDG_DATA_HOME": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run1/profile",
+    "VK_DRIVER_FILES": "/workspace/scratch/d66dc362420b/water-render-lab/runtime/extracted/usr/share/vulkan/icd.d/lvp_icd.json"
+  },
+  "purpose": "Pinned full Fish project through actual Pond; software renderer only; no owner GPU or manual controls claim."
+}

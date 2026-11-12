@@ -1,0 +1,40 @@
+[
+  {
+    "file": "Fish3.fbx",
+    "official_page": "https://quaternius.com/packs/animatedfish.html",
+    "official_folder": "https://drive.google.com/drive/folders/1SvlOveJJjmhSn-FgCRyojc1T5QHjjGkF",
+    "file_id": "1IhETkaj4bssjH3lNmxvSW7VwW8uCcM0C",
+    "download_url": "https://drive.google.com/uc?export=download&id=1IhETkaj4bssjH3lNmxvSW7VwW8uCcM0C",
+    "resolved_url": "https://drive.usercontent.google.com/download?id=1IhETkaj4bssjH3lNmxvSW7VwW8uCcM0C&export=download",
+    "bytes": 87468,
+    "content_type": "application/octet-stream",
+    "sha256": "142bb6559b928c61ff839eecbba4ee0cfafa964df37720db6a6ba3a90b4ed639",
+    "expected_sha256": "142bb6559b928c61ff839eecbba4ee0cfafa964df37720db6a6ba3a90b4ed639",
+    "verified": true,
+    "saved": "/workspace/scratch/d66dc362420b/fish-native-runtime/asset-recovery/quaternius/Fish3.fbx",
+    "preview": null,
+    "installed_paths": [
+      "/workspace/scratch/d66dc362420b/fish-water-surface/artifacts/assets/source/quaternius-animated-fish/direct-official-2018/Fish3.fbx",
+      "/workspace/scratch/d66dc362420b/fish-water-surface/game/assets/vendor-local/quaternius/Fish3.fbx"
+    ]
+  },
+  {
+    "file": "License.txt",
+    "official_page": "https://quaternius.com/packs/animatedfish.html",
+    "official_folder": "https://drive.google.com/drive/folders/1SvlOveJJjmhSn-FgCRyojc1T5QHjjGkF",
+    "file_id": "1aTEBOrDU05U6tp3TgpozTzgKtd_zTfqK",
+    "download_url": "https://drive.google.com/uc?export=download&id=1aTEBOrDU05U6tp3TgpozTzgKtd_zTfqK",
+    "resolved_url": "https://drive.usercontent.google.com/download?id=1aTEBOrDU05U6tp3TgpozTzgKtd_zTfqK&export=download",
+    "bytes": 361,
+    "content_type": "application/octet-stream",
+    "sha256": "2832c27ece15255677c5a6d7437ed05d6a2f49ccb73d867ab13d2be3f93e84e2",
+    "expected_sha256": null,
+    "verified": true,
+    "saved": "/workspace/scratch/d66dc362420b/fish-native-runtime/asset-recovery/quaternius/License.txt",
+    "preview": "------------------------------------------------------\r\nAnimated Fish Pack by Quaternius\r\nConsider supporting me on Patreon, even $1 helps me a lot!\r\n\r\nhttps://www.patreon.com/quaternius\r\n-------------------------------------------------------\r\nLicense:\r\nCC0 1.0 Universal (CC0 1.0) \r\nPublic Domain Dedication\r\nhttps://creativecommons.org/publicdomain/zero/1.0/",
+    "installed_paths": [
+      "/workspace/scratch/d66dc362420b/fish-water-surface/artifacts/assets/source/quaternius-animated-fish/direct-official-2018/License.txt",
+      "/workspace/scratch/d66dc362420b/fish-water-surface/game/assets/vendor-local/quaternius/License.txt"
+    ]
+  }
+]

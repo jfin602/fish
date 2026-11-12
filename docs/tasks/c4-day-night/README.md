@@ -26,6 +26,10 @@ At authoring, `UnderwaterAtmosphere` creates the Forward+ Environment, sets a co
 
 Normal gameplay pause already exists through the PlayShell path. The new environment clock must follow the actual gameplay pause contract rather than advancing from wall-clock time.
 
+## R3 integration on this branch
+
+The Pond reflection candidate additionally selects `pond_water_surface.gdshader`, `pond_sky.gdshader` and the shared `pond_air_sky.gdshaderinc` through `UnderwaterAtmosphere`, while Ocean retains its separate shader paths. When executing c4 P2/P3, feed the shared solar state into both the visible sky and the reflected-sky fallback; updating only one would leave inconsistent lighting. The current R3 sky is a procedural overcast treatment with a fixed solar setup, not a continuous day/night implementation. [R3 evidence](../p4/qualification/r3-surface-reflections.md) records the completed surface experiment and its remaining native limits. This documentation integration does not execute c4.
+
 ## Prompt order
 
 | Step | Prompt | Outcome | Tier / handoff |

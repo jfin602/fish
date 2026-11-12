@@ -1,0 +1,9 @@
+{
+  "observed_head": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+  "observed_status": "",
+  "shader_sha256": {
+    "pond_water_surface.gdshader": "1abef7b9c088819ef4ad69443034a8a88e427fd30f4634ce622b46ce5a494f15",
+    "pond_sky.gdshader": "ad83cceccdb1b4eecd9fbdaa158777d76a5991f4564f54b6116837b4e25f7fe2",
+    "pond_air_sky.gdshaderinc": "c4081915d9a906e336e9e6859d36eb6155b41327a49dbf3688c2e975a94f59bf"
+  }
+}

@@ -379,7 +379,9 @@ public partial class UnderwaterAtmosphere : Node3D
 
     private void AddSky()
     {
-        const string path = "res://shaders/underwater_sky.gdshader";
+        var path = _profile.Id == WorldEnvironmentProfile.Pond
+            ? "res://shaders/pond_sky.gdshader"
+            : "res://shaders/underwater_sky.gdshader";
         var shader = ResourceLoader.Load<Shader>(path);
         if (shader is null)
         {
@@ -408,7 +410,11 @@ public partial class UnderwaterAtmosphere : Node3D
             GD.PushError("FISH_ATMOSPHERE_MISSING_UPPER_LIMIT");
             return;
         }
-        const string path = "res://shaders/water_surface.gdshader";
+        // Keep the accepted Ocean surface on its original shader. Pond's
+        // reflection experiment is local to this material and owns no viewport.
+        var path = _profile.Id == WorldEnvironmentProfile.Pond
+            ? "res://shaders/pond_water_surface.gdshader"
+            : "res://shaders/water_surface.gdshader";
         var shader = ResourceLoader.Load<Shader>(path);
         if (shader is null)
         {
