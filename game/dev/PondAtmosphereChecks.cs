@@ -87,6 +87,7 @@ public static class PondAtmosphereChecks
             Require((float)oceanSky.GetShaderParameter("overcast") == 0f &&
                 (float)oceanSurface.GetShaderParameter("overcast") == 0f &&
                 (float)oceanSurface.GetShaderParameter("surface_extinction") == 0f &&
+                (float)oceanSurface.GetShaderParameter("reflection_strength") == 0f &&
                 (float)oceanSurface.GetShaderParameter("air_surface_enabled") == 0f,
                 "Pond material parameters leaked into Ocean");
 
@@ -153,6 +154,10 @@ public static class PondAtmosphereChecks
             atmosphere.ParametersAreFinite() && env.FogEnabled && env.VolumetricFogEnabled &&
             (float)surfaceMaterial.GetShaderParameter("surface_extinction") ==
                 WaterVisualProfile.Pond.SurfaceExtinctionPerMeter &&
+            (float)surfaceMaterial.GetShaderParameter("reflection_strength") ==
+                WaterVisualProfile.Pond.SurfaceReflectionStrength &&
+            (float)surfaceMaterial.GetShaderParameter("reflection_distortion") ==
+                WaterVisualProfile.Pond.SurfaceReflectionDistortion &&
             Mathf.Abs((float)surfaceMaterial.GetShaderParameter("surface_daylight") -
                 Mathf.Clamp(atmosphere.SunEnergy / 1.35f, 0.6f, 1.3f)) < .001f &&
             atmosphere.BackgroundWater == WaterVisualProfile.Pond.Background &&

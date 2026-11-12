@@ -19,12 +19,66 @@ uniform float air_fog_end = 105.0;
 uniform vec3 water_scatter = vec3(0.22, 0.28, 0.105);
 uniform float surface_extinction = 0.0;
 uniform float surface_daylight = 1.0;
+uniform float reflection_strength = 1.0;
+uniform float reflection_distortion = 1.0;
+uniform float ripple_strength = 1.0;
+uniform float fine_normal_strength = 1.0;
+uniform vec3 reflected_sky_horizon = vec3(0.48, 0.52, 0.51);
+uniform vec3 reflected_sky_zenith = vec3(0.65, 0.68, 0.65);
 uniform sampler2D air_scene : hint_screen_texture, filter_linear;
 uniform sampler2D air_depth : hint_depth_texture, filter_nearest;
 
 varying vec3 surface_world;
 varying vec3 surface_normal;
 varying float shore_blend;
+
+vec3 pond_sky(vec3 direction, float time) {
+    float height = smoothstep(0.0, 0.9, direction.y);
+    float cloud = sin(direction.x * 19.0 + direction.z * 11.0 + time * 0.015)
+        * sin(direction.z * 27.0 - direction.x * 7.0 - time * 0.009);
+    cloud += 0.35 * sin(direction.x * 48.0 + direction.z * 32.0);
+    vec3 base = mix(reflected_sky_horizon, reflected_sky_zenith, height);
+    vec3 cloudy = mix(vec3(0.29, 0.32, 0.32), vec3(0.72, 0.73, 0.68),
+        smoothstep(-0.75, 0.85, cloud));
+    return mix(base, cloudy, overcast * smoothstep(-0.1, 0.28, direction.y) * 0.72);
+}
+
+vec4 pond_screen_reflection(vec3 origin, vec3 direction, float water_y,
+    mat4 view_matrix, mat4 projection_matrix, mat4 inv_projection_matrix,
+    mat4 inv_view_matrix) {
+    // Only opaque, above-water pixels can be recovered from the screen buffer.
+    // Twelve bounded taps avoid a second camera and full-size render target.
+    float travel = 0.38;
+    for (int i = 0; i < 12; i++) {
+        vec3 point_view = (view_matrix * vec4(origin + direction * travel, 1.0)).xyz;
+        vec4 clip = projection_matrix * vec4(point_view, 1.0);
+        if (clip.w <= 0.0) break;
+        vec2 uv = clip.xy / clip.w * 0.5 + 0.5;
+        if (min(min(uv.x, uv.y), min(1.0 - uv.x, 1.0 - uv.y)) <= 0.015) break;
+        float depth = texture(air_depth, uv).r;
+        if (depth <= 0.0001) {
+            travel *= 1.48;
+            continue;
+        }
+        vec4 hit_view = inv_projection_matrix * vec4(uv * 2.0 - 1.0, depth, 1.0);
+        hit_view /= hit_view.w;
+        float behind = hit_view.z - point_view.z;
+        if (behind < 0.0 || behind > 2.8) {
+            travel *= 1.48;
+            continue;
+        }
+        vec3 hit_world = (inv_view_matrix * hit_view).xyz;
+        if (hit_world.y <= water_y + 0.08) {
+            travel *= 1.48;
+            continue;
+        }
+        float edge = smoothstep(0.015, 0.10,
+            min(min(uv.x, uv.y), min(1.0 - uv.x, 1.0 - uv.y)));
+        float confidence = edge * (1.0 - smoothstep(16.0, 35.0, travel));
+        return vec4(texture(air_scene, uv).rgb, confidence);
+    }
+    return vec4(0.0);
+}
 
 void vertex() {
     float t = surface_time * wave_speed;
@@ -69,11 +123,19 @@ void fragment() {
     float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
         surface_half_size - 2.0, edge_distance);
     ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade * mix(1.0, smoothstep(0.0, 0.55, shore_blend), shore_mask_enabled);
-    // The same plane is visible from air. Keep it translucent so a fish just
-    // beneath the interface remains readable when the camera looks down.
+    // The air side explicitly composes shallow transmission from opaque
+    // color/depth, so a fish just beneath the interface remains readable.
     if (FRONT_FACING && air_surface_enabled < 0.5) discard;
     if (FRONT_FACING) {
-        float air_fresnel = pow(1.0 - abs(dot(normal, ray_up)), 3.0);
+        vec2 broad = vec2(0.026, 0.016) * cos(surface_world.x * 0.71 + surface_world.z * 0.24 + t * 0.63)
+            + vec2(-0.019, 0.034) * cos(surface_world.x * -0.34 + surface_world.z * 1.21 - t * 0.41);
+        vec2 fine = vec2(0.019, -0.029) * cos(surface_world.x * 1.92 - surface_world.z * 0.83 + t * 0.97)
+            + vec2(-0.014, -0.018) * cos(surface_world.x * -2.83 - surface_world.z * 1.52 - t * 1.37)
+            + vec2(0.012, 0.007) * cos(surface_world.x * 4.17 + surface_world.z * 2.21 + t * 1.61);
+        vec2 slopes = (broad * ripple_strength + fine * fine_normal_strength) * shore_blend;
+        vec3 air_normal = normalize(surface_normal + vec3(slopes.x, 0.0, slopes.y));
+        float facing = clamp(abs(dot(air_normal, ray_up)), 0.0, 1.0);
+        float air_fresnel = 0.025 + 0.975 * pow(1.0 - facing, 4.0);
         vec2 bend = vec2(normal.x, -normal.z) * 0.003;
         vec2 refracted_uv = clamp(SCREEN_UV + bend, vec2(0.002), vec2(0.998));
         vec3 refracted = texture(air_scene, refracted_uv).rgb;
@@ -91,12 +153,26 @@ void fragment() {
         if (scene_depth > 0.0001 && !opaque_water_target) transmission = 1.0;
         vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple);
         vec3 scattered = mix(water_scatter, water_tint, 0.03);
-        ALBEDO = mix(refracted, scattered, 1.0 - transmission);
-        ALBEDO = mix(ALBEDO, water_tint, 0.01 + 0.04 * air_fresnel);
+        vec3 transmitted = mix(scattered, refracted, transmission);
+        vec3 reflected_direction = reflect(ray_up, air_normal);
+        float reflect_mix = clamp(air_fresnel * reflection_strength, 0.0, 0.92);
+        vec3 reflected = pond_sky(reflected_direction, surface_time);
+        if (reflect_mix > 0.06) {
+            vec4 scene_reflection = pond_screen_reflection(surface_world + air_normal * 0.06,
+                normalize(mix(reflected_direction, reflect(ray_up, surface_normal),
+                    1.0 - reflection_distortion)), surface_world.y,
+                VIEW_MATRIX, PROJECTION_MATRIX, INV_PROJECTION_MATRIX, INV_VIEW_MATRIX);
+            reflected = mix(reflected, scene_reflection.rgb, scene_reflection.a);
+        }
+        // Overcast Pond light is subdued; preserve dark bank silhouettes while
+        // letting open sky remain brighter than the absorbed water body.
+        reflected = pow(max(reflected, vec3(0.0)), vec3(2.2))
+            * vec3(0.72, 0.77, 0.57) + water_scatter * 0.07;
+        ALBEDO = mix(transmitted, reflected, reflect_mix);
         float air_distance = distance(CAMERA_POSITION_WORLD, surface_world);
         float air_fog = smoothstep(air_fog_begin, air_fog_end, air_distance);
-        ALBEDO = mix(ALBEDO, water_scatter, air_fog * 0.35);
-        ALPHA = edge_fade * smoothstep(0.0, 0.55, shore_blend);
+        ALBEDO = mix(ALBEDO, mix(water_scatter, reflected, 0.40), air_fog * 0.35);
+        ALPHA = edge_fade * smoothstep(0.0, 0.75, shore_blend);
         if (scene_depth > 0.0001 && !opaque_water_target) ALPHA = 0.0;
     }
 }

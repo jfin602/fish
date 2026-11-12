@@ -115,3 +115,7 @@ The [probe](../../../../game/dev/p12_underwater_murk_probe.gd) held the seed-71 
 At the fixed near-cover view, median/p95 frame times were `16.66/16.85 → 16.66/17.14` ms, with 205 draws and 129,978 primitives in both runs. This is a capped fixed pose, not a route-level performance or comfort result. `tools/dev import`, `build`, `inspect-pond-atmosphere`, `inspect-pond-camera-immersion`, `inspect-pond-scenery` and `inspect-pond-surface` passed. The Pond→Ocean→Pond check verifies that Ocean's fog start/range, underwater profile and material remain isolated, though no new native Ocean image was captured. The fixed probe relocates a diagnostic fish; it does not prove normal swimming, cover clearance or a continuous deep-and-return route.
 
 **Remaining V32:** owner judgment of this underwater candidate, live fish/camera crossings and all controls, actual shallow→middle→deep→return swim, trunk and bank clearance, pause/refocus and route-level frame pacing, plus native Ocean visual review. P12 remains **NOT GREEN**, P13 stays blocked and no `0.4.12` checkpoint is assigned.
+
+## Subsequent surface experiment
+
+The 2026-11-12 [air-side reflection experiment](surface-reflection-experiment.md) starts from a separate clean recovery checkpoint and records matched native before/after images and bounded cost. Its owner review is pending. This historical R1–R3 evidence and V32 disposition remain unchanged.

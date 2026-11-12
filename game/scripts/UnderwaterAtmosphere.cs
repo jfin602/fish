@@ -483,6 +483,10 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial.SetShaderParameter("water_scatter", new Vector3(_profile.SurfaceScatter.R,
             _profile.SurfaceScatter.G, _profile.SurfaceScatter.B));
         _surfaceMaterial.SetShaderParameter("surface_extinction", _profile.SurfaceExtinctionPerMeter);
+        _surfaceMaterial.SetShaderParameter("reflection_strength", _profile.SurfaceReflectionStrength);
+        _surfaceMaterial.SetShaderParameter("reflection_distortion", _profile.SurfaceReflectionDistortion);
+        _surfaceMaterial.SetShaderParameter("ripple_strength", _profile.SurfaceRippleStrength);
+        _surfaceMaterial.SetShaderParameter("fine_normal_strength", _profile.SurfaceFineNormalStrength);
         _surfaceMaterial.SetShaderParameter("surface_daylight", Mathf.Clamp(
             SunEnergy / 1.35f, 0.6f, 1.3f));
         _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
