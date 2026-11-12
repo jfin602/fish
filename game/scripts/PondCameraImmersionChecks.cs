@@ -53,7 +53,8 @@ public static class PondCameraImmersionChecks
             }
             At(water - 2f, 120);
             Require(atmosphere.CameraImmersion01 > .999f &&
-                env.FogDensity > .15f && env.FogDensity < .30f &&
+                env.FogDensity > .65f && env.FogDensity < .75f &&
+                Mathf.Abs(env.FogDepthBegin - 3f) < .001f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") < .001f,
                 "submerged profile did not restore");
             var previous = atmosphere.CameraImmersion01;

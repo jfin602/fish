@@ -24,7 +24,7 @@ public static class PondAtmosphereChecks
             Require(oceanStore.CurrentId == LightingPresetStore.DefaultId &&
                 pondStore.CurrentId == LightingPresetStore.PondCloudyId &&
                 oceanStore.Current.Settings.VisibilityDistanceMeters == 35f &&
-                pondStore.Current.Settings.VisibilityDistanceMeters == 25f,
+                pondStore.Current.Settings.VisibilityDistanceMeters == 18f,
                 "world lighting bases are not independent");
             var brighter = pondStore.List();
             var shallowOption = brighter.Single(p => p.Id == LightingPresetStore.PondShallowsId);
@@ -74,6 +74,8 @@ public static class PondAtmosphereChecks
                 atmosphere.BackgroundWater == WaterVisualProfile.Ocean.Background &&
                 WaterVisualProfile.Ocean.SurfaceExtinctionPerMeter == 0f &&
                 atmosphere.DistanceFogColor == WaterVisualProfile.Ocean.Fog &&
+                Mathf.Abs(atmosphere.WaterEnvironment!.FogDensity - .96f) < .001f &&
+                Mathf.Abs(atmosphere.WaterEnvironment!.FogDepthBegin - 5f) < .001f &&
                 atmosphere.CaptureLighting().VisibilityDistanceMeters == 35f &&
                 main.GetNode<WorldEnvironment>("WorldEnvironment").Environment == atmosphere.WaterEnvironment,
                 "Ocean profile did not reset after Pond disposal");
@@ -176,11 +178,12 @@ public static class PondAtmosphereChecks
         var deep = At(deepY);
         var extinction = env.FogDensity;
         Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 8f &&
-            extinction > .15f && extinction < .30f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction) > 0.95f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction) >
-                UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction) &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(25f, deep, extinction) < .85f,
+            Mathf.Abs(env.FogDepthBegin - 3f) < .001f &&
+            extinction > .65f && extinction < .75f &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction, env.FogDepthBegin) > .85f &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction, env.FogDepthBegin) >
+                UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) &&
+            UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) < .4f,
             "Pond depth/distance extinction lost near-to-far progression");
         Require(Mathf.Abs(At(surfaceY + 0.001f) - At(surfaceY - 0.001f)) < 0.01f &&
             Mathf.Abs(At(deepY + 0.001f) - At(deepY - 0.001f)) < 0.01f,

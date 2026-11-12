@@ -55,12 +55,14 @@ void fragment() {
     float glint = pow(sun, 150.0) * (0.7 + 0.3 * ripple);
     vec3 turquoise = mix(surface_dark, surface_light,
         clamp(0.5 + 0.35 * ripple + 0.15 * wave_detail * detail, 0.0, 1.0));
+    // Pond's underside scatters muddy olive light instead of reading as a bright pane.
+    turquoise = mix(turquoise, water_scatter, overcast * 0.85);
     float upward = smoothstep(0.15, 0.65, ray_up.y);
     float deep_cue = camera_depth * upward;
     // Only the overhead interface keeps transmitted light through deep water.
-    // Horizontal geometry still uses the unchanged water-column fog.
-    ALBEDO = turquoise + mix(vec3(0.22, 0.44, 0.40), vec3(0.12, 0.26, 0.11), overcast) * fresnel
-             + (1.0 - 0.7 * overcast) * (vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint)
+    // Horizontal geometry uses the independently tuned water-column fog.
+    ALBEDO = turquoise + mix(vec3(0.22, 0.44, 0.40), vec3(0.025, 0.055, 0.020), overcast) * fresnel
+             + (1.0 - 0.95 * overcast) * (vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint)
              + deep_cue * (mix(vec3(0.09, 0.24, 0.25), vec3(0.08, 0.16, 0.06), overcast)
              + mix(vec3(0.26, 0.31, 0.20), vec3(0.20, 0.22, 0.10), overcast) * halo);
     float edge_distance = max(abs(surface_world.x), abs(surface_world.z));

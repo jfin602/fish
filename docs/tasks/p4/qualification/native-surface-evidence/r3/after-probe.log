@@ -1,0 +1,23 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+Vulkan 1.4.318 - Forward+ - Using Device #0: AMD - AMD Radeon 880M (RADV GFX1150)
+
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=ExclusiveFullscreen
+FISH_FOUNDATION_READY
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1556 generator_invocations=0
+POND_AMBIENT_READY actors=12 creatures=3 insects=4 fish=5
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.078 upper_collision=disabled
+FISH_HABITAT_READY player=FAF-FISH-006 world=world-5e3b4fee759acbe3 mode=baked
+POND_SURFACE_READY vertices=16176 build_ms=20.86 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+P12_MURK_BASE density=0.700 begin=3.00 end=17.48 color=(0.2096, 0.27, 0.1014, 1.0)
+P12_MURK_SAMPLE view=baseline_horizontal frame_ms_median=16.66 frame_ms_p95=17.14 draws_median=205 primitives_median=129978 image=native-surface-evidence/r3/after-underwater.png
+P12_MURK_SAMPLE view=medium_horizontal frame_ms_median=16.66 frame_ms_p95=17.10 draws_median=205 primitives_median=129978 image=trial-output/medium_horizontal.png
+P12_MURK_SAMPLE view=strong_horizontal frame_ms_median=16.64 frame_ms_p95=17.03 draws_median=205 primitives_median=129978 image=trial-output/strong_horizontal.png
+P12_MURK_SAMPLE view=medium_dark_surface frame_ms_median=16.68 frame_ms_p95=17.07 draws_median=205 primitives_median=129978 image=trial-output/medium_dark_surface.png
+P12_MURK_LANDMARK name=middle camera=(-28.0, 5.654334, 0.0) fish=(-31.28441, 5.801039, -2.18961) fog_end=15.44
+P12_MURK_SAMPLE view=production_middle frame_ms_median=16.68 frame_ms_p95=17.02 draws_median=143 primitives_median=125284 image=native-surface-evidence/r3/after-middle.png
+P12_MURK_LANDMARK name=deep camera=(-14.0, 1.523225, 0.0) fish=(-17.71863, 1.952012, -1.144193) fog_end=12.52
+P12_MURK_SAMPLE view=production_deep frame_ms_median=16.66 frame_ms_p95=17.19 draws_median=151 primitives_median=126664 image=native-surface-evidence/r3/after-deep.png
+P12_MURK_SAMPLE view=air_overview frame_ms_median=16.67 frame_ms_p95=17.42 draws_median=215 primitives_median=130556 image=native-surface-evidence/r3/after-air-overview.png
+P12_MURK_PROBE_DONE adapter=AMD Radeon 880M (RADV GFX1150)

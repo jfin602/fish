@@ -151,7 +151,7 @@ public static class PondSurfaceSceneryChecks
                 "surface ring or splash survived pause/focus reset");
             camera.GlobalPosition = new Vector3(core.X, atmosphere.SurfaceHeight - 2f, core.Y);
             atmosphere.RefreshDepth(true, 2f);
-            Require(atmosphere.CameraImmersion01 > .999f && env.FogDepthBegin > 4.9f &&
+            Require(atmosphere.CameraImmersion01 > .999f && env.FogDepthBegin > 2.9f &&
                 WaterVisualProfile.For(WorldEnvironmentProfile.Ocean) == WaterVisualProfile.Ocean,
                 "water profile failed to restore or Ocean profile leaked");
             GD.Print($"POND_SCENERY_CHECK_OK vertices={vertices.Length} shore_samples={covered}/16 shore_faf={shoreCount} camera_fish_clearance={clearance}/32 authored_obstructions={authoredObstructions} structures={decorative.Length} rings={WaterReaction.PondRingCapacity} splash=6 sample_cpu_ms={cpuMs:F2} ocean_profile=isolated");

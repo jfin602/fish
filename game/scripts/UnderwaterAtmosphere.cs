@@ -18,8 +18,9 @@ public partial class UnderwaterAtmosphere : Node3D
     // Artistic depth-fog end distance at the surface. Actual optical range also depends on scatter.
     [Export(PropertyHint.Range, "18,60,1")] public float VisibilityRangeMeters { get; set; } = 35f;
     private const float FogNearMeters = 5f;
+    private const float PondFogNearMeters = 3f;
     private const float FogExtinction = 0.96f;
-    private const float PondFogExtinction = 0.18f;
+    private const float PondFogExtinction = 0.70f;
     private const float FogCurve = 1.2f;
     [Export(PropertyHint.Range, "0,0.05,0.001")] public float LowerWaterFog { get; set; } = 0.018f;
     [Export(PropertyHint.Range, "-8,8,0.1")] public float LowerFogStartHeight { get; set; } = -1.0f;
@@ -132,10 +133,10 @@ public partial class UnderwaterAtmosphere : Node3D
 
     /// <summary>Approximate engine depth-fog scene retention before height/volumetric fog.</summary>
     public static float EstimateDistanceRetention(float distanceMeters, float usefulRangeMeters,
-        float extinction = FogExtinction)
+        float extinction = FogExtinction, float fogNearMeters = FogNearMeters)
     {
-        var position = Mathf.Clamp((distanceMeters - FogNearMeters) /
-            (usefulRangeMeters - FogNearMeters), 0f, 1f);
+        var position = Mathf.Clamp((distanceMeters - fogNearMeters) /
+            (usefulRangeMeters - fogNearMeters), 0f, 1f);
         return 1f - extinction * Mathf.Pow(position, FogCurve);
     }
 
@@ -352,7 +353,8 @@ public partial class UnderwaterAtmosphere : Node3D
         // The depth mode gives a clear foreground and a continuous camera-distance
         // reveal. Camera depth never changes the saved surface-distance base.
         EffectiveUsefulRange = EffectiveBaseVisibilityRange * Mathf.Lerp(1f, _profile.DeepRangeFactor, depth);
-        _environment.FogDepthBegin = Mathf.Lerp(_profile.AirFogBegin, FogNearMeters, _immersion);
+        var waterFogBegin = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogNearMeters : FogNearMeters;
+        _environment.FogDepthBegin = Mathf.Lerp(_profile.AirFogBegin, waterFogBegin, _immersion);
         _environment.FogDepthEnd = Mathf.Lerp(_profile.AirFogEnd, EffectiveUsefulRange, _immersion);
         var waterFog = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogExtinction : FogExtinction;
         _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, waterFog, _immersion);
