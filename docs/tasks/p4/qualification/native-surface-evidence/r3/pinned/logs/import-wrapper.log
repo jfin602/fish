@@ -1,0 +1,1386 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Started Project initialization (5 steps)[39m[0m
+[   0% ] [90m[1mfirst_scan_filesystem[22m | Scanning file structure...[39m[0m
+[  16% ] [90m[1mfirst_scan_filesystem[22m | Loading global class names...[39m[0m
+[  33% ] [90m[1mfirst_scan_filesystem[22m | Verifying GDExtensions...[39m[0m
+[  50% ] [90m[1mfirst_scan_filesystem[22m | Creating autoload scripts...[39m[0m
+[  66% ] [90m[1mfirst_scan_filesystem[22m | Initializing plugins...[39m[0m
+[  83% ] [90m[1mfirst_scan_filesystem[22m | Starting file scan...[39m[0m
+[92m[ DONE ][39m [1mfirst_scan_filesystem[22m
+[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | Started Registering global classes... (195 steps)[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | MCPAnimationHandlers[39m[0m
+[   0% ] [90m[1mupdate_scripts_classes[22m | MCPAudioHandlers[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | MCPBatchHandlers[39m[0m
+[   1% ] [90m[1mupdate_scripts_classes[22m | MCPClassInfoHandlers[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | MCPCompositeHandlers[39m[0m
+[   2% ] [90m[1mupdate_scripts_classes[22m | MCPDebuggerHandlers[39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | MCPEditorHandlers[39m[0m
+[   3% ] [90m[1mupdate_scripts_classes[22m | MCPExportHandlers[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | MCPImportAssetHandlers[39m[0m
+[   4% ] [90m[1mupdate_scripts_classes[22m | MCPInputMapHandlers[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | MCPInputRecordingHandlers[39m[0m
+[   5% ] [90m[1mupdate_scripts_classes[22m | MCPMeshLibraryHandlers[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | MCPMutationHandlers[39m[0m
+[   6% ] [90m[1mupdate_scripts_classes[22m | MCPNavigationHandlers[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | MCPNodeParityHandlers[39m[0m
+[   7% ] [90m[1mupdate_scripts_classes[22m | MCPParticlesHandlers[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | MCPPhysicsHandlers[39m[0m
+[   8% ] [90m[1mupdate_scripts_classes[22m | MCPProfilingHandlers[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | MCPProjectFSHandlers[39m[0m
+[   9% ] [90m[1mupdate_scripts_classes[22m | MCPProjectScaffoldHandlers[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | MCPProjectToolHandlers[39m[0m
+[  10% ] [90m[1mupdate_scripts_classes[22m | MCPResourcesHandlers[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | MCPRuntimeInspectHandlers[39m[0m
+[  11% ] [90m[1mupdate_scripts_classes[22m | MCPRuntimeSessionHandlers[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | MCPScene3DHandlers[39m[0m
+[  12% ] [90m[1mupdate_scripts_classes[22m | MCPSceneInspectHandlers[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | MCPSceneSessionHandlers[39m[0m
+[  13% ] [90m[1mupdate_scripts_classes[22m | MCPScriptHandlers[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | MCPShadersHandlers[39m[0m
+[  14% ] [90m[1mupdate_scripts_classes[22m | MCPThemeUIHandlers[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | MCPTileMapHandlers[39m[0m
+[  15% ] [90m[1mupdate_scripts_classes[22m | MCPTileSetHandlers[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | MCPVisualShaderHandlers[39m[0m
+[  16% ] [90m[1mupdate_scripts_classes[22m | MCPAnimationRead[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | MCPAudioBusCapture[39m[0m
+[  17% ] [90m[1mupdate_scripts_classes[22m | MCPCommandRouter[39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  18% ] [90m[1mupdate_scripts_classes[22m | MCPInputActionRead[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | MCPAutoRefresh[39m[0m
+[  19% ] [90m[1mupdate_scripts_classes[22m | MCPBridge[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | MCPDebugger[39m[0m
+[  20% ] [90m[1mupdate_scripts_classes[22m | MCPStatusDock[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | MCPFsRemap[39m[0m
+[  21% ] [90m[1mupdate_scripts_classes[22m | MCPGuards[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | MCPHelpers[39m[0m
+[  22% ] [90m[1mupdate_scripts_classes[22m | MCPReceipt[39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  23% ] [90m[1mupdate_scripts_classes[22m | MCPStatusIcons[39m[0m
+[  24% ] [90m[1mupdate_scripts_classes[22m | MCPParticleRead[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | MCPProjectTools[39m[0m
+[  25% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | MCPSceneInspect[39m[0m
+[  26% ] [90m[1mupdate_scripts_classes[22m | MCPThemeRead[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | MCPTypeCoerce[39m[0m
+[  27% ] [90m[1mupdate_scripts_classes[22m | MCPValidation[39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  28% ] [90m[1mupdate_scripts_classes[22m | MCPVisualShaderRead[39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  29% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  30% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  31% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  32% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  33% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  34% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  35% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  36% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  37% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  38% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  39% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  40% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  41% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  42% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  43% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  44% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  45% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  46% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  47% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  48% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  49% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  50% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  51% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  52% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  53% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  54% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  55% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  56% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  57% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  58% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  59% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  60% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  61% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  62% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  63% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  64% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  65% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  66% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  67% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  68% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  69% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  70% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  71% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  72% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  73% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  74% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  75% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  76% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  77% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  78% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  79% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  80% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  81% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  82% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  83% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  84% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  85% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  86% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  87% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  88% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  89% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  90% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  91% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  92% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  93% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  94% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  95% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  96% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  97% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[  98% ] [90m[1mupdate_scripts_classes[22m | [39m[0m
+[92m[ DONE ][39m [1mupdate_scripts_classes[22m
+[0m
+[   0% ] [90m[1m_update_scan_actions[22m | Started Scanning actions... (129 steps)[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | icon.png[39m[0m
+[   0% ] [90m[1m_update_scan_actions[22m | coral_001a_branching.glb[39m[0m
+[   1% ] [90m[1m_update_scan_actions[22m | coral_001b_branching.glb[39m[0m
+[   2% ] [90m[1m_update_scan_actions[22m | coral_001c_branching.glb[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | coral_002a_rounded.glb[39m[0m
+[   3% ] [90m[1m_update_scan_actions[22m | coral_002b_rounded.glb[39m[0m
+[   4% ] [90m[1m_update_scan_actions[22m | coral_002c_rounded.glb[39m[0m
+[   5% ] [90m[1m_update_scan_actions[22m | coral_003a_tube.glb[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | coral_003b_tube.glb[39m[0m
+[   6% ] [90m[1m_update_scan_actions[22m | coral_003c_tube.glb[39m[0m
+[   7% ] [90m[1m_update_scan_actions[22m | coral_004a_fan.glb[39m[0m
+[   8% ] [90m[1m_update_scan_actions[22m | coral_004b_fan.glb[39m[0m
+[   9% ] [90m[1m_update_scan_actions[22m | coral_004c_fan.glb[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | detail_001a_fan_shell.glb[39m[0m
+[  10% ] [90m[1m_update_scan_actions[22m | detail_001b_ridge_shell.glb[39m[0m
+[  11% ] [90m[1m_update_scan_actions[22m | detail_002a_coral_rubble.glb[39m[0m
+[  12% ] [90m[1m_update_scan_actions[22m | detail_002b_reef_rubble.glb[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | detail_003a_slate_pebbles.glb[39m[0m
+[  13% ] [90m[1m_update_scan_actions[22m | detail_003b_warm_pebbles.glb[39m[0m
+[  14% ] [90m[1m_update_scan_actions[22m | detail_004a_encrusting_sponge.glb[39m[0m
+[  15% ] [90m[1m_update_scan_actions[22m | detail_004b_cup_sponge.glb[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | fish_001_yellow_tang.glb[39m[0m
+[  16% ] [90m[1m_update_scan_actions[22m | fish_001_yellow_tang__egg.glb[39m[0m
+[  17% ] [90m[1m_update_scan_actions[22m | fish_001_yellow_tang__juvenile.glb[39m[0m
+[  18% ] [90m[1m_update_scan_actions[22m | fish_001_yellow_tang__larva.glb[39m[0m
+[  19% ] [90m[1m_update_scan_actions[22m | fish_001_yellow_tang__subadult.glb[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | fish_002_ocellaris_clownfish.glb[39m[0m
+[  20% ] [90m[1m_update_scan_actions[22m | fish_002_ocellaris_clownfish__egg.glb[39m[0m
+[  21% ] [90m[1m_update_scan_actions[22m | fish_002_ocellaris_clownfish__juvenile.glb[39m[0m
+[  22% ] [90m[1m_update_scan_actions[22m | fish_002_ocellaris_clownfish__larva.glb[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | fish_002_ocellaris_clownfish__subadult.glb[39m[0m
+[  23% ] [90m[1m_update_scan_actions[22m | fish_003_blue_green_chromis.glb[39m[0m
+[  24% ] [90m[1m_update_scan_actions[22m | fish_003_blue_green_chromis__egg.glb[39m[0m
+[  25% ] [90m[1m_update_scan_actions[22m | fish_003_blue_green_chromis__juvenile.glb[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | fish_003_blue_green_chromis__larva.glb[39m[0m
+[  26% ] [90m[1m_update_scan_actions[22m | fish_003_blue_green_chromis__subadult.glb[39m[0m
+[  27% ] [90m[1m_update_scan_actions[22m | fish_004_reef_butterflyfish.glb[39m[0m
+[  28% ] [90m[1m_update_scan_actions[22m | fish_004_reef_butterflyfish__egg.glb[39m[0m
+[  29% ] [90m[1m_update_scan_actions[22m | fish_004_reef_butterflyfish__juvenile.glb[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | fish_004_reef_butterflyfish__larva.glb[39m[0m
+[  30% ] [90m[1m_update_scan_actions[22m | fish_004_reef_butterflyfish__subadult.glb[39m[0m
+[  31% ] [90m[1m_update_scan_actions[22m | fish_005_blacktip_reef_shark.glb[39m[0m
+[  32% ] [90m[1m_update_scan_actions[22m | fish_005_blacktip_reef_shark__early_juvenile.glb[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | fish_005_blacktip_reef_shark__juvenile.glb[39m[0m
+[  33% ] [90m[1m_update_scan_actions[22m | fish_005_blacktip_reef_shark__newborn_pup.glb[39m[0m
+[  34% ] [90m[1m_update_scan_actions[22m | fish_005_blacktip_reef_shark__subadult.glb[39m[0m
+[  35% ] [90m[1m_update_scan_actions[22m | plant_001a_sea_grass.glb[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | plant_001b_sea_grass.glb[39m[0m
+[  36% ] [90m[1m_update_scan_actions[22m | plant_001c_sea_grass.glb[39m[0m
+[  37% ] [90m[1m_update_scan_actions[22m | plant_002a_broad_seaweed.glb[39m[0m
+[  38% ] [90m[1m_update_scan_actions[22m | plant_002b_broad_seaweed.glb[39m[0m
+[  39% ] [90m[1m_update_scan_actions[22m | plant_002c_broad_seaweed.glb[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | plant_003a_reef_algae.glb[39m[0m
+[  40% ] [90m[1m_update_scan_actions[22m | plant_003b_reef_algae.glb[39m[0m
+[  41% ] [90m[1m_update_scan_actions[22m | creature_001_northern_leopard_frog.glb[39m[0m
+[  42% ] [90m[1m_update_scan_actions[22m | creature_002_northern_water_snake.glb[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | creature_003_common_snapping_turtle.glb[39m[0m
+[  43% ] [90m[1m_update_scan_actions[22m | fish_006_bluegill__adult.glb[39m[0m
+[  44% ] [90m[1m_update_scan_actions[22m | fish_006_bluegill__egg.glb[39m[0m
+[  45% ] [90m[1m_update_scan_actions[22m | fish_006_bluegill__juvenile.glb[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | fish_006_bluegill__larva.glb[39m[0m
+[  46% ] [90m[1m_update_scan_actions[22m | fish_006_bluegill__subadult.glb[39m[0m
+[  47% ] [90m[1m_update_scan_actions[22m | fish_007_largemouth_bass__adult.glb[39m[0m
+[  48% ] [90m[1m_update_scan_actions[22m | fish_007_largemouth_bass__egg.glb[39m[0m
+[  49% ] [90m[1m_update_scan_actions[22m | fish_007_largemouth_bass__juvenile.glb[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | fish_007_largemouth_bass__larva.glb[39m[0m
+[  50% ] [90m[1m_update_scan_actions[22m | fish_007_largemouth_bass__subadult.glb[39m[0m
+[  51% ] [90m[1m_update_scan_actions[22m | fish_008_channel_catfish__adult.glb[39m[0m
+[  52% ] [90m[1m_update_scan_actions[22m | fish_008_channel_catfish__egg.glb[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | fish_008_channel_catfish__juvenile.glb[39m[0m
+[  53% ] [90m[1m_update_scan_actions[22m | fish_008_channel_catfish__larva.glb[39m[0m
+[  54% ] [90m[1m_update_scan_actions[22m | fish_008_channel_catfish__subadult.glb[39m[0m
+[  55% ] [90m[1m_update_scan_actions[22m | fish_009_common_carp__adult.glb[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | fish_009_common_carp__egg.glb[39m[0m
+[  56% ] [90m[1m_update_scan_actions[22m | fish_009_common_carp__juvenile.glb[39m[0m
+[  57% ] [90m[1m_update_scan_actions[22m | fish_009_common_carp__larva.glb[39m[0m
+[  58% ] [90m[1m_update_scan_actions[22m | fish_009_common_carp__subadult.glb[39m[0m
+[  59% ] [90m[1m_update_scan_actions[22m | fish_010_northern_pike__adult.glb[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | fish_010_northern_pike__egg.glb[39m[0m
+[  60% ] [90m[1m_update_scan_actions[22m | fish_010_northern_pike__juvenile.glb[39m[0m
+[  61% ] [90m[1m_update_scan_actions[22m | fish_010_northern_pike__larva.glb[39m[0m
+[  62% ] [90m[1m_update_scan_actions[22m | fish_010_northern_pike__subadult.glb[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | detail_005a_algae_stone_low.glb[39m[0m
+[  63% ] [90m[1m_update_scan_actions[22m | detail_005b_algae_stone_upright.glb[39m[0m
+[  64% ] [90m[1m_update_scan_actions[22m | detail_006a_pebble_scatter.glb[39m[0m
+[  65% ] [90m[1m_update_scan_actions[22m | detail_006b_pebble_chain.glb[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | detail_007a_leaf_litter_broad.glb[39m[0m
+[  66% ] [90m[1m_update_scan_actions[22m | detail_007b_leaf_litter_windrow.glb[39m[0m
+[  67% ] [90m[1m_update_scan_actions[22m | terrain_002a_eroded_bank_undercut.glb[39m[0m
+[  68% ] [90m[1m_update_scan_actions[22m | terrain_002b_eroded_bank_scarred.glb[39m[0m
+[  69% ] [90m[1m_update_scan_actions[22m | insect_001a_green_darner_nymph.glb[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | insect_001b_green_darner_nymph.glb[39m[0m
+[  70% ] [90m[1m_update_scan_actions[22m | insect_002a_backswimmer.glb[39m[0m
+[  71% ] [90m[1m_update_scan_actions[22m | insect_002b_backswimmer.glb[39m[0m
+[  72% ] [90m[1m_update_scan_actions[22m | plant_004a_lily_pad.glb[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | plant_004b_lily_pad.glb[39m[0m
+[  73% ] [90m[1m_update_scan_actions[22m | plant_004c_lily_pad.glb[39m[0m
+[  74% ] [90m[1m_update_scan_actions[22m | plant_005a_tall_grass.glb[39m[0m
+[  75% ] [90m[1m_update_scan_actions[22m | plant_005b_tall_grass.glb[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | plant_006a_cattail.glb[39m[0m
+[  76% ] [90m[1m_update_scan_actions[22m | plant_006b_cattail.glb[39m[0m
+[  77% ] [90m[1m_update_scan_actions[22m | plant_007a_reed.glb[39m[0m
+[  78% ] [90m[1m_update_scan_actions[22m | plant_007b_reed.glb[39m[0m
+[  79% ] [90m[1m_update_scan_actions[22m | plant_008a_submerged_algae.glb[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | plant_008b_submerged_algae.glb[39m[0m
+[  80% ] [90m[1m_update_scan_actions[22m | plant_009a_floating_muck.glb[39m[0m
+[  81% ] [90m[1m_update_scan_actions[22m | plant_009b_floating_muck.glb[39m[0m
+[  82% ] [90m[1m_update_scan_actions[22m | wood_001a_bent_fallen_log.glb[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | wood_001b_forked_fallen_log.glb[39m[0m
+[  83% ] [90m[1m_update_scan_actions[22m | wood_001c_broken_fallen_log.glb[39m[0m
+[  84% ] [90m[1m_update_scan_actions[22m | wood_002a_hero_hollow_trunk.glb[39m[0m
+[  85% ] [90m[1m_update_scan_actions[22m | wood_002b_curved_hollow_trunk.glb[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | wood_002c_root_flared_hollow.glb[39m[0m
+[  86% ] [90m[1m_update_scan_actions[22m | wood_003a_rooted_leaning_trunk.glb[39m[0m
+[  87% ] [90m[1m_update_scan_actions[22m | wood_003b_broken_stump.glb[39m[0m
+[  88% ] [90m[1m_update_scan_actions[22m | wood_004a_sparse_sticks.glb[39m[0m
+[  89% ] [90m[1m_update_scan_actions[22m | wood_004b_forked_branches.glb[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | wood_004c_tangled_roots.glb[39m[0m
+[  90% ] [90m[1m_update_scan_actions[22m | wood_004d_heavy_branch_cover.glb[39m[0m
+[  91% ] [90m[1m_update_scan_actions[22m | rock_001a_reef_boulder.glb[39m[0m
+[  92% ] [90m[1m_update_scan_actions[22m | rock_001b_reef_boulder.glb[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | rock_001c_reef_boulder.glb[39m[0m
+[  93% ] [90m[1m_update_scan_actions[22m | rock_001d_reef_boulder.glb[39m[0m
+[  94% ] [90m[1m_update_scan_actions[22m | terrain_001a_open_sand.glb[39m[0m
+[  95% ] [90m[1m_update_scan_actions[22m | terrain_001b_rolling.glb[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | terrain_001c_reef_shelf.glb[39m[0m
+[  96% ] [90m[1m_update_scan_actions[22m | terrain_001d_slope.glb[39m[0m
+[  97% ] [90m[1m_update_scan_actions[22m | terrain_001e_drop_off.glb[39m[0m
+[  98% ] [90m[1m_update_scan_actions[22m | terrain_001f_rocky_floor.glb[39m[0m
+[92m[ DONE ][39m [1m_update_scan_actions[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (129 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   1% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   2% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   3% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   3% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   4% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   5% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   6% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   7% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   8% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   9% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  10% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  10% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  11% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  12% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  13% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  14% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  15% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  16% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  16% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  17% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  18% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  19% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  20% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  21% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  22% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  23% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  24% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  25% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  26% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  27% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  28% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  29% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  30% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  31% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  32% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  33% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  33% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  34% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  35% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  36% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  36% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  37% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  38% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  39% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  40% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  41% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  42% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  43% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  43% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  44% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  45% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  46% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  47% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  48% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  49% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  50% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  51% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  52% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  53% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  54% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  55% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  56% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  56% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  57% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  58% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  59% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  60% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  61% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  62% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  63% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  63% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  64% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  65% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  66% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  66% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  67% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  68% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  69% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  70% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  70% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  71% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  72% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  73% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  74% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  75% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  76% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  77% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  78% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  79% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  80% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  81% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  82% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  83% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  83% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  84% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  85% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  86% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  87% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  88% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  89% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  90% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  91% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  92% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  93% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  93% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  94% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  95% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  96% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  96% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  97% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[  98% ] [90m[1mreimport[22m | Preparing files to reimport...[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing pre-reimport operations...[39m[0m
+[   0% ] [90m[1mpreload_reimporting_scene[22m | Started Preparing scenes for reload (1 steps)[39m[0m
+[   0% ] [90m[1mpreload_reimporting_scene[22m | Analyzing scene [empty][39m[0m
+[  50% ] [90m[1mpreload_reimporting_scene[22m | Preparation done.[39m[0m
+[92m[ DONE ][39m [1mpreload_reimporting_scene[22m
+[0m
+[   0% ] [90m[1mreimport[22m | icon.png[39m[0m
+[   0% ] [90m[1mreimport[22m | fish_010_northern_pike__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   1% ] [90m[1mreimport[22m | detail_005a_algae_stone_low.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   2% ] [90m[1mreimport[22m | detail_005b_algae_stone_upright.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   3% ] [90m[1mreimport[22m | detail_006a_pebble_scatter.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   3% ] [90m[1mreimport[22m | detail_006b_pebble_chain.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   4% ] [90m[1mreimport[22m | detail_007a_leaf_litter_broad.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   5% ] [90m[1mreimport[22m | detail_007b_leaf_litter_windrow.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   6% ] [90m[1mreimport[22m | terrain_002a_eroded_bank_undercut.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   6% ] [90m[1mreimport[22m | terrain_002b_eroded_bank_scarred.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   7% ] [90m[1mreimport[22m | insect_001a_green_darner_nymph.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   8% ] [90m[1mreimport[22m | insect_001b_green_darner_nymph.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[   9% ] [90m[1mreimport[22m | insect_002a_backswimmer.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  10% ] [90m[1mreimport[22m | insect_002b_backswimmer.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  10% ] [90m[1mreimport[22m | plant_004a_lily_pad.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  11% ] [90m[1mreimport[22m | plant_004b_lily_pad.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  12% ] [90m[1mreimport[22m | plant_004c_lily_pad.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  13% ] [90m[1mreimport[22m | fish_010_northern_pike__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  13% ] [90m[1mreimport[22m | fish_010_northern_pike__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  14% ] [90m[1mreimport[22m | fish_010_northern_pike__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  15% ] [90m[1mreimport[22m | fish_010_northern_pike__adult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  16% ] [90m[1mreimport[22m | fish_009_common_carp__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  16% ] [90m[1mreimport[22m | fish_009_common_carp__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  17% ] [90m[1mreimport[22m | fish_009_common_carp__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  18% ] [90m[1mreimport[22m | fish_009_common_carp__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  19% ] [90m[1mreimport[22m | fish_009_common_carp__adult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  20% ] [90m[1mreimport[22m | fish_008_channel_catfish__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  20% ] [90m[1mreimport[22m | fish_008_channel_catfish__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  21% ] [90m[1mreimport[22m | fish_008_channel_catfish__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  22% ] [90m[1mreimport[22m | fish_008_channel_catfish__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  23% ] [90m[1mreimport[22m | fish_008_channel_catfish__adult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  23% ] [90m[1mreimport[22m | fish_007_largemouth_bass__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  24% ] [90m[1mreimport[22m | fish_007_largemouth_bass__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  25% ] [90m[1mreimport[22m | terrain_001f_rocky_floor.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  26% ] [90m[1mreimport[22m | terrain_001e_drop_off.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  26% ] [90m[1mreimport[22m | terrain_001d_slope.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  27% ] [90m[1mreimport[22m | terrain_001c_reef_shelf.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  28% ] [90m[1mreimport[22m | terrain_001b_rolling.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  29% ] [90m[1mreimport[22m | terrain_001a_open_sand.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  30% ] [90m[1mreimport[22m | rock_001d_reef_boulder.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  30% ] [90m[1mreimport[22m | rock_001c_reef_boulder.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  31% ] [90m[1mreimport[22m | rock_001b_reef_boulder.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  32% ] [90m[1mreimport[22m | rock_001a_reef_boulder.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  33% ] [90m[1mreimport[22m | wood_004d_heavy_branch_cover.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  33% ] [90m[1mreimport[22m | wood_004c_tangled_roots.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  34% ] [90m[1mreimport[22m | wood_004b_forked_branches.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  35% ] [90m[1mreimport[22m | wood_004a_sparse_sticks.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  36% ] [90m[1mreimport[22m | wood_003b_broken_stump.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  36% ] [90m[1mreimport[22m | wood_003a_rooted_leaning_trunk.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  37% ] [90m[1mreimport[22m | wood_002c_root_flared_hollow.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  38% ] [90m[1mreimport[22m | wood_002b_curved_hollow_trunk.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  39% ] [90m[1mreimport[22m | wood_002a_hero_hollow_trunk.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  40% ] [90m[1mreimport[22m | wood_001c_broken_fallen_log.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  40% ] [90m[1mreimport[22m | wood_001b_forked_fallen_log.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  41% ] [90m[1mreimport[22m | wood_001a_bent_fallen_log.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  42% ] [90m[1mreimport[22m | plant_009b_floating_muck.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  43% ] [90m[1mreimport[22m | plant_009a_floating_muck.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  43% ] [90m[1mreimport[22m | plant_008b_submerged_algae.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  44% ] [90m[1mreimport[22m | plant_008a_submerged_algae.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  45% ] [90m[1mreimport[22m | plant_007b_reed.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  46% ] [90m[1mreimport[22m | plant_007a_reed.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  46% ] [90m[1mreimport[22m | plant_006b_cattail.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  47% ] [90m[1mreimport[22m | plant_006a_cattail.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  48% ] [90m[1mreimport[22m | plant_005b_tall_grass.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  49% ] [90m[1mreimport[22m | plant_005a_tall_grass.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  50% ] [90m[1mreimport[22m | fish_003_blue_green_chromis__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  50% ] [90m[1mreimport[22m | fish_003_blue_green_chromis.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  51% ] [90m[1mreimport[22m | fish_002_ocellaris_clownfish__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  52% ] [90m[1mreimport[22m | fish_002_ocellaris_clownfish__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  53% ] [90m[1mreimport[22m | fish_002_ocellaris_clownfish__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  53% ] [90m[1mreimport[22m | fish_002_ocellaris_clownfish__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  54% ] [90m[1mreimport[22m | fish_002_ocellaris_clownfish.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  55% ] [90m[1mreimport[22m | fish_001_yellow_tang__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  56% ] [90m[1mreimport[22m | fish_001_yellow_tang__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  56% ] [90m[1mreimport[22m | fish_001_yellow_tang__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  57% ] [90m[1mreimport[22m | fish_001_yellow_tang__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  58% ] [90m[1mreimport[22m | fish_001_yellow_tang.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  59% ] [90m[1mreimport[22m | detail_004b_cup_sponge.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  60% ] [90m[1mreimport[22m | detail_004a_encrusting_sponge.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  60% ] [90m[1mreimport[22m | detail_003b_warm_pebbles.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  61% ] [90m[1mreimport[22m | detail_003a_slate_pebbles.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  62% ] [90m[1mreimport[22m | detail_002b_reef_rubble.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  63% ] [90m[1mreimport[22m | detail_002a_coral_rubble.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  63% ] [90m[1mreimport[22m | detail_001b_ridge_shell.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  64% ] [90m[1mreimport[22m | detail_001a_fan_shell.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  65% ] [90m[1mreimport[22m | coral_004c_fan.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  66% ] [90m[1mreimport[22m | coral_004b_fan.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  66% ] [90m[1mreimport[22m | coral_004a_fan.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  67% ] [90m[1mreimport[22m | coral_003c_tube.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  68% ] [90m[1mreimport[22m | coral_003b_tube.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  69% ] [90m[1mreimport[22m | coral_003a_tube.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  70% ] [90m[1mreimport[22m | coral_002c_rounded.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  70% ] [90m[1mreimport[22m | coral_002b_rounded.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  71% ] [90m[1mreimport[22m | coral_002a_rounded.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  72% ] [90m[1mreimport[22m | coral_001c_branching.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  73% ] [90m[1mreimport[22m | coral_001b_branching.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  73% ] [90m[1mreimport[22m | coral_001a_branching.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  74% ] [90m[1mreimport[22m | fish_007_largemouth_bass__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  75% ] [90m[1mreimport[22m | fish_007_largemouth_bass__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  76% ] [90m[1mreimport[22m | fish_007_largemouth_bass__adult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  76% ] [90m[1mreimport[22m | fish_006_bluegill__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  77% ] [90m[1mreimport[22m | fish_006_bluegill__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  78% ] [90m[1mreimport[22m | fish_006_bluegill__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  79% ] [90m[1mreimport[22m | fish_006_bluegill__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  80% ] [90m[1mreimport[22m | fish_006_bluegill__adult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  80% ] [90m[1mreimport[22m | creature_003_common_snapping_turtle.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  81% ] [90m[1mreimport[22m | creature_002_northern_water_snake.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  82% ] [90m[1mreimport[22m | creature_001_northern_leopard_frog.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  83% ] [90m[1mreimport[22m | plant_003b_reef_algae.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  83% ] [90m[1mreimport[22m | plant_003a_reef_algae.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  84% ] [90m[1mreimport[22m | plant_002c_broad_seaweed.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  85% ] [90m[1mreimport[22m | plant_002b_broad_seaweed.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  86% ] [90m[1mreimport[22m | plant_002a_broad_seaweed.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  86% ] [90m[1mreimport[22m | plant_001c_sea_grass.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  87% ] [90m[1mreimport[22m | plant_001b_sea_grass.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  88% ] [90m[1mreimport[22m | plant_001a_sea_grass.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  89% ] [90m[1mreimport[22m | fish_005_blacktip_reef_shark__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  90% ] [90m[1mreimport[22m | fish_005_blacktip_reef_shark__newborn_pup.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  90% ] [90m[1mreimport[22m | fish_005_blacktip_reef_shark__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  91% ] [90m[1mreimport[22m | fish_005_blacktip_reef_shark__early_juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  92% ] [90m[1mreimport[22m | fish_005_blacktip_reef_shark.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  93% ] [90m[1mreimport[22m | fish_004_reef_butterflyfish__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  93% ] [90m[1mreimport[22m | fish_004_reef_butterflyfish__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  94% ] [90m[1mreimport[22m | fish_004_reef_butterflyfish__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  95% ] [90m[1mreimport[22m | fish_004_reef_butterflyfish__egg.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  96% ] [90m[1mreimport[22m | fish_004_reef_butterflyfish.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  96% ] [90m[1mreimport[22m | fish_003_blue_green_chromis__subadult.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  97% ] [90m[1mreimport[22m | fish_003_blue_green_chromis__larva.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  98% ] [90m[1mreimport[22m | fish_003_blue_green_chromis__juvenile.glb[39m[0m
+[   0% ] [90m[1mimport[22m | Started Import Scene (104 steps)[39m[0m
+[   0% ] [90m[1mimport[22m | Importing Scene...[39m[0m
+[   1% ] [90m[1mimport[22m | Running Custom Script...[39m[0m
+[  99% ] [90m[1mimport[22m | Saving...[39m[0m
+[92m[ DONE ][39m [1mimport[22m
+[0m
+[  99% ] [90m[1mreimport[22m | Finalizing Asset Import...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mreimport[22m | Started (Re)Importing Assets (129 steps)[39m[0m
+[   0% ] [90m[1mreimport[22m | Executing post-reimport operations...[39m[0m
+[92m[ DONE ][39m [1mreimport[22m
+[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Started Loading editor (5 steps)[39m[0m
+[   0% ] [90m[1mloading_editor_layout[22m | Loading editor layout...[39m[0m
+[  16% ] [90m[1mloading_editor_layout[22m | Loading docks...[39m[0m
+[92m[ DONE ][39m [1mloading_editor_layout[22m
+[0m

@@ -9,6 +9,7 @@
 | Pushed source before the experiment | [`cc8cbb99de16f3b6138a046272721d986274a058`](https://github.com/jfin602/fish/commit/cc8cbb99de16f3b6138a046272721d986274a058) |
 | Saved rollback branch | [`checkpoint/water-surface-2026-11-12`](https://github.com/jfin602/fish/tree/checkpoint/water-surface-2026-11-12), created at that exact commit |
 | Candidate branch | [`experiment/pond-water-reflections`](https://github.com/jfin602/fish/tree/experiment/pond-water-reflections) |
+| Implemented shader/build source | [`e93ecf5e6bc2d00d6738fce9766d98f17585a4ca`](https://github.com/jfin602/fish/commit/e93ecf5e6bc2d00d6738fce9766d98f17585a4ca); actual-Pond captures add only the recorded probe capability-guard repair, with unchanged shaders |
 | Root version | `0.4.11`; no `0.4.12` or Gate promotion |
 | Native target | Tracked seed-71 Pond, Adult Bluegill `FAF-FISH-006`, Godot `4.7.2` .NET, Forward+ |
 
@@ -56,11 +57,15 @@ The maximum reflection trace is **34 depth reads**: one initial sample, 24 coars
 | Remote rollback branch | **PASS:** created at the exact pushed source above |
 | Original Ocean water and sky shaders | **PASS, source comparison:** unchanged from the checkpoint |
 | Inherited Pond vertex/underwater shader portions | **PASS, source comparison:** identical before the new air-facing branch |
-| Full project import/build and focused C# checks in this environment | **BLOCKED:** the pinned .NET toolchain is unavailable; installed Godot is standard `4.6.3`, not `4.7.2` .NET |
+| Pinned project import and build | **PASS:** Godot `4.7.2.stable.mono.official.ed1daf0bf`, SDK `10.0.403`; full Fish build has zero warnings and zero errors |
+| Pond atmosphere, scenery and camera-immersion checks | **PASS:** all three affected C#/state checks after approved local texture recovery; includes Pond→Ocean→Pond state/material isolation and five control-preset immersion assertions |
+| Ocean equal-input check | **PASS:** after exact-hash Fish3 recovery; atmosphere enabled/disabled routes have equal physics over 30 steps. This is not Ocean visual qualification |
 | Isolated Forward+ renders | **PASS for the diagnostic scope:** actual opaque bank/marker reflections, irregular surface ripples and retained shallow fish were observed; sky-only control removes reflected scene shapes |
 | Same-sky underwater comparison | **PASS for the fixture:** candidate versus original water shader under the same Pond sky has zero changed pixels; this is not full-game equivalence |
-| Native helper and CLI syntax | **PASS:** Godot `4.6.3 --check-only` and `bash -n tools/dev`; invalid sample count and headless capture guards fail as intended |
-| Baked Pond native captures and owner-controlled play | **NOT OBSERVED** |
+| Native helper and CLI syntax | **PASS:** initial syntax/argument guards plus successful pinned .NET execution after replacing the invalid `mono` OS feature check with verified `CSharpScript` capability detection; initial failure retained |
+| Actual baked-Pond fixed-pose rendering | **CAPTURED AND REVIEWED FOR THIS SCOPE:** fifteen images, five poses × legacy/candidate/sky-only; pinned .NET, Forward+, software llvmpipe, 960 × 540, no engine/shader/script errors or warnings |
+| Actual-Pond underwater comparison | **NEAR-IDENTICAL IN THIS FIXED VIEW:** legacy→candidate differs in 962 of 518,400 pixels, maximum channel delta 1/255; the full-game images are not byte-identical |
+| Owner-controlled play, motion stability and camera comfort | **NOT OBSERVED** |
 | Radeon 880M incremental GPU cost and route pacing | **NOT OBSERVED** |
 | P12/V32 acceptance | **NOT GREEN** |
 
@@ -78,7 +83,24 @@ The retained [diagnostic instructions](native-surface-evidence/r3/diagnostic/REA
 
 An earlier candidate showed horizontal combing in substantial stump reflections at grazing angles. A controlled 4→6→8 binary-refinement comparison held coarse steps, thickness, scene, light and camera fixed. Six refinements repaired nearby stumps but left a farther one striped; eight removed the observed broad-stump gaps. The final shader adopts eight refinements and preserves the earlier failure in the [refinement diagnostic](native-surface-evidence/r3/diagnostic/refinement-diagnostic.json). This costs four additional depth reads only when a crossing is found. Final retained render logs contain no engine, shader or script error. This repair does not prove all angles or moving-camera stability.
 
-## Native comparison ready to run
+## Pinned runtime and actual-Pond evidence
+
+The later [pinned validation record](native-surface-evidence/r3/pinned/README.md) contains the official tool archive hashes, build and state-check logs, initial asset failures, recovered-input provenance, fifteen captures and measured frame intervals. No runtime pins, baked world files, texture pixels or material settings were edited for the reconstruction. Coast Sand maps and the legacy Fish3 model match their tracked historical hashes. The ambientCG `Ground060`, `Gravel041` and `Rock063` 2K-JPG sets came from the approved official versioned packages, but their historical local-byte equality remains **unverified** because the original ignored inventory is absent. All modes in this comparison use the same restored inputs.
+
+The actual seed-71 Pond loaded its tracked bake with zero generator invocations, 1,101 FAF placements and the real Bluegill `FAF-FISH-006`. The run used 30 warmup frames and 30 measured intervals per capture, a fixed 12-second surface/sky time, an uncapped 960 × 540 virtual X11 display, and the Overcast profile. The shader sources are identical to `e93ecf5`; only the probe's .NET capability check was repaired. The [source record and hashes](native-surface-evidence/r3/pinned/actual-pond/analysis.json) identify that repair and every retained image.
+
+| Actual Pond comparison | Observed result |
+| --- | --- |
+| [Low bank legacy](native-surface-evidence/r3/pinned/actual-pond/captures/low_bank_legacy.png) → [candidate](native-surface-evidence/r3/pinned/actual-pond/captures/low_bank_candidate.png) | Stumps, roots and reeds have recognizable inverted reflections; the old surface has no corresponding reflected shore structure. No broad-stump combing was visible in this sampled view. |
+| [Oblique candidate](native-surface-evidence/r3/pinned/actual-pond/captures/oblique_bank_candidate.png) and [sky-only control](native-surface-evidence/r3/pinned/actual-pond/captures/oblique_bank_sky_only.png) | Scene-reflected silhouettes disappear in the control. Shallow water retains muted olive transmission and floating-pad detail. |
+| [Fish at 0.5 m](native-surface-evidence/r3/pinned/actual-pond/captures/fish_050cm_candidate.png) and [4 m](native-surface-evidence/r3/pinned/actual-pond/captures/fish_400cm_candidate.png) | The shallow Bluegill remains visible; the deeper fish is strongly attenuated. Two fixed depths do not complete the continuous shallow→deep route requirement. |
+| [Underwater legacy](native-surface-evidence/r3/pinned/actual-pond/captures/underwater_legacy.png) → [candidate](native-surface-evidence/r3/pinned/actual-pond/captures/underwater_candidate.png) | The green underside and fish silhouette are preserved in the sampled view, with maximum 1/255 channel difference. Other poses and transitions still require review. |
+
+This improves the reflective response, but does not establish parity with the reference screenshots. Fish's current open bank and overcast sky produce paler low-angle reflections than the dense canopy scenes. Thin reeds, off-screen objects and moving reflection stability retain the limits above.
+
+On this **software renderer**, low-bank legacy/candidate median intervals were 125.32/132.91 ms; oblique-bank medians were 130.74/158.93 ms. The [complete median/p95 table](native-surface-evidence/r3/pinned/actual-pond/REVIEW.md) includes every mode and pose. These short paused runs include scheduling and presentation, so they provide no Radeon 880M frame-rate or incremental GPU-cost claim. The observed unchanged draw counts do not imply zero shader cost.
+
+## Native comparison ready to reproduce
 
 Follow [the native handoff](../manual/R3-surface-reflections-native.txt) on the configured Fish desktop. `./tools/dev review-pond-reflections` performs import and build, creates a fresh ignored profile/output directory, then runs the actual main scene with the tracked Pond and Bluegill.
 
@@ -90,7 +112,7 @@ The paused fixed-pose samples include presentation, scheduling and possible vsyn
 
 ### Remaining acceptance work
 
-1. Build the pinned .NET project and run the affected atmosphere, scenery, immersion and Ocean equal-input checks.
+1. Reproduce the recorded candidate on the owner's configured desktop, verifying actual source identity and local asset inputs. The pinned build and four affected state checks passed here; use the handoff's commands when preparing that desktop run.
 2. Review real Pond bank reflections, shore/reed edges, nearby fish detail and continuous depth fade in both Pond lighting presets.
 3. Play low/high-effort surface swimming, wake/glide, orbit/zoom, repeated air/water crossings, pause/refocus and Pond→Ocean→Pond return. Cover the existing control-preset matrix and actual near-bank clearance.
 4. Complete the previously open continuous shallow→middle→deep→return route and covered-route observations; fixed poses do not satisfy them.

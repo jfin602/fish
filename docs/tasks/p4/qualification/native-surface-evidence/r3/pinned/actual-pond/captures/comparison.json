@@ -1,0 +1,486 @@
+{
+	"adapter": "llvmpipe (LLVM 19.1.7, 256 bits)",
+	"atmosphere_settings": {
+		"AmbientEnergy": 0.779999971389771,
+		"CausticEnergy": 0.0799999982118607,
+		"MoteCount": 72,
+		"ScreenWarpPixels": 0.0399999991059303,
+		"ShaftCount": 2,
+		"SunEnergy": 1.35000002384186,
+		"SurfaceWaveDetail": 0.349999994039536,
+		"SurfaceWaveHeight": 0.449999988079071,
+		"SurfaceWaveSpeed": 0.649999976158142,
+		"VisibilityRangeMeters": 25.0,
+		"VolumetricDensity": 0.028999999165535
+	},
+	"candidate_shader_sha256": "1abef7b9c088819ef4ad69443034a8a88e427fd30f4634ce622b46ce5a494f15",
+	"display": "X11",
+	"driver": "vulkan",
+	"engine_max_fps": 0,
+	"failures": [],
+	"fish_id": "FAF-FISH-006",
+	"fish_probe_floor_y": -1.83250045776367,
+	"fixed_surface_time": 12.0,
+	"godot": {
+		"build": "official",
+		"hash": "ed1daf0bf001b61586d9930840f2f1394092c079",
+		"hex": 263938,
+		"major": 4,
+		"minor": 7,
+		"patch": 2,
+		"status": "stable",
+		"string": "4.7.2-stable (official)",
+		"timestamp": 0
+	},
+	"initial_surface_uniforms": {
+		"air_fog_begin": "27.0",
+		"air_fog_end": "105.0",
+		"air_surface_enabled": "1.0",
+		"camera_depth": "0.915117",
+		"overcast": "1.0",
+		"reflection_max_distance": "null",
+		"reflection_scene_enabled": "null",
+		"reflection_strength": "null",
+		"shore_mask_enabled": "1.0",
+		"sun_direction": "Vector3(-0.22976796, 0.8674232, 0.441343)",
+		"surface_dark": "Vector3(0.13, 0.28, 0.12)",
+		"surface_daylight": "1.0",
+		"surface_extinction": "0.65",
+		"surface_half_size": "193.0",
+		"surface_light": "Vector3(0.31, 0.43, 0.2)",
+		"surface_time": "0.0",
+		"water_scatter": "Vector3(0.055, 0.085, 0.035)",
+		"wave_detail": "0.35",
+		"wave_height": "0.45",
+		"wave_speed": "0.65"
+	},
+	"legacy_scope": "Original water shader in the current scene and sky; this is not a full checkpoint-checkout comparison.",
+	"legacy_shader_sha256": "c6a057e3c09a0b0a820e81175311944a972e9b28577781e089a3f9471254c6f2",
+	"limitations": "Paused fixed poses; process/render interval includes vsync and scheduling, not isolated GPU time. No movement, camera-feel, offscreen-reflection completeness, world-switch, or owner visual qualification is claimed.",
+	"manifest_sha256": "966a70f784c5398e0071ca098ec07c3765d70fc03c2e0bae4e8c82f3bd2f2173",
+	"os": "Linux",
+	"pause_freeze": "PASS: surface/sky time and diagnostic fish/camera transforms remained fixed in every sample",
+	"renderer": "forward_plus",
+	"samples": [
+		{
+			"camera_immersion": 0.0342932976782322,
+			"draw_calls": {
+				"median": 71.0,
+				"p95": 71.0
+			},
+			"eye": "Vector3(-52.242043, 10.740001, -1.6544232)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 125.3205,
+				"p95": 140.862
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/low_bank_legacy.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "legacy",
+			"primitives": {
+				"median": 117734.0,
+				"p95": 117734.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 11.29, 2.4873252)",
+			"view": "low_bank"
+		},
+		{
+			"camera_immersion": 0.0342932976782322,
+			"draw_calls": {
+				"median": 71.0,
+				"p95": 71.0
+			},
+			"eye": "Vector3(-52.242043, 10.740001, -1.6544232)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 132.907,
+				"p95": 183.214
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/low_bank_candidate.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "candidate",
+			"primitives": {
+				"median": 117734.0,
+				"p95": 117734.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 11.29, 2.4873252)",
+			"view": "low_bank"
+		},
+		{
+			"camera_immersion": 0.0342932976782322,
+			"draw_calls": {
+				"median": 71.0,
+				"p95": 71.0
+			},
+			"eye": "Vector3(-52.242043, 10.740001, -1.6544232)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 128.3705,
+				"p95": 145.411
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/low_bank_sky_only.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "sky_only",
+			"primitives": {
+				"median": 117734.0,
+				"p95": 117734.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 11.29, 2.4873252)",
+			"view": "low_bank"
+		},
+		{
+			"camera_immersion": 0.0000000000260023114151409,
+			"draw_calls": {
+				"median": 74.0,
+				"p95": 74.0
+			},
+			"eye": "Vector3(-48.69077, 13.39, -3.4952006)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 130.736,
+				"p95": 163.905
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/oblique_bank_legacy.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "legacy",
+			"primitives": {
+				"median": 118150.0,
+				"p95": 118150.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 10.490001, 2.4873252)",
+			"view": "oblique_bank"
+		},
+		{
+			"camera_immersion": 0.0000000000260023114151409,
+			"draw_calls": {
+				"median": 74.0,
+				"p95": 74.0
+			},
+			"eye": "Vector3(-48.69077, 13.39, -3.4952006)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 158.9345,
+				"p95": 195.751
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/oblique_bank_candidate.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "candidate",
+			"primitives": {
+				"median": 118150.0,
+				"p95": 118150.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 10.490001, 2.4873252)",
+			"view": "oblique_bank"
+		},
+		{
+			"camera_immersion": 0.0000000000260023114151409,
+			"draw_calls": {
+				"median": 74.0,
+				"p95": 74.0
+			},
+			"eye": "Vector3(-48.69077, 13.39, -3.4952006)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 130.56,
+				"p95": 150.839
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/oblique_bank_sky_only.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "sky_only",
+			"primitives": {
+				"median": 118150.0,
+				"p95": 118150.0
+			},
+			"samples": 30,
+			"target": "Vector3(-60.232407, 10.490001, 2.4873252)",
+			"view": "oblique_bank"
+		},
+		{
+			"camera_immersion": 0.00000000000000000001971833144204,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 124.839,
+				"p95": 148.258
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_050cm_legacy.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "legacy",
+			"primitives": {
+				"median": 119186.0,
+				"p95": 119186.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_050cm"
+		},
+		{
+			"camera_immersion": 0.00000000000000000001971833144204,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 132.978,
+				"p95": 177.493
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_050cm_candidate.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "candidate",
+			"primitives": {
+				"median": 119186.0,
+				"p95": 119186.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_050cm"
+		},
+		{
+			"camera_immersion": 0.00000000000000000001971833144204,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 126.304,
+				"p95": 140.497
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_050cm_sky_only.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "sky_only",
+			"primitives": {
+				"median": 119186.0,
+				"p95": 119186.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_050cm"
+		},
+		{
+			"camera_immersion": 0.00000000000000000000000000001495,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 6.3900003, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 123.487,
+				"p95": 142.409
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_400cm_legacy.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "legacy",
+			"primitives": {
+				"median": 119082.0,
+				"p95": 119082.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_400cm"
+		},
+		{
+			"camera_immersion": 0.00000000000000000000000000001495,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 6.3900003, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 137.141,
+				"p95": 197.892
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_400cm_candidate.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "candidate",
+			"primitives": {
+				"median": 119082.0,
+				"p95": 119082.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_400cm"
+		},
+		{
+			"camera_immersion": 0.00000000000000000000000000001495,
+			"draw_calls": {
+				"median": 83.0,
+				"p95": 83.0
+			},
+			"eye": "Vector3(-10, 16.39, 3)",
+			"fish_position": "Vector3(-10, 6.3900003, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 133.9035,
+				"p95": 176.637
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/fish_400cm_sky_only.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "sky_only",
+			"primitives": {
+				"median": 119082.0,
+				"p95": 119082.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 9.39, 0)",
+			"view": "fish_400cm"
+		},
+		{
+			"camera_immersion": 1.0,
+			"draw_calls": {
+				"median": 187.0,
+				"p95": 187.0
+			},
+			"eye": "Vector3(-10, 8.59, 4.1)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 178.805,
+				"p95": 233.873
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/underwater_legacy.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "legacy",
+			"primitives": {
+				"median": 127326.0,
+				"p95": 127326.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 10.240001, 0)",
+			"view": "underwater"
+		},
+		{
+			"camera_immersion": 1.0,
+			"draw_calls": {
+				"median": 187.0,
+				"p95": 187.0
+			},
+			"eye": "Vector3(-10, 8.59, 4.1)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 169.452,
+				"p95": 212.723
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/underwater_candidate.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "candidate",
+			"primitives": {
+				"median": 127326.0,
+				"p95": 127326.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 10.240001, 0)",
+			"view": "underwater"
+		},
+		{
+			"camera_immersion": 1.0,
+			"draw_calls": {
+				"median": 187.0,
+				"p95": 187.0
+			},
+			"eye": "Vector3(-10, 8.59, 4.1)",
+			"fish_position": "Vector3(-10, 9.89, 0)",
+			"fov": 70.0,
+			"frame_ms": {
+				"median": 162.544,
+				"p95": 175.615
+			},
+			"image": "/workspace/scratch/d66dc362420b/water-render-lab/actual-pond-run2/captures/underwater_sky_only.png",
+			"image_size": [
+				960,
+				540
+			],
+			"mode": "sky_only",
+			"primitives": {
+				"median": 127326.0,
+				"p95": 127326.0
+			},
+			"samples": 30,
+			"target": "Vector3(-10, 10.240001, 0)",
+			"view": "underwater"
+		}
+	],
+	"samples_per_capture": 30,
+	"seed": 71.0,
+	"sky_include_sha256": "c4081915d9a906e336e9e6859d36eb6155b41327a49dbf3688c2e975a94f59bf",
+	"sky_shader_path": "res://shaders/pond_sky.gdshader",
+	"sky_shader_sha256": "ad83cceccdb1b4eecd9fbdaa158777d76a5991f4564f54b6116837b4e25f7fe2",
+	"source_supplied_by_caller": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca + probe capability guard dirty; approved-source textures restored, ambientCG historical bytes unverified",
+	"status": "CAPTURED_REQUIRES_VISUAL_REVIEW",
+	"surface_y": 10.3900003433228,
+	"viewport_size": [
+		960,
+		540
+	],
+	"vsync_mode": 0,
+	"warmup_frames": 30,
+	"world_id": "world-5e3b4fee759acbe3"
+}

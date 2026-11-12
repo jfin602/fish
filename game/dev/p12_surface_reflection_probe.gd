@@ -94,7 +94,8 @@ func _run() -> void:
 	if display in ["headless", "dummy"] or driver == "dummy" or adapter.is_empty() or renderer != "forward_plus":
 		_fail("native Forward+ with a real render target required; display=%s renderer=%s driver=%s adapter=%s" % [display, renderer, driver, adapter])
 		return
-	if not OS.has_feature("mono"):
+	# The .NET editor exposes CSharpScript; "mono" is not an OS feature tag.
+	if not ClassDB.class_exists("CSharpScript"):
 		_fail("the built Godot .NET project is required")
 		return
 	# Also terminates an awaited frame_post_draw if the window stops drawing.

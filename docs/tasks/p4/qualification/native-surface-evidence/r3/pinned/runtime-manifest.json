@@ -1,0 +1,23 @@
+{
+  "sources": [
+    {
+      "name": "godot",
+      "version": "4.7.2-stable-mono",
+      "url": "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_mono_linux_x86_64.zip",
+      "file": "Godot_v4.7.2-stable_mono_linux_x86_64.zip",
+      "bytes": 107698034,
+      "algorithm": "sha256",
+      "hash": "129f82db7bafd54ae14bb5bb284041c73860e8c7a009a3a026ca5e946cbff247"
+    },
+    {
+      "name": "dotnet",
+      "version": "10.0.403",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.403/dotnet-sdk-10.0.403-linux-x64.tar.gz",
+      "file": "dotnet-sdk-10.0.403-linux-x64.tar.gz",
+      "bytes": 240199984,
+      "algorithm": "sha512",
+      "hash": "b7b3d8461cf98b07d2552ce9199702fa3ad010ac2671a5f8cd5136f7534e50f6855ba7bbb02b11494563f1d04156276a31cda1103b900e5eecd0d9473dc7b9c5"
+    }
+  ],
+  "verification": "Archive byte counts and official SHA256/SHA512 matched; safe path-filtered extraction; no system install"
+}

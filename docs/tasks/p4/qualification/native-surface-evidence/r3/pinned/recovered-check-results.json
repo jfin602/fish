@@ -1,0 +1,48 @@
+[
+  {
+    "command": "./tools/dev inspect-pond-atmosphere",
+    "exit": 0,
+    "seconds": 13.72,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/recovered-inspect-pond-atmosphere.log",
+    "markers": [
+      "WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=3375 generator_invocations=0",
+      "WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=1651 generator_invocations=0",
+      "WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2514 generator_invocations=0",
+      "POND_ATMOSPHERE_CHECK_OK profile=pond ocean_reset=ok pond_reload=ok base=25.0 deep=17.0 fish=unchanged presets=isolated"
+    ]
+  },
+  {
+    "command": "./tools/dev inspect-pond-scenery",
+    "exit": 0,
+    "seconds": 6.39,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/recovered-inspect-pond-scenery.log",
+    "markers": [
+      "WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=3003 generator_invocations=0",
+      "POND_SCENERY_CHECK_OK vertices=16176 shore_samples=16/16 shore_faf=184 camera_fish_clearance=31/32 authored_obstructions=1 structures=52 rings=8 splash=6 sample_cpu_ms=4.07 ocean_profile=isolated"
+    ]
+  },
+  {
+    "command": "./tools/dev inspect-pond-camera-immersion",
+    "exit": 0,
+    "seconds": 6.29,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/recovered-inspect-pond-camera-immersion.log",
+    "markers": [
+      "WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2920 generator_invocations=0",
+      "POND_CAMERA_IMMERSION_OK water=10.390 max_blend_step=0.0551 max_follow_step=0.1349 presets=5 orbit_zoom=1 eye_above_fish_below=1 pause=1 reentry=1 fish_state=unchanged"
+    ]
+  },
+  {
+    "command": "./tools/dev inspect-ocean-equal-input",
+    "exit": 1,
+    "seconds": 5.29,
+    "source": "e93ecf5e6bc2d00d6738fce9766d98f17585a4ca",
+    "log": "/workspace/scratch/d66dc362420b/fish-native-runtime/logs/recovered-inspect-ocean-equal-input.log",
+    "markers": [
+      "WORLD_BAKED_LOAD_OK id=world-6cba9a67e6275297 seed=42 content=ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879 elapsed_ms=3234 generator_invocations=0",
+      "ERROR: FISH_ASSET_MISSING item=Quaternius Fish3 path=res://assets/vendor-local/quaternius/Fish3.fbx action=prepare-source-under-game/assets/vendor-local"
+    ]
+  }
+]

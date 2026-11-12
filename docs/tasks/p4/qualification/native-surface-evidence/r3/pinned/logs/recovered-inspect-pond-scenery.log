@@ -1,0 +1,12 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+FISH_DISPLAY_MODE requested=fullscreen source=saved-or-default effective=Minimized
+FISH_FOUNDATION_READY
+POND_FAF_READY assets=33 placements=1101 batches=23 triangles_est=216866
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=3003 generator_invocations=0
+POND_AMBIENT_READY actors=12 creatures=3 insects=4 fish=5
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.078 upper_collision=disabled
+FISH_HABITAT_READY player=FAF-FISH-006 world=world-5e3b4fee759acbe3 mode=baked
+POND_SURFACE_READY vertices=16176 build_ms=15.92 single_mesh=1
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=24.8 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+POND_SCENERY_CHECK_OK vertices=16176 shore_samples=16/16 shore_faf=184 camera_fish_clearance=31/32 authored_obstructions=1 structures=52 rings=8 splash=6 sample_cpu_ms=4.07 ocean_profile=isolated

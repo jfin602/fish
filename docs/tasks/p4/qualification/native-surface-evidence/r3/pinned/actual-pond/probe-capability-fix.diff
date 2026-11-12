@@ -1,0 +1,8 @@
+diff --git a/game/dev/p12_surface_reflection_probe.gd b/game/dev/p12_surface_reflection_probe.gd
+index 39dda4d..e4bf1d3 100644
+--- a/game/dev/p12_surface_reflection_probe.gd
++++ b/game/dev/p12_surface_reflection_probe.gd
+@@ -97 +97,2 @@ func _run() -> void:
+-	if not OS.has_feature("mono"):
++	# The .NET editor exposes CSharpScript; "mono" is not an OS feature tag.
++	if not ClassDB.class_exists("CSharpScript"):

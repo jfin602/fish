@@ -1,0 +1,10 @@
+Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
+
+FEATURE mono=false
+FEATURE dotnet=false
+FEATURE C#=false
+FEATURE cs=false
+FEATURE editor=true
+FEATURE linux=true
+CSHARP_SCRIPT_CLASS=false
+VERSION={ "major": 4, "minor": 6, "patch": 3, "hex": 263683, "status": "stable", "build": "official", "hash": "7d41c59c457bd5a245092b4e7eb2d833e3b3f8c3", "timestamp": 0, "string": "4.6.3-stable (official)" }

@@ -1,0 +1,32 @@
+[
+  {
+    "name": "coast_sand_01_Diffuse_2k.jpg",
+    "bytes": 3552676,
+    "sha256": "e1c37ea8b4282fda612b0584d864ca4eef2da28c2fa9f3930cad9209414eb979",
+    "md5": "bde59bb3bcdd8d4e9d6fcadc19f038fa",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_01/coast_sand_01_diff_2k.jpg",
+    "source": "/workspace/scratch/d66dc362420b/fish-water-surface/artifacts/assets/source/coast_sand_01-2k/coast_sand_01_Diffuse_2k.jpg",
+    "vendor": "/workspace/scratch/d66dc362420b/fish-water-surface/game/assets/vendor-local/coast_sand_01/coast_sand_01_Diffuse_2k.jpg",
+    "verification": "tracked_p1_manifest_sha256_and_official_api_size_md5"
+  },
+  {
+    "name": "coast_sand_01_nor_gl_2k.jpg",
+    "bytes": 4630126,
+    "sha256": "e5b1430c751727c8ab0332adfd8960c48342936146de258aa9b7736630cdbb62",
+    "md5": "2a9d793676562b38b5760b9147aa40ea",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_01/coast_sand_01_nor_gl_2k.jpg",
+    "source": "/workspace/scratch/d66dc362420b/fish-water-surface/artifacts/assets/source/coast_sand_01-2k/coast_sand_01_nor_gl_2k.jpg",
+    "vendor": "/workspace/scratch/d66dc362420b/fish-water-surface/game/assets/vendor-local/coast_sand_01/coast_sand_01_nor_gl_2k.jpg",
+    "verification": "tracked_p1_manifest_sha256_and_official_api_size_md5"
+  },
+  {
+    "name": "coast_sand_01_Rough_2k.jpg",
+    "bytes": 1389332,
+    "sha256": "93caeb7332d1593702d97a59040ce178a27c9d705b30c55413e0d2507e09a762",
+    "md5": "66e3bcd9f7158cd8919487afb51eabf2",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_01/coast_sand_01_rough_2k.jpg",
+    "source": "/workspace/scratch/d66dc362420b/fish-water-surface/artifacts/assets/source/coast_sand_01-2k/coast_sand_01_Rough_2k.jpg",
+    "vendor": "/workspace/scratch/d66dc362420b/fish-water-surface/game/assets/vendor-local/coast_sand_01/coast_sand_01_Rough_2k.jpg",
+    "verification": "tracked_p1_manifest_sha256_and_official_api_size_md5"
+  }
+]

@@ -9,6 +9,9 @@ This is direct native follow-up, not a runner prompt or a new Phase checkpoint.
 Read first
 - AGENTS.md, BOOT.md, docs/workflow.md and the relevant tools/dev composition.
 - docs/tasks/p4/qualification/r3-surface-reflections.md.
+- docs/tasks/p4/qualification/native-surface-evidence/r3/pinned/README.md for
+  the completed pinned build, affected state checks, fifteen actual-Pond stills,
+  restored-input provenance and remaining owner-hardware/play limits.
 - docs/tasks/p4/qualification/native-surface.md, including R1/R2 and open V32 cells.
 - docs/development.md for the exact Godot/.NET pins and local configuration.
 - The changed Pond shader, shared air-sky helper, atmosphere selection and probe.

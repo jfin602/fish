@@ -30,7 +30,7 @@ Every below-water view sets sky `air_mix=0` and the same diagnostic fog paramete
 
 Observed: Godot `4.6.3.stable.official.7d41c59c4` standard build; Forward+; Vulkan 1.4.305; Mesa `llvmpipe (LLVM 19.1.7, 256 bits)` software device; 960 × 540 viewport. The fixed shader time is 2.5. Bluegill uses the same `1 / 0.309825` normalization as its current adult catalog. Shadows are disabled in the fixture; all compared modes share that lighting setup.
 
-No Fish or system tool pins changed. The repository's Godot 4.7.2 .NET and SDK 10.0.403 were unavailable in this execution environment. The scratch renderer used extracted Debian Mesa/Xvfb packages, which are intentionally not included in the repository evidence.
+No Fish or system tool pins changed. At the time these isolated captures were produced, the repository's Godot 4.7.2 .NET and SDK 10.0.403 were not installed in this execution environment. They were subsequently installed in isolated scratch and used for the [pinned build, focused checks and actual-Pond captures](../pinned/README.md). The images and metadata in this directory remain the original 4.6.3 diagnostic. The scratch renderer used extracted Debian Mesa/Xvfb packages, which are intentionally not included in the repository evidence.
 
 This establishes shader compilation and actual rendered behavior on the stated diagnostic engine. It does not establish reference-image parity, temporal stability during swimming, normal Pond lifecycle, waterline camera transitions, input/motor invariance, native visual acceptance, or Radeon 880M performance. Thin geometry can still produce missed screen-space details; off-screen scenery cannot be reflected by this pass. P4/P12 status is unchanged.
 
