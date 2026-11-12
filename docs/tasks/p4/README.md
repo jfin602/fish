@@ -12,6 +12,10 @@ Offer two independently playable worlds, **Ocean** (preserve the existing reef, 
 
 The Pond includes **surface swimming and camera air–water crossing**: fish can swim immediately under the surface and partially breach with fins/mouth/back without ordinary airborne movement, while the follow/orbit/zoom camera passes above/below without snaps or visibility bugs. It transitions fog/distortion/exposure, shows genuine nearby generated banks/reeds/sky and supports cheap surface ripples/wake. The Ocean is not restyled or deleted.
 
+## S21 Pond clarity review routing (documentation-only)
+
+The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a uniform green underwater view. [The water-visibility contract](../../systems/underwater-visibility.md) owns spatial turbidity versus illumination and initial near-field visual targets; the [P4 design](../../planning/p4/freshwater-world.md) owns Pond habitat appearance and [V29/V32](../../validation.md) own native checks. Introduce the smallest bounded rendering correction **without rewriting already executed P4 prompts or P12-R1/R2 evidence**, preserving the owner-rejected pale/shiny trials, accepted dark muddy-green direction and Ocean. Compare a fixed-view prototype before wider deterministic world-field wiring; P5 later owns gameplay sensing and dynamic sediment. No prompt-stack execution, checkpoint, version change, or Gate PASS follows merely from this documentation update. P12 remains NOT GREEN pending owner-controlled native qualification.
+
 ## Non-negotiable entry dependency
 
 1. C3 manual M1–M4 completed; the owner approved progression with remaining visual/native gaps in the [P3 closeout](../p3/closeout.md). Preserve that disposition rather than converting previous failures to PASS or silently waiving V25/V26/V27.
