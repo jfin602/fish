@@ -1,0 +1,31 @@
+TASK: Phase 5 / P11 — Native feeding and growth review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.5.11`.
+
+GOAL
+STOP for a real player-controlled native stealth→food→growth test and owner judgment.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+P5 feeding/growth code/evidence, past M1/P8 owner review, validation V03/V04/V05/V35, real fish stage metadata.
+Require actual P10 evidence/checkpoint, prior root `0.5.10` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. From Pike Encounter attempt concealed prey approach and exposed approach, watch prey response, execute real eligible bite and invalid/double-bite cases.
+2. Feed until a true stage change, inspect body/rig, camera/collision near the log and an observable life-stage cover/food-chain tradeoff under actual controls.
+3. Repeat trap/escape and return/retry; measure native frame pacing, errors and clarity/readability at relevant daylight/water conditions.
+4. Capture explicit owner judgment and per-scenario PASS/FAIL/NOT OBSERVED/BLOCKED; stop on failure, never promote headless assertions into native evidence.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T3 manual native: Manual T3 V03/V04/V05/V35, owner visual/input observation, docs/tasks/p5/qualification/native-feeding-growth.md; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Native feeding/growth/stealth loop accepted or truthful failures recorded; no implied permanent death or wider ecosystem qualification.
+Manual checkpoint: the runner must pause before launch. Assign `0.5.11` only after actual native observation and owner approval; otherwise keep `0.5.10` and stop. Follow runner/manual checkpoint instructions; do not self-commit/push.

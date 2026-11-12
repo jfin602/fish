@@ -1,0 +1,31 @@
+TASK: Phase 5 / P5 — Pike investigation, pursuit and escape
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.5`.
+
+GOAL
+Create one Pike ecology actor that acts only on sensed evidence and decaying memory.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+P5 fixture, perception and disturbance sources, character/creature catalogs, existing fish movement/collision and stealth behavior contract.
+Require actual P4 evidence/checkpoint, prior root `0.5.4` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Implement normal activity, suspicion, investigation, verified chase, readable attack commitment, last-known-position search and disengagement; transitions need not follow a rigid chain.
+2. Use last **sensed** target location/time, never sample the hidden player's current transform as a cheat. Respect geometry, swim speeds, turning, physical Pike collision and finite search time.
+3. Provide temporary fixture outcomes caught/escaped, not permanent death, history or saved life; reset actor, sensors and target memory precisely.
+4. Build deterministic tests for open-water catch, occluded log escape/search/disengage, insufficient evidence, absent target, obstacle/turn clearance, pause and repeated restart.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; authored Pike AI simulation/fixture tests with actual success marker; scene smoke and World Select routing checks; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+One Pike can plausibly investigate, hunt, search and disengage without seeing the player through walls; native fairness remains for P6.
+If and only if checked source behavior passes, update package.json to `0.5.5` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

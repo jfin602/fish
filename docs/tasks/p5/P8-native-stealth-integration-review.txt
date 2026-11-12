@@ -1,0 +1,31 @@
+TASK: Phase 5 / P8 — Native stealth and prey awareness review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.5.8`.
+
+GOAL
+STOP for native hand-play of combined Pike/Bluegill/prey awareness before any feeding implementation.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+P5 P1–P7 evidence, validation V05/V33/V34/V36 and future V35, current P4 water/clarity caveats.
+Require actual P7 evidence/checkpoint, prior root `0.5.7` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Play still/glide/burst in open, reed and log conditions and observe Pike perception, hunt, search and disengage without cheating; check 3D above/below awareness.
+2. Approach prey slowly from cover and quickly over open water; compare genuine prey responses. Bite/nutrition parts of V35 are NOT OBSERVED until P9/P11.
+3. Repeat retry/return/focus/pause, Ocean and normal Pond entry with no predators, measure native frame pacing/graphics and inspect actor leaks.
+4. Record explicit owner readability/fun judgment, source/seed/preset/screenshots only if captured and any failures. Stop on unapproved native outcome.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T3 manual native: Manual T3 native stealth and menu isolation, specific focused tests after changes, docs/tasks/p5/qualification/native-stealth.md; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Owner-qualified readable movement, perception and concealment with prey reactions, or NOT GREEN/blocked; do not claim full V35 yet.
+Manual checkpoint: the runner must pause before launch. Assign `0.5.8` only after actual native observation and owner approval; otherwise keep `0.5.7` and stop. Follow runner/manual checkpoint instructions; do not self-commit/push.

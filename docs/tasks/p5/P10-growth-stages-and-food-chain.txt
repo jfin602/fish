@@ -1,0 +1,31 @@
+TASK: Phase 5 / P10 — Growth stages, body and food-chain reversal
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.10`.
+
+GOAL
+Connect legitimate nutrition to same-fish growth, staged visuals and changing shelter/hunt opportunities.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+Ecology contract, existing Pond egg/larva/juvenile/subadult/adult rigs, PondCreatureCatalog, FishController/FollowCamera, current food ledger and FAF clearance checks.
+Require actual P9 evidence/checkpoint, prior root `0.5.9` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Choose tunable verified thresholds and real stage exports, without fake egg swimming, stage identity replacement or invented body stats; retain one authoritative player species/identity.
+2. Derive body size/collider/camera/animation/edible targets/geometry clearance from authoritative stage, and prevent growth from duplicated nutrition or rendering updates.
+3. Prove a meaningful change in accessible cover and hunting/food-chain position via biologically plausible prey-size rules; avoid arbitrary Bluegill-eats-Pike reversal.
+4. Test near-wall transitions, rig/clip validity, legal eligibility before/after growth, same identity, pause/retry, camera independence and stable rewards.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; stage/rig/size/collider/camera tests, one-time food tests and ./tools/dev inspect-species; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+A legitimately fed fish visibly grows without clipping, loses/gains real options, maintains identity and obeys consistent dietary rules.
+If and only if checked source behavior passes, update package.json to `0.5.10` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

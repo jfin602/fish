@@ -1,0 +1,31 @@
+TASK: Phase 5 / P3 — Camera-independent world-space perception
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.3`.
+
+GOAL
+Implement reusable 3D visual detection based on environment, orientation, distance and real obstruction rather than screen fog.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+game/scripts/PondTurbidityField.cs, UnderwaterAtmosphere.cs, FishController.cs, active solar/light owner, P5 scene physics and documented stealth contract.
+Require actual P2 evidence/checkpoint, prior root `0.5.2` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Implement bounded sight query using sensing actor/target positions, heading, range, silhouette proxy, physics occlusion, segment-sampled water clarity and independent illumination/contrast.
+2. Sample the existing deterministic PondTurbidityField only as world input where applicable; make gameplay perception independent of player camera, GFX sliders, post effects and shader fog. Avoid shadow = sediment confusion.
+3. Budget query frequency and bounded ray/segment work; expose test-only reasons/evidence scores and handle pause, invalid target, unknown habitat and reset.
+4. Verify near/far, direct/obstructed, shallow/clear vs muddy intervening paths, illumination effects if supported, camera independence and repeatability; preserve normal Ocean baseline.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; implement and run targeted P5 perception checks; ./tools/dev inspect-ocean-equal-input; ./tools/dev inspect-pond-atmosphere; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Repeatable, bounded non-omniscient sight queries with real obstruction and no camera/render-driven outcomes.
+If and only if checked source behavior passes, update package.json to `0.5.3` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

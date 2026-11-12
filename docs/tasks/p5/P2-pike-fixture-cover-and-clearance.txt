@@ -1,0 +1,31 @@
+TASK: Phase 5 / P2 — Physical cover fixture and Pike placement
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.2`.
+
+GOAL
+Create a small deterministic freshwater pursuit course with real shelter, soft cover and open water.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+game/scripts/PondFafEnvironment.cs, FishController.cs, FollowCamera.cs, actual hollow-trunk collider wrappers, PondCreatureCatalog.cs, current P5 fixture and P4 clearance evidence.
+Require actual P1 evidence/checkpoint, prior root `0.5.1` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Inspect actual Bluegill collider/camera envelope and pike dimensions; choose real FAF hollow log with genuine passable interior and document clearance based on checked geometry.
+2. Place one hollow trunk, soft reed/weed patch, open crossing, safe spawn and exit markers with deterministic seed/poses; reuse accepted Pond assets and atmosphere without modifying the ordinary Pond bake or normal Pond/Ocean scenes.
+3. Instantiate one registered northern Pike physical actor initially non-hunting, with correct visual rig and bounded collider, separated from the Bluegill. No pretend feeding or death.
+4. Add clearance/placement checks: player can pass through selected log; larger Pike cannot clip/enter when blocked; camera can follow; no floating colliders; retries restore actors and geometry.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; a newly implemented and wired fixture-geometry check; fixture scene smoke; ./tools/dev inspect-pond-atmosphere; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Deterministic encounter traversable by real fish/camera, with no invisible obstacles and blocked Pike geometry enforced.
+If and only if checked source behavior passes, update package.json to `0.5.2` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

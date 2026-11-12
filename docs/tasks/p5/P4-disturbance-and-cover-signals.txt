@@ -1,0 +1,31 @@
+TASK: Phase 5 / P4 — Movement disturbances and concealment signals
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.4`.
+
+GOAL
+Connect actual fish movement and hard/soft cover to limited sensory evidence.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+FishController.cs, SwimMotor.cs, WaterReaction.cs, P5 perception query and fixture cover geometry.
+Require actual P3 evidence/checkpoint, prior root `0.5.3` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Create local movement disturbance events with bounded radius, finite TTL and rate limit from authoritative velocity/acceleration/turn/effort; gliding generates less evidence than bursts.
+2. Use real solid geometry for sight blocking; treat soft vegetation as partial visual concealment rather than magical invulnerability. Entering log does not erase prior suspicion.
+3. Keep WaterReaction visual-only, use one simulation clock and prevent pause/focus/retry from incorrectly advancing evidence, duplicating signals or changing motor outcomes.
+4. Check stop/glide/fast/turn, open/vegetation/log, signal decay, camera/preset independence, event budget and reset.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; new focused P5 cue/cover simulation checks; existing swim/motor and Ocean equal-input checks; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Sensor evidence changes explainably with motion and real cover and stays bounded without motor side effects.
+If and only if checked source behavior passes, update package.json to `0.5.4` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

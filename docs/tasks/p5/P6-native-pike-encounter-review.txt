@@ -1,0 +1,31 @@
+TASK: Phase 5 / P6 — Native M1 Survive the Pike review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.5.6`.
+
+GOAL
+STOP at the first owner-controlled native Bluegill-versus-Pike playtest before adding prey systems.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+P5 P1–P5 evidence, docs/validation.md V05/V33/V34/V36, current Fish native scene, P4 limitations and P5 plan.
+Require actual P5 evidence/checkpoint, prior root `0.5.5` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. On real Godot Forward+ desktop enter third card directly as Bluegill; inspect Pike visuals, existing controls/camera presets, hollow-log traversal and Pike obstruction clearance.
+2. Play slow concealed movement, suspicion, investigation, deliberate hidden retreat, last-known search and genuine escape; separately attempt an exposed fast crossing with readable catch.
+3. Retry and return repeatedly; check pause/refocus, ordinary Ocean/Pond routes, no hidden cheating, no predator clipping, native performance, warnings and player comfort/readability.
+4. Record actual source/seed/profile/system/owner judgments and PASS/FAIL/NOT OBSERVED/BLOCKED, screenshots/videos only if obtained. If failed or no owner native observation, stop; only bounded repairs and rechecks are allowed.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T3 manual native: Manual T3 V05/V33/V34/V36 with actual owner gameplay; targeted retests; docs/tasks/p5/qualification/native-m1.md; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+M1 owner accepts both hidden escape and exposed catch as fair and controllable, or a truthful NOT GREEN/blocked report stops progression.
+Manual checkpoint: the runner must pause before launch. Assign `0.5.6` only after actual native observation and owner approval; otherwise keep `0.5.5` and stop. Follow runner/manual checkpoint instructions; do not self-commit/push.

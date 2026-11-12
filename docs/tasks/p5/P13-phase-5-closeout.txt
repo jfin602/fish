@@ -1,0 +1,31 @@
+TASK: Phase 5 / P13 — Phase 5 closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.5.13`.
+
+GOAL
+Perform the sole owner-reviewed final P5 Gate decision, without manufacturing native evidence or silently upgrading unqualified habitats.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+docs/roadmap.md G5.1–G5.3, validation V03–V05/V33–V36, P5 P1–P12 evidence and owner reports, P4/older accepted-gap provenance, system contracts.
+Require actual P12 evidence/checkpoint, prior root `0.5.12` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Hand-play the final three-destination menu; Pike stealth hidden escape and exposed catch; prey caution/flight, real bite and one-time nutrition, stage/cover/food-chain change, clean retry/return, and representative ordinary Ocean/Pond regression.
+2. Review all actual T2/T3 evidence, source SHA, seed/world IDs, native platform/renderer/presets, screenshots if captured, input routes, frame pacing, owner perception and unsampled cases.
+3. Map G5.1 V03/V04, G5.2 V05/V33/V34/V36, and G5.3 V35; distinguish isolated fixture from normal habitat ecosystem deployment. Gate PASS requires evidence, not just scripted state.
+4. Create docs/tasks/p5/closeout.md and reconcile roadmap, BOOT, MODULES, owning docs only for real behavior. Preserve P2/P3/P4 gaps. P6 later owns durable save/death; P7 Life History. Leave owner-reviewable closeout uncommitted.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T3 manual native: Manual T3 native owner walkthrough + focused regression and documentation link/diff, git diff --check; no invented PASS or self-commit.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Owner-approved, source-backed G5.1–G5.3 disposition and explicit next action or accurate NOT GREEN/blocked P5 closeout.
+Manual checkpoint: the runner must pause before launch. Assign `0.5.13` only after actual native observation and owner approval; otherwise keep `0.5.12` and stop. Follow runner/manual checkpoint instructions; do not self-commit/push.

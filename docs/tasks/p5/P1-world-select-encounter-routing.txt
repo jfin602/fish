@@ -1,0 +1,31 @@
+TASK: Phase 5 / P1 — Pike Encounter entry and session routing
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.1`.
+
+GOAL
+Add a third World Select destination that directly launches a Bluegill-only Pike Encounter scene, without making a third habitat.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+game/scripts/WorldSelect.cs, WorldCatalog.cs, CharacterCatalog.cs, CharacterSelect.cs, PlayShell.cs, WorldSelectChecks.cs; existing menus/scenes and P5 plan.
+Before work, require owner-authorized P4 disposition and deliberate 0.5.0 package baseline; if missing STOP without source edits or a version bump.
+
+IMPLEMENT / NATIVE REVIEW
+1. Separate menu destinations from WorldCatalog.All: only ocean and pond remain world identities. Three cards need mouse/keyboard focus, narrow layouts, loading and errors; Ocean/Pond still route through Character Select.
+2. Create res://scenes/p5_pike_encounter.tscn and a minimal fixture controller. Use exact Pond-compatible FAF-FISH-006 Bluegill and FAF-FISH-010 Northern Pike asset validation; direct entry skips Character Select. Pike has no AI yet.
+3. Add Retry Encounter and Return to World Select; reset fixture state, pause, held controls, mouse capture, DemoSelection and WorldSession on reentry. Reject missing scene/model/ineligible species visibly without falling back.
+4. Extend focused scene/menu tests: two existing routes, third route, direct Bluegill, repeated restart/return, resource failures and no ordinary-world actor leakage.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; ./tools/dev inspect-world-select; ./tools/dev inspect-species; new focused P5 menu/fixture checks (first implement/wire them); git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Three destinations, two habitats, correct Bluegill direct scene and clean error/retry/return; source tests pass.
+If and only if checked source behavior passes, update package.json to `0.5.1` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

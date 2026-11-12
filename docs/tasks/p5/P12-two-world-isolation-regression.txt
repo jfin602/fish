@@ -1,0 +1,31 @@
+TASK: Phase 5 / P12 — Normal-world isolation and lifecycle regression
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.12`.
+
+GOAL
+Confirm stealth fixture and feeding/growth cannot affect ordinary Ocean/Pond testing or shared renderer/input authority.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+WorldSelect/WorldCatalog/CharacterSelect/PlayShell/WorldSession, full P5 scene and ecology code, P4 and P5 qualification records.
+Require actual P11 evidence/checkpoint, prior root `0.5.11` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Cycle Ocean, Pond, Pike Encounter repeatedly; assert two WorldCatalog habitats, original Character Select routes and preexisting baked hashes/rendering/control identities untouched.
+2. Verify normal worlds contain no active Pike predator/feeding changes, while fixture retries clean actors, awareness, signals, target/consumed IDs, timer, pause/input/camera and errors.
+3. Run negative compatibility/missing scene/corrupt asset handling, camera/GFX independence, double reward/growth checks and bounded perception performance.
+4. Update only relevant source/technical docs from actual behavior, preserve older P4 visual/native gaps and record focused T2 evidence.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build, inspect-world-select, inspect-world-catalog, inspect-pond-atmosphere, inspect-ocean-equal-input, inspect-species, actual P5 diagnostics and scene smoke; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+No predator or stale encounter leaks into ordinary habitats, and the new system is bounded/testable with named limitations.
+If and only if checked source behavior passes, update package.json to `0.5.12` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

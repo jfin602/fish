@@ -1,0 +1,31 @@
+TASK: Phase 5 / P7 — Shared prey sensing and evasive behavior
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.5.7`.
+
+GOAL
+Demonstrate that prey uses the same stealth rules as predators before implementing feeding.
+
+ENTRY / READ
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
+P5 shared perception, Pike source, PondCreatureCatalog/CharacterCatalog eligibility, actual P6 native findings and stealth/ecology contracts.
+Require actual P6 evidence/checkpoint, prior root `0.5.6` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
+
+IMPLEMENT / NATIVE REVIEW
+1. Pick one biologically plausible prey candidate from verified registered Pond-compatible assets; if available adults are too large to be Bluegill prey, use a clearly fixture-only temporary ecological proxy, not a fake FAF species.
+2. Reuse environmental sight/disturbance/cover evidence for prey perception; add real local flee/cover steering, bounded awareness/memory, body collisions and pause/reset behavior.
+3. Compare concealed slow approach to fast open-water approach with deterministic diagnostic readout; do not create nutrition or prey consumption yet.
+4. Test eligibility, camera-independent response, fleeing around a log, safe exit, stop/reset and predator/prey coexistence.
+
+SCOPE / DEFERRALS
+Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
+
+VALIDATION
+T2 focused integration: ./tools/dev build; focused prey sensing/flee tests and Pike regression; ./tools/dev inspect-species; git diff --check.
+Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
+
+DONE / VERSION / REPORT
+Prey notices and flees from believable exposure, and can fail to detect genuinely concealed movement using shared rules.
+If and only if checked source behavior passes, update package.json to `0.5.7` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.
