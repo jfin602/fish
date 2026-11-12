@@ -13,7 +13,7 @@ Every movement should have a meaningful exposure tradeoff. Shelter can preserve 
 - **Hard shelter:** real rocks, hollow trunks, enclosed routes and other solid geometry can obstruct sight and/or prevent a larger body entering. Visual and collision bounds must match closely enough for player and predator movement. Shelter that blocks the hunter does not erase knowledge that the player entered it.
 - **Soft cover:** weeds, reeds, roots, suspended sediment and partially obscuring structures may weaken visual evidence, but aren't automatically safe. A predator may still see motion, approach, or investigate.
 - **Open water:** increases exposure when visual clarity and lighting permit, especially when travelling between cover areas to feed.
-- **Water clarity and lighting:** distance extinction, depth, contrast and silhouette change visual information for both hunter and prey. Darkness and murk should not grant supernatural certainty or turn every nearby obstacle into an unreadable collision hazard.
+- **Water clarity and lighting:** distance extinction, depth, contrast and silhouette change visual information for both hunter and prey. Darkness and murk should not grant supernatural certainty or turn every nearby obstacle into an unreadable collision hazard. Pond's S21 spatial clarity design treats sediment/turbidity and illumination as distinct environmental properties; a shaded region is not automatically muddy, and murk does not replace solid occlusion.
 - **Cover networks:** the world should offer linked resting/hiding locations and exposed crossings with multiple credible escape routes where geometry allows. This is a world/placement affordance; P4 does not need stealth-state flags.
 
 Physical size and life stage change which gaps and shelters remain accessible. No purely decorative foliage volume may guarantee invulnerability.
@@ -24,6 +24,8 @@ Physical size and life stage change which gaps and shelters remain accessible. N
 2. **Local water movement:** actual fish speed, acceleration, tail movement or abrupt maneuvers may create limited near-field disturbance evidence. A simple timed spatial event/field is sufficient initially; do not attempt full fluid simulation or treat the existing visual wake effect as simulation authority. Lateral-line-inspired detection is local and tunable, not long-range magic.
 3. **Other senses:** strong splash/sound cues and species-specific chemical sensing are possible future systems. They must not be silently simulated with omniscience before rules and feedback are defined.
 4. **Habitat conditions:** current, background motion, time/depth and species abilities can eventually modulate perception, but first prove a small deterministic, testable subset. Ocean and Pond share behavioral principles while allowing separate values.
+
+When P5 implements sensing, start with camera-independent, reproducible queries of environmental clarity across hunter–target space (including meaningful intervening water, not just the predator's location), then combine them with occlusion, illumination/contrast, orientation and movement evidence. The Pond's P4 presentation may prototype its own visual approximation, but do **not** infer predator perception from camera fog, shader samples, graphics preset sliders or the player's viewpoint. A common baked world-space field is a preferred later integration if it proves inexpensive; no sensor values, occlusion claims or gameplay safety bonuses are implemented by S21.
 
 All AI perception and authoritative outcomes derive from simulation state. Camera position, graphics presets, UI indicators, shader fog and decorative effects must not directly reveal targets to AI or alter fish movement. Presentation should represent the same environment properties where practical, without coupling render state to authoritative detection.
 
@@ -58,7 +60,7 @@ A player should generally understand why a predator saw them, why a hiding place
 - **P4 — Environment only:** keep Pond and Ocean independent; integrate real hollow-log passages, wood/rock occlusion, plant cover, exposed lanes, size-appropriate gaps and camera/collider clearance. No predator AI, sensor scoring, attacks or stealth HUD.
 - **P5 — Small playable proof:** one compatible player, food, prey, predator and cover network. Prove sensing, visual obstruction, local movement evidence, suspicion/investigation, genuine hiding/escape, readable pursuit/strike, stealth hunting, and feeding/growth changes. Start with reversible parameters and record actual native observations.
 - **P6 — Continuity:** persist relevant encounter, suspicion and last-known-location state with the living fish. Closing and reopening cannot be used to reset a predator or convert a pending attack into safety. No offline simulation.
-- **Later:** optional sophisticated species senses, schooling, bird hunting at the surface, silt effects, richer ecosystem interactions and detailed sound/chemical behavior.
+- **Later:** optional sophisticated species senses, schooling, bird hunting at the surface, **dynamic** fish- or predator-disturbed sediment clouds and their sensing consequences, richer ecosystem interactions and detailed sound/chemical behavior. Static Pond clarity variation is instead a P4 visual requirement.
 
 ## Acceptance and evidence
 
@@ -66,4 +68,4 @@ P5 [G5.2/G5.3](../roadmap.md) and [V05/V33–V35](../validation.md) require nati
 
 ## Open implementation decisions
 
-Sensor units and ranges; clarity/light-to-visibility mapping; how local disturbance travels or decays; alert timers and memory; individual/species differences; UI/auditory accessibility; how gameplay fog shares physical parameters with the graphics preset; and exact death/damage rules are **not decided by S20**. Scope and tune them at P5. Do not infer hidden P4 or P5 implementation from this approved design document.
+Sensor units and ranges; authoritative clarity/light-to-visibility mapping and line-sampling cost; how local disturbance travels or decays; alert timers and memory; individual/species differences; UI/auditory accessibility; how gameplay fog shares physical parameters with the graphics preset; and exact death/damage rules are **not decided by S20**. Scope and tune them at P5. Do not infer hidden P4 or P5 implementation from this approved design document.
