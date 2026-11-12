@@ -49,6 +49,8 @@ First visual target: a temperate freshwater habitat with muddy olive-green water
 - **Intermediate habitat:** submerged trees/logs, pockets, open swim lanes and cover; structure belongs in the terrain rather than floating as a decorative bridge.
 - **Deep pond:** lower light and shorter visibility, sparse plants, subdued geological/wood silhouettes and comprehensible exits.
 - Visibility should reveal areas progressively rather than exposing the far bank immediately. Make nearby obstacles, the fish, routes, menu and key silhouettes readable in motion. Water color alone is insufficient; preserve overhead cues and depth/distance extinction.
+- **Spatial clarity (S21):** use a gentle baseline extinction with smoothly variable, world-space suspended sediment. Sunlit bank/open pockets may be clearer at the same depth than silty coves, muddy near-bottom water or sediment-rich lee pockets. Keep illumination and shadow separate from actual turbidity; sheltered water can be dark yet clear. Make transitions seed-consistent, with no camera-following fog, obvious tiled noise or hard boundaries. Initial useful detail targets and cheap implementation options are in [underwater visibility](../../systems/underwater-visibility.md). No dynamic silt simulation is required in P4.
+- **Near-field optical detail:** ordinary Pond views should retain recognizable fish outline/material variation and nearby log/hollow-trunk entrances; long or silty optical paths should soften details and eventually silhouettes without an artificial green wall. Keep air-side P12-R1/R2 surface transmission coherent and preserve the owner-selected dark muddy-green look rather than pale or shiny sheet water.
 - Reuse performance-conscious Forward+ rendering and shared water/light systems through independently tunable per-habitat profiles; the pond must not permanently mutate the ocean's saved appearance/settings.
 - Every solid object's visible bounds, simplified collision and camera clearance need usable agreement. Do not recreate P3's floating collision/terrain issues.
 - Compose **connected cover networks**: real hollow logs, rooted overhangs, occluding wood/rock and vegetation patches separated by visible open-water feeding/crossing lanes. A small fish should have several credible routes between shelters, with meaningful changes in exposure and more than one escape option where geometry permits. Plants that visually conceal but do not physically block should remain traversable and distinguishable from solid shelter; do not invent invisible safe-zone collision or change the currently accepted motor.
@@ -97,7 +99,7 @@ P4 character selection exposes the five native freshwater identities in their ac
 ### G4.2 — Freshwater terrain and presentation
 
 - Pond has recognizable irregular banks, coherent underwater depth, supported natural geometry, roots/logs/vegetation clusters, open routes and believable hiding spaces, including distinct hard-shelter and soft-cover examples connected by exposed swim lanes.
-- Shallow/middle/deep views are distinct; murky visibility hides distant bounds without obscuring close obstacles or player.
+- Shallow/middle/deep views are distinct; murky visibility hides distant bounds without obscuring close obstacles or player. At comparable depths, clearer and sediment-rich regions visibly differ with smooth transitions and distinguishable illumination versus turbidity; verify nearby fish/log detail and no uniform green veil.
 - Route/collision/camera validation and bounded performance pass on real native Forward+ play.
 - The generator and baked load remain deterministic and repeatable for an explicit seed/settings/version.
 - Fish can cruise just below the surface, with limited fin/back/mouth breach but no ordinary airborne swimming; no invisible ceiling or camera snap occurs.
@@ -123,7 +125,7 @@ P4 character selection exposes the five native freshwater identities in their ac
 
 ## Validation outline
 
-Add five P4 scenarios (V28–V32) in `docs/validation.md`: world routing/loading/reloading, pond world traversal/atmosphere, FAF asset+performance proof, cross-habitat species checks, and a dedicated native surface-swimming/air–water camera transition trial. Use focused manifest/registry tests followed by native gameplay and owner visual judgment. HEAD/source revision, test seeds, viewport/settings, performance/error information and observed gaps must be recorded. No authored plan alone qualifies G4.x.
+Add five P4 scenarios (V28–V32) in `docs/validation.md`: world routing/loading/reloading, pond world traversal/atmosphere, FAF asset+performance proof, cross-habitat species checks, and a dedicated native surface-swimming/air–water camera transition trial. Use focused manifest/registry tests followed by native gameplay and owner visual judgment. For S21, extend V29 to compare fixed and moving Pond views across clear/silty/shaded water, near-bed and raised paths, with surface perspective consistency and same-source Forward+ cost. Use V32 for repeated immersion crossing and Ocean regression; do not imply the existing P12-R2 stills qualify S21. HEAD/source revision, test seeds, viewport/settings, performance/error information and observed gaps must be recorded. No authored plan alone qualifies G4.x.
 
 ## Subsequent phases and save boundary
 
