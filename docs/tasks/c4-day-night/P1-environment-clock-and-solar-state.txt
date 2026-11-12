@@ -1,0 +1,30 @@
+TASK: Correction 4 / P1 — Environment clock and solar state
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.4.11`.
+
+GOAL
+Add one shared, deterministic and pause-aware in-game environment clock plus continuous solar-state mapping, without changing rendering yet beyond the minimum wiring needed to prove the state source.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c4-day-night/README.md, prompt-assessment.md, implementation-plan.md P1, docs/systems/day-night-and-weather.md, docs/systems/underwater-visibility.md, game/scripts/Main.cs, PlayShell.cs, UnderwaterAtmosphere.cs, current atmosphere checks and actual pause/process ownership. Inspect branch/HEAD, dirty state, package.json 0.4.11, tools/dev command composition and Fish project identity before editing.
+
+IMPLEMENT
+1. Introduce one explicit environment-time/solar-state owner. Keep it independent of renderer resources so later ecology can consume the same authoritative time without depending on sky/shader code.
+2. Represent time continuously as normalized day fraction and/or hours. Full-day duration must be configurable and bounded; do not lock a permanent design duration in code comments/docs.
+3. Advance only during active gameplay simulation and freeze when the game is paused. Do not derive game time from wall-clock date/time and do not simulate closed-game/offline time.
+4. Derive a finite continuous solar state from time, including sun direction/elevation and useful daylight/twilight/night scalar values. Tuning anchors may be used internally but transitions must be continuous, not preset jumps.
+5. Add deterministic development-only set-time and bounded acceleration hooks suitable for automated/native qualification. They must not become ordinary player UI or persist as a gameplay cheat path.
+6. Add focused checks for wraparound, finite normalized state, continuity around day boundaries, representative dawn/noon/sunset/night samples, pause freeze/resume and debug isolation.
+7. Wire the state so UnderwaterAtmosphere can consume it in later prompts without duplicating a second clock. Do not yet retune the whole sky/water stack.
+
+SCOPE / DEFERRALS
+No weather/cloud/rain/fog events, ecology schedules, persistence/save schema, seasons/calendar/latitude simulation, fish movement/camera/collision changes, renderer switch, or broad sky visual work. Root stays 0.4.11.
+
+VALIDATE
+T2. Run the smallest actual build/import/focused day-time checks and relevant pause integration checks. Run git diff --check and review status. Confirm no package-lock/vendor payload, root version unchanged, and the new state owner does not mutate FishController/SwimMotor/camera authority. Record exact executed checks under c4-day-night qualification evidence only when actually run.
+
+DONE / VERSION / HANDOFF
+One shared pause-aware environment time source and deterministic continuous solar mapping exist with focused evidence. Visual sky/light implementation remains P2. No version change, self-commit or push; runner owns checkpoint.
