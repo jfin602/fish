@@ -172,6 +172,8 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial?.SetShaderParameter("wave_height", SurfaceWaveHeight);
         _surfaceMaterial?.SetShaderParameter("wave_speed", SurfaceWaveSpeed);
         _surfaceMaterial?.SetShaderParameter("wave_detail", SurfaceWaveDetail);
+        _surfaceMaterial?.SetShaderParameter("surface_daylight", Mathf.Clamp(
+            SunEnergy / 1.35f, 0.6f, 1.3f));
         _shaftMaterial?.SetShaderParameter("shaft_count", ShaftCount);
         _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness * _immersion);
         _screenMaterial?.SetShaderParameter("warp_pixels", ScreenWarpPixels);
@@ -436,7 +438,11 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial.SetShaderParameter("shore_mask_enabled", seabed.Basin.IsPond ? 1f : 0f);
         _surfaceMaterial.SetShaderParameter("air_fog_begin", _profile.AirFogBegin);
         _surfaceMaterial.SetShaderParameter("air_fog_end", _profile.AirFogEnd);
-        _surfaceMaterial.SetShaderParameter("air_fog_color", new Vector3(PondAirBackground.R, PondAirBackground.G, PondAirBackground.B));
+        _surfaceMaterial.SetShaderParameter("water_scatter", new Vector3(_profile.SurfaceScatter.R,
+            _profile.SurfaceScatter.G, _profile.SurfaceScatter.B));
+        _surfaceMaterial.SetShaderParameter("surface_extinction", _profile.SurfaceExtinctionPerMeter);
+        _surfaceMaterial.SetShaderParameter("surface_daylight", Mathf.Clamp(
+            SunEnergy / 1.35f, 0.6f, 1.3f));
         _surfaceMaterial.SetShaderParameter("sun_direction", _sun!.GlobalTransform.Basis.Z.Normalized());
         _surfaceMaterial.SetShaderParameter("surface_time", 0.0f);
         _surfaceMaterial.SetShaderParameter("wave_height", SurfaceWaveHeight);

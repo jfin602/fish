@@ -72,15 +72,18 @@ public static class PondAtmosphereChecks
             atmosphere.ApplyLighting(oceanStore.Current.Settings);
             Require(atmosphere.ProfileId == WorldEnvironmentProfile.Ocean &&
                 atmosphere.BackgroundWater == WaterVisualProfile.Ocean.Background &&
+                WaterVisualProfile.Ocean.SurfaceExtinctionPerMeter == 0f &&
                 atmosphere.DistanceFogColor == WaterVisualProfile.Ocean.Fog &&
                 atmosphere.CaptureLighting().VisibilityDistanceMeters == 35f &&
                 main.GetNode<WorldEnvironment>("WorldEnvironment").Environment == atmosphere.WaterEnvironment,
                 "Ocean profile did not reset after Pond disposal");
             var oceanSky = (ShaderMaterial)atmosphere.WaterEnvironment!.Sky.SkyMaterial;
+            var oceanSurface = (ShaderMaterial)main.GetNode<MeshInstance3D>(
+                "UnderwaterAtmosphere/WaterEffects/OverheadSurface").MaterialOverride;
             Require((float)oceanSky.GetShaderParameter("overcast") == 0f &&
-                (float)((ShaderMaterial)main.GetNode<MeshInstance3D>(
-                    "UnderwaterAtmosphere/WaterEffects/OverheadSurface").MaterialOverride)
-                    .GetShaderParameter("overcast") == 0f,
+                (float)oceanSurface.GetShaderParameter("overcast") == 0f &&
+                (float)oceanSurface.GetShaderParameter("surface_extinction") == 0f &&
+                (float)oceanSurface.GetShaderParameter("air_surface_enabled") == 0f,
                 "Pond material parameters leaked into Ocean");
 
             LoadWorld(main, WorldCatalog.PondId);
@@ -143,6 +146,10 @@ public static class PondAtmosphereChecks
         atmosphere.RefreshDepth(true, 2f);
         Require(atmosphere.ProfileId == WorldEnvironmentProfile.Pond &&
             atmosphere.ParametersAreFinite() && env.FogEnabled && env.VolumetricFogEnabled &&
+            (float)surfaceMaterial.GetShaderParameter("surface_extinction") ==
+                WaterVisualProfile.Pond.SurfaceExtinctionPerMeter &&
+            Mathf.Abs((float)surfaceMaterial.GetShaderParameter("surface_daylight") -
+                Mathf.Clamp(atmosphere.SunEnergy / 1.35f, 0.6f, 1.3f)) < .001f &&
             atmosphere.BackgroundWater == WaterVisualProfile.Pond.Background &&
             Mathf.Abs(env.FogLightColor.R - WaterVisualProfile.Pond.Fog.Lerp(
                 WaterVisualProfile.Pond.DeepFog, atmosphere.EffectiveDepth01).R) < .001f &&

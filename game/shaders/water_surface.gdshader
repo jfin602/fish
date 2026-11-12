@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode unshaded, cull_disabled, blend_mix, fog_disabled;
 
-// The surface is viewed from below. Time is supplied by the atmosphere so pause freezes it.
+// Time is supplied by the atmosphere so pause freezes the waves.
 uniform float surface_time = 0.0;
 uniform vec3 sun_direction = vec3(0.0, 1.0, 0.0);
 uniform float wave_height = 1.0;
@@ -16,7 +16,9 @@ uniform float air_surface_enabled = 0.0;
 uniform float shore_mask_enabled = 0.0;
 uniform float air_fog_begin = 27.0;
 uniform float air_fog_end = 105.0;
-uniform vec3 air_fog_color = vec3(0.43, 0.48, 0.46);
+uniform vec3 water_scatter = vec3(0.22, 0.28, 0.105);
+uniform float surface_extinction = 0.0;
+uniform float surface_daylight = 1.0;
 uniform sampler2D air_scene : hint_screen_texture, filter_linear;
 uniform sampler2D air_depth : hint_depth_texture, filter_nearest;
 
@@ -71,23 +73,28 @@ void fragment() {
     if (FRONT_FACING) {
         float air_fresnel = pow(1.0 - abs(dot(normal, ray_up)), 3.0);
         vec2 bend = vec2(normal.x, -normal.z) * 0.003;
-        vec3 refracted = texture(air_scene, clamp(SCREEN_UV + bend,
-            vec2(0.002), vec2(0.998))).rgb;
-        float scene_depth = texture(air_depth, SCREEN_UV).r;
-        vec4 scene_view = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, scene_depth, 1.0);
+        vec2 refracted_uv = clamp(SCREEN_UV + bend, vec2(0.002), vec2(0.998));
+        vec3 refracted = texture(air_scene, refracted_uv).rgb;
+        float scene_depth = texture(air_depth, refracted_uv).r;
+        vec4 scene_view = INV_PROJECTION_MATRIX * vec4(refracted_uv * 2.0 - 1.0, scene_depth, 1.0);
         vec4 surface_view = INV_PROJECTION_MATRIX * vec4(SCREEN_UV * 2.0 - 1.0, FRAGCOORD.z, 1.0);
-        float water_path = scene_depth <= 0.0001 ? 30.0 :
-            max(0.0, surface_view.z / surface_view.w - scene_view.z / scene_view.w);
-        vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple)
-                        + vec3(0.13, 0.15, 0.11) * air_fresnel;
-        ALBEDO = mix(refracted, water_tint, mix(0.16, 0.50, air_fresnel));
+        vec3 entry_view = surface_view.xyz / surface_view.w;
+        vec3 target_view = scene_view.xyz / scene_view.w;
+        vec3 target_world = (INV_VIEW_MATRIX * vec4(target_view, 1.0)).xyz;
+        bool opaque_water_target = scene_depth > 0.0001 && target_world.y < surface_world.y - 0.01;
+        float water_path = opaque_water_target ? distance(entry_view, target_view) : 30.0;
+        float transmission = exp(-surface_extinction * max(water_path, 0.0) /
+            max(surface_daylight, 0.5));
+        // A dry bank or overhanging branch must not be colored as submerged scenery.
+        if (scene_depth > 0.0001 && !opaque_water_target) transmission = 1.0;
+        vec3 water_tint = mix(surface_dark, surface_light, 0.45 + 0.20 * ripple);
+        vec3 scattered = mix(water_scatter, water_tint, 0.03);
+        ALBEDO = mix(refracted, scattered, 1.0 - transmission);
+        ALBEDO = mix(ALBEDO, water_tint, 0.01 + 0.04 * air_fresnel);
         float air_distance = distance(CAMERA_POSITION_WORLD, surface_world);
         float air_fog = smoothstep(air_fog_begin, air_fog_end, air_distance);
-        ALBEDO = mix(ALBEDO, air_fog_color, air_fog * 0.94);
-        // The depth buffer contains the opaque fish/terrain behind this transparent
-        // interface. Short water paths transmit them; open/deep water keeps its sheen.
-        float absorption = 1.0 - exp(-water_path * 0.22);
-        float air_opacity = clamp(mix(0.14, 0.86, absorption) + 0.18 * air_fresnel, 0.14, 0.92);
-        ALPHA = air_opacity * edge_fade * smoothstep(0.0, 0.55, shore_blend);
+        ALBEDO = mix(ALBEDO, water_scatter, air_fog * 0.35);
+        ALPHA = edge_fade * smoothstep(0.0, 0.55, shore_blend);
+        if (scene_depth > 0.0001 && !opaque_water_target) ALPHA = 0.0;
     }
 }

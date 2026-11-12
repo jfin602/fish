@@ -16,6 +16,9 @@ public sealed record WaterVisualProfile(
     public float AirFogBegin { get; init; }
     public float AirFogEnd { get; init; } = 100f;
     public float AirFogDensity { get; init; }
+    // Air-side surface transmission only. Underwater fog remains independently tuned.
+    public float SurfaceExtinctionPerMeter { get; init; }
+    public Color SurfaceScatter { get; init; } = new(0.10f, 0.37f, 0.42f);
     public float SurfaceRippleInterval { get; init; } = .18f;
     public float SurfaceWakeStrength { get; init; }
     public static WaterVisualProfile Ocean { get; } = new(
@@ -45,6 +48,8 @@ public sealed record WaterVisualProfile(
         new(0.72f, 0.70f, 0.38f), 0.68f, 0.42f, 0.55f, 1.65f, 0.78f)
     {
         AirFogBegin = 27f, AirFogEnd = 105f, AirFogDensity = .94f,
+        SurfaceExtinctionPerMeter = .65f,
+        SurfaceScatter = new(0.055f, 0.085f, 0.035f),
         SurfaceRippleInterval = .19f, SurfaceWakeStrength = .72f,
     };
 
