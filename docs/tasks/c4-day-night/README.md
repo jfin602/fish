@@ -1,6 +1,6 @@
 # c4-day-night — shared day/night environment correction
 
-**State:** **P1 directly implemented and T2 checked; P2–P4 authored / not executed.** **Type:** Correction 4. **Required root version:** `0.4.11` unchanged. [P1 evidence](qualification/environment-time-p1.md).
+**State:** **P1–P2 directly implemented and T2 checked; P3–P4 authored / not executed.** **Type:** Correction 4. **Required root version:** `0.4.11` unchanged. [P1 evidence](qualification/environment-time-p1.md) · [P2 evidence](qualification/solar-lighting-p2.md).
 
 ## Purpose
 
@@ -31,7 +31,7 @@ Normal gameplay pause already exists through the PlayShell path. The new environ
 | Step | Prompt | Outcome | Tier / handoff |
 | --- | --- | --- | --- |
 | P1 | [Environment clock and solar state](P1-environment-clock-and-solar-state.txt) | Directly implemented: one bounded pause-aware environment-time source and continuous solar-state mapping with deterministic debug set/accelerate hooks | T2 passed; [evidence](qualification/environment-time-p1.md) |
-| P2 | [Procedural sky and direct lighting](P2-procedural-sky-and-lighting.txt) | Dynamic sky/horizon plus real sun/ambient lighting driven from the shared solar state | T2 |
+| P2 | [Procedural sky and direct lighting](P2-procedural-sky-and-lighting.txt) | Directly implemented: dynamic sky/horizon plus real sun/ambient lighting driven from the shared solar state | T2 passed; [evidence](qualification/solar-lighting-p2.md) |
 | P3 | [Water and underwater daylight integration](P3-water-and-underwater-daylight.txt) | Reflection/daylight/shafts/caustics consume the same solar state with Pond/Ocean profile isolation and bounded cost | T2 |
 | P4 | [Native day/night closeout](P4-native-day-night-closeout.txt) | Real Forward+ sweep through representative times, pause/profile/performance checks and owner visual decision | T3 manual closeout |
 

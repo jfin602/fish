@@ -1,0 +1,48 @@
+#nullable enable
+using Godot;
+
+namespace Fish;
+
+/// <summary>Presentation values derived from the shared solar state and the selected habitat.</summary>
+public readonly record struct SolarLightingState(Color AirHorizon, Color AirZenith,
+    Color AirAmbient, Color DirectColor, Color WarmHorizon, float WarmStrength,
+    float SunGlow, float AirAmbientEnergy, float DirectEnergyFactor, float VolumetricFactor)
+{
+    public static SolarLightingState From(SolarState solar, WorldEnvironmentProfile habitat)
+    {
+        var pond = habitat == WorldEnvironmentProfile.Pond;
+        var nightHorizon = new Color(0.008f, 0.019f, 0.038f);
+        var nightZenith = new Color(0.006f, 0.017f, 0.050f);
+        var dayHorizon = pond ? new Color(0.38f, 0.56f, 0.61f) :
+            new Color(0.45f, 0.70f, 0.84f);
+        var dayZenith = pond ? new Color(0.17f, 0.42f, 0.64f) :
+            new Color(0.12f, 0.45f, 0.81f);
+        var gradualDay = Mathf.Pow(solar.Daylight, 1.5f);
+        var skyBlend = Mathf.Clamp(gradualDay + 0.20f * solar.Twilight, 0f, 1f);
+        var zenithBlend = Mathf.Clamp(gradualDay + 0.08f * solar.Twilight, 0f, 1f);
+        var lowSun = 1f - Smooth(0.12f, 0.62f, Mathf.Max(0f, solar.DirectionToSun.Y));
+        var warm = Mathf.Clamp(0.72f * solar.Twilight +
+            0.60f * solar.Daylight * lowSun, 0f, 1f);
+        var daySun = pond ? new Color(0.94f, 0.94f, 0.86f) :
+            new Color(0.97f, 0.98f, 1.00f);
+        var direct = daySun.Lerp(new Color(1f, 0.49f, 0.25f), warm);
+        var nightAmbient = new Color(0.15f, 0.23f, 0.38f);
+        var dayAmbient = pond ? new Color(0.75f, 0.77f, 0.70f) :
+            new Color(0.73f, 0.84f, 0.94f);
+        return new SolarLightingState(
+            nightHorizon.Lerp(dayHorizon, skyBlend),
+            nightZenith.Lerp(dayZenith, zenithBlend),
+            nightAmbient.Lerp(dayAmbient, skyBlend), direct,
+            new Color(1f, 0.39f, 0.16f), warm,
+            Mathf.Clamp(0.80f * solar.Daylight + 0.45f * solar.Twilight, 0f, 1f),
+            0.10f + 0.65f * solar.AmbientLight + 0.08f * solar.Twilight,
+            solar.DirectLight,
+            Mathf.Sqrt(solar.DirectLight));
+    }
+
+    private static float Smooth(float start, float end, float value)
+    {
+        var x = Mathf.Clamp((value - start) / (end - start), 0f, 1f);
+        return x * x * (3f - 2f * x);
+    }
+}

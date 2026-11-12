@@ -138,7 +138,8 @@ public partial class Main : Node3D
         if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check") ||
             OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check") ||
             OS.GetCmdlineUserArgs().Contains("--pond-scenery-check") ||
-            OS.GetCmdlineUserArgs().Contains("--pond-surface-probe"))
+            OS.GetCmdlineUserArgs().Contains("--pond-surface-probe") ||
+            OS.GetCmdlineUserArgs().Contains("--solar-lighting-pond-check"))
         {
             WorldSession.Select(WorldCatalog.PondId);
             DemoSelection.CharacterId = "FAF-FISH-006";
@@ -219,6 +220,15 @@ public partial class Main : Node3D
             PondSurfaceChecks.Start(this);
             return;
         }
+#if DEBUG
+        if (populated && (OS.GetCmdlineUserArgs().Contains("--solar-lighting-check") ||
+            OS.GetCmdlineUserArgs().Contains("--solar-lighting-pond-check")))
+        {
+            try { SolarLightingChecks.Run(this); GetTree().Quit(); }
+            catch (Exception error) { GD.PushError($"SOLAR_LIGHTING_CHECK_FAILED {error}"); GetTree().Quit(1); }
+            return;
+        }
+#endif
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check"))
         {
             try { PondCameraImmersionChecks.Run(this); GetTree().Quit(); }

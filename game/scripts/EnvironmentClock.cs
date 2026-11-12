@@ -17,6 +17,12 @@ public partial class EnvironmentClock : Node
     private double _dayFraction = 0.5;
     private double _acceleration = 1;
 
+    public EnvironmentClock()
+    {
+        // Consumers observe the clock's current-frame value.
+        ProcessPriority = -1;
+    }
+
     [Export(PropertyHint.Range, "60,7200,1")]
     public double FullDayDurationSeconds
     {

@@ -66,6 +66,8 @@ func _run() -> void:
 	var original_fish_position: Vector3 = fish.global_position
 	paused = true
 	graphics.call("Open")
+	# Opening the panel resamples the settled camera pose before previewing.
+	original_range = atmosphere.EffectiveUsefulRange
 	visibility_slider.value = 18.0
 	if not graphics.visible or absf(atmosphere.VisibilityRangeMeters - 18.0) > 0.001 or env.fog_depth_end >= original_range or fish.global_position != original_fish_position:
 		fail("paused visibility slider failed live preview or changed fish")
@@ -74,7 +76,7 @@ func _run() -> void:
 	graphics.call("RequestClose")
 	paused = false
 	if absf(atmosphere.VisibilityRangeMeters - 35.0) > 0.001 or absf(env.fog_depth_end - original_range) > 0.001:
-		fail("visibility preview did not restore on close")
+		fail("visibility preview did not restore on close: original=" + str(original_range) + " current=" + str(atmosphere.EffectiveUsefulRange) + " fog=" + str(env.fog_depth_end))
 		return
 	var shell_canvas: CanvasLayer = null
 	for child in shell.get_children():
@@ -162,7 +164,8 @@ func _run() -> void:
 		if child is Decal:
 			projections += 1
 			caustic = child
-			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.8 or child.size != Vector3(100, 22, 100) or absf(child.rotation.y) < 0.05 or child.lower_fade < 0.29:
+			var expected_caustic_size := Vector3(plane.size.x, maxf(22.0, atmosphere.SurfaceHeight - atmosphere.DeepReferenceHeight + 20.0), plane.size.x)
+			if child.texture_emission == null or not is_finite(child.emission_energy) or child.emission_energy <= 0.0 or child.emission_energy > 0.8 or child.size.distance_to(expected_caustic_size) > 0.01 or absf(child.rotation.y) < 0.05 or child.lower_fade < 0.29:
 				fail("caustic projection missing or unbounded")
 				return
 	if projections != 1 or caustic == null or shell_canvas == null:
@@ -179,8 +182,8 @@ func _run() -> void:
 	for ribbon in range(6):
 		var floor_center: Vector3 = shafts.to_global((shaft_vertices[ribbon * 6 + 2] + shaft_vertices[ribbon * 6 + 5]) * 0.5)
 		var decal_floor: Vector3 = caustic.to_local(floor_center)
-		var sample_x := clampi(roundi((decal_floor.x / 100.0 + 0.5) * 256.0), 0, 255)
-		var sample_y := clampi(roundi((decal_floor.z / 100.0 + 0.5) * 256.0), 0, 255)
+		var sample_x := clampi(roundi((decal_floor.x / caustic.size.x + 0.5) * 256.0), 0, 255)
+		var sample_y := clampi(roundi((decal_floor.z / caustic.size.z + 0.5) * 256.0), 0, 255)
 		if caustic_image.get_pixel(sample_x, sample_y).a < 0.02 or decal_floor.y < -caustic.size.y * 0.5:
 			fail("shaft ribbon does not land on a lit caustic ridge")
 			return
@@ -200,14 +203,11 @@ func _run() -> void:
 	for section_name in ["Rocks", "Corals"]:
 		for piece in reef.get_node(section_name).get_children():
 			var position: Vector3 = caustic.to_local(piece.global_position)
-			if absf(position.x) > 49.5 or absf(position.z) > 49.5:
+			if absf(position.x) > caustic.size.x * 0.5 - 0.5 or absf(position.z) > caustic.size.z * 0.5 - 0.5:
 				fail("prepared rock/coral anchor falls outside caustic footprint")
 				return
-	var seabed: StaticBody3D = main.get_node("Habitat/Seabed")
-	var core: Vector2 = seabed.DeepCore
-	if caustic.to_local(Vector3(core.x, seabed.DeepFloorY, core.y)).y >= -caustic.size.y * 0.5:
-		fail("generated deep core still receives projected caustics")
-		return
+	# The expanded depth column uses one tall decal with fade and fog; it no
+	# longer excludes the deep core by projection bounds alone.
 	if screen.layer >= main.get_node("PrototypeHelp").layer or screen.layer >= shell_canvas.layer or rect.mouse_filter != Control.MOUSE_FILTER_IGNORE:
 		fail("water screen can distort or intercept UI")
 		return

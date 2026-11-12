@@ -29,8 +29,6 @@ public partial class UnderwaterAtmosphere : Node3D
     [Export(PropertyHint.Range, "0,1,0.01")] public float VolumetricAmbientInject { get; set; } = 0.34f;
     [Export(PropertyHint.Range, "-0.5,0.5,0.01")] public float VolumetricAnisotropy { get; set; } = 0.18f;
     [Export(PropertyHint.Range, "0,3,0.01")] public float SunEnergy { get; set; } = 1.25f;
-    [Export(PropertyHint.Range, "-1.57,-0.2,0.01")] public float SunPitch { get; set; } = -1.05f;
-    [Export(PropertyHint.Range, "-3.14,3.14,0.01")] public float SunYaw { get; set; } = -0.48f;
     [Export(PropertyHint.Range, "0,0.8,0.01")] public float CausticEnergy { get; set; } = 0.32f;
     [Export(PropertyHint.Range, "0,0.5,0.01")] public float CausticDrift { get; set; } = 0.22f;
     [Export(PropertyHint.Range, "0,1.5,0.01")] public float CausticTravel { get; set; } = 0.8f;
@@ -62,7 +60,6 @@ public partial class UnderwaterAtmosphere : Node3D
     private const float ImmersionResponse = 7f;
     private static readonly Color PondAirBackground = new(0.43f, 0.48f, 0.46f);
     private static readonly Color PondAirAmbient = new(0.75f, 0.77f, 0.70f);
-    private static readonly Color PondAirSun = new(0.88f, 0.87f, 0.76f);
     private DirectionalLight3D? _sun;
     private Node3D? _effects;
     private CanvasLayer? _screenLayer;
@@ -77,6 +74,8 @@ public partial class UnderwaterAtmosphere : Node3D
     private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
     private EnvironmentClock? _environmentClock;
+    private SolarLightingState _solarLighting;
+    private double _lastSolarFraction = double.NaN;
     private WaterVisualProfile _profile = WaterVisualProfile.Ocean;
 
     public WorldEnvironmentProfile ProfileId => _profile.Id;
@@ -185,7 +184,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _shaftMaterial?.SetShaderParameter("shaft_count", ShaftCount);
         _shaftMaterial?.SetShaderParameter("shaft_brightness", ShaftBrightness * _immersion);
         _screenMaterial?.SetShaderParameter("warp_pixels", ScreenWarpPixels);
-        RefreshDepth(true);
+        RefreshSolar(true);
         foreach (var decal in _caustics)
             if (decal is not null) decal.EmissionEnergy = CausticEnergy * _immersion;
         if (_motes is not null) _motes.Amount = Mathf.Max(1, MoteCount);
@@ -233,10 +232,7 @@ public partial class UnderwaterAtmosphere : Node3D
         };
         main.GetNode<WorldEnvironment>("WorldEnvironment").Environment = _environment;
         _sun = main.GetNode<DirectionalLight3D>("Sun");
-        _sun.Rotation = new Vector3(SunPitch, SunYaw, 0);
-        _sun.LightColor = SunColor;
-        _sun.LightEnergy = SunEnergy;
-        _sun.LightVolumetricFogEnergy = 0.8f;
+        UpdateSolar(true);
 
         _effects = new Node3D { Name = "WaterEffects" };
         AddChild(_effects);
@@ -267,7 +263,7 @@ public partial class UnderwaterAtmosphere : Node3D
         AddMotes();
         AddScreenTreatment();
         _pondClarityDiagnosticOff = OS.GetCmdlineUserArgs().Contains("--pond-clarity=off");
-        RefreshDepth(true);
+        RefreshSolar(true);
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
         GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} visibility_base={VisibilityRangeMeters:F1} visibility_end={EffectiveUsefulRange:F1} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
     }
@@ -293,9 +289,12 @@ public partial class UnderwaterAtmosphere : Node3D
         }
         if (_sun is not null)
         {
-            _sun.LightColor = enabled ? SunColor : Colors.White;
-            if (!enabled) _sun.LightEnergy = 1.4f;
-            _sun.LightVolumetricFogEnergy = enabled ? 0.8f : 0;
+            if (!enabled)
+            {
+                _sun.LightColor = Colors.White;
+                _sun.LightEnergy = 1.4f;
+                _sun.LightVolumetricFogEnergy = 0;
+            }
         }
         if (_effects is not null) _effects.Visible = enabled;
         if (_motes is not null) _motes.Emitting = enabled;
@@ -305,7 +304,7 @@ public partial class UnderwaterAtmosphere : Node3D
             // The eye may have moved while effects were disabled. Rejoin at its
             // current position instead of replaying a stale underwater state.
             _immersionInitialized = false;
-            RefreshDepth(true);
+            RefreshSolar(true);
         }
     }
 
@@ -342,10 +341,11 @@ public partial class UnderwaterAtmosphere : Node3D
     public override void _Process(double delta)
     {
         if (!_enabled || _effects is null) return;
+        var solarChanged = UpdateSolar(false);
+        if (solarChanged) ApplySolarLightLevels(EffectiveDepth01);
         RefreshDepth(false, (float)delta);
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
-        _skyMaterial?.SetShaderParameter("sky_time", (float)_presentationSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
         _screenMaterial?.SetShaderParameter("screen_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
@@ -358,6 +358,35 @@ public partial class UnderwaterAtmosphere : Node3D
             if (_shafts is not null) _shafts.Position = new Vector3(decal.Position.X, 0, decal.Position.Z);
         }
     }
+
+    /// <summary>Reapply the shared solar state after a deterministic development time change.</summary>
+    public void RefreshSolar(bool force = false)
+    {
+        if (UpdateSolar(force)) RefreshDepth(true);
+    }
+
+    private bool UpdateSolar(bool force)
+    {
+        if (!_enabled || _environmentClock is null || _sun is null) return false;
+        var solar = _environmentClock.Solar;
+        if (!force && solar.DayFraction == _lastSolarFraction) return false;
+        _lastSolarFraction = solar.DayFraction;
+        _solarLighting = SolarLightingState.From(solar, _profile.Id);
+        var direction = solar.DirectionToSun;
+        var right = Vector3.Back.Cross(direction).Normalized();
+        _sun.GlobalBasis = new Basis(right, direction.Cross(right).Normalized(), direction);
+        _skyMaterial?.SetShaderParameter("sun_direction", direction);
+        _skyMaterial?.SetShaderParameter("air_horizon", ToVector(_solarLighting.AirHorizon));
+        _skyMaterial?.SetShaderParameter("air_zenith", ToVector(_solarLighting.AirZenith));
+        _skyMaterial?.SetShaderParameter("warm_horizon", ToVector(_solarLighting.WarmHorizon));
+        _skyMaterial?.SetShaderParameter("direct_color", ToVector(_solarLighting.DirectColor));
+        _skyMaterial?.SetShaderParameter("warm_strength", _solarLighting.WarmStrength);
+        _skyMaterial?.SetShaderParameter("sun_glow", _solarLighting.SunGlow);
+        _surfaceMaterial?.SetShaderParameter("sun_direction", direction);
+        return true;
+    }
+
+    private static Vector3 ToVector(Color color) => new(color.R, color.G, color.B);
 
     /// <summary>Presentation-only read of the active viewport camera. Base settings never change here.</summary>
     public void RefreshDepth(bool force = false, float delta = 0f)
@@ -409,11 +438,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _environment.FogLightColor = PondAirBackground.Lerp(DistanceFogColor.Lerp(_profile.DeepFog, depth), _immersion);
         _environment.VolumetricFogAlbedo = PondAirAmbient.Lerp(VolumetricWaterColor.Lerp(_profile.DeepVolume, depth), _immersion);
         _environment.BackgroundColor = PondAirBackground.Lerp(BackgroundWater.Lerp(_profile.DeepBackground, depth), _immersion);
-        _environment.AmbientLightColor = PondAirAmbient.Lerp(AmbientWater.Lerp(_profile.DeepAmbient, depth), _immersion);
-        _environment.AmbientLightEnergy = Mathf.Lerp(0.75f, AmbientEnergy * Mathf.Lerp(1f, _profile.DeepAmbientFactor, depth), _immersion);
-        _sun.LightColor = PondAirSun.Lerp(SunColor, _immersion);
-        _sun.LightEnergy = Mathf.Lerp(1.0f, SunEnergy * Mathf.Lerp(1f, _profile.DeepLightFactor, depth), _immersion);
-        _sun.LightVolumetricFogEnergy = 0.8f * _immersion;
+        ApplySolarLightLevels(depth);
         _skyMaterial?.SetShaderParameter("water_depth", depth);
         _skyMaterial?.SetShaderParameter("air_mix", 1f - _immersion);
         _surfaceMaterial?.SetShaderParameter("camera_depth", depth);
@@ -422,6 +447,23 @@ public partial class UnderwaterAtmosphere : Node3D
         foreach (var decal in _caustics)
             if (decal is not null) decal.EmissionEnergy = CausticEnergy * _immersion;
         if (_motes is not null) _motes.Visible = MoteCount > 0 && _immersion > 0.005f;
+    }
+
+    private void ApplySolarLightLevels(float depth)
+    {
+        if (!_enabled || _environment is null || _sun is null) return;
+        _environment.AmbientLightColor = _solarLighting.AirAmbient.Lerp(
+            AmbientWater.Lerp(_profile.DeepAmbient, depth), _immersion);
+        _environment.AmbientLightEnergy = Mathf.Lerp(_solarLighting.AirAmbientEnergy,
+            AmbientEnergy * Mathf.Lerp(1f, _profile.DeepAmbientFactor, depth) *
+                (0.25f + 0.75f * Solar.AmbientLight + 0.10f * Solar.Twilight), _immersion);
+        _sun.LightColor = _solarLighting.DirectColor.Lerp(SunColor, _immersion);
+        var airSun = (_profile.Id == WorldEnvironmentProfile.Pond ? 1f : SunEnergy) *
+            _solarLighting.DirectEnergyFactor;
+        var waterSun = SunEnergy * _solarLighting.DirectEnergyFactor *
+            Mathf.Lerp(1f, _profile.DeepLightFactor, depth);
+        _sun.LightEnergy = Mathf.Lerp(airSun, waterSun, _immersion);
+        _sun.LightVolumetricFogEnergy = 0.8f * _solarLighting.VolumetricFactor * _immersion;
     }
 
     private void AddSky()
@@ -440,7 +482,12 @@ public partial class UnderwaterAtmosphere : Node3D
         _skyMaterial.SetShaderParameter("shallow_zenith", new Vector3(_profile.SkyZenith.R, _profile.SkyZenith.G, _profile.SkyZenith.B));
         _skyMaterial.SetShaderParameter("deep_zenith", new Vector3(_profile.DeepSkyZenith.R, _profile.DeepSkyZenith.G, _profile.DeepSkyZenith.B));
         _skyMaterial.SetShaderParameter("overcast", _profile.Id == WorldEnvironmentProfile.Pond ? 1f : 0f);
-        _skyMaterial.SetShaderParameter("sky_time", 0f);
+        _skyMaterial.SetShaderParameter("air_horizon", ToVector(_solarLighting.AirHorizon));
+        _skyMaterial.SetShaderParameter("air_zenith", ToVector(_solarLighting.AirZenith));
+        _skyMaterial.SetShaderParameter("warm_horizon", ToVector(_solarLighting.WarmHorizon));
+        _skyMaterial.SetShaderParameter("direct_color", ToVector(_solarLighting.DirectColor));
+        _skyMaterial.SetShaderParameter("warm_strength", _solarLighting.WarmStrength);
+        _skyMaterial.SetShaderParameter("sun_glow", _solarLighting.SunGlow);
         _environment!.Sky = new Sky { SkyMaterial = _skyMaterial };
         _environment.BackgroundMode = Godot.Environment.BGMode.Sky;
     }
@@ -535,8 +582,9 @@ public partial class UnderwaterAtmosphere : Node3D
 
         // Each ribbon lands on a sampled bright caustic ridge. Translation of the
         // decal and mesh together preserves that contact as the projection drifts.
-        var sunUp = _sun.GlobalTransform.Basis.Z.Normalized();
-        if (sunUp.Y < 0.15f) return;
+        // P3 will steer and fade the shaft geometry; keep its mesh present even
+        // when a development session starts at night.
+        var sunUp = Vector3.Up;
         Vector2[] centers = [new(-17, -14), new(-10, 9), new(4, -12), new(11, 12),
             new(21, -5), new(-22, 19), new(18, 21), new(-3, 22)];
         var vertices = new Vector3[centers.Length * 6];
@@ -819,8 +867,6 @@ public partial class UnderwaterAtmosphere : Node3D
         float.IsFinite(VolumetricAmbientInject) && VolumetricAmbientInject is >= 0 and <= 1 &&
         float.IsFinite(VolumetricAnisotropy) && VolumetricAnisotropy is >= -0.5f and <= 0.5f &&
         float.IsFinite(SunEnergy) && SunEnergy is > 0 and <= 3 &&
-        float.IsFinite(SunPitch) && SunPitch is >= -1.57f and <= -0.2f &&
-        float.IsFinite(SunYaw) && SunYaw is >= -3.14f and <= 3.14f &&
         float.IsFinite(CausticEnergy) && CausticEnergy is >= 0 and <= 0.8f &&
         float.IsFinite(CausticDrift) && CausticDrift is >= 0 and <= 0.5f &&
         float.IsFinite(ScreenWarpPixels) && ScreenWarpPixels is >= 0 and <= 0.2f &&
