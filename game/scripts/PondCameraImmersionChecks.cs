@@ -15,6 +15,8 @@ public static class PondCameraImmersionChecks
         var atmosphere = main.GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere");
         var seabed = main.GetNode<SeabedSurface>("Habitat/Seabed");
         var env = atmosphere.WaterEnvironment ?? throw new Exception("missing environment");
+        var localFog = (FogMaterial)main.GetNode<FogVolume>(
+            "UnderwaterAtmosphere/PondTurbidity").Material;
         var sun = main.GetNode<DirectionalLight3D>("Sun");
         Require(seabed.TryGetPondWaterSurfaceHeight(out var water) &&
             Mathf.Abs(water - atmosphere.SurfaceHeight) < .001f &&
@@ -53,8 +55,9 @@ public static class PondCameraImmersionChecks
             }
             At(water - 2f, 120);
             Require(atmosphere.CameraImmersion01 > .999f &&
-                env.FogDensity > .65f && env.FogDensity < .75f &&
+                env.FogDensity > .55f && env.FogDensity < .61f &&
                 Mathf.Abs(env.FogDepthBegin - 3f) < .001f &&
+                localFog.Density > .10f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") < .001f,
                 "submerged profile did not restore");
             var previous = atmosphere.CameraImmersion01;
@@ -74,6 +77,7 @@ public static class PondCameraImmersionChecks
                 Mathf.Abs(env.FogDepthBegin - WaterVisualProfile.Pond.AirFogBegin) < .001f &&
                 Mathf.Abs(env.FogDepthEnd - WaterVisualProfile.Pond.AirFogEnd) < .001f &&
                 env.VolumetricFogDensity < .001f &&
+                localFog.Density < .001f &&
                 Mathf.Abs(sun.LightEnergy - 1f) < .001f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") > .999f,
                 "air profile was not reached");

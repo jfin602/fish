@@ -61,6 +61,10 @@ The candidate low-cost rendering path is a measured test of one bounded world-an
 
 Fog is presentation-only. It must not change `FishController`, `SwimMotor`, collisions, fish identity, input/camera control, clock, or simulation. Day/night is likewise not implemented by changing fog density: darkness and color come from environmental illumination, while extinction/turbidity remain separate optical properties. Fog does not inherently reduce draw calls: later LOD/culling work is separate and requires its own measurements. Favor bounded scalar environment updates over extra full-screen passes, costly transparent layers, added real lights, or widespread fog volumes.
 
+## Pond spatial-clarity candidate (C4 P1)
+
+Pond now layers one fixed, world-space Forward+ `FogVolume` over its existing depth/distance fog. A one-time 64×16×64 R8 density texture is derived deterministically from the loaded Pond basin seed, shoreline, floor height and low-frequency 3D noise. Shallow open water trends clearer; suspended sediment rises near mud and selected pockets. Illumination remains in the existing sun, ambient, shadow, caustic and shaft path. Camera depth still affects global lighting and distance fog; the local density field does not follow the camera. A development-only `--pond-clarity=off` compare leaves presets and the baked world untouched. [P1 implementation evidence](../tasks/p4/qualification/spatial-clarity-p1.md) records bounds, actual checks and fixed-view limits. P2 native visual qualification is open, and the approximate 4–6/2–4/1–2 m Pond near-detail targets are not yet measured.
+
 ## Native acceptance and evidence
 
 Use the existing five-depth normal-play world (or the completed P3 FAF rebuild) on the tracked Forward+ renderer:

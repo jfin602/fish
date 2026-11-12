@@ -50,6 +50,7 @@ public static class PondAtmosphereChecks
             atmosphere.Initialize(main);
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
+            CheckSpatialField(main, atmosphere, camera);
             var pausedRange = atmosphere.EffectiveUsefulRange;
             var uiLayer = new CanvasLayer { Layer = 10 };
             main.AddChild(uiLayer);
@@ -71,6 +72,7 @@ public static class PondAtmosphereChecks
             atmosphere.Initialize(main);
             atmosphere.ApplyLighting(oceanStore.Current.Settings);
             Require(atmosphere.ProfileId == WorldEnvironmentProfile.Ocean &&
+                main.GetNodeOrNull<FogVolume>("UnderwaterAtmosphere/PondTurbidity") is null &&
                 atmosphere.BackgroundWater == WaterVisualProfile.Ocean.Background &&
                 WaterVisualProfile.Ocean.SurfaceExtinctionPerMeter == 0f &&
                 atmosphere.DistanceFogColor == WaterVisualProfile.Ocean.Fog &&
@@ -94,6 +96,7 @@ public static class PondAtmosphereChecks
             atmosphere.Initialize(main);
             atmosphere.ApplyLighting(pondStore.Current.Settings);
             CheckPond(main, atmosphere, camera);
+            CheckSpatialField(main, atmosphere, camera);
             Require(fish.GlobalPosition == fishPosition && fish.Velocity == fishVelocity &&
                 camera.GetInstanceId() != 0, "presentation changed fish state");
             GD.Print($"POND_ATMOSPHERE_CHECK_OK profile=pond ocean_reset=ok pond_reload=ok " +
@@ -179,16 +182,67 @@ public static class PondAtmosphereChecks
         var extinction = env.FogDensity;
         Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 8f &&
             Mathf.Abs(env.FogDepthBegin - 3f) < .001f &&
-            extinction > .65f && extinction < .75f &&
+            extinction > .55f && extinction < .61f &&
             UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction, env.FogDepthBegin) > .85f &&
             UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction, env.FogDepthBegin) >
                 UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) < .4f,
+            UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) < .5f,
             "Pond depth/distance extinction lost near-to-far progression");
         Require(Mathf.Abs(At(surfaceY + 0.001f) - At(surfaceY - 0.001f)) < 0.01f &&
             Mathf.Abs(At(deepY + 0.001f) - At(deepY - 0.001f)) < 0.01f,
             "Pond depth endpoint is discontinuous");
         At(deepY);
+    }
+
+    private static void CheckSpatialField(Main main, UnderwaterAtmosphere atmosphere, Camera3D camera)
+    {
+        var basin = main.GetNode<SeabedSurface>("Habitat/Seabed").Basin;
+        var a = new PondTurbidityField(basin, atmosphere.SurfaceHeight);
+        var b = new PondTurbidityField(basin, atmosphere.SurfaceHeight);
+        Require(a.Center == b.Center && a.Size == b.Size && a.Size.X < 200f &&
+            a.Size.Z < 200f && a.Size.Y < 30f, "Pond turbidity bounds changed");
+        var minimum = 1f;
+        var maximum = 0f;
+        var count = 0;
+        for (var z = -55; z <= 55; z += 5)
+        for (var x = -55; x <= 55; x += 5)
+        {
+            if (basin.DistanceToShore(x, z) < 5f ||
+                atmosphere.SurfaceHeight - basin.HeightAt(x, z) < 4f) continue;
+            var point = new Vector3(x, atmosphere.SurfaceHeight - 2f, z);
+            var sample = a.Sample(point);
+            Require(float.IsFinite(sample) && sample >= 0f && sample <= .88f &&
+                Mathf.Abs(sample - b.Sample(point)) < .000001f &&
+                Mathf.Abs(sample - a.Sample(point + new Vector3(.25f, 0, 0))) < .08f,
+                "Pond turbidity is unstable, unbounded, or discontinuous");
+            minimum = Mathf.Min(minimum, sample);
+            maximum = Mathf.Max(maximum, sample);
+            count++;
+        }
+        Require(count > 100 && maximum - minimum > .20f,
+            $"Pond spatial variation too weak: count={count} min={minimum:F3} max={maximum:F3}");
+        var core = basin.DeepCore;
+        var coreBed = basin.HeightAt(core.X, core.Y);
+        var nearBed = a.Sample(new Vector3(core.X, coreBed + .6f, core.Y));
+        var aboveBed = a.Sample(new Vector3(core.X, coreBed + 3f, core.Y));
+        Require(nearBed > aboveBed + .06f,
+            "Pond mud proximity did not raise sediment independently of illumination");
+        var volume = main.GetNode<FogVolume>("UnderwaterAtmosphere/PondTurbidity");
+        var material = (FogMaterial)volume.Material;
+        var fixedPosition = volume.GlobalPosition;
+        camera.GlobalPosition = new Vector3(0, atmosphere.SurfaceHeight - 2f, 0);
+        atmosphere.RefreshDepth(true, 2f);
+        Require(material.Density > .10f && material.DensityTexture is ImageTexture3D,
+            "Pond fog field did not reach Forward+ rendering");
+        camera.GlobalPosition += new Vector3(8f, 0, 5f);
+        atmosphere.RefreshDepth(true, 2f);
+        Require(volume.GlobalPosition == fixedPosition, "camera movement shifted Pond turbidity");
+        atmosphere.SetPondClarityDiagnosticEnabled(false);
+        Require(material.Density == 0f && volume.GlobalPosition == fixedPosition,
+            "Pond diagnostic off moved or retained fog");
+        atmosphere.SetPondClarityDiagnosticEnabled(true);
+        Require(material.Density > .10f, "Pond diagnostic on did not restore density");
+        GD.Print($"POND_TURBIDITY_CHECK_OK samples={count} min={minimum:F3} max={maximum:F3} texture=64x16x64 camera_anchor=fixed");
     }
 
     private static void Require(bool condition, string reason)

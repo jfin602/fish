@@ -20,7 +20,7 @@ public partial class UnderwaterAtmosphere : Node3D
     private const float FogNearMeters = 5f;
     private const float PondFogNearMeters = 3f;
     private const float FogExtinction = 0.96f;
-    private const float PondFogExtinction = 0.70f;
+    private const float PondFogExtinction = 0.58f;
     private const float FogCurve = 1.2f;
     [Export(PropertyHint.Range, "0,0.05,0.001")] public float LowerWaterFog { get; set; } = 0.018f;
     [Export(PropertyHint.Range, "-8,8,0.1")] public float LowerFogStartHeight { get; set; } = -1.0f;
@@ -68,6 +68,9 @@ public partial class UnderwaterAtmosphere : Node3D
     private CanvasLayer? _screenLayer;
     private ColorRect? _screenRect;
     private GpuParticles3D? _motes;
+    private FogVolume? _pondTurbidity;
+    private FogMaterial? _pondTurbidityMaterial;
+    private bool _pondClarityDiagnosticOff;
     private readonly Decal[] _caustics = new Decal[1];
     private bool _enabled = true;
     private bool _visibilityBypass;
@@ -252,10 +255,13 @@ public partial class UnderwaterAtmosphere : Node3D
         // Continuous height fog affects imported reef meshes without replacing their materials.
         _environment.FogHeight = _surfaceHeight - 0.60f * (_surfaceHeight - _deepReferenceHeight)
             + LowerFogStartHeight;
+        if (_profile.Id == WorldEnvironmentProfile.Pond)
+            AddPondTurbidity(seabed);
         AddCaustics();
         AddShafts(main);
         AddMotes();
         AddScreenTreatment();
+        _pondClarityDiagnosticOff = OS.GetCmdlineUserArgs().Contains("--pond-clarity=off");
         RefreshDepth(true);
         if (OS.GetCmdlineUserArgs().Contains("--atmosphere=off")) SetEnabled(false);
         GD.Print($"FISH_ATMOSPHERE_READY method=forward_plus volumetric={VolumetricDensity:F3} visibility_base={VisibilityRangeMeters:F1} visibility_end={EffectiveUsefulRange:F1} surface={(_surface is null ? "missing" : "ready")} shafts={ShaftCount} shaft_surfaces={(_shafts?.Mesh?.GetSurfaceCount() ?? 0)} caustics=1 motes={MoteCount} screen={(_screenLayer is null ? "missing" : "ready")}");
@@ -296,6 +302,36 @@ public partial class UnderwaterAtmosphere : Node3D
             _immersionInitialized = false;
             RefreshDepth(true);
         }
+    }
+
+    /// <summary>Development comparison only; leaves graphics presets and the baked world untouched.</summary>
+    public void SetPondClarityDiagnosticEnabled(bool enabled)
+    {
+        _pondClarityDiagnosticOff = !enabled;
+        RefreshDepth(true);
+    }
+
+    private void AddPondTurbidity(SeabedSurface seabed)
+    {
+        var start = Time.GetTicksUsec();
+        var field = new PondTurbidityField(seabed.Basin, _surfaceHeight);
+        _pondTurbidityMaterial = new FogMaterial
+        {
+            Albedo = VolumetricWaterColor,
+            Density = 0f,
+            DensityTexture = field.CreateTexture(),
+            EdgeFade = .25f,
+        };
+        _pondTurbidity = new FogVolume
+        {
+            Name = "PondTurbidity",
+            Shape = RenderingServer.FogVolumeShape.Box,
+            Size = field.Size,
+            Material = _pondTurbidityMaterial,
+            Position = ToLocal(field.Center),
+        };
+        AddChild(_pondTurbidity);
+        GD.Print($"POND_TURBIDITY_READY seed={seabed.Basin.Seed} texture={PondTurbidityField.TextureWidth}x{PondTurbidityField.TextureHeight}x{PondTurbidityField.TextureWidth} size={field.Size} density_max={PondTurbidityField.VolumeDensity:F3} build_ms={(Time.GetTicksUsec() - start) / 1000.0:F2}");
     }
 
     public override void _Process(double delta)
@@ -359,7 +395,11 @@ public partial class UnderwaterAtmosphere : Node3D
         var waterFog = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogExtinction : FogExtinction;
         _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, waterFog, _immersion);
         _environment.FogHeightDensity = LowerWaterFog * _immersion;
-        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion;
+        _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion
+            * (_profile.Id == WorldEnvironmentProfile.Pond ? .72f : 1f);
+        if (_pondTurbidityMaterial is not null)
+            _pondTurbidityMaterial.Density = _pondClarityDiagnosticOff ? 0f :
+                PondTurbidityField.VolumeDensity * _immersion;
         _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));
         _environment.FogLightColor = PondAirBackground.Lerp(DistanceFogColor.Lerp(_profile.DeepFog, depth), _immersion);
         _environment.VolumetricFogAlbedo = PondAirAmbient.Lerp(VolumetricWaterColor.Lerp(_profile.DeepVolume, depth), _immersion);
