@@ -226,7 +226,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 ## P5 — Stealth, feed, escape and grow
 
-**Status: NOT STARTED.** Scenarios V03–V05 and proposed V33–V35. [Ecology contract](systems/ecology-and-growth.md) and [stealth contract](systems/stealth-and-detection.md). Owner-approved identity: naturalistic stealth is the primary gameplay mechanic, not a secondary ability.
+**Status: NOT STARTED.** Scenarios V03–V05 and proposed V33–V36. [P5 foundation plan](planning/p5/stealth-foundation.md), [ecology contract](systems/ecology-and-growth.md) and [stealth contract](systems/stealth-and-detection.md). Owner-approved identity: naturalistic stealth is the primary gameplay mechanic, not a secondary ability. **M1 — Survive the Pike** is a proposed isolated scene milestone: a third World Select destination routes directly to a Bluegill/Pike encounter, keeping both normal habitat test worlds unchanged. Its planning is not P5 implementation, P5 Gate qualification, or authorization to advance P4.
 
 ### G5.1 — Feeding and visible growth
 
@@ -242,6 +242,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 **Result: NOT OBSERVED.**
 
 - A predator uses sensed visual/movement evidence, cover occlusion and bounded last-known-target memory; it cannot track a concealed fish with perfect knowledge.
+- The first foundation proof may use a dedicated Bluegill/Pike scene with fixture-only caught/escaped outcomes; the scene must not alter Ocean/Pond normal-play routes, habitat eligibility or true permanent-death records.
 - Native play demonstrates suspicion, investigation, a credible concealment/escape, loss of contact and searching/disengagement, alongside a readable successful predator strike or lethal encounter.
 - Physical shelter and soft cover have different effects; moving rapidly or leaving cover creates fair exposure risk. Threat cues, commitment and failure cause remain understandable even outside the immediate forward view.
 - Death, genuine pursuit, escape and predation events have authoritative causes/stable identities for later persistence/story use; don't fabricate an escape from every chase.

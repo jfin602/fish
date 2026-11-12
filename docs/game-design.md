@@ -20,6 +20,8 @@ The original reef/Ocean world remains an active playable option; P4 adds a separ
 
 World choice is a new-life choice, not an ability to transfer an existing fish between habitats. When persistence arrives, Continue restores the same living run, species, and world directly; a failed/missing world is a recovery issue, not a silent migration.
 
+**P5 development scenario (S23):** add a third World Select card labeled **Pike Encounter** which is **not a third habitat**. It opens a dedicated [Bluegill-versus-Pike scene](planning/p5/stealth-foundation.md) directly without Character Select; the two normal Ocean/Pond routes continue to work unchanged. The isolated scene uses the registered freshwater Bluegill and Northern Pike with temporary caught/escaped and retry/return outcomes, not real saved lives or permanent death.
+
 ## Connected loops
 
 ### Immediate survival
@@ -80,11 +82,11 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 [P2](tasks/p2/README.md) then replaces the visible test-course presentation with a natural reef-like habitat, locks a renderer from measured Compatibility/Forward+ testing, makes the world read convincingly underwater, and adds movement-reactive water presentation. The P1 course remains a regression fixture. [Art and assets](art-and-assets.md) owns source/provenance boundaries; the P2 slice does not settle the final species or production biome.
 
-After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 stealth/feed/escape/grow prototype then uses small food, one prey type, one predator type and a real cover network. It should prove concealment before detection, suspicion and investigation, fair pursuit and loss of contact, stealth hunting, readable escape, visible growth and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
+After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 stealth/feed/escape/grow prototype starts with an isolated Bluegill-versus-Pike cover-network fixture to establish honest sensory detection and escape; later P5 work adds small food, one prey type, nutrition and growth within the same framework. It should prove concealment before detection, suspicion and investigation, fair pursuit and loss of contact, stealth hunting, readable escape, visible growth and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 
-P3 was owner-closed for progression at `0.3.6` with documented non-GREEN gaps; P4 is the unimplemented `0.4.0` entry baseline. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
+P3 was owner-closed for progression at `0.3.6` with documented non-GREEN gaps; P4 P12 remains NOT GREEN at implemented root `0.4.11`. P5 is planned, not started. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
 
 ## Deferred choices
 

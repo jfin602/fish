@@ -55,10 +55,14 @@ The default presentation should be immersive: changed predator facing/behavior, 
 
 A player should generally understand why a predator saw them, why a hiding place worked or failed, and when a committed attack can be evaded. Account for predators outside the view, above and below, using clear non-color-only feedback. Uncertainty creates tension; inexplicable knowledge and invisible lethal attacks create unfairness.
 
+## P5 isolated encounter foundation
+
+The owner approved [M1 — Survive the Pike](../planning/p5/stealth-foundation.md) as a **dedicated playable Godot scene** reached through a third World Select card, bypassing Character Select and automatically using Bluegill `FAF-FISH-006` opposite Northern Pike `FAF-FISH-010`. This is a development scenario within the existing freshwater eligibility rules, not a third habitat. Ordinary Ocean/Pond exploration and visual tests must remain untouched. The initial caught/escaped result is an ephemeral scene outcome, not the persistent death/story pipeline. Scene reset/return must clear AI awareness and movement state. F1–F8 in the plan establish the implementation order; no P5 behavior is yet implemented or qualified.
+
 ## Implementation and scope sequence
 
 - **P4 — Environment only:** keep Pond and Ocean independent; integrate real hollow-log passages, wood/rock occlusion, plant cover, exposed lanes, size-appropriate gaps and camera/collider clearance. No predator AI, sensor scoring, attacks or stealth HUD.
-- **P5 — Small playable proof:** one compatible player, food, prey, predator and cover network. Prove sensing, visual obstruction, local movement evidence, suspicion/investigation, genuine hiding/escape, readable pursuit/strike, stealth hunting, and feeding/growth changes. Start with reversible parameters and record actual native observations.
+- **P5 — Small playable proof:** first build the isolated Bluegill/Pike cover-and-exposure encounter and manually qualify hiding/pursuit without requiring feeding, full death or growth. Then reuse the same perception model for prey awareness and complete the later feeding, growth and stealth-hunting requirements. Start with reversible parameters and record actual native observations; a successful fixture alone cannot qualify the production P5 loop.
 - **P6 — Continuity:** persist relevant encounter, suspicion and last-known-location state with the living fish. Closing and reopening cannot be used to reset a predator or convert a pending attack into safety. No offline simulation.
 - **Later:** optional sophisticated species senses, schooling, bird hunting at the surface, **dynamic** fish- or predator-disturbed sediment clouds and their sensing consequences, richer ecosystem interactions and detailed sound/chemical behavior. Static Pond clarity variation is instead a P4 visual requirement.
 

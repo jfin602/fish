@@ -30,7 +30,13 @@ At P2, Ocean is the only playable route. Pond remains selected when its absent b
 
 Proposed New Life path: **Main Menu → World Select → Character Select → Play**. In the current tech demo World Select may be the first gameplay selection screen. Character Select → Back returns to World Select; session-only Pause → Return to selection must clear held input and mouse capture. Neither navigation nor switching demo worlds is a death, save, archived life or gameplay world migration. A failed load stays visible as an error, not an implicit fallback to the other world.
 
-When saved lives are implemented in P6, **Continue** goes directly to the fish's stored world and species; World Select is only for starting a new life. Main-menu Life History remains global across habitats. [P4 plan](planning/p4/freshwater-world.md) owns the full proposed UI and native acceptance.
+When saved lives are implemented in P6, **Continue** goes directly to the fish's stored world and species; World Select is only for starting a new life. Main-menu Life History remains global across habitats. [P4 plan](planning/p4/freshwater-world.md) owns the two-habitat flow; the [P5 Pike Encounter plan](planning/p5/stealth-foundation.md) owns the separate development-only third destination.
+
+## P5 Pike Encounter — additional World Select destination (planned)
+
+**Owner-approved 2026-11-12; not implemented.** Extend the existing World Select page with a third selectable **Pike Encounter** card. The original **Ocean** and **Freshwater Pond** choices still route **World Select → Character Select → Play** with unchanged habitat-filtering. The third card routes **World Select → dedicated Pike Encounter scene**, without Character Select, and auto-uses the Pond-native Bluegill `FAF-FISH-006` against Northern Pike `FAF-FISH-010`. This is **not** a third world in the world catalog, a different habitat or a normal saved life. The scene must not spawn Pike predators in the ordinary Pond demo.
+
+Preserve pointer/keyboard focus and clear selection feedback across three cards at ordinary and narrow viewports; show errors on the selection screen if an encounter scene or required registered asset is missing. The encounter has readable **Retry Encounter** and **Return to World Select** paths. Caught/escaped outcomes reset only the temporary fixture, and entry/exit/reset must release capture, pause, input and AI resources with no effect on existing Ocean/Pond sessions or future history. Do not claim this control exists before P5 is executed; [the P5 plan](planning/p5/stealth-foundation.md) owns native verification and isolation conditions.
 
 ## Main menu
 

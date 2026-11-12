@@ -31,6 +31,7 @@ P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c
 | Product scope and accepted choices | [Vision](docs/vision.md), [game design](docs/game-design.md), [decisions](docs/decisions-and-questions.md) |
 | Swimming, input, cameras | [Swimming and camera](docs/systems/swimming-and-camera.md) |
 | Naturalistic stealth, hiding, predator sensing, pursuit and escape | [Stealth and detection](docs/systems/stealth-and-detection.md) |
+| P5 isolated Pike Encounter planning and World Select development route | [P5 stealth foundation](docs/planning/p5/stealth-foundation.md) |
 | Food, prey, predators, growth | [Ecology and growth](docs/systems/ecology-and-growth.md) |
 | Save/resume, pause, death, new lives | [Survival and runs](docs/systems/survival-and-runs.md) |
 | Life events, recounting, persistent archive | [Life stories and history](docs/systems/life-stories-and-history.md) |
