@@ -1,0 +1,13 @@
+config_version=5
+[application]
+config/name="Fish Water Shader Diagnostic"
+run/main_scene="res://fixture.tscn"
+[display]
+window/size/viewport_width=960
+window/size/viewport_height=540
+window/size/window_width_override=960
+window/size/window_height_override=540
+window/vsync/vsync_mode=0
+[rendering]
+renderer/rendering_method="forward_plus"
+textures/default_filters/use_nearest_mipmap_filter=false

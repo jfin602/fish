@@ -81,6 +81,8 @@ public static class PondAtmosphereChecks
             var oceanSurface = (ShaderMaterial)main.GetNode<MeshInstance3D>(
                 "UnderwaterAtmosphere/WaterEffects/OverheadSurface").MaterialOverride;
             Require((float)oceanSky.GetShaderParameter("overcast") == 0f &&
+                oceanSky.Shader.ResourcePath == "res://shaders/underwater_sky.gdshader" &&
+                oceanSurface.Shader.ResourcePath == "res://shaders/water_surface.gdshader" &&
                 (float)oceanSurface.GetShaderParameter("overcast") == 0f &&
                 (float)oceanSurface.GetShaderParameter("surface_extinction") == 0f &&
                 (float)oceanSurface.GetShaderParameter("air_surface_enabled") == 0f,
@@ -145,6 +147,8 @@ public static class PondAtmosphereChecks
         camera.GlobalPosition = new Vector3(original.X, atmosphere.SurfaceHeight - 2f, original.Z);
         atmosphere.RefreshDepth(true, 2f);
         Require(atmosphere.ProfileId == WorldEnvironmentProfile.Pond &&
+            sky.Shader.ResourcePath == "res://shaders/pond_sky.gdshader" &&
+            surfaceMaterial.Shader.ResourcePath == "res://shaders/pond_water_surface.gdshader" &&
             atmosphere.ParametersAreFinite() && env.FogEnabled && env.VolumetricFogEnabled &&
             (float)surfaceMaterial.GetShaderParameter("surface_extinction") ==
                 WaterVisualProfile.Pond.SurfaceExtinctionPerMeter &&

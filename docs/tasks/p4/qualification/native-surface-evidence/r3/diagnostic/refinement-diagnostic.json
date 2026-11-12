@@ -1,0 +1,41 @@
+{
+  "issue": "Horizontal combing in broad stump reflections at grazing angle",
+  "base_shader_sha256": "c5013006813e94810c40b4300e647abd6369f8657f4fc741674cb8b8ddd2d8b4",
+  "unchanged": [
+    "24 coarse samples",
+    "intersection thickness",
+    "scene geometry",
+    "all camera and material settings",
+    "normal field"
+  ],
+  "variants": {
+    "6": {
+      "shader_sha256": "1700f9d8d204c9271ae7bcc58a16eca6153236163d9f2ea8955e00ab416bb2cc",
+      "log": "render-refine6.log",
+      "errors": [],
+      "captures": [
+        "repair/refine6-grazing.png",
+        "repair/refine6-above.png"
+      ],
+      "observation": "Nearest broad stumps largely continuous; mid-distance right stump still visibly striped.",
+      "capture_sha256": "8217d449dcc0f0b67200a8146c258884a2aea693e9ce5bc96eab7b0906ce9256",
+      "source_derivation": "Original iteration3 source with only binary refinement count changed; snapshot hash retained, derivable source not duplicated."
+    },
+    "8": {
+      "shader_sha256": "72e1f1d744558a180b2ea1d957f475b8fe9c2176a9f5bde28e8d91d68405ddbf",
+      "log": "render-refine8.log",
+      "errors": [],
+      "captures": [
+        "repair/refine8-grazing.png",
+        "repair/refine8-above.png"
+      ],
+      "observation": "Observed broad-stump combing removed in grazing view; above view remains consistent. Thin reed/disocclusion limitations remain.",
+      "capture_sha256": "6dc6b278514e984b83f5875e432d99332ef1b43e3f6aaa0ea489ac6ae56895f0",
+      "source_derivation": "Original iteration3 source with only binary refinement count changed; snapshot hash retained, derivable source not duplicated."
+    }
+  },
+  "recommendation": "8 binary refinements; max 34 reflection depth reads including initial and final verification. Additional work occurs only after a crossing is detected. No native performance claim.",
+  "original_capture": "repair/refine4-grazing.png",
+  "original_shader_source": "Final repository shader with binary refinement loop bound changed from 8 to 4; recorded original hash includes its earlier sample-bound comment.",
+  "original_capture_sha256": "9b94df52b297a53f6e2d86def7170d4834bba3603846b366b2d375696725ebb2"
+}

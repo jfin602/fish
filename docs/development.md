@@ -88,6 +88,7 @@ The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate pac
 | `./tools/dev inspect-geology-sites` | Check deterministic terrain-conditioned sites, shoulder mass, water-domain entrances and structural burial for seeds 42/43/44. |
 | `./tools/dev inspect-pond-surface` | Exercise the baked Pond and real Bluegill body through near-surface ascent, skimming, turns, input lifecycle and generated bank contact. |
 | `./tools/dev inspect-pond-camera-immersion` | Check camera-eye blending, repeated waterline crossings, presets, pause/re-entry and fish-state invariance on the baked Pond. |
+| `./tools/dev review-pond-reflections` | Import and build once, then capture 15 actual-Pond fixed views (legacy surface/candidate/sky-only) with fresh ignored profile/output and source/render metadata. Requires a native Forward+ .NET display. Writes `comparison.json`, PNGs and `native-probe.log`; completion requires visual review and does not pass P12. |
 | `./tools/dev inspect-ocean-equal-input` | Compare equal Ocean input routes with water presentation enabled and disabled on the tracked baked world. |
 
 Normal play loads `res://worlds/base/ocean-m4-42` and fails visibly if the package or a referenced asset is missing/corrupt; it does not regenerate. The authored Habitat shell, Fish motor, Character Select and water presentation remain the scene owners. The historical `qualification-42` package remains a provisional P7 record. `manifest.json` and package resources are tracked for ordinary diffs; no raw FAF source package is copied into a Base World.

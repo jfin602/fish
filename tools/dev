@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|review-pond-reflections|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -33,7 +33,7 @@ logged() {
   timeout --signal=TERM --kill-after=5s "${limit}s" "$@" >"$log" 2>&1 || status=$?
   cat "$log"
   if (( status != 0 )); then echo "$name failed (exit $status; $log)" >&2; return 1; fi
-  if grep -E '(^ERROR:|SCRIPT ERROR:|Failed to load|Cannot load|Could not resolve script|FISH_SMOKE_FAILED|SCENE_TOOL_FAILED)' "$log" >&2; then
+  if grep -E '(^ERROR:|SCRIPT ERROR:|SHADER ERROR:|Failed to load|Cannot load|Could not resolve script|FISH_SMOKE_FAILED|SCENE_TOOL_FAILED)' "$log" >&2; then
     echo "$name reported engine errors ($log)" >&2; return 1
   fi
 }
@@ -145,6 +145,18 @@ generated_geology_check() {
   grep -Fq 'GEOLOGY_CLEARANCE_OK' "$LOGS/generated-geology-clearance.log" || { echo 'Generated geology clearance marker missing' >&2; return 1; }
 }
 case "${1:-help}" in
+  review-pond-reflections)
+    need_tools
+    do_import
+    do_build
+    surface_run=$(mktemp -d "$ROOT/artifacts/surface-reflections.XXXXXX")
+    surface_source=$(git -C "$ROOT" rev-parse HEAD)
+    if [[ -n $(git -C "$ROOT" status --porcelain --untracked-files=normal) ]]; then surface_source+='+dirty'; fi
+    logged pond-surface-reflections 240 env XDG_DATA_HOME="$surface_run/profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --script res://dev/p12_surface_reflection_probe.gd -- --pond-surface-probe "--surface-output=$surface_run/captures" "--surface-source=$surface_source"
+    grep -Fq 'P12_SURFACE_PROBE_DONE captures=15' "$LOGS/pond-surface-reflections.log" || { echo 'Pond reflection capture marker missing' >&2; exit 1; }
+    cp "$LOGS/pond-surface-reflections.log" "$surface_run/captures/native-probe.log"
+    echo "Pond reflection comparison: $surface_run/captures/comparison.json (visual review required)"
+    ;;
   measure-pond-surface)
     need_tools
     logged pond-surface-probe 120 env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --script res://dev/p11_surface_probe.gd -- --pond-surface-probe

@@ -41,7 +41,13 @@ Distinguish three contributions: **absorption/scattering** reduces contrast with
 | Shaded trunk or shelter | Locally darker, with a recognizable nearby entrance; turbidity need not increase |
 | Deeper water | Shorter useful visibility and gradual silhouette loss, with locally variable clarity |
 
-These Pond targets are **art-direction starting values**, not physical optical measurements, hard clips, validated renderer values, or replacements for the earlier Ocean visibility table. A nearby fish should remain visibly fish-shaped and materially recognizable when in ordinary water; silhouettes become subtler through longer or murkier paths rather than disappearing behind a constant green veil. Keep P12-R1 corrected air-facing surface geometry and P12-R2 muddy-green optical transmission coherent with underwater water properties; no false clear-water view from air and no return to the owner-rejected pale/shiny surface treatment.
+These Pond targets are **art-direction starting values**, not physical optical measurements, hard clips, validated renderer values, or replacements for the earlier Ocean visibility table. A nearby fish should remain visibly fish-shaped and materially recognizable when in ordinary water; silhouettes become subtler through longer or murkier paths rather than disappearing behind a constant green veil. Keep P12-R1 corrected air-facing surface geometry and P12-R2 muddy-green optical transmission coherent with underwater water properties; no false clear-water view from air and avoid the uniformly pale or artificial sheet-like sheen rejected in R2. S22 adds angle-dependent reflections of actual scenery and sky while preserving the dark water body.
+
+## Pond surface reference (S22; experimental candidate)
+
+The 2026-11-12 owner references add coherent reflected shore/sky shapes and broad irregular ripples to the Pond target. Reflection should strengthen toward grazing angles; downward views should retain nearby fish and local shallow mud through the established continuous depth attenuation. Real bright sky reflections are part of this direction; a uniformly pale overlay or obvious repeating grid is not.
+
+[P12-R3](../tasks/p4/qualification/r3-surface-reflections.md) implements a Pond-only shader candidate with bounded screen-space reflection and a shared air-sky fallback. Existing Ocean surface and sky resources remain unchanged. Missing off-screen/occluded/transparent scene information is an explicit limitation requiring native review. Ripple patches change surface normals, not suspended sediment, so S21 remains unimplemented. Native renderer cost, actual baked-Pond motion/immersion and owner judgment remain required; see the [R3 handoff](../tasks/p4/manual/R3-surface-reflections-native.txt).
 
 ## Visual behavior
 

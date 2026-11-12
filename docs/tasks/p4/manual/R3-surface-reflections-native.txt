@@ -1,0 +1,90 @@
+TASK: P4 P12-R3 — native review of the Pond surface reflection experiment
+
+Goal
+Observe and, if needed, make focused repairs to the reflection candidate in the
+actual Fish Pond. Compare it with the saved surface baseline, retain nearby fish
+visibility and underwater behavior, and record truthful visual/performance evidence.
+This is direct native follow-up, not a runner prompt or a new Phase checkpoint.
+
+Read first
+- AGENTS.md, BOOT.md, docs/workflow.md and the relevant tools/dev composition.
+- docs/tasks/p4/qualification/r3-surface-reflections.md.
+- docs/tasks/p4/qualification/native-surface.md, including R1/R2 and open V32 cells.
+- docs/development.md for the exact Godot/.NET pins and local configuration.
+- The changed Pond shader, shared air-sky helper, atmosphere selection and probe.
+Read further source only for a concrete finding; keep the active acceptance task.
+
+Source and preservation
+1. Verify repository jfin602/fish, local path, branch, HEAD, remotes and dirty work.
+   Save any unpushed/dirty local work before changing branches, or use a separate
+   worktree. Preserve unrelated work, local.env, user preferences and asset masters.
+   Do not reset, clean, force-push, or silently collect unrelated changes.
+2. The remote baseline is checkpoint/water-surface-2026-11-12 at
+   cc8cbb99de16f3b6138a046272721d986274a058. The candidate is on
+   experiment/pond-water-reflections. Fetch and inspect the actual candidate diff;
+   record its observed commit and any local repair diff, not a guessed identity.
+3. Keep package.json at 0.4.11. P12/V32 are NOT GREEN; P13 and the runner do not
+   advance through this manual review. The existing roadmap owns Gate decisions.
+
+Prerequisites and focused checks
+4. Run ./tools/dev doctor. Use the documented Godot 4.7.2 .NET, SDK 10.0.403 and
+   Forward+ setup. Verify any connected Godot MCP project is this Fish checkout.
+   If a dependency is missing, record BLOCKED and the exact next action. Do not
+   substitute the isolated 4.6.3 software-renderer fixture for game qualification.
+5. Run ./tools/dev review-pond-reflections. It imports and builds once before
+   rendering; inspect its log and actual completion marker. Stop on errors.
+6. Against that built candidate, run these affected checks once:
+   ./tools/dev inspect-pond-atmosphere
+   ./tools/dev inspect-pond-scenery
+   ./tools/dev inspect-pond-camera-immersion
+   ./tools/dev inspect-ocean-equal-input
+   Read every result. Repair/rerun only the concrete failing or newly affected
+   scope. Do not replace a failed check with a static shader-string assertion.
+
+Fixed-view evidence
+7. Preserve the helper's comparison.json, fifteen screenshots and native-probe.log.
+   Record engine/adapter, display/resolution, source and dirty identity, bake hash,
+   preset, source shader hashes, timing conditions and observed errors.
+8. Review legacy/candidate/sky_only at low_bank, oblique_bank, fish_050cm,
+   fish_400cm and underwater. All three modes share the current sky; this isolates
+   the surface shader. Use the checkpoint separately to assess the previous sky.
+9. Require recognizable reflected shore structure, broad irregular ripple motion,
+   useful dark green transmission and calm/ripple variation. Look for screen-edge
+   stretching, false fish/mud reflections, reed holes, pale flat bands, excessive
+   glint and reflection disappearance during changes of view. Four-meter fading
+   should remain gradual; preserve visible shallow mud and nearby fish features.
+   The fixture's submerged red cube and T marker are diagnostics, not game content.
+10. Compare the underwater samples. Verify the Ocean water shader still uses its
+    original path and appearance. Do not claim native equivalence from source
+    identity alone. The helper's CAPTURED/NOT_JUDGED result is not visual approval.
+
+Normal-play review
+11. Play the actual baked Pond as Bluegill with Overcast and Brighter Shallows.
+    Approach reeds and real banks from low and oblique angles. Orbit/zoom around
+    the fish, turn through the horizon and screen edges, and repeatedly cross the
+    waterline. Inspect full motion, not just favorable still frames.
+12. Exercise low/high-effort surface swimming, turning, glide and the existing
+    contact wake/ripples. Check pause/resume, focus loss/refocus, resize and return
+    to selection. Traverse Pond→Ocean→Pond and check state/preset isolation.
+13. Cover each existing control preset's camera behavior and comfort. Preserve
+    motor/collider/identity authority. Complete the still-open normal-input
+    shallow→middle→deep→return and covered-route checks; record unsampled cells.
+14. Measure candidate versus baseline at the same views, resolution and settings.
+    Where available use uncapped frame intervals or GPU timing to expose added
+    cost. Report median/p95, visible pacing, draws/primitives and the timing method.
+    A 60 Hz fixed-pose result cannot establish spare GPU capacity. Screen-space
+    reflections have a 34-depth-read maximum trace plus transmission reads.
+
+Repair and disposition
+15. Make only evidence-driven Pond surface/sky/probe repairs needed for this task.
+    Do not regenerate worlds, retune controls, alter Ocean or implement S21 spatial
+    turbidity as an incidental change. Preserve the old shader and rollback branch.
+16. Retain essential native evidence under the P4 qualification evidence directory;
+    append source, actions, observed results and limits to the R3 record. Preserve
+    historical failures. Keep renderer diagnostics distinct from normal play.
+17. Obtain the owner's actual visual/camera judgment after showing the concrete
+    result. Report PASS/FAIL/NOT OBSERVED for each required cell and BLOCKED only
+    with its missing dependency. A pleasing screenshot is not full V32 completion.
+18. Report exact changes, checks, comparison images, measured cost, remaining gaps
+    and the next bounded action. Leave version and progression unchanged unless
+    the owner explicitly directs evidenced closeout under the existing workflow.

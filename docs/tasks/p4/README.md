@@ -16,6 +16,10 @@ The Pond includes **surface swimming and camera air–water crossing**: fish can
 
 The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a uniform green underwater view. [The water-visibility contract](../../systems/underwater-visibility.md) owns spatial turbidity versus illumination and initial near-field visual targets; the [P4 design](../../planning/p4/freshwater-world.md) owns Pond habitat appearance and [V29/V32](../../validation.md) own native checks. Introduce the smallest bounded rendering correction **without rewriting already executed P4 prompts or P12-R1/R2 evidence**, preserving the owner-rejected pale/shiny trials, accepted dark muddy-green direction and Ocean. Compare a fixed-view prototype before wider deterministic world-field wiring; P5 later owns gameplay sensing and dynamic sediment. No prompt-stack execution, checkpoint, version change, or Gate PASS follows merely from this documentation update. P12 remains NOT GREEN pending owner-controlled native qualification.
 
+## S22 surface reference experiment (P12-R3)
+
+The owner requested a checkpoint and reference-driven surface improvement on 2026-11-12. [R3 evidence](qualification/r3-surface-reflections.md) records rollback branch `checkpoint/water-surface-2026-11-12` at `cc8cbb9`, the isolated Pond surface/sky candidate and diagnostic limits. [The native handoff](manual/R3-surface-reflections-native.txt) uses `./tools/dev review-pond-reflections` to capture matching actual-Pond views, then runs the affected checks and owner-play matrix. Full pinned .NET integration and native cost are unobserved; `0.4.11`, P12/V32 and runner progression remain unchanged. S21 water clarity remains separate.
+
 ## Non-negotiable entry dependency
 
 1. C3 manual M1–M4 completed; the owner approved progression with remaining visual/native gaps in the [P3 closeout](../p3/closeout.md). Preserve that disposition rather than converting previous failures to PASS or silently waiving V25/V26/V27.
