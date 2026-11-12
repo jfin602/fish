@@ -1,0 +1,30 @@
+TASK: Correction 4 / P2 — Procedural sky and lighting
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.4.11`.
+
+GOAL
+Replace the flat/static environment lighting with a bounded dynamic day/night sky and real DirectionalLight3D response driven only by P1's shared solar state.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c4-day-night/README.md, implementation-plan.md P2, actual P1 source/evidence, docs/systems/day-night-and-weather.md, game/scripts/UnderwaterAtmosphere.cs, current WorldEnvironment/sky setup, water surface shader inputs and focused atmosphere checks. Inspect current root/source state first.
+
+IMPLEMENT
+1. Refactor the current color-only/fixed-sun environment so normal Forward+ play uses a dynamic/procedural sky suitable for continuous time-of-day changes. Reuse resources and update bounded parameters; do not recreate heavy sky resources every frame.
+2. Drive the existing DirectionalLight3D from P1 solar direction/elevation. Continuously map direct-light color, energy and volumetric contribution from dawn through day, sunset/twilight and night.
+3. Drive sky/horizon/ambient colors and energy from the same state. Midday should read blue/cyan and bright; low sun should create localized warm horizon/solar color; twilight should cool; night should be dark blue-black but still playable.
+4. Avoid a flat hard horizon band. The sky must have vertical/solar variation sufficient that reflective water receives meaningful nonuniform environment color.
+5. Add only a lightweight moon/night contribution if needed for visual readability. Do not add multiple expensive real lights or realistic astronomy.
+6. Keep existing Pond/Ocean atmosphere profiles compatible. This prompt supplies shared solar baseline, not weather. Existing static overcast values may remain transitional but cannot own a competing sun/clock.
+7. Add focused deterministic sample checks proving representative times produce distinct finite sky/direct/ambient values and continuous boundaries without abrupt invalid jumps.
+
+SCOPE / DEFERRALS
+No clouds/weather/rain/storm/fog events, wind, water retuning beyond minimum compatibility, ecology/time gameplay, persistence, planar reflections, renderer switch or broad world-art changes.
+
+VALIDATE
+T2. Build/import and run focused day/night atmosphere checks at representative fixed times. Inspect actual Environment/Sky/DirectionalLight state where possible. Run git diff --check/status. Confirm root 0.4.11 and no shader/runtime errors in the focused path. Subjective native beauty remains P4.
+
+DONE / VERSION / HANDOFF
+The world has one continuous time-driven sky and directional/ambient lighting baseline, with no weather and no competing fixed solar authority. Water/underwater coupling remains P3. No version change, self-commit or push.

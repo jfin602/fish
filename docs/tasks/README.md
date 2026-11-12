@@ -16,6 +16,7 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [p4](p4/README.md) | **AUTHORED / NOT EXECUTED**: Ocean + Freshwater Pond World Select, habitat-restricted fish, low-poly Pond FAF and surface fish/camera/shore; `0.4.1–0.4.14` only after an explicit `0.4.0` entry from accepted/reconciled P3. |
 | [c3-world-gen](c3-world-gen/README.md) | **P1–P6 IMPLEMENTED / P7 NATIVE FAILED** at `0.3.6`: seeded compiler/bake/load works partly, while visual naturalness and alternate-seed routes fail; four [manual M1–M4 repairs](c3-world-gen/manual/README.md) and owner review are pending before P4. |
 | [c3-visibility](c3-visibility/README.md) | **P1–P3 IMPLEMENTED / P4 NATIVE NOT GREEN** at `0.3.6`: visibility source exists but clearance/native observation failed; revisit after accepted C3 world repair, without inventing V25 PASS. |
+| [c4-day-night](c4-day-night/README.md) | **AUTHORED / NOT EXECUTED** Correction 4: shared continuous solar clock, procedural day/night sky and habitat-aware above/below-water lighting; weather explicitly deferred. Root stays `0.4.11`. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
 
 ## Stack layout

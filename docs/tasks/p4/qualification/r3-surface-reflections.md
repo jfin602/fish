@@ -10,6 +10,7 @@
 | Saved rollback branch | [`checkpoint/water-surface-2026-11-12`](https://github.com/jfin602/fish/tree/checkpoint/water-surface-2026-11-12), created at that exact commit |
 | Candidate branch | [`experiment/pond-water-reflections`](https://github.com/jfin602/fish/tree/experiment/pond-water-reflections) |
 | Implemented shader/build source | [`e93ecf5e6bc2d00d6738fce9766d98f17585a4ca`](https://github.com/jfin602/fish/commit/e93ecf5e6bc2d00d6738fce9766d98f17585a4ca); actual-Pond captures add only the recorded probe capability-guard repair, with unchanged shaders |
+| Concurrent documentation integration | Main `614b44d821b794b82c37882df2652d3378bfbc43` adds authored c4 day/night planning; merged without runtime changes. Its S22/C67/C68 identities are preserved; this surface decision is S23/C69. |
 | Root version | `0.4.11`; no `0.4.12` or Gate promotion |
 | Native target | Tracked seed-71 Pond, Adult Bluegill `FAF-FISH-006`, Godot `4.7.2` .NET, Forward+ |
 

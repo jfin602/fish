@@ -1,0 +1,31 @@
+TASK: Correction 4 / P3 — Water and underwater daylight integration
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- Required unchanged project version: `0.4.11`.
+
+GOAL
+Make Pond/Ocean water reflection, surface daylight and underwater lighting consume the same shared solar state while preserving habitat-specific optics, P12 surface transmission and bounded Forward+ cost.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c4-day-night/README.md, implementation-plan.md P3, actual P1–P2 source/evidence, docs/systems/day-night-and-weather.md, docs/systems/underwater-visibility.md, P12 native surface evidence including R1/R2, game/scripts/UnderwaterAtmosphere.cs, game/shaders/water_surface.gdshader, shaft/caustic shaders/resources and existing performance probes. Inspect current source/dirty state first.
+
+IMPLEMENT
+1. Feed the real current solar direction and daylight state into the water surface so highlights/reflection cues follow the same sun as the world. Remove or bypass fixed duplicate sun assumptions rather than layering another value.
+2. Make reflected sky/environment brightness/color respond to time: cool bright day, warm low-sun contribution, darker night. Preserve Fresnel/refraction/transmission behavior and near-surface fish readability.
+3. Drive `surface_daylight` or equivalent transmission control from solar state through habitat-specific response curves. Do not globally lower opacity to fake night.
+4. Make underwater direct/ambient light, shaft direction/brightness and caustic energy/color coherently respond to solar elevation/daylight. At night the water should become genuinely darker from illumination loss, not increased fog/turbidity.
+5. Preserve Pond muddy olive-green optics and Ocean blue/turquoise identity. Explicitly test Pond→Ocean→Pond so profile state and solar response do not leak.
+6. Keep pause coherent: environment time, water animation time and solar-driven presentation must freeze/resume consistently under the existing pause contract.
+7. Extend deterministic diagnostics/probes so fixed times can report relevant sun/sky/surface/underwater values. Compare representative day and night Forward+ performance if the new sky/reflection path changes cost materially.
+8. Remove temporary tuning/debug UI before completion unless it is an existing supported developer diagnostic path.
+
+SCOPE / DEFERRALS
+No weather/cloud systems, rain/storm/fog events, wind-driven waves, ecology schedules, save/persistence of time, fish movement/camera/collision changes, dynamic turbidity simulation, planar reflection camera, renderer switch or P12 Gate claims.
+
+VALIDATE
+T2. Run build/import/focused atmosphere/surface checks and fixed-time diagnostics for dawn/noon/sunset/night. Verify pause and Pond/Ocean isolation. Run git diff --check/status. Compare same-view performance counters where applicable. Record actual results truthfully; native visual quality remains P4.
+
+DONE / VERSION / HANDOFF
+Above- and below-water presentation consume one shared solar state with habitat-specific optics and no weather. P12 evidence remains historical and NOT GREEN until owner/native requalification. No version change, self-commit or push.

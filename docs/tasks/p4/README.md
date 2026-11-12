@@ -16,7 +16,11 @@ The Pond includes **surface swimming and camera air–water crossing**: fish can
 
 The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a uniform green underwater view. [The water-visibility contract](../../systems/underwater-visibility.md) owns spatial turbidity versus illumination and initial near-field visual targets; the [P4 design](../../planning/p4/freshwater-world.md) owns Pond habitat appearance and [V29/V32](../../validation.md) own native checks. Introduce the smallest bounded rendering correction **without rewriting already executed P4 prompts or P12-R1/R2 evidence**, preserving the owner-rejected pale/shiny trials, accepted dark muddy-green direction and Ocean. Compare a fixed-view prototype before wider deterministic world-field wiring; P5 later owns gameplay sensing and dynamic sediment. No prompt-stack execution, checkpoint, version change, or Gate PASS follows merely from this documentation update. P12 remains NOT GREEN pending owner-controlled native qualification.
 
-## S22 surface reference experiment (P12-R3)
+## Day/night routing (documentation-only)
+
+The owner selected a staged environment pass on 2026-11-12 after reflective Pond water exposed the static flat sky as the next visual bottleneck. [c4-day-night](../c4-day-night/README.md) now owns the shared continuous solar clock, procedural sky and above/below-water daylight integration at unchanged `0.4.11`. Weather is explicitly deferred until that baseline is stable. This does not rewrite executed P11/P12 evidence or make P12/P4 GREEN.
+
+## S23 surface reference experiment (P12-R3)
 
 The owner requested a checkpoint and reference-driven surface improvement on 2026-11-12. [R3 evidence](qualification/r3-surface-reflections.md) records rollback branch `checkpoint/water-surface-2026-11-12` at `cc8cbb9`, the isolated Pond surface/sky candidate and diagnostic limits. [The native handoff](manual/R3-surface-reflections-native.txt) uses `./tools/dev review-pond-reflections` to capture matching actual-Pond views, then runs the affected checks and owner-play matrix. Full pinned .NET integration and native cost are unobserved; `0.4.11`, P12/V32 and runner progression remain unchanged. S21 water clarity remains separate.
 
@@ -42,7 +46,7 @@ The owner requested a checkpoint and reference-driven surface improvement on 202
 | P8 | [Freshwater FAF creature integration](P8-freshwater-fish-and-wildlife.txt) | Import **existing** 5 Pond species × 5 life stages (25 exports), frog/snake/turtle and two insect families; **no model generation** | `0.4.8` | T2 |
 | P9 | [Surface swim constraints](P9-surface-swimming-boundary.txt) | Fish swims at/barely through waterline without invisible ceiling or launch | `0.4.9` | T2 |
 | P10 | [Camera and immersion crossing](P10-camera-air-water-immersion.txt) | Smooth air–water camera/orbit/zoom and independently blended presentation | `0.4.10` | T2 |
-| P11 | [Surface view and water reaction](P11-surface-shore-and-reactions.txt) | Generated nearby banks/sky/cattails, bounded ripples/wake and weather | `0.4.11` | T2 |
+| P11 | [Surface view and water reaction](P11-surface-shore-and-reactions.txt) | Generated nearby banks/sky/cattails and bounded ripples/wake; historical static overcast only, with real day/night/weather superseded by the staged environment corrections | `0.4.11` | T2 |
 | P12 | [Native surface qualification](P12-native-surface-camera-review.txt) | **Manual** V32 waterline, controls, camera, visual and performance test | `0.4.12` | T3, pause |
 | P13 | [Cross-world integration](P13-two-world-regression-and-performance.txt) | V28–V31 focused matrix, asset/perf checks, save-boundary invariants | `0.4.13` | T2 |
 | P14 | [Phase 4 closeout](P14-freshwater-world-closeout.txt) | **Manual final** G4.1–G4.4 / V28–V32 evidence disposition | `0.4.14` | T3 review, pause |

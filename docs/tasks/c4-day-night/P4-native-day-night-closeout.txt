@@ -1,0 +1,41 @@
+TASK: Correction 4 / P4 — Native day/night closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- Required unchanged project version: `0.4.11`.
+
+GOAL
+Qualify the c4 day/night candidate in real native Godot Forward+ play, record truthful visual/performance evidence across the cycle, and obtain the owner's disposition without implementing weather.
+
+PREREQUISITES AND NARROW READING
+Read AGENTS.md, BOOT.md, docs/tasks/c4-day-night/README.md, prompt-assessment.md, implementation-plan.md P4, actual P1–P3 changes/evidence, docs/systems/day-night-and-weather.md, P12 surface evidence and relevant native-performance records. Verify exact source revision/dirty state, selected Fish project, Godot version, renderer, viewport/settings and test world identities before observation.
+
+NATIVE MATRIX
+Use deterministic set-time/acceleration controls to observe representative states approximately:
+- 06:00 dawn
+- 09:00 morning
+- 12:00 midday
+- 17:00 afternoon
+- sunset
+- twilight
+- 00:00 night
+
+At minimum inspect key above-water Pond views and matching underwater views where practical. Also run a continuous accelerated sweep through a full cycle.
+
+QUALIFY
+1. Sky/horizon changes continuously and does not show a flat gray/solid band as the dominant reflective source.
+2. Sun direction, shadows, bright water highlights and underwater shafts agree spatially and move through the cycle.
+3. Pond surface reflection responds naturally to changing sky/daylight: cool/bright day, warmer low sun, substantially darker night. Preserve near-surface fish readability and current muddy-green transmission direction.
+4. Underwater direct/ambient light, caustics and shafts diminish/change coherently with solar state. Night is meaningfully dark but navigation/readable near silhouettes remain possible; no fake darkness via increased turbidity.
+5. Pause freezes environmental progression and resumes without a jump. Repeated pause/refocus does not desynchronize water/sun time.
+6. Pond→Ocean→Pond retains one shared time while preserving separate habitat optical profiles and no tint/settings leakage.
+7. Run the relevant same-view native performance/error checks at representative day/night states. Record frame timing/draw/primitives where available and any shader/runtime errors.
+8. Explicitly confirm weather is still absent; static compatibility overcast does not count as the future weather system.
+9. Capture/retain representative evidence and record the owner's actual visual judgment. Do not infer acceptance from screenshots alone.
+
+EVIDENCE / CLOSEOUT
+Append a c4 qualification record with source revision, platform/settings/world/time states, actions, PASS/FAIL/NOT OBSERVED/BLOCKED cells, performance/error data and owner judgment. Reconcile docs/BOOT only for facts actually implemented/observed. Do not rewrite historical P12 failures or mark P4 Gates green from this correction alone.
+
+DONE / VERSION / HANDOFF
+If the owner accepts the cycle for this correction scope, mark c4-day-night owner-green while keeping root 0.4.11 and route weather as the next separate environment correction. If any material visual/pause/profile/performance cell fails, leave c4 NOT GREEN with the exact repair target. Leave closeout changes uncommitted for human review; no self-commit or push.
