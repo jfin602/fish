@@ -34,6 +34,8 @@
 
 Assistant examples, names, locations, quantities, and proposed features remain working designs unless specifically adopted. Porting the reference workflow does not import its 2D game mechanics, existing qualification results, or completed Phases.
 
+- **S21 — Spatial water clarity (2026-11-11):** The owner rejected the visually uniform green-fog look in Pond and selected locally variable clarity as part of convincing underwater depth. Pond visibility must respond to world-space suspended sediment, water depth, and illumination without conflating shadows with turbidity. Use cheap, deterministic, smooth environmental variation; retain legible nearby fish/cover, coherent surface transmission, and independent Ocean water. P4 owns visual presentation; future P5 sensing may use shared environmental data, not camera fog or GFX sliders. [Visibility contract](systems/underwater-visibility.md) owns the detailed behavior and [P4 Pond design](planning/p4/freshwater-world.md) owns initial habitat scope. This approval is not implementation or qualification evidence.
+
 ## Confirmed requirements
 
 | ID | Requirement | Source |
@@ -104,6 +106,7 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C63 | Fish's main gameplay identity is **naturalistic stealth survival**, not optional hiding attached to ordinary chase/combat gameplay. | S20 |
 | C64 | Guiding principle: **Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.** | S20 |
 | C65 | Survival should depend on meaningful movement exposure, genuine hiding opportunities and calculated feeding risk in an active aquatic environment; detailed sensor formulas and AI tuning are working designs. | S20 |
+| C66 | Freshwater Pond must have smoothly varying, world-anchored water clarity: coherent baseline distance/depth attenuation plus locally clearer and more sediment-rich water, with lighting distinguished from particle density, usable near-field detail, no visible density boundaries and no Ocean regression. Cheap deterministic rendering and native Forward+ review are required; dynamic sediment clouds and predator sensing remain deferred. | S21 |
 
 ## Working designs
 
