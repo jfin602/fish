@@ -67,6 +67,8 @@ public static class PikeEncounterChecks
                 Require(encounter is not null && !tree.Paused &&
                     WorldSession.ActiveHabitat is null && WorldSession.ActiveManifest is null &&
                     DemoSelection.CharacterId == PikeEncounterAssets.BluegillId &&
+                    encounter.Growth.Stage == "juvenile" && encounter.Feeding.Nutrition == 0 &&
+                    encounter.Feeding.Events.Count == 0 &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
                     encounter.PreyActors.Count == 9 &&
@@ -88,7 +90,8 @@ public static class PikeEncounterChecks
                     "retry retained old actor or pause");
             }
             var final = tree.CurrentScene as PikeEncounter;
-            Require(final is not null, "fixture lost after retries");
+            Require(final is not null && final.Growth.Stage == "juvenile" &&
+                final.Feeding.Nutrition == 0, "fixture growth leaked across retries");
             final!._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
             Button(final, "ReturnToWorldSelect").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);

@@ -15,6 +15,21 @@ public partial class FishController : CharacterBody3D
     public float PondWaterlineHeight { get; private set; } = float.NaN;
     public float PondColliderRadius { get; private set; }
     public float PondSurfaceCenterLimit => _pondSurfaceCenterLimit ?? float.NaN;
+    public float BodyScale { get; private set; } = 1f;
+    public float BodyRadius => GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D sphere
+        ? sphere.Radius : 0f;
+    public void SetPondBodyRadius(float radius)
+    {
+        if (!float.IsFinite(radius) || radius <= 0f ||
+            GetNodeOrNull<CollisionShape3D>("Collision") is not { Shape: SphereShape3D } collision)
+            throw new InvalidOperationException("POND_BODY_RADIUS_INVALID");
+        collision.Shape = new SphereShape3D { Radius = radius };
+        PondColliderRadius = radius;
+        BodyScale = radius / PondGrowthState.AdultColliderRadius;
+        if (float.IsFinite(PondWaterlineHeight))
+            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
+    }
     public void ConfigureWorldBounds(float horizontalLimit, float minimumY, float maximumY)
     {
         if (horizontalLimit < 36.7f || minimumY >= maximumY)

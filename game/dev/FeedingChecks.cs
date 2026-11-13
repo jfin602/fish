@@ -22,6 +22,8 @@ public static class FeedingChecks
             var larvaSpawns = scene.PreyActors.Skip(4).Select(p => p.GlobalPosition).ToArray();
             foreach (var actor in scene.PreyActors) actor.SetPhysicsProcess(false);
             var ledger = scene.Feeding;
+            Need(scene.Growth.Stage == "juvenile" && ledger.Nutrition == 0,
+                "fixture did not start at juvenile stage");
             var bluegill = PondCreatureCatalog.Stage("FAF-FISH-006", "adult")!;
             var bass = PondCreatureCatalog.Stage("FAF-FISH-007", "larva")!;
             var juvenile = PondCreatureCatalog.Stage("FAF-FISH-007", "juvenile")!;
@@ -54,13 +56,26 @@ public static class FeedingChecks
             var open = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
             fish.GlobalPosition = open;
             fish.GlobalBasis = Basis.Identity;
+            prey.GlobalPosition = open + new Vector3(0, 0, -.7f);
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Need(!scene.TryBite(prey).Consumed && ledger.Nutrition == 0,
+                "juvenile Bluegill ate oversized Bass larva");
+            foreach (var item in scene.FoodItems.Take(3))
+            {
+                fish.GlobalPosition = item.GlobalPosition + Vector3.Up * .4f;
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                Need(scene.TryCollectFood(item).Consumed, "juvenile food collection failed");
+            }
+            Need(scene.Growth.Stage == "subadult" && ledger.Nutrition == 3,
+                "registered subadult growth did not follow three real food awards");
+            fish.GlobalPosition = open;
             prey.GlobalPosition = open + new Vector3(0, 0, -.95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             scene._Input(new InputEventKey { Pressed = true, PhysicalKeycode = Key.Space });
             Need(!prey.IsAlive, "Space did not dispatch reachable Bass bite");
             var reward = ledger.Nutrition;
-            Need(reward == 4 && !scene.TryBite(prey).Consumed &&
-                ledger.Nutrition == reward && ledger.Events.Count == 1 &&
+            Need(reward == 7 && !scene.TryBite(prey).Consumed &&
+                ledger.Nutrition == reward && ledger.Events.Count == 4 &&
                 !prey.IsAlive && !prey.Visible, "duplicate bite rewarded or prey remained live");
             Need(!scene.TryBite(scene.PreyActors[0]).Consumed, "large juvenile prey rewarded");
             var other = scene.PreyActors[5];
@@ -69,12 +84,12 @@ public static class FeedingChecks
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(!scene.TryBite(other).Consumed, "rear bite rewarded");
 
-            var food = scene.FoodItems[0];
+            var food = scene.FoodItems[3];
             fish.GlobalPosition = food.GlobalPosition + Vector3.Up * .4f;
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryCollectFood(food).Consumed, "reachable food failed");
             Need(!scene.TryCollectFood(food).Consumed && ledger.Nutrition == reward + 1 &&
-                ledger.Events.Count == 2 && !food.IsAvailable, "duplicate food rewarded");
+                ledger.Events.Count == 5 && !food.IsAvailable, "duplicate food rewarded");
             Need(!scene.TryCollectFood(scene.FoodItems[4]).Consumed,
                 "distant food rewarded");
 
@@ -88,7 +103,7 @@ public static class FeedingChecks
             other.GlobalPosition = open + new Vector3(0, 0, -.95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             using (var wallRay = PhysicsRayQueryParameters3D.Create(
-                open + new Vector3(0, 0, -.48f), other.GlobalPosition, 1,
+                open + new Vector3(0, 0, -fish.BodyRadius), other.GlobalPosition, 1,
                 new Godot.Collections.Array<Rid> { fish.GetRid(), other.GetRid() }))
                 Need(scene.GetWorld3D().DirectSpaceState.IntersectRay(wallRay)
                     .TryGetValue("collider", out var hit) && hit.AsGodotObject() == wall,

@@ -16,7 +16,7 @@ public partial class PikeEncounter : Node3D
     private readonly List<PreyActor> _prey = new();
     private readonly List<FixtureFood> _food = new();
     private readonly FeedingLedger _feeding = new();
-    private float _bluegillLength;
+    private PondGrowthState _growth = null!;
     private string _biteFeedback = "";
     private double _biteFeedbackUntil;
     private readonly List<WorldSightSensor> _preySight = new();
@@ -41,6 +41,7 @@ public partial class PikeEncounter : Node3D
     public IReadOnlyList<PreyActor> PreyActors => _prey;
     public IReadOnlyList<FixtureFood> FoodItems => _food;
     public FeedingLedger Feeding => _feeding;
+    public PondGrowthState Growth => _growth;
 
     public PikeEncounter() => ProcessPriority = 10; // Observe FishController after its motor tick.
 
@@ -62,7 +63,7 @@ public partial class PikeEncounter : Node3D
             var sight = _preySight[i];
             var cues = _preyCues[i];
             var preySight = sight.Observe(actor.GlobalPosition, -actor.GlobalBasis.Z,
-                new SightTarget(_fish.GlobalPosition, .48f, 1f), SightWater!,
+                new SightTarget(_fish.GlobalPosition, _fish.BodyRadius, 1f), SightWater!,
                 cues.SimulationSeconds, GetTree().Paused);
             actor.Tick(preySight, cues.Sense(actor.GlobalPosition, GetTree().Paused),
                 cues.SimulationSeconds, (float)delta, GetTree().Paused);
@@ -70,6 +71,7 @@ public partial class PikeEncounter : Node3D
         foreach (var food in _food)
             if (food.IsAvailable && _fish.GlobalPosition.DistanceTo(food.GlobalPosition) <= .56f)
                 TryCollectFood(food);
+        TryAdvanceGrowth();
         UpdatePikeAnimation(delta);
         if (_pike.Mind.StrikeReady)
         {
@@ -77,7 +79,7 @@ public partial class PikeEncounter : Node3D
             PikeSight!.Reset();
             var close = ObserveFish().Sight;
             if (close.Detected && close.ClearRays > 0 &&
-                _pike.MouthCanReach(_fish.GlobalPosition, .48f))
+                _pike.MouthCanReach(_fish.GlobalPosition, _fish.BodyRadius))
             {
                 _pike.Mind.Catch(now);
                 Finish("caught", "Caught by the Pike after a committed strike.");
@@ -89,7 +91,7 @@ public partial class PikeEncounter : Node3D
             Finish("escaped", "Escaped: the Pike searched its last sensed area and disengaged.");
             return;
         }
-        _status.Text = $"PIKE ENCOUNTER · {_pike.Mind.Mode} · nutrition {_feeding.Nutrition} · Space: bite · Esc: pause" +
+        _status.Text = $"PIKE ENCOUNTER · {_pike.Mind.Mode} · {_growth.Stage} · nutrition {_feeding.Nutrition} · Space: bite · Esc: pause" +
             (now < _biteFeedbackUntil ? " · " + _biteFeedback : "");
     }
 
@@ -100,7 +102,7 @@ public partial class PikeEncounter : Node3D
         var pike = GetNode<CharacterBody3D>("NorthernPike");
         var paused = GetTree().Paused;
         var sight = PikeSight.Observe(pike.GlobalPosition, -pike.GlobalBasis.Z,
-            new SightTarget(_fish.GlobalPosition, .48f, 1f), SightWater,
+            new SightTarget(_fish.GlobalPosition, _fish.BodyRadius, 1f), SightWater,
             MovementCues.SimulationSeconds, paused);
         return new PikeSensoryEvidence(sight, MovementCues.Sense(pike.GlobalPosition, paused));
     }
@@ -141,6 +143,8 @@ public partial class PikeEncounter : Node3D
             PreyChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--feeding-check"))
             FeedingChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--growth-check"))
+            GrowthChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -148,12 +152,14 @@ public partial class PikeEncounter : Node3D
         if (!PikeEncounterAssets.TryValidate(out var bluegill, out var pike, out var diagnostic))
         { Fail(diagnostic); return; }
         DemoSelection.CharacterId = PikeEncounterAssets.BluegillId;
+        _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bluegill");
         _fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f,
             GetNode<SeabedSurface>("Habitat/Seabed").DeepFloorY - 2f,
             PikeCoverFixture.WaterY - .31f);
         _fish.ConfigurePondWaterline(GetNode<SeabedSurface>("Habitat/Seabed"));
-        if (!PlayerArt.TryLoadAndAttach(_fish, bluegill!, out diagnostic))
+        if (!PlayerArt.TryReplacePondStage(_fish, _growth.Entry(_growth.Asset), out diagnostic))
         { Fail(diagnostic); return; }
+        _fish.SetPondBodyRadius(_growth.ColliderRadius);
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
         var actor = GetNode<PikeActor>("NorthernPike");
@@ -188,7 +194,7 @@ public partial class PikeEncounter : Node3D
         _fish.ClearAndDisarmInput();
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-        _status.Text = "PIKE ENCOUNTER · Bass juveniles near shallow grass; larvae and tiny food at exposed edges · Space: bite · Esc: pause";
+        _status.Text = "PIKE ENCOUNTER · juvenile Bluegill: collect tiny food; Bass larvae become edible after growth · Space: bite · Esc: pause";
         GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 prey=FAF-FISH-007:juvenile juvenile_count=4 larva_count=5 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed} player_pos={_fish.GlobalPosition} prey_pos={_prey[0].GlobalPosition}");
     }
 
@@ -235,8 +241,6 @@ public partial class PikeEncounter : Node3D
         }
         PreySight = _preySight[0];
         PreyCues = _preyCues[0];
-        _bluegillLength = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "adult")?.Dimensions[1]
-            ?? throw new InvalidOperationException("BLUEGILL_STAGE_UNAVAILABLE");
         AddBassLarvae(plants);
     }
 
@@ -301,7 +305,7 @@ public partial class PikeEncounter : Node3D
         _retry.GrabFocus();
         GD.Print("PIKE_ENCOUNTER_UNAVAILABLE " + diagnostic);
         if (Array.Exists(OS.GetCmdlineUserArgs(), arg => (arg.StartsWith("--pike-", StringComparison.Ordinal) ||
-            arg is "--prey-check" or "--feeding-check")
+            arg is "--prey-check" or "--feeding-check" or "--growth-check")
             && arg.EndsWith("-check", StringComparison.Ordinal)))
             GetTree().CallDeferred(SceneTree.MethodName.Quit, 1);
     }
@@ -338,8 +342,9 @@ public partial class PikeEncounter : Node3D
     {
         if (_failed || _transitioning || _ended || GetTree().Paused)
             return new(false, "encounter inactive", 0);
-        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * .48f;
-        target ??= _prey.Where(p => p.IsAlive && p.Stage == "larva" &&
+        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * _fish.BodyRadius;
+        target ??= _prey.Where(p => p.IsAlive &&
+                FeedingLedger.IsEligiblePrey(p.SpeciesId, p.Stage, p.Length, _growth.Length) &&
                 p.GlobalPosition.DistanceTo(mouth) <= 1.1f &&
                 (-_fish.GlobalBasis.Z).Dot((p.GlobalPosition - mouth).Normalized()) >= .35f &&
                 ClearPath(mouth, p.GlobalPosition, p.GetRid()))
@@ -352,9 +357,9 @@ public partial class PikeEncounter : Node3D
             ClearPath(mouth, target.GlobalPosition, target.GetRid());
         var result = _feeding.TryConsume(new FeedCandidate(target.StableId, FeedKind.Prey,
             target.SpeciesId, target.Stage, WorldCatalog.PondId, WorldSession.SelectedWorldId,
-            target.Length, _bluegillLength, target.IsAlive), reachable,
+            target.Length, _growth.Length, target.IsAlive), reachable,
             MovementCues?.SimulationSeconds ?? 0);
-        if (result.Consumed) target.Consume();
+        if (result.Consumed) { target.Consume(); TryAdvanceGrowth(); }
         return ReportBite(result);
     }
 
@@ -367,11 +372,12 @@ public partial class PikeEncounter : Node3D
             ClearPath(_fish.GlobalPosition, item.GlobalPosition);
         var result = _feeding.TryConsume(new FeedCandidate(item.StableId, FeedKind.TinyFood,
             "fixture-invertebrate", "proxy", WorldCatalog.PondId, WorldSession.SelectedWorldId,
-            0f, _bluegillLength, item.IsAvailable), accessible,
+            0f, _growth.Length, item.IsAvailable), accessible,
             MovementCues?.SimulationSeconds ?? 0);
         if (result.Consumed)
         {
             item.Consume();
+            TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={item.StableId} kind=food nutrition={_feeding.Nutrition}");
         }
         return result;
@@ -383,6 +389,30 @@ public partial class PikeEncounter : Node3D
         if (target.IsValid) exclude.Add(target);
         using var query = PhysicsRayQueryParameters3D.Create(from, to, 1, exclude);
         return GetWorld3D().DirectSpaceState.IntersectRay(query).Count == 0;
+    }
+
+    public bool TryAdvanceGrowth()
+    {
+        if (_growth is null || _failed || _transitioning || _ended || GetTree().Paused ||
+            _growth.Next(_feeding.Nutrition) is not { } next) return false;
+        var radius = _growth.RadiusForNext();
+        if (_fish.GlobalPosition.Y > _fish.PondWaterlineHeight - .65f * radius) return false;
+        var query = new PhysicsShapeQueryParameters3D
+        {
+            Shape = new SphereShape3D { Radius = radius },
+            Transform = new Transform3D(Basis.Identity, _fish.GlobalPosition),
+            CollisionMask = _fish.CollisionMask,
+            Exclude = new Godot.Collections.Array<Rid> { _fish.GetRid() },
+        };
+        if (GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0) return false;
+        if (!PlayerArt.TryReplacePondStage(_fish, _growth.Entry(next), out var diagnostic))
+        { Fail("BLUEGILL_GROWTH_VISUAL_UNAVAILABLE " + diagnostic); return false; }
+        _fish.SetPondBodyRadius(radius);
+        _growth.Commit(next);
+        PikeSight?.Reset();
+        foreach (var sight in _preySight) sight.Reset();
+        GD.Print($"GROWTH_EVENT identity={_growth.Identity} stage={_growth.Stage} nutrition={_feeding.Nutrition} radius={radius:F3}");
+        return true;
     }
 
     private FeedResult ReportBite(FeedResult result)

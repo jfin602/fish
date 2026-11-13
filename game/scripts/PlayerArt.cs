@@ -7,6 +7,29 @@ public static class PlayerArt
 {
     public const string Source = "res://assets/vendor-local/quaternius/Fish3.fbx";
 
+    public static bool TryReplacePondStage(FishController fish, CharacterEntry entry,
+        out string diagnostic)
+    {
+        if (entry.Id != PikeEncounterAssets.BluegillId)
+        { diagnostic = "BLUEGILL_GROWTH_IDENTITY_INVALID"; return false; }
+        if (!CharacterCatalog.TryInstantiate(entry, out var visual, out var animation, out diagnostic))
+            return false;
+        var previous = fish.GetNodeOrNull<Node3D>("PlayerVisual");
+        if (previous is not null)
+        {
+            fish.RemoveChild(previous);
+            previous.QueueFree();
+        }
+        visual!.Name = "PlayerVisual";
+        fish.AddChild(visual);
+        visual.Transform = entry.PresentationTransform;
+        visual.AddChild(new CatalogFishVisualMotion(fish, animation!, entry));
+        foreach (var part in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
+            if (fish.GetNodeOrNull<MeshInstance3D>(part) is { } placeholder) placeholder.Visible = false;
+        diagnostic = "";
+        return true;
+    }
+
     public static bool TryLoadAndAttach(FishController fish, out string diagnostic)
     {
         if (DemoSelection.CharacterId is null)

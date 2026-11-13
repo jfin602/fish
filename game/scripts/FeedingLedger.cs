@@ -12,6 +12,10 @@ public sealed class FeedingLedger
     public int Nutrition { get; private set; }
     public IReadOnlyList<FeedEvent> Events => _events;
     public bool IsConsumed(string id) => _consumed.Contains(id);
+    public static bool IsEligiblePrey(string speciesId, string stage, float length, float playerLength) =>
+        speciesId == "FAF-FISH-007" && stage == "larva" &&
+        float.IsFinite(length) && float.IsFinite(playerLength) &&
+        length > 0f && playerLength > 0f && length <= playerLength * .45f;
 
     public FeedResult TryConsume(FeedCandidate target, bool accessible, double gameSeconds)
     {
@@ -23,9 +27,7 @@ public sealed class FeedingLedger
         if (target.Kind is not (FeedKind.Prey or FeedKind.TinyFood))
             return new(false, "unknown food kind", 0);
         if (target.Kind == FeedKind.Prey &&
-            (target.SpeciesId != "FAF-FISH-007" || target.Stage != "larva" ||
-             target.Length <= 0 || target.PlayerLength <= 0 ||
-             target.Length > target.PlayerLength * .45f))
+            !IsEligiblePrey(target.SpeciesId, target.Stage, target.Length, target.PlayerLength))
             return new(false, "prey is not eligible", 0);
         if (target.Kind == FeedKind.TinyFood &&
             (target.SpeciesId != "fixture-invertebrate" || target.Stage != "proxy"))

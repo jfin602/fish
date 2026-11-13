@@ -114,6 +114,7 @@ public partial class FollowCamera : Node3D
         }
 
         UpdateCameraControls((float)delta);
+        _probe.Radius = ProbeRadius * Mathf.Max(.32f, _fish.BodyScale);
 
         var fishPosition = _fish.GlobalPosition;
         if (fishPosition.DistanceTo(_previousFishPosition) > TeleportDistance) _resetPending = true;
@@ -146,10 +147,11 @@ public partial class FollowCamera : Node3D
         var horizontal = new Vector3(forward.X, 0, forward.Z);
         if (horizontal.LengthSquared() > 0.0001f) _lastHorizontalForward = horizontal.Normalized();
         var tuning = _fish.Tuning;
-        anchor = fishPosition + Vector3.Up * 0.35f;
+        var bodyScale = Mathf.Max(.32f, _fish.BodyScale);
+        anchor = fishPosition + Vector3.Up * (0.35f * bodyScale);
         if (_fish.CameraControl == CameraControlPolicy.MouseOrbit360)
         {
-            var orbitDistance = _zoomDistance;
+            var orbitDistance = _zoomDistance * bodyScale;
             var baseElevation = Mathf.Atan2(tuning.CameraHeight - 0.35f, tuning.CameraDistance);
             var orbitElevation = baseElevation + _orbitPitch;
             var rear = new Basis(Vector3.Up, _orbitYaw) * _lastHorizontalForward;
@@ -160,23 +162,23 @@ public partial class FollowCamera : Node3D
         }
         if (_fish.CameraControl == CameraControlPolicy.AdaptiveFollow)
         {
-            var adaptiveDistance = _zoomDistance;
-            var adaptiveEyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
-                adaptiveDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forward.Y * adaptiveDistance * PitchHeightFraction;
-            var radius = Mathf.Sqrt(adaptiveDistance * adaptiveDistance + Mathf.Pow(adaptiveEyeHeight - 0.35f, 2));
+            var adaptiveDistance = _zoomDistance * bodyScale;
+            var adaptiveEyeHeight = bodyScale * (0.35f + (tuning.CameraHeight - 0.35f) *
+                _zoomDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forward.Y * _zoomDistance * PitchHeightFraction);
+            var radius = Mathf.Sqrt(adaptiveDistance * adaptiveDistance + Mathf.Pow(adaptiveEyeHeight - 0.35f * bodyScale, 2));
             _lastCameraRear = _adaptiveRear;
-            var normalTarget = fishPosition + forward * tuning.CameraLookAhead + Vector3.Up * 0.15f;
+            var normalTarget = fishPosition + forward * (tuning.CameraLookAhead * bodyScale) + Vector3.Up * (0.15f * bodyScale);
             lookTarget = anchor.Lerp(normalTarget, _adaptiveLookAhead);
             return anchor - _adaptiveRear * (radius * Mathf.Cos(_adaptiveElevation)) +
                 Vector3.Up * (radius * Mathf.Sin(_adaptiveElevation));
         }
-        lookTarget = fishPosition + forward * tuning.CameraLookAhead + Vector3.Up * 0.15f;
-        var distance = _zoomDistance;
-        var eyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
-            distance / Mathf.Max(0.01f, tuning.CameraDistance) - forward.Y * distance * PitchHeightFraction;
-        var elevation = Mathf.Atan2(eyeHeight - 0.35f, distance) + _panPitch;
+        lookTarget = fishPosition + forward * (tuning.CameraLookAhead * bodyScale) + Vector3.Up * (0.15f * bodyScale);
+        var distance = _zoomDistance * bodyScale;
+        var eyeHeight = bodyScale * (0.35f + (tuning.CameraHeight - 0.35f) *
+            _zoomDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forward.Y * _zoomDistance * PitchHeightFraction);
+        var elevation = Mathf.Atan2(eyeHeight - 0.35f * bodyScale, distance) + _panPitch;
         var orbitRadius = Mathf.Sqrt(distance * distance +
-            Mathf.Pow(eyeHeight - 0.35f, 2));
+            Mathf.Pow(eyeHeight - 0.35f * bodyScale, 2));
         _lastCameraRear = (new Basis(Vector3.Up, _panYaw) * _lastHorizontalForward).Normalized();
         var right = _lastCameraRear.Cross(Vector3.Up).Normalized();
         return anchor - _lastCameraRear * (orbitRadius * Mathf.Cos(elevation)) +
@@ -301,7 +303,8 @@ public partial class FollowCamera : Node3D
     private Vector3 UnobstructedPosition(Vector3 anchor, Vector3 target)
     {
         var safe = CastSafe(anchor, target);
-        if (safe.DistanceTo(anchor) >= MinimumDistance) return safe;
+        var minimumDistance = MinimumDistance * Mathf.Max(.32f, _fish.BodyScale);
+        if (safe.DistanceTo(anchor) >= minimumDistance) return safe;
 
         // A post close behind the fish can leave no usable view on the centerline.
         // Try either shoulder before accepting a camera position inside the body.
@@ -310,10 +313,10 @@ public partial class FollowCamera : Node3D
         var bestTravel = float.PositiveInfinity;
         foreach (var side in new[] { 1.0f, -1.0f })
         {
-            var shoulder = anchor - _lastCameraRear * 1.15f +
-                Vector3.Up * 0.8f + right * (side * 1.1f);
+            var shoulder = anchor + (-_lastCameraRear * 1.15f +
+                Vector3.Up * 0.8f + right * (side * 1.1f)) * Mathf.Max(.32f, _fish.BodyScale);
             var clear = CastSafe(anchor, shoulder);
-            if (clear.DistanceTo(anchor) < MinimumDistance) continue;
+            if (clear.DistanceTo(anchor) < minimumDistance) continue;
             var travel = clear.DistanceTo(GlobalPosition);
             if (travel >= bestTravel) continue;
             best = clear;
