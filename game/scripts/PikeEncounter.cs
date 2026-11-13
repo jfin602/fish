@@ -12,6 +12,7 @@ public partial class PikeEncounter : Node3D
 {
     private FishController _fish = null!;
     private PikeActor _pike = null!;
+    private PreyActor? _prey;
     private AnimationPlayer? _pikeAnimation;
     private CharacterEntry? _pikeEntry;
     private Label _status = null!;
@@ -27,6 +28,8 @@ public partial class PikeEncounter : Node3D
     public WorldSightSensor? PikeSight { get; private set; }
     public SightEnvironment? SightWater { get; private set; }
     public MovementDisturbanceField? MovementCues { get; private set; }
+    public WorldSightSensor? PreySight { get; private set; }
+    public MovementDisturbanceField? PreyCues { get; private set; }
 
     public PikeEncounter() => ProcessPriority = 10; // Observe FishController after its motor tick.
 
@@ -35,9 +38,19 @@ public partial class PikeEncounter : Node3D
         if (_failed || _transitioning || _ended || MovementCues is null || _pike is null) return;
         MovementCues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
             _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
+        PreyCues?.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+            _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
         var observed = ObserveFish();
         var now = MovementCues.SimulationSeconds;
         _pike.Tick(observed.Sight, observed.Disturbance, now, (float)delta, GetTree().Paused);
+        if (_prey is not null && PreySight is not null && PreyCues is not null)
+        {
+            var preySight = PreySight.Observe(_prey.GlobalPosition, -_prey.GlobalBasis.Z,
+                new SightTarget(_fish.GlobalPosition, .48f, 1f), SightWater!,
+                PreyCues.SimulationSeconds, GetTree().Paused);
+            _prey.Tick(preySight, PreyCues.Sense(_prey.GlobalPosition, GetTree().Paused),
+                PreyCues.SimulationSeconds, (float)delta, GetTree().Paused);
+        }
         UpdatePikeAnimation(delta);
         if (_pike.Mind.StrikeReady)
         {
@@ -104,6 +117,8 @@ public partial class PikeEncounter : Node3D
             PikeDisturbanceChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-ai-check"))
             PikeAiChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--prey-check"))
+            PreyChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -139,6 +154,7 @@ public partial class PikeEncounter : Node3D
         var turbidity = new PondTurbidityField(basin, PikeCoverFixture.WaterY);
         SightWater = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
             turbidity.Sample, SolarState.At(.5));
+        InitializePrey(plants);
         actor.Configure();
         var preferences = new DisplayPreferences();
         preferences.Load();
@@ -150,13 +166,48 @@ public partial class PikeEncounter : Node3D
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
         _status.Text = "PIKE ENCOUNTER · Shallow grass → root refuge → deep wood maze · Esc: pause";
-        GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed}");
+        GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 prey=FAF-FISH-007:larva world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed}");
+    }
+
+    private void InitializePrey(IReadOnlyList<SoftSightCover> plants)
+    {
+        if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId, "FAF-FISH-007",
+                "larva", SpeciesRole.Ecological, out var asset, out var diagnostic) || asset is null)
+            throw new InvalidOperationException("PREY_ASSET_UNAVAILABLE " + diagnostic);
+        var scene = ResourceLoader.Load<PackedScene>(asset.ModelPath, "", ResourceLoader.CacheMode.Ignore)
+            ?? throw new InvalidOperationException("PREY_MODEL_UNAVAILABLE");
+        var model = scene.Instantiate<Node3D>();
+        var animation = model.FindChild("AnimationPlayer", true, false) as AnimationPlayer
+            ?? throw new InvalidOperationException("PREY_ANIMATION_UNAVAILABLE");
+        var swim = asset.Clip("Swim");
+        var fast = asset.Clip("SwimFast");
+        if (!animation.HasAnimation(swim) || !animation.HasAnimation(fast))
+            throw new InvalidOperationException("PREY_SWIM_CLIPS_UNAVAILABLE");
+        var body = new PreyActor { Name = "BassFry", CollisionLayer = 1, CollisionMask = 1,
+            MotionMode = CharacterBody3D.MotionModeEnum.Floating };
+        AddChild(body);
+        body.GlobalPosition = new Vector3(-6.8f,
+            PikeCoverFixture.Bed(-6.8f, 11f) + .55f, 11f);
+        body.AddChild(new CollisionShape3D { Name = "Collision",
+            Shape = new SphereShape3D { Radius = .075f } });
+        model.Name = "PreyVisual";
+        body.AddChild(model);
+        model.Rotation = new Vector3(0, Mathf.Pi, 0);
+        _prey = body;
+        body.Configure(plants, animation, swim, fast);
+        PreySight = new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
+            body.GetRid(), _fish.GetRid(), range: 24f);
+        PreyCues = new MovementDisturbanceField(GetWorld3D().DirectSpaceState, plants,
+            body.GetRid(), _fish.GetRid());
     }
 
     private void Fail(string diagnostic)
     {
         PikeSight?.Reset();
         MovementCues?.Reset();
+        PreySight?.Reset();
+        PreyCues?.Reset();
+        _prey?.ResetActor();
         _pike?.ResetActor();
         _failed = true;
         _resume.Disabled = true;
@@ -168,7 +219,8 @@ public partial class PikeEncounter : Node3D
         _menu.Visible = true;
         _retry.GrabFocus();
         GD.Print("PIKE_ENCOUNTER_UNAVAILABLE " + diagnostic);
-        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg.StartsWith("--pike-", StringComparison.Ordinal)
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => (arg.StartsWith("--pike-", StringComparison.Ordinal) ||
+            arg == "--prey-check")
             && arg.EndsWith("-check", StringComparison.Ordinal)))
             GetTree().CallDeferred(SceneTree.MethodName.Quit, 1);
     }
@@ -272,6 +324,9 @@ public partial class PikeEncounter : Node3D
         if (_transitioning) return;
         PikeSight?.Reset();
         MovementCues?.Reset();
+        PreySight?.Reset();
+        PreyCues?.Reset();
+        _prey?.ResetActor();
         _pike?.ResetActor();
         _transitioning = true;
         _fish.ClearAndDisarmInput();

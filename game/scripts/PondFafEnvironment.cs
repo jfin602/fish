@@ -220,7 +220,8 @@ public static class PondFafEnvironment
             if (asset.Family is "hollow_trunk" or "fallen_log" or "stump" or "eroded_bank")
             {
                 var path = asset.Wrapper ?? throw new InvalidDataException($"Missing Pond structural wrapper: {asset.Id}");
-                var piece = ResourceLoader.Load<PackedScene>(path)!.Instantiate<Node3D>();
+                var piece = ResourceLoader.Load<PackedScene>(path, "", ResourceLoader.CacheMode.Ignore)!
+                    .Instantiate<Node3D>();
                 piece.Name = asset.Id.Replace('-', '_') + "_" + root.GetChildCount();
                 piece.Transform = transform;
                 root.AddChild(piece);
@@ -241,7 +242,8 @@ public static class PondFafEnvironment
         foreach (var (id, transforms) in batches.OrderBy(p => p.Key, StringComparer.Ordinal))
         {
             var asset = byId[id];
-            var source = ResourceLoader.Load<PackedScene>(asset.Glb)!.Instantiate<Node3D>();
+            var source = ResourceLoader.Load<PackedScene>(asset.Glb, "", ResourceLoader.CacheMode.Ignore)!
+                .Instantiate<Node3D>();
             var meshes = FindMeshes(source).ToArray();
             if (meshes.Length == 0) throw new InvalidDataException($"Pond FAF imported mesh missing: {id}");
             for (var part = 0; part < meshes.Length; part++)

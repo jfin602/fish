@@ -2,7 +2,7 @@
 
 ## Status and ownership
 
-**Planned; no P5 stealth, feeding or growth implementation or gameplay qualification.** Naturalistic stealth survival is the owner's main gameplay direction. Eating food and smaller fish, hiding from hunters and growing from hatchling to large fish are confirmed. This document owns food-chain and growth transactions; [stealth and detection](stealth-and-detection.md) owns sensing, physical cover, suspicion, concealment and pursuit. Species tuning, diets, thresholds, damage, hunger and numerical balance remain open.
+**P5 stealth foundation and one fixture prey are implemented; feeding and growth remain planned.** Naturalistic stealth survival is the owner's main gameplay direction. Eating food and smaller fish, hiding from hunters and growing from hatchling to large fish are confirmed. The [P7 prey check](../tasks/p5/qualification/p7-prey.md) uses a registered Pond Bass larva for sensing and flight without consumption or nutrition. This document owns food-chain and growth transactions; [stealth and detection](stealth-and-detection.md) owns sensing, physical cover, suspicion, concealment and pursuit. Species tuning, diets, thresholds, damage, hunger and numerical balance remain open.
 
 ## A bounded first food chain
 
