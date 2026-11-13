@@ -2,6 +2,7 @@
 using Godot;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Fish;
 
@@ -9,7 +10,7 @@ namespace Fish;
 public partial class WorldSelect : Control
 {
     private readonly DisplayPreferences _preferences = new();
-    private readonly Button[] _cards = new Button[WorldCatalog.All.Count];
+    private readonly Button[] _cards = new Button[WorldDestinations.All.Count];
     private GridContainer _grid = null!;
     private Button _choose = null!;
     private Button _back = null!;
@@ -19,6 +20,8 @@ public partial class WorldSelect : Control
     private bool _loading;
     private bool _invalidDisplay;
     private static bool _checkStarted;
+    internal string EncounterScenePath { get; set; } = PikeEncounterAssets.ScenePath;
+    internal IReadOnlyList<CharacterEntry>? EncounterCatalog { get; set; }
 
     public override void _EnterTree()
     {
@@ -54,12 +57,15 @@ public partial class WorldSelect : Control
         BuildInterface();
         Select(0);
         _choose.GrabFocus();
-        GD.Print("FISH_WORLD_SELECT_READY entries=2");
+        GD.Print($"FISH_WORLD_SELECT_READY entries={_cards.Length} habitats={WorldCatalog.All.Count}");
         if (!_checkStarted && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--world-select-check"))
         {
             _checkStarted = true;
             WorldSelectChecks.Run(this);
         }
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-encounter-check") &&
+            !PikeEncounterChecks.Started)
+            PikeEncounterChecks.Run(this);
     }
 
     public override void _ExitTree() => GetViewport().SizeChanged -= Resize;
@@ -108,7 +114,12 @@ public partial class WorldSelect : Control
     private void Resize()
     {
         Size = GetViewport().GetVisibleRect().Size;
-        if (_grid is not null) _grid.Columns = Size.X < 900 ? 1 : 2;
+        if (_grid is not null)
+        {
+            _grid.Columns = Size.X < 900 ? 1 : 3;
+            foreach (var card in _cards)
+                if (card is not null) card.CustomMinimumSize = new Vector2(250, Size.X < 900 ? 135 : 240);
+        }
     }
 
     private void BuildInterface()
@@ -126,21 +137,24 @@ public partial class WorldSelect : Control
         column.AddThemeConstantOverride("separation", 18);
         margin.AddChild(column);
         column.AddChild(Text("FISH  /  WORLD SELECT", 32, Colors.White));
-        column.AddChild(Text("Choose a habitat for this demo session", 19, new Color(.67f, .86f, .85f)));
+        column.AddChild(Text("Choose a world or development encounter", 19, new Color(.67f, .86f, .85f)));
 
-        _grid = new GridContainer { Name = "WorldCards", Columns = Size.X < 900 ? 1 : 2,
-            SizeFlagsVertical = SizeFlags.ExpandFill };
+        var scroll = new ScrollContainer { Name = "WorldCardsScroll",
+            SizeFlagsVertical = SizeFlags.ExpandFill, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
+        column.AddChild(scroll);
+        _grid = new GridContainer { Name = "WorldCards", Columns = Size.X < 900 ? 1 : 3,
+            SizeFlagsHorizontal = SizeFlags.ExpandFill };
         _grid.AddThemeConstantOverride("h_separation", 18);
         _grid.AddThemeConstantOverride("v_separation", 18);
-        column.AddChild(_grid);
+        scroll.AddChild(_grid);
         for (var i = 0; i < _cards.Length; i++)
         {
             var index = i;
-            var world = WorldCatalog.All[i];
-            var card = new Button { Name = "World_" + world.Id, FocusMode = FocusModeEnum.All,
-                Alignment = HorizontalAlignment.Left, CustomMinimumSize = new Vector2(270, 240),
+            var destination = WorldDestinations.All[i];
+            var card = new Button { Name = "World_" + destination.Id, FocusMode = FocusModeEnum.All,
+                Alignment = HorizontalAlignment.Left, CustomMinimumSize = new Vector2(250, Size.X < 900 ? 135 : 240),
                 SizeFlagsHorizontal = SizeFlags.ExpandFill, SizeFlagsVertical = SizeFlags.ExpandFill };
-            var color = world.Preview.Accent;
+            var color = destination.Accent;
             var normal = new StyleBoxFlat { BgColor = color.Darkened(.62f), BorderColor = color.Lightened(.24f) };
             normal.SetBorderWidthAll(2);
             normal.SetCornerRadiusAll(12);
@@ -182,10 +196,11 @@ public partial class WorldSelect : Control
             "← → browse  •  Tab changes focus  •  Enter chooses the focused action";
         for (var i = 0; i < _cards.Length; i++)
         {
-            var world = WorldCatalog.All[i];
+            var destination = WorldDestinations.All[i];
             _cards[i].Text = (i == index ? "✓ SELECTED\n\n" : "  SELECT\n\n") +
-                world.DisplayName + "\n\n" + world.Preview.Description +
-                "\n\nPreview art pending" + (world.Bake is null ? "\nWorld bake pending" : "");
+                destination.DisplayName + "\n\n" + destination.Description +
+                (destination.WorldId is null ? "\n\nBluegill only · no Character Select" :
+                    "\n\nPreview art pending" + (WorldCatalog.Resolve(destination.WorldId).Bake is null ? "\nWorld bake pending" : ""));
         }
     }
 
@@ -196,25 +211,40 @@ public partial class WorldSelect : Control
         _error = "";
         _choose.Disabled = true;
         _back.Disabled = true;
-        _status.Text = $"Loading {WorldCatalog.All[_selected].DisplayName}…";
+        _status.Text = $"Loading {WorldDestinations.All[_selected].DisplayName}…";
         CallDeferred(MethodName.CompleteChoice);
     }
 
     private void CompleteChoice()
     {
-        var world = WorldCatalog.All[_selected];
+        var destination = WorldDestinations.All[_selected];
         try
         {
+            if (destination.IsEncounter)
+            {
+                if (!PikeEncounterAssets.TryValidate(out _, out _, out var diagnostic,
+                    scenePath: EncounterScenePath, catalog: EncounterCatalog))
+                    throw new InvalidDataException(diagnostic);
+                GetTree().Paused = false;
+                Input.MouseMode = Input.MouseModeEnum.Visible;
+                DemoSelection.Clear();
+                WorldSession.Unload();
+                var error = GetTree().ChangeSceneToFile(EncounterScenePath);
+                if (error != Error.Ok) throw new InvalidDataException($"PIKE_SCENE_LOAD_FAILED code={error}");
+                return;
+            }
+            var world = WorldCatalog.Resolve(destination.WorldId);
             WorldSession.Select(world.Id);
             WorldCatalog.VerifyInstalledManifest(world);
             world.LoadHabitatScene();
             DemoSelection.Clear();
             Input.MouseMode = Input.MouseModeEnum.Visible;
-            GetTree().ChangeSceneToFile("res://scenes/character_select.tscn");
+            if (GetTree().ChangeSceneToFile("res://scenes/character_select.tscn") != Error.Ok)
+                throw new InvalidDataException("CHARACTER_SCENE_LOAD_FAILED action=restore-character-select");
         }
-        catch (Exception error) when (error is IOException or InvalidDataException)
+        catch (Exception error)
         {
-            _error = $"{world.DisplayName} is unavailable: {error.Message}";
+            _error = $"{destination.DisplayName} is unavailable: {error.Message}";
             _status.Text = _error;
             _loading = false;
             _choose.Disabled = false;

@@ -84,6 +84,7 @@ The explicit-seed workflow uses the pinned Godot/.NET setup above. Candidate pac
 | `./tools/dev promote-world <new-name> <base-name> --dry-run` | Validate and show the exact source/destination without writing. |
 | `./tools/dev promote-world <new-name> <base-name>` | Validate and copy to `game/worlds/base/<base-name>/`. Existing destinations fail; no command stages or commits files. |
 | `./tools/dev inspect-character-select` | Exercise all five Character Select fish and the return/select route against the baked default. |
+| `./tools/dev inspect-pike-encounter` | Check three menu routes, Pond Bluegill/Pike identity, resource refusals, repeated fixture retry/return and ordinary-world isolation. Headless only. |
 | `./tools/dev inspect-shore-field` | Check reproducible shoreline, shore-derived depth and area bands for seeds 42/43/44 without compiling complete worlds. |
 | `./tools/dev inspect-geology-sites` | Check deterministic terrain-conditioned sites, shoulder mass, water-domain entrances and structural burial for seeds 42/43/44. |
 | `./tools/dev inspect-pond-surface` | Exercise the baked Pond and real Bluegill body through near-surface ascent, skimming, turns, input lifecycle and generated bank contact. |

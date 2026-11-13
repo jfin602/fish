@@ -1,6 +1,6 @@
 # P5 — Stealth, feed, escape and grow
 
-**Status: AUTHORED / NOT EXECUTED.** GitHub main at 535116c5b6907681786b233f34af15bc2a87d4b5, root 0.4.11. P4 P12/V32 FAIL / NOT GREEN and still undergoing visual/camera work. P5 is not started and must NOT be executed until owner approves explicit P4 closeout/progression and deliberate root 0.5.0 baseline. No P5 gameplay, phase checkpoint or Gate qualification is claimed by this task stack.
+**Status: P1 IMPLEMENTED IN WORKING TREE / RUNNER CHECKPOINT PENDING.** P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md), and the deliberate `0.5.0` baseline preceded this task. P1 routes directly to an isolated stationary Bluegill/Pike fixture; [focused P1 evidence](qualification/p1-routing.md) records its checks and limits. P2–P13 remain unexecuted; no P5 Gate is qualified.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [New FAF cover intake](stealth-cover-asset-intake.md) · [P5 approved design](../../planning/p5/stealth-foundation.md) · [stealth system](../../systems/stealth-and-detection.md) · [ecology/growth](../../systems/ecology-and-growth.md) · [roadmap](../../roadmap.md) · [validation](../../validation.md) · [runner](../../phase-runner.md)
 
@@ -12,7 +12,7 @@
 
 ## Entry and version guard
 
-1. P4 is still active at `0.4.11` and P12/V32 is NOT GREEN as of authoring. Do not run P5 now. Owner must explicitly review the real P4 disposition and authorize progression (even if gaps remain), preserving evidence; then deliberately establish a clean/reconciled `0.5.0` baseline. Runner does not create phase entry. No invented `0.4.12`–`0.4.14` checkpoints.
+1. The [P4 owner disposition](../p4/closeout.md) and deliberate `0.5.0` entry are recorded; P4 remains NOT GREEN. Preserve its evidence and do not invent `0.4.12`–`0.4.14` checkpoints.
 2. Verify live branch/HEAD, dirty work and compatibility with current P4/c4 corrections, Fish project and model/SDK availability. Never modify the P4 runner snapshot or overwrite unmerged art/world work.
 3. **P2 strict asset input:** The two new 5+5 FAF producer briefs are not verified completed packs on GitHub. Audit their actual sources/GLBs/manifests before composing the encounter; if missing, P2 BLOCKED, do not create substitute art or advance. No normal Pond/Ocean asset installs.
 4. Each prompt has one assigned `0.5.x` development checkpoint. The runner, not Codex inside the task, owns implementation commits. The **manual P6, P8 and P11 checkpoints** must be completed by a native-capable session with owner judgment, and P13 is a **manual final closeout**. Do not auto-resume a failed/blocked review.
@@ -52,4 +52,4 @@ Only once P4's owner handoff and `0.5.0` phase baseline exist, execute intention
 npm run fish:phase -- p5
 ```
 
-The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-species`, `inspect-pond-atmosphere`, `inspect-world-catalog` and `inspect-ocean-equal-input`. P5-specific inspection commands **do not yet exist**; implementation prompts must add and run them. Avoid redundant broad builds. Record actual evidence under `docs/tasks/p5/qualification/`; only an executed final closeout writes `docs/tasks/p5/closeout.md`. [Roadmap](../../roadmap.md) alone owns Gate status.
+The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-species`, `inspect-pond-atmosphere`, `inspect-world-catalog` and `inspect-ocean-equal-input`. P1 added `inspect-pike-encounter`; later P5 tasks add their own focused commands before use. Avoid redundant broad builds. Record actual evidence under `docs/tasks/p5/qualification/`; only an executed final closeout writes `docs/tasks/p5/closeout.md`. [Roadmap](../../roadmap.md) alone owns Gate status.
