@@ -1,6 +1,6 @@
 # P5 — Stealth, feed, escape and grow
 
-**Status: P1 IMPLEMENTED IN WORKING TREE / RUNNER CHECKPOINT PENDING.** P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md), and the deliberate `0.5.0` baseline preceded this task. P1 routes directly to an isolated stationary Bluegill/Pike fixture; [focused P1 evidence](qualification/p1-routing.md) records its checks and limits. P2–P13 remain unexecuted; no P5 Gate is qualified.
+**Status: P1 CHECKPOINTED; P2 SOURCE IMPLEMENTED IN WORKING TREE / RUNNER CHECKPOINT PENDING.** P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md). P1 routes to an isolated Bluegill/Pike fixture; [P1 evidence](qualification/p1-routing.md) records its checks. [P2 source evidence](qualification/p2-cover.md) records strict new FAF pack intake and the connected three-area cover fixture, with native art/gameplay still unobserved. P3–P13 remain unexecuted; no P5 Gate is qualified.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [New FAF cover intake](stealth-cover-asset-intake.md) · [P5 approved design](../../planning/p5/stealth-foundation.md) · [stealth system](../../systems/stealth-and-detection.md) · [ecology/growth](../../systems/ecology-and-growth.md) · [roadmap](../../roadmap.md) · [validation](../../validation.md) · [runner](../../phase-runner.md)
 
@@ -14,7 +14,7 @@
 
 1. The [P4 owner disposition](../p4/closeout.md) and deliberate `0.5.0` entry are recorded; P4 remains NOT GREEN. Preserve its evidence and do not invent `0.4.12`–`0.4.14` checkpoints.
 2. Verify live branch/HEAD, dirty work and compatibility with current P4/c4 corrections, Fish project and model/SDK availability. Never modify the P4 runner snapshot or overwrite unmerged art/world work.
-3. **P2 strict asset input:** The two new 5+5 FAF producer briefs are not verified completed packs on GitHub. Audit their actual sources/GLBs/manifests before composing the encounter; if missing, P2 BLOCKED, do not create substitute art or advance. No normal Pond/Ocean asset installs.
+3. **P2 strict asset input:** Both new 5+5 FAF producer packs were verified from actual sources/GLBs/manifests at P2. The [intake record](qualification/p2-cover.md) preserves hashes and limits. No original pack 001 substitution or normal Pond/Ocean asset install occurred.
 4. Each prompt has one assigned `0.5.x` development checkpoint. The runner, not Codex inside the task, owns implementation commits. The **manual P6, P8 and P11 checkpoints** must be completed by a native-capable session with owner judgment, and P13 is a **manual final closeout**. Do not auto-resume a failed/blocked review.
 5. Only P5 fixture outcomes are ephemeral. P6 saves/death, P7 archive, whole-world advanced AI and visual correction tasks remain out of scope. P5 does not make the existing Pond/Ocean ordinary routes into active predator ecosystems.
 

@@ -2,6 +2,8 @@
 
 **Owner input (2026-11-12):** FAF Run 1 — Pond Vegetation Expansion; FAF Run 2 — Pond Large Wood & Log Expansion. These are detailed **creation briefs**, not a delivery/qualification report. A GitHub tree check at `d7f7b156` found only the earlier original [Pond foliage pack 001](../../fish-asset-factory/pond-foliage-pack-001/README.md) and [wood pack 001](../../fish-asset-factory/pond-wood-pack-001/README.md), not completed **new** expansion manifests/GLBs. Check actual local/unpushed producer work at P2 execution; never guess IDs or paths.
 
+**P2 execution update:** Both later producer packs are present and technically verified at pre-task HEAD `eaad625`; [the P2 intake and fixture record](qualification/p2-cover.md) gives actual IDs, manifest hashes, Godot import checks, scene implementation and native observation limits. The earlier tree check above remains historical, not the current asset state.
+
 ## Intake and ownership
 
 The independent FAF creation runs own Blender MCP, source-controlled deterministic generators, editable Blender files, new Pond-tagged unique IDs, individual GLBs, manifest/hash/seed records, collision wrappers and isolated Blender/Godot proofs. **P5 imports real completed outputs only** into the standalone Pike Encounter; it must not generate, rename, overwrite or repair producer art, merge conflicting shared registries uncoordinated, re-bake normal Pond, or touch Ocean. P2 records exact actual family IDs, sources/GLB/hash, dimensions, structural variants, rooted pivots, triangles/materials, wrapper/collision, depth role and visual/technical review status.

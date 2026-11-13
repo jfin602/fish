@@ -1,5 +1,7 @@
 #nullable enable
 using Godot;
+using System;
+using System.Collections.Generic;
 
 namespace Fish;
 
@@ -13,6 +15,7 @@ public partial class PikeEncounter : Node3D
     private Button _resume = null!;
     private bool _transitioning;
     private bool _failed;
+    public IReadOnlyList<PikeCoverPlacement> CoverPlan { get; private set; } = Array.Empty<PikeCoverPlacement>();
 
     public override void _Ready()
     {
@@ -23,7 +26,20 @@ public partial class PikeEncounter : Node3D
         DemoSelection.Clear();
         WorldSession.Select(WorldCatalog.PondId);
         BuildInterface();
+        try
+        {
+            var cover = PikeCoverFixture.LoadCatalog();
+            CoverPlan = PikeCoverFixture.Plan(cover);
+            PikeCoverFixture.Build(this, cover, CoverPlan);
+        }
+        catch (Exception error)
+        {
+            Fail("PIKE_COVER_UNAVAILABLE " + error.Message);
+            return;
+        }
         InitializeActors();
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-cover-check"))
+            PikeCoverChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -31,6 +47,7 @@ public partial class PikeEncounter : Node3D
         if (!PikeEncounterAssets.TryValidate(out var bluegill, out var pike, out var diagnostic))
         { Fail(diagnostic); return; }
         DemoSelection.CharacterId = PikeEncounterAssets.BluegillId;
+        _fish.ConfigureWorldBounds(36.7f, -7f, PikeCoverFixture.WaterY - .31f);
         if (!PlayerArt.TryLoadAndAttach(_fish, bluegill!, out diagnostic))
         { Fail(diagnostic); return; }
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
@@ -49,8 +66,8 @@ public partial class PikeEncounter : Node3D
         _fish.ClearAndDisarmInput();
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-        _status.Text = "PIKE ENCOUNTER · Bluegill vs Northern Pike (stationary fixture) · Esc: pause";
-        GD.Print("PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 world=fixture");
+        _status.Text = "PIKE ENCOUNTER · Shallow grass → root refuge → deep wood maze · Pike stationary · Esc: pause";
+        GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed}");
     }
 
     private void Fail(string diagnostic)

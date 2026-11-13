@@ -1,0 +1,418 @@
+{
+  "Assets": [
+    {
+      "Id": "FAF-PLANT-010A",
+      "Family": "ribbon_grass",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_010a_ribbon_grass.glb",
+      "GlbSha256": "655d2cdd44934aa3b5547b9eda57374c4c17ef237096d52975d2fcbdb588ee07",
+      "Wrapper": null,
+      "Seed": 7101,
+      "Size": [
+        0.88825,
+        0.75645,
+        0.83008
+      ],
+      "Triangles": 648,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-010B",
+      "Family": "ribbon_grass",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_010b_ribbon_grass.glb",
+      "GlbSha256": "43933e9ba6c96b2ecac51cae6843d82f7c51fc8414e9ed9ece8dc6b242c91933",
+      "Wrapper": null,
+      "Seed": 7102,
+      "Size": [
+        1.98212,
+        1.39433,
+        1.738
+      ],
+      "Triangles": 972,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-010C",
+      "Family": "ribbon_grass",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_010c_ribbon_grass.glb",
+      "GlbSha256": "330705626a8b16d9e2163c39923c086a4a890b2e4c775d660d2676980b1e7d4b",
+      "Wrapper": null,
+      "Seed": 7103,
+      "Size": [
+        3.1931,
+        2.69423,
+        3.57745
+      ],
+      "Triangles": 1332,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-011A",
+      "Family": "branching_waterweed",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_011a_branching_waterweed.glb",
+      "GlbSha256": "8e0b3876fadc43ca2955ddf0389786bbd6f1e73490de943834a0bd21b08b77ac",
+      "Wrapper": null,
+      "Seed": 7201,
+      "Size": [
+        0.78665,
+        0.74354,
+        1.56741
+      ],
+      "Triangles": 610,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-011B",
+      "Family": "branching_waterweed",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_011b_branching_waterweed.glb",
+      "GlbSha256": "672af9c62ec0ad1f5950406d0e036e48c97d15d1357000b09f240d750fb4bcf8",
+      "Wrapper": null,
+      "Seed": 7202,
+      "Size": [
+        1.50287,
+        1.63175,
+        1.16765
+      ],
+      "Triangles": 924,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-011C",
+      "Family": "branching_waterweed",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_011c_branching_waterweed.glb",
+      "GlbSha256": "f65c74de35d40e54ccef5c0e33ebe010a733edec931d4520be08278202ac5a3a",
+      "Wrapper": null,
+      "Seed": 7203,
+      "Size": [
+        2.11168,
+        2.30081,
+        1.55539
+      ],
+      "Triangles": 1424,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-012A",
+      "Family": "coontail",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_012a_coontail.glb",
+      "GlbSha256": "181a989a1ff87e19a4cf171eaaf9f3d969c21ec541d8fbb673ba03d65b154469",
+      "Wrapper": null,
+      "Seed": 7301,
+      "Size": [
+        0.80066,
+        0.77929,
+        0.83731
+      ],
+      "Triangles": 910,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-012B",
+      "Family": "coontail",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_012b_coontail.glb",
+      "GlbSha256": "4d89ce1af0e7b4fee19677637956e7a93e223af9b4704e84dae5cd909fd32587",
+      "Wrapper": null,
+      "Seed": 7302,
+      "Size": [
+        1.19073,
+        1.08305,
+        1.5779
+      ],
+      "Triangles": 1488,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-012C",
+      "Family": "coontail",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_012c_coontail.glb",
+      "GlbSha256": "acac14e9a18738b7b08ed43c6702ba6af13445776aa74167962ddc08f15c6d87",
+      "Wrapper": null,
+      "Seed": 7303,
+      "Size": [
+        3.11462,
+        3.25617,
+        0.90604
+      ],
+      "Triangles": 1274,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-013A",
+      "Family": "broad_pondweed",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_013a_broad_pondweed.glb",
+      "GlbSha256": "07f2069d3021f12eaec16ac7360a00e87308cebdb4360a428b3c407a3e377589",
+      "Wrapper": null,
+      "Seed": 7401,
+      "Size": [
+        0.84387,
+        0.83339,
+        1.0879
+      ],
+      "Triangles": 640,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-013B",
+      "Family": "broad_pondweed",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_013b_broad_pondweed.glb",
+      "GlbSha256": "bfce88f2ed28ab405c89e5c3dcc42481fce079a1b6eec74af71c6ddc9c500852",
+      "Wrapper": null,
+      "Seed": 7402,
+      "Size": [
+        1.03729,
+        1.09381,
+        1.6193
+      ],
+      "Triangles": 1148,
+      "Materials": 1,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-014A",
+      "Family": "rooted_thicket",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_014a_rooted_thicket.glb",
+      "GlbSha256": "39ebad2234c0f897bcc6936ffdf191fa96e9887609bdd4a1e202a80e8a7230ef",
+      "Wrapper": null,
+      "Seed": 7501,
+      "Size": [
+        1.5706,
+        1.50837,
+        1.31408
+      ],
+      "Triangles": 2472,
+      "Materials": 2,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-PLANT-014B",
+      "Family": "rooted_thicket",
+      "Source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "SourceSha256": "988f818988842961f89d45cae3c18ae166ed441f32746a47c230c53580e0df99",
+      "Glb": "res://assets/faf/pond/plants/plant_014b_rooted_thicket.glb",
+      "GlbSha256": "2cf796b20011cb40b38c85cbb271735b455c1e052ddd4f6386b5c43aa0f464de",
+      "Wrapper": null,
+      "Seed": 7502,
+      "Size": [
+        2.26964,
+        2.03437,
+        1.87908
+      ],
+      "Triangles": 4256,
+      "Materials": 2,
+      "CollisionShapes": 0
+    },
+    {
+      "Id": "FAF-WOOD-005A",
+      "Family": "long_fallen_tree",
+      "Source": "assets/faf/pond/wood/wood_005a_long_fallen_tree.blend",
+      "SourceSha256": "466516120e2a20b8a2c04ca91634a7cbe2943233bfcc2f3a8dcf57a8bd2a8eb2",
+      "Glb": "res://assets/faf/pond/wood/wood_005a_long_fallen_tree.glb",
+      "GlbSha256": "dac46180b79c027a187ce4568d200a7db30d724b97897c6ab8107808267f4cbe",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_005a_long_fallen_tree.tscn",
+      "Seed": 5101,
+      "Size": [
+        4.36466,
+        14.90187,
+        2.27623
+      ],
+      "Triangles": 484,
+      "Materials": 4,
+      "CollisionShapes": 18
+    },
+    {
+      "Id": "FAF-WOOD-005B",
+      "Family": "long_fallen_tree",
+      "Source": "assets/faf/pond/wood/wood_005b_bent_fallen_tree.blend",
+      "SourceSha256": "2bc04b2ceb2451ffdb1b5efe6186e8b49d2341021f3689027f58f39a92732e5d",
+      "Glb": "res://assets/faf/pond/wood/wood_005b_bent_fallen_tree.glb",
+      "GlbSha256": "876a46ff40806d39195c5a7daf18a5985a69e2995d0eba9e9504a578f1dfb7f0",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_005b_bent_fallen_tree.tscn",
+      "Seed": 5102,
+      "Size": [
+        5.12447,
+        17.60899,
+        2.60134
+      ],
+      "Triangles": 484,
+      "Materials": 4,
+      "CollisionShapes": 18
+    },
+    {
+      "Id": "FAF-WOOD-006A",
+      "Family": "forked_fallen_log",
+      "Source": "assets/faf/pond/wood/wood_006a_forked_fallen_log.blend",
+      "SourceSha256": "6f04b392ebccb6add6b20b11186a2b32dc60643f2da23adb52c0bf4b3519d967",
+      "Glb": "res://assets/faf/pond/wood/wood_006a_forked_fallen_log.glb",
+      "GlbSha256": "1ab36c579d9bd541a02f993e5abb6fab7105042035fb3163b00aa7a0c1f24a95",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_006a_forked_fallen_log.tscn",
+      "Seed": 6201,
+      "Size": [
+        7.24856,
+        10.78906,
+        2.65193
+      ],
+      "Triangles": 294,
+      "Materials": 4,
+      "CollisionShapes": 12
+    },
+    {
+      "Id": "FAF-WOOD-006B",
+      "Family": "forked_fallen_log",
+      "Source": "assets/faf/pond/wood/wood_006b_high_fork_log.blend",
+      "SourceSha256": "e7fbf13dc65b10744ad8582c8a646e2eace0ab4572c9bc2e9d329dd3928d8ad4",
+      "Glb": "res://assets/faf/pond/wood/wood_006b_high_fork_log.glb",
+      "GlbSha256": "e0cedebe8e09d59120d7861ecd300032bd1edfebed9cd264d8065531c81e4031",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_006b_high_fork_log.tscn",
+      "Seed": 6202,
+      "Size": [
+        9.64428,
+        10.85698,
+        3.03098
+      ],
+      "Triangles": 294,
+      "Materials": 4,
+      "CollisionShapes": 12
+    },
+    {
+      "Id": "FAF-WOOD-007A",
+      "Family": "root_ball_tree",
+      "Source": "assets/faf/pond/wood/wood_007a_open_root_ball.blend",
+      "SourceSha256": "0fb2ac92ed757a09fe46dd112145bca04d0c0db73b105f42f46f12108ff8f7b0",
+      "Glb": "res://assets/faf/pond/wood/wood_007a_open_root_ball.glb",
+      "GlbSha256": "ca6c76025c6543a818c65ba27d51a96087272f641726796232108bb0e46e21ae",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_007a_open_root_ball.tscn",
+      "Seed": 7301,
+      "Size": [
+        6.18922,
+        10.00797,
+        2.71252
+      ],
+      "Triangles": 524,
+      "Materials": 4,
+      "CollisionShapes": 23
+    },
+    {
+      "Id": "FAF-WOOD-007B",
+      "Family": "root_ball_tree",
+      "Source": "assets/faf/pond/wood/wood_007b_broad_root_ball.blend",
+      "SourceSha256": "93f5cd349ec563789391dfc7e953bc5d1f59f25e62a0d15ed256ff8edae8ac2a",
+      "Glb": "res://assets/faf/pond/wood/wood_007b_broad_root_ball.glb",
+      "GlbSha256": "ab26828fc2a45040779e086c16d7246e7e24c7c7109d25e0a116a523f855968b",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_007b_broad_root_ball.tscn",
+      "Seed": 7302,
+      "Size": [
+        6.87501,
+        10.05934,
+        3.21977
+      ],
+      "Triangles": 616,
+      "Materials": 4,
+      "CollisionShapes": 27
+    },
+    {
+      "Id": "FAF-WOOD-008A",
+      "Family": "split_hollow_log",
+      "Source": "assets/faf/pond/wood/wood_008a_split_decayed_log.blend",
+      "SourceSha256": "ecb981ab3da5d1840bac2a5559bbab9436b7271f8f4bc66c34255443534a821d",
+      "Glb": "res://assets/faf/pond/wood/wood_008a_split_decayed_log.glb",
+      "GlbSha256": "fec81b9223d4abd786bad6d9472ca1c7b76e82c51e132f0e0cdcf0e6e968cad5",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_008a_split_decayed_log.tscn",
+      "Seed": 8401,
+      "Size": [
+        4.53254,
+        7.7,
+        3.86851
+      ],
+      "Triangles": 972,
+      "Materials": 4,
+      "CollisionShapes": 21
+    },
+    {
+      "Id": "FAF-WOOD-008B",
+      "Family": "split_hollow_log",
+      "Source": "assets/faf/pond/wood/wood_008b_broad_broken_hollow.blend",
+      "SourceSha256": "5ccf65bbf242a024bc0806fa5ae9e90a8e4038989c0338f89047101f68a836b0",
+      "Glb": "res://assets/faf/pond/wood/wood_008b_broad_broken_hollow.glb",
+      "GlbSha256": "77e3389ce4e4846eb0f1e604087cb2b8acd566ec58a7122c7081b71a5e42142e",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_008b_broad_broken_hollow.tscn",
+      "Seed": 8402,
+      "Size": [
+        5.28269,
+        9.2,
+        4.52482
+      ],
+      "Triangles": 828,
+      "Materials": 4,
+      "CollisionShapes": 21
+    },
+    {
+      "Id": "FAF-WOOD-009A",
+      "Family": "sunken_branch_crown",
+      "Source": "assets/faf/pond/wood/wood_009a_sunken_branch_crown.blend",
+      "SourceSha256": "74873107f4d84d8754914d97aa6e6a191c097ab6483eb1d70ffa547f69444499",
+      "Glb": "res://assets/faf/pond/wood/wood_009a_sunken_branch_crown.glb",
+      "GlbSha256": "1dcb17464bba411d4e4c6dfcbefba31aae732a58ba72bffc6b221b91ea35915e",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_009a_sunken_branch_crown.tscn",
+      "Seed": 9501,
+      "Size": [
+        8.67986,
+        10.4718,
+        4.80898
+      ],
+      "Triangles": 408,
+      "Materials": 4,
+      "CollisionShapes": 18
+    },
+    {
+      "Id": "FAF-WOOD-009B",
+      "Family": "sunken_branch_crown",
+      "Source": "assets/faf/pond/wood/wood_009b_high_branch_crown.blend",
+      "SourceSha256": "de0a9e81b1e7ae3e03e49ea8b5715cccdc2d100d2a4a270a4f1b464ca8ae1454",
+      "Glb": "res://assets/faf/pond/wood/wood_009b_high_branch_crown.glb",
+      "GlbSha256": "5d82a33b8f6e30a7c9fb1426e34742bdce9c6222c913072f7c9f22f1aa9589de",
+      "Wrapper": "res://scenes/faf_pond_wood_002/wood_009b_high_branch_crown.tscn",
+      "Seed": 9502,
+      "Size": [
+        8.76287,
+        12.40862,
+        5.26293
+      ],
+      "Triangles": 516,
+      "Materials": 4,
+      "CollisionShapes": 23
+    }
+  ]
+}

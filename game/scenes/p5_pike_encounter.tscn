@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/PikeEncounter.cs" id="1_encounter"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
@@ -8,18 +8,9 @@
 [sub_resource type="SphereShape3D" id="fish_shape"]
 radius = 0.48
 
-[sub_resource type="BoxMesh" id="basin_mesh"]
-size = Vector3(80, 1, 80)
-
-[sub_resource type="BoxShape3D" id="basin_shape"]
-size = Vector3(80, 1, 80)
-
-[sub_resource type="StandardMaterial3D" id="basin_material"]
-albedo_color = Color(0.19, 0.24, 0.17, 1)
-
 [sub_resource type="CapsuleShape3D" id="pike_shape"]
-radius = 0.45
-height = 2.8
+radius = 0.24
+height = 1.15
 
 [node name="PikeEncounter" type="Node3D"]
 script = ExtResource("1_encounter")
@@ -28,20 +19,8 @@ script = ExtResource("1_encounter")
 rotation = Vector3(-0.7, -0.5, 0)
 light_energy = 1.4
 
-[node name="FixtureFloor" type="StaticBody3D" parent="."]
-position = Vector3(0, -4.5, 0)
-collision_layer = 1
-collision_mask = 0
-
-[node name="Mesh" type="MeshInstance3D" parent="FixtureFloor"]
-mesh = SubResource("basin_mesh")
-surface_material_override/0 = SubResource("basin_material")
-
-[node name="Collision" type="CollisionShape3D" parent="FixtureFloor"]
-shape = SubResource("basin_shape")
-
 [node name="Fish" type="CharacterBody3D" parent="."]
-position = Vector3(0, 0, 5)
+position = Vector3(13, 1, 24)
 collision_layer = 1
 collision_mask = 1
 script = ExtResource("2_fish")
@@ -56,10 +35,11 @@ script = ExtResource("3_camera")
 [node name="Camera3D" type="Camera3D" parent="Fish/CameraRig"]
 current = true
 
-[node name="NorthernPike" type="StaticBody3D" parent="."]
-position = Vector3(0, 0, -5)
+[node name="NorthernPike" type="CharacterBody3D" parent="."]
+position = Vector3(0, 0, 5)
 collision_layer = 1
-collision_mask = 0
+collision_mask = 1
+motion_mode = 1
 
 [node name="Collision" type="CollisionShape3D" parent="NorthernPike"]
 rotation = Vector3(1.5707964, 0, 0)
