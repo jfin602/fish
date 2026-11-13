@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://scripts/PikeEncounter.cs" id="1_encounter"]
 [ext_resource type="Script" path="res://scripts/FishController.cs" id="2_fish"]
 [ext_resource type="Script" path="res://scripts/FollowCamera.cs" id="3_camera"]
 [ext_resource type="Resource" path="res://resources/swim_tuning.tres" id="4_tuning"]
+[ext_resource type="Script" path="res://scripts/PikeActor.cs" id="5_pike"]
 
 [sub_resource type="SphereShape3D" id="fish_shape"]
 radius = 0.48
@@ -40,6 +41,7 @@ position = Vector3(0, 0, 5)
 collision_layer = 1
 collision_mask = 1
 motion_mode = 1
+script = ExtResource("5_pike")
 
 [node name="Collision" type="CollisionShape3D" parent="NorthernPike"]
 rotation = Vector3(1.5707964, 0, 0)

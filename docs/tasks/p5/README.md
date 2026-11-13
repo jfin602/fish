@@ -1,6 +1,6 @@
 # P5 — Stealth, feed, escape and grow
 
-**Status: P1–P3 CHECKPOINTED; P4 SOURCE IMPLEMENTED IN WORKING TREE / RUNNER CHECKPOINT PENDING.** P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md). P1 routes to an isolated Bluegill/Pike fixture; [P1 evidence](qualification/p1-routing.md) records its checks. [P2 source evidence](qualification/p2-cover.md) records strict new FAF pack intake and the connected three-area cover fixture. [P3 source evidence](qualification/p3-perception.md) records bounded world-space sight. [P4 source evidence](qualification/p4-disturbance.md) records movement cues, real cover attenuation and focused headless checks. Native gameplay remains unobserved; P5–P13 remain unexecuted and no P5 Gate is qualified.
+**Status: P1–P4 CHECKPOINTED; P5 SOURCE CHECKED IN WORKING TREE / RUNNER CHECKPOINT PENDING.** P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md). P1–P4 establish fixture routing, verified FAF cover, bounded world-space sight and movement cues. [P5 source evidence](qualification/p5-pike-ai.md) records the physical Pike actor, sensed-only memory, headless catch/search checks and regressions. Native gameplay remains unobserved; P6 is the next manual M1 review and no P5 Gate is qualified.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [New FAF cover intake](stealth-cover-asset-intake.md) · [P5 approved design](../../planning/p5/stealth-foundation.md) · [stealth system](../../systems/stealth-and-detection.md) · [ecology/growth](../../systems/ecology-and-growth.md) · [roadmap](../../roadmap.md) · [validation](../../validation.md) · [runner](../../phase-runner.md)
 
@@ -52,4 +52,4 @@ Only once P4's owner handoff and `0.5.0` phase baseline exist, execute intention
 npm run fish:phase -- p5
 ```
 
-The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-species`, `inspect-pond-atmosphere`, `inspect-world-catalog` and `inspect-ocean-equal-input`. P1 added `inspect-pike-encounter`; later P5 tasks add their own focused commands before use. Avoid redundant broad builds. Record actual evidence under `docs/tasks/p5/qualification/`; only an executed final closeout writes `docs/tasks/p5/closeout.md`. [Roadmap](../../roadmap.md) alone owns Gate status.
+The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-pike-encounter`, `inspect-pike-cover`, `inspect-pike-sight`, `inspect-pike-disturbance` and `inspect-pike-ai`. Avoid redundant broad builds. Record actual evidence under `docs/tasks/p5/qualification/`; only an executed final closeout writes `docs/tasks/p5/closeout.md`. [Roadmap](../../roadmap.md) alone owns Gate status.

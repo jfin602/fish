@@ -37,7 +37,8 @@ public sealed class SightEnvironment
 public readonly record struct SoftSightCover(string FafId, Aabb VisibleBounds);
 public readonly record struct SightTarget(Vector3 Position, float Radius, float Contrast);
 public readonly record struct SightEvidence(bool Detected, float Strength, string Reason,
-    float Water, float Light, float SoftCover, int ClearRays, int Rays, int WaterSamples);
+    float Water, float Light, float SoftCover, int ClearRays, int Rays, int WaterSamples,
+    Vector3? SensedPosition = null, double SensedAt = 0);
 
 /// <summary>One observer/target pair. At most three physics rays, seven water samples and 128 mesh bounds per update.</summary>
 public sealed class WorldSightSensor
@@ -95,7 +96,7 @@ public sealed class WorldSightSensor
         foreach (var offset in offsets)
         {
             var end = fish.Position + offset;
-            var ray = PhysicsRayQueryParameters3D.Create(observer, end, 1, _exclude);
+            using var ray = PhysicsRayQueryParameters3D.Create(observer, end, 1, _exclude);
             if (_space.IntersectRay(ray).Count > 0) continue;
             clear++;
             cover += SoftCoverTransmission.Along(observer, end, _plants, .2f);
@@ -120,7 +121,7 @@ public sealed class WorldSightSensor
             Mathf.Clamp(fish.Contrast, 0f, 1f) * soft;
         return _last = new SightEvidence(score >= Threshold, score,
             score >= Threshold ? "visible" : "weak-evidence", water, light, soft,
-            clear, 3, waterSamples);
+            clear, 3, waterSamples, score >= Threshold ? fish.Position : null, gameSeconds);
     }
 
     private static SightEvidence Empty(string reason) => new(false, 0f, reason, 0f, 0f, 0f, 0, 0, 0);

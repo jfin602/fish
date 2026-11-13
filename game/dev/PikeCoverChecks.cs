@@ -12,6 +12,9 @@ public static class PikeCoverChecks
     public static async void Run(PikeEncounter scene)
     {
         var tree = scene.GetTree();
+        // This legacy P2 clearance probe repositions both actors for long
+        // traversal sequences; suspend the now-live Pike ecology tick.
+        scene.SetPhysicsProcess(false);
         try
         {
             var catalog = PikeCoverFixture.LoadCatalog();

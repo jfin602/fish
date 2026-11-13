@@ -23,6 +23,17 @@ public static class PikeCoverFixture
     public const int Seed = 5202;
     public const float WaterY = 3.5f;
     public const string CatalogPath = "res://assets/faf/pond/p5_cover_catalog.json";
+    // Repeated fixture retry reuses the same imported scene wrappers. Keeping
+    // them alive also avoids a Godot/.NET finalizer race during rapid scene churn.
+    private static readonly Dictionary<string, PackedScene> ImportedScenes = new();
+
+    private static PackedScene? Scene(string path)
+    {
+        if (ImportedScenes.TryGetValue(path, out var scene)) return scene;
+        scene = ResourceLoader.Load<PackedScene>(path);
+        if (scene is not null) ImportedScenes[path] = scene;
+        return scene;
+    }
 
     // Locations are authored around one continuous bed, with the central x=0
     // crossing and two outside lanes kept open. Each source variant has a role.
@@ -70,8 +81,8 @@ public static class PikeCoverFixture
                 throw new InvalidDataException("P5 cover metadata invalid: " + asset.Id);
             CheckHash(asset.Source, asset.SourceSha256, asset.Id);
             CheckHash(asset.Glb, asset.GlbSha256, asset.Id);
-            if (ResourceLoader.Load<PackedScene>(asset.Glb) is null ||
-                (asset.Wrapper is not null && ResourceLoader.Load<PackedScene>(asset.Wrapper) is null))
+            if (Scene(asset.Glb) is null ||
+                (asset.Wrapper is not null && Scene(asset.Wrapper) is null))
                 throw new InvalidDataException("P5 cover import missing: " + asset.Id);
         }
         var grass = catalog.Assets.Where(a => a.Family == "ribbon_grass")
@@ -195,7 +206,7 @@ public static class PikeCoverFixture
         {
             var asset = byId[placement.Id];
             var path = asset.Wrapper ?? asset.Glb;
-            var node = ResourceLoader.Load<PackedScene>(path)!.Instantiate<Node3D>();
+            var node = Scene(path)!.Instantiate<Node3D>();
             node.Name = placement.Id.Replace("-", "_") + "_" + collection.GetChildCount();
             collection.AddChild(node);
             node.Position = placement.Position;

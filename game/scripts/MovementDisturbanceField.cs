@@ -8,7 +8,7 @@ namespace Fish;
 public readonly record struct MovementCue(Vector3 Position, float Radius, float Strength,
     double CreatedAt);
 public readonly record struct DisturbanceEvidence(float Strength, int Events, bool HardCover,
-    float SoftCover);
+    float SoftCover, Vector3? Position = null, double SensedAt = 0);
 
 /// <summary>Fixture-local movement evidence. Only completed motor ticks advance its clock.</summary>
 public sealed class MovementDisturbanceField
@@ -81,6 +81,8 @@ public sealed class MovementDisturbanceField
         var strongest = 0f;
         var coverAtStrongest = 1f;
         var hardAtStrongest = false;
+        Vector3? position = null;
+        var sensedAt = 0d;
         foreach (var cue in _events)
         {
             var distance = observer.DistanceTo(cue.Position);
@@ -88,16 +90,19 @@ public sealed class MovementDisturbanceField
             var age = Mathf.Clamp(1f - (float)((SimulationSeconds - cue.CreatedAt) / LifetimeSeconds), 0f, 1f);
             var falloff = Mathf.Clamp(1f - distance / cue.Radius, 0f, 1f);
             var soft = SoftCoverTransmission.Along(observer, cue.Position, _plants, .35f);
-            var blocked = _space.IntersectRay(PhysicsRayQueryParameters3D.Create(
-                observer, cue.Position, 1, _exclude)).Count > 0;
+            using var ray = PhysicsRayQueryParameters3D.Create(observer, cue.Position, 1, _exclude);
+            var blocked = _space.IntersectRay(ray).Count > 0;
             // Wood damps a disturbance but cannot erase a recently sensed location.
             var strength = cue.Strength * age * falloff * soft * (blocked ? .4f : 1f);
             if (strength <= strongest) continue;
             strongest = strength;
             coverAtStrongest = soft;
             hardAtStrongest = blocked;
+            position = cue.Position;
+            sensedAt = cue.CreatedAt;
         }
-        return new DisturbanceEvidence(strongest, _events.Count, hardAtStrongest, coverAtStrongest);
+        return new DisturbanceEvidence(strongest, _events.Count, hardAtStrongest,
+            coverAtStrongest, position, sensedAt);
     }
 
     private static bool Finite(Vector3 value) => float.IsFinite(value.X) &&

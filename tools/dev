@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|inspect-pike-ai|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -45,7 +45,11 @@ smoke() {
   logged smoke 90 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --smoke
   grep -Fq 'FISH_SMOKE_OK main scene and C# scripts executed' "$LOGS/smoke.log" || { echo 'C# smoke marker missing' >&2; return 1; }
 }
-scene_tool() { local label=$1; shift; logged "$label" 30 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- "$@"; }
+scene_tool() {
+  local label=$1 profile; shift
+  profile=$(mktemp -d "$ROOT/artifacts/scene-tool.XXXXXX")
+  logged "$label" 30 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- "$@"
+}
 missing_scene_check() {
   local log="$LOGS/missing-scene.log" status=0
   timeout --signal=TERM --kill-after=5s 30s "${GODOT_CMD[@]}" --headless --path "$PROJECT" --script res://dev/scene_tool.gd -- inspect res://scenes/does-not-exist.tscn >"$log" 2>&1 || status=$?
@@ -150,6 +154,12 @@ case "${1:-help}" in
     profile=$(mktemp -d "$ROOT/artifacts/pike-disturbance.XXXXXX")
     logged pike-disturbance 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --pike-disturbance-check
     grep -Fq 'PIKE_DISTURBANCE_CHECK_OK' "$LOGS/pike-disturbance.log" || { echo 'Pike disturbance marker missing' >&2; exit 1; }
+    ;;
+  inspect-pike-ai)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/pike-ai.XXXXXX")
+    logged pike-ai 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --pike-ai-check
+    grep -Fq 'PIKE_AI_CHECK_OK' "$LOGS/pike-ai.log" || { echo 'Pike AI marker missing' >&2; exit 1; }
     ;;
   inspect-pike-sight)
     need_tools

@@ -7,16 +7,22 @@ namespace Fish;
 
 public readonly record struct PikeSensoryEvidence(SightEvidence Sight, DisturbanceEvidence Disturbance);
 
-/// <summary>Session-local P5 entry fixture. The Pike is a stationary actor until later tasks add AI.</summary>
+/// <summary>Session-local Pike encounter. Outcomes never alter a persistent life.</summary>
 public partial class PikeEncounter : Node3D
 {
     private FishController _fish = null!;
+    private PikeActor _pike = null!;
+    private AnimationPlayer? _pikeAnimation;
+    private CharacterEntry? _pikeEntry;
     private Label _status = null!;
     private Control _menu = null!;
     private Button _retry = null!;
     private Button _resume = null!;
     private bool _transitioning;
     private bool _failed;
+    private bool _ended;
+    private string _outcome = "active";
+    public string Outcome => _outcome;
     public IReadOnlyList<PikeCoverPlacement> CoverPlan { get; private set; } = Array.Empty<PikeCoverPlacement>();
     public WorldSightSensor? PikeSight { get; private set; }
     public SightEnvironment? SightWater { get; private set; }
@@ -26,9 +32,33 @@ public partial class PikeEncounter : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_failed || _transitioning || MovementCues is null) return;
+        if (_failed || _transitioning || _ended || MovementCues is null || _pike is null) return;
         MovementCues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
             _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
+        var observed = ObserveFish();
+        var now = MovementCues.SimulationSeconds;
+        _pike.Tick(observed.Sight, observed.Disturbance, now, (float)delta, GetTree().Paused);
+        UpdatePikeAnimation();
+        if (_pike.Mind.StrikeReady)
+        {
+            // A committed strike needs fresh, clear contact at physical bite range.
+            PikeSight!.Reset();
+            var close = ObserveFish().Sight;
+            if (close.Detected && close.ClearRays > 0 &&
+                _pike.GlobalPosition.DistanceTo(_fish.GlobalPosition) <= 1.15f &&
+                (-_pike.GlobalBasis.Z).Dot((_fish.GlobalPosition - _pike.GlobalPosition).Normalized()) > .35f)
+            {
+                _pike.Mind.Catch(now);
+                Finish("caught", "Caught by the Pike after a committed strike.");
+                return;
+            }
+        }
+        if (_pike.Mind.Escaped)
+        {
+            Finish("escaped", "Escaped: the Pike searched its last sensed area and disengaged.");
+            return;
+        }
+        _status.Text = $"PIKE ENCOUNTER · {_pike.Mind.Mode} · Shallow grass → roots → deep wood · Esc: pause";
     }
 
     public PikeSensoryEvidence ObserveFish()
@@ -70,6 +100,8 @@ public partial class PikeEncounter : Node3D
             PikeSightChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-disturbance-check"))
             PikeDisturbanceChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-ai-check"))
+            PikeAiChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -82,11 +114,14 @@ public partial class PikeEncounter : Node3D
         { Fail(diagnostic); return; }
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
-        var actor = GetNode<CharacterBody3D>("NorthernPike");
+        var actor = GetNode<PikeActor>("NorthernPike");
+        _pike = actor;
         pikeModel!.Name = "PikeVisual";
         actor.AddChild(pikeModel);
         pikeModel.Transform = pike!.PresentationTransform;
         animation!.Play(pike.GlideClip);
+        _pikeAnimation = animation;
+        _pikeEntry = pike;
         var plants = PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("Cover"));
         PikeSight = new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
             actor.GetRid(), _fish.GetRid());
@@ -94,6 +129,7 @@ public partial class PikeEncounter : Node3D
             actor.GetRid(), _fish.GetRid());
         SightWater = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
             PikeCoverFixture.FixtureSediment, SolarState.At(.5));
+        actor.Configure();
         var preferences = new DisplayPreferences();
         preferences.Load();
         _fish.ConfigureMouse(preferences.MouseSensitivity, preferences.InvertMouseY);
@@ -103,7 +139,7 @@ public partial class PikeEncounter : Node3D
         _fish.ClearAndDisarmInput();
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-        _status.Text = "PIKE ENCOUNTER · Shallow grass → root refuge → deep wood maze · Pike stationary · Esc: pause";
+        _status.Text = "PIKE ENCOUNTER · Shallow grass → root refuge → deep wood maze · Esc: pause";
         GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed}");
     }
 
@@ -111,6 +147,7 @@ public partial class PikeEncounter : Node3D
     {
         PikeSight?.Reset();
         MovementCues?.Reset();
+        _pike?.ResetActor();
         _failed = true;
         _resume.Disabled = true;
         DemoSelection.Clear();
@@ -125,7 +162,7 @@ public partial class PikeEncounter : Node3D
 
     public override void _Input(InputEvent @event)
     {
-        if (_transitioning || _failed || @event is not InputEventKey { Pressed: true, Echo: false } key ||
+        if (_transitioning || _failed || _ended || @event is not InputEventKey { Pressed: true, Echo: false } key ||
             key.Keycode != Key.Escape) return;
         if (_menu.Visible) Resume(); else Pause();
         GetViewport().SetInputAsHandled();
@@ -175,7 +212,7 @@ public partial class PikeEncounter : Node3D
 
     private void Resume()
     {
-        if (_failed || _transitioning) return;
+        if (_failed || _transitioning || _ended) return;
         _fish.ClearAndDisarmInput();
         _menu.Visible = false;
         GetTree().Paused = false;
@@ -186,11 +223,39 @@ public partial class PikeEncounter : Node3D
     private void Retry() => Leave(PikeEncounterAssets.ScenePath);
     private void ReturnToWorldSelect() => Leave("res://scenes/world_select.tscn");
 
+    private void Finish(string outcome, string message)
+    {
+        _outcome = outcome;
+        _ended = true;
+        _fish.ClearAndDisarmInput();
+        GetTree().Paused = true;
+        Input.MouseMode = Input.MouseModeEnum.Visible;
+        _status.Text = message + " Retry or return to World Select.";
+        _resume.Disabled = true;
+        _menu.Visible = true;
+        _retry.GrabFocus();
+        GD.Print($"PIKE_ENCOUNTER_OUTCOME outcome={outcome} seconds={MovementCues?.SimulationSeconds:F2}");
+    }
+
+    private void UpdatePikeAnimation()
+    {
+        if (_pikeAnimation is null || _pikeEntry is null) return;
+        var clip = _pike.Mind.Mode switch
+        {
+            PikeMode.Chase => _pikeEntry.FastClip,
+            PikeMode.Commit when _pike.Mind.StrikeReady => _pikeEntry.FastClip,
+            PikeMode.Investigate or PikeMode.Search => _pikeEntry.SwimClip,
+            _ => _pikeEntry.GlideClip,
+        };
+        if (_pikeAnimation.CurrentAnimation != clip) _pikeAnimation.Play(clip);
+    }
+
     private void Leave(string scene)
     {
         if (_transitioning) return;
         PikeSight?.Reset();
         MovementCues?.Reset();
+        _pike?.ResetActor();
         _transitioning = true;
         _fish.ClearAndDisarmInput();
         GetTree().Paused = false;

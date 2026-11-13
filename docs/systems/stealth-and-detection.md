@@ -2,7 +2,7 @@
 
 ## Status, owner decision, and boundaries
 
-**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. P5 P3 implements a bounded visual query in the isolated Pike Encounter, with headless checks and no native gameplay qualification. The remaining mechanics in this document are working designs. P4 supplies physically usable cover networks, not predator pursuit or gameplay stealth state.
+**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. P5 P3–P5 implement bounded sight, movement cues and one sensed-only physical Pike in the isolated Pike Encounter, with headless checks and no native gameplay qualification. The remaining mechanics in this document are working designs. Ordinary Pond and Ocean remain predator-free test worlds.
 
 > Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.
 
@@ -57,7 +57,7 @@ A player should generally understand why a predator saw them, why a hiding place
 
 ## P5 isolated encounter foundation
 
-The owner approved [M1 — Survive the Pike](../planning/p5/stealth-foundation.md) as a **dedicated playable Godot scene** reached through a third World Select card, bypassing Character Select and automatically using Bluegill `FAF-FISH-006` opposite Northern Pike `FAF-FISH-010`. This is a development scenario within the existing freshwater eligibility rules, not a third habitat. Ordinary Ocean/Pond exploration and visual tests must remain untouched. The initial caught/escaped result is an ephemeral scene outcome, not the persistent death/story pipeline. Scene reset/return must clear AI awareness and movement state. F1–F8 in the plan establish the implementation order; no P5 behavior is yet implemented or qualified.
+The owner approved [M1 — Survive the Pike](../planning/p5/stealth-foundation.md) as a **dedicated playable Godot scene** reached through a third World Select card, bypassing Character Select and automatically using Bluegill `FAF-FISH-006` opposite Northern Pike `FAF-FISH-010`. This is a development scenario within the existing freshwater eligibility rules, not a third habitat. Ordinary Ocean/Pond exploration and visual tests remain untouched. P5 P5 implements ephemeral caught/escaped results and resets AI awareness and movement on retry/return; [source evidence](../tasks/p5/qualification/p5-pike-ai.md) is headless only. Native fairness, player-controlled hidden escape and owner judgment remain for P6.
 
 ## Implementation and scope sequence
 
