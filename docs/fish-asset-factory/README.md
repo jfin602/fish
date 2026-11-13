@@ -34,11 +34,15 @@ The first original vegetation pack is [FAF-PLANT-001–003](plant-pack-001/READM
 
 The first Pond-only [foliage pack](pond-foliage-pack-001/README.md) adds **FAF-PLANT-004–009**: 13 lily, grass, cattail, reed, submerged algae and floating muck variants. It has a separate editable Blender master, deterministic family generators, Pond-tagged GLBs and an isolated Forward+ shallow-bank proof. It does not enter Ocean or normal play.
 
+The isolated [Pond stealth vegetation pack](pond-stealth-vegetation-pack-001/README.md) adds **FAF-PLANT-010–014**: thirteen structural variants across submerged ribbon grass, branching waterweed, coontail, broad pondweed and rooted thicket. A deterministic Blender source, individual Pond GLBs, import checks and an isolated Forward+ traversal proof establish candidate soft cover; no normal-world placement or stealth sensing is included.
+
 The first Pond-only [insect pack](pond-insect-pack-001/README.md) registers **FAF-INSECT-001–002** with two common green darner nymphs and two backswimmers. Four individually skinned Blender masters and GLBs have looping ambient Actions, Pond metadata, focused imported-clip checks and an isolated Forward+ shallow-bank proof. Actual 3.8 m fish-camera readability is limited; normal play remains unchanged.
 
 The first Pond-only [creature pack](pond-creature-pack-001/README.md) registers **FAF-CREATURE-001–003**: a northern leopard frog, northern water snake and common snapping turtle. Three original deforming rigs, editable Blender masters, Pond-tagged GLBs, species-specific Actions and an isolated Forward+ bank/waterline proof passed focused source, export and imported-clip checks. No gameplay or Ocean scene is wired to them; Pond style owner lock remains open.
 
 The first Pond [wood and cover pack](pond-wood-pack-001/README.md) registers **FAF-WOOD-001–004**: twelve distinct fallen-log, hollow-trunk, stump and branch/root variants. Source-controlled Blender recipes, editable masters, Pond-tagged GLBs, simple scene collision wrappers and an isolated Forward+ traversal fixture preserve the current Ocean and P3 worlds. Its hero opening is qualified with the existing fish controller and follow camera in both directions; style refinement remains separately recorded.
+
+The isolated [large Pond wood and cover expansion](pond-wood-pack-002/README.md) adds **FAF-WOOD-005–009**: ten long-tree, fork, root-ball, split-hollow and branch-crown variants with segment-level collision wrappers. Blender MCP family views, Godot import/clearance checks, and a native Forward+ real-controller route matrix establish candidate encounter geometry; normal Pond placement and stealth behavior remain separate work.
 
 The first Pond [ground-dressing pack](pond-ground-pack-001/README.md) reserves **FAF-TERRAIN-002A/B** and **FAF-DETAIL-005–007 A/B**: two bank shoulders, two algae-coated stones, two pebble clusters and two leaf-litter clusters. Four shared earthy materials and one broad-frequency basin shader support a single-floor isolated Forward+ placement proof. It does not change the generated Pond or Ocean runtime worlds.
 

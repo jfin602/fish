@@ -21,6 +21,18 @@ public static class EnvironmentClockChecks
             Require(Math.Abs(EnvironmentClock.WrapFraction(-0.25) - 0.75) < 1e-12 &&
                 Math.Abs(EnvironmentClock.WrapFraction(1.25) - 0.25) < 1e-12,
                 "fraction wraparound");
+            clock.ScrubMinutes(15);
+            Require(Math.Abs(clock.HourOfDay - (debug ? 6.25 : 12.25)) < 1e-8,
+                "forward time scrub");
+            clock.ScrubMinutes(-30);
+            Require(Math.Abs(clock.HourOfDay - (debug ? 5.75 : 11.75)) < 1e-8,
+                "reverse time scrub");
+            clock.ScrubMinutes(15);
+            clock.ScrubMinutes(12 * 60);
+            clock.ScrubMinutes(12 * 60);
+            Require(Math.Abs(clock.HourOfDay - (debug ? 6 : 12)) < 1e-8,
+                "time scrub midnight wrap");
+            RequireThrows<ArgumentOutOfRangeException>(() => clock.ScrubMinutes(double.NaN));
             for (var tick = 0; tick <= 240; tick++)
             {
                 var state = SolarState.At(tick / 240.0);

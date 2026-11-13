@@ -1,0 +1,97 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "ambient_energy": 0.428999990224838,
+  "character": "FAF-FISH-006 adult Bluegill",
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "lighting": "Pond Overcast",
+  "motion": {
+    "display": "1920x1200 exclusive fullscreen, VSync disabled, uncapped",
+    "draws": 202.0,
+    "duration_seconds": 8,
+    "end": "(-10.63327, 7.79, -0.000227)",
+    "frames": [
+      {
+        "camera": "[X: (0.554031, 0.0, 0.832496), Y: (0.342379, 0.911515, -0.227855), Z: (-0.758832, 0.411268, 0.505007), O: (-44.30303, 9.621764, 2.06508)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-42.0, 7.79, 0.0)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_00.png",
+        "second": 0.000538,
+        "thrust": 0.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366079, 0.930584, -0.000003), Z: (-0.930584, 0.366079, 0.000007), O: (-42.53613, 9.789999, 0.000004)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-38.63337, 7.79, -0.000024)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_01.png",
+        "second": 1.001836,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366079, 0.930584, -0.000003), Z: (-0.930584, 0.366079, 0.000007), O: (-38.53619, 9.789999, -0.000025)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-34.63343, 7.79, -0.000053)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_02.png",
+        "second": 2.00303,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-34.53622, 9.789999, -0.000054)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-30.63346, 7.79, -0.000082)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_03.png",
+        "second": 3.00439,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-30.53617, 9.789999, -0.000083)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-26.6334, 7.79, -0.000111)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_04.png",
+        "second": 4.00322,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-26.53611, 9.789999, -0.000112)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-22.63335, 7.79, -0.00014)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_05.png",
+        "second": 5.002907,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-22.53606, 9.789999, -0.000141)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-18.6333, 7.79, -0.000169)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_06.png",
+        "second": 6.001781,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-18.53603, 9.789999, -0.00017)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-14.63326, 7.79, -0.000198)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_07.png",
+        "second": 7.001665,
+        "thrust": 1.0
+      },
+      {
+        "camera": "[X: (0.000007, 0.0, 1.0), Y: (0.366078, 0.930584, -0.000003), Z: (-0.930584, 0.366078, 0.000007), O: (-14.53603, 9.789999, -0.000199)]",
+        "fish": "[X: (0.000007, 0.0, 1.0), Y: (0.0, 1.0, 0.0), Z: (-1.0, 0.0, 0.000007), O: (-10.63327, 7.79, -0.000227)]",
+        "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/motion-low/M_08.png",
+        "second": 8.003147,
+        "thrust": 1.0
+      }
+    ],
+    "median_ms": 5.092,
+    "p95_ms": 7.436,
+    "preset": "builtin:keyboard",
+    "primitives": 182240.0,
+    "samples": 1388,
+    "start": "(-42.0, 7.89, 0.0)"
+  },
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "sun_basis": "[X: (-0.288934, -0.957349, 0.0), Y: (0.425554, -0.128435, 0.895772), Z: (-0.857567, 0.258819, 0.444513)]",
+  "sun_color": "(0.8459, 0.7138, 0.4669, 1.0)",
+  "sun_energy": 0.146750375628471,
+  "sun_shadow_enabled": false,
+  "time_hour": 17.0,
+  "viewport": "(1920, 1200)",
+  "views": {},
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

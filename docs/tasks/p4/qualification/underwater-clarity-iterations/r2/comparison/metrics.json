@@ -1,0 +1,178 @@
+{
+  "A10_air": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "baseline_median_ms": 5.35,
+    "baseline_p95_ms": 6.436,
+    "baseline_draws": 205.0,
+    "baseline_primitives": 126522.0,
+    "candidate_median_ms": 5.562,
+    "candidate_p95_ms": 8.042,
+    "candidate_draws": 205.0,
+    "candidate_primitives": 126522.0
+  },
+  "A1_spawn": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      4.29,
+      6.13,
+      21.48
+    ],
+    "baseline_median_ms": 3.931,
+    "baseline_p95_ms": 5.023,
+    "baseline_draws": 179.0,
+    "baseline_primitives": 127302.0,
+    "candidate_median_ms": 4.128,
+    "candidate_p95_ms": 6.209,
+    "candidate_draws": 179.0,
+    "candidate_primitives": 127302.0
+  },
+  "A2_near": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      6.66,
+      6.41,
+      26.08
+    ],
+    "baseline_median_ms": 4.036,
+    "baseline_p95_ms": 5.751,
+    "baseline_draws": 206.0,
+    "baseline_primitives": 129978.0,
+    "candidate_median_ms": 4.265,
+    "candidate_p95_ms": 6.646,
+    "candidate_draws": 206.0,
+    "candidate_primitives": 129978.0
+  },
+  "A3_log": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      3.7,
+      5.17,
+      13.75
+    ],
+    "baseline_median_ms": 4.199,
+    "baseline_p95_ms": 6.596,
+    "baseline_draws": 210.0,
+    "baseline_primitives": 130664.0,
+    "candidate_median_ms": 3.871,
+    "candidate_p95_ms": 5.67,
+    "candidate_draws": 210.0,
+    "candidate_primitives": 130664.0
+  },
+  "A4_shallow": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      5.44,
+      6.42,
+      23.45
+    ],
+    "baseline_median_ms": null,
+    "baseline_p95_ms": null,
+    "baseline_draws": null,
+    "baseline_primitives": null,
+    "candidate_median_ms": null,
+    "candidate_p95_ms": null,
+    "candidate_draws": null,
+    "candidate_primitives": null
+  },
+  "A5_silty": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      3.58,
+      5.49,
+      18.39
+    ],
+    "baseline_median_ms": null,
+    "baseline_p95_ms": null,
+    "baseline_draws": null,
+    "baseline_primitives": null,
+    "candidate_median_ms": null,
+    "candidate_p95_ms": null,
+    "candidate_draws": null,
+    "candidate_primitives": null
+  },
+  "A6_middle": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      3.07,
+      5.78,
+      18.59
+    ],
+    "baseline_median_ms": 3.736,
+    "baseline_p95_ms": 5.147,
+    "baseline_draws": 143.0,
+    "baseline_primitives": 125284.0,
+    "candidate_median_ms": 3.896,
+    "candidate_p95_ms": 5.265,
+    "candidate_draws": 143.0,
+    "candidate_primitives": 125284.0
+  },
+  "A7_deep": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      3.64,
+      6.75,
+      15.75
+    ],
+    "baseline_median_ms": 3.718,
+    "baseline_p95_ms": 5.703,
+    "baseline_draws": 146.0,
+    "baseline_primitives": 127176.0,
+    "candidate_median_ms": 3.721,
+    "candidate_p95_ms": 6.016,
+    "candidate_draws": 146.0,
+    "candidate_primitives": 127176.0
+  },
+  "A8_surface": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      6.28,
+      8.77,
+      29.65
+    ],
+    "baseline_median_ms": null,
+    "baseline_p95_ms": null,
+    "baseline_draws": null,
+    "baseline_primitives": null,
+    "candidate_median_ms": null,
+    "candidate_p95_ms": null,
+    "candidate_draws": null,
+    "candidate_primitives": null
+  },
+  "A9_shade": {
+    "matched_transform": true,
+    "mean_abs_rgb": [
+      2.24,
+      1.6,
+      4.32
+    ],
+    "baseline_median_ms": null,
+    "baseline_p95_ms": null,
+    "baseline_draws": null,
+    "baseline_primitives": null,
+    "candidate_median_ms": null,
+    "candidate_p95_ms": null,
+    "candidate_draws": null,
+    "candidate_primitives": null
+  },
+  "baseline_motion": {
+    "end": "(-10.63327, 7.79, -0.000227)",
+    "median_ms": 4.976,
+    "p95_ms": 7.332,
+    "draws": 202.0,
+    "primitives": 182240.0,
+    "samples": 1363
+  },
+  "candidate_motion": {
+    "end": "(-10.63327, 7.79, -0.000227)",
+    "median_ms": 4.983,
+    "p95_ms": 8.483,
+    "draws": 202.0,
+    "primitives": 182240.0,
+    "samples": 1333
+  }
+}

@@ -17,10 +17,14 @@ uniform float shore_mask_enabled = 0.0;
 uniform float air_fog_begin = 27.0;
 uniform float air_fog_end = 105.0;
 uniform vec3 water_scatter = vec3(0.22, 0.28, 0.105);
+uniform vec3 underwater_scatter = vec3(0.22, 0.28, 0.105);
 uniform float surface_extinction = 0.0;
 uniform float surface_daylight = 1.0;
 uniform float surface_illumination = 1.0;
 uniform vec3 night_surface_glow = vec3(0.0);
+uniform vec3 night_underwater_color = vec3(0.0);
+uniform float night_weight = 0.0;
+uniform float moon_glow = 0.0;
 uniform float reflection_sun_energy = 1.0;
 uniform vec3 reflection_sun_color = vec3(1.0, 0.9, 0.7);
 uniform float reflection_strength = 1.0;
@@ -35,6 +39,22 @@ uniform sampler2D air_depth : hint_depth_texture, filter_nearest;
 varying vec3 surface_world;
 varying vec3 surface_normal;
 varying float shore_blend;
+
+float star_hash(vec2 cell) {
+    vec3 value = fract(vec3(cell.x, cell.y, cell.x) * vec3(0.1031, 0.1030, 0.0973));
+    value += dot(value, value.yzx + 33.33);
+    return fract((value.x + value.y) * value.z);
+}
+
+float night_stars(vec3 direction) {
+    vec2 grid = vec2(atan(direction.z, direction.x) * 0.15915494 + 0.5,
+        acos(clamp(direction.y, -1.0, 1.0)) * 0.31830989) * vec2(520.0, 260.0);
+    vec2 cell = floor(grid);
+    float chosen = step(0.997, star_hash(cell));
+    float point = 1.0 - smoothstep(0.07, 0.20, length(fract(grid) - vec2(0.5)));
+    return chosen * point * (0.55 + 0.45 * star_hash(cell + vec2(19.0, 47.0)))
+        * smoothstep(-0.04, 0.18, direction.y);
+}
 
 vec3 pond_sky(vec3 direction) {
     float height = smoothstep(0.0, 0.9, direction.y);
@@ -110,8 +130,8 @@ void fragment() {
     float glint = pow(sun, 150.0) * (0.7 + 0.3 * ripple);
     vec3 turquoise = mix(surface_dark, surface_light,
         clamp(0.5 + 0.35 * ripple + 0.15 * wave_detail * detail, 0.0, 1.0));
-    // Pond's underside scatters muddy olive light instead of reading as a bright pane.
-    turquoise = mix(turquoise, water_scatter, overcast * 0.85);
+    // The underwater side follows its own water-column color; the air-side muddy transmission stays separate.
+    turquoise = mix(turquoise, underwater_scatter, overcast * 0.85);
     float upward = smoothstep(0.15, 0.65, ray_up.y);
     float deep_cue = camera_depth * upward;
     // Only the overhead interface keeps transmitted light through deep water.
@@ -120,6 +140,29 @@ void fragment() {
              + reflection_sun_color * reflection_sun_energy * (1.0 - 0.95 * overcast) * (vec3(0.55, 0.66, 0.52) * halo + vec3(0.55, 0.58, 0.43) * glint)
              + deep_cue * (mix(vec3(0.09, 0.24, 0.25), vec3(0.08, 0.16, 0.06), overcast)
              + mix(vec3(0.26, 0.31, 0.20), vec3(0.20, 0.22, 0.10), overcast) * halo));
+    // Night water keeps the same dark water-column tone. Celestial light is
+    // transmitted as small directional points instead of a luminous ceiling.
+    ALBEDO = mix(ALBEDO, night_underwater_color, night_weight);
+    if (!FRONT_FACING) {
+        float celestial_transmission = upward * (1.0 - smoothstep(8.0, 24.0,
+            distance(surface_world, CAMERA_POSITION_WORLD)));
+        float celestial = night_stars(ray_up);
+        float moon_disc = pow(sun, 8500.0);
+        float moon_halo = pow(sun, 1100.0);
+        ALBEDO += night_weight * celestial_transmission * (vec3(0.20, 0.24, 0.25) * celestial
+            + moon_glow * vec3(0.13, 0.15, 0.15) * (moon_disc + 0.12 * moon_halo));
+    }
+    // The underside gets broad transmitted light breaks tied to the same wave
+    // phase and sun color. Deep water and night retain a subdued interface.
+    float daylight_amount = clamp((surface_illumination - 0.12) / 0.88, 0.0, 1.0);
+    float folds = sin(surface_world.x * 0.32 + sin(surface_world.z * 0.21 + t * 0.09))
+        * sin(surface_world.z * 0.27 - sin(surface_world.x * 0.25 - t * 0.07));
+    float light_breaks = smoothstep(-0.10, 0.55, 0.70 * folds + 0.30 * ripple);
+    float solar_angle = smoothstep(0.08, 0.5, sun_direction.y);
+    float near_interface = 1.0 - smoothstep(7.0, 22.0,
+        distance(surface_world, CAMERA_POSITION_WORLD));
+    ALBEDO += reflection_sun_color * (0.075 * daylight_amount * solar_angle
+        * light_breaks * near_interface * (1.0 - 0.72 * camera_depth));
     // A faint scattered night-sky cue belongs to the overhead interface only.
     ALBEDO += night_surface_glow * upward * (1.0 - 0.55 * camera_depth)
         * (0.78 + 0.22 * ripple);

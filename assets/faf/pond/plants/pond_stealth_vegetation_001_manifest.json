@@ -1,0 +1,891 @@
+{
+  "pack": "pond_stealth_vegetation_001",
+  "habitat": "pond",
+  "asset_count": 13,
+  "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+  "assets": [
+    {
+      "faf_id": "FAF-PLANT-010A",
+      "habitat": "pond",
+      "family": "ribbon_grass",
+      "variant": "A",
+      "generator": "plants.pond_stealth_vegetation.ribbon_grass.v1",
+      "seed": 7101,
+      "spec": {
+        "height": 0.84,
+        "blade_count": 18,
+        "spread": 0.27,
+        "blade_width": 0.052,
+        "lean": 0.2,
+        "seed": 7101
+      },
+      "intended_zone": "short grass; 0.5\u20131 m shallows",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        0.88825,
+        0.75645,
+        0.83008
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.41048,
+        -0.44491,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.47777,
+        0.31154,
+        0.83008
+      ],
+      "triangles": 648,
+      "materials": 1,
+      "components": [
+        "blades"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_010a_ribbon_grass.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-010B",
+      "habitat": "pond",
+      "family": "ribbon_grass",
+      "variant": "B",
+      "generator": "plants.pond_stealth_vegetation.ribbon_grass.v1",
+      "seed": 7102,
+      "spec": {
+        "height": 1.82,
+        "blade_count": 27,
+        "spread": 0.4,
+        "blade_width": 0.064,
+        "lean": 0.38,
+        "seed": 7102
+      },
+      "intended_zone": "medium grass; 1\u20132 m water",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        1.98212,
+        1.39433,
+        1.738
+      ],
+      "bounds_min_m_blender_xyz": [
+        -1.04196,
+        -0.68257,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.94016,
+        0.71176,
+        1.738
+      ],
+      "triangles": 972,
+      "materials": 1,
+      "components": [
+        "blades"
+      ],
+      "palette": [
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_010b_ribbon_grass.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-010C",
+      "habitat": "pond",
+      "family": "ribbon_grass",
+      "variant": "C",
+      "generator": "plants.pond_stealth_vegetation.ribbon_grass.v1",
+      "seed": 7103,
+      "spec": {
+        "height": 3.58,
+        "blade_count": 37,
+        "spread": 0.53,
+        "blade_width": 0.072,
+        "lean": 0.67,
+        "seed": 7103
+      },
+      "intended_zone": "tall near-surface grass; mud depth 3.2\u20133.7 m",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        3.1931,
+        2.69423,
+        3.57745
+      ],
+      "bounds_min_m_blender_xyz": [
+        -1.77296,
+        -1.39205,
+        0.0
+      ],
+      "bounds_max_m_blender_xyz": [
+        1.42014,
+        1.30218,
+        3.57745
+      ],
+      "triangles": 1332,
+      "materials": 1,
+      "components": [
+        "blades"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_010c_ribbon_grass.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-011A",
+      "habitat": "pond",
+      "family": "branching_waterweed",
+      "variant": "A",
+      "generator": "plants.pond_stealth_vegetation.branching_waterweed.v1",
+      "seed": 7201,
+      "spec": {
+        "height": 1.58,
+        "width": 0.48,
+        "stalk_count": 5,
+        "forks_per_stalk": 3,
+        "leaf_pairs": 2,
+        "seed": 7201
+      },
+      "intended_zone": "narrow upright mid-water",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        0.78665,
+        0.74354,
+        1.56741
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.41731,
+        -0.36275,
+        -0.00364
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.36934,
+        0.38079,
+        1.56376
+      ],
+      "triangles": 610,
+      "materials": 1,
+      "components": [
+        "stems",
+        "leaf_clusters"
+      ],
+      "palette": [
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_011a_branching_waterweed.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-011B",
+      "habitat": "pond",
+      "family": "branching_waterweed",
+      "variant": "B",
+      "generator": "plants.pond_stealth_vegetation.branching_waterweed.v1",
+      "seed": 7202,
+      "spec": {
+        "height": 1.25,
+        "width": 0.82,
+        "stalk_count": 6,
+        "forks_per_stalk": 4,
+        "leaf_pairs": 2,
+        "seed": 7202
+      },
+      "intended_zone": "medium spreading mid-water",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        1.50287,
+        1.63175,
+        1.16765
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.7247,
+        -0.78697,
+        -0.00854
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.77817,
+        0.84478,
+        1.15911
+      ],
+      "triangles": 924,
+      "materials": 1,
+      "components": [
+        "stems",
+        "leaf_clusters"
+      ],
+      "palette": [
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_011b_branching_waterweed.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-011C",
+      "habitat": "pond",
+      "family": "branching_waterweed",
+      "variant": "C",
+      "generator": "plants.pond_stealth_vegetation.branching_waterweed.v1",
+      "seed": 7203,
+      "spec": {
+        "height": 1.55,
+        "width": 1.12,
+        "stalk_count": 8,
+        "forks_per_stalk": 4,
+        "leaf_pairs": 3,
+        "seed": 7203
+      },
+      "intended_zone": "broad porous mass; intermediate depth",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        2.11168,
+        2.30081,
+        1.55539
+      ],
+      "bounds_min_m_blender_xyz": [
+        -1.09252,
+        -1.00757,
+        -0.00882
+      ],
+      "bounds_max_m_blender_xyz": [
+        1.01916,
+        1.29324,
+        1.54658
+      ],
+      "triangles": 1424,
+      "materials": 1,
+      "components": [
+        "stems",
+        "leaf_clusters"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_011c_branching_waterweed.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-012A",
+      "habitat": "pond",
+      "family": "coontail",
+      "variant": "A",
+      "generator": "plants.pond_stealth_vegetation.coontail.v1",
+      "seed": 7301,
+      "spec": {
+        "height": 0.82,
+        "width": 0.62,
+        "stalk_count": 5,
+        "whorls": 5,
+        "horizontal_bias": 0.3,
+        "seed": 7301
+      },
+      "intended_zone": "compact small-fish cover",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        0.80066,
+        0.77929,
+        0.83731
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.36981,
+        -0.37582,
+        -0.00635
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.43085,
+        0.40347,
+        0.83096
+      ],
+      "triangles": 910,
+      "materials": 1,
+      "components": [
+        "stems",
+        "chunky_whorls"
+      ],
+      "palette": [
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_012a_coontail.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-012B",
+      "habitat": "pond",
+      "family": "coontail",
+      "variant": "B",
+      "generator": "plants.pond_stealth_vegetation.coontail.v1",
+      "seed": 7302,
+      "spec": {
+        "height": 1.58,
+        "width": 0.83,
+        "stalk_count": 6,
+        "whorls": 7,
+        "horizontal_bias": 0.36,
+        "seed": 7302
+      },
+      "intended_zone": "tall irregular small-fish cover",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        1.19073,
+        1.08305,
+        1.5779
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.60607,
+        -0.5398,
+        -0.00472
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.58466,
+        0.54325,
+        1.57318
+      ],
+      "triangles": 1488,
+      "materials": 1,
+      "components": [
+        "stems",
+        "chunky_whorls"
+      ],
+      "palette": [
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_012b_coontail.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-012C",
+      "habitat": "pond",
+      "family": "coontail",
+      "variant": "C",
+      "generator": "plants.pond_stealth_vegetation.coontail.v1",
+      "seed": 7303,
+      "spec": {
+        "height": 0.76,
+        "width": 1.36,
+        "stalk_count": 7,
+        "whorls": 5,
+        "horizontal_bias": 0.88,
+        "seed": 7303
+      },
+      "intended_zone": "horizontal bottom growth",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        3.11462,
+        3.25617,
+        0.90604
+      ],
+      "bounds_min_m_blender_xyz": [
+        -1.55331,
+        -1.64466,
+        -0.02062
+      ],
+      "bounds_max_m_blender_xyz": [
+        1.56131,
+        1.6115,
+        0.88541
+      ],
+      "triangles": 1274,
+      "materials": 1,
+      "components": [
+        "stems",
+        "chunky_whorls"
+      ],
+      "palette": [
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_012c_coontail.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-013A",
+      "habitat": "pond",
+      "family": "broad_pondweed",
+      "variant": "A",
+      "generator": "plants.pond_stealth_vegetation.broad_pondweed.v1",
+      "seed": 7401,
+      "spec": {
+        "height": 1.12,
+        "width": 0.65,
+        "stalk_count": 5,
+        "leaves_per_stalk": 3,
+        "leaf_width": 0.18,
+        "seed": 7401
+      },
+      "intended_zone": "shallow transition and log edge",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        0.84387,
+        0.83339,
+        1.0879
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.47327,
+        -0.40361,
+        -0.00497
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.37059,
+        0.42979,
+        1.08293
+      ],
+      "triangles": 640,
+      "materials": 1,
+      "components": [
+        "stems",
+        "broad_leaves"
+      ],
+      "palette": [
+        "yellow_olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_013a_broad_pondweed.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-013B",
+      "habitat": "pond",
+      "family": "broad_pondweed",
+      "variant": "B",
+      "generator": "plants.pond_stealth_vegetation.broad_pondweed.v1",
+      "seed": 7402,
+      "spec": {
+        "height": 1.66,
+        "width": 0.9,
+        "stalk_count": 7,
+        "leaves_per_stalk": 4,
+        "leaf_width": 0.23,
+        "seed": 7402
+      },
+      "intended_zone": "open intermediate-depth leaves",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        1.03729,
+        1.09381,
+        1.6193
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.5235,
+        -0.5711,
+        -0.00488
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.5138,
+        0.52272,
+        1.61442
+      ],
+      "triangles": 1148,
+      "materials": 1,
+      "components": [
+        "stems",
+        "broad_leaves"
+      ],
+      "palette": [
+        "olive"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_013b_broad_pondweed.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-014A",
+      "habitat": "pond",
+      "family": "rooted_thicket",
+      "variant": "A",
+      "generator": "plants.pond_stealth_vegetation.rooted_thicket.v1",
+      "seed": 7501,
+      "spec": {
+        "height": 1.32,
+        "width": 1.05,
+        "stalk_count": 6,
+        "root_count": 6,
+        "crown_density": 3,
+        "seed": 7501
+      },
+      "intended_zone": "rooted hide-behind brush near wood",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        1.5706,
+        1.50837,
+        1.31408
+      ],
+      "bounds_min_m_blender_xyz": [
+        -0.83119,
+        -0.76018,
+        -0.03341
+      ],
+      "bounds_max_m_blender_xyz": [
+        0.73941,
+        0.74819,
+        1.28067
+      ],
+      "triangles": 2472,
+      "materials": 2,
+      "components": [
+        "roots_and_shoots",
+        "crown_foliage"
+      ],
+      "palette": [
+        "brown",
+        "moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_014a_rooted_thicket.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    },
+    {
+      "faf_id": "FAF-PLANT-014B",
+      "habitat": "pond",
+      "family": "rooted_thicket",
+      "variant": "B",
+      "generator": "plants.pond_stealth_vegetation.rooted_thicket.v1",
+      "seed": 7502,
+      "spec": {
+        "height": 1.88,
+        "width": 1.48,
+        "stalk_count": 8,
+        "root_count": 8,
+        "crown_density": 4,
+        "seed": 7502
+      },
+      "intended_zone": "large porous hide-inside brush",
+      "cover_role": "soft visual concealment; no automatic gameplay hiding",
+      "collision": "none (swimmable soft cover)",
+      "dimensions_m_blender_xyz": [
+        2.26964,
+        2.03437,
+        1.87908
+      ],
+      "bounds_min_m_blender_xyz": [
+        -1.19253,
+        -0.88484,
+        -0.0336
+      ],
+      "bounds_max_m_blender_xyz": [
+        1.07712,
+        1.14954,
+        1.84548
+      ],
+      "triangles": 4256,
+      "materials": 2,
+      "components": [
+        "roots_and_shoots",
+        "crown_foliage"
+      ],
+      "palette": [
+        "brown",
+        "deep_moss"
+      ],
+      "origin_m": [
+        0,
+        0,
+        0
+      ],
+      "rotation_rad": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "placement": {
+        "anchor": "mud_root",
+        "root_height_m": 0,
+        "clearance": "maintain open fish/camera lanes between clusters"
+      },
+      "sway_coordinate": "UV.y root=0 tip=1; roots and thick stems remain fixed",
+      "source": "assets/faf/pond/plants/pond_stealth_vegetation_001.blend",
+      "glb": "game/assets/faf/pond/plants/plant_014b_rooted_thicket.glb",
+      "technical_validation_state": "generated; observed checks in pack candidate record",
+      "style_review_state": "candidate; observed views in pack candidate record; owner lock open"
+    }
+  ]
+}

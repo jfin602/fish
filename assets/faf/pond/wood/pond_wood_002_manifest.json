@@ -1,0 +1,2998 @@
+{
+  "pack": "pond-wood-002",
+  "generator": "wood.pond_cover_expansion v1",
+  "asset_count": 10,
+  "assets": [
+    {
+      "faf_id": "FAF-WOOD-005A",
+      "family": "long_fallen_tree",
+      "stem": "wood_005a_long_fallen_tree",
+      "habitat": "pond",
+      "role": "elongated hard-cover landmark",
+      "seed": 5101,
+      "generator_config": {
+        "id": "FAF-WOOD-005A",
+        "stem": "wood_005a_long_fallen_tree",
+        "family": "long_fallen_tree",
+        "seed": 5101,
+        "length": 14.8,
+        "radius": 1.02,
+        "bend": 0.24,
+        "role": "elongated hard-cover landmark"
+      },
+      "dimensions_m": [
+        4.36466,
+        14.90187,
+        2.27623
+      ],
+      "triangle_count": 484,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_005a_long_fallen_tree.blend",
+      "glb": "game/assets/faf/pond/wood/wood_005a_long_fallen_tree.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_005a_long_fallen_tree.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0.0,
+            -7.4,
+            0.9384
+          ],
+          "b": [
+            0.11934402376762154,
+            -5.550000000000001,
+            0.974462445840514
+          ],
+          "radius": 0.9594
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.11934402376762154,
+            -5.550000000000001,
+            0.974462445840514
+          ],
+          "b": [
+            0.22470562748477138,
+            -3.7,
+            0.9894000000000001
+          ],
+          "radius": 0.9404
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.22470562748477138,
+            -3.7,
+            0.9894000000000001
+          ],
+          "b": [
+            0.3042310878027088,
+            -1.85,
+            0.974462445840514
+          ],
+          "radius": 0.907
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3042310878027088,
+            -1.85,
+            0.974462445840514
+          ],
+          "b": [
+            0.35,
+            0.0,
+            0.9384
+          ],
+          "radius": 0.8589
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.35,
+            0.0,
+            0.9384
+          ],
+          "b": [
+            0.35923108780270885,
+            1.85,
+            0.9023375541594861
+          ],
+          "radius": 0.8018
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.35923108780270885,
+            1.85,
+            0.9023375541594861
+          ],
+          "b": [
+            0.3347056274847714,
+            3.7,
+            0.8874
+          ],
+          "radius": 0.7444
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3347056274847714,
+            3.7,
+            0.8874
+          ],
+          "b": [
+            0.2843440237676216,
+            5.550000000000001,
+            0.9023375541594861
+          ],
+          "radius": 0.6957
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.2843440237676216,
+            5.550000000000001,
+            0.9023375541594861
+          ],
+          "b": [
+            0.22000000000000003,
+            7.4,
+            0.9384
+          ],
+          "radius": 0.6614
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.11934402376762154,
+            -5.550000000000001,
+            1.5354624458405142
+          ],
+          "b": [
+            0.6693440237676216,
+            -5.370000000000001,
+            1.770062445840514
+          ],
+          "radius": 0.1705
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.6693440237676216,
+            -5.370000000000001,
+            1.770062445840514
+          ],
+          "b": [
+            1.0193440237676215,
+            -5.200000000000001,
+            1.637462445840514
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3042310878027088,
+            -1.85,
+            1.5354624458405142
+          ],
+          "b": [
+            -0.24576891219729124,
+            -1.6700000000000002,
+            1.770062445840514
+          ],
+          "radius": 0.1705
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.24576891219729124,
+            -1.6700000000000002,
+            1.770062445840514
+          ],
+          "b": [
+            -0.9457689121972912,
+            -1.5,
+            1.800662445840514
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.35,
+            0.0,
+            1.4994
+          ],
+          "b": [
+            0.9,
+            0.18,
+            1.734
+          ],
+          "radius": 0.1705
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.9,
+            0.18,
+            1.734
+          ],
+          "b": [
+            1.9500000000000002,
+            0.35,
+            1.6014
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.35923108780270885,
+            1.85,
+            1.4633375541594862
+          ],
+          "b": [
+            -0.1907689121972912,
+            2.0300000000000002,
+            1.6979375541594863
+          ],
+          "radius": 0.1705
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.1907689121972912,
+            2.0300000000000002,
+            1.6979375541594863
+          ],
+          "b": [
+            -0.5407689121972912,
+            2.2,
+            1.728537554159486
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3347056274847714,
+            3.7,
+            1.4484
+          ],
+          "b": [
+            0.8847056274847714,
+            3.8800000000000003,
+            1.683
+          ],
+          "radius": 0.1705
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.8847056274847714,
+            3.8800000000000003,
+            1.683
+          ],
+          "b": [
+            1.5847056274847713,
+            4.05,
+            1.5504
+          ],
+          "radius": 0.0968
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 18,
+      "openings": [
+        {
+          "name": "both long sides",
+          "classification": "hard-cover travel lane",
+          "fish_clearance_m": 1.2
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "both long-side Fish-controller paths passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-005B",
+      "family": "long_fallen_tree",
+      "stem": "wood_005b_bent_fallen_tree",
+      "habitat": "pond",
+      "role": "bent bank-side hard-cover landmark",
+      "seed": 5102,
+      "generator_config": {
+        "id": "FAF-WOOD-005B",
+        "stem": "wood_005b_bent_fallen_tree",
+        "family": "long_fallen_tree",
+        "seed": 5102,
+        "length": 17.2,
+        "radius": 1.18,
+        "bend": 1.05,
+        "role": "bent bank-side hard-cover landmark"
+      },
+      "dimensions_m": [
+        5.12447,
+        17.60899,
+        2.60134
+      ],
+      "triangle_count": 484,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_005b_bent_fallen_tree.blend",
+      "glb": "game/assets/faf/pond/wood/wood_005b_bent_fallen_tree.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_005b_bent_fallen_tree.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0.0,
+            -8.6,
+            1.0856
+          ],
+          "b": [
+            0.4293176039833443,
+            -6.449999999999999,
+            1.1273193000900064
+          ],
+          "radius": 1.1099
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.4293176039833443,
+            -6.449999999999999,
+            1.1273193000900064
+          ],
+          "b": [
+            0.7974621202458749,
+            -4.3,
+            1.1446
+          ],
+          "radius": 1.0879
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.7974621202458749,
+            -4.3,
+            1.1446
+          ],
+          "b": [
+            1.052573509136851,
+            -2.15,
+            1.1273193000900064
+          ],
+          "radius": 1.0492
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.052573509136851,
+            -2.15,
+            1.1273193000900064
+          ],
+          "b": [
+            1.1600000000000001,
+            0.0,
+            1.0856
+          ],
+          "radius": 0.9937
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.1600000000000001,
+            0.0,
+            1.0856
+          ],
+          "b": [
+            1.107573509136851,
+            2.15,
+            1.0438806999099937
+          ],
+          "radius": 0.9275
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.107573509136851,
+            2.15,
+            1.0438806999099937
+          ],
+          "b": [
+            0.907462120245875,
+            4.3,
+            1.0266
+          ],
+          "radius": 0.8611
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.907462120245875,
+            4.3,
+            1.0266
+          ],
+          "b": [
+            0.5943176039833444,
+            6.449999999999999,
+            1.0438806999099937
+          ],
+          "radius": 0.8048
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.5943176039833444,
+            6.449999999999999,
+            1.0438806999099937
+          ],
+          "b": [
+            0.22000000000000014,
+            8.6,
+            1.0856
+          ],
+          "radius": 0.7651
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.4293176039833443,
+            -6.449999999999999,
+            1.7763193000900064
+          ],
+          "b": [
+            0.9793176039833443,
+            -6.27,
+            2.0477193000900065
+          ],
+          "radius": 0.1973
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.9793176039833443,
+            -6.27,
+            2.0477193000900065
+          ],
+          "b": [
+            1.3293176039833443,
+            -6.1,
+            1.8943193000900065
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.052573509136851,
+            -2.15,
+            1.7763193000900064
+          ],
+          "b": [
+            0.5025735091368511,
+            -1.97,
+            2.0477193000900065
+          ],
+          "radius": 0.1973
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.5025735091368511,
+            -1.97,
+            2.0477193000900065
+          ],
+          "b": [
+            -0.1974264908631489,
+            -1.7999999999999998,
+            2.083119300090006
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.1600000000000001,
+            0.0,
+            1.7346
+          ],
+          "b": [
+            1.7100000000000002,
+            0.18,
+            2.006
+          ],
+          "radius": 0.1973
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.7100000000000002,
+            0.18,
+            2.006
+          ],
+          "b": [
+            2.7600000000000002,
+            0.35,
+            1.8525999999999998
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.107573509136851,
+            2.15,
+            1.6928806999099937
+          ],
+          "b": [
+            0.557573509136851,
+            2.33,
+            1.9642806999099935
+          ],
+          "radius": 0.1973
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.557573509136851,
+            2.33,
+            1.9642806999099935
+          ],
+          "b": [
+            0.20757350913685102,
+            2.5,
+            1.9996806999099936
+          ],
+          "radius": 0.0968
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.907462120245875,
+            4.3,
+            1.6756
+          ],
+          "b": [
+            1.457462120245875,
+            4.4799999999999995,
+            1.947
+          ],
+          "radius": 0.1973
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.457462120245875,
+            4.4799999999999995,
+            1.947
+          ],
+          "b": [
+            2.1574621202458752,
+            4.6499999999999995,
+            1.7936
+          ],
+          "radius": 0.0968
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 18,
+      "openings": [
+        {
+          "name": "both long sides",
+          "classification": "hard-cover travel lane",
+          "fish_clearance_m": 1.2
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "both long-side Fish-controller paths passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-006A",
+      "family": "forked_fallen_log",
+      "stem": "wood_006a_forked_fallen_log",
+      "habitat": "pond",
+      "role": "forked route splitter",
+      "seed": 6201,
+      "generator_config": {
+        "id": "FAF-WOOD-006A",
+        "stem": "wood_006a_forked_fallen_log",
+        "family": "forked_fallen_log",
+        "seed": 6201,
+        "radius": 0.88,
+        "spread": 3.15,
+        "role": "forked route splitter"
+      },
+      "dimensions_m": [
+        7.24856,
+        10.78906,
+        2.65193
+      ],
+      "triangle_count": 294,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_006a_forked_fallen_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_006a_forked_fallen_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_006a_forked_fallen_log.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -6.3,
+            0.8184
+          ],
+          "b": [
+            0.12,
+            -4.2,
+            0.88
+          ],
+          "radius": 0.7667
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.12,
+            -4.2,
+            0.88
+          ],
+          "b": [
+            -0.1,
+            -2.0,
+            0.9856000000000001
+          ],
+          "radius": 0.6815
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.1,
+            -2.0,
+            0.9856000000000001
+          ],
+          "b": [
+            0.1,
+            -0.45,
+            1.0735999999999999
+          ],
+          "radius": 0.6118
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.1,
+            -0.65,
+            1.0735999999999999
+          ],
+          "b": [
+            0.65,
+            0.75,
+            1.1088
+          ],
+          "radius": 0.5343
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.65,
+            0.75,
+            1.1088
+          ],
+          "b": [
+            2.268,
+            2.55,
+            1.232
+          ],
+          "radius": 0.4182
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.268,
+            2.55,
+            1.232
+          ],
+          "b": [
+            3.15,
+            4.3,
+            1.2936
+          ],
+          "radius": 0.2478
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.1,
+            -0.55,
+            1.056
+          ],
+          "b": [
+            -0.8,
+            0.52,
+            1.0031999999999999
+          ],
+          "radius": 0.4492
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.8,
+            0.52,
+            1.0031999999999999
+          ],
+          "b": [
+            -2.646,
+            2.13,
+            0.836
+          ],
+          "radius": 0.3252
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.646,
+            2.13,
+            0.836
+          ],
+          "b": [
+            -3.6854999999999998,
+            3.62,
+            0.616
+          ],
+          "radius": 0.1859
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.6065,
+            1.78,
+            1.2144
+          ],
+          "b": [
+            2.8035,
+            2.02,
+            2.024
+          ],
+          "radius": 0.1549
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.8035,
+            2.02,
+            2.024
+          ],
+          "b": [
+            3.3075,
+            2.26,
+            2.4816
+          ],
+          "radius": 0.0704
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.764,
+            1.55,
+            0.9504
+          ],
+          "b": [
+            -2.394,
+            1.3,
+            0.14
+          ],
+          "radius": 0.0792
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 12,
+      "openings": [
+        {
+          "name": "space between outer arms at forward half",
+          "classification": "traversable lateral route",
+          "fish_clearance_m": 2.1
+        },
+        {
+          "name": "apex",
+          "classification": "visual gap only",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "lateral fork Fish-controller path passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-006B",
+      "family": "forked_fallen_log",
+      "stem": "wood_006b_high_fork_log",
+      "habitat": "pond",
+      "role": "asymmetric high fork and vertical escape",
+      "seed": 6202,
+      "generator_config": {
+        "id": "FAF-WOOD-006B",
+        "stem": "wood_006b_high_fork_log",
+        "family": "forked_fallen_log",
+        "seed": 6202,
+        "radius": 1.02,
+        "spread": 4.0,
+        "role": "asymmetric high fork and vertical escape"
+      },
+      "dimensions_m": [
+        9.64428,
+        10.85698,
+        3.03098
+      ],
+      "triangle_count": 294,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_006b_high_fork_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_006b_high_fork_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_006b_high_fork_log.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -6.3,
+            0.9486000000000001
+          ],
+          "b": [
+            0.12,
+            -4.2,
+            1.02
+          ],
+          "radius": 0.8886
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.12,
+            -4.2,
+            1.02
+          ],
+          "b": [
+            -0.1,
+            -2.0,
+            1.1424
+          ],
+          "radius": 0.7899
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.1,
+            -2.0,
+            1.1424
+          ],
+          "b": [
+            0.1,
+            -0.45,
+            1.2444
+          ],
+          "radius": 0.7091
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.1,
+            -0.65,
+            1.2444
+          ],
+          "b": [
+            0.65,
+            0.75,
+            1.2852000000000001
+          ],
+          "radius": 0.6193
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.65,
+            0.75,
+            1.2852000000000001
+          ],
+          "b": [
+            2.88,
+            2.55,
+            1.8870000000000002
+          ],
+          "radius": 0.4847
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.88,
+            2.55,
+            1.8870000000000002
+          ],
+          "b": [
+            4.0,
+            4.3,
+            2.0705999999999998
+          ],
+          "radius": 0.2872
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.1,
+            -0.55,
+            1.224
+          ],
+          "b": [
+            -0.8,
+            0.52,
+            1.1627999999999998
+          ],
+          "radius": 0.5206
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.8,
+            0.52,
+            1.1627999999999998
+          ],
+          "b": [
+            -3.76,
+            2.13,
+            0.969
+          ],
+          "radius": 0.377
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -3.76,
+            2.13,
+            0.969
+          ],
+          "b": [
+            -5.2,
+            3.62,
+            0.714
+          ],
+          "radius": 0.2154
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.04,
+            1.78,
+            1.4076
+          ],
+          "b": [
+            3.56,
+            2.02,
+            2.3459999999999996
+          ],
+          "radius": 0.1795
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            3.56,
+            2.02,
+            2.3459999999999996
+          ],
+          "b": [
+            4.2,
+            2.26,
+            2.8764
+          ],
+          "radius": 0.0704
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.24,
+            1.55,
+            1.1016000000000001
+          ],
+          "b": [
+            -3.04,
+            1.3,
+            0.14
+          ],
+          "radius": 0.0792
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 12,
+      "openings": [
+        {
+          "name": "space between outer arms at forward half",
+          "classification": "traversable lateral route",
+          "fish_clearance_m": 2.1
+        },
+        {
+          "name": "apex",
+          "classification": "visual gap only",
+          "fish_clearance_m": 0
+        },
+        {
+          "name": "lower B-fork cross-limb opening",
+          "classification": "camera-constrained visual gap; not a declared route",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "lateral fork Fish-controller path passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-007A",
+      "family": "root_ball_tree",
+      "stem": "wood_007a_open_root_ball",
+      "habitat": "pond",
+      "role": "root undercut limited refuge",
+      "seed": 7301,
+      "generator_config": {
+        "id": "FAF-WOOD-007A",
+        "stem": "wood_007a_open_root_ball",
+        "family": "root_ball_tree",
+        "seed": 7301,
+        "radius": 1.1,
+        "spread": 2.9,
+        "role": "root undercut limited refuge"
+      },
+      "dimensions_m": [
+        6.18922,
+        10.00797,
+        2.71252
+      ],
+      "triangle_count": 524,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_007a_open_root_ball.blend",
+      "glb": "game/assets/faf/pond/wood/wood_007a_open_root_ball.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_007a_open_root_ball.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -2.05,
+            1.4850000000000003
+          ],
+          "b": [
+            0.17,
+            -0.35,
+            1.342
+          ],
+          "radius": 1.0067
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.17,
+            -0.35,
+            1.342
+          ],
+          "b": [
+            0.46,
+            2.25,
+            1.1880000000000002
+          ],
+          "radius": 0.8034
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.46,
+            2.25,
+            1.1880000000000002
+          ],
+          "b": [
+            0.72,
+            5.55,
+            1.0010000000000001
+          ],
+          "radius": 0.5227
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.2700014696178129,
+            -2.2909221246398346,
+            1.298
+          ],
+          "b": [
+            -0.6956219680880743,
+            -3.2682317468925888,
+            0.66
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.6956219680880743,
+            -3.2682317468925888,
+            0.66
+          ],
+          "b": [
+            -1.0677330843977146,
+            -3.9941389270766825,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.5075712748582908,
+            -2.152153988154315,
+            1.375
+          ],
+          "b": [
+            -1.4682652696355285,
+            -2.7848879305767182,
+            0.8600000000000001
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.4682652696355285,
+            -2.7848879305767182,
+            0.8600000000000001
+          ],
+          "b": [
+            -2.31601578213311,
+            -3.20339972449322,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.5636772455533993,
+            -1.9439108428429204,
+            1.298
+          ],
+          "b": [
+            -1.8088915243668173,
+            -1.7893969777548842,
+            1.06
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.8088915243668173,
+            -1.7893969777548842,
+            1.06
+          ],
+          "b": [
+            -2.914960301305865,
+            -1.4972371913010871,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.26413768840972823,
+            -1.7072916754828362,
+            1.375
+          ],
+          "b": [
+            -0.6805147354119726,
+            -0.8844727632811696,
+            0.66
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.6805147354119726,
+            -0.8844727632811696,
+            0.66
+          ],
+          "b": [
+            -1.0445444950748344,
+            0.006382515326740723,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.24880028551162373,
+            -1.7028524562236167,
+            1.298
+          ],
+          "b": [
+            0.7197113713618061,
+            -0.7033964699232276,
+            0.8600000000000001
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.7197113713618061,
+            -0.7033964699232276,
+            0.8600000000000001
+          ],
+          "b": [
+            1.1352600440303109,
+            0.35016693714048674,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.5690967280727764,
+            -1.9667935079823125,
+            1.375
+          ],
+          "b": [
+            1.8262831364517276,
+            -1.9079541460843596,
+            1.06
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.8262831364517276,
+            -1.9079541460843596,
+            1.06
+          ],
+          "b": [
+            2.942986226642084,
+            -1.702349080641456,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.4755513395654068,
+            -2.1833807182627023,
+            1.298
+          ],
+          "b": [
+            1.2251931784803298,
+            -2.828993537282426,
+            0.66
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.2251931784803298,
+            -2.828993537282426,
+            0.66
+          ],
+          "b": [
+            1.8805893882813811,
+            -3.256991468818886,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.24446129149375068,
+            -2.2983438068656303,
+            1.375
+          ],
+          "b": [
+            0.7071598450301042,
+            -3.4621454907156832,
+            0.8600000000000001
+          ],
+          "radius": 0.1742
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.7071598450301042,
+            -3.4621454907156832,
+            0.8600000000000001
+          ],
+          "b": [
+            1.1154614874102957,
+            -4.35962829066453,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.396,
+            -1.6,
+            1.4850000000000003
+          ],
+          "b": [
+            -2.1500000000000004,
+            -2.4,
+            2.09
+          ],
+          "radius": 0.1452
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.1500000000000004,
+            -2.4,
+            2.09
+          ],
+          "b": [
+            -3.05,
+            -3.15,
+            2.255
+          ],
+          "radius": 0.0616
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.396,
+            -1.6,
+            1.4850000000000003
+          ],
+          "b": [
+            2.1500000000000004,
+            -2.4,
+            2.09
+          ],
+          "radius": 0.1452
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.1500000000000004,
+            -2.4,
+            2.09
+          ],
+          "b": [
+            3.05,
+            -3.15,
+            2.255
+          ],
+          "radius": 0.0616
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 23,
+      "openings": [
+        {
+          "name": "central root undercut",
+          "classification": "limited refuge",
+          "fish_clearance_m": 1.25
+        },
+        {
+          "name": "narrow upper root windows",
+          "classification": "too small to enter; visual gap only",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "central undercut Fish-controller refuge entry passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-007B",
+      "family": "root_ball_tree",
+      "stem": "wood_007b_broad_root_ball",
+      "habitat": "pond",
+      "role": "broad root-ball hide-behind",
+      "seed": 7302,
+      "generator_config": {
+        "id": "FAF-WOOD-007B",
+        "stem": "wood_007b_broad_root_ball",
+        "family": "root_ball_tree",
+        "seed": 7302,
+        "radius": 1.3,
+        "spread": 3.55,
+        "role": "broad root-ball hide-behind"
+      },
+      "dimensions_m": [
+        6.87501,
+        10.05934,
+        3.21977
+      ],
+      "triangle_count": 616,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_007b_broad_root_ball.blend",
+      "glb": "game/assets/faf/pond/wood/wood_007b_broad_root_ball.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_007b_broad_root_ball.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -2.05,
+            1.7550000000000001
+          ],
+          "b": [
+            0.17,
+            -0.35,
+            1.586
+          ],
+          "radius": 1.1898
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.17,
+            -0.35,
+            1.586
+          ],
+          "b": [
+            0.46,
+            2.25,
+            1.4040000000000001
+          ],
+          "radius": 0.9495
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.46,
+            2.25,
+            1.4040000000000001
+          ],
+          "b": [
+            0.72,
+            5.55,
+            1.183
+          ],
+          "radius": 0.6178
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.37699419295659786,
+            -2.3237208787417365,
+            1.534
+          ],
+          "b": [
+            -0.9990346113349844,
+            -3.4435123412601945,
+            0.66
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.9990346113349844,
+            -3.4435123412601945,
+            0.66
+          ],
+          "b": [
+            -1.5442262134568336,
+            -4.29841823906633,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.5465435689820429,
+            -2.229515435729585,
+            1.625
+          ],
+          "b": [
+            -1.6274385811765293,
+            -3.177083782787416,
+            0.8600000000000001
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.6274385811765293,
+            -3.177083782787416,
+            0.8600000000000001
+          ],
+          "b": [
+            -2.58314601020359,
+            -3.88026106963083,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.6626317436047188,
+            -2.0771766376975527,
+            1.534
+          ],
+          "b": [
+            -2.1902527709765205,
+            -2.492740658406511,
+            1.06
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.1902527709765205,
+            -2.492740658406511,
+            1.06
+          ],
+          "b": [
+            -3.5493928159655126,
+            -2.716555397699584,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.6580755501860359,
+            -1.9107864049547008,
+            1.625
+          ],
+          "b": [
+            -1.7439002079929955,
+            -1.7042323376692001,
+            0.66
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.7439002079929955,
+            -1.7042323376692001,
+            0.66
+          ],
+          "b": [
+            -2.6955786959543397,
+            -1.366583475178376,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.3927797685232182,
+            -1.6825874019016118,
+            1.534
+          ],
+          "b": [
+            -1.1695772953487522,
+            -0.5627677810897045,
+            0.8600000000000001
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.1695772953487522,
+            -0.5627677810897045,
+            0.8600000000000001
+          ],
+          "b": [
+            -1.8564073379166897,
+            0.6003416690367955,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.22543727428719057,
+            -1.632325680443945,
+            1.625
+          ],
+          "b": [
+            0.7451568981631214,
+            -0.11367773901421777,
+            1.06
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.7451568981631214,
+            -0.11367773901421777,
+            1.06
+          ],
+          "b": [
+            1.2075567606418889,
+            1.4137146438781416,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.5210194821357033,
+            -1.7515110537625538,
+            1.534
+          ],
+          "b": [
+            1.3807016276596138,
+            -1.0333645584478763,
+            0.66
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.3807016276596138,
+            -1.0333645584478763,
+            0.66
+          ],
+          "b": [
+            2.134175955671246,
+            -0.2357284817141314,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.6683285916877626,
+            -1.9414120667344426,
+            1.625
+          ],
+          "b": [
+            1.9900769064794839,
+            -1.7999496789906353,
+            0.8600000000000001
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.9900769064794839,
+            -1.7999496789906353,
+            0.8600000000000001
+          ],
+          "b": [
+            3.1587423823112446,
+            -1.5200296236321638,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.6059702810184546,
+            -2.1728614221096265,
+            1.534
+          ],
+          "b": [
+            2.002964844258692,
+            -3.0044628854422823,
+            1.06
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.002964844258692,
+            -3.0044628854422823,
+            1.06
+          ],
+          "b": [
+            3.245885188709799,
+            -3.604951819125532,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3368248702704029,
+            -2.338140421363863,
+            1.625
+          ],
+          "b": [
+            0.8925859062165676,
+            -3.5042474547845908,
+            0.66
+          ],
+          "radius": 0.2059
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.8925859062165676,
+            -3.5042474547845908,
+            0.66
+          ],
+          "b": [
+            1.379686487838381,
+            -4.400796991683427,
+            0.04
+          ],
+          "radius": 0.0484
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -0.46799999999999997,
+            -1.6,
+            1.7550000000000001
+          ],
+          "b": [
+            -2.35,
+            -2.4,
+            2.4699999999999998
+          ],
+          "radius": 0.1716
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.35,
+            -2.4,
+            2.4699999999999998
+          ],
+          "b": [
+            -3.25,
+            -3.15,
+            2.665
+          ],
+          "radius": 0.0616
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.46799999999999997,
+            -1.6,
+            1.7550000000000001
+          ],
+          "b": [
+            2.35,
+            -2.4,
+            2.4699999999999998
+          ],
+          "radius": 0.1716
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.35,
+            -2.4,
+            2.4699999999999998
+          ],
+          "b": [
+            3.25,
+            -3.15,
+            2.665
+          ],
+          "radius": 0.0616
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 27,
+      "openings": [
+        {
+          "name": "central root undercut",
+          "classification": "limited refuge",
+          "fish_clearance_m": 1.25
+        },
+        {
+          "name": "narrow upper root windows",
+          "classification": "too small to enter; visual gap only",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "central undercut Fish-controller refuge entry passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-008A",
+      "family": "split_hollow_log",
+      "stem": "wood_008a_split_decayed_log",
+      "habitat": "pond",
+      "role": "end passage and side-entry hollow refuge",
+      "seed": 8401,
+      "generator_config": {
+        "id": "FAF-WOOD-008A",
+        "stem": "wood_008a_split_decayed_log",
+        "family": "split_hollow_log",
+        "seed": 8401,
+        "length": 7.7,
+        "outer": 1.95,
+        "inner": 1.53,
+        "role": "end passage and side-entry hollow refuge"
+      },
+      "dimensions_m": [
+        4.53254,
+        7.7,
+        3.86851
+      ],
+      "triangle_count": 972,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_008a_split_decayed_log.blend",
+      "glb": "game/assets/faf/pond/wood/wood_008a_split_decayed_log.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_008a_split_decayed_log.tscn",
+      "collision_shapes": [
+        {
+          "kind": "shell_slab",
+          "angle": 0.224399,
+          "y": -2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.224399,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.673198,
+          "y": -2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.673198,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.121997,
+          "y": 0.55,
+          "length": 6.402,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.570796,
+          "y": -1.65,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.570796,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.019595,
+          "y": -2.2,
+          "length": 3.201,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.019595,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.468394,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.917193,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 3.365992,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 3.814791,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 4.26359,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 4.712389,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 5.161188,
+          "y": 0.0,
+          "length": 7.469,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 5.609987,
+          "y": -2.2,
+          "length": 1.067,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 5.609987,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 6.058786,
+          "y": -2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 6.058786,
+          "y": 2.75,
+          "length": 2.134,
+          "inner": 1.53,
+          "outer": 1.95,
+          "sides": 14
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.4625,
+            -2.849,
+            2.925
+          ],
+          "b": [
+            -2.4375,
+            -0.77,
+            3.0615
+          ],
+          "radius": 0.1144
+        }
+      ],
+      "collision_type": "open shell panels plus outer capsule",
+      "collision_count": 21,
+      "openings": [
+        {
+          "name": "both broken ends through center",
+          "classification": "passage",
+          "fish_clearance_m": 2.45
+        },
+        {
+          "name": "right-side collapsed wall",
+          "classification": "side-entry passage",
+          "fish_clearance_m": 1.35
+        },
+        {
+          "name": "missing roof",
+          "classification": "peek-through visual gap",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "end-to-end and side-entry Fish-controller paths passed; fish-sphere probes passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-008B",
+      "family": "split_hollow_log",
+      "stem": "wood_008b_broad_broken_hollow",
+      "habitat": "pond",
+      "role": "broad broken hollow and lateral exit",
+      "seed": 8402,
+      "generator_config": {
+        "id": "FAF-WOOD-008B",
+        "stem": "wood_008b_broad_broken_hollow",
+        "family": "split_hollow_log",
+        "seed": 8402,
+        "length": 9.2,
+        "outer": 2.28,
+        "inner": 1.78,
+        "role": "broad broken hollow and lateral exit"
+      },
+      "dimensions_m": [
+        5.28269,
+        9.2,
+        4.52482
+      ],
+      "triangle_count": 828,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_008b_broad_broken_hollow.blend",
+      "glb": "game/assets/faf/pond/wood/wood_008b_broad_broken_hollow.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_008b_broad_broken_hollow.tscn",
+      "collision_shapes": [
+        {
+          "kind": "shell_slab",
+          "angle": 0.224399,
+          "y": -3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.224399,
+          "y": 3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.673198,
+          "y": -3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 0.673198,
+          "y": 3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.121997,
+          "y": 0.65714,
+          "length": 7.64914,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.570796,
+          "y": -2.62857,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 1.570796,
+          "y": 3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.019595,
+          "y": -3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.019595,
+          "y": 3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.468394,
+          "y": -3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.468394,
+          "y": 3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 2.917193,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 3.365992,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 3.814791,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 4.26359,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 4.712389,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 5.161188,
+          "y": 0.0,
+          "length": 8.924,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 5.609987,
+          "y": 3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 6.058786,
+          "y": -3.94286,
+          "length": 1.27486,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "shell_slab",
+          "angle": 6.058786,
+          "y": 3.28571,
+          "length": 2.54971,
+          "inner": 1.78,
+          "outer": 2.28,
+          "sides": 14
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.71,
+            -3.404,
+            3.42
+          ],
+          "b": [
+            -2.8499999999999996,
+            -0.9199999999999999,
+            3.5795999999999997
+          ],
+          "radius": 0.1144
+        }
+      ],
+      "collision_type": "open shell panels plus outer capsule",
+      "collision_count": 21,
+      "openings": [
+        {
+          "name": "both broken ends through center",
+          "classification": "passage",
+          "fish_clearance_m": 2.45
+        },
+        {
+          "name": "right-side collapsed wall",
+          "classification": "side-entry passage",
+          "fish_clearance_m": 1.35
+        },
+        {
+          "name": "missing roof",
+          "classification": "peek-through visual gap",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "end-to-end and side-entry Fish-controller paths passed; fish-sphere probes passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-009A",
+      "family": "sunken_branch_crown",
+      "stem": "wood_009a_sunken_branch_crown",
+      "habitat": "pond",
+      "role": "layered branch-maze cover",
+      "seed": 9501,
+      "generator_config": {
+        "id": "FAF-WOOD-009A",
+        "stem": "wood_009a_sunken_branch_crown",
+        "family": "sunken_branch_crown",
+        "seed": 9501,
+        "radius": 0.83,
+        "spread": 4.4,
+        "role": "layered branch-maze cover"
+      },
+      "dimensions_m": [
+        8.67986,
+        10.4718,
+        4.80898
+      ],
+      "triangle_count": 408,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_009a_sunken_branch_crown.blend",
+      "glb": "game/assets/faf/pond/wood/wood_009a_sunken_branch_crown.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_009a_sunken_branch_crown.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -4.7,
+            0.55
+          ],
+          "b": [
+            0,
+            -2.8,
+            0.75
+          ],
+          "radius": 0.6866
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -2.8,
+            0.75
+          ],
+          "b": [
+            0.3,
+            -0.65,
+            1.05
+          ],
+          "radius": 0.5624
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3,
+            -0.65,
+            1.05
+          ],
+          "b": [
+            0.48,
+            1.1,
+            1.18
+          ],
+          "radius": 0.409
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            -0.25,
+            1.1
+          ],
+          "b": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "b": [
+            -3.1,
+            2.55,
+            1.7
+          ],
+          "radius": 0.0876
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "b": [
+            -2.162,
+            2.15,
+            1.891
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            0.25,
+            1.1
+          ],
+          "b": [
+            2.1580000000000004,
+            1.5,
+            1.7955
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.1580000000000004,
+            1.5,
+            1.7955
+          ],
+          "b": [
+            4.15,
+            3.05,
+            2.85
+          ],
+          "radius": 0.0876
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            1.2,
+            1.1
+          ],
+          "b": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "b": [
+            -2.5,
+            4.0,
+            3.95
+          ],
+          "radius": 0.0876
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "b": [
+            -1.85,
+            3.6,
+            3.3085
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            1.6,
+            1.1
+          ],
+          "b": [
+            1.69,
+            2.85,
+            0.9324
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.69,
+            2.85,
+            0.9324
+          ],
+          "b": [
+            3.25,
+            4.4,
+            1.48
+          ],
+          "radius": 0.0876
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            2.45,
+            1.1
+          ],
+          "b": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "b": [
+            -4.4,
+            5.25,
+            2.55
+          ],
+          "radius": 0.0876
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "b": [
+            -2.838,
+            4.85,
+            2.4265
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            2.8,
+            1.1
+          ],
+          "b": [
+            1.4820000000000002,
+            4.05,
+            2.8035
+          ],
+          "radius": 0.2191
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.4820000000000002,
+            4.05,
+            2.8035
+          ],
+          "b": [
+            2.85,
+            5.6,
+            4.45
+          ],
+          "radius": 0.0876
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 18,
+      "openings": [
+        {
+          "name": "raised outer branch lanes",
+          "classification": "traversable lateral route",
+          "fish_clearance_m": 1.7
+        },
+        {
+          "name": "raised middle openings",
+          "classification": "vertical escape route",
+          "fish_clearance_m": 1.5
+        },
+        {
+          "name": "lower outer branch crossings",
+          "classification": "camera-constrained visual gap; not a declared route",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "lateral and ascending Fish-controller paths passed; see wood-002 record"
+    },
+    {
+      "faf_id": "FAF-WOOD-009B",
+      "family": "sunken_branch_crown",
+      "stem": "wood_009b_high_branch_crown",
+      "habitat": "pond",
+      "role": "large vertical and lateral branch maze",
+      "seed": 9502,
+      "generator_config": {
+        "id": "FAF-WOOD-009B",
+        "stem": "wood_009b_high_branch_crown",
+        "family": "sunken_branch_crown",
+        "seed": 9502,
+        "radius": 1.02,
+        "spread": 5.1,
+        "role": "large vertical and lateral branch maze"
+      },
+      "dimensions_m": [
+        8.76287,
+        12.40862,
+        5.26293
+      ],
+      "triangle_count": 516,
+      "material_count": 4,
+      "blender_source": "assets/faf/pond/wood/wood_009b_high_branch_crown.blend",
+      "glb": "game/assets/faf/pond/wood/wood_009b_high_branch_crown.glb",
+      "godot_wrapper": "game/scenes/faf_pond_wood_002/wood_009b_high_branch_crown.tscn",
+      "collision_shapes": [
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -4.7,
+            0.55
+          ],
+          "b": [
+            0,
+            -2.8,
+            0.75
+          ],
+          "radius": 0.8437
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0,
+            -2.8,
+            0.75
+          ],
+          "b": [
+            0.3,
+            -0.65,
+            1.05
+          ],
+          "radius": 0.6912
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.3,
+            -0.65,
+            1.05
+          ],
+          "b": [
+            0.48,
+            1.1,
+            1.18
+          ],
+          "radius": 0.5027
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            -0.25,
+            1.1
+          ],
+          "b": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "b": [
+            -3.1,
+            2.55,
+            1.7
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.612,
+            1.0,
+            1.071
+          ],
+          "b": [
+            -2.162,
+            2.15,
+            1.891
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            0.25,
+            1.1
+          ],
+          "b": [
+            2.1580000000000004,
+            1.5,
+            1.7955
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.1580000000000004,
+            1.5,
+            1.7955
+          ],
+          "b": [
+            4.15,
+            3.05,
+            2.85
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            1.2,
+            1.1
+          ],
+          "b": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "b": [
+            -2.5,
+            4.0,
+            3.95
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.3,
+            2.45,
+            2.4885
+          ],
+          "b": [
+            -1.85,
+            3.6,
+            3.3085
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            1.6,
+            1.1
+          ],
+          "b": [
+            1.69,
+            2.85,
+            0.9324
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.69,
+            2.85,
+            0.9324
+          ],
+          "b": [
+            3.25,
+            4.4,
+            1.48
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            2.45,
+            1.1
+          ],
+          "b": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "b": [
+            -4.4,
+            5.25,
+            2.55
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -2.2880000000000003,
+            3.7,
+            1.6064999999999998
+          ],
+          "b": [
+            -2.838,
+            4.85,
+            2.4265
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            2.8,
+            1.1
+          ],
+          "b": [
+            1.4820000000000002,
+            4.05,
+            2.8035
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            1.4820000000000002,
+            4.05,
+            2.8035
+          ],
+          "b": [
+            2.85,
+            5.6,
+            4.45
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            4.1,
+            1.1
+          ],
+          "b": [
+            -1.898,
+            5.35,
+            2.9610000000000003
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.898,
+            5.35,
+            2.9610000000000003
+          ],
+          "b": [
+            -3.65,
+            6.8999999999999995,
+            4.7
+          ],
+          "radius": 0.1077
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            -1.898,
+            5.35,
+            2.9610000000000003
+          ],
+          "b": [
+            -2.448,
+            6.5,
+            3.781
+          ],
+          "radius": 0.0528
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            0.25,
+            4.7,
+            1.1
+          ],
+          "b": [
+            2.184,
+            5.95,
+            2.3625
+          ],
+          "radius": 0.2693
+        },
+        {
+          "kind": "capsule",
+          "a": [
+            2.184,
+            5.95,
+            2.3625
+          ],
+          "b": [
+            4.2,
+            7.5,
+            3.75
+          ],
+          "radius": 0.1077
+        }
+      ],
+      "collision_type": "segmented capsules",
+      "collision_count": 23,
+      "openings": [
+        {
+          "name": "raised outer branch lanes",
+          "classification": "traversable lateral route",
+          "fish_clearance_m": 1.7
+        },
+        {
+          "name": "raised middle openings",
+          "classification": "vertical escape route",
+          "fish_clearance_m": 1.5
+        },
+        {
+          "name": "lower outer branch crossings",
+          "classification": "camera-constrained visual gap; not a declared route",
+          "fish_clearance_m": 0
+        }
+      ],
+      "pivot": "ground-contact origin; Blender +Z up, length along Y",
+      "technical_state": "candidate; import and native checks recorded separately",
+      "visual_review_state": "reviewed in Blender MCP and isolated native Forward+; owner style approval pending",
+      "native_traversal_state": "lateral and ascending Fish-controller paths passed; see wood-002 record"
+    }
+  ]
+}

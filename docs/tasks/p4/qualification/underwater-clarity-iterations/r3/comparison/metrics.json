@@ -1,0 +1,1026 @@
+{
+  "noon": {
+    "A10_air": {
+      "baseline_ms": [
+        6.982,
+        11.875
+      ],
+      "candidate_ms": [
+        6.769,
+        11.511
+      ],
+      "baseline_draws": 205.0,
+      "candidate_draws": 300.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 293928.0,
+      "mean_abs_rgb": [
+        0.03909244791666667,
+        0.02834765625,
+        0.016403645833333334
+      ],
+      "sun_energy": [
+        1.00000023841858,
+        1.00000023841858
+      ],
+      "ambient_energy": [
+        0.75,
+        0.75
+      ],
+      "fog_density": [
+        0.939999878406525,
+        0.939999878406525
+      ],
+      "volumetric_density": [
+        4.59790205908917e-09,
+        4.59790205908917e-09
+      ]
+    },
+    "A1_spawn": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        4.372664930555556,
+        3.0633628472222223,
+        2.6835125868055556
+      ],
+      "sun_energy": [
+        1.30720794200897,
+        1.30720794200897
+      ],
+      "ambient_energy": [
+        0.760817289352417,
+        0.760817289352417
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00570573378354311,
+        0.00570573378354311
+      ]
+    },
+    "A2_near": {
+      "baseline_ms": [
+        4.366,
+        10.088
+      ],
+      "candidate_ms": [
+        5.439,
+        8.446
+      ],
+      "baseline_draws": 206.0,
+      "candidate_draws": 286.0,
+      "baseline_primitives": 129978.0,
+      "candidate_primitives": 325134.0,
+      "mean_abs_rgb": [
+        4.2810512152777775,
+        2.9355082465277778,
+        2.8118797743055555
+      ],
+      "sun_energy": [
+        1.32250165939331,
+        1.32250165939331
+      ],
+      "ambient_energy": [
+        0.767673075199127,
+        0.767673075199127
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00563577935099602,
+        0.00563577935099602
+      ]
+    },
+    "A3_log": {
+      "baseline_ms": [
+        4.346,
+        9.703
+      ],
+      "candidate_ms": [
+        4.779,
+        5.801
+      ],
+      "baseline_draws": 210.0,
+      "candidate_draws": 294.0,
+      "baseline_primitives": 130664.0,
+      "candidate_primitives": 300736.0,
+      "mean_abs_rgb": [
+        1.7214913194444443,
+        1.1405850694444444,
+        0.42748307291666665
+      ],
+      "sun_energy": [
+        0.795224845409393,
+        0.795224845409393
+      ],
+      "ambient_energy": [
+        0.531307697296143,
+        0.531307697296143
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    },
+    "A4_shallow": {
+      "baseline_ms": [
+        4.441,
+        9.642
+      ],
+      "candidate_ms": [
+        4.85,
+        8.495
+      ],
+      "baseline_draws": 159.0,
+      "candidate_draws": 248.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 296670.0,
+      "mean_abs_rgb": [
+        3.4745347222222223,
+        2.395462673611111,
+        2.13635546875
+      ],
+      "sun_energy": [
+        1.30304753780365,
+        1.30304753780365
+      ],
+      "ambient_energy": [
+        0.758952260017395,
+        0.758952260017395
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00572476396337152,
+        0.00572476396337152
+      ]
+    },
+    "A6_middle": {
+      "baseline_ms": [
+        3.846,
+        8.575
+      ],
+      "candidate_ms": [
+        4.513,
+        5.456
+      ],
+      "baseline_draws": 143.0,
+      "candidate_draws": 232.0,
+      "baseline_primitives": 125284.0,
+      "candidate_primitives": 291608.0,
+      "mean_abs_rgb": [
+        1.5805729166666667,
+        1.0881098090277779,
+        0.7836028645833333
+      ],
+      "sun_energy": [
+        1.00157451629639,
+        1.00157451629639
+      ],
+      "ambient_energy": [
+        0.623809278011322,
+        0.623809278011322
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00710372347384691,
+        0.00710372347384691
+      ]
+    },
+    "A7_deep": {
+      "baseline_ms": [
+        4.368,
+        9.923
+      ],
+      "candidate_ms": [
+        5.26,
+        8.234
+      ],
+      "baseline_draws": 146.0,
+      "candidate_draws": 230.0,
+      "baseline_primitives": 127176.0,
+      "candidate_primitives": 298010.0,
+      "mean_abs_rgb": [
+        0.5510711805555556,
+        0.34545442708333335,
+        0.17342447916666667
+      ],
+      "sun_energy": [
+        0.604662537574768,
+        0.604662537574768
+      ],
+      "ambient_energy": [
+        0.445883184671402,
+        0.445883184671402
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00891922879964113,
+        0.00891922879964113
+      ]
+    },
+    "A8_surface": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        4.3970212673611115,
+        3.1049405381944446,
+        3.2626592881944445
+      ],
+      "sun_energy": [
+        1.26444566249847,
+        1.26444566249847
+      ],
+      "ambient_energy": [
+        0.741648018360138,
+        0.741648018360138
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.005901332013309,
+        0.005901332013309
+      ]
+    },
+    "A9_shade": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        9.203301215277778,
+        6.973921440972222,
+        2.6289344618055557
+      ],
+      "sun_energy": [
+        0.795224845409393,
+        0.795224845409393
+      ],
+      "ambient_energy": [
+        0.531307697296143,
+        0.531307697296143
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    }
+  },
+  "low": {
+    "A10_air": {
+      "baseline_ms": [
+        5.157,
+        9.281
+      ],
+      "candidate_ms": [
+        6.079,
+        9.931
+      ],
+      "baseline_draws": 205.0,
+      "candidate_draws": 317.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 294576.0,
+      "mean_abs_rgb": [
+        0.006973958333333334,
+        0.0035499131944444445,
+        0.0015286458333333332
+      ],
+      "sun_energy": [
+        0.258819133043289,
+        0.258819133043289
+      ],
+      "ambient_energy": [
+        0.754682421684265,
+        0.754682421684265
+      ],
+      "fog_density": [
+        0.939999878406525,
+        0.939999878406525
+      ],
+      "volumetric_density": [
+        4.59790205908917e-09,
+        4.59790205908917e-09
+      ]
+    },
+    "A1_spawn": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        1.61189453125,
+        0.8551614583333333,
+        0.6861362847222222
+      ],
+      "sun_energy": [
+        0.338330298662186,
+        0.338330298662186
+      ],
+      "ambient_energy": [
+        0.760817289352417,
+        0.760817289352417
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00570573378354311,
+        0.00570573378354311
+      ]
+    },
+    "A2_near": {
+      "baseline_ms": [
+        3.96,
+        4.941
+      ],
+      "candidate_ms": [
+        5.123,
+        7.936
+      ],
+      "baseline_draws": 206.0,
+      "candidate_draws": 312.0,
+      "baseline_primitives": 129978.0,
+      "candidate_primitives": 326552.0,
+      "mean_abs_rgb": [
+        1.8163055555555556,
+        0.9133828125,
+        0.7267213541666667
+      ],
+      "sun_energy": [
+        0.342288613319397,
+        0.342288613319397
+      ],
+      "ambient_energy": [
+        0.767673075199127,
+        0.767673075199127
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00563577935099602,
+        0.00563577935099602
+      ]
+    },
+    "A3_log": {
+      "baseline_ms": [
+        3.776,
+        4.916
+      ],
+      "candidate_ms": [
+        5.3,
+        8.432
+      ],
+      "baseline_draws": 210.0,
+      "candidate_draws": 337.0,
+      "baseline_primitives": 130664.0,
+      "candidate_primitives": 303796.0,
+      "mean_abs_rgb": [
+        0.9022625868055556,
+        0.43987196180555554,
+        0.16515755208333333
+      ],
+      "sun_energy": [
+        0.205819323658943,
+        0.205819323658943
+      ],
+      "ambient_energy": [
+        0.531307697296143,
+        0.531307697296143
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    },
+    "A4_shallow": {
+      "baseline_ms": [
+        3.797,
+        5.41
+      ],
+      "candidate_ms": [
+        5.752,
+        8.23
+      ],
+      "baseline_draws": 159.0,
+      "candidate_draws": 266.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 297320.0,
+      "mean_abs_rgb": [
+        1.2686354166666667,
+        0.6475920138888889,
+        0.5184470486111111
+      ],
+      "sun_energy": [
+        0.337253510951996,
+        0.337253510951996
+      ],
+      "ambient_energy": [
+        0.758952260017395,
+        0.758952260017395
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00572476396337152,
+        0.00572476396337152
+      ]
+    },
+    "A6_middle": {
+      "baseline_ms": [
+        4.375,
+        5.907
+      ],
+      "candidate_ms": [
+        5.498,
+        9.166
+      ],
+      "baseline_draws": 143.0,
+      "candidate_draws": 249.0,
+      "baseline_primitives": 125284.0,
+      "candidate_primitives": 296006.0,
+      "mean_abs_rgb": [
+        0.3782790798611111,
+        0.1959743923611111,
+        0.15444401041666667
+      ],
+      "sun_energy": [
+        0.259226560592651,
+        0.259226560592651
+      ],
+      "ambient_energy": [
+        0.623809278011322,
+        0.623809278011322
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00710372347384691,
+        0.00710372347384691
+      ]
+    },
+    "A7_deep": {
+      "baseline_ms": [
+        3.759,
+        4.937
+      ],
+      "candidate_ms": [
+        5.797,
+        7.458
+      ],
+      "baseline_draws": 146.0,
+      "candidate_draws": 272.0,
+      "baseline_primitives": 127176.0,
+      "candidate_primitives": 300176.0,
+      "mean_abs_rgb": [
+        0.07089583333333334,
+        0.04793532986111111,
+        0.029588541666666666
+      ],
+      "sun_energy": [
+        0.156498163938522,
+        0.156498163938522
+      ],
+      "ambient_energy": [
+        0.445883184671402,
+        0.445883184671402
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00891922879964113,
+        0.00891922879964113
+      ]
+    },
+    "A8_surface": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        1.9135985243055555,
+        0.96830078125,
+        0.8633272569444445
+      ],
+      "sun_energy": [
+        0.327262610197067,
+        0.327262610197067
+      ],
+      "ambient_energy": [
+        0.741648018360138,
+        0.741648018360138
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.005901332013309,
+        0.005901332013309
+      ]
+    },
+    "A9_shade": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        2.95543359375,
+        1.648763888888889,
+        0.6986315104166667
+      ],
+      "sun_energy": [
+        0.205819323658943,
+        0.205819323658943
+      ],
+      "ambient_energy": [
+        0.531307697296143,
+        0.531307697296143
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    }
+  },
+  "night": {
+    "A10_air": {
+      "baseline_ms": [
+        10.699,
+        17.613
+      ],
+      "candidate_ms": [
+        5.227,
+        6.625
+      ],
+      "baseline_draws": 205.0,
+      "candidate_draws": 205.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 126522.0,
+      "mean_abs_rgb": [
+        0.0,
+        4.340277777777778e-07,
+        3.0381944444444443e-06
+      ],
+      "sun_energy": [
+        0.0850000455975533,
+        0.0850000455975533
+      ],
+      "ambient_energy": [
+        0.152000233530998,
+        0.152000233530998
+      ],
+      "fog_density": [
+        0.939999878406525,
+        0.939999878406525
+      ],
+      "volumetric_density": [
+        4.59790205908917e-09,
+        4.59790205908917e-09
+      ]
+    },
+    "A1_spawn": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        1.3020833333333333e-06,
+        4.340277777777778e-07,
+        0.0
+      ],
+      "sun_energy": [
+        0.135562300682068,
+        0.135562300682068
+      ],
+      "ambient_energy": [
+        0.42484039068222,
+        0.42484039068222
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00570573378354311,
+        0.00570573378354311
+      ]
+    },
+    "A2_near": {
+      "baseline_ms": [
+        5.496,
+        16.321
+      ],
+      "candidate_ms": [
+        4.212,
+        6.121
+      ],
+      "baseline_draws": 206.0,
+      "candidate_draws": 206.0,
+      "baseline_primitives": 129978.0,
+      "candidate_primitives": 129978.0,
+      "mean_abs_rgb": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sun_energy": [
+        0.137148320674896,
+        0.137148320674896
+      ],
+      "ambient_energy": [
+        0.428668618202209,
+        0.428668618202209
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00563577935099602,
+        0.00563577935099602
+      ]
+    },
+    "A3_log": {
+      "baseline_ms": [
+        4.262,
+        15.003
+      ],
+      "candidate_ms": [
+        3.867,
+        5.794
+      ],
+      "baseline_draws": 210.0,
+      "candidate_draws": 210.0,
+      "baseline_primitives": 130664.0,
+      "candidate_primitives": 130664.0,
+      "mean_abs_rgb": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sun_energy": [
+        0.082467757165432,
+        0.082467757165432
+      ],
+      "ambient_energy": [
+        0.296682208776474,
+        0.296682208776474
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    },
+    "A4_shallow": {
+      "baseline_ms": [
+        4.359,
+        15.424
+      ],
+      "candidate_ms": [
+        3.784,
+        5.322
+      ],
+      "baseline_draws": 159.0,
+      "candidate_draws": 159.0,
+      "baseline_primitives": 126522.0,
+      "candidate_primitives": 126522.0,
+      "mean_abs_rgb": [
+        4.340277777777778e-07,
+        0.0,
+        4.340277777777778e-07
+      ],
+      "sun_energy": [
+        0.135130852460861,
+        0.135130852460861
+      ],
+      "ambient_energy": [
+        0.42379891872406,
+        0.42379891872406
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00572476396337152,
+        0.00572476396337152
+      ]
+    },
+    "A6_middle": {
+      "baseline_ms": [
+        5.698,
+        14.94
+      ],
+      "candidate_ms": [
+        3.766,
+        5.748
+      ],
+      "baseline_draws": 143.0,
+      "candidate_draws": 143.0,
+      "baseline_primitives": 125284.0,
+      "candidate_primitives": 125284.0,
+      "mean_abs_rgb": [
+        4.340277777777778e-07,
+        4.340277777777778e-07,
+        4.340277777777778e-07
+      ],
+      "sun_energy": [
+        0.10386698693037,
+        0.10386698693037
+      ],
+      "ambient_energy": [
+        0.348335087299347,
+        0.348335087299347
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00710372347384691,
+        0.00710372347384691
+      ]
+    },
+    "A7_deep": {
+      "baseline_ms": [
+        3.822,
+        14.582
+      ],
+      "candidate_ms": [
+        4.04,
+        6.302
+      ],
+      "baseline_draws": 146.0,
+      "candidate_draws": 146.0,
+      "baseline_primitives": 127176.0,
+      "candidate_primitives": 127176.0,
+      "mean_abs_rgb": [
+        0.0,
+        8.680555555555556e-07,
+        4.340277777777778e-07
+      ],
+      "sun_energy": [
+        0.0627057403326035,
+        0.0627057403326035
+      ],
+      "ambient_energy": [
+        0.248981162905693,
+        0.248981162905693
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00891922879964113,
+        0.00891922879964113
+      ]
+    },
+    "A8_surface": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sun_energy": [
+        0.131127700209618,
+        0.131127700209618
+      ],
+      "ambient_energy": [
+        0.414136230945587,
+        0.414136230945587
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.005901332013309,
+        0.005901332013309
+      ]
+    },
+    "A9_shade": {
+      "baseline_ms": [
+        null,
+        null
+      ],
+      "candidate_ms": [
+        null,
+        null
+      ],
+      "baseline_draws": null,
+      "candidate_draws": null,
+      "baseline_primitives": null,
+      "candidate_primitives": null,
+      "mean_abs_rgb": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sun_energy": [
+        0.082467757165432,
+        0.082467757165432
+      ],
+      "ambient_energy": [
+        0.296682208776474,
+        0.296682208776474
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00804758165031672,
+        0.00804758165031672
+      ]
+    }
+  },
+  "up": {
+    "A11_up": {
+      "baseline_ms": [
+        3.564,
+        5.517
+      ],
+      "candidate_ms": [
+        4.435,
+        7.015
+      ],
+      "baseline_draws": 60.0,
+      "candidate_draws": 115.0,
+      "baseline_primitives": 117200.0,
+      "candidate_primitives": 281114.0,
+      "mean_abs_rgb": [
+        9.045056423611111,
+        6.567450520833333,
+        6.971529079861111
+      ],
+      "sun_energy": [
+        1.31263959407806,
+        1.31263959407806
+      ],
+      "ambient_energy": [
+        0.763252198696136,
+        0.763252198696136
+      ],
+      "fog_density": [
+        0.779999971389771,
+        0.779999971389771
+      ],
+      "volumetric_density": [
+        0.00568088935688138,
+        0.00568088935688138
+      ]
+    }
+  },
+  "motion-noon": {
+    "baseline": {
+      "median_ms": 9.524,
+      "p95_ms": 17.149,
+      "draws": 202.0,
+      "primitives": 182240.0,
+      "samples": 780,
+      "end": "(-10.69993, 7.79, -0.000226)"
+    },
+    "candidate": {
+      "median_ms": 6.577,
+      "p95_ms": 10.644,
+      "draws": 282.0,
+      "primitives": 352918.0,
+      "samples": 1001,
+      "end": "(-10.7666, 7.79, -0.000226)"
+    }
+  },
+  "motion-low": {
+    "baseline": {
+      "median_ms": 5.092,
+      "p95_ms": 7.436,
+      "draws": 202.0,
+      "primitives": 182240.0,
+      "samples": 1388,
+      "end": "(-10.63327, 7.79, -0.000227)"
+    },
+    "candidate": {
+      "median_ms": 6.295,
+      "p95_ms": 9.804,
+      "draws": 318.0,
+      "primitives": 355618.0,
+      "samples": 1062,
+      "end": "(-10.7666, 7.79, -0.000226)"
+    }
+  }
+}

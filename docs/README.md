@@ -1,6 +1,6 @@
 # Documentation index
 
-Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete; P2 world qualification remains open at its owner/native checkpoint. [The roadmap](roadmap.md) owns exact Phase/Gate status.
+Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete; P2, P3 and P4 are owner-closed for progression with explicit gaps, and P5 is active next at `0.5.0`. [The roadmap](roadmap.md) owns exact Phase/Gate status.
 
 ## Ownership
 
@@ -15,7 +15,12 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, depth-structured traversal, renderer lock, water-column atmosphere and movement-reactive presentation. |
 | [P3 FAF reef-world plan](planning/p3/reef-world-rebuild.md) | Rebuild/dress the accepted varying-depth world with the complete original FAF environment library, caves/tunnels, depth-based density, and the five-fish Character Select/session-return flow. |
 | [P3 procedural world generation](planning/p3/procedural-world-generation.md) | Deterministic finite world compiler: irregular basin, true 3D geology, terrain-aware placement, baked candidate/Base World lifecycle and generation-time target. |
+<<<<<<< HEAD
 | [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Ocean/Pond world selection and distinct habitats; P4 implementation through P11, with P12/V32 native review NOT GREEN at `0.4.11`. |
+=======
+| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Historical approved Ocean/Pond design; [P4 direct closeout](tasks/p4/closeout.md) owns implementation and incomplete qualification. |
+| [P5 entry](tasks/p5/entry.md) | `0.5.0` source/world baseline, focused checks, open P4 work and first ecosystem slice for separate P5 planning. |
+>>>>>>> ec90b05 (fixed nighttime)
 | [Underwater visibility and discovery](systems/underwater-visibility.md) | Owner-selected distance/depth extinction, progressive reef reveal, near-field readability, tuning controls, and pending native acceptance. |
 | [Day/night and weather](systems/day-night-and-weather.md) | Shared environmental time/solar cycle contract; weather is a later modifier layered on the day/night baseline. |
 | [Stealth and detection](systems/stealth-and-detection.md) | Owner-approved naturalistic stealth core; physical shelter, exposure, sensory detection, investigation, escape, stealth hunting and P4/P5 boundary. |
@@ -45,7 +50,11 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.3/V20 remains an accepted open gap. P3 is also **owner-closed for progression / NOT GREEN**, with corrected Ocean `ocean-m4-42` at completed `0.3.6`, documented visual/native/visibility gaps and [direct closeout](tasks/p3/closeout.md). Do not convert accepted gaps into PASS.
 
+<<<<<<< HEAD
 **P4 remains IN PROGRESS / P12 V32 NOT GREEN at `0.4.11`:** Ocean and the generated Pond are distinct playable development environments; P4's native surface/clarity work still requires qualification and no P4 Gate has passed. [P5's planned Pike Encounter](planning/p5/stealth-foundation.md) will be a separate test scene launched by a third World Select card, not a third habitat or change to the normal worlds. **P5 remains NOT STARTED.** P5 later owns naturalistic sensing/cover, stealth hunting, feeding and growth; P6 saves/death; P7 Life History; P8 integrated qualification. Planning changes do not bump version, implement a scene or pass a Gate.
+=======
+**P4 is owner-closed for progression / NOT GREEN:** [closeout](tasks/p4/closeout.md) preserves the failed/unobserved native visual criteria. At the deliberate `0.5.0` working-tree baseline, [P5 entry](tasks/p5/entry.md) prepares naturalistic stealth, feeding and growth; gameplay is not yet implemented. P6 saves/death, P7 Life History and P8 integration remain later. The previously selected Movement abilities remain a later enhancement.
+>>>>>>> ec90b05 (fixed nighttime)
 
 ## Status language
 

@@ -18,9 +18,9 @@ public partial class UnderwaterAtmosphere : Node3D
     // Artistic depth-fog end distance at the surface. Actual optical range also depends on scatter.
     [Export(PropertyHint.Range, "18,60,1")] public float VisibilityRangeMeters { get; set; } = 35f;
     private const float FogNearMeters = 5f;
-    private const float PondFogNearMeters = 3f;
+    private const float PondFogNearMeters = 4.5f;
     private const float FogExtinction = 0.96f;
-    private const float PondFogExtinction = 0.58f;
+    private const float PondFogExtinction = 0.78f;
     private const float FogCurve = 1.2f;
     [Export(PropertyHint.Range, "0,0.05,0.001")] public float LowerWaterFog { get; set; } = 0.018f;
     [Export(PropertyHint.Range, "-8,8,0.1")] public float LowerFogStartHeight { get; set; } = -1.0f;
@@ -47,6 +47,7 @@ public partial class UnderwaterAtmosphere : Node3D
     private ShaderMaterial? _skyMaterial;
     private ShaderMaterial? _surfaceMaterial;
     private ShaderMaterial? _shaftMaterial;
+    private ShaderMaterial? _pondBasinMaterial;
     private ShaderMaterial? _screenMaterial;
     private MeshInstance3D? _surface;
     private MeshInstance3D? _shafts;
@@ -230,6 +231,13 @@ public partial class UnderwaterAtmosphere : Node3D
         };
         main.GetNode<WorldEnvironment>("WorldEnvironment").Environment = _environment;
         _sun = main.GetNode<DirectionalLight3D>("Sun");
+        // One short, single-map shadow from the existing solar light gives nearby
+        // trunks and foliage a real shaded side without extra light nodes.
+        if (_profile.Id == WorldEnvironmentProfile.Pond)
+        {
+            _sun.DirectionalShadowMode = DirectionalLight3D.ShadowMode.Orthogonal;
+            _sun.DirectionalShadowMaxDistance = 28f;
+        }
         UpdateSolar(true);
 
         _effects = new Node3D { Name = "WaterEffects" };
@@ -251,6 +259,13 @@ public partial class UnderwaterAtmosphere : Node3D
             return;
         }
         seabed.SetWaterColumn(_surfaceHeight, _deepReferenceHeight);
+        if (_profile.Id == WorldEnvironmentProfile.Pond)
+        {
+            _pondBasinMaterial = seabed.GetNode<MeshInstance3D>("Mesh").MaterialOverride as ShaderMaterial;
+            _pondBasinMaterial?.SetShaderParameter("water_surface_y", _surfaceHeight);
+            _pondBasinMaterial?.SetShaderParameter("sun_direction", _sun.GlobalTransform.Basis.Z.Normalized());
+            _pondBasinMaterial?.SetShaderParameter("sunlight_energy", _solarLighting.DirectEnergyFactor);
+        }
         // Continuous height fog affects imported reef meshes without replacing their materials.
         _environment.FogHeight = _surfaceHeight - 0.60f * (_surfaceHeight - _deepReferenceHeight)
             + LowerFogStartHeight;
@@ -344,6 +359,7 @@ public partial class UnderwaterAtmosphere : Node3D
         RefreshDepth(false, (float)delta);
         _presentationSeconds += delta;
         _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
+        _pondBasinMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
         _screenMaterial?.SetShaderParameter("screen_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
@@ -370,6 +386,7 @@ public partial class UnderwaterAtmosphere : Node3D
         if (!force && solar.DayFraction == _lastSolarFraction) return false;
         _lastSolarFraction = solar.DayFraction;
         _solarLighting = SolarLightingState.From(solar, _profile.Id);
+        _sun.ShadowEnabled = _profile.Id == WorldEnvironmentProfile.Pond && solar.DirectLight > 0.08f;
         _solarWater = SolarWaterState.From(solar, _solarLighting, _profile, SunEnergy);
         _nightWeight = 1f - Mathf.Clamp(solar.Daylight + 0.5f * solar.Twilight, 0f, 1f);
         _airFogColor = _solarLighting.AirHorizon.Lerp(PondAirBackground,
@@ -386,6 +403,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _skyMaterial?.SetShaderParameter("warm_strength", _solarLighting.WarmStrength);
         _skyMaterial?.SetShaderParameter("sun_glow", _solarLighting.SunGlow);
         _skyMaterial?.SetShaderParameter("moon_glow", SolarLightingState.MoonVisibility(solar));
+        _skyMaterial?.SetShaderParameter("night_weight", _nightWeight);
         _skyMaterial?.SetShaderParameter("underwater_daylight", _solarWater.UnderwaterSky);
         _screenMaterial?.SetShaderParameter("night_saturation",
             Mathf.Lerp(1f, _profile.NightSaturation, _nightWeight));
@@ -394,10 +412,16 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial?.SetShaderParameter("surface_illumination", _solarWater.SurfaceIllumination);
         _surfaceMaterial?.SetShaderParameter("night_surface_glow",
             ToVector(_profile.NightSurfaceGlow) * _nightWeight);
+        _surfaceMaterial?.SetShaderParameter("night_underwater_color",
+            ToVector(_profile.NightFog) * 0.11f);
+        _surfaceMaterial?.SetShaderParameter("night_weight", _nightWeight);
+        _surfaceMaterial?.SetShaderParameter("moon_glow", SolarLightingState.MoonVisibility(solar));
         _surfaceMaterial?.SetShaderParameter("reflected_sky_horizon", ToVector(_solarLighting.AirHorizon));
         _surfaceMaterial?.SetShaderParameter("reflected_sky_zenith", ToVector(_solarLighting.AirZenith));
         _surfaceMaterial?.SetShaderParameter("reflection_sun_color", ToVector(_solarLighting.DirectColor));
         _surfaceMaterial?.SetShaderParameter("reflection_sun_energy", _solarWater.ReflectionSunEnergy);
+        _pondBasinMaterial?.SetShaderParameter("sun_direction", direction);
+        _pondBasinMaterial?.SetShaderParameter("sunlight_energy", _solarLighting.DirectEnergyFactor);
         _shaftMaterial?.SetShaderParameter("sun_direction", direction);
         _shaftMaterial?.SetShaderParameter("shaft_lean", _solarWater.ShaftLean);
         _shaftMaterial?.SetShaderParameter("shaft_color", ToVector(_profile.ShaftColor.Lerp(_solarLighting.DirectColor, 0.45f * _solarLighting.WarmStrength)));
@@ -445,16 +469,23 @@ public partial class UnderwaterAtmosphere : Node3D
         var waterFogBegin = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogNearMeters : FogNearMeters;
         _environment.FogDepthBegin = Mathf.Lerp(_profile.AirFogBegin, waterFogBegin, _immersion);
         _environment.FogDepthEnd = Mathf.Lerp(_profile.AirFogEnd, EffectiveUsefulRange, _immersion);
+        _environment.FogDepthCurve = Mathf.Lerp(FogCurve,
+            _profile.Id == WorldEnvironmentProfile.Pond ? 1.55f : FogCurve, _immersion);
+        _environment.FogSkyAffect = _profile.Id == WorldEnvironmentProfile.Pond ? .35f * _immersion : 0f;
         var waterFog = _profile.Id == WorldEnvironmentProfile.Pond ? PondFogExtinction : FogExtinction;
         _environment.FogDensity = _visibilityBypass ? 0f : Mathf.Lerp(_profile.AirFogDensity, waterFog, _immersion);
         _environment.FogHeightDensity = LowerWaterFog * _immersion;
         _environment.VolumetricFogDensity = Mathf.Min(0.06f, VolumetricDensity * Mathf.Lerp(1f, _profile.DeepVolumeFactor, depth)) * _immersion
-            * (_profile.Id == WorldEnvironmentProfile.Pond ? .38f : 1f);
+            * (_profile.Id == WorldEnvironmentProfile.Pond ? .19f : 1f);
         if (_pondTurbidityMaterial is not null)
             _pondTurbidityMaterial.Density = _pondClarityDiagnosticOff ? 0f :
                 PondTurbidityField.VolumeDensity * _immersion;
         _environment.VolumetricFogLength = Mathf.Max(20f, FogLength * Mathf.Lerp(1f, _profile.DeepFogLengthFactor, depth));
-        _environment.VolumetricFogAlbedo = PondAirAmbient.Lerp(VolumetricWaterColor.Lerp(_profile.DeepVolume, depth), _immersion);
+        var waterVolumeColor = VolumetricWaterColor.Lerp(_profile.DeepVolume, depth)
+            .Lerp(_profile.NightVolume, _nightWeight);
+        _environment.VolumetricFogAlbedo = PondAirAmbient.Lerp(waterVolumeColor, _immersion);
+        if (_pondTurbidityMaterial is not null)
+            _pondTurbidityMaterial.Albedo = waterVolumeColor;
         _environment.BackgroundColor = PondAirBackground.Lerp(BackgroundWater.Lerp(_profile.DeepBackground, depth), _immersion);
         ApplySolarLightLevels(depth);
         _skyMaterial?.SetShaderParameter("water_depth", depth);
@@ -469,8 +500,7 @@ public partial class UnderwaterAtmosphere : Node3D
     {
         if (!_enabled || _environment is null || _sun is null) return;
         var waterFogColor = DistanceFogColor.Lerp(_profile.DeepFog, depth);
-        if (_profile.Id == WorldEnvironmentProfile.Ocean)
-            waterFogColor = waterFogColor.Lerp(_profile.NightFog, _nightWeight);
+        waterFogColor = waterFogColor.Lerp(_profile.NightFog, _nightWeight);
         _environment.FogLightColor = _airFogColor.Lerp(waterFogColor, _immersion);
         _environment.AmbientLightColor = _solarLighting.AirAmbient.Lerp(
             AmbientWater.Lerp(_profile.DeepAmbient, depth)
@@ -485,7 +515,7 @@ public partial class UnderwaterAtmosphere : Node3D
         var waterSun = SunEnergy * _solarLighting.DirectEnergyFactor *
             Mathf.Lerp(1f, _profile.DeepLightFactor, depth);
         var moon = SolarLightingState.MoonVisibility(Solar);
-        var moonEnergy = _profile.Id == WorldEnvironmentProfile.Pond ? 0.14f : 0.03f;
+        var moonEnergy = _profile.Id == WorldEnvironmentProfile.Pond ? 0.18f : 0.03f;
         _sun.LightEnergy = Mathf.Lerp(airSun + 0.085f * moon,
             waterSun + moonEnergy * moon * Mathf.Lerp(1f, _profile.DeepLightFactor, depth), _immersion);
         _sun.LightVolumetricFogEnergy = 0.8f * _solarLighting.VolumetricFactor * _immersion;
@@ -570,6 +600,7 @@ public partial class UnderwaterAtmosphere : Node3D
         _surfaceMaterial.SetShaderParameter("air_fog_end", _profile.AirFogEnd);
         _surfaceMaterial.SetShaderParameter("water_scatter", new Vector3(_profile.SurfaceScatter.R,
             _profile.SurfaceScatter.G, _profile.SurfaceScatter.B));
+        _surfaceMaterial.SetShaderParameter("underwater_scatter", ToVector(_profile.UnderwaterSurfaceScatter));
         _surfaceMaterial.SetShaderParameter("surface_extinction", _profile.SurfaceExtinctionPerMeter);
         _surfaceMaterial.SetShaderParameter("reflection_strength", _profile.SurfaceReflectionStrength);
         _surfaceMaterial.SetShaderParameter("reflection_distortion", _profile.SurfaceReflectionDistortion);
@@ -590,6 +621,7 @@ public partial class UnderwaterAtmosphere : Node3D
             Name = "OverheadSurface",
             Mesh = waterMesh,
             MaterialOverride = _surfaceMaterial,
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
             CustomAabb = new Aabb(new Vector3(-(extent.X + 14.0f) * 0.5f, -0.35f, -(extent.Z + 14.0f) * 0.5f),
                 new Vector3(extent.X + 14.0f, 0.7f, extent.Z + 14.0f)),
             Position = _effects!.ToLocal(upper.GlobalPosition) + new Vector3(0,

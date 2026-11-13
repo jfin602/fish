@@ -425,8 +425,10 @@ public static class FullWorldPackage
         System.IO.File.WriteAllBytes(path, bytes);
     }
 
+    // Avoid cached PackedScene reuse across repeated world unload/reload; the
+    // repeated-entry check emitted Godot uninitialized-handle errors with reuse.
     private static Node3D LoadSubscene(string directory, string file) =>
-        (ResourceLoader.Load<PackedScene>(directory + "/" + file)
+        (ResourceLoader.Load<PackedScene>(directory + "/" + file, "", ResourceLoader.CacheMode.Ignore)
             ?? throw new InvalidDataException($"Baked scene missing: {file}")).Instantiate<Node3D>();
 
     private static void ReplaceVisuals(Node3D parent, Node3D replacement)

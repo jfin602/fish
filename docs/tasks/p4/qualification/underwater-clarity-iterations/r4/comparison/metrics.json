@@ -1,0 +1,783 @@
+{
+  "A4_shallow": {
+    "baseline": {
+      "camera": "(-40.0, 8.867146, -5.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.314173611964989,
+      "distance_fog": 0.779999971389771,
+      "draws": 248.0,
+      "fish": "(-40.0, 8.517146, -8.0)",
+      "fish_sample": 0.316189067520139,
+      "global_density": 0.00572476396337152,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A4_shallow.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.057,
+      "p95_ms": 8.595,
+      "primitives": 296670.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-40.0, 8.867146, -5.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.641597575747346,
+      "distance_fog": 0.779999971389771,
+      "draws": 248.0,
+      "fish": "(-40.0, 8.517146, -8.0)",
+      "fish_sample": 0.523975084538906,
+      "global_density": 0.00572476396337152,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A4_shallow.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.773,
+      "p95_ms": 7.709,
+      "primitives": 296670.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      3.312516059027778,
+      2.484515190972222,
+      2.6488059895833334
+    ]
+  },
+  "A2_near": {
+    "baseline": {
+      "camera": "(-19.64, 9.24, 27.16)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.996276, -0.086216), Z: (0.0, 0.086216, 0.996276)]",
+      "camera_sample": 0.315817934189189,
+      "distance_fog": 0.779999971389771,
+      "draws": 286.0,
+      "fish": "(-19.64, 8.79, 23.96)",
+      "fish_sample": 0.348272871406691,
+      "global_density": 0.00563577935099602,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A2_near.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.549,
+      "p95_ms": 9.585,
+      "primitives": 325134.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-19.64, 9.24, 27.16)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.996276, -0.086216), Z: (0.0, 0.086216, 0.996276)]",
+      "camera_sample": 0.548653158521961,
+      "distance_fog": 0.779999971389771,
+      "draws": 286.0,
+      "fish": "(-19.64, 8.79, 23.96)",
+      "fish_sample": 0.558865150885922,
+      "global_density": 0.00563577935099602,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A2_near.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 5.046,
+      "p95_ms": 9.45,
+      "primitives": 325134.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      2.3078072916666668,
+      2.0626553819444444,
+      2.933659722222222
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.9102903645833333,
+        1.6347300347222222,
+        2.405721354166667
+      ],
+      "high_off_mean_abs_rgb": [
+        3.04577734375,
+        2.7241341145833333,
+        4.033353298611111
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.10149479166666667,
+        0.0945568576388889,
+        0.14695095486111112
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        3.9440963541666667,
+        3.4597018229166667,
+        5.033289930555555
+      ],
+      "high_off_mean_abs_rgb": [
+        6.39352734375,
+        5.589370225694444,
+        7.945075086805556
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.23531901041666667,
+        0.21042057291666666,
+        0.2928515625
+      ]
+    }
+  },
+  "A5_silty": {
+    "baseline": {
+      "camera": "(-36.0, 6.109618, -1.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.995037, -0.099504), Z: (0.0, 0.099504, 0.995037)]",
+      "camera_sample": 0.438605231442005,
+      "distance_fog": 0.779999971389771,
+      "draws": 266.0,
+      "fish": "(-36.0, 5.709618, -4.0)",
+      "fish_sample": 0.336247050133359,
+      "global_density": 0.00686794798821211,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A5_silty.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 4.835,
+      "p95_ms": 5.919,
+      "primitives": 297320.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-36.0, 6.109618, -1.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.995037, -0.099504), Z: (0.0, 0.099504, 0.995037)]",
+      "camera_sample": 0.826975139830904,
+      "distance_fog": 0.779999971389771,
+      "draws": 266.0,
+      "fish": "(-36.0, 5.709618, -4.0)",
+      "fish_sample": 0.541953184969581,
+      "global_density": 0.00686794798821211,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A5_silty.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.955,
+      "p95_ms": 8.282,
+      "primitives": 297320.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      2.62435546875,
+      2.12501171875,
+      2.6865907118055556
+    ]
+  },
+  "A3_log": {
+    "baseline": {
+      "camera": "(-20.09723, 3.817871, 24.95895)",
+      "camera_basis": "[X: (0.909409, 0.0, 0.415903), Y: (0.018466, 0.999014, -0.040378), Z: (-0.415493, 0.044401, 0.908512)]",
+      "camera_sample": 0.428921555992686,
+      "distance_fog": 0.779999971389771,
+      "draws": 294.0,
+      "fish": "(-18.82253, 3.511383, 22.17172)",
+      "fish_sample": 0.421368316034475,
+      "global_density": 0.00804758165031672,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A3_log.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.175,
+      "p95_ms": 9.234,
+      "primitives": 300736.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-20.09723, 3.817871, 24.95895)",
+      "camera_basis": "[X: (0.909409, 0.0, 0.415903), Y: (0.018466, 0.999014, -0.040378), Z: (-0.415493, 0.044401, 0.908512)]",
+      "camera_sample": 0.628432079766661,
+      "distance_fog": 0.779999971389771,
+      "draws": 294.0,
+      "fish": "(-18.82253, 3.511383, 22.17172)",
+      "fish_sample": 0.581551856868552,
+      "global_density": 0.00804758165031672,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A3_log.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 5.115,
+      "p95_ms": 8.82,
+      "primitives": 300736.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      1.6285490451388889,
+      1.5095221354166666,
+      1.3286059027777777
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        0.8341493055555556,
+        0.8103541666666667,
+        0.9668107638888889
+      ],
+      "high_off_mean_abs_rgb": [
+        1.4840112847222222,
+        1.4851788194444444,
+        1.6816128472222223
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.07197743055555555,
+        0.08402560763888889,
+        0.088453125
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        2.258593315972222,
+        2.143279513888889,
+        2.1142074652777776
+      ],
+      "high_off_mean_abs_rgb": [
+        3.930740451388889,
+        3.5432139756944445,
+        3.461556423611111
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.16329904513888888,
+        0.15803428819444446,
+        0.17723784722222222
+      ]
+    }
+  },
+  "A6_middle": {
+    "baseline": {
+      "camera": "(-28.0, 5.654334, 0.0)",
+      "camera_basis": "[X: (0.5547, 0.0, -0.83205), Y: (0.015864, 0.999818, 0.010576), Z: (0.831899, -0.019066, 0.554599)]",
+      "camera_sample": 0.265996366601948,
+      "distance_fog": 0.779999971389771,
+      "draws": 232.0,
+      "fish": "(-30.87386, 5.720201, -1.915909)",
+      "fish_sample": 0.326254759788616,
+      "global_density": 0.00710372347384691,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A6_middle.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 4.753,
+      "p95_ms": 8.497,
+      "primitives": 291608.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-28.0, 5.654334, 0.0)",
+      "camera_basis": "[X: (0.5547, 0.0, -0.83205), Y: (0.015864, 0.999818, 0.010576), Z: (0.831899, -0.019066, 0.554599)]",
+      "camera_sample": 0.374226495320327,
+      "distance_fog": 0.779999971389771,
+      "draws": 232.0,
+      "fish": "(-30.87386, 5.720201, -1.915909)",
+      "fish_sample": 0.549326861129761,
+      "global_density": 0.00710372347384691,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A6_middle.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.484,
+      "p95_ms": 6.186,
+      "primitives": 291608.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      2.7373741319444442,
+      1.8398567708333333,
+      2.3239809027777776
+    ]
+  },
+  "A7_deep": {
+    "baseline": {
+      "camera": "(-14.0, 1.523225, 0.0)",
+      "camera_basis": "[X: (-0.0, 0.0, -1.0), Y: (0.144597, 0.989491, -0.0), Z: (0.989491, -0.144597, -0.0)]",
+      "camera_sample": 0.280889290580566,
+      "distance_fog": 0.779999971389771,
+      "draws": 230.0,
+      "fish": "(-17.3569, 2.013778, 0.0)",
+      "fish_sample": 0.269076357419473,
+      "global_density": 0.00891922879964113,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/A7_deep.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 4.763,
+      "p95_ms": 8.891,
+      "primitives": 298010.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-14.0, 1.523225, 0.0)",
+      "camera_basis": "[X: (-0.0, 0.0, -1.0), Y: (0.144597, 0.989491, -0.0), Z: (0.989491, -0.144597, -0.0)]",
+      "camera_sample": 0.178095728827798,
+      "distance_fog": 0.779999971389771,
+      "draws": 230.0,
+      "fish": "(-17.3569, 2.013778, 0.0)",
+      "fish_sample": 0.173749812307319,
+      "global_density": 0.00891922879964113,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/A7_deep.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.603,
+      "p95_ms": 7.599,
+      "primitives": 298010.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      0.5235256076388889,
+      0.38398177083333335,
+      0.6728841145833333
+    ]
+  },
+  "B1_clear": {
+    "baseline": {
+      "camera": "(-30.0, 8.740001, -24.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.177828014895589,
+      "distance_fog": 0.779999971389771,
+      "draws": 255.0,
+      "fish": "(-30.0, 8.39, -27.0)",
+      "fish_sample": 0.135906164510782,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/B1_clear.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.175,
+      "p95_ms": 9.028,
+      "primitives": 295154.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-30.0, 8.740001, -24.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.21944879221824,
+      "distance_fog": 0.779999971389771,
+      "draws": 255.0,
+      "fish": "(-30.0, 8.39, -27.0)",
+      "fish_sample": 0.259721325941994,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/B1_clear.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.947,
+      "p95_ms": 7.668,
+      "primitives": 295154.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      3.053967013888889,
+      2.3334249131944444,
+      3.0784874131944444
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.137079861111111,
+        0.8805086805555555,
+        1.1546970486111112
+      ],
+      "high_off_mean_abs_rgb": [
+        1.7209127604166667,
+        1.2874171006944444,
+        1.765041232638889
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.03602907986111111,
+        0.08814192708333334,
+        0.04932638888888889
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        3.8178819444444443,
+        2.960344184027778,
+        3.8758914930555557
+      ],
+      "high_off_mean_abs_rgb": [
+        6.302176649305555,
+        4.621148003472222,
+        6.018282986111111
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.22085373263888888,
+        0.08174565972222222,
+        0.17064887152777777
+      ]
+    }
+  },
+  "B2_murky": {
+    "baseline": {
+      "camera": "(3.0, 8.740001, 12.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.404493931322958,
+      "distance_fog": 0.779999971389771,
+      "draws": 269.0,
+      "fish": "(3.0, 8.39, 9.0)",
+      "fish_sample": 0.428066101767538,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/B2_murky.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.192,
+      "p95_ms": 8.8,
+      "primitives": 322462.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(3.0, 8.740001, 12.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.239837641362367,
+      "distance_fog": 0.779999971389771,
+      "draws": 269.0,
+      "fish": "(3.0, 8.39, 9.0)",
+      "fish_sample": 0.186719831245405,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/B2_murky.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.716,
+      "p95_ms": 6.979,
+      "primitives": 322462.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      1.0949205729166667,
+      1.1187743055555555,
+      1.9080616319444443
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.9885590277777778,
+        1.9720811631944444,
+        2.8859557291666667
+      ],
+      "high_off_mean_abs_rgb": [
+        3.250078125,
+        3.2720121527777777,
+        5.071091145833333
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.1108493923611111,
+        0.11745789930555556,
+        0.18212803819444445
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        2.9442552083333333,
+        2.9489596354166667,
+        4.570534288194445
+      ],
+      "high_off_mean_abs_rgb": [
+        4.547455729166667,
+        4.61703125,
+        7.200342447916666
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.15289756944444444,
+        0.15873871527777778,
+        0.24615494791666667
+      ]
+    }
+  },
+  "C1_clear": {
+    "baseline": {
+      "camera": "(18.0, 8.740001, -9.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.225033040286416,
+      "distance_fog": 0.779999971389771,
+      "draws": 261.0,
+      "fish": "(18.0, 8.39, -12.0)",
+      "fish_sample": 0.191018174422969,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/C1_clear.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.273,
+      "p95_ms": 8.373,
+      "primitives": 294930.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(18.0, 8.740001, -9.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.0673696386067532,
+      "distance_fog": 0.779999971389771,
+      "draws": 261.0,
+      "fish": "(18.0, 8.39, -12.0)",
+      "fish_sample": 0.0516483780765915,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/C1_clear.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 5.081,
+      "p95_ms": 8.355,
+      "primitives": 294930.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      0.40183550347222224,
+      0.3286306423611111,
+      0.5321844618055556
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.1464991319444444,
+        0.8689700520833333,
+        1.1785598958333334
+      ],
+      "high_off_mean_abs_rgb": [
+        1.8806636284722222,
+        1.3386436631944445,
+        1.6097860243055555
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.048765625,
+        0.10107248263888889,
+        0.060823350694444445
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.4289626736111112,
+        1.1678098958333334,
+        1.4986831597222223
+      ],
+      "high_off_mean_abs_rgb": [
+        2.0827942708333333,
+        1.5419171006944445,
+        2.014435763888889
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.11158116319444444,
+        0.20069618055555555,
+        0.12023307291666667
+      ]
+    }
+  },
+  "C2_murky": {
+    "baseline": {
+      "camera": "(-27.0, 8.740001, -33.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.243932204967284,
+      "distance_fog": 0.779999971389771,
+      "draws": 213.0,
+      "fish": "(-27.0, 8.39, -36.0)",
+      "fish_sample": 0.216716715327896,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/C2_murky.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 4.902,
+      "p95_ms": 7.92,
+      "primitives": 285464.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-27.0, 8.740001, -33.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.702853841181365,
+      "distance_fog": 0.779999971389771,
+      "draws": 213.0,
+      "fish": "(-27.0, 8.39, -36.0)",
+      "fish_sample": 0.7316886450888,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/C2_murky.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.801,
+      "p95_ms": 8.659,
+      "primitives": 285464.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      5.424619791666666,
+      3.4132096354166666,
+      3.857390190972222
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        0.932515625,
+        0.6406675347222223,
+        0.9307113715277778
+      ],
+      "high_off_mean_abs_rgb": [
+        1.6924092881944444,
+        1.1051323784722222,
+        1.3887296006944445
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.058789496527777776,
+        0.0358828125,
+        0.03536024305555555
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        5.839346788194445,
+        3.6982465277777776,
+        4.400205295138889
+      ],
+      "high_off_mean_abs_rgb": [
+        9.868342013888888,
+        6.232964409722222,
+        7.222966145833333
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.3721154513888889,
+        0.25089539930555554,
+        0.2785646701388889
+      ]
+    }
+  },
+  "B3_clear_bed": {
+    "baseline": {
+      "camera": "(-30.0, 4.235504, -24.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.217511117166934,
+      "distance_fog": 0.779999971389771,
+      "draws": 255.0,
+      "fish": "(-30.0, 3.885504, -27.0)",
+      "fish_sample": 0.179151737850813,
+      "global_density": 0.00784139521420002,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/B3_clear_bed.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.125,
+      "p95_ms": 8.314,
+      "primitives": 295154.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-30.0, 4.235504, -24.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.264118731005427,
+      "distance_fog": 0.779999971389771,
+      "draws": 255.0,
+      "fish": "(-30.0, 3.885504, -27.0)",
+      "fish_sample": 0.301020312890729,
+      "global_density": 0.00784139521420002,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/B3_clear_bed.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.654,
+      "p95_ms": 7.205,
+      "primitives": 295154.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      2.2075338541666665,
+      1.4175182291666666,
+      1.8514383680555555
+    ]
+  },
+  "B4_murky_bed": {
+    "baseline": {
+      "camera": "(3.0, 3.756011, 12.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.356293589824851,
+      "distance_fog": 0.779999971389771,
+      "draws": 276.0,
+      "fish": "(3.0, 3.406012, 9.0)",
+      "fish_sample": 0.562369180428628,
+      "global_density": 0.00807732064276934,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/B4_murky_bed.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.205,
+      "p95_ms": 9.182,
+      "primitives": 322462.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(3.0, 3.756011, 12.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.230003805871103,
+      "distance_fog": 0.779999971389771,
+      "draws": 276.0,
+      "fish": "(3.0, 3.406012, 9.0)",
+      "fish_sample": 0.277633680433044,
+      "global_density": 0.00807732064276934,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/B4_murky_bed.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.812,
+      "p95_ms": 9.585,
+      "primitives": 322462.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      0.5566961805555556,
+      0.46732682291666666,
+      0.949046875
+    ],
+    "baseline_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        0.9958741319444444,
+        0.8035611979166667,
+        1.558204861111111
+      ],
+      "high_off_mean_abs_rgb": [
+        1.7160746527777777,
+        1.4778172743055555,
+        2.686994357638889
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.11388151041666666,
+        0.14576258680555557,
+        0.16433723958333332
+      ]
+    },
+    "candidate_diagnostic": {
+      "full_off_mean_abs_rgb": [
+        1.4707109375,
+        1.1873745659722221,
+        2.361693142361111
+      ],
+      "high_off_mean_abs_rgb": [
+        2.408407986111111,
+        2.0614266493055555,
+        3.6900516493055555
+      ],
+      "full_restored_mean_abs_rgb": [
+        0.15085590277777777,
+        0.2024123263888889,
+        0.2050920138888889
+      ]
+    }
+  },
+  "B5_transition": {
+    "baseline": {
+      "camera": "(-13.5, 8.740001, -6.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.349511959956277,
+      "distance_fog": 0.779999971389771,
+      "draws": 246.0,
+      "fish": "(-13.5, 8.39, -9.0)",
+      "fish_sample": 0.382835964182694,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/baseline/fixed/B5_transition.png",
+      "local_density": 0.0500000007450581,
+      "median_ms": 5.225,
+      "p95_ms": 10.395,
+      "primitives": 296586.0,
+      "samples": 90
+    },
+    "candidate": {
+      "camera": "(-13.5, 8.740001, -6.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.171348560954299,
+      "distance_fog": 0.779999971389771,
+      "draws": 246.0,
+      "fish": "(-13.5, 8.39, -9.0)",
+      "fish_sample": 0.177411780124567,
+      "global_density": 0.00575980171561241,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/B5_transition.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.761,
+      "p95_ms": 5.653,
+      "primitives": 296586.0,
+      "samples": 90
+    },
+    "mean_abs_rgb": [
+      1.2654470486111111,
+      1.4220724826388889,
+      2.488504340277778
+    ]
+  },
+  "C3_clear_bed": {
+    "candidate": {
+      "camera": "(18.0, 6.342455, -9.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.0907055393610247,
+      "distance_fog": 0.779999971389771,
+      "draws": 269.0,
+      "fish": "(18.0, 5.992455, -12.0)",
+      "fish_sample": 0.103705802336882,
+      "global_density": 0.00674980878829956,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/C3_clear_bed.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 4.898,
+      "p95_ms": 8.778,
+      "primitives": 295304.0,
+      "samples": 90
+    }
+  },
+  "C4_murky_bed": {
+    "candidate": {
+      "camera": "(-27.0, 5.883956, -33.0)",
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.998752, -0.049938), Z: (0.0, 0.049938, 0.998752)]",
+      "camera_sample": 0.784225669428991,
+      "distance_fog": 0.779999971389771,
+      "draws": 211.0,
+      "fish": "(-27.0, 5.533956, -36.0)",
+      "fish_sample": 0.847077160211454,
+      "global_density": 0.00698418077081442,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r4/candidate/fixed/C4_murky_bed.png",
+      "local_density": 0.140000000596046,
+      "median_ms": 5.52,
+      "p95_ms": 10.036,
+      "primitives": 285464.0,
+      "samples": 90
+    }
+  }
+}

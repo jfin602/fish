@@ -85,7 +85,8 @@ public partial class FollowCamera : Node3D
         if (_fish.CanOrbitCamera ||
             (_fish.CameraControl == CameraControlPolicy.AdaptiveFollow && _fish.CanZoomCamera))
             _orbitMouse.Accept(@event);
-        if (!_fish.CanZoomCamera || @event is not InputEventMouseButton { Pressed: true } wheel)
+        if (!_fish.CanZoomCamera || _fish.DebugWheelControlsTime ||
+            @event is not InputEventMouseButton { Pressed: true } wheel)
             return;
         var direction = wheel.ButtonIndex switch
         {

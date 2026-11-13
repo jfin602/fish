@@ -1,8 +1,8 @@
 # P4 — Freshwater Pond and World Select
 
-**State: P12 native V32 review attempted at `0.4.11`, FAIL / NOT GREEN; no `0.4.12` checkpoint or P4 Gate.** The [P12 record](qualification/native-surface.md) captures real air/water pixels, an obscured fish, a scoped transition repair, and missing owner comfort judgment and matrix cells. The [native P7 record](qualification/native-pond.md) retains near-field darkness and incomplete deep/return traversal. Ocean Base World `ocean-m4-42` and Pond Base World `pond-p4-71` retain their tracked identities. Earlier P3/C3 gaps remain explicit in the [P3 direct closeout](../p3/closeout.md). [P11 implementation evidence](qualification/implementation.md) records headless checks and native limits.
+**State: OWNER CLOSED FOR PROGRESSION / NOT GREEN at deliberate P5 baseline `0.5.0`.** [Direct closeout](closeout.md) maps G4.1–G4.4 and V28–V32 to actual evidence, failures and unobserved cells. The implemented P4 prefix stops at P11 / `0.4.11`; P12–P14 were not runner checkpoints, and no `0.4.12`–`0.4.14` history is claimed. Ocean Base World `ocean-m4-42` and Pond Base World `pond-p4-71` retain their identities. Earlier P3/C3 gaps remain explicit in the [P3 direct closeout](../p3/closeout.md).
 
-[P8 intake evidence](qualification/integration.md) records the 25 fish stages, three creature bases, four insect variants, runtime wiring, facing correction, bounded native observations and remaining visual limits. P11 source evidence covers generated shore geometry and bounded surface effects. P12 still needs a passing native waterline/camera result and explicit owner review before the runner advances.
+[P8 intake evidence](qualification/integration.md) records the 25 fish stages, three creature bases, four insect variants, runtime wiring, facing correction, bounded native observations and remaining visual limits. P11 source evidence covers generated shore geometry and bounded surface effects. The failed/unsampled P12 native waterline review remains a future targeted qualification; the P4 runner is not resumed to synthesize missing checkpoints.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [Owner Pond FAF integration inventory](pond-faf-integration.md) · [P4 design](../../planning/p4/freshwater-world.md) · [Roadmap](../../roadmap.md) · [Runner contract](../../phase-runner.md) · [Validation V28–V32](../../validation.md)
 
@@ -12,15 +12,15 @@ Offer two independently playable worlds, **Ocean** (preserve the existing reef, 
 
 The Pond includes **surface swimming and camera air–water crossing**: fish can swim immediately under the surface and partially breach with fins/mouth/back without ordinary airborne movement, while the follow/orbit/zoom camera passes above/below without snaps or visibility bugs. It transitions fog/distortion/exposure, shows genuine nearby generated banks/reeds/sky and supports cheap surface ripples/wake. The Ocean is not restyled or deleted.
 
-## Day/night routing (documentation-only)
+## Day/night correction status
 
-The owner selected a staged environment pass on 2026-11-12 after reflective Pond water exposed the static flat sky as the next visual bottleneck. [c4-day-night](../c4-day-night/README.md) now owns the shared continuous solar clock, procedural sky and above/below-water daylight integration at unchanged `0.4.11`. Weather is explicitly deferred until that baseline is stable. This does not rewrite executed P11/P12 evidence or make P12/P4 GREEN.
+The owner selected a staged environment pass on 2026-11-12 after reflective Pond water exposed the static flat sky as the next visual bottleneck. [c4-day-night](../c4-day-night/README.md) owns the implemented shared continuous solar clock, procedural sky and above/below-water daylight integration. It was implemented at unchanged `0.4.11`; the later deliberate `0.5.0` P5 baseline does not qualify its native full-cycle/night result. Weather remains deferred.
 
-## S21 Pond clarity review routing (documentation-only)
+## S21 Pond clarity candidate
 
-The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a uniform green underwater view. [The water-visibility contract](../../systems/underwater-visibility.md) owns spatial turbidity versus illumination and initial near-field visual targets; the [P4 design](../../planning/p4/freshwater-world.md) owns Pond habitat appearance and [V29/V32](../../validation.md) own native checks. Introduce the smallest bounded rendering correction **without rewriting already executed P4 prompts or P12-R1/R2 evidence**, preserving the owner-rejected pale/shiny trials, accepted dark muddy-green direction and Ocean. Compare a fixed-view prototype before wider deterministic world-field wiring; P5 later owns gameplay sensing and dynamic sediment. No prompt-stack execution, checkpoint, version change, or Gate PASS follows merely from this documentation update. P12 remains NOT GREEN pending owner-controlled native qualification.
+The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a uniform green underwater view. [The water-visibility contract](../../systems/underwater-visibility.md) owns spatial turbidity versus illumination and near-field targets. A seeded Pond field and [R2–R5 optical/lighting/sediment/material candidates](qualification/underwater-clarity-iterations/visual-progress.md) now exist; owner native visual acceptance and V29/V32 remain open. Preserve rejected pale/shiny trials, the accepted dark muddy-green air direction and Ocean optics. P5 owns gameplay sensing; no AI should read shader fog as authoritative perception.
 
-## Non-negotiable entry dependency
+## Historical P4 entry dependency
 
 1. C3 manual M1–M4 completed; the owner approved progression with remaining visual/native gaps in the [P3 closeout](../p3/closeout.md). Preserve that disposition rather than converting previous failures to PASS or silently waiving V25/V26/V27.
 2. The corrected Ocean Base World was promoted under new `ocean-m4-42` without overwriting `qualification-42`; normal baked loading and five-fish Character Select passed focused checks. Complete fish-controlled native exploration remains an accepted progression gap.
@@ -28,7 +28,7 @@ The owner selected world-space, nonuniform Pond clarity on 2026-11-11 after a un
 4. Preserve the Ocean identity and package during P4. Do not create an artificial P3 P7/P8 or P4 checkpoint.
 5. Before running inspect the phase runner's exact command composition, Node/Codex model availability and selected Fish MCP project identity. Avoid concurrent P3/c3/P4 runners.
 
-## Prompt order
+## Historical prompt order
 
 | Task | File | Outcome | Version | Tier / handoff |
 | --- | --- | --- | --- | --- |

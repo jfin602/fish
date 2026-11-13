@@ -1,0 +1,176 @@
+{
+  "matched_conditions": {
+    "renderer": "forward_plus",
+    "adapter": "AMD Radeon 880M (RADV GFX1150)",
+    "godot": "4.7.2-stable (official)",
+    "viewport": "(1920, 1200)",
+    "vsync": "disabled",
+    "fps_cap": 0,
+    "world": "pond-p4-71",
+    "seed": 71,
+    "time_hour": 12.0
+  },
+  "views": {
+    "F0_normal": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 5.444,
+      "candidate_median_ms": 5.078,
+      "baseline_p95_ms": 7.776,
+      "candidate_p95_ms": 7.312,
+      "baseline_draws": 286.0,
+      "candidate_draws": 286.0,
+      "baseline_primitives": 325134.0,
+      "candidate_primitives": 325134.0,
+      "mean_abs_rgb": 1.351
+    },
+    "F1_close_wood": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.815,
+      "candidate_median_ms": 4.652,
+      "baseline_p95_ms": 8.699,
+      "candidate_p95_ms": 7.516,
+      "baseline_draws": 301.0,
+      "candidate_draws": 301.0,
+      "baseline_primitives": 324768.0,
+      "candidate_primitives": 324768.0,
+      "mean_abs_rgb": 3.466
+    },
+    "F2_entrance": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.837,
+      "candidate_median_ms": 4.785,
+      "baseline_p95_ms": 7.652,
+      "candidate_p95_ms": 6.259,
+      "baseline_draws": 294.0,
+      "candidate_draws": 294.0,
+      "baseline_primitives": 300736.0,
+      "candidate_primitives": 300736.0,
+      "mean_abs_rgb": 1.866
+    },
+    "F3_dense": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 5.344,
+      "candidate_median_ms": 4.869,
+      "baseline_p95_ms": 9.043,
+      "candidate_p95_ms": 8.457,
+      "baseline_draws": 246.0,
+      "candidate_draws": 246.0,
+      "baseline_primitives": 294674.0,
+      "candidate_primitives": 294674.0,
+      "mean_abs_rgb": 1.541
+    },
+    "F4_sparse": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.899,
+      "candidate_median_ms": 5.228,
+      "baseline_p95_ms": 7.745,
+      "candidate_p95_ms": 8.571,
+      "baseline_draws": 261.0,
+      "candidate_draws": 261.0,
+      "baseline_primitives": 294930.0,
+      "candidate_primitives": 294930.0,
+      "mean_abs_rgb": 2.12
+    },
+    "F5_mud_transition": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.738,
+      "candidate_median_ms": 5.072,
+      "baseline_p95_ms": 8.26,
+      "candidate_p95_ms": 8.746,
+      "baseline_draws": 266.0,
+      "candidate_draws": 266.0,
+      "baseline_primitives": 297320.0,
+      "candidate_primitives": 297320.0,
+      "mean_abs_rgb": 1.299
+    },
+    "F6_sunlit_plants": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.764,
+      "candidate_median_ms": 5.198,
+      "baseline_p95_ms": 6.981,
+      "candidate_p95_ms": 8.009,
+      "baseline_draws": 246.0,
+      "candidate_draws": 246.0,
+      "baseline_primitives": 294674.0,
+      "candidate_primitives": 294674.0,
+      "mean_abs_rgb": 1.743
+    },
+    "F7_shaded_wood": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.985,
+      "candidate_median_ms": 5.339,
+      "baseline_p95_ms": 6.131,
+      "candidate_p95_ms": 8.161,
+      "baseline_draws": 298.0,
+      "candidate_draws": 298.0,
+      "baseline_primitives": 326110.0,
+      "candidate_primitives": 326110.0,
+      "mean_abs_rgb": 1.783
+    },
+    "F8_layers": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.564,
+      "candidate_median_ms": 4.819,
+      "baseline_p95_ms": 7.215,
+      "candidate_p95_ms": 7.544,
+      "baseline_draws": 232.0,
+      "candidate_draws": 232.0,
+      "baseline_primitives": 291608.0,
+      "candidate_primitives": 291608.0,
+      "mean_abs_rgb": 1.395
+    },
+    "F9_deep": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 4.678,
+      "candidate_median_ms": 4.515,
+      "baseline_p95_ms": 8.068,
+      "candidate_p95_ms": 8.163,
+      "baseline_draws": 230.0,
+      "candidate_draws": 230.0,
+      "baseline_primitives": 298010.0,
+      "candidate_primitives": 298010.0,
+      "mean_abs_rgb": 1.298
+    },
+    "F10_open": {
+      "camera_match": true,
+      "fish_match": true,
+      "baseline_median_ms": 5.481,
+      "candidate_median_ms": 4.692,
+      "baseline_p95_ms": 7.603,
+      "candidate_p95_ms": 8.166,
+      "baseline_draws": 272.0,
+      "candidate_draws": 272.0,
+      "baseline_primitives": 297668.0,
+      "candidate_primitives": 297668.0,
+      "mean_abs_rgb": 1.87
+    }
+  },
+  "motion": {
+    "baseline": {
+      "median_ms": 6.139,
+      "p95_ms": 9.34,
+      "draws": 282.0,
+      "primitives": 352918.0,
+      "samples": 1083,
+      "end": "(-10.83327, 7.79, -0.000225)"
+    },
+    "candidate": {
+      "median_ms": 6.449,
+      "p95_ms": 10.374,
+      "draws": 282.0,
+      "primitives": 352918.0,
+      "samples": 1016,
+      "end": "(-10.69993, 7.79, -0.000226)"
+    }
+  }
+}

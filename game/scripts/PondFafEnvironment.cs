@@ -211,6 +211,7 @@ public static class PondFafEnvironment
             new ShaderMaterial { Shader = basinShader, ResourceName = "Pond silt/mud basin" };
         var batches = new Dictionary<string, List<Transform3D>>(StringComparer.Ordinal);
         var byId = assets.ToDictionary(a => a.Id, StringComparer.Ordinal);
+        var readabilityMaterials = new Dictionary<(ulong ResourceId, string Family), StandardMaterial3D>();
         foreach (var placement in plan)
         {
             var asset = byId[placement.Id];
@@ -223,6 +224,12 @@ public static class PondFafEnvironment
                 piece.Name = asset.Id.Replace('-', '_') + "_" + root.GetChildCount();
                 piece.Transform = transform;
                 root.AddChild(piece);
+                if (asset.Family is "hollow_trunk" or "fallen_log" or "stump")
+                    foreach (var visual in FindMeshes(piece))
+                        for (var surface = 0; surface < visual.Mesh!.GetSurfaceCount(); surface++)
+                            if (visual.GetActiveMaterial(surface) is StandardMaterial3D original)
+                                visual.SetSurfaceOverrideMaterial(surface,
+                                    ReadabilityMaterial(original, asset.Family, readabilityMaterials));
             }
             else
             {
@@ -233,7 +240,8 @@ public static class PondFafEnvironment
         }
         foreach (var (id, transforms) in batches.OrderBy(p => p.Key, StringComparer.Ordinal))
         {
-            var source = ResourceLoader.Load<PackedScene>(byId[id].Glb)!.Instantiate<Node3D>();
+            var asset = byId[id];
+            var source = ResourceLoader.Load<PackedScene>(asset.Glb)!.Instantiate<Node3D>();
             var meshes = FindMeshes(source).ToArray();
             if (meshes.Length == 0) throw new InvalidDataException($"Pond FAF imported mesh missing: {id}");
             for (var part = 0; part < meshes.Length; part++)
@@ -245,6 +253,10 @@ public static class PondFafEnvironment
                     batch.SetInstanceTransform(i, transforms[i] * meshes[part].Transform);
                 var node = new MultiMeshInstance3D { Name = id.Replace('-', '_') + "_" + part,
                     Multimesh = batch };
+                if (asset.Family is "lily_pad" or "tall_grass" or "cattail" or "reed" or
+                    "submerged_algae" or "floating_muck")
+                    if (meshes[part].GetActiveMaterial(0) is StandardMaterial3D original)
+                        node.MaterialOverride = ReadabilityMaterial(original, asset.Family, readabilityMaterials);
                 node.SetMeta("faf_id", id);
                 node.SetMeta("faf_habitat", WorldCatalog.PondId);
                 node.SetMeta("placement_count", transforms.Count);
@@ -265,5 +277,40 @@ public static class PondFafEnvironment
         if (node is MeshInstance3D mesh) yield return mesh;
         foreach (var child in node.GetChildren())
             foreach (var found in FindMeshes(child)) yield return found;
+    }
+
+    // Scene-local materials preserve the owner GLBs and their named surface palette.
+    // They alter neither source art nor collision and add no transparent layer.
+    private static StandardMaterial3D ReadabilityMaterial(StandardMaterial3D original, string family,
+        Dictionary<(ulong ResourceId, string Family), StandardMaterial3D> cache)
+    {
+        var key = (original.GetInstanceId(), family);
+        if (cache.TryGetValue(key, out var shared)) return shared;
+        var material = (StandardMaterial3D)original.Duplicate();
+        var name = original.ResourceName.ToString();
+        var factor = family switch
+        {
+            "hollow_trunk" or "fallen_log" or "stump" when name.Contains("dark_bark") => 1.22f,
+            "hollow_trunk" or "fallen_log" or "stump" when name.Contains("bark_ochre") => 1.62f,
+            "hollow_trunk" or "fallen_log" or "stump" when name.Contains("warm_break") => 1.44f,
+            "hollow_trunk" or "fallen_log" or "stump" when name.Contains("algae_olive") => 1.30f,
+            "submerged_algae" => 1.65f,
+            "cattail" or "reed" => 1.32f,
+            "lily_pad" => 1.17f,
+            "tall_grass" => 1.15f,
+            "floating_muck" => 1.10f,
+            _ => 1f,
+        };
+        var baseColor = original.AlbedoColor;
+        material.AlbedoColor = new Color(
+            Mathf.Min(baseColor.R * factor, 1f),
+            Mathf.Min(baseColor.G * factor, 1f),
+            Mathf.Min(baseColor.B * factor, 1f), baseColor.A);
+        // All parts remain opaque and matte, with just enough response for bark
+        // facets and plant paddles to separate under the existing Pond Sun.
+        material.Roughness = family is "hollow_trunk" or "fallen_log" or "stump"
+            ? Mathf.Min(original.Roughness, .90f) : original.Roughness;
+        cache[key] = material;
+        return material;
     }
 }

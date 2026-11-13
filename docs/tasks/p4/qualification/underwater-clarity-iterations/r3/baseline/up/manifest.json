@@ -1,0 +1,41 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "ambient_energy": 0.428999990224838,
+  "character": "FAF-FISH-006 adult Bluegill",
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "lighting": "Pond Overcast",
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "sun_basis": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]",
+  "sun_color": "(0.78, 0.72, 0.43, 1.0)",
+  "sun_energy": 0.566999971866608,
+  "sun_shadow_enabled": false,
+  "time_hour": 12.0,
+  "viewport": "(1920, 1200)",
+  "views": {
+    "A11_up": {
+      "ambient_energy": 0.763252198696136,
+      "camera_basis": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.287348, 0.957826), Z: (0.0, -0.957826, 0.287348)]",
+      "camera_position": "(-19.64, 9.04, 26.56)",
+      "camera_transform": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.287348, 0.957826), Z: (0.0, -0.957826, 0.287348), O: (-19.64, 9.04, 26.56)]",
+      "draws": 60.0,
+      "fish_transform": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-19.64, 8.79, 23.96)]",
+      "fog_density": 0.779999971389771,
+      "height": 1200,
+      "image": "/home/jfin/dev/fish/docs/tasks/p4/qualification/underwater-clarity-iterations/r3/baseline/up/A11_up.png",
+      "median_ms": 3.564,
+      "p95_ms": 5.517,
+      "primitives": 117200.0,
+      "samples": 90,
+      "sun_energy": 1.31263959407806,
+      "sun_shadow_enabled": false,
+      "surface_y": 10.3900003433228,
+      "volumetric_density": 0.00568088935688138,
+      "width": 1920
+    }
+  },
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

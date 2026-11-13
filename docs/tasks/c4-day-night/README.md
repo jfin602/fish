@@ -1,6 +1,8 @@
 # c4-day-night — shared day/night environment correction
 
-**State:** **P1–P3 directly implemented and T2 checked; P4 native candidate NOT GREEN.** Native captures and performance checks are recorded. The owner accepted the solar-fog repair for the pale sunset shore. A [night readability and Pond shore alignment candidate](qualification/night-readability-candidate.md) is now implemented and captured, but the whole cycle has no owner acceptance. **Type:** Correction 4. **Required root version:** `0.4.11` unchanged. [P1 evidence](qualification/environment-time-p1.md) · [P2 evidence](qualification/solar-lighting-p2.md) · [P3 evidence](qualification/solar-water-p3.md) · [P4 native evidence](qualification/native-day-night-p4.md).
+**State:** **P1–P3 directly implemented and T2 checked; P4 native candidate NOT GREEN.** Native captures and performance checks are recorded. The owner accepted the solar-fog repair for the pale sunset shore. A [night readability and Pond shore alignment candidate](qualification/night-readability-candidate.md) is implemented and captured, but the whole cycle has no owner acceptance. **Type:** Correction 4. Its authored prompts required `0.4.11` unchanged; the [P4 direct closeout](../p4/closeout.md) deliberately establishes `0.5.0` without passing c4. [P1 evidence](qualification/environment-time-p1.md) · [P2 evidence](qualification/solar-lighting-p2.md) · [P3 evidence](qualification/solar-water-p3.md) · [P4 native evidence](qualification/native-day-night-p4.md).
+
+The [focused night optics repair candidate](qualification/night-optics-repair/README.md) records the later moonlit sky, dark water, underside stars/moon, matched native captures and remaining review limit. It does not alter the P4 NOT GREEN status.
 
 ## Purpose
 

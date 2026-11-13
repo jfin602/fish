@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_stealth_vegetation_proof.gd" id="1_script"]
+
+[node name="FAFPondStealthVegetationProof" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="ReviewCamera" type="Camera3D" parent="."]
+current = true
+fov = 64.0
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.78, 0.45, -0.23)
+light_color = Color(1, 0.85, 0.61, 1)
+light_energy = 1.4
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]

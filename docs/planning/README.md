@@ -13,7 +13,12 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | [P2 — Build the underwater world](p2/underwater-world.md) | In progress; technical depth world and atmosphere exist, with G2.3/V20 still open. |
 | [P3 — FAF reef world rebuild](p3/reef-world-rebuild.md) | Owner-selected world-art/Character Select plan; world formation is superseded by the procedural compiler architecture below. |
 | [P3 — Procedural realistic world generation](p3/procedural-world-generation.md) | Owner-approved deterministic finite world compiler: irregular basin, true 3D geology, natural placement, bake/load and curated Base Worlds; implemented by c3-world-gen. |
+<<<<<<< HEAD
 | [P4 — Freshwater Pond and World Select](p4/freshwater-world.md) | In progress through P11 at `0.4.11`; P12 native V32 NOT GREEN; preserve in-flight stack and Gate evidence. |
 | [P5 — Stealth foundation / Pike Encounter](p5/stealth-foundation.md) | Approved F1–F8 plan; separate Bluegill/Pike fixture and World Select route, without implementing P5 or changing P4. |
+=======
+| [P4 — Freshwater Pond and World Selection](p4/freshwater-world.md) | Historical approved design; [P4 direct closeout](../tasks/p4/closeout.md) records implemented scope and remaining native/visual gaps. |
+| [P5 entry](../tasks/p5/entry.md) | Active next phase handoff at `0.5.0`; assessment and implementation plan remain to be authored separately. |
+>>>>>>> ec90b05 (fixed nighttime)
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md).

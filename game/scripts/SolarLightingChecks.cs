@@ -110,7 +110,8 @@ public static class SolarLightingChecks
                 dawn.Warm > noon.Warm && sunset.Warm > noon.Warm &&
                 twilight.Warm > night.Warm &&
                 noon.Horizon.DistanceTo(noon.Zenith) > .08f &&
-                night.Horizon.DistanceTo(night.Zenith) > .01f,
+                night.Horizon.DistanceTo(night.Zenith) > .001f &&
+                Luminance(night.Horizon) < .01f,
                 "sky lacks daylight, localized warmth or vertical variation");
             if (profile == WorldEnvironmentProfile.Pond)
                 Require(Luminance(noon.FogColor) > 1.5f * Luminance(sunset.FogColor) &&
@@ -144,9 +145,9 @@ public static class SolarLightingChecks
                 var underwaterNoon = Sample(12);
                 var underwaterNight = Sample(0);
                 Require(atmosphere.CameraImmersion01 > .99f &&
-                    underwaterNoon.AmbientEnergy > 1.5f * underwaterNight.AmbientEnergy &&
+                    underwaterNoon.AmbientEnergy > 1.2f * underwaterNight.AmbientEnergy &&
                     underwaterNoon.SunEnergy > underwaterNight.SunEnergy &&
-                    underwaterNoon.FogColor.DistanceTo(underwaterNight.FogColor) < .0001f &&
+                    underwaterNoon.FogColor.DistanceTo(underwaterNight.FogColor) > .05f &&
                     Math.Abs(underwaterNoon.FogDensity - underwaterNight.FogDensity) < .0001f,
                     "Pond underwater illumination did not lose daylight");
             }

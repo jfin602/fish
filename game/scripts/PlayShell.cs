@@ -22,6 +22,11 @@ public partial class PlayShell : Node
     private OptionButton _mode = null!;
     private ControlPresetsPanel _presetEditor = null!;
     private GraphicsPanel _graphicsPanel = null!;
+    private PanelContainer _debugPanel = null!;
+    private CheckButton _debugWheelToggle = null!;
+    private Label _debugNotice = null!;
+    private double _debugNoticeSeconds;
+    private bool _backtickScreenshots;
     private LightingPresetStore _lightingPresets = new();
     private WorldEnvironmentProfile _lightingProfile = WorldEnvironmentProfile.Ocean;
     private Label? _quickPresetLabel;
@@ -70,6 +75,13 @@ public partial class PlayShell : Node
             _quickPresetLabel.AddThemeFontSizeOverride("font_size", 18);
             canvas.AddChild(_quickPresetLabel);
         }
+        _debugNotice = new Label
+        {
+            Name = "DebugNotice", Visible = false,
+            MouseFilter = Control.MouseFilterEnum.Ignore
+        };
+        _debugNotice.AddThemeFontSizeOverride("font_size", 18);
+        canvas.AddChild(_debugNotice);
         _overlay = new Control { Visible = false, MouseFilter = Control.MouseFilterEnum.Ignore };
         canvas.AddChild(_overlay);
 
@@ -148,6 +160,20 @@ public partial class PlayShell : Node
             _fish.ClearAndDisarmInput();
         };
         items.AddChild(graphicsButton);
+        var debugButton = new Button
+        {
+            Name = "DebugControlsButton", Text = "Debug Controls…",
+            FocusMode = Control.FocusModeEnum.All
+        };
+        ApplyFocusStyle(debugButton);
+        debugButton.Pressed += () =>
+        {
+            _panel.Visible = false;
+            _debugPanel.Visible = true;
+            _fish.ClearAndDisarmInput();
+            _debugWheelToggle.GrabFocus();
+        };
+        items.AddChild(debugButton);
 
         _sensitivityLabel = new Label();
         items.AddChild(_sensitivityLabel);
@@ -229,6 +255,54 @@ public partial class PlayShell : Node
             });
         center.AddChild(_graphicsPanel);
 
+        _debugPanel = new PanelContainer { Name = "DebugControlsPanel", Visible = false };
+        center.AddChild(_debugPanel);
+        var debugMargin = new MarginContainer();
+        foreach (var side in new[] { "left", "right", "top", "bottom" })
+            debugMargin.AddThemeConstantOverride("margin_" + side, side is "left" or "right" ? 16 : 12);
+        _debugPanel.AddChild(debugMargin);
+        var debugItems = new VBoxContainer();
+        debugItems.AddThemeConstantOverride("separation", 8);
+        debugMargin.AddChild(debugItems);
+        var debugTitle = new Label { Text = "Debug Controls", HorizontalAlignment = HorizontalAlignment.Center };
+        debugTitle.AddThemeFontSizeOverride("font_size", 23);
+        debugItems.AddChild(debugTitle);
+        var wheelTime = new CheckButton
+        {
+            Name = "MouseWheelTimeToggle", Text = "Mouse Wheel Controls Time",
+            ButtonPressed = false, FocusMode = Control.FocusModeEnum.All
+        };
+        ApplyFocusStyle(wheelTime);
+        wheelTime.Toggled += enabled =>
+        {
+            _fish.DebugWheelControlsTime = enabled;
+            _fish.ClearAndDisarmInput();
+            if (!enabled) _debugNotice.Visible = false;
+            UpdateHelp();
+        };
+        _debugWheelToggle = wheelTime;
+        debugItems.AddChild(wheelTime);
+        var screenshots = new CheckButton
+        {
+            Name = "BacktickScreenshotToggle", Text = "Backtick Key Screenshots",
+            ButtonPressed = false, FocusMode = Control.FocusModeEnum.All
+        };
+        ApplyFocusStyle(screenshots);
+        screenshots.Toggled += enabled =>
+        {
+            _backtickScreenshots = enabled;
+            if (enabled) GD.Print("FISH_SCREENSHOTS_DIR " + ScreenshotDirectory);
+        };
+        debugItems.AddChild(screenshots);
+        var debugBack = new Button
+        {
+            Name = "DebugBackButton", Text = "Back to Options",
+            FocusMode = Control.FocusModeEnum.All
+        };
+        ApplyFocusStyle(debugBack);
+        debugBack.Pressed += CloseDebugPanel;
+        debugItems.AddChild(debugBack);
+
         GetViewport().SizeChanged += UpdateLayout;
         UpdateLegacyMouseControls();
         UpdateLayout();
@@ -236,6 +310,15 @@ public partial class PlayShell : Node
 
     public override void _Input(InputEvent @event)
     {
+        if (_overlay.Visible && _debugPanel.Visible)
+        {
+            if (@event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.Escape })
+            {
+                CloseDebugPanel();
+                GetViewport().SetInputAsHandled();
+            }
+            return;
+        }
         if (_overlay.Visible && _graphicsPanel.Visible)
         {
             if (@event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.Escape })
@@ -260,7 +343,7 @@ public partial class PlayShell : Node
             }
             return;
         }
-        if (CanQuickCycle() && !_overlay.Visible &&
+        if (CanQuickCycle() && !_overlay.Visible && !TextFieldFocused() &&
             @event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.F6 })
         {
             RefreshModeChoices();
@@ -268,6 +351,28 @@ public partial class PlayShell : Node
             TryChooseProfile(_profileChoices[(current + 1) % _profileChoices.Count]);
             GetViewport().SetInputAsHandled();
             return;
+        }
+        if (!_overlay.Visible && !TextFieldFocused())
+        {
+            if (_fish.DebugWheelControlsTime && @event is InputEventMouseButton
+                { Pressed: true, ButtonIndex: MouseButton.WheelUp or MouseButton.WheelDown } wheel)
+            {
+                var clock = GetParent().GetNode<EnvironmentClock>("EnvironmentClock");
+                clock.ScrubMinutes(wheel.ButtonIndex == MouseButton.WheelUp ? 15 : -15);
+                GetParent().GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere")?.RefreshSolar(true);
+                var minute = (int)Math.Floor(clock.HourOfDay * 60 + 0.000001) % 1440;
+                ShowDebugNotice($"{minute / 60:00}:{minute % 60:00}");
+                GetViewport().SetInputAsHandled();
+                return;
+            }
+            if (_backtickScreenshots && @event is InputEventKey
+                { Pressed: true, Echo: false } key &&
+                (key.PhysicalKeycode == Key.Quoteleft || key.Keycode == Key.Quoteleft))
+            {
+                CaptureScreenshot();
+                GetViewport().SetInputAsHandled();
+                return;
+            }
         }
         if (_fish.IsPauseEvent(@event))
         {
@@ -282,9 +387,16 @@ public partial class PlayShell : Node
 
     public override void _Process(double delta)
     {
-        if (_quickPresetLabel is null || !_quickPresetLabel.Visible) return;
-        _quickPresetSeconds -= delta;
-        if (_quickPresetSeconds <= 0) _quickPresetLabel.Visible = false;
+        if (_quickPresetLabel is { Visible: true })
+        {
+            _quickPresetSeconds -= delta;
+            if (_quickPresetSeconds <= 0) _quickPresetLabel.Visible = false;
+        }
+        if (_debugNotice.Visible)
+        {
+            _debugNoticeSeconds -= delta;
+            if (_debugNoticeSeconds <= 0) _debugNotice.Visible = false;
+        }
     }
 
     public override void _Notification(int what)
@@ -311,6 +423,7 @@ public partial class PlayShell : Node
 
     private void Resume()
     {
+        if (_debugPanel.Visible) CloseDebugPanel();
         if (_graphicsPanel.Visible)
         {
             _graphicsPanel.Hide();
@@ -359,6 +472,9 @@ public partial class PlayShell : Node
             _quickPresetLabel.Position = new Vector2(20, Mathf.Max(12, viewport.Y - 48));
             _quickPresetLabel.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 32);
         }
+        _debugNotice.Position = new Vector2(20, 14);
+        _debugNotice.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 32);
+        _debugPanel.CustomMinimumSize = new Vector2(Mathf.Min(480, Mathf.Max(240, viewport.X - 32)), 0);
         _presetEditor.CustomMinimumSize = new Vector2(Mathf.Min(760, Mathf.Max(310, viewport.X - 24)),
             Mathf.Min(650, Mathf.Max(300, viewport.Y - 24)));
         _graphicsPanel.CustomMinimumSize = new Vector2(Mathf.Min(660, Mathf.Max(310, viewport.X - 24)),
@@ -402,6 +518,7 @@ public partial class PlayShell : Node
               $"Pitch: {Steering(ControlAction.PitchUp, ControlAction.PitchDown, SteeringAxis.Pitch)}  " +
               $"Wheel: zoom  Pause: Esc{(otherPause.Length == 0 ? "" : "/" + otherPause)}" +
               (CanQuickCycle() ? "  Debug: F6 cycles presets" : "");
+        if (_fish.DebugWheelControlsTime) _help.Text = _help.Text.Replace("Wheel: zoom", "Wheel: time");
         _help.Position = new Vector2(20, 60);
         _help.Size = new Vector2(Mathf.Max(200, viewport.X - 40), 120);
         _help.AutowrapMode = TextServer.AutowrapMode.WordSmart;
@@ -487,6 +604,49 @@ public partial class PlayShell : Node
         for (var i = 0; i < _profileChoices.Count; i++)
             _mode.AddItem(_profileChoices[i].Name, i);
         _mode.Select(_profileChoices.FindIndex(profile => profile.Id == _presets.CurrentId));
+    }
+
+    private void CloseDebugPanel()
+    {
+        _debugPanel.Visible = false;
+        _panel.Visible = true;
+        _resume.GrabFocus();
+    }
+
+    private bool TextFieldFocused() =>
+        GetViewport().GuiGetFocusOwner() is LineEdit or TextEdit;
+
+    private void ShowDebugNotice(string message)
+    {
+        _debugNotice.Text = message;
+        _debugNotice.Visible = true;
+        _debugNoticeSeconds = 2;
+    }
+
+    private static string ScreenshotDirectory => ProjectSettings.GlobalizePath("user://screenshots");
+
+    private async void CaptureScreenshot()
+    {
+        // Read the completed viewport frame at its current resolution.
+        await ToSignal(RenderingServer.Singleton, RenderingServer.SignalName.FramePostDraw);
+        if (!IsInsideTree()) return;
+        var directory = ScreenshotDirectory;
+        try
+        {
+            System.IO.Directory.CreateDirectory(directory);
+            var filename = $"fish_{DateTime.UtcNow:yyyyMMdd_HHmmss_fffffff}_{Guid.NewGuid():N}.png";
+            var path = System.IO.Path.Combine(directory, filename);
+            var image = GetViewport().GetTexture().GetImage();
+            var result = image.SavePng(path);
+            if (result != Error.Ok) throw new System.IO.IOException($"PNG save failed: {result}");
+            GD.Print($"FISH_SCREENSHOT_SAVED {path}");
+            ShowDebugNotice($"Saved {filename}");
+        }
+        catch (Exception error) when (error is System.IO.IOException or UnauthorizedAccessException)
+        {
+            GD.PushError($"FISH_SCREENSHOT_FAILED directory={directory} error={error.Message}");
+            ShowDebugNotice("Screenshot could not be saved");
+        }
     }
 
     private static void ApplyFocusStyle(Control control)

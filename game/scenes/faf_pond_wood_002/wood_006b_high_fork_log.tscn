@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://dev/faf_pond_wood_002_piece.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://assets/faf/pond/wood/wood_006b_high_fork_log.glb" id="2_visual"]
+
+[node name="wood_006b_high_fork_log" type="Node3D"]
+script = ExtResource("1_script")
+faf_id = "FAF-WOOD-006B"
+collision_json = "[{\"kind\":\"capsule\",\"a\":[0,-6.3,0.9486000000000001],\"b\":[0.12,-4.2,1.02],\"radius\":0.8886},{\"kind\":\"capsule\",\"a\":[0.12,-4.2,1.02],\"b\":[-0.1,-2.0,1.1424],\"radius\":0.7899},{\"kind\":\"capsule\",\"a\":[-0.1,-2.0,1.1424],\"b\":[0.1,-0.45,1.2444],\"radius\":0.7091},{\"kind\":\"capsule\",\"a\":[0.1,-0.65,1.2444],\"b\":[0.65,0.75,1.2852000000000001],\"radius\":0.6193},{\"kind\":\"capsule\",\"a\":[0.65,0.75,1.2852000000000001],\"b\":[2.88,2.55,1.8870000000000002],\"radius\":0.4847},{\"kind\":\"capsule\",\"a\":[2.88,2.55,1.8870000000000002],\"b\":[4.0,4.3,2.0705999999999998],\"radius\":0.2872},{\"kind\":\"capsule\",\"a\":[0.1,-0.55,1.224],\"b\":[-0.8,0.52,1.1627999999999998],\"radius\":0.5206},{\"kind\":\"capsule\",\"a\":[-0.8,0.52,1.1627999999999998],\"b\":[-3.76,2.13,0.969],\"radius\":0.377},{\"kind\":\"capsule\",\"a\":[-3.76,2.13,0.969],\"b\":[-5.2,3.62,0.714],\"radius\":0.2154},{\"kind\":\"capsule\",\"a\":[2.04,1.78,1.4076],\"b\":[3.56,2.02,2.3459999999999996],\"radius\":0.1795},{\"kind\":\"capsule\",\"a\":[3.56,2.02,2.3459999999999996],\"b\":[4.2,2.26,2.8764],\"radius\":0.0704},{\"kind\":\"capsule\",\"a\":[-2.24,1.55,1.1016000000000001],\"b\":[-3.04,1.3,0.14],\"radius\":0.0792}]"
+
+[node name="Visual" parent="." instance=ExtResource("2_visual")]

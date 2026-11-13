@@ -31,9 +31,10 @@ public static class WorldSelectChecks
             await Scene(tree);
             var pondCharacters = tree.CurrentScene as CharacterSelect;
             Require(pondCharacters is not null && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
-                pondCharacters.FindChild("Character_0", true, false) is null &&
-                pondCharacters.FindChild("EnterWorldButton", true, false) is Button { Disabled: true },
-                "Pond should reach empty native-fish selection before P8");
+                Enumerable.Range(0, 5).All(index =>
+                    pondCharacters.FindChild($"Character_{index}", true, false) is Button) &&
+                pondCharacters.FindChild("EnterWorldButton", true, false) is Button { Disabled: false },
+                "Pond should offer five native fish after P8");
             FindButton(pondCharacters!, "BackToWorldButton").EmitSignal(Button.SignalName.Pressed);
             await Scene(tree);
             initial = tree.CurrentScene as WorldSelect ?? throw new Exception("Pond Back did not return to World Select");
@@ -103,7 +104,7 @@ public static class WorldSelectChecks
             returned = tree.CurrentScene as WorldSelect;
             Require(returned is not null && FindButton(returned, "WorldBackButton").Text.Contains("Quit demo"),
                 "World Select Back action missing");
-            GD.Print("WORLD_SELECT_CHECK_OK pond=baked-empty-species ocean=repeated back=clean return=clean");
+            GD.Print("WORLD_SELECT_CHECK_OK pond=five-native-species ocean=repeated back=clean return=clean");
             FindButton(returned!, "WorldBackButton").EmitSignal(Button.SignalName.Pressed);
         }
         catch (Exception error)

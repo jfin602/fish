@@ -1,0 +1,78 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "mode": "motion",
+  "motion": {
+    "draws": 202.0,
+    "duration_seconds": 8,
+    "end": "(-10.5666, 7.79, -0.000227)",
+    "frames": [
+      {
+        "camera": "(-44.32513, 9.641184, 2.07077)",
+        "fish": "(-42.0, 7.79, 0.0)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_00.png",
+        "second": 0.001015
+      },
+      {
+        "camera": "(-42.53613, 9.789999, 0.000004)",
+        "fish": "(-38.63337, 7.79, -0.000024)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_01.png",
+        "second": 1.006368
+      },
+      {
+        "camera": "(-38.46953, 9.789999, -0.000026)",
+        "fish": "(-34.56677, 7.79, -0.000054)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_02.png",
+        "second": 2.005247
+      },
+      {
+        "camera": "(-34.53622, 9.789999, -0.000054)",
+        "fish": "(-30.63346, 7.79, -0.000082)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_03.png",
+        "second": 3.000133
+      },
+      {
+        "camera": "(-30.53617, 9.789999, -0.000083)",
+        "fish": "(-26.6334, 7.79, -0.000111)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_04.png",
+        "second": 4.001575
+      },
+      {
+        "camera": "(-26.53611, 9.789999, -0.000112)",
+        "fish": "(-22.63335, 7.79, -0.00014)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_05.png",
+        "second": 5.001184
+      },
+      {
+        "camera": "(-22.46939, 9.789999, -0.000141)",
+        "fish": "(-18.56663, 7.79, -0.000169)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_06.png",
+        "second": 6.004587
+      },
+      {
+        "camera": "(-18.53603, 9.789999, -0.00017)",
+        "fish": "(-14.63326, 7.79, -0.000198)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_07.png",
+        "second": 7.003745
+      },
+      {
+        "camera": "(-14.46937, 9.789999, -0.000199)",
+        "fish": "(-10.5666, 7.79, -0.000227)",
+        "image": "/home/jfin/dev/fish/docs/tasks/c4-day-night/qualification/night-optics-repair/candidate/route_08.png",
+        "second": 8.005247
+      }
+    ],
+    "median_ms": 5.079,
+    "p95_ms": 8.251,
+    "primitives": 182240.0,
+    "samples": 1337
+  },
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "viewport": "(1920, 1200)",
+  "views": {},
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

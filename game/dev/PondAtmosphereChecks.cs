@@ -166,6 +166,7 @@ public static class PondAtmosphereChecks
         var shaft = (ShaderMaterial)main.GetNode<MeshInstance3D>(
             "UnderwaterAtmosphere/WaterEffects/SunShafts").MaterialOverride;
         var decal = main.GetNode<Decal>("UnderwaterAtmosphere/WaterEffects/CausticProjection1");
+        var sun = main.GetNode<DirectionalLight3D>("Sun");
         var horizon = (Vector3)surface.GetShaderParameter("reflected_sky_horizon");
         var daylight = (float)surface.GetShaderParameter("surface_daylight");
         var illumination = (float)surface.GetShaderParameter("surface_illumination");
@@ -179,6 +180,20 @@ public static class PondAtmosphereChecks
             Mathf.Abs(decal.EmissionEnergy - atmosphere.CausticEnergy * atmosphere.CameraImmersion01 *
                 expectedWater.CausticEnergy) < .0001f,
             "profile solar water values diverged from the shared clock");
+        Require(sun.ShadowEnabled == (atmosphere.ProfileId == WorldEnvironmentProfile.Pond &&
+                solar.DirectLight > .08f) &&
+            (atmosphere.ProfileId != WorldEnvironmentProfile.Pond ||
+                sun.DirectionalShadowMode == DirectionalLight3D.ShadowMode.Orthogonal),
+            "Pond-only solar shadows did not follow the shared clock");
+        if (atmosphere.ProfileId == WorldEnvironmentProfile.Pond)
+        {
+            var basin = (ShaderMaterial)main.GetNode<MeshInstance3D>("Habitat/Seabed/Mesh").MaterialOverride;
+            Require(Mathf.Abs((float)basin.GetShaderParameter("sunlight_energy") -
+                    expectedLight.DirectEnergyFactor) < .0001f &&
+                ((Vector3)basin.GetShaderParameter("sun_direction")).DistanceTo(
+                    sun.GlobalTransform.Basis.Z.Normalized()) < .0001f,
+                "Pond basin light pools diverged from the shared sun");
+        }
         return new SolarWaterSnapshot(illumination, daylight, horizon, shaftEnergy, decal.EmissionEnergy);
     }
 #endif
@@ -235,6 +250,7 @@ public static class PondAtmosphereChecks
                 WaterVisualProfile.Pond.DeepFog, atmosphere.EffectiveDepth01).R) < .001f &&
             (float)sky.GetShaderParameter("overcast") == 1f &&
             (float)surfaceMaterial.GetShaderParameter("overcast") == 1f &&
+            surface.CastShadow == GeometryInstance3D.ShadowCastingSetting.Off &&
             (Vector3)shaftMaterial.GetShaderParameter("shaft_color") == new Vector3(
                 WaterVisualProfile.Pond.ShaftColor.R, WaterVisualProfile.Pond.ShaftColor.G,
                 WaterVisualProfile.Pond.ShaftColor.B), "Pond material/palette switch failed");
@@ -255,9 +271,9 @@ public static class PondAtmosphereChecks
         var middle = At((surfaceY + deepY) * 0.5f);
         var deep = At(deepY);
         var extinction = env.FogDensity;
-        Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 8f &&
-            Mathf.Abs(env.FogDepthBegin - 3f) < .001f &&
-            extinction > .55f && extinction < .61f &&
+        Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 7f &&
+            Mathf.Abs(env.FogDepthBegin - 4.5f) < .001f &&
+            extinction > .77f && extinction < .79f &&
             UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction, env.FogDepthBegin) > .85f &&
             UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction, env.FogDepthBegin) >
                 UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) &&
@@ -279,6 +295,7 @@ public static class PondAtmosphereChecks
         var minimum = 1f;
         var maximum = 0f;
         var count = 0;
+        var sites = new System.Collections.Generic.List<(float Depth, float Density, Vector2 Position)>();
         for (var z = -55; z <= 55; z += 5)
         for (var x = -55; x <= 55; x += 5)
         {
@@ -286,16 +303,28 @@ public static class PondAtmosphereChecks
                 atmosphere.SurfaceHeight - basin.HeightAt(x, z) < 4f) continue;
             var point = new Vector3(x, atmosphere.SurfaceHeight - 2f, z);
             var sample = a.Sample(point);
-            Require(float.IsFinite(sample) && sample >= 0f && sample <= .88f &&
+            Require(float.IsFinite(sample) && sample >= 0f && sample <= .95f &&
                 Mathf.Abs(sample - b.Sample(point)) < .000001f &&
-                Mathf.Abs(sample - a.Sample(point + new Vector3(.25f, 0, 0))) < .08f,
+                Mathf.Abs(sample - a.Sample(point + new Vector3(.25f, 0, 0))) < .08f &&
+                Mathf.Abs(sample - a.Sample(point + new Vector3(0, 0, .25f))) < .08f,
                 "Pond turbidity is unstable, unbounded, or discontinuous");
             minimum = Mathf.Min(minimum, sample);
             maximum = Mathf.Max(maximum, sample);
+            sites.Add((atmosphere.SurfaceHeight - basin.HeightAt(x, z), sample, new Vector2(x, z)));
             count++;
         }
         Require(count > 100 && maximum - minimum > .20f,
             $"Pond spatial variation too weak: count={count} min={minimum:F3} max={maximum:F3}");
+        var sameDepthGap = 0f;
+        foreach (var first in sites)
+        foreach (var second in sites)
+        {
+            if (Mathf.Abs(first.Depth - second.Depth) > .5f ||
+                first.Position.DistanceTo(second.Position) < 12f) continue;
+            sameDepthGap = Mathf.Max(sameDepthGap, Mathf.Abs(first.Density - second.Density));
+        }
+        Require(sameDepthGap > .4f,
+            $"Pond clarity lacks comparable-depth clear and silty sites: gap={sameDepthGap:F3}");
         var core = basin.DeepCore;
         var coreBed = basin.HeightAt(core.X, core.Y);
         var nearBed = a.Sample(new Vector3(core.X, coreBed + .6f, core.Y));
@@ -307,7 +336,7 @@ public static class PondAtmosphereChecks
         var fixedPosition = volume.GlobalPosition;
         camera.GlobalPosition = new Vector3(0, atmosphere.SurfaceHeight - 2f, 0);
         atmosphere.RefreshDepth(true, 2f);
-        Require(material.Density > .10f && material.DensityTexture is ImageTexture3D,
+        Require(material.Density > .04f && material.DensityTexture is ImageTexture3D,
             "Pond fog field did not reach Forward+ rendering");
         camera.GlobalPosition += new Vector3(8f, 0, 5f);
         atmosphere.RefreshDepth(true, 2f);
@@ -316,8 +345,8 @@ public static class PondAtmosphereChecks
         Require(material.Density == 0f && volume.GlobalPosition == fixedPosition,
             "Pond diagnostic off moved or retained fog");
         atmosphere.SetPondClarityDiagnosticEnabled(true);
-        Require(material.Density > .10f, "Pond diagnostic on did not restore density");
-        GD.Print($"POND_TURBIDITY_CHECK_OK samples={count} min={minimum:F3} max={maximum:F3} texture=64x16x64 camera_anchor=fixed");
+        Require(material.Density > .04f, "Pond diagnostic on did not restore density");
+        GD.Print($"POND_TURBIDITY_CHECK_OK samples={count} min={minimum:F3} max={maximum:F3} same_depth_gap={sameDepthGap:F3} texture=64x16x64 camera_anchor=fixed");
     }
 
     private static void Require(bool condition, string reason)

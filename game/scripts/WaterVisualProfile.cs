@@ -19,6 +19,7 @@ public sealed record WaterVisualProfile(
     // Air-side surface transmission only. Underwater fog remains independently tuned.
     public float SurfaceExtinctionPerMeter { get; init; }
     public Color SurfaceScatter { get; init; } = new(0.10f, 0.37f, 0.42f);
+    public Color UnderwaterSurfaceScatter { get; init; } = new(0.10f, 0.37f, 0.42f);
     public float SurfaceReflectionStrength { get; init; }
     public float SurfaceReflectionDistortion { get; init; } = 1f;
     public float SurfaceRippleStrength { get; init; } = 1f;
@@ -29,6 +30,7 @@ public sealed record WaterVisualProfile(
     public Color NightAmbient { get; init; } = new(0.45f, 0.56f, 0.66f);
     public Color NightSurfaceGlow { get; init; } = new(0.012f, 0.025f, 0.038f);
     public Color NightFog { get; init; } = new(0.040f, 0.085f, 0.125f);
+    public Color NightVolume { get; init; } = new(0.08f, 0.12f, 0.18f);
     public float NightSaturation { get; init; } = 0.58f;
     public static WaterVisualProfile Ocean { get; } = new(
         WorldEnvironmentProfile.Ocean,
@@ -44,27 +46,31 @@ public sealed record WaterVisualProfile(
         new(0.54f, 0.79f, 0.72f), 4f / 7f, 0.35f, 0.48f, 2.25f, 0.68f)
     {
         SurfaceReflectionStrength = 0.55f,
+        NightFog = new(0.006f, 0.012f, 0.020f),
     };
 
     public static WaterVisualProfile Pond { get; } = new(
         WorldEnvironmentProfile.Pond,
-        new(0.065f, 0.115f, 0.052f), new(0.82f, 0.82f, 0.65f),
-        new(0.22f, 0.28f, 0.105f), new(0.32f, 0.38f, 0.15f),
+        new(0.035f, 0.10f, 0.09f), new(0.82f, 0.82f, 0.65f),
+        new(0.105f, 0.245f, 0.205f), new(0.27f, 0.40f, 0.30f),
         new(0.78f, 0.72f, 0.43f), new(0.76f, 0.71f, 0.34f),
         new(0.66f, 0.59f, 0.31f, 0.25f),
-        new(0.035f, 0.075f, 0.040f), new(0.24f, 0.30f, 0.18f),
-        new(0.105f, 0.17f, 0.065f), new(0.20f, 0.27f, 0.11f),
-        new(0.15f, 0.22f, 0.095f), new(0.40f, 0.46f, 0.22f),
-        new(0.055f, 0.12f, 0.060f), new(0.20f, 0.29f, 0.14f),
+        new(0.025f, 0.06f, 0.055f), new(0.24f, 0.30f, 0.18f),
+        new(0.055f, 0.115f, 0.105f), new(0.15f, 0.22f, 0.16f),
+        new(0.095f, 0.26f, 0.235f), new(0.22f, 0.43f, 0.385f),
+        new(0.045f, 0.11f, 0.105f), new(0.10f, 0.20f, 0.18f),
         new(0.13f, 0.28f, 0.12f), new(0.31f, 0.43f, 0.20f),
         new(0.72f, 0.70f, 0.38f), 0.68f, 0.42f, 0.55f, 1.65f, 0.78f)
     {
         AirFogBegin = 27f, AirFogEnd = 105f, AirFogDensity = .94f,
-        NightAmbient = new(0.58f, 0.63f, 0.46f),
-        NightSurfaceGlow = new(0.035f, 0.055f, 0.038f),
+        NightAmbient = new(0.68f, 0.70f, 0.54f),
+        NightSurfaceGlow = new(0.003f, 0.005f, 0.003f),
+        NightFog = new(0.025f, 0.040f, 0.022f),
+        NightVolume = new(0.12f, 0.15f, 0.09f),
         NightSaturation = 0.78f,
         SurfaceExtinctionPerMeter = .65f,
         SurfaceScatter = new(0.055f, 0.085f, 0.035f),
+        UnderwaterSurfaceScatter = new(0.085f, 0.16f, 0.14f),
         SurfaceReflectionStrength = .95f,
         SurfaceReflectionDistortion = 1f,
         SurfaceRippleStrength = 1f,

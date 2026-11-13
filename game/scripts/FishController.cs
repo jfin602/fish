@@ -100,6 +100,7 @@ public partial class FishController : CharacterBody3D
         _mouseCaptureActive && _inputArmed && !GetTree().Paused;
     public bool CanZoomCamera => _inputArmed && !GetTree().Paused &&
         (!_input.UsesMouse || _mouseCaptureActive);
+    public bool DebugWheelControlsTime { get; set; }
     public float PresentationSpeed => _state.Speed;
     public float PresentationEffort { get; private set; }
     public float PresentationTurn { get; private set; }

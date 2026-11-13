@@ -8,7 +8,7 @@ public sealed class PondTurbidityField
 {
     public const int TextureWidth = 64;
     public const int TextureHeight = 16;
-    public const float VolumeDensity = 0.11f;
+    public const float VolumeDensity = 0.14f;
     private readonly GeneratedBasin _basin;
     private readonly FastNoiseLite _broad;
     private readonly FastNoiseLite _detail;
@@ -43,16 +43,21 @@ public sealed class PondTurbidityField
         var bed = _basin.HeightAt(world.X, world.Z);
         var waterDepth = SurfaceY - bed;
         if (world.Y <= bed || waterDepth <= 0f) return 0f;
-        var broad = _broad.GetNoise3D(world.X, world.Y * .65f, world.Z);
-        var detail = _detail.GetNoise3D(world.X, world.Y * .45f, world.Z);
+        // The broad 2D term keeps a water-column pocket in the same place while
+        // swimming vertically. The smaller 3D term prevents a flat vertical wall.
+        var broad = Smooth(-.38f, .42f, _broad.GetNoise2D(world.X, world.Z));
+        var detail = Smooth(-.6f, .6f, _detail.GetNoise3D(world.X, world.Y * .45f, world.Z));
         var shallowOpen = 1f - Smooth(2.5f, 6f, waterDepth);
         var nearBed = 1f - Smooth(.25f, 2.2f, world.Y - bed);
         var shelter = Smooth(.10f, 4f, shore) * (1f - Smooth(8f, 19f, shore));
-        var density = .31f + .25f * broad + .11f * detail - .15f * shallowOpen
-            + .34f * nearBed * (.65f + .35f * broad) + .08f * shelter * (.5f + .5f * detail);
+        var density = .055f + .10f * Smooth(4f, 11f, waterDepth)
+            + .70f * broad * broad * (.55f + .45f * detail)
+            + .18f * shelter * broad
+            + .28f * nearBed * (.35f + .65f * broad)
+            - .055f * shallowOpen;
         var waterMask = Smooth(0f, .7f, SurfaceY - world.Y) *
             Smooth(0f, .35f, world.Y - bed) * Smooth(0f, 2f, shore);
-        return Mathf.Clamp(density, .10f, .88f) * waterMask;
+        return Mathf.Clamp(density, .025f, .95f) * waterMask;
     }
 
     public ImageTexture3D CreateTexture()

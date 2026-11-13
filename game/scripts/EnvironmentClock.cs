@@ -37,7 +37,15 @@ public partial class EnvironmentClock : Node
 
     public double DayFraction => _dayFraction;
     public double HourOfDay => _dayFraction * 24;
+    public double GetHourOfDay() => HourOfDay;
     public SolarState Solar => SolarState.At(_dayFraction);
+
+    /// <summary>Adjust presentation time without advancing the game simulation.</summary>
+    public void ScrubMinutes(double minutes)
+    {
+        if (!double.IsFinite(minutes)) throw new ArgumentOutOfRangeException(nameof(minutes));
+        _dayFraction = WrapFraction(_dayFraction + minutes / (24 * 60));
+    }
 
     public override void _Ready()
     {
