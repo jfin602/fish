@@ -63,7 +63,7 @@ public partial class WorldSelect : Control
             _checkStarted = true;
             WorldSelectChecks.Run(this);
         }
-        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-encounter-check") &&
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg is "--pike-encounter-check" or "--world-isolation-check") &&
             !PikeEncounterChecks.Started)
             PikeEncounterChecks.Run(this);
     }

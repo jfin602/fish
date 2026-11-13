@@ -14,6 +14,7 @@ public static class PikeEncounterChecks
     {
         Started = true;
         var tree = initial.GetTree();
+        var fullIsolation = Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--world-isolation-check");
         try
         {
             Require(WorldCatalog.All.Count == 2 && WorldDestinations.All.Count == 3 &&
@@ -101,6 +102,8 @@ public static class PikeEncounterChecks
                 DemoSelection.CharacterId is null && WorldSession.ActiveHabitat is null &&
                 WorldSession.ActiveManifest is null && WorldSession.SelectedWorldId == WorldCatalog.OceanId &&
                 !GodotObject.IsInstanceValid(final), "return leaked fixture state");
+            if (fullIsolation)
+                menu = await CheckOrdinaryWorldCycles(tree, menu!);
             foreach (var worldId in new[] { WorldCatalog.OceanId, WorldCatalog.PondId })
             {
                 Button(menu!, "World_" + worldId).EmitSignal(BaseButton.SignalName.Pressed);
@@ -141,6 +144,8 @@ public static class PikeEncounterChecks
             Button(isolated!, "ReturnToWorldSelect").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
             GD.Print("PIKE_ENCOUNTER_CHECK_OK routes=3 habitats=2 retries=3 errors=4 visible_errors=3 pond_to_fixture=clean isolated=true");
+            if (fullIsolation)
+                GD.Print("WORLD_ISOLATION_CHECK_OK cycles=2 order=ocean,pond,pike repeats=3 predator=absent feeding=absent cover=absent");
             tree.Quit();
         }
         catch (Exception error)
@@ -148,6 +153,62 @@ public static class PikeEncounterChecks
             GD.PushError("PIKE_ENCOUNTER_CHECK_FAILED " + error);
             tree.Quit(1);
         }
+    }
+
+    private static async Task<WorldSelect> CheckOrdinaryWorldCycles(SceneTree tree, WorldSelect menu)
+    {
+        var expected = new[] { WorldCatalog.OceanId, WorldCatalog.PondId };
+        for (var cycle = 0; cycle < 2; cycle++)
+        foreach (var id in expected)
+        {
+            Button(menu, "World_" + id).EmitSignal(BaseButton.SignalName.Pressed);
+            Button(menu, "ChooseWorldButton").EmitSignal(BaseButton.SignalName.Pressed);
+            await Scene(tree);
+            Require(tree.CurrentScene is CharacterSelect &&
+                WorldSession.SelectedWorldId == id && DemoSelection.CharacterId is null,
+                "ordinary character route leaked after fixture " + id);
+            Button(tree.CurrentScene, "EnterWorldButton").EmitSignal(BaseButton.SignalName.Pressed);
+            await Scene(tree);
+            var world = tree.CurrentScene as Main;
+            var identity = WorldCatalog.Resolve(id).Bake!;
+            Require(world is not null && WorldSession.SelectedWorldId == id &&
+                WorldSession.ActiveManifest?.WorldId == identity.WorldId &&
+                WorldSession.ActiveManifest?.ContentSha256 == identity.ContentSha256 &&
+                WorldSession.ActiveHabitat is not null &&
+                world.GetNode<FishController>("Fish").GetNode<FollowCamera>("CameraRig") is not null &&
+                world.GetNode<FishController>("Fish").GetHeldInputCount() == 0 &&
+                !tree.Paused && !HasEncounterNodes(world) &&
+                world.GetNodeOrNull<Node3D>("Cover") is null,
+                "ordinary world has wrong identity or fixture residue " + id);
+            var shell = world!.GetNode<PlayShell>("PlayShell");
+            Button(shell, "OptionsButton").EmitSignal(BaseButton.SignalName.Pressed);
+            Button(shell, "WorldSelectButton").EmitSignal(BaseButton.SignalName.Pressed);
+            await Scene(tree);
+            Require(!GodotObject.IsInstanceValid(world) &&
+                WorldSession.ActiveHabitat is null && WorldSession.ActiveManifest is null &&
+                DemoSelection.CharacterId is null && !tree.Paused &&
+                Input.MouseMode == Input.MouseModeEnum.Visible &&
+                tree.Root.GetChildren().OfType<PikeEncounter>().Count() == 0,
+                "ordinary world return retained state " + id);
+            menu = tree.CurrentScene as WorldSelect ??
+                throw new Exception("ordinary return lost World Select");
+        }
+        return menu;
+    }
+
+    private static bool HasEncounterNodes(Node root)
+    {
+        if (root is PikeActor or PreyActor or PikeEncounter) return true;
+        if (root.HasMeta("faf_id"))
+        {
+            var id = root.GetMeta("faf_id").AsString();
+            if (Enumerable.Range(10, 5).Any(n => id.StartsWith($"FAF-PLANT-{n:000}", StringComparison.Ordinal)) ||
+                Enumerable.Range(5, 5).Any(n => id.StartsWith($"FAF-WOOD-{n:000}", StringComparison.Ordinal)))
+                return true;
+        }
+        foreach (Node child in root.GetChildren())
+            if (HasEncounterNodes(child)) return true;
+        return false;
     }
 
     private static Button Button(Node root, string name) => root.FindChild(name, true, false) as Button
