@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Map G5.1 V03/V04, G5.2 V05/V33/V34/V36, and G5.3 V35; distinguish isolated fixture from normal habitat ecosystem deployment. Gate PASS requires evidence, not just scripted state.
 4. Create docs/tasks/p5/closeout.md and reconcile roadmap, BOOT, MODULES, owning docs only for real behavior. Preserve P2/P3/P4 gaps. P6 later owns durable save/death; P7 Life History. Leave owner-reviewable closeout uncommitted.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Review P2 intake evidence of the **five new plant + five new large wood families** (authentic source/GLB/hash/variant/wrapper), their P5-only use and P3 rooted three-zone placement. Record honest PASS/FAIL/NOT OBSERVED for each family and critical hollow/fork/root/crown opening; do not confuse old pack 001 with new content.
+2. Final native owner walkthrough must move shallow ribbon grass → intermediate hornwort/thicket and root-ball → deeper split-hollow/branch-crown route, comparing true solid concealment, soft foliage, exposed feeding lanes and Pike last-known search. Assess natural blending, camera collision, plausible greenery by depth, overdraw/frame pacing and whether hiding is reliably understandable, not decorative.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

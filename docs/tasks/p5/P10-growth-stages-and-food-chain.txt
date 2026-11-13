@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Prove a meaningful change in accessible cover and hunting/food-chain position via biologically plausible prey-size rules; avoid arbitrary Bluegill-eats-Pike reversal.
 4. Test near-wall transitions, rig/clip validity, legal eligibility before/after growth, same identity, pause/retry, camera independence and stable rewards.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Test growth-driven **real gap access** using root-ball undercuts, split/decayed hollow side openings, fork routes and branch-crown branches plus narrower plant/root gaps. Derive all passage eligibility from actual body/collider size and structural aperture, not a separate scripted age gate.
+2. Compare early-stage shelter value in coontail/ribbon-grass and later-stage exposure/hunting tradeoffs using actual new cover-zone geometry and camera clearance.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Run negative compatibility/missing scene/corrupt asset handling, camera/GFX independence, double reward/growth checks and bounded perception performance.
 4. Update only relevant source/technical docs from actual behavior, preserve older P4 visual/native gaps and record focused T2 evidence.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Regression-check all **ten new FAF families** against verified manifest IDs, variants/hashes, P2 imported-resource ownership and P5 encounter-only placements; assert original Pond/Ocean world source/bakes, ambient population/asset catalogs, FAF producer sources and renderer are unchanged. Repeat fixture→Pond→Ocean switches without residual new foliage or logs.
+2. Verify seeded shallow/mid/deep composition, no floating roots/wood or repeated stamp grids, fish/Pike/camera passage classifications, plant density/LoS semantics, actual hollow entrances, branch-crown multi-directional travel and bounded render cost under dense mix.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

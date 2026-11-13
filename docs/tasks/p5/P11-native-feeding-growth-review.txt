@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Repeat trap/escape and return/retry; measure native frame pacing, errors and clarity/readability at relevant daylight/water conditions.
 4. Capture explicit owner judgment and per-scenario PASS/FAIL/NOT OBSERVED/BLOCKED; stop on failure, never promote headless assertions into native evidence.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. During native feeding/growth review traverse each new connected area with the current stage, then after growth revisit root-ball, fork and broken hollow passages. Confirm genuine lost/gained access and prey protection from foliage rather than a cosmetic stage-only effect.
+2. Evaluate feeding-risk decisions at real pondweed/grass edges and exposed lanes, rootedness of tall grass/wood and acceptable dense-plant frame pacing during active predator/prey AI.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

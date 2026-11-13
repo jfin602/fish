@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Repeat retry/return/focus/pause, Ocean and normal Pond entry with no predators, measure native frame pacing/graphics and inspect actor leaks.
 4. Record explicit owner readability/fun judgment, source/seed/preset/screenshots only if captured and any failures. Stop on unapproved native outcome.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Native compare **all five new plant families** (grass short/medium/tall, branching waterweed, coontail, broad-leaf pondweed, rooted thicket) and **all five new wood families** (long fallen tree, fork, root ball, split/hollow log, sunken branch crown) in connected shallow→intermediate→deep movement. Verify every item's actual stealth role, density/height gradients, mud grounding, open routes, side entries, camera clearance and Pike/prey behavior.
+2. Judge visually if encounter looks like a naturally overgrown Pond rather than repeated props, whether dense foliage partially conceals without creating opaque walls, whether open lanes create meaningful exposure, and whether native frame pacing/overdraw remains acceptable in combined dense weeds + branch crown.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

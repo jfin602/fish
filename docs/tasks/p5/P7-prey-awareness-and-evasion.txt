@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Compare concealed slow approach to fast open-water approach with deterministic diagnostic readout; do not create nutrition or prey consumption yet.
 4. Test eligibility, camera-independent response, fleeing around a log, safe exit, stop/reset and predator/prey coexistence.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Choose prey's actual cover-seeking route using the five new vegetation families (coontail/hornwort and rooted thicket are stronger small-fish camouflage than sparse broad-leaf pondweed) and real root-ball/fork gaps. Prey must not flee through a sealed split log or physically solid wood.
+2. Compare cautious approach from tall ribbon grass and the long fallen-tree side to careless open-water crossing, with shared real plant-coverage/LoS evidence and no binary hide-volume cheating.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

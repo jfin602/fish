@@ -19,6 +19,10 @@ IMPLEMENT / NATIVE REVIEW
 3. Track stable prey/food IDs and transactional consumed state; duplicate collision/input/double-bite calls must award nutrition exactly once. Reject already-consumed, dead, inaccessible and incompatible targets.
 4. Keep stealth movement/predators active while feeding, record real hunt events only; no durable save, hunger-offline drain, fabricated death/story.
 
+NEW FAF COVER / NATURAL ENCOUNTER QUALIFICATION
+1. Place reachable food and prey at the natural **cover → exposed crossing → cover** transitions created by the new ribbon-grass nursery, pondweed edge, root-ball refuge and split-log/branch-crown approaches. Feeding requires deliberate exposure rather than spawning nutrition inside impassable thickets.
+2. Test that target reach, LoS and prey movement respect honest wood collision and soft foliage; no rewards from outside closed log walls, unreachable roots or false plant cover.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 
