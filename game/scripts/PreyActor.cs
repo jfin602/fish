@@ -21,6 +21,28 @@ public partial class PreyActor : CharacterBody3D
     public PreyAwareness Mind => _mind;
     public Vector3 CoverGoal => _coverGoal;
     public float ActualSpeed => Velocity.Length();
+    public string StableId { get; private set; } = "";
+    public bool IsAlive { get; private set; } = true;
+    public string SpeciesId { get; private set; } = "";
+    public string Stage { get; private set; } = "";
+    public float Length { get; private set; }
+
+    public void SetIdentity(string id, string speciesId, string stage, float length)
+    {
+        StableId = id;
+        SpeciesId = speciesId;
+        Stage = stage;
+        Length = length;
+    }
+
+    public void Consume()
+    {
+        IsAlive = false;
+        Velocity = Vector3.Zero;
+        CollisionLayer = 0;
+        CollisionMask = 0;
+        Visible = false;
+    }
 
     public void Configure(IReadOnlyList<SoftSightCover> plants, AnimationPlayer animation,
         string swim, string fast)
@@ -46,7 +68,7 @@ public partial class PreyActor : CharacterBody3D
     public void Tick(SightEvidence sight, DisturbanceEvidence disturbance,
         double seconds, float delta, bool paused)
     {
-        if (paused || delta <= 0) return;
+        if (!IsAlive || paused || delta <= 0) return;
         _mind.Step(sight, disturbance, seconds, false);
         if (_mind.Mode == PreyMode.Flee && _mind.LastSensedPosition is { } threat &&
             (seconds >= _nextChoiceAt || GlobalPosition.DistanceTo(_coverGoal) < .45f))

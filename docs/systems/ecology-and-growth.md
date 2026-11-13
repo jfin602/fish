@@ -2,7 +2,7 @@
 
 ## Status and ownership
 
-**P5 stealth foundation and one fixture prey are implemented; feeding and growth remain planned.** Naturalistic stealth survival is the owner's main gameplay direction. Eating food and smaller fish, hiding from hunters and growing from hatchling to large fish are confirmed. The [P7 prey check](../tasks/p5/qualification/p7-prey.md) uses a registered Pond Bass larva for sensing and flight without consumption or nutrition. This document owns food-chain and growth transactions; [stealth and detection](stealth-and-detection.md) owns sensing, physical cover, suspicion, concealment and pursuit. Species tuning, diets, thresholds, damage, hunger and numerical balance remain open.
+**P5 fixture feeding is implemented at P9; growth remains planned.** Naturalistic stealth survival is the owner's main gameplay direction. Eating food and smaller fish, hiding from hunters and growing from hatchling to large fish are confirmed. The [P9 source checks](../tasks/p5/qualification/p9-feeding.md) cover a registered Pond Bass larva as edible prey and a non-shipping invertebrate food proxy; the four larger P8 Bass juveniles remain awareness actors and are ineligible meals for the current adult Bluegill. This document owns food-chain and growth transactions; [stealth and detection](stealth-and-detection.md) owns sensing, physical cover, suspicion, concealment and pursuit. Species tuning, diets, thresholds, damage, hunger and numerical balance remain open.
 
 ## A bounded first food chain
 
@@ -13,6 +13,8 @@ The prototype should allow at least one meaningful role reversal: something init
 ## Feeding transaction
 
 Successful feeding consumes a real target or food item and awards nutrition once. A target already consumed, dead, invalid, or outside the allowed interaction cannot produce a second reward. Visual effects, repeated input, overlapping collision callbacks, and saving during an encounter must not duplicate nutrition.
+
+In the isolated Pike fixture, Space makes a directed bite at a live Bass larva within 1.1 m of the mouth, in front of the Bluegill and across a clear physics ray. Its registered 0.058 m length is below the current 45% of adult Bluegill length threshold; the 0.235 m Bass juvenile and 1.075 m adult Pike are not eligible. Small food uses a 0.56 m contact radius and a clear physics ray. Five fixture-only, non-shipping invertebrate proxies sit at open cover transitions. Session-local stable target IDs, consumed flags and a single nutrition ledger award 4 units per larva or 1 per food item. Successful consumption records the actual target and game time; failed attempts record no hunt event. These are P9 working rules, not final diet, balance or P11 native qualification.
 
 The working control proposal is contact collection for tiny food and a directed bite for live prey. Adopt the simplest rule that gives the first hunt and escape a readable outcome. Bite timing, reach, damage, and instant swallowing require a scoped decision before qualification.
 

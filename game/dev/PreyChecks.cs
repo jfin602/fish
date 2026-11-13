@@ -19,8 +19,8 @@ public static class PreyChecks
             scene.SetPhysicsProcess(false);
             var fish = scene.GetNode<FishController>("Fish");
             var prey = scene.GetNode<PreyActor>("BassPrey0");
-            var school = scene.PreyActors;
-            Need(school.Count == 4 && school.Select(p => p.GlobalPosition).Distinct().Count() == 4,
+            var school = scene.PreyActors.Where(p => p.Stage == "juvenile").ToArray();
+            Need(school.Length == 4 && school.Select(p => p.GlobalPosition).Distinct().Count() == 4,
                 "juvenile group missing or overlapping spawn positions");
             var pike = scene.GetNode<PikeActor>("NorthernPike");
             var plants = PikeCoverFixture.VisibleSoftCover(scene.GetNode<Node3D>("Cover"));

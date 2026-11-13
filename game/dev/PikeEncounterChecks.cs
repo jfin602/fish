@@ -69,7 +69,7 @@ public static class PikeEncounterChecks
                     DemoSelection.CharacterId == PikeEncounterAssets.BluegillId &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
-                    encounter.PreyActors.Count == 4 &&
+                    encounter.PreyActors.Count == 9 &&
                     encounter.GetNodeOrNull<PreyActor>("BassPrey0") is not null &&
                     encounter.FindChild("CharacterSelect", true, false) is null &&
                     encounter.FindChild("AmbientLife", true, false) is null,
