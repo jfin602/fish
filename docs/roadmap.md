@@ -236,7 +236,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 ## P5 — Stealth, feed, escape and grow
 
-**Status: ACTIVE; P1 checkpointed, P2 cover source implemented pending runner checkpoint.** Scenarios V03–V05 and V33–V36 remain unqualified. [P1 evidence](tasks/p5/qualification/p1-routing.md), [P2 source evidence](tasks/p5/qualification/p2-cover.md), [entry handoff](tasks/p5/entry.md), [foundation plan](planning/p5/stealth-foundation.md), [ecology](systems/ecology-and-growth.md) and [stealth](systems/stealth-and-detection.md) govern the remaining work. The isolated Pike Encounter is a menu destination; Ocean and Pond remain the two habitats. Native appearance, draw/overdraw and owner gameplay are open; no P5 Gate is GREEN.
+**Status: ACTIVE; P1–P2 checkpointed, P3 world-space sight source implemented pending runner checkpoint.** Scenarios V03–V05 and V33–V36 remain unqualified. [P1 evidence](tasks/p5/qualification/p1-routing.md), [P2 source evidence](tasks/p5/qualification/p2-cover.md), [P3 source evidence](tasks/p5/qualification/p3-perception.md), [entry handoff](tasks/p5/entry.md), [foundation plan](planning/p5/stealth-foundation.md), [ecology](systems/ecology-and-growth.md) and [stealth](systems/stealth-and-detection.md) govern the remaining work. The isolated Pike Encounter is a menu destination; Ocean and Pond remain the two habitats. Native appearance, draw/overdraw and owner gameplay are open; no P5 Gate is GREEN.
 
 ### G5.1 — Feeding and visible growth
 

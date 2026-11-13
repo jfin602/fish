@@ -16,6 +16,8 @@ public partial class PikeEncounter : Node3D
     private bool _transitioning;
     private bool _failed;
     public IReadOnlyList<PikeCoverPlacement> CoverPlan { get; private set; } = Array.Empty<PikeCoverPlacement>();
+    public WorldSightSensor? PikeSight { get; private set; }
+    public SightEnvironment? SightWater { get; private set; }
 
     public override void _Ready()
     {
@@ -40,6 +42,8 @@ public partial class PikeEncounter : Node3D
         InitializeActors();
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-cover-check"))
             PikeCoverChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-sight-check"))
+            PikeSightChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -52,11 +56,16 @@ public partial class PikeEncounter : Node3D
         { Fail(diagnostic); return; }
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
-        var actor = GetNode<Node3D>("NorthernPike");
+        var actor = GetNode<CharacterBody3D>("NorthernPike");
         pikeModel!.Name = "PikeVisual";
         actor.AddChild(pikeModel);
         pikeModel.Transform = pike!.PresentationTransform;
         animation!.Play(pike.GlideClip);
+        var plants = PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("Cover"));
+        PikeSight = new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
+            actor.GetRid(), _fish.GetRid());
+        SightWater = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
+            PikeCoverFixture.FixtureSediment, SolarState.At(.5));
         var preferences = new DisplayPreferences();
         preferences.Load();
         _fish.ConfigureMouse(preferences.MouseSensitivity, preferences.InvertMouseY);
@@ -72,6 +81,7 @@ public partial class PikeEncounter : Node3D
 
     private void Fail(string diagnostic)
     {
+        PikeSight?.Reset();
         _failed = true;
         _resume.Disabled = true;
         DemoSelection.Clear();
@@ -150,6 +160,7 @@ public partial class PikeEncounter : Node3D
     private void Leave(string scene)
     {
         if (_transitioning) return;
+        PikeSight?.Reset();
         _transitioning = true;
         _fish.ClearAndDisarmInput();
         GetTree().Paused = false;

@@ -215,4 +215,46 @@ public static class PikeCoverFixture
             surface.AddVertex(point);
         }
     }
+
+    public static IReadOnlyList<SoftSightCover> VisibleSoftCover(Node3D collection)
+    {
+        var result = new List<SoftSightCover>();
+        foreach (Node3D placement in collection.GetChildren())
+        {
+            var id = placement.GetMeta("faf_id").AsString();
+            if (!id.StartsWith("FAF-PLANT-", StringComparison.Ordinal)) continue;
+            Collect(placement, id);
+        }
+        return result;
+
+        void Collect(Node node, string id)
+        {
+            if (node is MeshInstance3D { Mesh: not null } mesh && mesh.IsVisibleInTree())
+            {
+                var local = mesh.GetAabb();
+                var min = new Vector3(float.PositiveInfinity, float.PositiveInfinity, float.PositiveInfinity);
+                var max = new Vector3(float.NegativeInfinity, float.NegativeInfinity, float.NegativeInfinity);
+                for (var mask = 0; mask < 8; mask++)
+                {
+                    var corner = local.Position + new Vector3(
+                        (mask & 1) == 0 ? 0 : local.Size.X,
+                        (mask & 2) == 0 ? 0 : local.Size.Y,
+                        (mask & 4) == 0 ? 0 : local.Size.Z);
+                    var world = mesh.GlobalTransform * corner;
+                    min = min.Min(world);
+                    max = max.Max(world);
+                }
+                result.Add(new SoftSightCover(id, new Aabb(min, max - min)));
+            }
+            foreach (Node child in node.GetChildren()) Collect(child, id);
+        }
+    }
+
+    public static float FixtureSediment(Vector3 position)
+    {
+        if (position.Y >= WaterY || position.Y <= Bed(position.X, position.Z)) return 0f;
+        var aboveBed = position.Y - Bed(position.X, position.Z);
+        var deep = Mathf.Clamp((WaterY - position.Y - 3f) / 5f, 0f, 1f);
+        return .06f + .23f * (1f - Mathf.Clamp(aboveBed / 2f, 0f, 1f)) + .10f * deep;
+    }
 }

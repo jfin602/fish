@@ -2,7 +2,7 @@
 
 ## Status, owner decision, and boundaries
 
-**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. **Mechanics in this document are working designs, not implemented or qualified P5 behavior.** P4 supplies physically usable cover networks, not predator sensing or gameplay stealth state.
+**Owner-approved direction (S20, 2026-11-11):** naturalistic ecosystem stealth is Fish's core gameplay identity across Ocean and Freshwater Pond. P5 P3 implements a bounded visual query in the isolated Pike Encounter, with headless checks and no native gameplay qualification. The remaining mechanics in this document are working designs. P4 supplies physically usable cover networks, not predator pursuit or gameplay stealth state.
 
 > Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.
 
