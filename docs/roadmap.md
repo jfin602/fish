@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-13. P0 and P1 are COMPLETE. P2, P3 and P4 are OWNER CLOSED FOR PROGRESSION / NOT GREEN.** The deliberate `0.5.0` baseline opened P5; P1–P5 are checkpointed and P6 is owner-closed for progression / NOT GREEN at requested `0.5.6`. The second bounded repair reached native catch and escape, but M1 fairness and parts of the native matrix remain unqualified. The owner explicitly requested the version and runner continuation. [P4 direct closeout](tasks/p4/closeout.md) records the owner's progression decision, implemented Ocean/Pond systems, G4.1–G4.4 evidence limits and unexecuted P12–P14 checkpoints. No P4 Gate passed. P4's historical P12/V32 failure, unapproved R2–R5 underwater candidates and c4 day/night native gaps remain open. [P3 direct closeout](tasks/p3/closeout.md) retains G3.1–G3.3 FAIL, G3.4 NOT GREEN and V25–V27 limits; P2 G2.3/V20 remains an accepted gap. This is the single Phase/Gate status authority.
+**Status: 2026-11-13. P0 and P1 are COMPLETE. P2, P3, P4 and P5 are OWNER CLOSED FOR PROGRESSION / NOT GREEN.** The owner accepted P5 as a baseline to build from after the real P12 `0.5.12` checkpoint; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native qualification gaps. No P5 Gate passed and the assigned `0.5.13` was not applied. [P4 direct closeout](tasks/p4/closeout.md) retains G4.1–G4.4 limits, historical P12/V32 failure, unapproved R2–R5 underwater candidates and c4 day/night gaps. [P3 direct closeout](tasks/p3/closeout.md) retains G3.1–G3.3 FAIL, G3.4 NOT GREEN and V25–V27 limits; P2 G2.3/V20 remains an accepted gap. This is the single Phase/Gate status authority.
 
 The dated `0.4.11` candidate notes below record when each visual iteration was made; they are historical evidence, not the current root version or a Gate decision.
 
@@ -27,7 +27,7 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | **P2 — Build the underwater world** | Replace the prototype-course look with a natural reef space, convincing underwater atmosphere, and movement-reactive water presentation. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; G2.1/G2.2 pass, G2.3/V20 is an accepted open gap under S16. |
 | **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at implemented `0.3.6`; [direct closeout](tasks/p3/closeout.md) preserves failed and unobserved criteria, with no P7/P8 runner checkpoints. |
 | **P4 — Freshwater Pond and World Select** | Add Ocean and Pond as distinct selectable worlds, compatible fish/ambient populations, freshwater assets, bank/sky and surface-swimming/camera immersion. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at deliberate P5 baseline `0.5.0`; G4.1–G4.4 retain incomplete native/owner qualification. [Direct closeout](tasks/p4/closeout.md). |
-| **P5 — Stealth, feed, escape and grow** | Naturalistic detection, concealment, investigation, pursuit/escape and stealth hunting anchor the feeding/growth loop in compatible habitats. | **ACTIVE; P1–P11 checkpointed; P12 T2 source checked at uncommitted `0.5.12`.** [P12 record](tasks/p5/qualification/p12-isolation.md) owns isolation checks and native limits. Every P5 Gate remains open. |
+| **P5 — Stealth, feed, escape and grow** | Naturalistic detection, concealment, investigation, pursuit/escape and stealth hunting anchor the feeding/growth loop in compatible habitats. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at real P12 checkpoint `0.5.12`; [closeout](tasks/p5/closeout.md). G5.1–G5.3 remain open. |
 | P6 — A life across sessions | Continue one living fish in its original world; death permanently ends it with recoverable durable records. | NOT STARTED; formerly P5. |
 | P7 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED; formerly P6. |
 | P8 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation across the selected habitat scope. | NOT STARTED; formerly P7. |
@@ -236,11 +236,11 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 ## P5 — Stealth, feed, escape and grow
 
-**Status: ACTIVE; P1–P11 checkpointed; P12 T2 source checked at uncommitted `0.5.12`; P6 owner-closed for progression / NOT GREEN; P8 owner-green for progression.** [P12 isolation evidence](tasks/p5/qualification/p12-isolation.md) confirms repeated fixture/Ocean/Pond routes and retained original bakes under headless checks; native gameplay and cover presentation remain open. Scenarios V03–V05 and V33–V36 remain only partially qualified. [P11 native record](tasks/p5/qualification/native-feeding-growth.md) preserves owner feedback and pending T3 cells. [P6 review](tasks/p5/qualification/native-m1.md), [P8 review](tasks/p5/qualification/native-stealth.md), [entry handoff](tasks/p5/entry.md), [foundation plan](planning/p5/stealth-foundation.md), [ecology](systems/ecology-and-growth.md) and [stealth](systems/stealth-and-detection.md) govern the remaining work. The isolated Pike Encounter is a menu destination; Ocean and Pond remain the two habitats. No P5 Gate is GREEN.
+**Status: OWNER CLOSED FOR PROGRESSION / NOT GREEN at real P12 checkpoint `0.5.12`; assigned P13 `0.5.13` not applied.** The owner's baseline approval and [P5 closeout](tasks/p5/closeout.md) permit next-phase planning with G5.1–G5.3 still open. [P12 isolation evidence](tasks/p5/qualification/p12-isolation.md) confirms repeated fixture/Ocean/Pond routes and retained original bakes under headless checks; native gameplay and cover presentation remain open. Scenarios V03–V05 and V33–V36 remain partially qualified. [P11 native](tasks/p5/qualification/native-feeding-growth.md), [P6](tasks/p5/qualification/native-m1.md) and [P8](tasks/p5/qualification/native-stealth.md) preserve the narrower owner judgments and unsampled T3 cells. The isolated Pike Encounter is a menu destination; Ocean and Pond remain the two habitats. No P5 Gate is GREEN.
 
 ### G5.1 — Feeding and visible growth
 
-**Result: NOT OBSERVED.**
+**Result: NOT GREEN; final native V03/V04 route NOT OBSERVED.**
 
 - Food and suitable smaller prey can be consumed through defined actions and eligibility rules.
 - Each consumed entity grants its reward exactly once; unavailable/ineligible targets do not grant growth.
@@ -249,7 +249,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 ### G5.2 — Detection, concealment and escape
 
-**Result: NOT OBSERVED.**
+**Result: NOT GREEN; final native V05/V33/V34/V36 route NOT OBSERVED.**
 
 - A predator uses sensed visual/movement evidence, cover occlusion and bounded last-known-target memory; it cannot track a concealed fish with perfect knowledge.
 - The first foundation proof may use a dedicated Bluegill/Pike scene with fixture-only caught/escaped outcomes; the scene must not alter Ocean/Pond normal-play routes, habitat eligibility or true permanent-death records.
@@ -260,7 +260,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 ### G5.3 — Stealth hunting and ecosystem consistency
 
-**Result: NOT OBSERVED.**
+**Result: NOT GREEN; final native V35 comparison NOT OBSERVED.**
 
 - The player can approach prey through usable cover/slow movement, and careless exposure can alert prey to flee toward reachable shelter.
 - Player and NPC outcomes share coherent movement, sight, obstruction, distance, body-size/cover and prey-eligibility rules; gameplay cannot derive knowledge from a hidden UI or camera-only state.

@@ -1,6 +1,6 @@
 # P5 — Stealth, feed, escape and grow
 
-**Status: P1–P11 CHECKPOINTED; P12 T2 SOURCE CHECKED at uncommitted `0.5.12`; P6 OWNER-CLOSED FOR PROGRESSION / NOT GREEN; P8 OWNER GREEN FOR PROGRESSION.** The exact-subject P11 checkpoint is `b20a62b`; [P11 evidence](qualification/native-feeding-growth.md) retains the owner's limited approval and open T3 cells. [P12 evidence](qualification/p12-isolation.md) records repeated fixture/normal-world switching and its headless limits. P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md). [P9 source evidence](qualification/p9-feeding.md) and [P10 source evidence](qualification/p10-growth.md) remain historical; no P5 Gate is GREEN.
+**Status: OWNER CLOSED FOR PROGRESSION / NOT GREEN.** [Closeout](closeout.md) records the owner's baseline approval and G5.1–G5.3 evidence limits. P1–P12 are real checkpoints through `55e2926` / `0.5.12`; the manual P13 `0.5.13` was not assigned because its final native walkthrough was not reported. [P11](qualification/native-feeding-growth.md) retains the owner's limited native approval and open T3 cells; [P12](qualification/p12-isolation.md) records repeated fixture/normal-world switching and its headless limits. P4 is [owner-closed for progression / NOT GREEN](../p4/closeout.md). No P5 Gate is GREEN.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [New FAF cover intake](stealth-cover-asset-intake.md) · [P5 approved design](../../planning/p5/stealth-foundation.md) · [stealth system](../../systems/stealth-and-detection.md) · [ecology/growth](../../systems/ecology-and-growth.md) · [roadmap](../../roadmap.md) · [validation](../../validation.md) · [runner](../../phase-runner.md)
 
@@ -52,4 +52,4 @@ Only once P4's owner handoff and `0.5.0` phase baseline exist, execute intention
 npm run fish:phase -- p5
 ```
 
-The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-pike-encounter`, `inspect-pike-cover`, `inspect-pike-sight`, `inspect-pike-disturbance` and `inspect-pike-ai`. Avoid redundant broad builds. Record actual evidence under `docs/tasks/p5/qualification/`; only an executed final closeout writes `docs/tasks/p5/closeout.md`. [Roadmap](../../roadmap.md) alone owns Gate status.
+The existing `tools/dev` supports `build`, `import`, `smoke-world`, `inspect-world-select`, `inspect-pike-encounter`, `inspect-pike-cover`, `inspect-pike-sight`, `inspect-pike-disturbance` and `inspect-pike-ai`. Avoid redundant broad builds. Actual evidence remains under `qualification/`; the [direct owner closeout](closeout.md) records the progression decision without a fabricated P13 native PASS or version. [Roadmap](../../roadmap.md) alone owns Gate status.

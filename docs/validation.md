@@ -112,8 +112,8 @@ V28–V31 establish world routing, habitat identity, natural freshwater generati
 | Confirmed requirement | Planned evidence |
 | --- | --- |
 | C01–C04: 3D fish, growth/feeding/predation and camera choice | B04; V01–V05; V13. |
-| C63–C65: naturalistic stealth-survival identity, exposure/cover/feeding risk and ecologically grounded detection | V05, V33–V35 (P5 not started). |
-| C69: separate development-only Pike Encounter card, direct Bluegill entry, and isolation from both normal habitat routes | V36 (P5 not started). |
+| C63–C65: naturalistic stealth-survival identity, exposure/cover/feeding risk and ecologically grounded detection | V05, V33–V35; P5 fixture source/focused checks exist, final native Gate qualification remains open. |
+| C69: separate development-only Pike Encounter card, direct Bluegill entry, and isolation from both normal habitat routes | V36; P5 focused routing/isolation checks pass, final native review remains open. |
 | C66: spatially variable freshwater water clarity, with turbidity separate from illumination and preserved Pond near-field visibility | V29 (future native Pond water-clarity comparison), V32 (surface consistency and Ocean regression); S21 is a requirement, not passed qualification. |
 | C05–C07: one life across sessions, permanent death, no offline simulation | V06–V09; V14. |
 | C08–C10: brief factual recounting and all stories in main-menu history | V08; V10–V12; V14. |
