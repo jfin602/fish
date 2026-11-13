@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Fish;
 
-/// <summary>Real fixture food, registered rigs and collision-based stage transition probe.</summary>
+/// <summary>Registered Bass feeding, rigs and collision-based stage transition probe.</summary>
 public static class GrowthChecks
 {
     public static async void Run(PikeEncounter scene)
@@ -41,35 +41,30 @@ public static class GrowthChecks
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.Growth.Stage == stageBeforeCamera && scene.Feeding.Nutrition == 0,
                 "camera update mutated growth");
-            Need(!scene.TryBite(larva).Consumed && scene.Feeding.Nutrition == 0,
-                "juvenile ate oversized Bass larva");
-            foreach (var food in scene.FoodItems.Take(2)) Collect(food);
-            Need(scene.Growth.Stage == "juvenile" && scene.Feeding.Nutrition == 2,
-                "premature growth");
-            var third = scene.FoodItems[2];
-            fish.GlobalPosition = third.GlobalPosition + Vector3.Up * .4f;
-            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Need(FeedingLedger.IsEligiblePrey(larva.SpeciesId, larva.Stage, larva.Length,
+                    scene.Growth.Stage, scene.Growth.Length),
+                "registered Bass larva should be edible from juvenile Bluegill");
             var wall = new StaticBody3D { Name = "GrowthTestWall", CollisionLayer = 1 };
             scene.AddChild(wall);
             wall.GlobalPosition = fish.GlobalPosition + new Vector3(.27f, 0, 0);
             wall.AddChild(new CollisionShape3D { Shape = new BoxShape3D
                 { Size = new Vector3(.08f, 1f, 1f) } });
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(scene.TryCollectFood(third).Consumed && scene.Feeding.Nutrition == 3 &&
+            Need(scene.TryBite(larva).Consumed && scene.Feeding.Nutrition == 4 &&
                 scene.Growth.Stage == "juvenile" && !scene.TryAdvanceGrowth(),
-                "near-wall stage should defer after real award");
+                "near-wall stage should defer after real Bass bite");
             wall.QueueFree();
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryAdvanceGrowth() && scene.Growth.Stage == "subadult" &&
                 Near(fish.BodyRadius, scene.Growth.ColliderRadius) &&
-                scene.Growth.Identity == identity && scene.Feeding.Nutrition == 3,
+                scene.Growth.Identity == identity && scene.Feeding.Nutrition == 4,
                 "subadult stage did not apply after clearance");
             CheckRig();
             tree.Paused = true;
             Need(!scene.TryBite(larva).Consumed && !scene.TryAdvanceGrowth() &&
-                scene.Feeding.Nutrition == 3, "paused scene advanced feeding/growth");
+                scene.Feeding.Nutrition == 4, "paused scene advanced feeding/growth");
             tree.Paused = false;
-            foreach (var prey in scene.PreyActors.Skip(4).Take(2))
+            foreach (var prey in scene.PreyActors.Skip(5).Take(2))
             {
                 fish.GlobalPosition = open;
                 fish.GlobalBasis = Basis.Identity;
@@ -78,14 +73,20 @@ public static class GrowthChecks
                 Need(scene.TryBite(prey).Consumed, "subadult Bass larva bite failed");
                 Need(!scene.TryBite(prey).Consumed, "duplicate Bass bite awarded");
             }
-            Need(scene.Growth.Stage == "adult" && scene.Feeding.Nutrition == 11 &&
-                scene.Feeding.Events.Count == 5 && scene.Growth.Identity == identity &&
+            Need(scene.Growth.Stage == "adult" && scene.Feeding.Nutrition == 12 &&
+                scene.Feeding.Events.Count == 3 && scene.Growth.Identity == identity &&
                 DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
                 Near(fish.BodyRadius, PondGrowthState.AdultColliderRadius),
                 "adult stage, one-time awards or identity changed");
             CheckRig();
-            Need(!scene.TryBite(scene.PreyActors[0]).Consumed,
-                "adult Bluegill ate oversized Bass juvenile");
+            var juvenileBass = scene.PreyActors[0];
+            fish.GlobalPosition = open;
+            fish.GlobalBasis = Basis.Identity;
+            juvenileBass.GlobalPosition = open + new Vector3(0, 0, -.95f);
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Need(scene.TryBite(juvenileBass).Consumed &&
+                !scene.TryBite(juvenileBass).Consumed && scene.Feeding.Events.Count == 4,
+                "adult Bluegill did not gain a one-time Bass-juvenile hunt");
             Need(camera.GetNode<Camera3D>("Camera3D").Current &&
                 Near(fish.BodyScale, 1f), "camera/body scale lost at adult");
             fish.GlobalPosition = open;
@@ -100,12 +101,6 @@ public static class GrowthChecks
             GD.Print($"GROWTH_CHECK_OK seed={PikeCoverFixture.Seed} fixture=pike identity={identity} stage={scene.Growth.Stage} nutrition={scene.Feeding.Nutrition} events={scene.Feeding.Events.Count} radius={fish.BodyRadius:F3} camera_juvenile={juvenileCameraDistance:F2} camera_adult={adultCameraDistance:F2}");
             tree.Quit();
 
-            void Collect(FixtureFood food)
-            {
-                fish.GlobalPosition = food.GlobalPosition + Vector3.Up * .4f;
-                Need(scene.TryCollectFood(food).Consumed && !scene.TryCollectFood(food).Consumed,
-                    "real tiny-food transaction/duplicate failed");
-            }
             void CheckRig()
             {
                 var asset = scene.Growth.Asset;
@@ -226,7 +221,7 @@ public static class GrowthChecks
 
         bool Clear(float radius, Vector3 at)
         {
-            var query = new PhysicsShapeQueryParameters3D
+            using var query = new PhysicsShapeQueryParameters3D
             {
                 Shape = new SphereShape3D { Radius = radius },
                 Transform = new Transform3D(Basis.Identity, at), CollisionMask = 1, Exclude = exclude,
@@ -238,7 +233,7 @@ public static class GrowthChecks
     private static bool Near(float a, float b) => Mathf.Abs(a - b) < .003f;
     private static bool CameraClear(PikeEncounter scene, FishController fish, FollowCamera camera)
     {
-        var query = new PhysicsShapeQueryParameters3D
+        using var query = new PhysicsShapeQueryParameters3D
         {
             Shape = new SphereShape3D { Radius = .22f * Mathf.Max(.32f, fish.BodyScale) },
             Transform = new Transform3D(Basis.Identity, camera.GlobalPosition),

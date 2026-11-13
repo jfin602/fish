@@ -12,6 +12,7 @@ public partial class PreyActor : CharacterBody3D
     private IReadOnlyList<SoftSightCover> _plants = Array.Empty<SoftSightCover>();
     private Vector3 _home;
     private Vector3 _coverGoal;
+    private float _foragePhase;
     private double _nextChoiceAt;
     private float _speed;
     private AnimationPlayer? _animation;
@@ -33,6 +34,10 @@ public partial class PreyActor : CharacterBody3D
         SpeciesId = speciesId;
         Stage = stage;
         Length = length;
+        uint hash = 2166136261;
+        foreach (var symbol in id)
+            hash = (hash ^ symbol) * 16777619;
+        _foragePhase = hash % 6283 / 1000f;
     }
 
     public void Consume()
@@ -76,16 +81,21 @@ public partial class PreyActor : CharacterBody3D
             _coverGoal = ChooseCover(threat);
             _nextChoiceAt = seconds + 1.2;
         }
-        var goal = _mind.Mode is PreyMode.Flee or PreyMode.Alert ? _coverGoal : _home;
+        var goal = _mind.Mode switch
+        {
+            PreyMode.Flee or PreyMode.Alert => _coverGoal,
+            PreyMode.Forage => ForagePoint(seconds),
+            _ => _home,
+        };
         var to = goal - GlobalPosition;
         var desiredSpeed = _mind.Mode switch
         {
             PreyMode.Flee => 2.3f,
             PreyMode.Alert => .6f,
             PreyMode.Settle => .45f,
-            _ => GlobalPosition.DistanceTo(_home) > 1.2f ? .45f : 0f,
+            _ => .48f,
         };
-        if (to.Length() < .35f) desiredSpeed = 0;
+        if (to.Length() < .15f) desiredSpeed = 0;
         var direct = to.LengthSquared() > .01f ? to.Normalized() : -GlobalBasis.Z;
         var direction = ClearDirection(direct);
         if (direction is null) desiredSpeed = 0;
@@ -113,6 +123,16 @@ public partial class PreyActor : CharacterBody3D
                 _animation.CurrentAnimationPosition >= source.Length - delta * _animation.SpeedScale)
                 _animation.Seek(0, true);
         }
+    }
+
+    private Vector3 ForagePoint(double seconds)
+    {
+        var angle = (float)(seconds * .48) + _foragePhase;
+        var target = _home + new Vector3(Mathf.Cos(angle) * .72f,
+            Mathf.Sin(angle * .7f) * .12f, Mathf.Sin(angle) * .72f);
+        target.Y = Mathf.Clamp(target.Y,
+            PikeCoverFixture.Bed(target.X, target.Z) + .32f, PikeCoverFixture.WaterY - .35f);
+        return target;
     }
 
     private Vector3 ChooseCover(Vector3 threat)

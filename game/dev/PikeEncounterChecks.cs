@@ -71,8 +71,9 @@ public static class PikeEncounterChecks
                     encounter.Feeding.Events.Count == 0 &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
-                    encounter.PreyActors.Count == 9 &&
+                    encounter.PreyActors.Count == 10 &&
                     encounter.GetNodeOrNull<PreyActor>("BassPrey0") is not null &&
+                    encounter.FindChild("NonShippingInvertebrateProxy", true, false) is null &&
                     encounter.FindChild("CharacterSelect", true, false) is null &&
                     encounter.FindChild("AmbientLife", true, false) is null,
                     "direct fixture entry or isolation failed");

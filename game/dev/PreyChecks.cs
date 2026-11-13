@@ -53,6 +53,27 @@ public static class PreyChecks
                     spawn.Z < fish.GlobalPosition.Z && !InsideWood(member),
                     "juvenile spawn is too far, behind player or inside solid cover: " + member.Name);
             }
+            var forageTravel = 0f;
+            foreach (var larvaName in new[] { "BassLarva0", "BassLarva2" })
+            {
+                var larva = scene.GetNode<PreyActor>(larvaName);
+                var home = larva.GlobalPosition;
+                var farthest = 0f;
+                for (var frame = 0; frame < 180; frame++)
+                {
+                    larva.Tick(default, default, frame / 60d, 1f / 60f, false);
+                    await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                    farthest = Mathf.Max(farthest, larva.GlobalPosition.DistanceTo(home));
+                    Need(larva.GlobalPosition.DistanceTo(home) < 1.5f && !InsideWood(larva),
+                        "undisturbed larva left its home cover or entered wood: " + larvaName);
+                }
+                Need(farthest > .25f && larva.Mind.Mode == PreyMode.Forage,
+                    "undisturbed larva remained motionless: " + larvaName);
+                var heldLarva = larva.GlobalPosition;
+                larva.Tick(default, default, 3, 1f / 60f, true);
+                Need(larva.GlobalPosition == heldLarva, "pause moved foraging larva");
+                forageTravel = Mathf.Max(forageTravel, farthest);
+            }
             // Retain the P7 fixed sensor comparison pose independently of the
             // nearer P8 discovery spawn.
             var from = new Vector3(-6.8f, PikeCoverFixture.Bed(-6.8f, 11f) + .55f, 11f);
@@ -203,7 +224,7 @@ public static class PreyChecks
             cues.Reset();
             Need(prey.Mind.Mode == PreyMode.Forage && prey.Mind.LastSensedPosition is null &&
                 cues.Events.Count == 0, "prey/field reset incomplete");
-            GD.Print($"PREY_CHECK_OK seed={PikeCoverFixture.Seed} stage=FAF-FISH-007:juvenile grass={careful[0].Reason}/{careful[0].Strength:F4} log={careful[1].Reason}/{careful[1].Strength:F4} open={open.Max(v => v.Strength):F4} plant_attenuation={plantAttenuation:F4} fast_cue={fastCue.Strength:F4} slow_cue={slowCue.Strength:F4} flee={held.DistanceTo(start):F2} first_cover={firstFamily}:{firstCover} last_cover={chosenCover} root_gap=clear fork_end={forkEnd} split_wood=solid");
+            GD.Print($"PREY_CHECK_OK seed={PikeCoverFixture.Seed} stage=FAF-FISH-007:juvenile forage_travel={forageTravel:F2} grass={careful[0].Reason}/{careful[0].Strength:F4} log={careful[1].Reason}/{careful[1].Strength:F4} open={open.Max(v => v.Strength):F4} plant_attenuation={plantAttenuation:F4} fast_cue={fastCue.Strength:F4} slow_cue={slowCue.Strength:F4} flee={held.DistanceTo(start):F2} first_cover={firstFamily}:{firstCover} last_cover={chosenCover} root_gap=clear fork_end={forkEnd} split_wood=solid");
             tree.Quit();
 
             bool InsideWood(PreyActor? candidate = null)

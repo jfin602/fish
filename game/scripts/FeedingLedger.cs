@@ -12,10 +12,13 @@ public sealed class FeedingLedger
     public int Nutrition { get; private set; }
     public IReadOnlyList<FeedEvent> Events => _events;
     public bool IsConsumed(string id) => _consumed.Contains(id);
-    public static bool IsEligiblePrey(string speciesId, string stage, float length, float playerLength) =>
-        speciesId == "FAF-FISH-007" && stage == "larva" &&
+    public static bool IsEligiblePrey(string speciesId, string stage, float length,
+        string playerStage, float playerLength) =>
+        speciesId == "FAF-FISH-007" &&
         float.IsFinite(length) && float.IsFinite(playerLength) &&
-        length > 0f && playerLength > 0f && length <= playerLength * .45f;
+        length > 0f && playerLength > 0f &&
+        (stage == "larva" && length <= playerLength * .65f ||
+         stage == "juvenile" && playerStage == "adult" && length <= playerLength * .8f);
 
     public FeedResult TryConsume(FeedCandidate target, bool accessible, double gameSeconds)
     {
@@ -24,28 +27,23 @@ public sealed class FeedingLedger
         if (!target.Alive) return new(false, "target is dead", 0);
         if (target.Habitat != WorldCatalog.PondId || target.PlayerHabitat != target.Habitat)
             return new(false, "incompatible habitat", 0);
-        if (target.Kind is not (FeedKind.Prey or FeedKind.TinyFood))
-            return new(false, "unknown food kind", 0);
-        if (target.Kind == FeedKind.Prey &&
-            !IsEligiblePrey(target.SpeciesId, target.Stage, target.Length, target.PlayerLength))
+        if (!IsEligiblePrey(target.SpeciesId, target.Stage, target.Length,
+                target.PlayerStage, target.PlayerLength))
             return new(false, "prey is not eligible", 0);
-        if (target.Kind == FeedKind.TinyFood &&
-            (target.SpeciesId != "fixture-invertebrate" || target.Stage != "proxy"))
-            return new(false, "food is not eligible", 0);
         if (!accessible) return new(false, "out of reach or blocked", 0);
         if (!double.IsFinite(gameSeconds) || gameSeconds < 0)
             return new(false, "invalid game time", 0);
-        var award = target.Kind == FeedKind.Prey ? 4 : 1;
+        const int award = 4;
         // All validation precedes the single commit; this is the only nutrition mutation.
         _consumed.Add(target.Id);
         Nutrition += award;
-        _events.Add(new FeedEvent(target.Id, target.Kind, gameSeconds, award));
+        _events.Add(new FeedEvent(target.Id, target.Stage, gameSeconds, award));
         return new(true, "consumed", award);
     }
 }
 
-public enum FeedKind { TinyFood, Prey }
-public readonly record struct FeedCandidate(string Id, FeedKind Kind, string SpeciesId,
-    string Stage, string Habitat, string PlayerHabitat, float Length, float PlayerLength, bool Alive);
+public readonly record struct FeedCandidate(string Id, string SpeciesId,
+    string Stage, string Habitat, string PlayerHabitat, float Length,
+    string PlayerStage, float PlayerLength, bool Alive);
 public readonly record struct FeedResult(bool Consumed, string Reason, int Award);
-public readonly record struct FeedEvent(string TargetId, FeedKind Kind, double GameSeconds, int Nutrition);
+public readonly record struct FeedEvent(string TargetId, string Stage, double GameSeconds, int Nutrition);
