@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fish;
 
-/// <summary>Deterministic seed-5202 decision and placed-cover probe; no native fairness claim.</summary>
+/// <summary>Deterministic generated-Pond decision and placed-cover probe; no native fairness claim.</summary>
 public static class PikeAiChecks
 {
     public static async void Run(PikeEncounter scene)
@@ -19,6 +19,25 @@ public static class PikeAiChecks
             scene.SetPhysicsProcess(false);
             var fish = scene.GetNode<FishController>("Fish");
             var actor = scene.GetNode<PikeActor>("NorthernPike");
+            var visual = actor.GetNode<Node3D>("PikeVisual");
+            var shape = actor.GetNode<CollisionShape3D>("Collision").Shape as CapsuleShape3D;
+            Need(PikeEncounterAssets.TryValidate(out _, out var pikeEntry, out _) &&
+                pikeEntry is not null &&
+                visual.Scale.IsEqualApprox(Vector3.One * (pikeEntry.WorldScale * 3f)) &&
+                shape is not null && Mathf.IsEqualApprox(shape.Radius, .42f) &&
+                Mathf.IsEqualApprox(shape.Height, 2.65f), "Pike visual/slim body drift");
+            Need(actor.GetNode<AnimationPlayer>("PikeVisual/AnimationPlayer").CurrentAnimation ==
+                pikeEntry!.SwimClip, "Pike patrol did not start its swim animation");
+            var contactPosition = actor.GlobalPosition;
+            var contactBasis = actor.GlobalBasis;
+            actor.GlobalPosition = new Vector3(0, 4, 0);
+            actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
+            Need(!actor.MouthCanReach(new Vector3(0, 4, -2.3f), .48f) &&
+                actor.MouthCanReach(new Vector3(0, 4, -1.78f), .48f) &&
+                !actor.MouthCanReach(new Vector3(0, 4, 1.78f), .48f),
+                "Pike bite reached before mouth contact or behind body");
+            actor.GlobalPosition = contactPosition;
+            actor.GlobalBasis = contactBasis;
             var strong = new SightEvidence(true, .4f, "visible", 1, 1, 1, 3, 3, 7,
                 new Vector3(0, 1, 0), 0);
             var weak = new SightEvidence(false, .025f, "weak-evidence", 1, 1, 1, 3, 3, 7);
@@ -91,12 +110,16 @@ public static class PikeAiChecks
                     var sample = sensor.Observe(from, to - from,
                         new SightTarget(to, .48f, 1), scene.SightWater!, 0, false);
                     if (sample.Reason != "hard-cover") continue;
-                    actor.GlobalPosition = from;
+                    var physicalFrom = new Vector3(from.X,
+                        Mathf.Max(from.Y, PikeCoverFixture.Bed(from.X, from.Z) + 1.8f), from.Z);
+                    var physicalTo = new Vector3(to.X,
+                        Mathf.Max(to.Y, PikeCoverFixture.Bed(to.X, to.Z) + 1.8f), to.Z);
+                    actor.GlobalPosition = physicalFrom;
                     actor.GlobalBasis = Basis.LookingAt((to - from).Normalized(), Vector3.Up);
                     actor.ResetActor();
                     if (OverlapName() != "") continue;
                     blocked = true;
-                    Need(actor.TestMove(actor.GlobalTransform, to - from),
+                    Need(actor.TestMove(actor.GlobalTransform, physicalTo - physicalFrom),
                         id + " hard cover does not stop physical Pike sweep");
                     for (var tick = 0; tick < 120; tick++)
                     {
@@ -108,8 +131,8 @@ public static class PikeAiChecks
                         var overlap = OverlapName();
                         Need(overlap == "", id + $" Pike phased into {overlap} tick={tick} at={actor.GlobalPosition}");
                         Need(actor.GlobalPosition.DistanceTo(prior) < .13f &&
-                            facing.AngleTo(-actor.GlobalBasis.Z) <= Mathf.DegToRad(126f) / 60f + .002f,
-                            id + " Pike exceeded speed or turn clearance");
+                            facing.AngleTo(-actor.GlobalBasis.Z) <= Mathf.DegToRad(81f) / 60f + .002f,
+                            id + $" Pike exceeded speed or turn clearance tick={tick} move={actor.GlobalPosition.DistanceTo(prior):F3} turn={facing.AngleTo(-actor.GlobalBasis.Z):F3} at={actor.GlobalPosition}");
                     }
                     var last = new Vector3(0, 1, 0);
                     mind.Step(new Vector3(0, 1, 6), strong with { SensedPosition = last },
@@ -128,7 +151,7 @@ public static class PikeAiChecks
             }
             // Fixed-pose body probe: collision is a real sweep, including vertical
             // and lateral alternatives around the placed wood, not direct translation.
-            var start = new Vector3(0, 1, 8);
+            var start = new Vector3(0, PikeCoverFixture.Bed(0, 8) + 2f, 8);
             actor.GlobalPosition = start;
             actor.ResetActor();
             var step = 1f / 60f;
@@ -146,7 +169,7 @@ public static class PikeAiChecks
                 actor.Mind.Mode == PikeMode.Patrol, "actor restart retained pursuit");
             actor.ResetActor();
             Need(actor.Mind.LastSensedPosition is null, "second actor restart retained memory");
-            actor.GlobalPosition = new Vector3(0, 1, 5);
+            actor.GlobalPosition = new Vector3(0, PikeCoverFixture.Bed(0, 5) + 2f, 5);
             actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
             actor.ResetActor();
             var patrolStart = actor.GlobalPosition;
@@ -156,14 +179,25 @@ public static class PikeAiChecks
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             }
             Need(actor.Mind.Mode == PikeMode.Patrol && actor.Mind.LastSensedPosition is null &&
-                actor.GlobalPosition.DistanceTo(patrolStart) > .15f && actor.ActualSpeed <= 1.2f,
+                actor.GlobalPosition.DistanceTo(patrolStart) > .15f && actor.ActualSpeed <= 2.3f,
                 "absent-target ordinary patrol did not swim at bounded speed");
+            for (var tick = 60; tick < 300; tick++)
+            {
+                actor.Tick(default, default, tick / 60d, step, false);
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            }
+            Need(actor.GlobalPosition.DistanceTo(patrolStart) > 4f,
+                $"Pike did not physically patrol beyond starting corridor distance={actor.GlobalPosition.DistanceTo(patrolStart):F2}");
+            Need(actor.Mind.Destination(0, patrolStart).DistanceTo(
+                    actor.Mind.Destination(31.4, patrolStart)) > 18f,
+                "Pike patrol did not cover the connected Pond route");
             // Run the actual fixture for an exposed, stationary Bluegill. The
             // temporary result must follow sight, windup, movement and bite range.
-            actor.GlobalPosition = new Vector3(0, 1, 5);
+            var openY = Mathf.Max(PikeCoverFixture.Bed(0, 9), PikeCoverFixture.Bed(0, 5)) + 2f;
+            actor.GlobalPosition = new Vector3(0, openY, 9);
             actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
             actor.ResetActor();
-            fish.GlobalPosition = new Vector3(0, 1, 2);
+            fish.GlobalPosition = new Vector3(0, openY, 5);
             fish.ClearAndDisarmInput();
             scene.PikeSight!.Reset();
             scene.MovementCues!.Reset();
@@ -191,7 +225,7 @@ public static class PikeAiChecks
             var hits = scene.GetWorld3D().DirectSpaceState.IntersectShape(
                 new PhysicsShapeQueryParameters3D
                 {
-                    Shape = new CapsuleShape3D { Radius = .18f, Height = .95f },
+                    Shape = new CapsuleShape3D { Radius = .35f, Height = 2.4f },
                     Transform = collision.GlobalTransform,
                     CollisionMask = 1,
                     Margin = 0,

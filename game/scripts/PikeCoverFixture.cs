@@ -20,9 +20,11 @@ public sealed record PikeCoverPlacement(string Id, string Zone, Vector3 Position
 
 public static class PikeCoverFixture
 {
-    public const int Seed = 5202;
-    public const float WaterY = 3.5f;
+    public const int Seed = 5266;
+    public const float WaterY = GeneratedBasin.WaterSurfaceY;
+    public const string WorldPath = "res://worlds/encounters/pike-m1-5266";
     public const string CatalogPath = "res://assets/faf/pond/p5_cover_catalog.json";
+    private static readonly GeneratedBasin PondBasin = new(Seed, pond: true);
     // Repeated fixture retry reuses the same imported scene wrappers. Keeping
     // them alive also avoids a Godot/.NET finalizer race during rapid scene churn.
     private static readonly Dictionary<string, PackedScene> ImportedScenes = new();
@@ -104,14 +106,7 @@ public static class PikeCoverFixture
     }
 
     public static float Bed(float x, float z)
-    {
-        // Broad, connected terrace transitions plus small deterministic mud relief.
-        var mid = Mathf.SmoothStep(0f, 1f, Mathf.Clamp((12f - z) / 7f, 0f, 1f));
-        var deep = Mathf.SmoothStep(0f, 1f, Mathf.Clamp((-7f - z) / 8f, 0f, 1f));
-        var bank = Mathf.Pow(Mathf.Clamp((Mathf.Abs(x) - 14f) / 9f, 0f, 1f), 2f) * 1.9f;
-        return -.24f - 1.95f * mid - 2.55f * deep + bank +
-            .09f * Mathf.Sin(.28f * x + .19f * z) * Mathf.Cos(.21f * z);
-    }
+        => PondBasin.HeightAt(x, z);
 
     public static IReadOnlyList<PikeCoverPlacement> Plan(PikeCoverCatalog catalog)
     {
@@ -141,6 +136,33 @@ public static class PikeCoverFixture
         void Add(string id, float x, float z, float yaw, float scale)
         {
             var asset = byId[id];
+            if (id.StartsWith("FAF-WOOD-", StringComparison.Ordinal))
+            {
+                var best = float.PositiveInfinity;
+                var chosen = (x, z, yaw);
+                for (var dz = -12; dz <= 12; dz++)
+                for (var dx = -12; dx <= 12; dx++)
+                for (var turn = -6; turn <= 6; turn++)
+                {
+                    var cx = x + dx; var cz = z + dz; var angle = yaw + turn * .15f;
+                    if (PondBasin.DistanceToShore(cx, cz) < 3f ||
+                        WaterY - Bed(cx, cz) < 3.5f) continue;
+                    var axis = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+                    var centerY = Bed(cx, cz);
+                    var support = Mathf.Max(
+                        Mathf.Abs(Bed(cx + axis.X * asset.Size[1] * .35f,
+                            cz + axis.Y * asset.Size[1] * .35f) - centerY),
+                        Mathf.Abs(Bed(cx - axis.X * asset.Size[1] * .35f,
+                            cz - axis.Y * asset.Size[1] * .35f) - centerY));
+                    if (support > .75f) continue;
+                    var score = Mathf.Sqrt(dx * dx + dz * dz) + 2f * support + .12f * Mathf.Abs(turn);
+                    if (score >= best) continue;
+                    best = score;
+                    chosen = (cx, cz, angle);
+                }
+                if (!float.IsFinite(best)) throw new InvalidDataException($"P5 wood lacks Pond terrain support: {id}");
+                (x, z, yaw) = chosen;
+            }
             var bed = Bed(x, z);
             var tip = bed + asset.Size[2] * scale;
             if (tip > WaterY + .12f && id.StartsWith("FAF-PLANT-", StringComparison.Ordinal))
@@ -152,53 +174,26 @@ public static class PikeCoverFixture
 
     public static void Build(Node3D scene, PikeCoverCatalog catalog, IReadOnlyList<PikeCoverPlacement> plan)
     {
-        var atmosphere = new Godot.Environment
-        {
-            BackgroundMode = Godot.Environment.BGMode.Color,
-            BackgroundColor = new Color(.13f, .21f, .16f),
-            AmbientLightSource = Godot.Environment.AmbientSource.Color,
-            AmbientLightColor = new Color(.57f, .65f, .46f),
-            AmbientLightEnergy = .55f,
-            FogEnabled = true,
-            FogLightColor = new Color(.2f, .32f, .23f),
-            FogDensity = .008f,
-        };
-        scene.AddChild(new WorldEnvironment { Name = "PondColumnLight", Environment = atmosphere });
-        var water = new MeshInstance3D { Name = "Waterline",
-            Mesh = new PlaneMesh { Size = new Vector2(80, 80) },
-            Position = new Vector3(0, WaterY, 0) };
-        water.MaterialOverride = new StandardMaterial3D
-        {
-            AlbedoColor = new Color(.19f, .37f, .29f, .12f),
-            Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-            ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
-            CullMode = BaseMaterial3D.CullModeEnum.Disabled,
-        };
-        scene.AddChild(water);
-        var ground = new StaticBody3D { Name = "ConnectedMudBed", CollisionLayer = 1, CollisionMask = 0 };
-        scene.AddChild(ground);
-        var surface = new SurfaceTool();
-        surface.Begin(Mesh.PrimitiveType.Triangles);
-        for (var z = -38; z < 38; z++)
-            for (var x = -38; x < 38; x++)
-            {
-                var a = new Vector3(x, Bed(x, z), z);
-                var b = new Vector3(x + 1, Bed(x + 1, z), z);
-                var c = new Vector3(x + 1, Bed(x + 1, z + 1), z + 1);
-                var d = new Vector3(x, Bed(x, z + 1), z + 1);
-                AddMudVertex(a); AddMudVertex(d); AddMudVertex(b);
-                AddMudVertex(b); AddMudVertex(d); AddMudVertex(c);
-            }
-        surface.GenerateNormals();
-        var mesh = surface.Commit();
-        var mud = new StandardMaterial3D
-        {
-            AlbedoColor = Colors.White, Roughness = .96f,
-            VertexColorUseAsAlbedo = true,
-        };
-        var visual = new MeshInstance3D { Name = "Mud", Mesh = mesh, MaterialOverride = mud };
-        ground.AddChild(visual);
-        ground.AddChild(new CollisionShape3D { Name = "MudCollision", Shape = mesh.CreateTrimeshShape() });
+        scene.AddChild(new WorldEnvironment { Name = "WorldEnvironment" });
+        scene.AddChild(new EnvironmentClock { Name = "EnvironmentClock" });
+        var habitat = Scene("res://scenes/pond_habitat.tscn")?.Instantiate<Node3D>()
+            ?? throw new InvalidDataException("Pond habitat scene missing");
+        habitat.Name = "Habitat";
+        scene.AddChild(habitat);
+        var loaded = FullWorldPackage.Load(WorldPath, habitat, WorldCatalog.PondId);
+        if (loaded.Manifest.Seed != Seed || loaded.Manifest.GeneratorVersion != FullWorldPackage.PondGeneratorVersion)
+            throw new InvalidDataException("Pike fixture Pond generation identity mismatch");
+        // The encounter's ten new wood families own its hard-cover gaps. Keep
+        // generated Pond foliage, shore dressing and terrain, but remove the
+        // ordinary Pond's older wood wrappers so they cannot fill those gaps.
+        var ordinaryDressing = habitat.GetNode<Node3D>("PondFafEnvironment");
+        foreach (Node child in ordinaryDressing.GetChildren())
+            if (child.Name.ToString().StartsWith("FAF_WOOD_", StringComparison.Ordinal))
+            { ordinaryDressing.RemoveChild(child); child.Free(); }
+        var atmosphere = new UnderwaterAtmosphere { Name = "UnderwaterAtmosphere" };
+        scene.AddChild(atmosphere);
+        atmosphere.ConfigureProfile(WorldEnvironmentProfile.Pond);
+        atmosphere.Initialize(scene);
         var collection = new Node3D { Name = "Cover" };
         scene.AddChild(collection);
         var byId = catalog.Assets.ToDictionary(a => a.Id);
@@ -216,15 +211,15 @@ public static class PikeCoverFixture
             node.SetMeta("zone", placement.Zone);
         }
 
-        void AddMudVertex(Vector3 point)
-        {
-            var depth = Mathf.Clamp((WaterY - point.Y - 3.7f) / 5f, 0f, 1f);
-            var shore = Mathf.Clamp((Mathf.Abs(point.X) - 13f) / 12f, 0f, 1f);
-            var color = new Color(.30f, .285f, .20f).Lerp(
-                new Color(.13f, .18f, .135f), depth);
-            surface.SetColor(color.Lerp(new Color(.33f, .29f, .19f), shore * .35f));
-            surface.AddVertex(point);
-        }
+    }
+
+    public static Vector3 ConcealedSpawn(IReadOnlyList<PikeCoverPlacement> plan, Vector3 pikePosition)
+    {
+        var log = plan.Single(p => p.Id == "FAF-WOOD-005B");
+        var center = new Vector2(log.Position.X, log.Position.Z);
+        var away = (center - new Vector2(pikePosition.X, pikePosition.Z)).Normalized();
+        var point = center + away * 5.5f;
+        return new Vector3(point.X, Bed(point.X, point.Y) + 1.35f, point.Y);
     }
 
     public static IReadOnlyList<SoftSightCover> VisibleSoftCover(Node3D collection)

@@ -61,11 +61,11 @@ public sealed class PikeAwareness
                 Enter(PikeMode.Chase, seconds);
             }
             if (Mode != PikeMode.Commit)
-                Enter(pikePosition.DistanceTo(seen) <= 1.7f && seconds >= _nextCommitAt
+                Enter(pikePosition.DistanceTo(seen) <= 3.4f && seconds >= _nextCommitAt
                     ? PikeMode.Commit : PikeMode.Chase, seconds);
             if (Mode == PikeMode.Commit)
             {
-                if (pikePosition.DistanceTo(seen) > 3.2f) Enter(PikeMode.Chase, seconds);
+                if (pikePosition.DistanceTo(seen) > 5.0f) Enter(PikeMode.Chase, seconds);
                 else StrikeReady = seconds - _modeAt >= .55;
             }
             return;
@@ -125,10 +125,10 @@ public sealed class PikeAwareness
             if (Mode is PikeMode.Suspicious or PikeMode.Investigate or PikeMode.Chase or PikeMode.Commit)
                 return last;
         }
-        // Small ordinary patrol near the starting corridor, independent of the player.
-        var phase = (float)(seconds * .22);
-        return origin + new Vector3(Mathf.Sin(phase) * 3f, Mathf.Sin(phase * .7f) * .35f,
-            Mathf.Cos(phase) * 3f);
+        // Sweep the connected nursery, refuge and deep cover, independent of the player.
+        var phase = (float)(seconds * .10);
+        return origin + new Vector3(Mathf.Sin(phase) * 14f,
+            Mathf.Sin(phase * .7f) * .5f, -Mathf.Cos(phase) * 18f);
     }
 
     public float DesiredSpeed => Mode switch
@@ -139,7 +139,7 @@ public sealed class PikeAwareness
         PikeMode.Investigate => 2.4f,
         PikeMode.Suspicious => 1.2f,
         PikeMode.Caught => 0f,
-        _ => 1.1f,
+        _ => 2.2f,
     };
 
     public void Catch(double seconds)

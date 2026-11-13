@@ -67,12 +67,15 @@ public static class PikeCoverChecks
             {
                 var asset = catalog.Assets.Single(a => a.Id == placement.Id);
                 var basis = new Basis(Vector3.Up, placement.Yaw);
+                var support = 0f;
                 foreach (var z in new[] { -asset.Size[1] * .35f, 0f, asset.Size[1] * .35f })
                 {
                     var sample = placement.Position + basis * new Vector3(0, 0, z);
-                    supportMax = Mathf.Max(supportMax,
+                    support = Mathf.Max(support,
                         Mathf.Abs(PikeCoverFixture.Bed(sample.X, sample.Z) - placement.BedY));
                 }
+                supportMax = Mathf.Max(supportMax, support);
+                GD.Print($"PIKE_WOOD_SUPPORT id={placement.Id} x={placement.Position.X:F1} z={placement.Position.Z:F1} depth={PikeCoverFixture.WaterY-placement.BedY:F2} variation={support:F2}");
             }
             Require(supportMax < .85f, $"wood axis unsupported by mud support_max={supportMax:F2}");
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
@@ -87,7 +90,7 @@ public static class PikeCoverChecks
             Require(SolidOnSightline(scene, fish.GlobalPosition, pike.GlobalPosition, fish, pike),
                 "Bluegill spawn is exposed to Pike");
             var fishSphere = new SphereShape3D { Radius = .48f };
-            var pikeSphere = new SphereShape3D { Radius = .24f };
+            var pikeSphere = new SphereShape3D { Radius = .72f };
             var cameraSphere = new SphereShape3D { Radius = .22f };
             // Exposed center lane is accessible to the real Pike size; both
             // outside flanks remain alternatives to the short central crossing.
@@ -97,11 +100,11 @@ public static class PikeCoverChecks
                 Require(!Blocked(scene, pikeSphere, at, fish, pike), "Pike lane blocked z=" + z);
                 Require(!Blocked(scene, fishSphere, at, fish, pike), "fish crossing blocked z=" + z);
             }
-            foreach (var x in new[] { -17f, 17f })
+            foreach (var x in new[] { -25f, 25f })
                 foreach (var z in new[] { 18f, 1f, -17f })
                     Require(!Blocked(scene, fishSphere,
                         new Vector3(x, PikeCoverFixture.Bed(x, z) + 1.35f, z), fish, pike),
-                        "alternate lane blocked");
+                        $"alternate lane blocked x={x} z={z}");
 
             // Sample the actual authored wrappers after scene placement. The
             // root undercut is a refuge; it is deliberately not a through-route.
@@ -178,27 +181,31 @@ public static class PikeCoverChecks
             Require(hollowEnd.Z < hollow.Position.Z - 4f && hollowHits == 0,
                 $"real split-hollow traverse failed start={hollowStart} end={hollowEnd} camera_hits={hollowHits}");
             fish.GlobalPosition = start;
-            pike.GlobalPosition = new Vector3(0, -.4f, 5);
+            pike.GlobalPosition = new Vector3(0, PikeCoverFixture.Bed(0, 5) + 1.7f, 5);
             var pikeStart = pike.GlobalPosition;
             for (var i = 0; i < 84; i++)
             {
-                var collision = pike.MoveAndCollide(new Vector3(0, 0, -.2f));
+                var nextZ = pike.GlobalPosition.Z - .2f;
+                var destination = new Vector3(0, PikeCoverFixture.Bed(0, nextZ) + 1.7f, nextZ);
+                var collision = pike.MoveAndCollide(destination - pike.GlobalPosition);
                 Require(collision is null, "real Pike actor blocked in search corridor");
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             }
             Require(pike.GlobalPosition.Z < -11f,
                 "real Pike actor did not reach deep approach");
             pike.GlobalPosition = hollow.Position + new Basis(Vector3.Up, hollow.Yaw) *
-                new Vector3(0, 1.95f, 7.7f * .55f + 1.2f);
-            for (var i = 0; i < 48; i++)
+                new Vector3(0, 1.95f, 7.7f * .55f + 2.4f);
+            for (var i = 0; i < 52; i++)
             {
                 var collision = pike.MoveAndCollide(new Basis(Vector3.Up, hollow.Yaw) *
                     new Vector3(0, 0, -.2f));
-                Require(collision is null, "real Pike actor blocked in split hollow");
+                Require(collision is null, "triple-size Pike clipped during split hollow traverse");
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             }
-            Require(pike.GlobalPosition.Z < hollow.Position.Z - 3f,
-                "real Pike actor did not exit hollow");
+            var pikeHollowLocal = new Basis(Vector3.Up, hollow.Yaw).Inverse() *
+                (pike.GlobalPosition - hollow.Position);
+            Require(pikeHollowLocal.Z < -3f,
+                "triple-size Pike did not exit physically open hollow");
             GD.Print($"PIKE_COVER_CHECK_OK seed={PikeCoverFixture.Seed} variants=23 families=10 instances={plan.Count} triangles={tris} materials={mats} shapes={actualShapes} zones=3 wood_support_max={supportMax:F2} fish_end={end} hollow_end={hollowEnd} pike_hollow_end={pike.GlobalPosition} camera_hits={cameraHits + hollowHits}");
             tree.Quit();
 

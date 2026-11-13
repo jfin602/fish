@@ -38,15 +38,14 @@ public partial class PikeEncounter : Node3D
         var observed = ObserveFish();
         var now = MovementCues.SimulationSeconds;
         _pike.Tick(observed.Sight, observed.Disturbance, now, (float)delta, GetTree().Paused);
-        UpdatePikeAnimation();
+        UpdatePikeAnimation(delta);
         if (_pike.Mind.StrikeReady)
         {
             // A committed strike needs fresh, clear contact at physical bite range.
             PikeSight!.Reset();
             var close = ObserveFish().Sight;
             if (close.Detected && close.ClearRays > 0 &&
-                _pike.GlobalPosition.DistanceTo(_fish.GlobalPosition) <= 1.15f &&
-                (-_pike.GlobalBasis.Z).Dot((_fish.GlobalPosition - _pike.GlobalPosition).Normalized()) > .35f)
+                _pike.MouthCanReach(_fish.GlobalPosition, .48f))
             {
                 _pike.Mind.Catch(now);
                 Finish("caught", "Caught by the Pike after a committed strike.");
@@ -75,6 +74,8 @@ public partial class PikeEncounter : Node3D
 
     public override void _Ready()
     {
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-seed-survey"))
+        { PikeSeedSurvey.Run(GetTree()); return; }
         Name = "PikeEncounter";
         _fish = GetNode<FishController>("Fish");
         GetTree().Paused = false;
@@ -93,7 +94,8 @@ public partial class PikeEncounter : Node3D
             Fail("PIKE_COVER_UNAVAILABLE " + error.Message);
             return;
         }
-        InitializeActors();
+        try { InitializeActors(); }
+        catch (Exception error) { Fail("PIKE_ACTOR_UNAVAILABLE " + error.Message); return; }
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-cover-check"))
             PikeCoverChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-sight-check"))
@@ -109,26 +111,34 @@ public partial class PikeEncounter : Node3D
         if (!PikeEncounterAssets.TryValidate(out var bluegill, out var pike, out var diagnostic))
         { Fail(diagnostic); return; }
         DemoSelection.CharacterId = PikeEncounterAssets.BluegillId;
-        _fish.ConfigureWorldBounds(36.7f, -7f, PikeCoverFixture.WaterY - .31f);
+        _fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f,
+            GetNode<SeabedSurface>("Habitat/Seabed").DeepFloorY - 2f,
+            PikeCoverFixture.WaterY - .31f);
+        _fish.ConfigurePondWaterline(GetNode<SeabedSurface>("Habitat/Seabed"));
         if (!PlayerArt.TryLoadAndAttach(_fish, bluegill!, out diagnostic))
         { Fail(diagnostic); return; }
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
         var actor = GetNode<PikeActor>("NorthernPike");
         _pike = actor;
+        actor.Position = new Vector3(0, PikeCoverFixture.Bed(0, 5) + 1.7f, 5);
+        _fish.Position = PikeCoverFixture.ConcealedSpawn(CoverPlan, actor.Position);
         pikeModel!.Name = "PikeVisual";
         actor.AddChild(pikeModel);
         pikeModel.Transform = pike!.PresentationTransform;
-        animation!.Play(pike.GlideClip);
+        pikeModel.Scale *= 3f;
+        animation!.Play(pike.SwimClip);
         _pikeAnimation = animation;
         _pikeEntry = pike;
         var plants = PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("Cover"));
         PikeSight = new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
-            actor.GetRid(), _fish.GetRid());
+            actor.GetRid(), _fish.GetRid(), range: 42f, acuity: 2.5f);
         MovementCues = new MovementDisturbanceField(GetWorld3D().DirectSpaceState, plants,
             actor.GetRid(), _fish.GetRid());
+        var basin = GetNode<SeabedSurface>("Habitat/Seabed").Basin;
+        var turbidity = new PondTurbidityField(basin, PikeCoverFixture.WaterY);
         SightWater = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
-            PikeCoverFixture.FixtureSediment, SolarState.At(.5));
+            turbidity.Sample, SolarState.At(.5));
         actor.Configure();
         var preferences = new DisplayPreferences();
         preferences.Load();
@@ -158,6 +168,9 @@ public partial class PikeEncounter : Node3D
         _menu.Visible = true;
         _retry.GrabFocus();
         GD.Print("PIKE_ENCOUNTER_UNAVAILABLE " + diagnostic);
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg.StartsWith("--pike-", StringComparison.Ordinal)
+            && arg.EndsWith("-check", StringComparison.Ordinal)))
+            GetTree().CallDeferred(SceneTree.MethodName.Quit, 1);
     }
 
     public override void _Input(InputEvent @event)
@@ -237,17 +250,21 @@ public partial class PikeEncounter : Node3D
         GD.Print($"PIKE_ENCOUNTER_OUTCOME outcome={outcome} seconds={MovementCues?.SimulationSeconds:F2}");
     }
 
-    private void UpdatePikeAnimation()
+    private void UpdatePikeAnimation(double delta)
     {
         if (_pikeAnimation is null || _pikeEntry is null) return;
         var clip = _pike.Mind.Mode switch
         {
             PikeMode.Chase => _pikeEntry.FastClip,
-            PikeMode.Commit when _pike.Mind.StrikeReady => _pikeEntry.FastClip,
-            PikeMode.Investigate or PikeMode.Search => _pikeEntry.SwimClip,
-            _ => _pikeEntry.GlideClip,
+            PikeMode.Commit => _pikeEntry.FastClip,
+            _ => _pikeEntry.SwimClip,
         };
-        if (_pikeAnimation.CurrentAnimation != clip) _pikeAnimation.Play(clip);
+        if (_pikeAnimation.CurrentAnimation != clip) _pikeAnimation.Play(clip, .22);
+        _pikeAnimation.SpeedScale = Mathf.Clamp(.72f + _pike.ActualSpeed * .13f, .72f, 1.55f);
+        var source = _pikeAnimation.GetAnimation(clip);
+        if (source is not null && source.LoopMode == Animation.LoopModeEnum.None &&
+            _pikeAnimation.CurrentAnimationPosition >= source.Length - (float)delta * _pikeAnimation.SpeedScale)
+            _pikeAnimation.Seek(0, true);
     }
 
     private void Leave(string scene)

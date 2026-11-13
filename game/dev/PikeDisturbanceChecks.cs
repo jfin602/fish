@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fish;
 
-/// <summary>Seed 5202 motor, cue clock and real-cover assertions; no native player judgment.</summary>
+/// <summary>Generated Pond motor, cue clock and real-cover assertions; no native player judgment.</summary>
 public static class PikeDisturbanceChecks
 {
     public static async void Run(PikeEncounter scene)
@@ -38,7 +38,7 @@ public static class PikeDisturbanceChecks
                 MovementDisturbanceField.Energy(coast.Speed, 0, 0, 0),
                 "actual motor burst did not exceed coast");
 
-            var source = new Vector3(0, 1, 5);
+            var source = new Vector3(0, PikeCoverFixture.Bed(0, 5) + 2f, 5);
             field.Step(source, Vector3.Zero, 0, 0, 1d / 60, 1, false);
             Need(field.Events.Count == 0, "still generated cue");
             for (var i = 2; i <= 1000; i++)
@@ -67,13 +67,13 @@ public static class PikeDisturbanceChecks
 
             var openField = new MovementDisturbanceField(space,
                 Array.Empty<SoftSightCover>(), pike.GetRid(), fish.GetRid());
-            var observer = new Vector3(0, 1, 7);
+            var observer = new Vector3(0, PikeCoverFixture.Bed(0, 7) + 2f, 7);
             openField.Step(source, new Vector3(0, 0, -4), 1, 0, 1d / 60, 1, false);
             var open = openField.Sense(observer, false);
             Need(open.Strength > 0 && !open.HardCover, "open lane cue absent");
             var camera = fish.GetNode<Camera3D>("CameraRig/Camera3D");
             var original = camera.Transform;
-            var environment = scene.GetNode<WorldEnvironment>("PondColumnLight").Environment;
+            var environment = scene.GetNode<WorldEnvironment>("WorldEnvironment").Environment;
             var fog = environment.FogEnabled;
             camera.Position += new Vector3(4, 3, 2);
             environment.FogEnabled = !fog;

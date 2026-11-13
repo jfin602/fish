@@ -49,16 +49,22 @@ public sealed class WorldSightSensor
     private readonly PhysicsDirectSpaceState3D _space;
     private readonly IReadOnlyList<SoftSightCover> _plants;
     private readonly Godot.Collections.Array<Rid> _exclude;
+    private readonly float _range;
+    private readonly float _acuity;
     private double _lastTime = double.NegativeInfinity;
     private SightEvidence _last;
 
     public WorldSightSensor(PhysicsDirectSpaceState3D space, IReadOnlyList<SoftSightCover> plants,
-        Rid observer, Rid target)
+        Rid observer, Rid target, float range = Range, float acuity = 1f)
     {
         if (plants.Count > 128) throw new ArgumentOutOfRangeException(nameof(plants));
+        if (!float.IsFinite(range) || range <= 0 || !float.IsFinite(acuity) || acuity <= 0)
+            throw new ArgumentOutOfRangeException(nameof(range));
         _space = space;
         _plants = plants;
         _exclude = new Godot.Collections.Array<Rid> { observer, target };
+        _range = range;
+        _acuity = acuity;
     }
 
     public void Reset()
@@ -83,7 +89,7 @@ public sealed class WorldSightSensor
         _lastTime = gameSeconds;
         var to = fish.Position - observer;
         var distance = to.Length();
-        if (distance < .01f || distance > Range) return _last = Empty("range");
+        if (distance < .01f || distance > _range) return _last = Empty("range");
         var direction = to / distance;
         var facing = heading.Normalized().Dot(direction);
         if (facing < -.15f) return _last = Empty("orientation");
@@ -117,7 +123,7 @@ public sealed class WorldSightSensor
             Mathf.Exp(-depth * (environment.Habitat == WorldEnvironmentProfile.Pond ? .045f : .025f));
         var silhouette = Mathf.Clamp(fish.Radius * 5f / distance, .06f, 1f);
         var soft = cover / 3f;
-        var score = angleFactor * water * light * silhouette *
+        var score = _acuity * angleFactor * water * light * silhouette *
             Mathf.Clamp(fish.Contrast, 0f, 1f) * soft;
         return _last = new SightEvidence(score >= Threshold, score,
             score >= Threshold ? "visible" : "weak-evidence", water, light, soft,

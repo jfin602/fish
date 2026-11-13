@@ -128,7 +128,7 @@ public static class PikeEncounterChecks
                 WorldSession.ActiveManifest is null &&
                 tree.Root.GetChildren().OfType<Main>().Count() == 0 &&
                 isolated.FindChild("PondAmbientLife", true, false) is null &&
-                isolated.FindChild("Habitat", true, false) is null,
+                isolated.GetNode<SeabedSurface>("Habitat/Seabed").Basin.Seed == PikeCoverFixture.Seed,
                 "ordinary Pond actors leaked into encounter");
             Button(isolated!, "ReturnToWorldSelect").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);

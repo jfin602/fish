@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Fish;
 
-/// <summary>Fixed seed 5202 physics and world-input sensing checks; no native gameplay claim.</summary>
+/// <summary>Generated Pond physics and world-input sensing checks; no native gameplay claim.</summary>
 public static class PikeSightChecks
 {
     public static async void Run(PikeEncounter scene)
@@ -23,25 +23,43 @@ public static class PikeSightChecks
                 "soft cover families missing");
             var water = scene.SightWater!;
             SightEvidence Query(Vector3 from, Vector3 to, SightEnvironment env,
-                bool usePlants = true, float radius = .48f) =>
+                bool usePlants = true, float radius = .48f, float range = WorldSightSensor.Range,
+                float acuity = 1f) =>
                 new WorldSightSensor(scene.GetWorld3D().DirectSpaceState,
-                    usePlants ? visual : Array.Empty<SoftSightCover>(), pike.GetRid(), fish.GetRid())
+                    usePlants ? visual : Array.Empty<SoftSightCover>(), pike.GetRid(), fish.GetRid(),
+                    range, acuity)
                     .Observe(from, to - from, new SightTarget(to, radius, 1f), env, 0, false);
 
-            var near = Query(new Vector3(0, 1, 9), new Vector3(0, 1, 5), water);
+            (Vector3 from, Vector3 to) OpenLine(float startZ, float endZ)
+            {
+                var floor = Mathf.Max(PikeCoverFixture.Bed(0, startZ),
+                    PikeCoverFixture.Bed(0, endZ));
+                for (var z = Mathf.Min(startZ, endZ); z <= Mathf.Max(startZ, endZ); z += .5f)
+                    floor = Mathf.Max(floor, PikeCoverFixture.Bed(0, z));
+                var y = Mathf.Min(PikeCoverFixture.WaterY - .8f, floor + 1.8f);
+                return (new Vector3(0, y, startZ), new Vector3(0, y, endZ));
+            }
+            var nearLine = OpenLine(9, 5);
+            var near = Query(nearLine.from, nearLine.to, water);
             Need(near.Detected && near.ClearRays == 3, "near open water invisible " + near);
-            Need(!Query(new Vector3(0, 1, 31), new Vector3(0, 1, -1), water).Detected,
+            var extended = OpenLine(24, 5);
+            var ordinary = Query(extended.from, extended.to, water);
+            var hunter = Query(extended.from, extended.to, water, range: 42f, acuity: 2.5f);
+            Need(!ordinary.Detected && hunter.Detected && hunter.ClearRays > 0,
+                $"Pike did not see farther down open Pond lane ordinary={ordinary} hunter={hunter}");
+            var farLine = OpenLine(31, -1);
+            Need(!Query(farLine.from, farLine.to, water).Detected,
                 "far target visible");
             var back = new WorldSightSensor(scene.GetWorld3D().DirectSpaceState, visual,
-                pike.GetRid(), fish.GetRid()).Observe(new Vector3(0, 1, 9), Vector3.Forward,
-                new SightTarget(new Vector3(0, 1, 12), .48f, 1), water, 0, false);
+                pike.GetRid(), fish.GetRid()).Observe(nearLine.from, Vector3.Forward,
+                new SightTarget(nearLine.from + Vector3.Back * 3f, .48f, 1), water, 0, false);
             Need(back.Reason == "orientation", "rear target observed");
 
             foreach (var (from, to) in new[]
             {
-                (new Vector3(0, 2, 18), new Vector3(0, 2, 12)),
-                (new Vector3(0, .4f, 5), new Vector3(0, .4f, -1)),
-                (new Vector3(0, -2.1f, -14), new Vector3(0, -2.1f, -20)),
+                OpenLine(18, 12),
+                OpenLine(5, -1),
+                OpenLine(-14, -20),
             })
             {
                 var open = Query(from, to, water);
@@ -50,17 +68,16 @@ public static class PikeSightChecks
                 Need(small.ClearRays > 0 && small.Strength < open.Strength,
                     "target silhouette not effective");
             }
-            var clear = new SightEnvironment(WorldEnvironmentProfile.Pond, 3.5f,
+            var clear = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
                 _ => 0f, SolarState.At(.5));
-            var mud = new SightEnvironment(WorldEnvironmentProfile.Pond, 3.5f,
+            var mud = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
                 p => p.Z is < 7 and > -3 ? .9f : 0f, SolarState.At(.5));
-            var start = new Vector3(0, .7f, 10);
-            var end = new Vector3(0, .7f, -2);
+            var (start, end) = OpenLine(10, -2);
             var clearPath = Query(start, end, clear);
             var mudPath = Query(start, end, mud);
             Need(clearPath.Strength > mudPath.Strength && clearPath.Water > mudPath.Water,
                 "intervening sediment ignored");
-            var night = new SightEnvironment(WorldEnvironmentProfile.Pond, 3.5f,
+            var night = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
                 _ => 0f, SolarState.At(0));
             Need(Query(start, end, clear).Strength > Query(start, end, night).Strength,
                 "solar illumination ignored");
@@ -88,7 +105,7 @@ public static class PikeSightChecks
             Need(sample.Observe(start, end - start, null, clear, 1.06, false).Reason ==
                 "invalid-target", "invalid target accepted");
             Need(sample.Observe(start, end - start, new SightTarget(end, .48f, 1),
-                new SightEnvironment((WorldEnvironmentProfile)99, 3.5f, _ => 0f,
+                new SightEnvironment((WorldEnvironmentProfile)99, PikeCoverFixture.WaterY, _ => 0f,
                     SolarState.At(.5)), 1.06, false).Reason == "unknown-habitat",
                 "unknown habitat accepted");
             sample.Reset();
@@ -97,7 +114,7 @@ public static class PikeSightChecks
 
             var camera = fish.GetNode<Camera3D>("CameraRig/Camera3D");
             var saved = camera.Transform;
-            var envNode = scene.GetNode<WorldEnvironment>("PondColumnLight").Environment;
+            var envNode = scene.GetNode<WorldEnvironment>("WorldEnvironment").Environment;
             var fog = envNode.FogEnabled;
             var before = Query(start, end, clear);
             camera.Position += new Vector3(8, 4, -9);

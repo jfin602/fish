@@ -32,11 +32,21 @@ func _run() -> void:
 	camera.far = 90.0
 	fixture.add_child(camera)
 	camera.make_current()
-	var views := {
-		"nursery": [Vector3(4, 2.7, 28), Vector3(5, -.2, 16)],
-		"refuge": [Vector3(1, 2.1, 10), Vector3(0, -1.8, -3)],
-		"maze": [Vector3(0, .4, -9), Vector3(1, -3.1, -22)],
-	}
+	var cover := fixture.get_node("Cover")
+	var views := {}
+	for pair in [["nursery", "FAF-WOOD-005B"], ["refuge", "FAF-WOOD-006A"], ["maze", "FAF-WOOD-008A"]]:
+		var anchor: Node3D = null
+		for child in cover.get_children():
+			if child.get_meta("faf_id", "") == pair[1]:
+				anchor = child
+				break
+		if anchor == null:
+			_fail("missing cover anchor " + pair[1])
+			return
+		views[pair[0]] = [anchor.global_position + Vector3(5, 2.5, 7),
+			anchor.global_position + Vector3(0, 1.4, 0)]
+	var pike := fixture.get_node("NorthernPike") as Node3D
+	views["pike"] = [pike.global_position + Vector3(3, 1, 6), pike.global_position]
 	for label in views:
 		camera.global_position = views[label][0]
 		camera.look_at(views[label][1])
@@ -51,7 +61,7 @@ func _run() -> void:
 			" draws=", Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME),
 			" primitives=", Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME),
 			" image=", output.path_join(label + ".png"))
-	print("PIKE_COVER_NATIVE_SURVEY_OK views=3 owner_gameplay=not_observed")
+	print("PIKE_COVER_NATIVE_SURVEY_OK views=4 owner_gameplay=not_observed")
 	quit()
 
 func _fail(message: String) -> void:

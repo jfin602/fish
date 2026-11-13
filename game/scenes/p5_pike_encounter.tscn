@@ -10,8 +10,8 @@
 radius = 0.48
 
 [sub_resource type="CapsuleShape3D" id="pike_shape"]
-radius = 0.24
-height = 1.15
+radius = 0.42
+height = 2.65
 
 [node name="PikeEncounter" type="Node3D"]
 script = ExtResource("1_encounter")
