@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M5 — Independent Pike hunting and school-assisted evasion
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Allow Pike to genuinely sense and pursue either Bass player or an individual Bluegill, making school-based escape situational rather than guaranteed.
+
+NARROW SOURCES
+PikeActor.cs, PikeAwareness.cs (locate real path), PikeEncounter.cs, WorldSightSensor.cs, MovementDisturbanceField.cs, PreyActor.cs, M4 school actors, collision/strike tests and P5 historical fairness evidence.
+
+IMPLEMENT / QUALIFY
+1. Generalize target candidates to living Bass and individual Bluegill with **per-target actual sensing evidence** (world-space sight, motion disturbance, occlusion, turbidity, direction), stable identities, physical length/edibility, finite last-known positions and time. Do not present an entire school as a single omniscient target or read the hidden Bass transform.
+2. Add bounded opportunity/commitment/hysteresis rules so Pike may continue hunting Bass despite a school, or may redirect to a more convincing individual Bluegill when genuinely detected/reachable. Switching must involve plausible reaction, turning and acceleration, not instantaneous teleports or reaction to offscreen unobserved fish.
+3. Implement committed strike and consumption against Bluegill with real range/direction/clear collision, target removal/event identity exactly once, neighboring school scatter and possible regroup; player successful escape is recorded only after genuine Pike pursuit/search/disengagement of that target. Preserve existing Bass caught/escaped fixture semantics, not a permanent run death.
+4. Test both school-nearby outcomes: successful player evasion following a *real target switch* and failed diversion when Pike retains Bass evidence. Check obstructed wood/plant movement, pause/retry, missing dead target, no side effects on normal Pond/Ocean and target-switch/perception cost.
+
+VALIDATION / REPORT
+T2: build, extend `./tools/dev inspect-pike-ai`, inspect-pike-sight, inspect-prey, inspect-pike-encounter and inspect-world-isolation; add deterministic target-switch/avoidance/consumption tests and measured bounded cost; `git diff --check`. Owner feel must wait for M8.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.

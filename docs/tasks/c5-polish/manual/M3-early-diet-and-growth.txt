@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M3 — Early Bass food and all-stage growth
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Make Bass progress from yolk and small microfauna through aquatic invertebrates to legally-sized Bluegill prey without orange proxy orbs.
+
+NARROW SOURCES
+PondGrowthState.cs, FeedingLedger.cs, PreyActor.cs, PikeEncounter.cs, PondCreatureCatalog real egg/larva/juvenile/subadult/adult Bass exports, FAF insect manifests, M2 hatching source, ecology doc and actual feeding/growth tests.
+
+IMPLEMENT / QUALIFY
+1. Define a simple tunable, **explicit** first-life nutrition table: yolk/nonfeeding egg and early larva; first edible **zooplankton/microfauna**; later aquatic insect/larval invertebrates; only then size-eligible Bluegill fry/juveniles. Use low-cost visibly aquatic non-fish microfauna, not glowing orange balls or fabricated new fish species. Document proposed numerical tuning and actual source/evidence.
+2. Use existing real Bass stage resources `egg`, `larva`, `juvenile`, `subadult`, `adult` rather than a uniform scale morph. Preserve one Bass stable ID and exactly-once nutrition ledger. For each stage, derive body collider, camera offset, animation, bite reach, prey mouth/LOS and clearance/eligibility from actual dimensions; no adult Bass swallowing larger-than-allowed Bluegill.
+3. Near hollow logs, root balls and surface constrain growth to safe physical clearance, retaining earned nutrition if the larger stage is temporarily blocked. Provide correct in-world feedback for available food type and size, including a discoverable first target that doesn't require seeing microscopic particles from meters away.
+4. Test invalid/repeat contacts, blocked/out-of-reach and consumed targets, stage threshold reentry, collision and camera near shelter, pause/retry and no changing world/species ID. No health/death persistence.
+
+VALIDATION / REPORT
+T2: `./tools/dev build`, `./tools/dev inspect-feeding`, `./tools/dev inspect-growth`, `./tools/dev inspect-species`, focused microfauna/yolk/size tests plus existing world-isolation checks as warranted; `git diff --check`.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.

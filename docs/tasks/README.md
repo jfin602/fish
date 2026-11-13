@@ -14,12 +14,12 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [p2](p2/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: G2.1/G2.2 pass; G2.3/V20 remains an accepted gap under S16. P3 transition authorized. |
 <<<<<<< HEAD
 | [p3](p3/README.md) | **IN PROGRESS at `0.3.6` / NOT GREEN**: FAF Ocean world C3 corrections, native route/style acceptance pending; preserve historical failures. |
-| [p5](p5/README.md) | **AUTHORED / NOT EXECUTED**: 13-prompt full stealth/feed/growth phase, third World Select Pike fixture, native P6/P8/P11 checkpoints and P13 closeout. Requires explicit P4 handoff and deliberate `0.5.0` entry. |
-| [p4](p4/README.md) | **AUTHORED / NOT EXECUTED**: Ocean + Freshwater Pond World Select, habitat-restricted fish, low-poly Pond FAF and surface fish/camera/shore; `0.4.1–0.4.14` only after an explicit `0.4.0` entry from accepted/reconciled P3. |
+| [p4](p4/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: P4 closeout retains native Pond/world/air–water gaps; historical runner prefix through `0.4.11`. |
+| [p5](p5/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: executed stealth/Bass-prey fixture through `0.5.12`; G5.1–G5.3 remain open with source/native evidence in closeout. |
+| [c5-polish](c5-polish/README.md) | **MANUAL BRIEFS AUTHORED / NOT EXECUTED**: M1–M8 Bass hatch/fry, Bluegill schools, Pike multi-target and dissipating blood; final M8 must launch native game for owner's playthrough. Root stays `0.5.12`. |
+| [p5 entry](p5/entry.md) | Historical deliberate `0.5.0` development baseline and P4 handoff, not current P5 implementation status. |
 =======
 | [p3](p3/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at implemented `0.3.6`; [direct closeout](p3/closeout.md) preserves Ocean visual/native gaps. |
-| [p4](p4/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at deliberate P5 baseline `0.5.0`; [direct closeout](p4/closeout.md) maps four Gates without fabricating P12–P14 runner checkpoints. |
-| [p5 entry](p5/entry.md) | Active next development phase; baseline identities, focused regression and first ecosystem responsibility. Assessment/plan/prompt stack and gameplay are not yet written. |
 >>>>>>> ec90b05 (fixed nighttime)
 | [c3-world-gen](c3-world-gen/README.md) | **P1–P6 IMPLEMENTED / P7 NATIVE FAILED** at `0.3.6`: seeded compiler/bake/load works partly, while visual naturalness and alternate-seed routes fail; four [manual M1–M4 repairs](c3-world-gen/manual/README.md) and owner review are pending before P4. |
 | [c3-visibility](c3-visibility/README.md) | **P1–P3 IMPLEMENTED / P4 NATIVE NOT GREEN** at `0.3.6`: visibility source exists but clearance/native observation failed; revisit after accepted C3 world repair, without inventing V25 PASS. |

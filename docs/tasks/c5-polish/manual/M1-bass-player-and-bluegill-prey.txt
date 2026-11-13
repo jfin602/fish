@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M1 — Bass player and Bluegill-only fish prey
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Replace the isolated Bluegill-player/Bass-prey fixture with Bass player + Bluegill as the only fish prey, preserving legacy P5 evidence.
+
+NARROW SOURCES
+PikeEncounter.cs, PondGrowthState.cs, FeedingLedger.cs, PreyActor.cs, PikeEncounterAssets/WorldDestinations locations (find in actual source), PondCreatureCatalog.cs, CharacterCatalog.cs/SpeciesCompatibility, focused game/dev feeding/growth/prey/encounter checks.
+
+IMPLEMENT / QUALIFY
+1. Inspect how the encounter validates/hardcodes Bluegill `FAF-FISH-006`, Bass `FAF-FISH-007`, Pike `FAF-FISH-010`, status/help, HUD and stable IDs. Rework the fixture-specific player contract to `FAF-FISH-007` Bass and independent Bluegill `FAF-FISH-006` prey. Keep the **third World Select card and no Character Select**; label remains Pike Encounter unless owner instructs otherwise.
+2. Use existing real adult/juvenile/subadult Bass exports and metadata; temporarily start a verified controllable **juvenile Bass** for this M1 implementation, while M2 adds egg+larval startup. Preserve model scale, body/collision, camera, swim animations and one stable new Bass identity. Do not simply rename Bluegill text or keep Bluegill proportions.
+3. Replace all encounter Bass prey spawns and Bass-larva food references with staged/size-appropriate real Bluegill prey. Remove hardcoded Bluegill-versus-Bass nutrition assumptions; make eligible target species `FAF-FISH-006` with actual size and adult eligibility rules. Avoid letting an initial tiny Bass consume a physically larger Bluegill. No other *fish* prey may spawn in fixture; early non-fish food comes in M3.
+4. Update existing focused checks and fixture diagnostics for correct IDs, no cross-habitat fallback, Bass behavior, eligible Bluegill feeding, one-time nutrition, invalid repeats and clean retry/return, including unchanged normal worlds.
+
+VALIDATION / REPORT
+T2: `./tools/dev build`, `./tools/dev inspect-pike-encounter`, `./tools/dev inspect-feeding`, `./tools/dev inspect-growth`, `./tools/dev inspect-species`, `./tools/dev inspect-world-isolation`, only after inspecting command composition; `git diff --check`. Update/adapt focused tests, do not claim native hatching at M1.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.

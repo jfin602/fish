@@ -8,7 +8,7 @@ One fish's life is one run. That life can continue across many play sessions. Le
 
 After death, a brief recounting tells that fish's actual life story. Its story remains in a history section of the main menu, where the player can revisit all previous lives.
 
-These foundations come from owner decisions on 2026-11-09 through 2026-11-11, including S20's naturalistic stealth-survival direction. [The decision register](decisions-and-questions.md) separates confirmed design requirements from proposed rules. P0/P1 gameplay foundations are implemented; stealth AI, feeding and growth are not implemented or qualified.
+These foundations come from owner decisions on 2026-11-09 through 2026-11-11, including S20's naturalistic stealth-survival direction. [The decision register](decisions-and-questions.md) separates confirmed design requirements from proposed rules. P0/P1 foundations and P5's isolated stealth, feeding and growth fixture are implemented, but P5 is owner-closed for progression / NOT GREEN with missing native Gate evidence. The [C5 Bass first-life correction](planning/c5-post-p5-ecology-lifecycle.md) is owner-approved **planned work**, not implemented or qualified.
 
 ## Guiding principle — owner-approved
 

@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M8 — Launch Fish for the owner's full visual/playthrough qualification
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Finish integration preflight, then **LAUNCH THE REAL NATIVE FISH GAME** and hand it to the owner for an actual visual/playthrough qualification. Do not substitute screenshots, headless tests or an assistant assertion for owner approval.
+
+NARROW SOURCES
+docs/tasks/c5-polish/qualification/preflight.md from M7; current source/dirty state and P5 closeout; V03–V05/V33–V41; actual tools/dev command composition; World Select and Pike Encounter; native Godot/Forward+ project and display.
+
+IMPLEMENT / QUALIFY
+1. Verify current Fish repo/version/project and real graphical desktop; inspect actual `./tools/dev doctor` and the `run` wrapper. Build or import only if needed, resolve build/scene errors, and check that source still satisfies the Bass-only encounter, hatch/first food/Bluegill school/Pike blood contract. Preserve historical P5/native debt.
+2. Prepare a concise **owner walkthrough** (in docs/tasks/c5-polish/qualification/owner-playthrough.md) with specific repeatable checks: third World Select route bypasses character picker; Bass egg nest hatch and Skip Intro; tiny fry movement/camera and yolk→microfauna food; first real Bluegill prey and true stages; young shallow/older deep Bluegill schools; Pike chasing Bass vs switching toward an individual Bluegill, school scatter and both school-assisted escape and unsuccessful distraction; wood/log/root/branch 3D shelter, hard versus soft concealment; real contact, single event blood dissipation; pause/retry/return; normal Ocean/Pond regression and real frame pacing. Capture test seed, platform, current settings and only actually recorded evidence.
+3. Keep the first play native and owner-controlled. Never use automated scripted test screenshots to claim native owner passage. Do **not** mark V03–V05, V33–V41 or G5.1–G5.3 GREEN before actual owner observations. Leave owner findings as pending/NOT OBSERVED, request precise failures or screenshots after the owner's play and create a bounded follow-up repair list.
+4. FINAL REQUIRED ACTION — after all preflight/build work and walkthrough are saved, **launch the actual Fish game with** `./tools/dev run --display-mode=windowed-fullscreen` **in the user's graphical session**. Do not run it headless, substitute a Godot probe, set an automatic timeout, close the window, or immediately quit. Keep it open and hand mouse/keyboard to the owner for visual/gameplay testing. If no native window/display is available, report the exact blocker and do not claim the game was launched.
+
+VALIDATION / REPORT
+T3 owner native required. Record exact runnable launch command, actual game window/process and renderer/GPU, any startup errors, and owner judgment **after the user plays**. Do not self-grade or self-close a Gate. Final result is a running Fish window for user qualification or an explicit concrete launch blocker; no auto-commit/push.
+
+HANDOFF TO OWNER
+Do not end with a fake test PASS. The final action is the user-visible desktop game launch; leave it open for real player qualification and collect owner feedback afterward.

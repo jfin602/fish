@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M6 — Dissipating underwater blood on genuine fish predation
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Add tasteful, low-cost blood particles to confirmed fish damage or consumption, without duplicating events or affecting AI sensing.
+
+NARROW SOURCES
+PikeEncounter.cs authoritative Fish/Bass bite events, FeedingLedger.cs consumed/stable IDs, PikeActor committed strike logic, existing WaterReaction.cs, UnderwaterAtmosphere.cs, GFX settings and Godot Forward+ particles/effects path.
+
+IMPLEMENT / QUALIFY
+1. Capture an **authoritative unique fish-damage or consumption event ID** and exact world-space contact position for Bass eating Bluegill and Pike eating Bass/Bluegill; trigger only after successful verified bite/strike, not every physics overlap or animation. Prevent double emission on duplicated callbacks/input.
+2. Implement compact, pooled/short-lived visual underwater blood effect: muted dark red/rust-brown, localized at bite, expanding/softening/diluting into Pond green murk over a short tunable duration. No screen-filling red haze, permanent stain or constant particles.
+3. Blood is visual-only and read-only relative to feeding/AI. No chemical smell or hidden detection bonus, no nutrition duplication, no lag from too many particle instances, no art replacement. Honor pause/time scale, retry, scene unload, FX off/low-graphics settings and GPU resource lifetime.
+4. Check both fish-predation paths, repeated invalid bites, multi-target school catch, pause/retry/return cleanup, controlled fixed-view screenshots or scripted probes only if actually captured, and bounded particle/draw/performance delta.
+
+VALIDATION / REPORT
+T2: build, focused exact-once VFX event/lifetime/render-state test and FX-off invariants, existing feeding/Pike/world isolation checks plus actual native Forward+ smoke if available. `git diff --check`; real underwater aesthetic approval remains M8.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.

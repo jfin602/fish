@@ -1,6 +1,6 @@
 # Documentation index
 
-Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete; P2, P3 and P4 are owner-closed for progression with explicit gaps, and P5 is active next at `0.5.0`. [The roadmap](roadmap.md) owns exact Phase/Gate status.
+Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete. P2–P5 are owner-closed for progression / NOT GREEN with explicit remaining native evidence. The current package baseline is `0.5.12`; C5 Bass lifecycle/ecology polish is owner-approved **manual correction work**, not yet implemented. [The roadmap](roadmap.md) owns exact Phase/Gate status.
 
 ## Ownership
 
@@ -15,16 +15,13 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [P2 underwater-world plan](planning/p2/underwater-world.md) | Natural reef habitat, depth-structured traversal, renderer lock, water-column atmosphere and movement-reactive presentation. |
 | [P3 FAF reef-world plan](planning/p3/reef-world-rebuild.md) | Rebuild/dress the accepted varying-depth world with the complete original FAF environment library, caves/tunnels, depth-based density, and the five-fish Character Select/session-return flow. |
 | [P3 procedural world generation](planning/p3/procedural-world-generation.md) | Deterministic finite world compiler: irregular basin, true 3D geology, terrain-aware placement, baked candidate/Base World lifecycle and generation-time target. |
-<<<<<<< HEAD
-| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Ocean/Pond world selection and distinct habitats; P4 implementation through P11, with P12/V32 native review NOT GREEN at `0.4.11`. |
-=======
-| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Historical approved Ocean/Pond design; [P4 direct closeout](tasks/p4/closeout.md) owns implementation and incomplete qualification. |
-| [P5 entry](tasks/p5/entry.md) | `0.5.0` source/world baseline, focused checks, open P4 work and first ecosystem slice for separate P5 planning. |
->>>>>>> ec90b05 (fixed nighttime)
+| [P4 freshwater world and selection](planning/p4/freshwater-world.md) | Historical Ocean/Pond design; [P4 closeout](tasks/p4/closeout.md) preserves implementation and native gaps. |
+| [P5 historical entry](tasks/p5/entry.md) | Earlier `0.5.0` baseline/progression record; superseded by executed P5 closeout for present state. |
 | [Underwater visibility and discovery](systems/underwater-visibility.md) | Owner-selected distance/depth extinction, progressive reef reveal, near-field readability, tuning controls, and pending native acceptance. |
 | [Day/night and weather](systems/day-night-and-weather.md) | Shared environmental time/solar cycle contract; weather is a later modifier layered on the day/night baseline. |
 | [Stealth and detection](systems/stealth-and-detection.md) | Owner-approved naturalistic stealth core; physical shelter, exposure, sensory detection, investigation, escape, stealth hunting and P4/P5 boundary. |
-| [P5 stealth foundation plan](planning/p5/stealth-foundation.md) | Approved standalone Pike Encounter with third World Select destination, direct Bluegill entry, reusable sensing systems, F1–F8 work order and manual milestones; planning only. |
+| [P5 executed stealth foundation and closeout](tasks/p5/closeout.md) | Historical Bluegill player, Bass prey and Pike fixture implementation; owner-closed / NOT GREEN with native test debt. |
+| [C5 Bass lifecycle and ecology design](planning/c5-post-p5-ecology-lifecycle.md) | Approved Bass player, egg hatch, Bluegill schools, Pike targeting, blood, and [manual M1–M8 implementation](tasks/c5-polish/README.md); not yet executed. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
@@ -50,11 +47,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.3/V20 remains an accepted open gap. P3 is also **owner-closed for progression / NOT GREEN**, with corrected Ocean `ocean-m4-42` at completed `0.3.6`, documented visual/native/visibility gaps and [direct closeout](tasks/p3/closeout.md). Do not convert accepted gaps into PASS.
 
-<<<<<<< HEAD
-**P4 remains IN PROGRESS / P12 V32 NOT GREEN at `0.4.11`:** Ocean and the generated Pond are distinct playable development environments; P4's native surface/clarity work still requires qualification and no P4 Gate has passed. [P5's planned Pike Encounter](planning/p5/stealth-foundation.md) will be a separate test scene launched by a third World Select card, not a third habitat or change to the normal worlds. **P5 remains NOT STARTED.** P5 later owns naturalistic sensing/cover, stealth hunting, feeding and growth; P6 saves/death; P7 Life History; P8 integrated qualification. Planning changes do not bump version, implement a scene or pass a Gate.
-=======
-**P4 is owner-closed for progression / NOT GREEN:** [closeout](tasks/p4/closeout.md) preserves the failed/unobserved native visual criteria. At the deliberate `0.5.0` working-tree baseline, [P5 entry](tasks/p5/entry.md) prepares naturalistic stealth, feeding and growth; gameplay is not yet implemented. P6 saves/death, P7 Life History and P8 integration remain later. The previously selected Movement abilities remain a later enhancement.
->>>>>>> ec90b05 (fixed nighttime)
+**P4 and P5 are owner-closed for progression / NOT GREEN.** [P4 closeout](tasks/p4/closeout.md) retains underwater clarity, route and surface/camera qualification limits; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native evidence debt at package `0.5.12`. The third World Select encounter is implemented, while normal Ocean/Pond remain separate test worlds. **C5 is approved/manual only**: [Bass lifecycle and ecological correction](planning/c5-post-p5-ecology-lifecycle.md), [M1–M8 manual prompts](tasks/c5-polish/README.md). P6 saves/death, P7 Life History and P8 integrated qualification remain future work.
 
 ## Status language
 

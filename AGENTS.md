@@ -18,7 +18,7 @@ The repository contains documentation, a Node.js development phase runner, and t
 | Execute an explicitly selected task stack | `npm run fish:phase -- <folder>` |
 | Check runner behavior and prompt grammar | `npm run test:runner` |
 
-P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c1-bindings/README.md) is reconciled into the accepted P1 baseline. [P2 underwater world](docs/tasks/p2/README.md) remains in progress at root `0.2.6`. The post-P2 [water/light correction](docs/tasks/c2-watet-light-fx/README.md) is owner-green for progression, and [c2-depth](docs/tasks/c2-depth/README.md) is the next authored correction: reshape normal play into at least five natural depth ledges and make visibility/light respond to the actual water column before returning to P2 qualification. Node.js 24 is required for runner commands; no npm dependencies or install step are needed. `tools/dev` provides `doctor`, `import`, `build`, `check`, `editor`, `run`, `inspect-scene` and focused `inspect-*` commands. Check actual command composition before invoking it.
+P0/P1 are implemented and complete; P2, P3, P4 and **P5 are owner-closed for progression / NOT GREEN** with distinct native evidence gaps in [the roadmap](docs/roadmap.md). P5's [historical closeout](docs/tasks/p5/closeout.md) records the executed Bluegill/Bass fixture at root package **`0.5.12`**; the current `0.5.13` commit subject is not proof of a package version change or full native Gate pass. [C5 polish](docs/tasks/c5-polish/README.md) is a planned **manual-only** correction: Bass hatch/fry, Bluegill schools, multi-target Pike, blood FX and a final owner-native launch/playthrough. P6 save/death is later. Node.js 24 is required for runner commands; no npm install is needed. `tools/dev` owns Fish import/build/check/editor/run; inspect actual command composition before invoking.
 
 ## Documentation routing
 
@@ -31,7 +31,8 @@ P0 and P1 were directly implemented and are complete; [c1-bindings](docs/tasks/c
 | Product scope and accepted choices | [Vision](docs/vision.md), [game design](docs/game-design.md), [decisions](docs/decisions-and-questions.md) |
 | Swimming, input, cameras | [Swimming and camera](docs/systems/swimming-and-camera.md) |
 | Naturalistic stealth, hiding, predator sensing, pursuit and escape | [Stealth and detection](docs/systems/stealth-and-detection.md) |
-| P5 isolated Pike Encounter planning and World Select development route | [P5 stealth foundation](docs/planning/p5/stealth-foundation.md) |
+| P5 historical executed Pike Encounter and qualified limits | [P5 closeout](docs/tasks/p5/closeout.md), [P5 original design](docs/planning/p5/stealth-foundation.md) |
+| C5 manual Bass lifecycle / Bluegill-school ecology correction | [C5 design](docs/planning/c5-post-p5-ecology-lifecycle.md), [manual briefs](docs/tasks/c5-polish/README.md) |
 | Food, prey, predators, growth | [Ecology and growth](docs/systems/ecology-and-growth.md) |
 | Save/resume, pause, death, new lives | [Survival and runs](docs/systems/survival-and-runs.md) |
 | Life events, recounting, persistent archive | [Life stories and history](docs/systems/life-stories-and-history.md) |

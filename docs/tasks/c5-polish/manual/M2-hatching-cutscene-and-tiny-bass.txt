@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M2 — Shallow egg hatch and controllable Bass fry
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Open an encounter with a skippable real Bass egg hatch cinematic, then a physically tiny, controllable larval fish with correct camera and one identity.
+
+NARROW SOURCES
+PikeEncounter.cs, game/scenes/p5_pike_encounter.tscn, PondGrowthState.cs, FishController.cs, PlayerArt.cs, FollowCamera.cs, PondCreatureCatalog.cs `FAF-FISH-007` egg/larva clips, Pond cover/bed/waterline and pause/scene lifecycle.
+
+IMPLEMENT / QUALIFY
+1. Create a shallow, naturally planted **Bass nest** at an actual safe bed location in the existing P5 fixture, without editing normal generated Pond or its Base World. Instantiate the authentic registered Bass egg and play a short restrained hatching presentation (visible hatch/transition, no adult teleport or fake swimming egg). Honor available egg rig/Action, don't fabricate it.
+2. Establish one authoritative Bass identity before cinematic. Egg/yolk state is non-swimming; on hatch transition to `FAF-FISH-007:larva` with real model/clip, tiny body/collider and fish-appropriate slow controls; include actual camera near/far and collision/shore geometry tuned to tiny-body size. No invalid waterline breach or clipping.
+3. Add Skip Intro without skipping authoritative hatch state: both watch/skip paths create exactly one Bass and identical starting stage/nutrition/position, no duplicate egg, prey, Pike timer or startup event. Pause/refocus/retry and input capture behave cleanly; do not start a Pike lethal ambush during an unskippable cutscene.
+4. Use clear yet understated feedback for yolk phase vs free-swimming phase; do not add durable save/death/story semantics. Keep cinematic asset/camera presentation separate from actual fish growth.
+
+VALIDATION / REPORT
+T2: build, focused new hatch/camera/stage and restart/skip checks (add actual `tools/dev` route only if implemented), existing growth/fixture/route checks, import needed egg/larva assets, `git diff --check`. Real cinematic appearance remains for M8 native review.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.

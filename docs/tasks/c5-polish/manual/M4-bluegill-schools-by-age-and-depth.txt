@@ -1,0 +1,27 @@
+MANUAL TASK: c5-polish / M4 — Age-structured Bluegill schools in real Pond cover
+
+STATE / SCOPE
+MANUAL EXECUTION RULES
+- Repository: jfin602/fish. Required unchanged root package version: `0.5.12`; check actual package.json, source branch, HEAD, working tree and active editor before each step. The latest historical Git commit subject may read `0.5.13`; do not confuse that with the package version.
+- Read AGENTS.md, BOOT.md, docs/workflow.md, docs/tasks/c5-polish/README.md, docs/tasks/c5-polish/implementation-plan.md, docs/planning/c5-post-p5-ecology-lifecycle.md and only the owning source/evidence named below. Verify Fish-only Godot .NET/MCP identity; if MCP is disconnected, use supported CLI checks without fabricating native editor observations.
+- **MANUAL ONLY.** Never use `npm run fish:phase -- c5-polish`, do not automatically execute the next manual brief, and do not rewrite P5 prompts/history or upgrade Gates without real owner evidence. Preserve all local changes; no forced checkout/reset/rebase, auto-commit or push.
+- Keep Pike Encounter a third *destination* (no Character Select) but never a third habitat. Preserve ordinary Ocean/Pond, their baked worlds, FAF originals, input/camera, renderer and existing closeout evidence.
+- At the end of this brief, report precise changed files, real commands, PASS/FAIL/NOT OBSERVED, source identity, known gaps and next manual step; STOP for owner review. Do not claim the owner played unless they did.
+
+GOAL
+Replace scattered Bass prey with cohesive, bounded schools of real Bluegill, young in shallow nursery areas and older schools toward deeper routes.
+
+NARROW SOURCES
+PreyActor.cs/PreyAwareness, PikeEncounter.cs and PikeCoverFixture.cs, WorldSightSensor.cs, MovementDisturbanceField.cs, original and new FAF vegetation/wood catalog, actual `FAF-FISH-006` stages, current Pond seed/zone layout.
+
+IMPLEMENT / QUALIFY
+1. Create small, deterministic sets of **real individual Bluegill actors** with distinct stable IDs, actual stage/collider/animation and alive/consumed state. Several schools: larvae/juveniles in ribbon grass, hornwort/coontail shallows; juvenile/subadult in intermediate root/log vegetation; subadult/adult in deeper space. Preferred zones are soft habitat preferences, not hard magic depth barriers.
+2. Implement bounded neighbor separation, coherence/alignment, shared movement intent, idle forage, obstacle-aware local steering, realistic speed by fish size and local scatter/regroup on sensed threats; keep update budgets reasonable and no giant all-to-all physics or guaranteed uniform school turns.
+3. Make schools readable and findable under Pond's actual murk/light conditions. Avoid spawning inside hard wood/root collisions, camera blocks, waterline or tiny tunnels; natural density and size classes should match cover and swimming lanes. Bluegill prey may be scattered, preyed upon, or survive as separate fish.
+4. Keep all new schools **only in Pike Encounter**: normal Pond and Ocean ambient fish remain their pre-C5 passive populations, existing FAF species eligibility unchanged, no duplicate prey on Retry and no resource leaks.
+
+VALIDATION / REPORT
+T2: build, focused school population/age/depth/neighbor physics/clearance, deterministic seed, scatter/regroup, pause/reset and no-double-feed checks; inspect-prey, inspect-pike-encounter and inspect-world-isolation; measure bounded actor update cost; `git diff --check`.
+
+STOP FOR OWNER REVIEW
+Do not automatically invoke or start the next M prompt. Preserve work for owner inspection; report whether it is ready for the next manual task.
