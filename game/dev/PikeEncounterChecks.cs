@@ -69,12 +69,13 @@ public static class PikeEncounterChecks
                     DemoSelection.CharacterId == PikeEncounterAssets.BluegillId &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
-                    encounter.GetNodeOrNull<PreyActor>("BassFry") is not null &&
+                    encounter.PreyActors.Count == 4 &&
+                    encounter.GetNodeOrNull<PreyActor>("BassPrey0") is not null &&
                     encounter.FindChild("CharacterSelect", true, false) is null &&
                     encounter.FindChild("AmbientLife", true, false) is null,
                     "direct fixture entry or isolation failed");
                 var fish = encounter!.GetNode<FishController>("Fish");
-                var prey = encounter.GetNode<PreyActor>("BassFry");
+                var prey = encounter.PreyActors.ToArray();
                 Require(fish.GetHeldInputCount() == 0, "held control leaked into fixture");
                 encounter._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
                 Require(tree.Paused && Input.MouseMode == Input.MouseModeEnum.Visible &&
@@ -83,7 +84,7 @@ public static class PikeEncounterChecks
                 Button(encounter, "RetryEncounter").EmitSignal(BaseButton.SignalName.Pressed);
                 await Scene(tree);
                 Require(!GodotObject.IsInstanceValid(encounter) &&
-                    !GodotObject.IsInstanceValid(prey) && !tree.Paused,
+                    prey.All(actor => !GodotObject.IsInstanceValid(actor)) && !tree.Paused,
                     "retry retained old actor or pause");
             }
             var final = tree.CurrentScene as PikeEncounter;
