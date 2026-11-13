@@ -60,6 +60,14 @@ Plants, rocks, depth changes, and lighting provide spatial cues. Ocean retains i
 
 Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
 
+## C5 — Bass hatching, first camera and feeding effects (approved, not yet implemented)
+
+The third World Select **Pike Encounter** entry remains a distinct test-scene route with **no Character Select**, but S24 changes its fixed player to **Bass**. Begin a new fixture life with a brief nest-level cinematic: real Bass egg in the shallows, visible hatch, then **one continuous Bass identity** transitioned into a tiny swimming larva/fry under the original fish-control system. The egg is not a swimmer. Use a small-body-appropriate camera, readable ground plants, smooth camera ownership/mouse capture, and an option to skip the cinematic without skipping authoritative hatch/stage setup. Retry must deterministically replay or optionally skip presentation without duplicating food, actors or start events. Do not claim a cinematic is a persisted death/rebirth or a P6 save.
+
+Later prey are only **Bluegill fish** in this fixture, with schools by real size/age. Early food microfauna should be visible and recognizably aquatic, not non-shipping glowing orange-orb pickups. Show restrained, readable school scatter and Pike reorientation to an actually sensed individual target; no permanent school target arrows or guaranteed panic safe zone.
+
+A confirmed fish bite/injury/consumption can emit a bounded reddish-brown **blood cloud**, expanding and thinning within Pond water with no permanent stain, no trigger from invalid/double bite and no smell/chemical tracking. Keep GPU costs bounded and reduced-effects behavior acceptable. Native owner review covers hatching visual continuity, fry camera, readable food, schooling, predator fairness, blood/underwater appearance and frame pacing. [C5 scope and test path](planning/c5-post-p5-ecology-lifecycle.md).
+
 ## Stealth and threat readability (P5 working design)
 
 Naturalistic stealth is the game's owner-approved central identity. Communicate what creatures actually sensed, not an invented omniscient player-detection overlay. Prioritize predator orientation, investigation movement, prey scattering, disturbed vegetation/water, attack commitment and loss of pursuit. Threats above, behind or outside the camera's view need subtle directional/non-color-only cues, but those cues should only disclose information the player's fish could plausibly perceive. [Stealth and detection](systems/stealth-and-detection.md) owns sensor authority and fair outcomes; UI and camera cannot write to AI awareness state.

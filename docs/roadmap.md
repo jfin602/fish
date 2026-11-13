@@ -238,6 +238,8 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 
 **Status: OWNER CLOSED FOR PROGRESSION / NOT GREEN at real P12 checkpoint `0.5.12`; assigned P13 `0.5.13` not applied.** The owner's baseline approval and [P5 closeout](tasks/p5/closeout.md) permit next-phase planning with G5.1–G5.3 still open. [P12 isolation evidence](tasks/p5/qualification/p12-isolation.md) confirms repeated fixture/Ocean/Pond routes and retained original bakes under headless checks; native gameplay and cover presentation remain open. Scenarios V03–V05 and V33–V36 remain partially qualified. [P11 native](tasks/p5/qualification/native-feeding-growth.md), [P6](tasks/p5/qualification/native-m1.md) and [P8](tasks/p5/qualification/native-stealth.md) preserve the narrower owner judgments and unsampled T3 cells. The isolated Pike Encounter is a menu destination; Ocean and Pond remain the two habitats. No P5 Gate is GREEN.
 
+**C5 post-P5 correction (approved design only, 2026-11-13):** [Bass lifecycle and ecology polish](planning/c5-post-p5-ecology-lifecycle.md) and its [manual work plan](tasks/c5-polish/README.md) revise the *isolated* Pike Encounter to a Bass player hatching in the shallows, age-structured Bluegill fish-prey schools, school-aware Pike hunting, and event-driven blood VFX. M1–M8 are **not executed** or qualification evidence. Revisit remaining V03–V05/V33–V36 and new V37–V41 in a native owner session; preserve P5 owner-closed / NOT GREEN and the `0.5.12` package baseline until evidence warrants change. No P5 Gate is upgraded.
+
 ### G5.1 — Feeding and visible growth
 
 **Result: NOT GREEN; final native V03/V04 route NOT OBSERVED.**

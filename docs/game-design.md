@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-This document organizes the Fish concept approved in the project discussion. [Decisions and open questions](decisions-and-questions.md) records provenance and decision status. Detailed mechanics below are working designs unless identified as confirmed. No gameplay system is implemented or qualified in this starter.
+This document organizes the Fish concept approved in the project discussion. [Decisions and open questions](decisions-and-questions.md) records provenance and decision status. Detailed mechanics below are working designs unless identified as confirmed. P0/P1 core play, Ocean/Pond environments and the P5 isolated stealth/feeding/growth fixture now exist. P5 is owner-closed for progression / NOT GREEN; the post-P5 Bass ecology/lifecycle correction is approved as **future work**, not implemented or qualified.
 
 ## Confirmed core
 
@@ -21,6 +21,10 @@ The original reef/Ocean world remains an active playable option; P4 adds a separ
 World choice is a new-life choice, not an ability to transfer an existing fish between habitats. When persistence arrives, Continue restores the same living run, species, and world directly; a failed/missing world is a recovery issue, not a silent migration.
 
 **P5 development scenario (S23):** add a third World Select card labeled **Pike Encounter** which is **not a third habitat**. It opens a dedicated [Bluegill-versus-Pike scene](planning/p5/stealth-foundation.md) directly without Character Select; the two normal Ocean/Pond routes continue to work unchanged. The isolated scene uses the registered freshwater Bluegill and Northern Pike with temporary caught/escaped and retry/return outcomes, not real saved lives or permanent death.
+
+## C5 — Bass encounter evolution (owner-approved, pending implementation)
+
+Historical P5 used **Bluegill as player, Bass as larval/juvenile prey**, as recorded in the [P5 closeout](tasks/p5/closeout.md); its source/evidence remains intact. **S24 supersedes only that isolated encounter's player/prey roles**: the Pike Encounter becomes a Bass's first life from shallow egg hatch through controllable fry, invertebrate/microfauna feeding and later Bluegill hunting. Bluegill form age-structured shallow/intermediate/deep schools, and Pike hunts any legitimately sensed Bass or Bluegill, permitting but not guaranteeing escape near a scattered school. A real predatory strike may emit brief dissipating blood. [C5 design](planning/c5-post-p5-ecology-lifecycle.md) owns scope. Ocean and ordinary Pond retain Character Select and passive non-enemy experimentation. The scene is a **development fixture**, not permanent death/history gameplay.
 
 ## Connected loops
 
@@ -86,7 +90,7 @@ After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and W
 
 The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 
-P3 was owner-closed for progression at `0.3.6` with documented non-GREEN gaps; P4 P12 remains NOT GREEN at implemented root `0.4.11`. P5 is planned, not started. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
+P2, P3, P4 and P5 are owner-closed **for progression / NOT GREEN** with historical native gaps. The current root package version remains `0.5.12` even though the latest commit subject is `0.5.13`. The [P5 closeout](tasks/p5/closeout.md) owns actual executed facts; C5 Bass/lifecycle polish is approved planning, not a new finished Phase. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
 
 ## Deferred choices
 
