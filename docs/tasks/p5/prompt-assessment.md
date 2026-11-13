@@ -11,13 +11,13 @@ Make naturalistic stealth central to Fish. First establish a real Bluegill versu
 - `WorldSelect.cs` currently builds two cards from `WorldCatalog.All`; `WorldCatalog.cs` defines the two authoritative habitat IDs `ocean`/`pond`. Never add the Pike Encounter as a third habitat; introduce menu destinations separately.
 - `PondCreatureCatalog` contains authentic Pond adult Bluegill `FAF-FISH-006` and Pike `FAF-FISH-010`, with asset/rig validation and habitat eligibility via `CharacterCatalog/SpeciesCompatibility`. `DemoSelection` is session only.
 - `FishController`, `SwimMotor`, `FollowCamera`, control presets, `PlayShell` and water/camera presentation are shared. No stealth override may alter authoritative swim or old P1/P4 input feel.
-- `PondFafEnvironment` and FAF hollow trunks/reeds give starting cover, but geometry and camera clearance must be measured. `PondTurbidityField.Sample` can inform world-space sight; renderer fog/GFX sliders are NOT simulation authority.
+- `PondFafEnvironment` and FAF hollow trunks/reeds give starting cover, but geometry and camera clearance must be measured. The owner supplied **two new FAF production briefs** (five underwater vegetation + five large wood families); finished new exports/manifests were absent from GitHub at review, so [P5 asset intake](stealth-cover-asset-intake.md) makes P2 block on missing verified inputs. `PondTurbidityField.Sample` can inform world-space sight; renderer fog/GFX sliders are NOT simulation authority.
 - `FafAmbientPondLife` is presentation-only, not predator AI. Environmental day/night and P4 water clarity remain owner-sensitive and currently unqualified.
 - Normal play baked Ocean and Pond identities must not change; no new original art or duplicate GLB export is authorized.
 
 ## Work decomposition
 
-P1–P5 make the direct scene, real cover, visual/flow sensing, movement signals and Pike hunting logic. P6 is first native **M1** owner test. P7 builds shared prey noticing/fleeing, P8 is second native stealth checkpoint. P9 feeding makes every eligible consume a once-only transaction. P10 growth uses genuine life-stage assets and changes size/collider/camera/edible prey; P11 is native integrated feeding/growth review. P12 performs cross-habitat isolation checks. P13 performs manual final G5.1–G5.3 closeout.
+P1 creates the direct scene. **P2 first verifies/imports all ten new FAF families, then composes naturally connected shallow grass, intermediate root/weed and deeper hollow/branch-crown encounter regions** with exposed lanes; missing packs block P2. P3–P5 then implement world-space vision, movement/cover signals and Pike hunting. P6 is first native **M1** owner test. P7 builds shared prey noticing/fleeing, P8 is second native stealth checkpoint. P9 feeding makes every eligible consume a once-only transaction. P10 growth uses genuine life-stage assets and changes size/collider/camera/edible prey; P11 is native integrated feeding/growth review. P12 performs cross-habitat isolation checks. P13 performs manual final G5.1–G5.3 closeout.
 
 ## Risks and handling
 
@@ -26,7 +26,9 @@ P1–P5 make the direct scene, real cover, visual/flow sensing, movement signals
 | P4 not ready for progression | Require explicit owner progression/closeout and deliberate `0.5.0` entry; do not run P5 from `0.4.11`. |
 | Third menu card breaks species/world integrity | Menu destination separate from WorldCatalog; fail closed on wrong/missing models; test three routes and repeated return. |
 | Cheating or unreadable Pike | Last **sensed** location and finite memory, real occlusion and movement evidence; native fair-catch and hidden-escape comparison. |
-| Foliage or log cheats | Distinguish hard physics occlusion from soft visual cover; probe fish/Pike/camera clearance. |
+| Missing/unverified FAF expansion or concurrent registry conflict | P2 checks actual source/manifest/unique IDs/GLB hashes/structural variants/wrappers and stops without art generation or pack-001 substitution. |
+| Unnatural set dressing | Terrain/depth-aware rooted and varied three-zone composition, no repeated rows or opaque hedge; native visual review. |
+| Foliage or log cheats | Real wood LoS/physics vs visible soft plant density, no invisible safe zones; fish/Pike/camera clearance. |
 | GPU fog controlling sensors | Perception in world space, independent of camera and graphics preset; bounded sampling on actual turbidity field. |
 | Rendering or movement slowdowns | Bounded sensory checks, frame pacing during active encounter, read-only motion inputs. |
 | Biology/growth unrealistic | Verify eligible size/stage/prey; no Bluegill-eats-Pike shortcut, no fake egg swimming, same-fish identity. |

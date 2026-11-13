@@ -6,26 +6,26 @@ MODEL / REASONING / USAGE
 - This prompt's assigned project version is `0.5.2`.
 
 GOAL
-Create a small deterministic freshwater pursuit course with real shelter, soft cover and open water.
+Import the **five new underwater plant families and five new large wood families** from the separate owner FAF runs, then build connected, naturally blended shallow/intermediate/deeper Pike Encounter areas with real soft and hard cover.
 
 ENTRY / READ
 Read AGENTS.md, BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p5/README.md, assessment, implementation plan and only relevant affected sources. Inspect local HEAD/dirty tree, true P4 closure/entry authorization, source and tools/dev commands; do not reset/rebase or overwrite in-flight changes. Verify Fish-only Godot/MCP identity.
-game/scripts/PondFafEnvironment.cs, FishController.cs, FollowCamera.cs, actual hollow-trunk collider wrappers, PondCreatureCatalog.cs, current P5 fixture and P4 clearance evidence.
+docs/tasks/p5/stealth-cover-asset-intake.md, actual **new** FAF source/manifest/registry/GLB/wrapper records and original pack 001 comparison; PondFafEnvironment.cs, FishController.cs, FollowCamera.cs, PondCreatureCatalog.cs, current P5 fixture and P4 clearance evidence.
 Require actual P1 evidence/checkpoint, prior root `0.5.1` and, after a manual step, explicit owner authorization. If unavailable STOP and report truthful reason.
 
 IMPLEMENT / NATIVE REVIEW
-1. Inspect actual Bluegill collider/camera envelope and pike dimensions; choose real FAF hollow log with genuine passable interior and document clearance based on checked geometry.
-2. Place one hollow trunk, soft reed/weed patch, open crossing, safe spawn and exit markers with deterministic seed/poses; reuse accepted Pond assets and atmosphere without modifying the ordinary Pond bake or normal Pond/Ocean scenes.
-3. Instantiate one registered northern Pike physical actor initially non-hunting, with correct visual rig and bounded collider, separated from the Bluegill. No pretend feeding or death.
-4. Add clearance/placement checks: player can pass through selected log; larger Pike cannot clip/enter when blocked; camera can follow; no floating colliders; retries restore actors and geometry.
+1. FIRST perform strict intake of **all 10 new families**, confirming actual manifest paths and Pond IDs, distinct structural variants, Blender sources, reproducible generator seeds, GLB/hash/import, sizes/material budgets, roots/pivots and wood collision wrappers. Tall ribbon grass must have short (0.5–1 m), medium (1–2 m) and tall (2–3.5+ m) genuine height classes. **The owner briefs are creation requests, not proof of finished packs.** If required new packs are unavailable or unverified, STOP without checkpoint/version change; do not substitute old pack 001, invent IDs or create new Blender art in P5.
+2. Compose a **deterministic connected three-area encounter**, not a ten-model showroom: **shallow grass nursery** with short/medium/surface-reaching ribbon grass, broad-leaved pondweed and a long fallen tree along a muddy bank; **intermediate refuge** with thick branching waterweed, bushy coontail/hornwort, submerged rooted thicket, forked fallen log and root-ball tree; **deeper escape maze** with truly open split/hollow decayed log and a sunken branch crown for lateral/vertical routes. Use all ten families meaningfully; existing pack 001 plants/ground are optional natural background, not replacements. Define safe Bluegill spawn, exposed feeding-risk crossing, alternate exits and realistic Pike search access.
+3. Blend every family by actual bank/bed depth, shoreline, sediment and light: grounded roots and logs, tall grass only where waterline permits, irregular patch boundaries, varied structural forms/rotation, graded shallow-to-deep density, open swim lanes, no floating stems/wood, buried foliage, repeated grids, opaque plant walls or artificial hide-zone circles. Integrate genuine hard wood occlusion and **soft traversable vegetation** rather than one solid collision per blade. Instantiate the registered Pike physical actor non-hunting, with real size/clearance and no feeding/death.
+4. Verify every new family ID/structural variant participates in correct depth zone; test fish/Pike/FollowCamera in fork, root-ball, split-hollow **multi-direction actual openings** and sunken branch crown, classify gaps as passage/refuge/visual-only, verify LoS breaks and real collision, anchored placement, grass height bands, seeded replay, natural cluster spacing, exposed route connectivity and representative triangle/draw/overdraw costs. Keep normal Pond and Ocean untouched.
 
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 
 VALIDATION
-T2 focused integration: ./tools/dev build; a newly implemented and wired fixture-geometry check; fixture scene smoke; ./tools/dev inspect-pond-atmosphere; git diff --check.
+T2 focused integration: actual new FAF manifest/source/hash/import checks, all 10 families + variants, deterministic zone/height/root/LoS/physical gap checks; ./tools/dev import/build, new P5 asset/fixture diagnostics only after implementing them, scene smoke, ./tools/dev inspect-pond-atmosphere and git diff --check. Headless proof is not native art approval.
 Only report checks genuinely executed; log source SHA, seed/fixture, actual commands, PASS/FAIL/NOT OBSERVED/BLOCKED and gaps. A headless or fixed-pose test is not an owner native gameplay PASS. Add new inspection commands before attempting them.
 
 DONE / VERSION / REPORT
-Deterministic encounter traversable by real fish/camera, with no invisible obstacles and blocked Pike geometry enforced.
+Only after BOTH new FAF expansion packs are actually verified, all ten families form a natural three-zone encounter with honest cover/escape/collision and the real Pike/Bluegill/camera traverse it, assign 0.5.2. Missing pack/source/variant/geometry is a BLOCKER; retain 0.5.1 and report specifics.
 If and only if checked source behavior passes, update package.json to `0.5.2` while retaining scripts, then leave implementation for the runner checkpoint. On failure keep the prior version and report blockers. Do not self-commit/push.

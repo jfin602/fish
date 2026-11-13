@@ -19,6 +19,9 @@ IMPLEMENT / NATIVE REVIEW
 3. Retry and return repeatedly; check pause/refocus, ordinary Ocean/Pond routes, no hidden cheating, no predator clipping, native performance, warnings and player comfort/readability.
 4. Record actual source/seed/profile/system/owner judgments and PASS/FAIL/NOT OBSERVED/BLOCKED, screenshots/videos only if obtained. If failed or no owner native observation, stop; only bounded repairs and rechecks are allowed.
 
+NEW FAF COVER AND NATURAL HABITAT REQUIREMENTS
+Native owner play traverses the connected **shallow ribbon-grass nursery → midwater waterweed/coontail/root refuge → deeper split hollow/branch crown**. Compare true solid LoS versus partial green-cover attenuation versus open water. Inspect all ten family roles, tall grass bands, natural terrain grounding and density transitions, real fork/root/hollow gaps, camera snag, Pike physical access, performance/overdraw and whether it resembles a real pond rather than a prop grid.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

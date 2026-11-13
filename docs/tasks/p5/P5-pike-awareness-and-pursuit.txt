@@ -19,6 +19,9 @@ IMPLEMENT / NATIVE REVIEW
 3. Provide temporary fixture outcomes caught/escaped, not permanent death, history or saved life; reset actor, sensors and target memory precisely.
 4. Build deterministic tests for open-water catch, occluded log escape/search/disengage, insufficient evidence, absent target, obstacle/turn clearance, pause and repeated restart.
 
+NEW FAF COVER AND NATURAL HABITAT REQUIREMENTS
+Pike movement/search must respect the new **long tree ends, fork branches, root-ball openings, split-hollow side entrances and sunken crown vertical/lateral routes**. Test a suspicious slow passage at grass edges, pursuing across exposed water and losing sight through root/hollow/crown structures; Pike cannot phase through hard barriers or know hidden Bluegill coordinates.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

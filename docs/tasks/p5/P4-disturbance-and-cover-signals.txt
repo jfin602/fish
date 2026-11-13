@@ -19,6 +19,9 @@ IMPLEMENT / NATIVE REVIEW
 3. Keep WaterReaction visual-only, use one simulation clock and prevent pause/focus/retry from incorrectly advancing evidence, duplicating signals or changing motor outcomes.
 4. Check stop/glide/fast/turn, open/vegetation/log, signal decay, camera/preset independence, event budget and reset.
 
+NEW FAF COVER AND NATURAL HABITAT REQUIREMENTS
+Compare still/glide/burst/turn movement through the five new plant families and exposed transitions; vegetation remains mostly passable **soft cover**, with thicker roots colliding only if source geometry warrants it. Wood hard cover must actually block rays/physical travel; do not make leaf sway, GFX fog or decorative particles authoritative signals.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 

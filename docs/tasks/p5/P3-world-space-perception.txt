@@ -19,6 +19,9 @@ IMPLEMENT / NATIVE REVIEW
 3. Budget query frequency and bounded ray/segment work; expose test-only reasons/evidence scores and handle pause, invalid target, unknown habitat and reset.
 4. Verify near/far, direct/obstructed, shallow/clear vs muddy intervening paths, illumination effects if supported, camera independence and repeatability; preserve normal Ocean baseline.
 
+NEW FAF COVER AND NATURAL HABITAT REQUIREMENTS
+Use the **actual new wood** long fallen tree, fork, root-ball, broken hollow and crown for physics-aligned obstruction and opening checks; derive partial visual occlusion from **visible** ribbon grass, branching waterweed, coontail/hornwort, broad-leaf pondweed and rooted thicket clusters. Do not give invisible safe-zone bonuses. Test shallow, midwater and deeper sightlines and multiple target depths.
+
 SCOPE / DEFERRALS
 Preserve two real habitats (ocean and pond), both ordinary test worlds' existing Character Select and baked assets, existing fish motor/camera/pause/Forward+ effects, FAF source provenance and historical P2–P4 failures. Pike Encounter is an isolated development scene, not a third world. Do not add predators to ordinary worlds, implement permanent saves/death/Life History, invent missing assets or use screen-space fog/camera as gameplay authority.
 
