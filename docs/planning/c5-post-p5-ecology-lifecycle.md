@@ -17,7 +17,7 @@ Keep the **third World Select destination** (the Pike Encounter / development te
 - Existing P5 qualification covers source-level feeding, movement, sensing and partial native owner observations but **does not** prove the final three-zone route, complete stage/hunt transition, honest Pike contact, native two-world regression, or natural 5+5 cover appearance. [P5 closeout](../tasks/p5/closeout.md) is authoritative for what was and was not observed.
 - The P5 fixture uses an independently baked Pond seed `5266`; original Ocean seed `42` and Pond seed `71` are independent. Preserve those existing manifests and all original P5 evidence. No blanket P5 Gate GREEN, `0.5.13` package version, or P6 persistence is implied by approval of this correction.
 
-## Lifecyle design and first food
+## Lifecycle design and first food
 
 **Egg / cinematic:** open a new Bass encounter with a brief, restrained, skippable **shallow nest hatching scene** (prefer reuse of the existing Bass egg/larva asset and Pond shader/lighting/camera). Establish one new fixture fish identity before cinematic start. The egg itself does not swim, consume prey or use a fish motor. No magical morph from adult, instant unexplained stage jump or dummy orange nutrition spheres. Once hatched, the same Bass life becomes a **tiny playable larva/fry** at the actual registered scale, with camera/body/collision/clipping suitable for its size. Retain smooth transition into existing controls and no sudden loss of input/focus.
 
