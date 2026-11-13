@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 namespace Fish;
 
+public readonly record struct PikeSensoryEvidence(SightEvidence Sight, DisturbanceEvidence Disturbance);
+
 /// <summary>Session-local P5 entry fixture. The Pike is a stationary actor until later tasks add AI.</summary>
 public partial class PikeEncounter : Node3D
 {
@@ -18,6 +20,28 @@ public partial class PikeEncounter : Node3D
     public IReadOnlyList<PikeCoverPlacement> CoverPlan { get; private set; } = Array.Empty<PikeCoverPlacement>();
     public WorldSightSensor? PikeSight { get; private set; }
     public SightEnvironment? SightWater { get; private set; }
+    public MovementDisturbanceField? MovementCues { get; private set; }
+
+    public PikeEncounter() => ProcessPriority = 10; // Observe FishController after its motor tick.
+
+    public override void _PhysicsProcess(double delta)
+    {
+        if (_failed || _transitioning || MovementCues is null) return;
+        MovementCues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+            _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
+    }
+
+    public PikeSensoryEvidence ObserveFish()
+    {
+        if (_failed || _transitioning || PikeSight is null || SightWater is null || MovementCues is null)
+            return default;
+        var pike = GetNode<CharacterBody3D>("NorthernPike");
+        var paused = GetTree().Paused;
+        var sight = PikeSight.Observe(pike.GlobalPosition, -pike.GlobalBasis.Z,
+            new SightTarget(_fish.GlobalPosition, .48f, 1f), SightWater,
+            MovementCues.SimulationSeconds, paused);
+        return new PikeSensoryEvidence(sight, MovementCues.Sense(pike.GlobalPosition, paused));
+    }
 
     public override void _Ready()
     {
@@ -44,6 +68,8 @@ public partial class PikeEncounter : Node3D
             PikeCoverChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-sight-check"))
             PikeSightChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-disturbance-check"))
+            PikeDisturbanceChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -64,6 +90,8 @@ public partial class PikeEncounter : Node3D
         var plants = PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("Cover"));
         PikeSight = new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
             actor.GetRid(), _fish.GetRid());
+        MovementCues = new MovementDisturbanceField(GetWorld3D().DirectSpaceState, plants,
+            actor.GetRid(), _fish.GetRid());
         SightWater = new SightEnvironment(WorldEnvironmentProfile.Pond, PikeCoverFixture.WaterY,
             PikeCoverFixture.FixtureSediment, SolarState.At(.5));
         var preferences = new DisplayPreferences();
@@ -82,6 +110,7 @@ public partial class PikeEncounter : Node3D
     private void Fail(string diagnostic)
     {
         PikeSight?.Reset();
+        MovementCues?.Reset();
         _failed = true;
         _resume.Disabled = true;
         DemoSelection.Clear();
@@ -161,6 +190,7 @@ public partial class PikeEncounter : Node3D
     {
         if (_transitioning) return;
         PikeSight?.Reset();
+        MovementCues?.Reset();
         _transitioning = true;
         _fish.ClearAndDisarmInput();
         GetTree().Paused = false;

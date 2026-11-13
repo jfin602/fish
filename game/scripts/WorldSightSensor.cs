@@ -98,10 +98,7 @@ public sealed class WorldSightSensor
             var ray = PhysicsRayQueryParameters3D.Create(observer, end, 1, _exclude);
             if (_space.IntersectRay(ray).Count > 0) continue;
             clear++;
-            var lineCover = 0f;
-            foreach (var plant in _plants)
-                lineCover += SegmentBoxLength(observer, end, plant.VisibleBounds);
-            cover += Mathf.Exp(-.8f * Mathf.Min(lineCover, 12f));
+            cover += SoftCoverTransmission.Along(observer, end, _plants, .2f);
         }
         if (clear == 0) return _last = new SightEvidence(false, 0f, "hard-cover", 0f, 0f, 0f, 0, 3, 0);
         var sediment = 0f;
@@ -128,6 +125,19 @@ public sealed class WorldSightSensor
 
     private static SightEvidence Empty(string reason) => new(false, 0f, reason, 0f, 0f, 0f, 0, 0, 0);
     private static bool Finite(Vector3 v) => float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z);
+
+}
+
+/// <summary>Visible foliage reduces evidence along a line without declaring a safe zone.</summary>
+public static class SoftCoverTransmission
+{
+    public static float Along(Vector3 from, Vector3 to, IReadOnlyList<SoftSightCover> plants,
+        float minimum)
+    {
+        var length = 0f;
+        foreach (var plant in plants) length += SegmentBoxLength(from, to, plant.VisibleBounds);
+        return Mathf.Max(Mathf.Clamp(minimum, 0f, 1f), Mathf.Exp(-.8f * Mathf.Min(length, 12f)));
+    }
 
     private static float SegmentBoxLength(Vector3 from, Vector3 to, Aabb box)
     {
