@@ -11,7 +11,7 @@ The [swimming contract](../../systems/swimming-and-camera.md) owns movement beha
 
 ## S25 — C5 speed boost scheduling
 
-On 2026-11-14 the owner promoted the burst to a **finite-energy hold-Spacebar swimming boost** for chase/escape, in place of player biting. The [C5 M2A brief](../../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt) owns implementation and validation. This changes neither historical P1 qualification nor the deferral of precision mode and evasive turning.
+On 2026-11-14 the owner promoted the burst to a **finite-energy hold-Spacebar swimming boost** for chase/escape, in place of player biting. The [revised C5 M7 brief](../../tasks/c5-polish/manual/M7-regression-and-native-playtest-preflight.txt) owns implementation and validation. This changes neither historical P1 qualification nor the deferral of precision mode and evasive turning.
 
 ## Selected follow-up
 
