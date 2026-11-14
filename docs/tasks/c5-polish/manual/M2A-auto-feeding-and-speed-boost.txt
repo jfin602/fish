@@ -1,5 +1,7 @@
 MANUAL TASK: c5-polish / M2A — Automatic mouth feeding and limited Spacebar boost
 
+**SUPERSEDED — DO NOT EXECUTE AS A SEPARATE TASK.** Owner reports C5 work through M6 complete; implementation and T2 qualification of this S25 scope moved to the revised M7. M8 owns native qualification. This brief is retained for planning history, not a dependency before M3.
+
 STATE / SCOPE
 - Repository: jfin602/fish. Read AGENTS.md, BOOT.md, docs/workflow.md, docs/planning/c5-post-p5-ecology-lifecycle.md, docs/systems/ecology-and-growth.md, docs/systems/swimming-and-camera.md, docs/validation.md and only relevant actual sources.
 - MANUAL ONLY; do not run the phase runner. Inspect actual branch, HEAD, working tree, package.json version, Godot and MCP project identity. Preserve local changes and the documented root baseline 0.5.12, historical P5 evidence, normal Ocean/Pond and active editor changes; no reset/rebase or self-commit/push. This task begins only after corrected M2 native review; stop before M3.
