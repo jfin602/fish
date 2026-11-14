@@ -17,7 +17,26 @@ public partial class FishController : CharacterBody3D
     public float PondSurfaceCenterLimit => _pondSurfaceCenterLimit ?? float.NaN;
     public float BodyScale { get; private set; } = 1f;
     public float BodyRadius => GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D sphere
-        ? sphere.Radius : 0f;
+        ? sphere.Radius : GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D capsule
+            ? capsule.Radius : 0f;
+    public float BodyForwardReach => GetNode<CollisionShape3D>("Collision") is { Shape: CapsuleShape3D capsule } collision
+        ? capsule.Height * .5f - collision.Position.Z : BodyRadius;
+    public void SetEncounterBassBody(float radius, float length)
+    {
+        if (!float.IsFinite(radius) || !float.IsFinite(length) || radius <= 0f ||
+            length < radius * 2f ||
+            GetNodeOrNull<CollisionShape3D>("Collision") is not { } collision)
+            throw new InvalidOperationException("BASS_BODY_DIMENSIONS_INVALID");
+        collision.Shape = new CapsuleShape3D { Radius = radius, Height = length };
+        collision.Rotation = new Vector3(Mathf.Pi * .5f, 0f, 0f);
+        // The registered mesh origin sits forward of its nose-to-tail midpoint.
+        collision.Position = new Vector3(0f, 0f, length * .08f);
+        PondColliderRadius = radius;
+        BodyScale = length;
+        if (float.IsFinite(PondWaterlineHeight))
+            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
+    }
     public void SetPondBodyRadius(float radius)
     {
         if (!float.IsFinite(radius) || radius <= 0f ||
@@ -25,7 +44,7 @@ public partial class FishController : CharacterBody3D
             throw new InvalidOperationException("POND_BODY_RADIUS_INVALID");
         collision.Shape = new SphereShape3D { Radius = radius };
         PondColliderRadius = radius;
-        BodyScale = radius / PondGrowthState.AdultColliderRadius;
+        BodyScale = radius / .48f;
         if (float.IsFinite(PondWaterlineHeight))
             _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
@@ -78,6 +97,14 @@ public partial class FishController : CharacterBody3D
     private bool _invertMouseY;
     private bool _legacyMouseSettings;
     private bool _mouseCaptureActive;
+    private bool _hatchLocked;
+
+    public void SetEncounterHatchLocked(bool locked)
+    {
+        _hatchLocked = locked;
+        ClearAndDisarmInput();
+        GetNode<CollisionShape3D>("Collision").Disabled = locked;
+    }
 
     public string ActiveInputMode => _input.UsesKeyboardSteering
         ? DisplayPreferences.KeyboardMode : DisplayPreferences.MouseMode;
@@ -137,11 +164,13 @@ public partial class FishController : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
+        if (_hatchLocked) return;
         _input.Accept(@event, _mouseCaptureActive && _inputArmed && !GetTree().Paused);
     }
 
     public override void _PhysicsProcess(double delta)
     {
+        if (_hatchLocked) return;
         var intent = new SwimIntent(0, 0, 0, 0);
         if (!_inputArmed)
         {
@@ -158,7 +187,20 @@ public partial class FishController : CharacterBody3D
         LastYaw = intent.Yaw;
         LastPitch = intent.Pitch;
         var previousYaw = _state.Yaw;
-        _state = SwimMotor.Step(_state, intent, (float)delta, Tuning);
+        var next = SwimMotor.Step(_state, intent, (float)delta, Tuning);
+        if (GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D &&
+            (intent.Yaw != 0f || intent.Pitch != 0f) &&
+            EncounterTurnOverlaps(next))
+        {
+            // A long body can rotate into a branch without translating. Keep
+            // motor state and physical heading together when a turn is blocked.
+            var yawOnly = SwimMotor.Step(_state, intent with { Pitch = 0f }, (float)delta, Tuning);
+            var pitchOnly = SwimMotor.Step(_state, intent with { Yaw = 0f }, (float)delta, Tuning);
+            next = !EncounterTurnOverlaps(yawOnly) ? yawOnly
+                : !EncounterTurnOverlaps(pitchOnly) ? pitchOnly
+                : SwimMotor.Step(_state, intent with { Yaw = 0f, Pitch = 0f }, (float)delta, Tuning);
+        }
+        _state = next;
         MotorStepCount++;
         PresentationEffort = _state.Reversing
             ? Mathf.Clamp(intent.Slow, 0, 1)
@@ -188,6 +230,23 @@ public partial class FishController : CharacterBody3D
         Velocity = effective;
         _state.Velocity = effective;
         _state.Speed = effective.Length();
+    }
+
+    private bool EncounterTurnOverlaps(SwimState state)
+    {
+        var collider = GetNode<CollisionShape3D>("Collision");
+        if (collider.Shape is not CapsuleShape3D) return false;
+        var heading = new Basis(Vector3.Up, -state.Yaw) *
+            new Basis(Vector3.Right, state.Pitch);
+        using var query = new PhysicsShapeQueryParameters3D
+        {
+            Shape = collider.Shape,
+            Transform = new Transform3D(heading, GlobalPosition) * collider.Transform,
+            CollisionMask = CollisionMask,
+            Margin = 0f,
+            Exclude = new Godot.Collections.Array<Rid> { GetRid() },
+        };
+        return GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0;
     }
 
     public void ClearAndDisarmInput() => ClearAndDisarmInput(true);

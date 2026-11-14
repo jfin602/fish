@@ -14,7 +14,7 @@ public sealed class FeedingLedger
     public bool IsConsumed(string id) => _consumed.Contains(id);
     public static bool IsEligiblePrey(string speciesId, string stage, float length,
         string playerStage, float playerLength) =>
-        speciesId == "FAF-FISH-007" &&
+        speciesId == PikeEncounterAssets.BluegillId &&
         float.IsFinite(length) && float.IsFinite(playerLength) &&
         length > 0f && playerLength > 0f &&
         (stage == "larva" && length <= playerLength * .65f ||

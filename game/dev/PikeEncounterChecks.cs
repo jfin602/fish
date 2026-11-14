@@ -19,8 +19,8 @@ public static class PikeEncounterChecks
         {
             Require(WorldCatalog.All.Count == 2 && WorldDestinations.All.Count == 3 &&
                 WorldCatalog.All.All(w => w.Id != WorldDestinations.PikeId), "encounter became a habitat");
-            Require(PikeEncounterAssets.TryValidate(out var bluegill, out var pike, out var diagnostic) &&
-                bluegill?.Id == PikeEncounterAssets.BluegillId && pike?.Id == PikeEncounterAssets.PikeId,
+            Require(PikeEncounterAssets.TryValidate(out var bass, out var pike, out var diagnostic) &&
+                bass?.Id == PikeEncounterAssets.BassId && pike?.Id == PikeEncounterAssets.PikeId,
                 "real Pond actor validation " + diagnostic);
             Require(!PikeEncounterAssets.TryValidate(out _, out _, out diagnostic,
                 "res://scenes/missing-pike.tscn") && diagnostic.Contains("SCENE_MISSING"),
@@ -28,10 +28,14 @@ public static class PikeEncounterChecks
             Require(!PikeEncounterAssets.TryValidate(out _, out _, out diagnostic,
                 pikeId: "FAF-FISH-001") && diagnostic.Contains("INELIGIBLE"),
                 "wrong Pike accepted");
-            var missingModel = CharacterCatalog.All.Select(entry => entry.Id == PikeEncounterAssets.BluegillId
+            var missingModel = CharacterCatalog.All.Select(entry => entry.Id == PikeEncounterAssets.BassId
+                ? entry with { ModelPath = "res://assets/faf/pond/missing-bass.glb" } : entry).ToArray();
+            Require(!PikeEncounterAssets.TryValidate(out _, out _, out diagnostic,
+                catalog: missingModel) && diagnostic.Contains("MODEL_MISSING"), "missing Bass model accepted");
+            var missingPrey = CharacterCatalog.All.Select(entry => entry.Id == PikeEncounterAssets.BluegillId
                 ? entry with { ModelPath = "res://assets/faf/pond/missing-bluegill.glb" } : entry).ToArray();
             Require(!PikeEncounterAssets.TryValidate(out _, out _, out diagnostic,
-                catalog: missingModel) && diagnostic.Contains("MODEL_MISSING"), "missing Bluegill model accepted");
+                catalog: missingPrey) && diagnostic.Contains("MODEL_MISSING"), "missing Bluegill prey model accepted");
             var ineligible = CharacterCatalog.All.Select(entry => entry.Id == PikeEncounterAssets.PikeId
                 ? entry with { Ecological = false } : entry).ToArray();
             Require(!PikeEncounterAssets.TryValidate(out _, out _, out diagnostic,
@@ -67,13 +71,18 @@ public static class PikeEncounterChecks
                 var encounter = tree.CurrentScene as PikeEncounter;
                 Require(encounter is not null && !tree.Paused &&
                     WorldSession.ActiveHabitat is null && WorldSession.ActiveManifest is null &&
-                    DemoSelection.CharacterId == PikeEncounterAssets.BluegillId &&
+                    DemoSelection.CharacterId == PikeEncounterAssets.BassId &&
+                    encounter.Growth.Identity == $"pike-{PikeCoverFixture.Seed}:player-bass" &&
                     encounter.Growth.Stage == "juvenile" && encounter.Feeding.Nutrition == 0 &&
                     encounter.Feeding.Events.Count == 0 &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
                     encounter.PreyActors.Count == 10 &&
-                    encounter.GetNodeOrNull<PreyActor>("BassPrey0") is not null &&
+                    encounter.GetNodeOrNull<PreyActor>("BluegillPrey0") is not null &&
+                    encounter.PreyActors.All(p => p.SpeciesId == PikeEncounterAssets.BluegillId) &&
+                    encounter.PreyActors.All(p => p.StableId.Contains("bluegill", StringComparison.Ordinal)) &&
+                    encounter.PreyActors.Count(p => p.Stage == "juvenile") == 4 &&
+                    encounter.PreyActors.Count(p => p.Stage == "larva") == 6 &&
                     encounter.FindChild("NonShippingInvertebrateProxy", true, false) is null &&
                     encounter.FindChild("CharacterSelect", true, false) is null &&
                     encounter.FindChild("AmbientLife", true, false) is null,
@@ -81,6 +90,23 @@ public static class PikeEncounterChecks
                 var fish = encounter!.GetNode<FishController>("Fish");
                 var prey = encounter.PreyActors.ToArray();
                 Require(fish.GetHeldInputCount() == 0, "held control leaked into fixture");
+                if (visit == 0)
+                {
+                    fish.SetActivePreset(ControlPreset.Builtins().Single(p => p.Id == ControlPreset.KeyboardId));
+                    await PhysicsFrames(tree, 2); // The preset switch disarms one release tick.
+                    fish.GlobalPosition = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
+                    var start = fish.GlobalPosition;
+                    var steps = fish.MotorStepCount;
+                    fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+                    await PhysicsFrames(tree, 12);
+                    Require(fish.LastThrust > 0 && fish.MotorStepCount > steps &&
+                        fish.GlobalPosition.DistanceTo(start) > .01f &&
+                        encounter.Growth.Identity == $"pike-{PikeCoverFixture.Seed}:player-bass" &&
+                        encounter.Feeding.Nutrition == 0,
+                        "juvenile Bass did not respond to swim input without changing identity or nutrition");
+                    fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
+                    fish.ClearAndDisarmInput();
+                }
                 encounter._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
                 Require(tree.Paused && Input.MouseMode == Input.MouseModeEnum.Visible &&
                     encounter.FindChild("EncounterMenu", true, false) is Control { Visible: true },
@@ -217,6 +243,10 @@ public static class PikeEncounterChecks
     private static async Task Frames(SceneTree tree, int count)
     {
         for (var i = 0; i < count; i++) await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+    }
+    private static async Task PhysicsFrames(SceneTree tree, int count)
+    {
+        for (var i = 0; i < count; i++) await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
     }
     private static string Status(Node root) => (root.FindChild("WorldStatus", true, false) as Label)?.Text ?? "";
     private static void Require(bool condition, string message)

@@ -27,7 +27,9 @@ func _ready() -> void:
 			var radius := float(info["radius"])
 			var capsule := CapsuleShape3D.new()
 			capsule.radius = radius
-			capsule.height = maxf(span.length(),radius*2.0)
+			# Godot capsule height includes both end caps. Cover the authored
+			# endpoints as well as the segment between them.
+			capsule.height = span.length() + radius*2.0
 			node.shape = capsule
 			node.position = (start+finish)*.5
 			node.quaternion = Quaternion(Vector3.UP,span.normalized())

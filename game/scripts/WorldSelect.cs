@@ -199,7 +199,7 @@ public partial class WorldSelect : Control
             var destination = WorldDestinations.All[i];
             _cards[i].Text = (i == index ? "✓ SELECTED\n\n" : "  SELECT\n\n") +
                 destination.DisplayName + "\n\n" + destination.Description +
-                (destination.WorldId is null ? "\n\nBluegill only · no Character Select" :
+                (destination.WorldId is null ? "\n\nBass player · no Character Select" :
                     "\n\nPreview art pending" + (WorldCatalog.Resolve(destination.WorldId).Bake is null ? "\nWorld bake pending" : ""));
         }
     }

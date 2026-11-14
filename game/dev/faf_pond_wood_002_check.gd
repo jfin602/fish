@@ -41,9 +41,19 @@ func _run() -> void:
 		var body := piece.get_node_or_null("AuthoredWoodCollision") as StaticBody3D
 		if body==null or body.get_child_count()!=int(entry["collision_count"]):
 			_fail("collision count "+id);return
+		var recipes: Array = JSON.parse_string(piece.collision_json)
 		for child in body.get_children():
 			if not child is CollisionShape3D or child.shape==null or child.disabled:
 				_fail("bad shape "+id);return
+			var shape_index := child.get_index()
+			var recipe: Dictionary = recipes[shape_index]
+			if recipe["kind"] == "capsule":
+				var capsule := child.shape as CapsuleShape3D
+				var start := Vector3(float(recipe["a"][0]),float(recipe["a"][2]),-float(recipe["a"][1]))
+				var finish := Vector3(float(recipe["b"][0]),float(recipe["b"][2]),-float(recipe["b"][1]))
+				var expected_height := start.distance_to(finish)+2.0*float(recipe["radius"])
+				if capsule==null or absf(capsule.height-expected_height)>.001:
+					_fail("wood capsule misses authored endpoints "+id+" shape="+str(shape_index));return
 		var meshes: Array[MeshInstance3D]=[]
 		_meshes(piece,meshes)
 		if meshes.size()!=1: _fail("mesh count "+id);return

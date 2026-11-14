@@ -27,6 +27,13 @@ public sealed class PikeAwareness
     public bool StrikeReady { get; private set; }
     public bool Escaped { get; private set; }
 
+    public bool ConsumeEscape()
+    {
+        if (!Escaped) return false;
+        Escaped = false;
+        return true;
+    }
+
     public void Reset()
     {
         _memory = null;

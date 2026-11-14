@@ -84,14 +84,17 @@ public static class PikeCoverChecks
             var fish = scene.GetNode<FishController>("Fish");
             var pike = scene.GetNode<CharacterBody3D>("NorthernPike");
             var camera = fish.GetNode<FollowCamera>("CameraRig");
+            Require(fish.GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D,
+                "Bass does not have its lengthwise physical body");
             Require(fish.GlobalPosition.DistanceTo(pike.GlobalPosition) > 15 &&
                 camera.GetNode<Camera3D>("Camera3D").Current,
                 "safe spawn or real follow camera absent");
             Require(SolidOnSightline(scene, fish.GlobalPosition, pike.GlobalPosition, fish, pike),
                 "Bluegill spawn is exposed to Pike");
-            var fishSphere = new SphereShape3D { Radius = .48f };
+            var fishSphere = new SphereShape3D { Radius = fish.BodyRadius };
             var pikeSphere = new SphereShape3D { Radius = .72f };
-            var cameraSphere = new SphereShape3D { Radius = .22f };
+            var cameraSphere = new SphereShape3D
+                { Radius = .22f * Mathf.Max(.32f, fish.BodyScale) };
             // Exposed center lane is accessible to the real Pike size; both
             // outside flanks remain alternatives to the short central crossing.
             foreach (var z in new[] { 22f, 15f, 9f, 2f, -5f, -12f, -21f })
@@ -130,6 +133,13 @@ public static class PikeCoverChecks
             }
             var treeAnchor = plan.Single(p => p.Id == "FAF-WOOD-005A");
             var bed = PikeCoverFixture.Bed(treeAnchor.Position.X, treeAnchor.Position.Z);
+            var fishStart = fish.GlobalTransform;
+            fish.GlobalPosition = treeAnchor.Position + new Basis(Vector3.Up, treeAnchor.Yaw) *
+                new Vector3(-3f, 1.15f, 0f);
+            fish.GlobalBasis = Basis.Identity;
+            Require(fish.TestMove(fish.GlobalTransform, new Basis(Vector3.Up, treeAnchor.Yaw) *
+                new Vector3(6f, 0f, 0f)), "juvenile Bass passed through long tree trunk");
+            fish.GlobalTransform = fishStart;
             Require(SolidOnSightline(scene,
                 new Vector3(treeAnchor.Position.X - 6f, bed + 1f, treeAnchor.Position.Z),
                 new Vector3(treeAnchor.Position.X + 6f, bed + 1f, treeAnchor.Position.Z),
@@ -172,7 +182,10 @@ public static class PikeCoverChecks
             {
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 if (frame % 12 == 0 && Blocked(scene, cameraSphere, camera.GlobalPosition, fish, pike))
+                {
                     hollowHits++;
+                    GD.Print($"PIKE_COVER_CAMERA_OVERLAP frame={frame} eye={camera.GlobalPosition} fish={fish.GlobalPosition} blocker={Blocker(scene, cameraSphere, camera.GlobalPosition, fish, pike)}");
+                }
                 if (fish.GlobalPosition.Z < hollow.Position.Z - 4.6f) break;
             }
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
@@ -206,8 +219,59 @@ public static class PikeCoverChecks
                 (pike.GlobalPosition - hollow.Position);
             Require(pikeHollowLocal.Z < -3f,
                 "triple-size Pike did not exit physically open hollow");
+            // Reproduce a stationary turn under the authored bent tree branch.
+            // Translation collision alone cannot keep a long body out of wood.
+            var bent = plan.Single(p => p.Id == "FAF-WOOD-005B");
+            var bentBasis = new Basis(Vector3.Up, bent.Yaw);
+            var initialHeading = fish.GlobalBasis;
+            var quarterTurn = new Basis(Vector3.Up, -Mathf.Pi * .5f) * initialHeading;
+            var turnPose = Vector3.Inf;
+            for (var x = 2.2f; x <= 3.8f && !turnPose.IsFinite(); x += .1f)
+                for (var y = 1.4f; y <= 2.5f && !turnPose.IsFinite(); y += .1f)
+                    for (var z = -.9f; z <= .9f; z += .1f)
+                    {
+                        var at = bent.Position + bentBasis * new Vector3(x, y, z);
+                        if (BodyBlocked(at, initialHeading) || !BodyBlocked(at, quarterTurn))
+                            continue;
+                        turnPose = at;
+                        break;
+                    }
+            Require(turnPose.IsFinite(), "no clear-to-blocked Bass turn pose by bent branch");
+            fish.ClearAndDisarmInput();
+            fish.GlobalPosition = turnPose;
+            for (var i = 0; i < 3; i++) await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Require(!BodyBlocked(fish.GlobalPosition, fish.GlobalBasis),
+                "Bass turn starts intersecting bent branch");
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.D, Pressed = true });
+            var bodyHits = 0;
+            for (var frame = 0; frame < 50; frame++)
+            {
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                if (BodyBlocked(fish.GlobalPosition, fish.GlobalBasis)) bodyHits++;
+                var visual = fish.GetNodeOrNull<Node3D>("PlayerVisual");
+                Require(visual is not null && visual.GlobalPosition.DistanceTo(fish.GlobalPosition) < .001f,
+                    "Bass visual detached from authoritative body while turning");
+            }
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.D, Pressed = false });
+            var turnDegrees = Mathf.RadToDeg(initialHeading.Z.AngleTo(fish.GlobalBasis.Z));
+            Require(fish.GetLastYaw() > 0f && bodyHits == 0 && turnDegrees < 90f,
+                $"Bass rotated through bent branch input={fish.GetLastYaw():F2} turn={turnDegrees:F1} overlaps={bodyHits}");
+            GD.Print($"PIKE_BASS_BRANCH_TURN_OK pose={turnPose} turn_degrees={turnDegrees:F1} overlaps={bodyHits}");
             GD.Print($"PIKE_COVER_CHECK_OK seed={PikeCoverFixture.Seed} variants=23 families=10 instances={plan.Count} triangles={tris} materials={mats} shapes={actualShapes} zones=3 wood_support_max={supportMax:F2} fish_end={end} hollow_end={hollowEnd} pike_hollow_end={pike.GlobalPosition} camera_hits={cameraHits + hollowHits}");
             tree.Quit();
+
+            bool BodyBlocked(Vector3 at, Basis heading)
+            {
+                var body = fish.GetNode<CollisionShape3D>("Collision");
+                using var query = new PhysicsShapeQueryParameters3D
+                {
+                    Shape = body.Shape,
+                    Transform = new Transform3D(heading, at) * body.Transform,
+                    CollisionMask = fish.CollisionMask,
+                    Exclude = new Godot.Collections.Array<Rid> { fish.GetRid(), pike.GetRid() },
+                };
+                return scene.GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count > 0;
+            }
 
             void ProbeLine(string id, Vector3 start, Vector3 end, string role)
             {

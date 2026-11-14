@@ -10,8 +10,8 @@ public static class PlayerArt
     public static bool TryReplacePondStage(FishController fish, CharacterEntry entry,
         out string diagnostic)
     {
-        if (entry.Id != PikeEncounterAssets.BluegillId)
-        { diagnostic = "BLUEGILL_GROWTH_IDENTITY_INVALID"; return false; }
+        if (entry.Id != PikeEncounterAssets.BassId)
+        { diagnostic = "BASS_GROWTH_IDENTITY_INVALID"; return false; }
         if (!CharacterCatalog.TryInstantiate(entry, out var visual, out var animation, out diagnostic))
             return false;
         var previous = fish.GetNodeOrNull<Node3D>("PlayerVisual");

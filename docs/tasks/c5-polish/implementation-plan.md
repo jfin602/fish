@@ -1,6 +1,6 @@
 # C5 manual implementation plan
 
-**Status:** authored plan only; separate M1–M8 manual prompts. Read [assessment](prompt-assessment.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
+**Status:** M1 contact and escape-continuation corrections passed focused headless checks after owner native FAIL feedback; the latest world-isolation run passed after intermittent Godot .NET scene-change errors, and owner native recheck is pending before M2. M2–M8 remain authored manual prompts. Read [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md), [assessment](prompt-assessment.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
 
 ## Source owners / implementation order
 

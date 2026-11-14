@@ -30,7 +30,10 @@ public partial class PikeEncounter : Node3D
     private bool _failed;
     private bool _ended;
     private string _outcome = "active";
+    private int _escapeCount;
+    private double _escapeFeedbackUntil;
     public string Outcome => _outcome;
+    public int EscapeCount => _escapeCount;
     public IReadOnlyList<PikeCoverPlacement> CoverPlan { get; private set; } = Array.Empty<PikeCoverPlacement>();
     public WorldSightSensor? PikeSight { get; private set; }
     public SightEnvironment? SightWater { get; private set; }
@@ -74,19 +77,22 @@ public partial class PikeEncounter : Node3D
             PikeSight!.Reset();
             var close = ObserveFish().Sight;
             if (close.Detected && close.ClearRays > 0 &&
-                _pike.MouthCanReach(_fish.GlobalPosition, _fish.BodyRadius))
+                _pike.MouthCanReach(_fish))
             {
+                GD.Print($"PIKE_CATCH_CONTACT pike={_pike.GlobalPosition} bass={_fish.GlobalPosition} distance={_pike.GlobalPosition.DistanceTo(_fish.GlobalPosition):F3} mouth={_pike.MouthPosition} bass_radius={_fish.BodyRadius:F3}");
                 _pike.Mind.Catch(now);
                 Finish("caught", "Caught by the Pike after a committed strike.");
                 return;
             }
         }
-        if (_pike.Mind.Escaped)
+        if (_pike.Mind.ConsumeEscape())
         {
-            Finish("escaped", "Escaped: the Pike searched its last sensed area and disengaged.");
-            return;
+            _escapeCount++;
+            _escapeFeedbackUntil = now + 6.0;
+            GD.Print($"PIKE_ENCOUNTER_ESCAPE count={_escapeCount} seconds={now:F2} bass={_fish.GlobalPosition} pike={_pike.GlobalPosition}");
         }
-        _status.Text = $"PIKE ENCOUNTER · {_pike.Mind.Mode} · {_growth.Stage} · nutrition {_feeding.Nutrition} · Space: bite · Esc: pause" +
+        _status.Text = $"PIKE ENCOUNTER · {_pike.Mind.Mode} · Bass {_growth.Stage} · nutrition {_feeding.Nutrition} · Space: bite · Esc: pause" +
+            (now < _escapeFeedbackUntil ? $" · Escaped Pike {_escapeCount} — keep swimming" : "") +
             (now < _biteFeedbackUntil ? " · " + _biteFeedback : "");
     }
 
@@ -144,17 +150,17 @@ public partial class PikeEncounter : Node3D
 
     private void InitializeActors()
     {
-        if (!PikeEncounterAssets.TryValidate(out var bluegill, out var pike, out var diagnostic))
+        if (!PikeEncounterAssets.TryValidate(out var bass, out var pike, out var diagnostic))
         { Fail(diagnostic); return; }
-        DemoSelection.CharacterId = PikeEncounterAssets.BluegillId;
-        _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bluegill");
+        DemoSelection.CharacterId = bass!.Id;
+        _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass");
         _fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f,
             GetNode<SeabedSurface>("Habitat/Seabed").DeepFloorY - 2f,
             PikeCoverFixture.WaterY - .31f);
         _fish.ConfigurePondWaterline(GetNode<SeabedSurface>("Habitat/Seabed"));
         if (!PlayerArt.TryReplacePondStage(_fish, _growth.Entry(_growth.Asset), out diagnostic))
         { Fail(diagnostic); return; }
-        _fish.SetPondBodyRadius(_growth.ColliderRadius);
+        _fish.SetEncounterBassBody(_growth.ColliderRadius, _growth.ColliderLength);
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
         var actor = GetNode<PikeActor>("NorthernPike");
@@ -188,13 +194,13 @@ public partial class PikeEncounter : Node3D
         _fish.ClearAndDisarmInput();
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-        _status.Text = "PIKE ENCOUNTER · juvenile Bluegill: Bass larvae near shallow grass · Space: bite · Esc: pause";
-        GD.Print($"PIKE_ENCOUNTER_READY player=FAF-FISH-006 pike=FAF-FISH-010 prey=FAF-FISH-007:juvenile juvenile_count=4 larva_count=6 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed} player_pos={_fish.GlobalPosition} prey_pos={_prey[0].GlobalPosition} larva_pos={_prey[4].GlobalPosition}");
+        _status.Text = "PIKE ENCOUNTER · juvenile Bass: Bluegill larvae near shallow grass · Space: bite · Esc: pause";
+        GD.Print($"PIKE_ENCOUNTER_READY player={PondGrowthState.SpeciesId} identity={_growth.Identity} stage={_growth.Stage} pike={PikeEncounterAssets.PikeId} prey={PikeEncounterAssets.BluegillId} juvenile_count=4 larva_count=6 world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed} player_pos={_fish.GlobalPosition} prey_pos={_prey[0].GlobalPosition} larva_pos={_prey[4].GlobalPosition}");
     }
 
     private void InitializePrey(IReadOnlyList<SoftSightCover> plants)
     {
-        if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId, "FAF-FISH-007",
+        if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId, PikeEncounterAssets.BluegillId,
                 "juvenile", SpeciesRole.Ecological, out var asset, out var diagnostic) || asset is null)
             throw new InvalidOperationException("PREY_ASSET_UNAVAILABLE " + diagnostic);
         var scene = ResourceLoader.Load<PackedScene>(asset.ModelPath, "", ResourceLoader.CacheMode.Ignore)
@@ -213,9 +219,9 @@ public partial class PikeEncounter : Node3D
                 ?? throw new InvalidOperationException("PREY_ANIMATION_UNAVAILABLE");
             if (!animation.HasAnimation(swim) || !animation.HasAnimation(fast))
                 throw new InvalidOperationException("PREY_SWIM_CLIPS_UNAVAILABLE");
-            var body = new PreyActor { Name = "BassPrey" + i, CollisionLayer = 1, CollisionMask = 1,
+            var body = new PreyActor { Name = "BluegillPrey" + i, CollisionLayer = 1, CollisionMask = 1,
                 MotionMode = CharacterBody3D.MotionModeEnum.Floating };
-            body.SetIdentity($"pike-{PikeCoverFixture.Seed}:bass-juvenile:{i}",
+            body.SetIdentity($"pike-{PikeCoverFixture.Seed}:bluegill-juvenile:{i}",
                 asset.Id, "juvenile", asset.Dimensions[1]);
             AddChild(body);
             var point = spawns[i];
@@ -235,12 +241,12 @@ public partial class PikeEncounter : Node3D
         }
         PreySight = _preySight[0];
         PreyCues = _preyCues[0];
-        AddBassLarvae(plants);
+        AddBluegillLarvae(plants);
     }
 
-    private void AddBassLarvae(IReadOnlyList<SoftSightCover> plants)
+    private void AddBluegillLarvae(IReadOnlyList<SoftSightCover> plants)
     {
-        if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId, "FAF-FISH-007",
+        if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId, PikeEncounterAssets.BluegillId,
                 "larva", SpeciesRole.Ecological, out var asset, out var diagnostic) || asset is null)
             throw new InvalidOperationException("LARVA_ASSET_UNAVAILABLE " + diagnostic);
         var scene = ResourceLoader.Load<PackedScene>(asset.ModelPath, "", ResourceLoader.CacheMode.Ignore)
@@ -263,9 +269,9 @@ public partial class PikeEncounter : Node3D
                 ?? throw new InvalidOperationException("LARVA_ANIMATION_UNAVAILABLE");
             if (!animation.HasAnimation(swim) || !animation.HasAnimation(fast))
                 throw new InvalidOperationException("LARVA_SWIM_CLIPS_UNAVAILABLE");
-            var body = new PreyActor { Name = "BassLarva" + i, CollisionLayer = 1, CollisionMask = 1,
+            var body = new PreyActor { Name = "BluegillLarva" + i, CollisionLayer = 1, CollisionMask = 1,
                 MotionMode = CharacterBody3D.MotionModeEnum.Floating };
-            body.SetIdentity($"pike-{PikeCoverFixture.Seed}:bass-larva:{i}",
+            body.SetIdentity($"pike-{PikeCoverFixture.Seed}:bluegill-larva:{i}",
                 asset.Id, "larva", asset.Dimensions[1]);
             AddChild(body);
             var point = points[i].Position;
@@ -276,7 +282,9 @@ public partial class PikeEncounter : Node3D
             model.Name = "PreyVisual";
             body.AddChild(model);
             model.Rotation = new Vector3(0, Mathf.Pi, 0);
-            model.Scale = Vector3.One * _growth.Entry(_growth.Asset).WorldScale;
+            var adultBluegill = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "adult")
+                ?? throw new InvalidOperationException("BLUEGILL_ADULT_SCALE_UNAVAILABLE");
+            model.Scale = Vector3.One / adultBluegill.Dimensions[1];
             body.Configure(plants, animation, swim, fast);
             _prey.Add(body);
             _preySight.Add(new WorldSightSensor(GetWorld3D().DirectSpaceState, plants,
@@ -312,7 +320,7 @@ public partial class PikeEncounter : Node3D
     {
         if (_failed || _transitioning || _ended || GetTree().Paused)
             return new(false, "encounter inactive", 0);
-        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * _fish.BodyRadius;
+        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * _fish.BodyForwardReach;
         target ??= _prey.Where(p => p.IsAlive &&
                 FeedingLedger.IsEligiblePrey(p.SpeciesId, p.Stage, p.Length,
                     _growth.Stage, _growth.Length) &&
@@ -352,18 +360,21 @@ public partial class PikeEncounter : Node3D
         if (_growth is null || _failed || _transitioning || _ended || GetTree().Paused ||
             _growth.Next(_feeding.Nutrition) is not { } next) return false;
         var radius = _growth.RadiusForNext();
+        var length = _growth.LengthForNext();
         if (_fish.GlobalPosition.Y > _fish.PondWaterlineHeight - .65f * radius) return false;
+        using var grownShape = new CapsuleShape3D { Radius = radius, Height = length };
         using var query = new PhysicsShapeQueryParameters3D
         {
-            Shape = new SphereShape3D { Radius = radius },
-            Transform = new Transform3D(Basis.Identity, _fish.GlobalPosition),
+            Shape = grownShape,
+            Transform = new Transform3D(_fish.GlobalBasis * new Basis(Vector3.Right, Mathf.Pi * .5f),
+                _fish.GlobalPosition + _fish.GlobalBasis.Z * length * .08f),
             CollisionMask = _fish.CollisionMask,
             Exclude = new Godot.Collections.Array<Rid> { _fish.GetRid() },
         };
         if (GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0) return false;
         if (!PlayerArt.TryReplacePondStage(_fish, _growth.Entry(next), out var diagnostic))
-        { Fail("BLUEGILL_GROWTH_VISUAL_UNAVAILABLE " + diagnostic); return false; }
-        _fish.SetPondBodyRadius(radius);
+        { Fail("BASS_GROWTH_VISUAL_UNAVAILABLE " + diagnostic); return false; }
+        _fish.SetEncounterBassBody(radius, length);
         _growth.Commit(next);
         PikeSight?.Reset();
         foreach (var sight in _preySight) sight.Reset();
@@ -373,7 +384,7 @@ public partial class PikeEncounter : Node3D
 
     private FeedResult ReportBite(FeedResult result, string? stage = null)
     {
-        _biteFeedback = result.Consumed ? "Bass " + stage + " eaten" : "Bite missed: " + result.Reason;
+        _biteFeedback = result.Consumed ? "Bluegill " + stage + " eaten" : "Bite missed: " + result.Reason;
         _biteFeedbackUntil = (MovementCues?.SimulationSeconds ?? 0) + 1.6;
         return result;
     }

@@ -124,7 +124,7 @@ public partial class FollowCamera : Node3D
         var safeDesired = UnobstructedPosition(anchor, desired);
         if (_resetPending)
         {
-            GlobalPosition = safeDesired;
+            GlobalPosition = ResolveEncounterOverlap(anchor, safeDesired);
             _resetPending = false;
         }
         else
@@ -135,7 +135,7 @@ public partial class FollowCamera : Node3D
                 ? _fish.Tuning.CameraRecoveryResponse : _fish.Tuning.CameraFollowResponse;
             var fraction = 1.0f - Mathf.Exp(-Mathf.Max(0.01f, response) * (float)delta);
             var candidate = GlobalPosition.Lerp(safeDesired, fraction);
-            GlobalPosition = UnobstructedPosition(anchor, candidate);
+            GlobalPosition = ResolveEncounterOverlap(anchor, UnobstructedPosition(anchor, candidate));
         }
         FaceTarget(lookTarget);
     }
@@ -344,6 +344,40 @@ public partial class FollowCamera : Node3D
         // A nearby wall can force less than the preferred minimum distance.
         var allowed = Mathf.Max(0.05f, length * proportions[0] - ObstacleClearance);
         return anchor + motion.Normalized() * Mathf.Min(allowed, length);
+    }
+
+    private Vector3 ResolveEncounterOverlap(Vector3 anchor, Vector3 candidate)
+    {
+        // Near the Bass-sized hollow, the cast can start inside a wood shell.
+        // An initial overlap gives CastMotion no safe travel fraction, so verify
+        // the final eye location against the actual cover shape as well.
+        if (_fish.GetNode<CollisionShape3D>("Collision").Shape is not CapsuleShape3D ||
+            !Overlaps(candidate)) return candidate;
+        for (var step = 1; step <= 16; step++)
+        {
+            var towardFish = candidate.Lerp(anchor, step / 16f);
+            if (!Overlaps(towardFish)) return towardFish;
+        }
+        foreach (var distance in new[] { .2f, .4f, .6f, .8f, 1f, 1.2f })
+            foreach (var direction in new[] { Vector3.Up, Vector3.Down, Vector3.Right,
+                Vector3.Left, Vector3.Forward, Vector3.Back })
+            {
+                var nearby = anchor + direction * distance;
+                if (!Overlaps(nearby)) return nearby;
+            }
+        return candidate;
+    }
+
+    private bool Overlaps(Vector3 point)
+    {
+        using var query = new PhysicsShapeQueryParameters3D
+        {
+            Shape = _probe,
+            Transform = new Transform3D(Basis.Identity, point),
+            CollisionMask = 1,
+            Exclude = new Godot.Collections.Array<Rid> { _fish.GetRid() },
+        };
+        return GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0;
     }
 
     private void FaceTarget(Vector3 target)

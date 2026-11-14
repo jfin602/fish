@@ -18,7 +18,7 @@ public static class WorldDestinations
     {
         FromWorld(WorldCatalog.Resolve(WorldCatalog.OceanId)),
         FromWorld(WorldCatalog.Resolve(WorldCatalog.PondId)),
-        new WorldDestination(PikeId, "Pike Encounter", "Bluegill vs Northern Pike · isolated development encounter",
+        new WorldDestination(PikeId, "Pike Encounter", "Bass, Bluegill prey and Northern Pike · isolated development encounter",
             new Color(.38f, .48f, .22f)),
     };
 
@@ -30,27 +30,31 @@ public static class PikeEncounterAssets
 {
     public const string ScenePath = "res://scenes/p5_pike_encounter.tscn";
     public const string BluegillId = "FAF-FISH-006";
+    public const string BassId = "FAF-FISH-007";
     public const string PikeId = "FAF-FISH-010";
 
-    public static bool TryValidate(out CharacterEntry? bluegill, out CharacterEntry? pike,
-        out string diagnostic, string scenePath = ScenePath, string bluegillId = BluegillId,
+    public static bool TryValidate(out CharacterEntry? bass, out CharacterEntry? pike,
+        out string diagnostic, string scenePath = ScenePath, string bassId = BassId,
         string pikeId = PikeId, IReadOnlyList<CharacterEntry>? catalog = null)
     {
-        bluegill = null;
+        bass = null;
         pike = null;
         if (scenePath != ScenePath || !Godot.FileAccess.FileExists(scenePath) ||
             ResourceLoader.Load<PackedScene>(scenePath) is null)
         { diagnostic = "PIKE_SCENE_MISSING action=restore-and-import-encounter-scene"; return false; }
-        if (bluegillId != BluegillId || pikeId != PikeId)
-        { diagnostic = "PIKE_SPECIES_INELIGIBLE action=use-bluegill-and-northern-pike"; return false; }
+        if (bassId != BassId || pikeId != PikeId)
+        { diagnostic = "PIKE_SPECIES_INELIGIBLE action=use-bass-and-northern-pike"; return false; }
         var entries = catalog ?? CharacterCatalog.All;
-        if (!SpeciesCompatibility.TryResolveFrom(entries, WorldCatalog.PondId, bluegillId,
-            SpeciesRole.Selectable, out bluegill, out diagnostic) || bluegill is null)
-        { diagnostic = "PIKE_BLUEGILL_UNAVAILABLE " + diagnostic; return false; }
+        if (!SpeciesCompatibility.TryResolveFrom(entries, WorldCatalog.PondId, bassId,
+            SpeciesRole.Selectable, out bass, out diagnostic) || bass is null)
+        { diagnostic = "PIKE_BASS_UNAVAILABLE " + diagnostic; return false; }
+        if (!SpeciesCompatibility.TryResolveFrom(entries, WorldCatalog.PondId, BluegillId,
+            SpeciesRole.Ecological, out var bluegill, out diagnostic) || bluegill is null)
+        { diagnostic = "PIKE_BLUEGILL_PREY_UNAVAILABLE " + diagnostic; return false; }
         if (!SpeciesCompatibility.TryResolveFrom(entries, WorldCatalog.PondId, pikeId,
             SpeciesRole.Ecological, out pike, out diagnostic) || pike is null)
         { diagnostic = "PIKE_MODEL_UNAVAILABLE " + diagnostic; return false; }
-        foreach (var actor in new[] { bluegill, pike })
+        foreach (var actor in new[] { bass, bluegill, pike })
             if (!CharacterCatalog.TryInstantiate(actor, out var model, out _, out diagnostic))
             { diagnostic = $"PIKE_MODEL_INVALID id={actor.Id} {diagnostic}"; return false; }
             else model!.Free();

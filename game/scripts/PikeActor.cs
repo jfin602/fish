@@ -15,13 +15,19 @@ public partial class PikeActor : CharacterBody3D
     public Vector3 LastSteeringTarget { get; private set; }
     public float ActualSpeed => Velocity.Length();
 
-    public bool MouthCanReach(Vector3 fishPosition, float fishRadius)
+    public Vector3 MouthPosition => GlobalPosition - GlobalBasis.Z * 1.32f;
+
+    public bool MouthCanReach(FishController fish)
     {
-        if (!float.IsFinite(fishRadius) || fishRadius <= 0) return false;
+        var collision = fish.GetNode<CollisionShape3D>("Collision");
+        if (collision.Shape is not CapsuleShape3D capsule) return false;
         var forward = -GlobalBasis.Z;
-        var mouth = GlobalPosition + forward * 1.32f;
-        return mouth.DistanceTo(fishPosition) <= fishRadius + .25f &&
-            forward.Dot((fishPosition - GlobalPosition).Normalized()) > .65f;
+        var mouth = MouthPosition;
+        var local = collision.ToLocal(mouth);
+        var spine = Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+            capsule.Height * .5f - capsule.Radius);
+        return local.DistanceTo(new Vector3(0f, spine, 0f)) <= capsule.Radius + .06f &&
+            forward.Dot((fish.GlobalPosition - GlobalPosition).Normalized()) > .65f;
     }
 
     public void Configure()

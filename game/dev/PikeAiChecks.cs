@@ -32,10 +32,17 @@ public static class PikeAiChecks
             var contactBasis = actor.GlobalBasis;
             actor.GlobalPosition = new Vector3(0, 4, 0);
             actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
-            Need(!actor.MouthCanReach(new Vector3(0, 4, -2.3f), .48f) &&
-                actor.MouthCanReach(new Vector3(0, 4, -1.78f), .48f) &&
-                !actor.MouthCanReach(new Vector3(0, 4, 1.78f), .48f),
-                "Pike bite reached before mouth contact or behind body");
+            var fishPosition = fish.GlobalPosition;
+            var fishBasis = fish.GlobalBasis;
+            fish.GlobalBasis = Basis.Identity;
+            fish.GlobalPosition = new Vector3(0, 4, -2.3f);
+            Need(!actor.MouthCanReach(fish), "Pike bite reached across open water");
+            fish.GlobalPosition = new Vector3(0, 4, -1.48f);
+            Need(actor.MouthCanReach(fish), "Pike missed physical Bass contact");
+            fish.GlobalPosition = new Vector3(0, 4, 1.48f);
+            Need(!actor.MouthCanReach(fish), "Pike bite reached behind body");
+            fish.GlobalPosition = fishPosition;
+            fish.GlobalBasis = fishBasis;
             actor.GlobalPosition = contactPosition;
             actor.GlobalBasis = contactBasis;
             var strong = new SightEvidence(true, .4f, "visible", 1, 1, 1, 3, 3, 7,
@@ -144,6 +151,9 @@ public static class PikeAiChecks
                     mind.Step(from, sample, default, 7, false);
                     Need(mind.Mode == PikeMode.Disengage && mind.Escaped,
                         id + " lost-contact search never ended");
+                    Need(mind.ConsumeEscape() && !mind.ConsumeEscape() &&
+                        mind.Mode == PikeMode.Disengage,
+                        id + " escape was not a one-time nonterminal event");
                     mind.Reset();
                     checkedWood++;
                 }
@@ -191,13 +201,64 @@ public static class PikeAiChecks
             Need(actor.Mind.Destination(0, patrolStart).DistanceTo(
                     actor.Mind.Destination(31.4, patrolStart)) > 18f,
                 "Pike patrol did not cover the connected Pond route");
-            // Run the actual fixture for an exposed, stationary Bluegill. The
+            // The same Bass must remain playable after a confirmed escape.
+            actor.GlobalPosition = new Vector3(22, PikeCoverFixture.Bed(22, 22) + 2f, 22);
+            actor.ResetActor();
+            fish.GlobalPosition = new Vector3(0, PikeCoverFixture.Bed(0, -15) + 2f, -15);
+            fish.ClearAndDisarmInput();
+            var bassIdentity = scene.Growth.Identity;
+            var nutritionBeforeEscape = scene.Feeding.Nutrition;
+            var escapeMind = actor.Mind;
+            escapeMind.Step(actor.GlobalPosition,
+                strong with { SensedPosition = fish.GlobalPosition, SensedAt = -7.5 },
+                default, -7.5, false);
+            escapeMind.Step(actor.GlobalPosition, hidden, default, -7.1, false);
+            escapeMind.Step(actor.GlobalPosition, hidden, default, 0, false);
+            Need(escapeMind.Escaped && escapeMind.Mode == PikeMode.Disengage,
+                "fixture escape setup did not produce a confirmed disengagement");
+            scene.PikeSight!.Reset();
+            scene.SetPhysicsProcess(true);
+            for (var frame = 0; frame < 5; frame++)
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Need(scene.Outcome == "active" && scene.EscapeCount == 1 && !tree.Paused &&
+                scene.Growth.Identity == bassIdentity &&
+                scene.Feeding.Nutrition == nutritionBeforeEscape &&
+                !escapeMind.Escaped &&
+                scene.FindChild("EncounterMenu", true, false) is Control { Visible: false } &&
+                scene.FindChild("EncounterStatus", true, false) is Label status &&
+                status.Text.Contains("keep swimming"),
+                "escape wrongly ended or paused the Bass life");
+            var afterEscapeTime = scene.MovementCues!.SimulationSeconds;
+            fish.SetInputMode("keyboard");
+            fish.ClearAndDisarmInput();
+            for (var frame = 0; frame < 3; frame++)
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            var afterEscapePosition = fish.GlobalPosition;
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+            for (var frame = 0; frame < 20; frame++)
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
+            fish.ClearAndDisarmInput();
+            Need(scene.Outcome == "active" && scene.EscapeCount == 1 && !tree.Paused &&
+                scene.MovementCues.SimulationSeconds > afterEscapeTime &&
+                fish.GlobalPosition.DistanceTo(afterEscapePosition) > .15f,
+                "escaped Bass did not keep swimming with one escape event");
+            scene._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
+            var resume = scene.FindChild("ResumeEncounter", true, false) as Button;
+            Need(tree.Paused && resume is { Disabled: false },
+                "escape disabled ordinary pause/resume");
+            resume!.EmitSignal(BaseButton.SignalName.Pressed);
+            Need(!tree.Paused &&
+                scene.FindChild("EncounterMenu", true, false) is Control { Visible: false },
+                "escaped Bass could not resume after voluntary pause");
+            scene.SetPhysicsProcess(false);
+            // Run the actual fixture for an exposed, stationary Bass. The
             // temporary result must follow sight, windup, movement and bite range.
             var openY = Mathf.Max(PikeCoverFixture.Bed(0, 9), PikeCoverFixture.Bed(0, 5)) + 2f;
             actor.GlobalPosition = new Vector3(0, openY, 9);
             actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
             actor.ResetActor();
-            fish.GlobalPosition = new Vector3(0, openY, 5);
+            fish.GlobalPosition = new Vector3(0, openY, 7);
             fish.ClearAndDisarmInput();
             scene.PikeSight!.Reset();
             scene.MovementCues!.Reset();
@@ -206,7 +267,7 @@ public static class PikeAiChecks
                 await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
             Need(scene.Outcome == "caught" && actor.Mind.Mode == PikeMode.Caught && tree.Paused,
                 $"exposed fixture did not produce a physical temporary catch outcome={scene.Outcome} mode={actor.Mind.Mode} ready={actor.Mind.StrikeReady} time={scene.MovementCues.SimulationSeconds:F2} distance={actor.GlobalPosition.DistanceTo(fish.GlobalPosition):F2} at={actor.GlobalPosition}");
-            GD.Print($"PIKE_AI_CHECK_OK seed={PikeCoverFixture.Seed} wood={checkedWood} states=8 open_catch=true hidden_escape=true pause=true restart=2");
+            GD.Print($"PIKE_AI_CHECK_OK seed={PikeCoverFixture.Seed} wood={checkedWood} states=8 open_catch=true hidden_escape_continues=true pause=true restart=2");
             tree.Quit();
         }
         catch (Exception error)
@@ -222,15 +283,16 @@ public static class PikeAiChecks
             var collision = body.GetNode<CollisionShape3D>("Collision");
             // A smaller concentric capsule distinguishes penetration from
             // normal contact tolerances at the outer collision surface.
-            var hits = scene.GetWorld3D().DirectSpaceState.IntersectShape(
-                new PhysicsShapeQueryParameters3D
+            using var probeShape = new CapsuleShape3D { Radius = .35f, Height = 2.4f };
+            using var query = new PhysicsShapeQueryParameters3D
                 {
-                    Shape = new CapsuleShape3D { Radius = .35f, Height = 2.4f },
+                    Shape = probeShape,
                     Transform = collision.GlobalTransform,
                     CollisionMask = 1,
                     Margin = 0,
                     Exclude = new Godot.Collections.Array<Rid> { body.GetRid(), fish.GetRid() },
-                }, 1);
+                };
+            var hits = scene.GetWorld3D().DirectSpaceState.IntersectShape(query, 1);
             return hits.Count == 0 ? "" :
                 (hits[0]["collider"].AsGodotObject() as Node)?.GetPath().ToString() ?? "unknown";
         }

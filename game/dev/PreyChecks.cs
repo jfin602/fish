@@ -18,24 +18,25 @@ public static class PreyChecks
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             scene.SetPhysicsProcess(false);
             var fish = scene.GetNode<FishController>("Fish");
-            var prey = scene.GetNode<PreyActor>("BassPrey0");
+            var prey = scene.GetNode<PreyActor>("BluegillPrey0");
             var school = scene.PreyActors.Where(p => p.Stage == "juvenile").ToArray();
             Need(school.Length == 4 && school.Select(p => p.GlobalPosition).Distinct().Count() == 4,
                 "juvenile group missing or overlapping spawn positions");
             var pike = scene.GetNode<PikeActor>("NorthernPike");
             var plants = PikeCoverFixture.VisibleSoftCover(scene.GetNode<Node3D>("Cover"));
             Need(SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId,
-                "FAF-FISH-007", "juvenile", SpeciesRole.Ecological, out var stage, out _) &&
-                stage is not null && stage.Dimensions[1] > .2f && stage.Dimensions[1] < .3f &&
+                PikeEncounterAssets.BluegillId, "juvenile", SpeciesRole.Ecological, out var stage, out _) &&
+                stage is not null && stage.Dimensions[1] > .09f && stage.Dimensions[1] < .11f &&
                 PondCreatureCatalog.Stage("FAF-FISH-007", "adult") is { } bassAdult &&
                 PondCreatureCatalog.Stage("FAF-FISH-006", "adult") is { } bluegillAdult &&
                 bassAdult.Dimensions[1] > bluegillAdult.Dimensions[1] &&
                 !SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.OceanId,
-                    "FAF-FISH-007", "juvenile", SpeciesRole.Ecological, out _, out _) &&
+                    PikeEncounterAssets.BluegillId, "juvenile", SpeciesRole.Ecological, out _, out _) &&
                 !SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId,
-                    "FAF-FISH-007", "adult", SpeciesRole.Selectable, out _, out _),
+                    PikeEncounterAssets.BluegillId, "adult", SpeciesRole.Selectable, out _, out _),
                 "Pond juvenile eligibility or size drift");
-            Need(prey.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D { Radius: .075f } &&
+            Need(prey.SpeciesId == PikeEncounterAssets.BluegillId &&
+                prey.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D { Radius: .075f } &&
                 prey.GetNode<AnimationPlayer>("PreyVisual/AnimationPlayer").HasAnimation(stage!.Clip("SwimFast")),
                 "prey lacks body or authentic swim rig");
             Need(plants.Any(p => p.FafId.StartsWith("FAF-PLANT-012")) &&
@@ -54,7 +55,7 @@ public static class PreyChecks
                     "juvenile spawn is too far, behind player or inside solid cover: " + member.Name);
             }
             var forageTravel = 0f;
-            foreach (var larvaName in new[] { "BassLarva0", "BassLarva2" })
+            foreach (var larvaName in new[] { "BluegillLarva0", "BluegillLarva2" })
             {
                 var larva = scene.GetNode<PreyActor>(larvaName);
                 var home = larva.GlobalPosition;
@@ -224,7 +225,7 @@ public static class PreyChecks
             cues.Reset();
             Need(prey.Mind.Mode == PreyMode.Forage && prey.Mind.LastSensedPosition is null &&
                 cues.Events.Count == 0, "prey/field reset incomplete");
-            GD.Print($"PREY_CHECK_OK seed={PikeCoverFixture.Seed} stage=FAF-FISH-007:juvenile forage_travel={forageTravel:F2} grass={careful[0].Reason}/{careful[0].Strength:F4} log={careful[1].Reason}/{careful[1].Strength:F4} open={open.Max(v => v.Strength):F4} plant_attenuation={plantAttenuation:F4} fast_cue={fastCue.Strength:F4} slow_cue={slowCue.Strength:F4} flee={held.DistanceTo(start):F2} first_cover={firstFamily}:{firstCover} last_cover={chosenCover} root_gap=clear fork_end={forkEnd} split_wood=solid");
+            GD.Print($"PREY_CHECK_OK seed={PikeCoverFixture.Seed} stage=FAF-FISH-006:juvenile forage_travel={forageTravel:F2} grass={careful[0].Reason}/{careful[0].Strength:F4} log={careful[1].Reason}/{careful[1].Strength:F4} open={open.Max(v => v.Strength):F4} plant_attenuation={plantAttenuation:F4} fast_cue={fastCue.Strength:F4} slow_cue={slowCue.Strength:F4} flee={held.DistanceTo(start):F2} first_cover={firstFamily}:{firstCover} last_cover={chosenCover} root_gap=clear fork_end={forkEnd} split_wood=solid");
             tree.Quit();
 
             bool InsideWood(PreyActor? candidate = null)

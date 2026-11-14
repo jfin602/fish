@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Fish;
 
-/// <summary>Registered Bass feeding, rigs and collision-based stage transition probe.</summary>
+/// <summary>Registered Bass growth, rigs and collision-based stage transition probe.</summary>
 public static class GrowthChecks
 {
     public static async void Run(PikeEncounter scene)
@@ -25,6 +25,12 @@ public static class GrowthChecks
             Need(DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
                 scene.Growth.Stage == "juvenile" &&
                 Near(fish.BodyRadius, scene.Growth.ColliderRadius), "juvenile identity or collider");
+            var juvenileCollision = fish.GetNode<CollisionShape3D>("Collision");
+            Need(juvenileCollision.Shape is CapsuleShape3D { } juvenileCapsule &&
+                Near(juvenileCapsule.Height, scene.Growth.ColliderLength) &&
+                Near(juvenileCapsule.Radius, scene.Growth.ColliderRadius) &&
+                Near(fish.BodyForwardReach, scene.Growth.ColliderLength * .42f),
+                "juvenile Bass physical body does not follow registered dimensions");
             CheckRig();
             var larva = scene.PreyActors[4];
             var open = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
@@ -43,16 +49,16 @@ public static class GrowthChecks
                 "camera update mutated growth");
             Need(FeedingLedger.IsEligiblePrey(larva.SpeciesId, larva.Stage, larva.Length,
                     scene.Growth.Stage, scene.Growth.Length),
-                "registered Bass larva should be edible from juvenile Bluegill");
+                "registered Bluegill larva should be edible from juvenile Bass");
             var wall = new StaticBody3D { Name = "GrowthTestWall", CollisionLayer = 1 };
             scene.AddChild(wall);
-            wall.GlobalPosition = fish.GlobalPosition + new Vector3(.27f, 0, 0);
+            wall.GlobalPosition = fish.GlobalPosition + new Vector3(.16f, 0, 0);
             wall.AddChild(new CollisionShape3D { Shape = new BoxShape3D
                 { Size = new Vector3(.08f, 1f, 1f) } });
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(larva).Consumed && scene.Feeding.Nutrition == 4 &&
                 scene.Growth.Stage == "juvenile" && !scene.TryAdvanceGrowth(),
-                "near-wall stage should defer after real Bass bite");
+                "near-wall stage should defer after real Bluegill bite");
             wall.QueueFree();
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryAdvanceGrowth() && scene.Growth.Stage == "subadult" &&
@@ -70,8 +76,8 @@ public static class GrowthChecks
                 fish.GlobalBasis = Basis.Identity;
                 prey.GlobalPosition = open + new Vector3(0, 0, -.95f);
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-                Need(scene.TryBite(prey).Consumed, "subadult Bass larva bite failed");
-                Need(!scene.TryBite(prey).Consumed, "duplicate Bass bite awarded");
+                Need(scene.TryBite(prey).Consumed, "subadult Bluegill larva bite failed");
+                Need(!scene.TryBite(prey).Consumed, "duplicate Bluegill bite awarded");
             }
             Need(scene.Growth.Stage == "adult" && scene.Feeding.Nutrition == 12 &&
                 scene.Feeding.Events.Count == 3 && scene.Growth.Identity == identity &&
@@ -79,14 +85,14 @@ public static class GrowthChecks
                 Near(fish.BodyRadius, PondGrowthState.AdultColliderRadius),
                 "adult stage, one-time awards or identity changed");
             CheckRig();
-            var juvenileBass = scene.PreyActors[0];
+            var juvenileBluegill = scene.PreyActors[0];
             fish.GlobalPosition = open;
             fish.GlobalBasis = Basis.Identity;
-            juvenileBass.GlobalPosition = open + new Vector3(0, 0, -.95f);
+            juvenileBluegill.GlobalPosition = open + new Vector3(0, 0, -.95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(scene.TryBite(juvenileBass).Consumed &&
-                !scene.TryBite(juvenileBass).Consumed && scene.Feeding.Events.Count == 4,
-                "adult Bluegill did not gain a one-time Bass-juvenile hunt");
+            Need(scene.TryBite(juvenileBluegill).Consumed &&
+                !scene.TryBite(juvenileBluegill).Consumed && scene.Feeding.Events.Count == 4,
+                "adult Bass did not gain a one-time Bluegill-juvenile hunt");
             Need(camera.GetNode<Camera3D>("Camera3D").Current &&
                 Near(fish.BodyScale, 1f), "camera/body scale lost at adult");
             fish.GlobalPosition = open;
@@ -107,7 +113,14 @@ public static class GrowthChecks
                 var visual = fish.GetNode<Node3D>("PlayerVisual");
                 var player = visual.FindChild("AnimationPlayer", true, false) as AnimationPlayer;
                 var motion = visual.GetNode<CatalogFishVisualMotion>("SwimPresentation");
-                Need(PondCreatureCatalog.ExportMatches(asset) &&
+                var adultBass = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!;
+                Need(asset.Id == PikeEncounterAssets.BassId &&
+                    Near(visual.Scale.X, 1f / adultBass.Dimensions[1]) &&
+                    Near(fish.BodyRadius, asset.Dimensions[0] /
+                        (2f * adultBass.Dimensions[1])) &&
+                    fish.GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D body &&
+                    Near(body.Height, asset.Dimensions[1] / adultBass.Dimensions[1]) &&
+                    PondCreatureCatalog.ExportMatches(asset) &&
                     player is not null && player.HasAnimation(asset.Clip("Glide")) &&
                     player.HasAnimation(asset.Clip("Swim")) &&
                     player.HasAnimation(asset.Clip("SwimFast")) &&
@@ -125,6 +138,8 @@ public static class GrowthChecks
     private static void ClearanceSurvey(PikeEncounter scene, FishController fish)
     {
         var catalog = PikeCoverFixture.LoadCatalog();
+        var juvenileRadius = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "juvenile")!.Dimensions[0] /
+            (2f * PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!.Dimensions[1]);
         var exclude = new Godot.Collections.Array<Rid> { fish.GetRid(),
             scene.GetNode<PikeActor>("NorthernPike").GetRid() };
         foreach (var prey in scene.PreyActors) exclude.Add(prey.GetRid());
@@ -147,7 +162,7 @@ public static class GrowthChecks
                         var local = new Vector3((ix - 8) * .3f, .55f + iy * .35f, (iz - 8) * .3f);
                         var at = placement.Position + basis * local;
                         if (at.Y > PikeCoverFixture.WaterY - .65f * PondGrowthState.AdultColliderRadius) continue;
-                        var juvenile = Clear(.155f, at);
+                        var juvenile = Clear(juvenileRadius, at);
                         var adult = Clear(PondGrowthState.AdultColliderRadius, at);
                         juvenileCells[ix, iz] = juvenile;
                         adultCells[ix, iz] = adult;
@@ -177,9 +192,9 @@ public static class GrowthChecks
                             (x - 8) * .3f, .55f + iy * .35f, (z - 8) * .3f);
                         var to = placement.Position + basis * new Vector3(
                             (xx - 8) * .3f, .55f + iy * .35f, (zz - 8) * .3f);
-                        if (!Clear(.155f, from.Lerp(to, .25f)) ||
-                            !Clear(.155f, from.Lerp(to, .5f)) ||
-                            !Clear(.155f, from.Lerp(to, .75f))) continue;
+                        if (!Clear(juvenileRadius, from.Lerp(to, .25f)) ||
+                            !Clear(juvenileRadius, from.Lerp(to, .5f)) ||
+                            !Clear(juvenileRadius, from.Lerp(to, .75f))) continue;
                         seen[xx, zz] = true;
                         queue.Enqueue((xx, zz));
                     }
@@ -205,7 +220,7 @@ public static class GrowthChecks
                     scene.GetNode<PikeActor>("NorthernPike").GetRid(), fish.GetRid(),
                     range: 42f, acuity: 2.5f);
                 var juvenile = sensor.Observe(observer, -Vector3.Right,
-                    new SightTarget(center, .155f, 1f), scene.SightWater!, 1, false);
+                    new SightTarget(center, juvenileRadius, 1f), scene.SightWater!, 1, false);
                 sensor.Reset();
                 var adult = sensor.Observe(observer, -Vector3.Right,
                     new SightTarget(center, PondGrowthState.AdultColliderRadius, 1f),

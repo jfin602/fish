@@ -27,41 +27,50 @@ public static class FeedingChecks
                 "fixture did not start juvenile and hungry");
             Need(larvae.Length == 6 && juveniles.Length == 4 &&
                 scene.PreyActors.Select(p => p.StableId).Distinct().Count() == 10,
-                "registered Bass spawn identities changed");
+                "registered Bluegill spawn identities changed");
             Need(larvae[0].GlobalPosition.DistanceTo(fish.GlobalPosition) < 4f &&
                 larvae[1].GlobalPosition.DistanceTo(fish.GlobalPosition) < 6f &&
                 larvaSpawns.All(p => !InsideWood(p)),
-                "first Bass larvae are distant or inside solid wood");
+                "first Bluegill larvae are distant or inside solid wood");
             Need(larvae.All(p => p.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D { Radius: .07f } &&
-                p.GetNode<Node3D>("PreyVisual").Scale.X > 3f),
-                "Bass larvae lack visible registered rigs or physical bodies");
+                p.GetNode<Node3D>("PreyVisual").Scale.X > 3f &&
+                p.SpeciesId == PikeEncounterAssets.BluegillId &&
+                p.Length == PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "larva")!.Dimensions[1]),
+                "Bluegill larvae lack visible registered rigs or physical bodies");
 
-            var bluegillJuvenile = PondCreatureCatalog.Stage("FAF-FISH-006", "juvenile")!;
-            var bluegillAdult = PondCreatureCatalog.Stage("FAF-FISH-006", "adult")!;
-            var bassLarva = PondCreatureCatalog.Stage("FAF-FISH-007", "larva")!;
-            var bassJuvenile = PondCreatureCatalog.Stage("FAF-FISH-007", "juvenile")!;
+            var bluegillLarva = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "larva")!;
+            var bluegillJuvenile = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "juvenile")!;
+            var bluegillAdult = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "adult")!;
+            var bassJuvenile = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "juvenile")!;
+            var bassAdult = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!;
             var pike = PondCreatureCatalog.Stage("FAF-FISH-010", "adult")!;
-            Need(FeedingLedger.IsEligiblePrey(bassLarva.Id, "larva", bassLarva.Dimensions[1],
-                    "juvenile", bluegillJuvenile.Dimensions[1]) &&
+            Need(FeedingLedger.IsEligiblePrey(bluegillLarva.Id, "larva", bluegillLarva.Dimensions[1],
+                    "juvenile", bassJuvenile.Dimensions[1]) &&
+                !FeedingLedger.IsEligiblePrey(bluegillJuvenile.Id, "juvenile", bluegillJuvenile.Dimensions[1],
+                    "juvenile", bassJuvenile.Dimensions[1]) &&
+                FeedingLedger.IsEligiblePrey(bluegillJuvenile.Id, "juvenile", bluegillJuvenile.Dimensions[1],
+                    "adult", bassAdult.Dimensions[1]) &&
+                !FeedingLedger.IsEligiblePrey(bluegillAdult.Id, "adult", bluegillAdult.Dimensions[1],
+                    "adult", bassAdult.Dimensions[1]) &&
+                !FeedingLedger.IsEligiblePrey(bluegillLarva.Id, "larva", bassJuvenile.Dimensions[1],
+                    "juvenile", bassJuvenile.Dimensions[1]) &&
                 !FeedingLedger.IsEligiblePrey(bassJuvenile.Id, "juvenile", bassJuvenile.Dimensions[1],
-                    "juvenile", bluegillJuvenile.Dimensions[1]) &&
-                FeedingLedger.IsEligiblePrey(bassJuvenile.Id, "juvenile", bassJuvenile.Dimensions[1],
-                    "adult", bluegillAdult.Dimensions[1]) &&
+                    "adult", bassAdult.Dimensions[1]) &&
                 !FeedingLedger.IsEligiblePrey(pike.Id, "adult", pike.Dimensions[1],
-                    "adult", bluegillAdult.Dimensions[1]),
+                    "adult", bassAdult.Dimensions[1]),
                 "registered prey-size policy changed");
 
-            var baseTarget = new FeedCandidate("test:prey", bassLarva.Id, "larva",
-                WorldCatalog.PondId, WorldCatalog.PondId, bassLarva.Dimensions[1],
-                "juvenile", bluegillJuvenile.Dimensions[1], true);
+            var baseTarget = new FeedCandidate("test:prey", bluegillLarva.Id, "larva",
+                WorldCatalog.PondId, WorldCatalog.PondId, bluegillLarva.Dimensions[1],
+                "juvenile", bassJuvenile.Dimensions[1], true);
             var policy = new FeedingLedger();
             Need(!policy.TryConsume(baseTarget with { SpeciesId = pike.Id,
                 Length = pike.Dimensions[1] }, true, 1).Consumed, "Pike edible");
             Need(!policy.TryConsume(baseTarget with { PlayerHabitat = WorldCatalog.OceanId },
                 true, 1).Consumed, "cross-habitat prey edible");
             Need(!policy.TryConsume(baseTarget with { Stage = "juvenile",
-                Length = bassJuvenile.Dimensions[1] }, true, 1).Consumed,
-                "juvenile Bass edible before adult Bluegill");
+                Length = bluegillJuvenile.Dimensions[1] }, true, 1).Consumed,
+                "juvenile Bluegill edible before adult Bass");
             Need(!policy.TryConsume(baseTarget with { Alive = false }, true, 1).Consumed,
                 "dead prey edible");
             Need(!policy.TryConsume(baseTarget, false, 1).Consumed,
@@ -82,15 +91,15 @@ public static class FeedingChecks
             Need(!larvae[0].IsAlive && scene.Growth.Stage == "subadult" &&
                 ledger.Nutrition == 4 && ledger.Events.Count == 1 &&
                 !scene.TryBite(larvae[0]).Consumed,
-                "first Bass larva bite, growth or duplicate refusal failed");
+                "first Bluegill larva bite, growth or duplicate refusal failed");
             Need(!scene.TryBite(juveniles[0]).Consumed,
-                "subadult Bluegill ate oversized Bass juvenile");
+                "subadult Bass ate a Bluegill juvenile before eligibility");
             Need(!scene.TryBite(larvae[1]).Consumed,
-                "distant Bass larva rewarded");
+                "distant Bluegill larva rewarded");
             larvae[1].GlobalPosition = open + new Vector3(0, 0, .8f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(!scene.TryBite(larvae[1]).Consumed,
-                "rear Bass larva rewarded");
+                "rear Bluegill larva rewarded");
 
             // A real wall between mouth and larva rejects an otherwise reachable bite.
             var wall = new StaticBody3D { Name = "FeedingTestWall", CollisionLayer = 1 };
@@ -114,17 +123,17 @@ public static class FeedingChecks
             PutAhead(larvae[1], .95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(larvae[1]).Consumed && ledger.Nutrition == 8 &&
-                scene.Growth.Stage == "subadult", "second Bass larva award failed");
+                scene.Growth.Stage == "subadult", "second Bluegill larva award failed");
             PutAhead(larvae[2], .95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(larvae[2]).Consumed && ledger.Nutrition == 12 &&
-                scene.Growth.Stage == "adult", "third Bass larva did not grow adult");
+                scene.Growth.Stage == "adult", "third Bluegill larva did not grow adult");
             PutAhead(juveniles[0], .95f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(juveniles[0]).Consumed && ledger.Nutrition == 16 &&
                 !scene.TryBite(juveniles[0]).Consumed && ledger.Events.Count == 4,
-                "adult Bass-juvenile food-chain change or duplicate refusal failed");
-            GD.Print($"FEEDING_CHECK_OK seed={PikeCoverFixture.Seed} fixture=pike prey=FAF-FISH-007 nutrition={ledger.Nutrition} events={ledger.Events.Count} larvae={larvae.Length} wall=blocked");
+                "adult Bluegill-juvenile food-chain change or duplicate refusal failed");
+            GD.Print($"FEEDING_CHECK_OK seed={PikeCoverFixture.Seed} fixture=pike prey=FAF-FISH-006 nutrition={ledger.Nutrition} events={ledger.Events.Count} larvae={larvae.Length} wall=blocked");
             tree.Quit();
 
             void PutAhead(PreyActor prey, float distance)
