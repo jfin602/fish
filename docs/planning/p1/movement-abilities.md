@@ -9,15 +9,19 @@ First make normal swimming, turning, and slowing feel right. The owner originall
 
 The [swimming contract](../../systems/swimming-and-camera.md) owns movement behavior, and [the roadmap](../../roadmap.md) owns Phase/Gate progress. The owner approved the seven core playtest criteria in worksheet Q10; [validation](../../validation.md#core-movement-acceptance) owns their execution/evidence. Actual native playtesting and owner acceptance must still lock the implemented core before these abilities can safely build on it, whenever they are scheduled.
 
+## S25 — C5 speed boost scheduling
+
+On 2026-11-14 the owner promoted the burst to a **finite-energy hold-Spacebar swimming boost** for chase/escape, in place of player biting. The [C5 M2A brief](../../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt) owns implementation and validation. This changes neither historical P1 qualification nor the deferral of precision mode and evasive turning.
+
 ## Selected follow-up
 
 | Ability | Intended experience |
 | --- | --- |
-| Short speed burst | A quick dart forward, faster than normal swimming. |
+| Short speed burst | **S25 C5 current scope:** finite recoverable hold-Spacebar faster swim; not yet implemented. |
 | Precision mode | Slower movement for carefully approaching something or navigating a tight space. |
 | Quick evasive turn | A deliberate action that changes direction more sharply than an ordinary turn. |
 
-These are the three selected follow-ups. Their order within the group remains open.
+These are the three originally selected abilities. Only speed boost is now scheduled in C5; precision/evasive turning remain future work.
 
 ## Choices for the follow-up
 
