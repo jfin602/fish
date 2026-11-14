@@ -27,7 +27,7 @@ Blend these by habitat, depth, surface position, and time of day. Existing under
 | `swim_accelerate.wav` | A real increase in propulsion | Candidate |
 | `swim_turn.wav` | A distinct hard turn, with a cooldown | Candidate |
 | `swim_large.wav` | Heavier swimming once the same fish has grown large | Candidate |
-| `escape_burst.wav` | An actual evasive burst | Candidate |
+| `escape_burst.wav` | A genuine limited Spacebar boost begins for pursuit or escape | Candidate |
 | `surface_breach.wav` | Fish breaks the water surface | Candidate |
 | `surface_reentry.wav` | Fish returns below the surface | Candidate |
 
@@ -45,17 +45,16 @@ Swimming beds should be subtle and follow actual speed and body size. A turn or 
 
 Contact sounds need impact thresholds and cooldowns so sustained overlap does not chatter. These are presentation effects; a sound does not create a predator sensing event by itself.
 
-## Feeding and prey — 5 effects
+## Feeding and prey — 4 effects
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
 | `feeding_small.wav` | Confirmed zooplankton or other tiny-food consumption | Candidate |
-| `feeding_bite_miss.wav` | A bite input that makes contact with no valid food or prey | New |
-| `feeding_strike.wav` | A real directed bite connects with a fish target | Candidate |
+| `feeding_strike.wav` | A real automatic mouth-contact strike connects with an eligible fish | Candidate |
 | `feeding_swallow.wav` | A valid fish prey target is consumed and nutrition is awarded | New |
 | `prey_scatter.wav` | A real nearby prey group breaks formation or flees | Candidate |
 
-The hit and swallow cues represent different outcomes. Never play a success cue for an invalid or duplicate bite. A quiet miss is preferable to an exaggerated failure alarm.
+The hit and swallow cues represent different outcomes. Never play a success cue for an invalid or duplicate bite. The S25 design removes manual bite/miss input; invalid contact needs no missed-bite sound. Existing audio takes are not deleted.
 
 ## Predator and injury — 6 effects
 
@@ -96,7 +95,7 @@ The ordinary UI trio covers Main Menu, World Select, Character Select, pause/set
 
 ## Scope and naming rules
 
-- **41 canonical files:** 8 ambience loops and 33 short effects. The existing candidate pack covers 28 names; 13 names above require new source material.
+- **40 canonical files:** 8 ambience loops and 32 short effects. The existing candidate pack covers 28 retained candidate roles; 12 listed roles need new source material. S25 retires the manual `feeding_bite_miss.wav` role.
 - The exact filename stem is the event role. Current candidate names ending in `_01` or `_02` are audition take numbers; the chosen default take is renamed to the unsuffixed canonical filename when promoted here.
 - The list is complete for the **defined MVP audio roles**, not for future weather, advanced senses, new species, new habitats, or a larger music score. No music track is required for this naturalistic MVP; ambience carries the continuous sound bed.
 - Keep volume, distance, stereo position, looping, and transition rules in game integration. They are not additional files. Some events may be silent at very low intensity, but their named role remains available for meaningful instances.
