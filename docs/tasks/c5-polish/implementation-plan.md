@@ -1,6 +1,6 @@
 # C5 manual implementation plan
 
-**Status:** M1 contact/escape corrections and revised M2 Bass hatch/fry passed focused headless checks. The owner reported defects in the first M2 native build; M1 owner native contact recheck and corrected M2 native review remain pending; M3–M8 are not executed. Read [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md), [M2 evidence](qualification/m2-hatching-and-tiny-bass.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
+**Status:** M1 contact/escape corrections and revised M2 Bass hatch/fry passed focused headless checks. The owner reported defects in the first M2 native build; M1 owner native contact recheck and corrected M2 native review remain pending; M2A and M3–M8 are not executed; S25 is approved design only. Read [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md), [M2 evidence](qualification/m2-hatching-and-tiny-bass.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
 
 ## Source owners / implementation order
 
@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | **M1** | `PikeEncounter`, `PondGrowthState`, `FeedingLedger`, actor/asset eligibility: fixed **Bass player**, **Bluegill-only fish prey** | Actual species IDs, juvenile proof baseline, normal route regression |
 | **M2** | New egg/hatching presentation and tiny larval Bass movement using `PondCreatureCatalog` 5 real stages, `PlayerArt`, `FollowCamera`, `FishController` | Hatch/skip same authoritative state and safe camera/input |
+| **M2A** | Remove `PikeEncounter` Space bite; enable stage-relative forward mouth contact via feeding ledger, plus limited hold-Space energy boost through existing motor/input and disturbance | T2 valid/invalid/duplicate contact, shell, boost drain/recharge, pause/focus/retry and scene isolation |
 | **M3** | Early invertebrate nutrition → size-eligible Bluegill consumption; 5 stages, real collider/camera/cover implications | Exactly-once rewards, no too-large prey, stage/progression |
 | **M4** | `PreyActor`/new bounded school behavior for staged Bluegill; shallow nursery/intermediate/deeper routes | Cohesion, separation, scatter/regroup, size/age and performance |
 | **M5** | `PikeActor/PikeAwareness` multi-target evidence and hysteresis; Pike catches Bluegill or Bass | Real individual target IDs, commitment, both possible player escape outcomes |
@@ -17,10 +18,10 @@
 
 ## Execution safety
 
-Manual prompts are located at `manual/M1-...` through `manual/M8-...`, with their exact file names in [manual README](manual/README.md). These are not runner parser tasks. Execute **one per interactive Codex session**; each ends with a STOP, review the diff and evidence before the next. The final M8 brief is explicit: **the last action, after all preflight, is to launch `./tools/dev run --display-mode=windowed-fullscreen`** using real display, and leave Fish open for the owner.
+Manual prompts are located at `manual/M1-...` through `manual/M8-...` plus inserted `manual/M2A-...`, with their exact file names in [manual README](manual/README.md). These are not runner parser tasks. Execute **one per interactive Codex session**; each ends with a STOP, review the diff and evidence before the next. The final M8 brief is explicit: **the last action, after all preflight, is to launch `./tools/dev run --display-mode=windowed-fullscreen`** using real display, and leave Fish open for the owner.
 
 Avoid rebuilding the Pond generator, swapping every habitat's fish or adding save/death. Use actual checks defined in `tools/dev`, and implement new focused checks before calling them. If Codex cannot access a graphical Godot desktop, report that as BLOCKED rather than pretending it launched Fish.
 
 ### P5 qualification debt and C5 additions
 
-Retest **G5.1/V03–V04** food/growth and cover clearance, **G5.2/V05/V33–V34/V36** Pike contact, concealment, escape and third-route isolation, **G5.3/V35** slow-cover approach vs exposed Bluegill approach. Extend with **V37** hatching, **V38** diet/growth, **V39** schools, **V40** multi-target Pike, **V41** event-driven blood. Record original P5 historical results separately; version/commit name does not certify success. Only the owner's real play/observations can convert relevant NOT OBSERVED T3 cells to PASS.
+Retest **G5.1/V03–V04** food/growth and cover clearance, **G5.2/V05/V33–V34/V36** Pike contact, concealment, escape and third-route isolation, **G5.3/V35** slow-cover approach vs exposed Bluegill approach. Extend with **V37** hatching, **V38** diet/growth, **V39** schools, **V40** multi-target Pike, **V41** event-driven blood and **V42** automatic mouth feeding/boost. Record original P5 historical results separately; version/commit name does not certify success. Only the owner's real play/observations can convert relevant NOT OBSERVED T3 cells to PASS.
