@@ -1,6 +1,6 @@
 # C5 — Post-P5 ecology, Bass lifecycle and qualification polish
 
-**Decision:** S24, owner-approved 2026-11-13. **Status:** approved working design; M1 Bass-player/Bluegill-prey and M2 hatch/fry have headless T2 evidence; M1 native contact recheck and corrected M2 native review remain open. M3–M8 and native qualification remain open. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
+**Decisions:** S24 approved 2026-11-13 and S25 approved 2026-11-14 (automatic feeding and limited Spacebar boost). **Status:** approved working design; M1 Bass-player/Bluegill-prey and M2 hatch/fry have headless T2 evidence; M1 native contact recheck and corrected M2 native review remain open. M2A and M3–M8 and native qualification remain open. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
 
 [Manual execution instructions](../tasks/c5-polish/README.md) · [Ecology](../systems/ecology-and-growth.md) · [Sensing](../systems/stealth-and-detection.md) · [Validation](../validation.md) · [Roadmap](../roadmap.md)
 
@@ -9,6 +9,14 @@
 Keep the **third World Select destination** (the Pike Encounter / development test scene), still **without Character Select**, but switch its fixed player from Bluegill `FAF-FISH-006` to **Largemouth Bass `FAF-FISH-007`**. Bass starts life in a shallow nest, hatches, transitions to an actual tiny swimming larva/fry, grows by species-appropriate feeding, later hunts Bluegill from distinct age/size-appropriate schools, and survives a Northern Pike `FAF-FISH-010` that can independently pursue the player **or** a legitimate individual Bluegill. Fish bite/consumption causes a restrained event-driven blood cloud that disperses through the water. The existing normal **Ocean** and **Freshwater Pond** remain unchanged predator-free test worlds, retaining their character selection and baked identities. This is one standalone fixture, not a third habitat or a new persistent game run.
 
 > Every movement is a decision about exposure. Every hiding place is an opportunity to survive. Every feeding opportunity is a reason to take a risk.
+
+## S25 — feeding/contact and speed-boost change
+
+The Bass automatically consumes genuine eligible microfood, invertebrates and smaller Bluegill **only by unobstructed forward mouth contact**, scaled by its actual life stage, without a bite key, prey magnetism, duplicate nutrition, side/tail feeding or swallowing invalid larger fish. An optional reachable shed shell remains zero-nutrition contact food; yolk does not count as feeding. Live fish prey triggers an automatic physical bite/swallow and real event-only blood/audio where appropriate; microfood is subtle.
+
+**Spacebar holds a finite-energy swimming boost** for pursuit/escape. It drains while active, recharges when not boosting, stops on release/exhaustion and must clear through pause, focus, hatching, menu and retry. Actual faster movement increases realistic disturbance evidence, not magical prey detection or guaranteed school-assisted escape. Energy belongs to simulation, not camera/UI. Multipliers, ranges and recharge values remain tunable.
+
+**Implementation order:** after corrected M2 native review, execute [M2A](../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt) before M3; M7/M8 test V42. Existing `Space: bite` source is **not** S25 implementation. Preserve historical P5 reports.
 
 ## Current source reality (do not rewrite history)
 
