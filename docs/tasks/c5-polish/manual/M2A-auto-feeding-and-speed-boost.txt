@@ -1,0 +1,25 @@
+MANUAL TASK: c5-polish / M2A — Automatic mouth feeding and limited Spacebar boost
+
+STATE / SCOPE
+- Repository: jfin602/fish. Read AGENTS.md, BOOT.md, docs/workflow.md, docs/planning/c5-post-p5-ecology-lifecycle.md, docs/systems/ecology-and-growth.md, docs/systems/swimming-and-camera.md, docs/validation.md and only relevant actual sources.
+- MANUAL ONLY; do not run the phase runner. Inspect actual branch, HEAD, working tree, package.json version, Godot and MCP project identity. Preserve local changes and the documented root baseline 0.5.12, historical P5 evidence, normal Ocean/Pond and active editor changes; no reset/rebase or self-commit/push. This task begins only after corrected M2 native review; stop before M3.
+
+GOAL
+Implement the S25 design in the isolated C5 Bass Pike Encounter. Player feeding becomes automatic on valid forward mouth contact; holding Spacebar supplies an energy-limited swimming boost for pursuit or escape. No manual bite remains. Do not expand to hunger, new fish species, save/death, or a larger combat/stamina system.
+
+NARROW SOURCES
+PikeEncounter.cs (Space input, TryBite, egg shell, help), FishController and control preset/profile input/motor tuning, FeedingLedger, PreyActor and registered Bass/Bluegill stage lengths, PlayerArt/actual anatomical mouth forward, MovementDisturbanceField and Pike/prey sensing, M2 hatch source, real feeding/growth/input tests, applicable UX and SFX hooks. Discover exact ownership before changing source.
+
+IMPLEMENT
+1. Remove current Space manual-bite handling and active `Space: bite` instructions. Preserve Skip Intro, menus, pause, control preset and focus cleanup. Historical P5 prompt/evidence stays unchanged; current tests and UI must instead express the approved behavior.
+2. Add a **small forward mouth interaction volume** following current Bass life-stage dimensions, mouth location and heading, not the camera or whole body. Automatically consume eligible live food/prey upon real unobstructed contact only. Reject off-axis, behind/tail/side, blocked, too-large, dead, unregistered and consumed targets. No magnetic snapping, teleporting food, auto-chasing or phantom contact. M3 will add new microfauna/invertebrate actors; M2A proves this using existing eligible prey and optional post-hatch shell.
+3. Route consumption through existing stable IDs and FeedingLedger, once per item irrespective of duplicate collisions or physics frames. Shell awards zero nutrition and is no longer bitten via Space; yolk remains nonfeeding. Genuine live-fish consumption triggers a single physical bite/swallow event and appropriate audio/blood hook, while microfood uses subtle feedback; invalid contacts do not trigger missed-bite sound, blood or nutrition.
+4. Implement hold-to-boost via the existing motor and input across presets. Authoritative finite reserve drains while actually boosting, recovers off boost, stops boosted propulsion on release/exhaustion and preserves ordinary momentum/collision/waterline rules. Expose tunable multiplier, reserve and recharge without inventing owner-locked values. Leave precision mode/evasive turn deferred.
+5. Clear stale held boost during hatch/Skip Intro, pause, menus, focus loss, disarm, retry and scene reset; require fresh press after re-arming. Preserve normal mouse-only steering/propulsion and Adaptive Follow's Left Shift free-look. Camera, HUD and animation are readers of simulation state. Actual faster movement increases bounded disturbance for prey/Pike without a magic key-press clue or guaranteed escape.
+6. Update control help/HUD to show Space boost and a restrained real energy meter. Avoid introducing unreviewed audio assets. Keep normal Ocean/Pond world identities, baked data and non-enemy behavior unchanged.
+
+VALIDATION / REPORT
+T2: inspect the actual ./tools/dev command composition and run appropriate targeted build, input, feeding/growth, movement/Pike disturbance and world-isolation checks. Add focused coverage proving auto consumption without bite, shell zero nutrition, correct mouth-stage geometry, side/tail/wall/duplicate/invalid refusal; boost speed, finite depletion, release, recharge, pause/focus/input cleanup, and realistic disturbance. Verify git diff --check. Record exact revision/dirty state, chosen tunables, executed commands and PASS/FAIL/BLOCKED/NOT OBSERVED, without claiming native V42 T3 playfeel from headless tests.
+
+STOP FOR OWNER REVIEW
+Report files/evidence/remaining gaps and whether M3 is safe to start. Do not self-commit/push, auto-run M3, change package version or mark Gates GREEN.
