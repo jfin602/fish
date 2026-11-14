@@ -58,7 +58,11 @@ The approved [swimming presentation](systems/swimming-and-camera.md) places the 
 
 Plants, rocks, depth changes, and lighting provide spatial cues. Ocean retains its vibrant low-poly reef contract; Pond adds murky-green freshwater lighting, mud, logs and vegetation. [FAF style](fish-asset-factory/art-style.md) owns shared/habitat look, and [art and assets](art-and-assets.md) owns sources and preparation checks. P2 remains the historical first underwater-world treatment.
 
-Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented burst, bite, or escape should have feedback that matches its actual outcome.
+Predator approach and attack feedback should offer an understandable chance to react. Avoid relying only on color to distinguish edible targets, danger, or an unavailable action. An implemented boost, automatic valid fish-consumption event, or escape must have feedback matching the actual outcome, with no manual missed-bite sound.
+
+## S25 — automatic feeding and boost feedback (approved, pending implementation)
+
+Active game help must eventually replace `Space: bite` with **Hold Space: boost**, but not claim this is currently implemented. A restrained HUD energy indicator should reflect the actual finite reserve, drain, exhaustion and recovery; it never owns fish movement. No manual Bite button or failed-bite-input sound. Eligible physical mouth contact produces quiet tiny-food collection or a real automatic prey bite/swallow sound/animation and blood only when justified. Invalid, side/tail, blocked or duplicate contacts cannot create reward or success feedback. Preserve Skip Intro, focus/pause, all control presets and reduced-effects behavior. See [S25 ecology](systems/ecology-and-growth.md).
 
 ## C5 — Bass hatching, first camera and feeding effects (approved, not yet implemented)
 
