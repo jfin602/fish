@@ -1,6 +1,6 @@
 # C5 — Manual Bass lifecycle, Bluegill schools and Pike ecology polish
 
-**Status: M1 and corrected M2 implemented with headless T2 checks; corrected M2 native review and M1 native contact recheck pending; M2A and M3–M8 NOT EXECUTED.** Owner approved [S24](../../decisions-and-questions.md) on 2026-11-13 and **S25 automatic forward-mouth feeding and limited Spacebar boost** on 2026-11-14 (design only). Root Fish package baseline remains **`0.5.12`**. Historical [P5 closeout](../p5/closeout.md) is **OWNER CLOSED FOR PROGRESSION / NOT GREEN**, all G5.1–G5.3 native gaps preserved. [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md) and [M2 evidence](qualification/m2-hatching-and-tiny-bass.md) keep headless and native limits separate.
+**Status: M1 and corrected M2 implemented with headless T2 checks; corrected M2 native review and M1 native contact recheck pending; M2A superseded; owner reports M1–M6 complete but this is not independently verified against published GitHub. M7/M8 remain, with S25 implementation assigned to M7.** Owner approved [S24](../../decisions-and-questions.md) on 2026-11-13 and **S25 automatic forward-mouth feeding and limited Spacebar boost** on 2026-11-14 (design only). Root Fish package baseline remains **`0.5.12`**. Historical [P5 closeout](../p5/closeout.md) is **OWNER CLOSED FOR PROGRESSION / NOT GREEN**, all G5.1–G5.3 native gaps preserved. [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md) and [M2 evidence](qualification/m2-hatching-and-tiny-bass.md) keep headless and native limits separate.
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [C5 approved design](../../planning/c5-post-p5-ecology-lifecycle.md) · [manual prompt list](manual/README.md) · [P5 closeout](../p5/closeout.md) · [validation](../../validation.md) · [roadmap](../../roadmap.md)
 
@@ -10,7 +10,10 @@ Improve **only the existing separate Pike Encounter**, the third World Select de
 
 ## Manual execution, not runner automation
 
-**M1–M8 plus inserted M2A are independent manually copied Codex briefs under `docs/tasks/c5-polish/manual/`.** They are **not** runner-compatible `P<number>-` prompts and there are deliberately no direct `.txt` entries in the correction folder. **Do NOT run `npm run fish:phase -- c5-polish` or `npm run fish:phase:validate -- c5-polish`; the runner grammar is intentionally not applicable.** Review corrected M2's native result, then execute **M2A before M3**; review every step before the next. Manual prompts do not self-commit, self-push or advance a phase version. Preserve and reconcile in-progress work at every step.
+**2026-11-14 C5 sequencing update:** The owner reports completion through P6/M6. Current GitHub may not include unpushed local work; inspect local source and evidence before starting. Do not rerun M1–M6 or execute M2A retroactively. **Revised M7** implements S25 automatic mouth feeding and limited Spacebar boost, plus T2 integration preflight, directly against existing C5 food/schools/Pike/blood; **M8** provides owner-native T3 qualification. Prior M2A is superseded planning only; S25 is NOT yet claimed implemented.
+
+
+**M1–M8 are manually copied Codex briefs (M2A remains only as superseded planning) under `docs/tasks/c5-polish/manual/`.** They are **not** runner-compatible `P<number>-` prompts and there are deliberately no direct `.txt` entries in the correction folder. **Do NOT run `npm run fish:phase -- c5-polish` or `npm run fish:phase:validate -- c5-polish`; the runner grammar is intentionally not applicable.** Begin with revised **M7** after inspecting actual local M1–M6 source/evidence; stop for review before M8. Do not execute M2A or replay earlier tasks. Manual prompts do not self-commit, self-push or advance a phase version. Preserve and reconcile in-progress work at every step.
 
 ### Order
 
@@ -18,13 +21,13 @@ Improve **only the existing separate Pike Encounter**, the third World Select de
 | --- | --- | --- |
 | M1 | [Bass player and Bluegill-only fish prey](manual/M1-bass-player-and-bluegill-prey.txt) | T2 implementation and targeted tests |
 | M2 | [Shallow egg hatch and controllable Bass fry](manual/M2-hatching-cutscene-and-tiny-bass.txt) | T2 implementation and targeted tests |
-| **M2A** | [Automatic mouth-contact feeding and limited Spacebar boost](manual/M2A-auto-feeding-and-speed-boost.txt) | S25 input/feeding foundation, T2 checks; native feel remains for M8 |
+| **M2A (superseded)** | [Earlier S25 planning brief](manual/M2A-auto-feeding-and-speed-boost.txt) | Not a separate execution step; scope moved to M7 |
 | M3 | [Early Bass food and all-stage growth](manual/M3-early-diet-and-growth.txt) | T2 implementation and targeted tests |
 | M4 | [Age-structured Bluegill schools in real Pond cover](manual/M4-bluegill-schools-by-age-and-depth.txt) | T2 implementation and targeted tests |
 | M5 | [Independent Pike hunting and school-assisted evasion](manual/M5-pike-multi-target-and-school-escape.txt) | T2 implementation and targeted tests |
 | M6 | [Dissipating underwater blood on genuine fish predation](manual/M6-blood-cloud-on-real-fish-events.txt) | T2 implementation and targeted tests |
-| M7 | [C5 integration checks and owner-native launch readiness](manual/M7-regression-and-native-playtest-preflight.txt) | T2 regression + native preflight |
-| M8 | [Launch Fish for the owner's full visual/playthrough qualification](manual/M8-owner-native-launch-and-qualification.txt) | **T3 final native game launch and owner qualification** |
+| M7 | [Implement S25 feeding/boost and C5 integration preflight](manual/M7-regression-and-native-playtest-preflight.txt) | **S25 implementation + T2 source and integration checks** |
+| M8 | [Owner-native launch including S25](manual/M8-owner-native-launch-and-qualification.txt) | **T3 real native owner playthrough and qualification** |
 
 **The final M8 brief explicitly ends with `./tools/dev run --display-mode=windowed-fullscreen`, leaving the native game open for the owner's actual visual/playthrough review.** M8 has not been executed.
 
