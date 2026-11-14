@@ -21,7 +21,7 @@
 
 ## Execution safety
 
-Manual prompts are located at `manual/M1-...` through `manual/M8-...` plus inserted `manual/M2A-...`, with their exact file names in [manual README](manual/README.md). These are not runner parser tasks. Owner reports completion through M6. Start revised M7 after inspecting the true local source/evidence; M8 follows owner review. Each brief ends with STOP. The final M8 brief is explicit: **the last action, after all preflight, is to launch `./tools/dev run --display-mode=windowed-fullscreen`** using real display, and leave Fish open for the owner.
+Manual prompts are under `manual/M1-...` through `manual/M8-...`, with exact names in [manual README](manual/README.md). The M2A file is superseded and retained for planning provenance only. These are not runner parser tasks. Owner reports completion through M6. Start revised M7 after inspecting the true local source/evidence; M8 follows owner review. Each brief ends with STOP. The final M8 brief is explicit: **the last action, after all preflight, is to launch `./tools/dev run --display-mode=windowed-fullscreen`** using real display, and leave Fish open for the owner.
 
 Avoid rebuilding the Pond generator, swapping every habitat's fish or adding save/death. Use actual checks defined in `tools/dev`, and implement new focused checks before calling them. If Codex cannot access a graphical Godot desktop, report that as BLOCKED rather than pretending it launched Fish.
 
