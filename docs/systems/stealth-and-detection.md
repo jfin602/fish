@@ -21,7 +21,7 @@ Physical size and life stage change which gaps and shelters remain accessible. N
 ## Working sensory model
 
 1. **Vision:** target distance, orientation, visible projected silhouette, light/contrast, water clarity and actual obstruction determine whether a target can be observed. Use efficient bounded checks in 3D space, not a camera-based player-detection hack.
-2. **Local water movement:** actual fish speed, acceleration, tail movement or abrupt maneuvers may create limited near-field disturbance evidence. A simple timed spatial event/field is sufficient initially; do not attempt full fluid simulation or treat the existing visual wake effect as simulation authority. Lateral-line-inspired detection is local and tunable, not long-range magic.
+2. **Local water movement:** actual fish speed, acceleration, tail movement or abrupt maneuvers (including S25's genuine speed-boost motion) may create limited near-field disturbance evidence; the boost key itself is not a magical AI signal. A simple timed spatial event/field is sufficient initially; do not attempt full fluid simulation or treat the existing visual wake effect as simulation authority. Lateral-line-inspired detection is local and tunable, not long-range magic.
 3. **Other senses:** strong splash/sound cues and species-specific chemical sensing are possible future systems. They must not be silently simulated with omniscience before rules and feedback are defined.
 4. **Habitat conditions:** current, background motion, time/depth and species abilities can eventually modulate perception, but first prove a small deterministic, testable subset. Ocean and Pond share behavioral principles while allowing separate values.
 
