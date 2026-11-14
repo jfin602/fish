@@ -45,6 +45,12 @@ The C1 correction adds built-in Keyboard Only, Mouse Only and Hybrid Swim profil
 
 **Adaptive Follow, pending owner feel testing:** `builtin:adaptive-follow` adds a fifth built-in choice. Mouse X/Y steer fish yaw/pitch as in Hybrid Swim; W/S and Up/Down pitch the fish up/down, A/D yaw left/right, left mouse thrusts, and right mouse slows. Holding Left Shift temporarily routes captured mouse motion to an independent 360° camera look without steering the fish; releasing Left Shift smoothly returns the view behind the fish. Normal follow lags turns by about 0.25 seconds, limits temporary heading separation to about 35°, and recenters while swimming straight or gliding. A 2px cumulative mouse noise gate and about 0.12-second steering filter apply only to this preset; keyboard steering takes priority on its axis. The existing motor, zoom, pause, obstacle avoidance, and steady horizon are unchanged. Left Shift is reserved for free-look in Adaptive Follow and copies of it. Existing custom profiles and saved selections retain their camera policy. Headless checks cover behavior and lifecycle; the owner still needs to judge native steering and camera feel.
 
+## S25 — limited Spacebar boost (approved, not implemented)
+
+**Hold Spacebar** for a limited forward swimming boost through the existing motor. An authoritative finite energy reserve drains while actively boosting and recovers when not boosting. Release or exhaustion ends boosted acceleration immediately, preserving normal coasting, real collision and waterline limits. The player does not press a bite key, auto-target prey or gain an unlimited sprint. Tune multiplier, capacity, recharge and UI in native gameplay; no specific numeric values are locked.
+
+Apply to current input presets without breaking normal mouse-only swimming or Adaptive Follow's Left Shift free-look. On hatch/cutscene, pause, menu, focus loss, retry or disarmed controls, clear held boost and prevent reactivation without a fresh press. Camera/UI cannot own or alter energy. Real faster movement/acceleration increases normal world-space disturbance and detection risk, not an omniscient Pike signal or guaranteed escape. Future saving must preserve authoritative energy. [Ecology](ecology-and-growth.md) owns automatic mouth feeding. Current `Space: bite` HUD/source remains pending [M2A](../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt).
+
 ## P4 — Pond surface swimming boundary and planned camera transition
 
 The owner-approved [P4 Pond plan](../planning/p4/freshwater-world.md#surface-swimming-and-airwater-camera-transition-p4-requirement) extends the already accepted P1 underwater baseline. P9 implements the Pond physical boundary at `0.4.9` with headless checks. Camera crossing and presentation remain planned for P10–P12.
@@ -63,7 +69,7 @@ Implement and tune normal swimming, turning, vertical travel, and slowing first,
 
 The core is locked for progression by the owner's direct 2026-11-09 acceptance together with the bounded native observations and source checks in [P1 closeout](../tasks/p1/closeout.md). The authored exhaustive per-mode matrix remains incomplete; the closeout does not present absent observations as results.
 
-After that core acceptance, the owner routed the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**, followed by the [P3 FAF reef-world rebuild](../planning/p3/reef-world-rebuild.md). The previously selected [Movement abilities](../planning/p1/movement-abilities.md)—short speed burst, precision mode and quick evasive turn—remain approved future work, but their immediate scheduling is superseded. Feeding/predators/growth begin in P4.
+After that core acceptance, the owner routed the next roadmap work to **[P2 worldbuilding](../planning/p2/underwater-world.md)**, followed by the [P3 FAF reef-world rebuild](../planning/p3/reef-world-rebuild.md). The original [Movement abilities](../planning/p1/movement-abilities.md) were deferred after P1. S25 schedules limited Spacebar boost for C5 while precision/evasive turn stay deferred. Feeding/predators/growth belong to P5 after P4.
 
 ## P1 delivery requirement
 
@@ -87,7 +93,7 @@ These details should be chosen and documented during implementation and playtest
 - The fish has one authoritative position, orientation, velocity, and collision body.
 - Input requests movement or actions; the camera does not own the fish's survival state.
 - Camera changes preserve identity, location, growth, health, resources, and active encounters.
-- Input captured by menus must not continue swimming or trigger a bite when the menu closes.
+- Input captured by menus must not continue swimming, trigger feeding, or restart a stale held boost when the menu closes.
 - Pausing and resuming must clear stale input without advancing the paused simulation. Intended coasting after input release is distinct from stuck propulsion input.
 - Visual scale, collision shape, and camera distance need an explicit policy as the fish grows. A visual enlargement alone must not claim qualified passage through cover.
 
@@ -97,6 +103,6 @@ Third-person collision avoidance should keep the fish readable near rocks and pl
 
 When the relevant systems exist, extend movement and camera checks to threats above/below, close cover, and pursuing prey near boundaries. Audio, screen-edge indicators, and predator posture remain possible aids; their exact design is open.
 
-For later Movement abilities, any burst must have an observable availability and effect. If stamina or cooldown is selected, its authoritative state persists through view changes and saves. Costs, recovery, and use in escape/pursuit remain later tuning choices.
+S25's finite boost needs observable authoritative energy/effect through view changes and future saves; costs and recovery remain native tuning choices. Precision mode and evasive turning are later work.
 
 Preserve the wider game checks: reach food without fighting the camera; use cover during a readable predator approach; preserve fish state through view switches; preserve collision boundaries at multiple sizes; and resume saved positions near cover coherently. Those checks belong to the relevant later [validation scenarios](../validation.md), separate from the initial core lock.
