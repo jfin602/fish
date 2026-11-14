@@ -8,7 +8,7 @@
 
 The player no longer requests a bite. Eligible live food (microfauna, invertebrates or appropriate Bluegill) is **automatically consumed only on real unobstructed contact with a small forward-facing mouth interaction zone** aligned to the fish's current anatomical stage. Honor species/diet, stage, size, distance, alive/unconsumed identity, solid obstruction and reach; side, tail, behind-target and remote collisions cannot feed. Never pull or teleport prey into range. Send one confirmed contact per stable target to the existing FeedingLedger for exactly-once nutrition and event accounting. The optional post-hatch egg shell is reachable by the same contact rules but yields zero nutrition; yolk is not active feeding.
 
-Small food gets quiet collection feedback. Real fish prey automatically triggers bite/swallow animation and genuine event-driven sound/blood where valid; duplicate or invalid contact creates no reward or miss sound. Current `PikeEncounter.cs` still binds Space to `TryBite`, which is **source debt** for [M2A](../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt), not evidence of S25 implementation. Geometry and numeric timing are native-tunable.
+Small food gets quiet collection feedback. Real fish prey automatically triggers bite/swallow animation and genuine event-driven sound/blood where valid; duplicate or invalid contact creates no reward or miss sound. Current `PikeEncounter.cs` still binds Space to `TryBite`, which is **source debt** for [revised M7](../tasks/c5-polish/manual/M7-regression-and-native-playtest-preflight.txt), not evidence of S25 implementation. Geometry and numeric timing are native-tunable.
 
 ## C5 — planned Bass first-life and Bluegill prey correction
 
