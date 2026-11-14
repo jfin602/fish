@@ -29,7 +29,7 @@ public static class GrowthChecks
             Need(juvenileCollision.Shape is CapsuleShape3D { } juvenileCapsule &&
                 Near(juvenileCapsule.Height, scene.Growth.ColliderLength) &&
                 Near(juvenileCapsule.Radius, scene.Growth.ColliderRadius) &&
-                Near(fish.BodyForwardReach, scene.Growth.ColliderLength * .42f),
+                Near(fish.BodyForwardReach, scene.Growth.ColliderLength * .455f),
                 "juvenile Bass physical body does not follow registered dimensions");
             CheckRig();
             var larva = scene.PreyActors[4];

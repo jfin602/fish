@@ -1,6 +1,6 @@
 # C5 — Post-P5 ecology, Bass lifecycle and qualification polish
 
-**Decision:** S24, owner-approved 2026-11-13. **Status:** approved working design; M1 Bass-player/Bluegill-prey implementation has headless T2 evidence and awaits owner review; M2–M8 and native qualification remain open. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
+**Decision:** S24, owner-approved 2026-11-13. **Status:** approved working design; M1 Bass-player/Bluegill-prey and M2 hatch/fry have headless T2 evidence; M1 native contact recheck and corrected M2 native review remain open. M3–M8 and native qualification remain open. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
 
 [Manual execution instructions](../tasks/c5-polish/README.md) · [Ecology](../systems/ecology-and-growth.md) · [Sensing](../systems/stealth-and-detection.md) · [Validation](../validation.md) · [Roadmap](../roadmap.md)
 

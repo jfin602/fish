@@ -1,6 +1,6 @@
 # C5 manual implementation plan
 
-**Status:** M1 contact and escape-continuation corrections passed focused headless checks after owner native FAIL feedback; the latest world-isolation run passed after intermittent Godot .NET scene-change errors, and owner native recheck is pending before M2. M2–M8 remain authored manual prompts. Read [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md), [assessment](prompt-assessment.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
+**Status:** M1 contact/escape corrections and revised M2 Bass hatch/fry passed focused headless checks. The owner reported defects in the first M2 native build; M1 owner native contact recheck and corrected M2 native review remain pending; M3–M8 are not executed. Read [M1 evidence](qualification/m1-bass-player-and-bluegill-prey.md), [M2 evidence](qualification/m2-hatching-and-tiny-bass.md), [owner design](../../planning/c5-post-p5-ecology-lifecycle.md), and [original P5 closeout](../p5/closeout.md). Root `0.5.12` remains unchanged; do not invoke the phase runner or assign arbitrary correction versions.
 
 ## Source owners / implementation order
 

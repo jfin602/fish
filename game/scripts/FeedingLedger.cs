@@ -40,6 +40,19 @@ public sealed class FeedingLedger
         _events.Add(new FeedEvent(target.Id, target.Stage, gameSeconds, award));
         return new(true, "consumed", award);
     }
+
+    public FeedResult TryConsumeEggShell(string id, bool accessible, double gameSeconds)
+    {
+        if (string.IsNullOrWhiteSpace(id) || _consumed.Contains(id))
+            return new(false, "already consumed or invalid ID", 0);
+        if (!accessible) return new(false, "out of reach or blocked", 0);
+        if (!double.IsFinite(gameSeconds) || gameSeconds < 0)
+            return new(false, "invalid game time", 0);
+        _consumed.Add(id);
+        // A shed shell is a first bite, not a growth meal. M3 owns larval diet.
+        _events.Add(new FeedEvent(id, "egg-shell", gameSeconds, 0));
+        return new(true, "consumed", 0);
+    }
 }
 
 public readonly record struct FeedCandidate(string Id, string SpeciesId,

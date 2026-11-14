@@ -32,6 +32,23 @@ public partial class FollowCamera : Node3D
     private float _panPitch;
     private float _zoomDistance;
     private bool _resetPending = true;
+    private bool _larvaView;
+
+    public void ConfigureEncounterLarvaView(bool enabled)
+    {
+        _larvaView = enabled;
+        if (_camera is not null)
+        {
+            _camera.Near = enabled ? .006f : .08f;
+            // The Pond surface extends beyond 50 m from the nursery. Clipping it
+            // produced a camera-following hard horizon in the fry view.
+            _camera.Far = enabled ? 200f : 4000f;
+        }
+        ResetZoom();
+        ResetFollow();
+    }
+
+    private float ViewScale => Mathf.Max(_larvaView ? .11f : .32f, _fish.BodyScale);
 
     public override void _Ready()
     {
@@ -56,6 +73,16 @@ public partial class FollowCamera : Node3D
     {
         _resetPending = true;
         _adaptiveInitialized = false;
+    }
+
+    public void SnapToFish()
+    {
+        _probe.Radius = _larvaView ? .012f : ProbeRadius * ViewScale;
+        var desired = DesiredPosition(out var target, out var anchor);
+        GlobalPosition = ResolveEncounterOverlap(anchor, UnobstructedPosition(anchor, desired));
+        FaceTarget(target);
+        _previousFishPosition = _fish.GlobalPosition;
+        _resetPending = false;
     }
 
     public void ResetZoom() => _zoomDistance = _fish.Tuning.CameraDistance;
@@ -114,7 +141,7 @@ public partial class FollowCamera : Node3D
         }
 
         UpdateCameraControls((float)delta);
-        _probe.Radius = ProbeRadius * Mathf.Max(.32f, _fish.BodyScale);
+        _probe.Radius = _larvaView ? .012f : ProbeRadius * ViewScale;
 
         var fishPosition = _fish.GlobalPosition;
         if (fishPosition.DistanceTo(_previousFishPosition) > TeleportDistance) _resetPending = true;
@@ -147,7 +174,7 @@ public partial class FollowCamera : Node3D
         var horizontal = new Vector3(forward.X, 0, forward.Z);
         if (horizontal.LengthSquared() > 0.0001f) _lastHorizontalForward = horizontal.Normalized();
         var tuning = _fish.Tuning;
-        var bodyScale = Mathf.Max(.32f, _fish.BodyScale);
+        var bodyScale = ViewScale;
         anchor = fishPosition + Vector3.Up * (0.35f * bodyScale);
         if (_fish.CameraControl == CameraControlPolicy.MouseOrbit360)
         {
@@ -234,16 +261,16 @@ public partial class FollowCamera : Node3D
 
     private void UpdateAdaptiveFollow(float delta)
     {
-        var anchor = _fish.GlobalPosition + Vector3.Up * 0.35f;
+        var anchor = _fish.GlobalPosition + Vector3.Up * (0.35f * ViewScale);
         var fishForward = new Vector3(-_fish.GlobalBasis.Z.X, 0, -_fish.GlobalBasis.Z.Z);
         if (fishForward.LengthSquared() > 0.0001f) fishForward = fishForward.Normalized();
         else fishForward = _lastHorizontalForward;
         var tuning = _fish.Tuning;
-        var distance = _zoomDistance;
+        var distance = _zoomDistance * ViewScale;
         var forwardY = (-_fish.GlobalBasis.Z).Y;
-        var eyeHeight = 0.35f + (tuning.CameraHeight - 0.35f) *
-            distance / Mathf.Max(0.01f, tuning.CameraDistance) - forwardY * distance * PitchHeightFraction;
-        var normalElevation = Mathf.Atan2(eyeHeight - 0.35f, distance);
+        var eyeHeight = ViewScale * 0.35f + (tuning.CameraHeight - 0.35f) * ViewScale *
+            _zoomDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forwardY * distance * PitchHeightFraction;
+        var normalElevation = Mathf.Atan2(eyeHeight - 0.35f * ViewScale, distance);
         if (!_adaptiveInitialized)
         {
             var fromEye = anchor - GlobalPosition;
@@ -303,7 +330,7 @@ public partial class FollowCamera : Node3D
     private Vector3 UnobstructedPosition(Vector3 anchor, Vector3 target)
     {
         var safe = CastSafe(anchor, target);
-        var minimumDistance = MinimumDistance * Mathf.Max(.32f, _fish.BodyScale);
+        var minimumDistance = MinimumDistance * ViewScale;
         if (safe.DistanceTo(anchor) >= minimumDistance) return safe;
 
         // A post close behind the fish can leave no usable view on the centerline.
@@ -314,7 +341,7 @@ public partial class FollowCamera : Node3D
         foreach (var side in new[] { 1.0f, -1.0f })
         {
             var shoulder = anchor + (-_lastCameraRear * 1.15f +
-                Vector3.Up * 0.8f + right * (side * 1.1f)) * Mathf.Max(.32f, _fish.BodyScale);
+                Vector3.Up * 0.8f + right * (side * 1.1f)) * ViewScale;
             var clear = CastSafe(anchor, shoulder);
             if (clear.DistanceTo(anchor) < minimumDistance) continue;
             var travel = clear.DistanceTo(GlobalPosition);
@@ -336,13 +363,14 @@ public partial class FollowCamera : Node3D
             Transform = new Transform3D(Basis.Identity, anchor),
             Motion = motion,
             CollisionMask = 1,
-            Margin = 0.02f,
+            Margin = _larvaView ? .001f : .02f,
             Exclude = new Godot.Collections.Array<Rid> { _fish.GetRid() },
         };
         var proportions = GetWorld3D().DirectSpaceState.CastMotion(query);
         if (proportions.Length == 0 || proportions[0] >= 0.999f) return target;
         // A nearby wall can force less than the preferred minimum distance.
-        var allowed = Mathf.Max(0.05f, length * proportions[0] - ObstacleClearance);
+        var allowed = Mathf.Max(_larvaView ? .008f : .05f,
+            length * proportions[0] - (_larvaView ? .008f : ObstacleClearance));
         return anchor + motion.Normalized() * Mathf.Min(allowed, length);
     }
 
@@ -358,7 +386,10 @@ public partial class FollowCamera : Node3D
             var towardFish = candidate.Lerp(anchor, step / 16f);
             if (!Overlaps(towardFish)) return towardFish;
         }
-        foreach (var distance in new[] { .2f, .4f, .6f, .8f, 1f, 1.2f })
+        var fallbackDistances = _larvaView
+            ? new[] { .02f, .04f, .06f, .08f, .10f, .12f }
+            : new[] { .2f, .4f, .6f, .8f, 1f, 1.2f };
+        foreach (var distance in fallbackDistances)
             foreach (var direction in new[] { Vector3.Up, Vector3.Down, Vector3.Right,
                 Vector3.Left, Vector3.Forward, Vector3.Back })
             {

@@ -29,8 +29,13 @@ public partial class FishController : CharacterBody3D
             throw new InvalidOperationException("BASS_BODY_DIMENSIONS_INVALID");
         collision.Shape = new CapsuleShape3D { Radius = radius, Height = length };
         collision.Rotation = new Vector3(Mathf.Pi * .5f, 0f, 0f);
-        // The registered mesh origin sits forward of its nose-to-tail midpoint.
-        collision.Position = new Vector3(0f, 0f, length * .08f);
+        // Mesh bounds put the larva nose/tail midpoint at +4.5% of its length.
+        // The former +8% offset left the visible mouth beyond the collider.
+        collision.Position = new Vector3(0f, 0f, length * .045f);
+        // Godot's default 1 mm recovery margin is a large fraction of a fry.
+        // Keep its contact response proportional to the registered body.
+        SafeMargin = Mathf.Clamp(radius * .08f, .00025f, .001f);
+        MaxSlides = 8;
         PondColliderRadius = radius;
         BodyScale = length;
         if (float.IsFinite(PondWaterlineHeight))
@@ -98,6 +103,8 @@ public partial class FishController : CharacterBody3D
     private bool _legacyMouseSettings;
     private bool _mouseCaptureActive;
     private bool _hatchLocked;
+    private float _fryYaw;
+    private float _fryPitch;
 
     public void SetEncounterHatchLocked(bool locked)
     {
@@ -182,6 +189,13 @@ public partial class FishController : CharacterBody3D
             intent = _input.Consume((float)delta, Tuning, _mouseCaptureActive,
                 ActiveMouseSensitivity, ActiveMouseInvertY);
         }
+        if (GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D { Height: < .12f })
+        {
+            var turnFraction = 1f - Mathf.Exp(-6f * (float)delta);
+            _fryYaw = Mathf.Lerp(_fryYaw, intent.Yaw, turnFraction);
+            _fryPitch = Mathf.Lerp(_fryPitch, intent.Pitch, turnFraction);
+            intent = intent with { Yaw = _fryYaw, Pitch = _fryPitch };
+        }
         LastThrust = intent.Thrust;
         LastSlow = intent.Slow;
         LastYaw = intent.Yaw;
@@ -259,6 +273,7 @@ public partial class FishController : CharacterBody3D
         PresentationEffort = 0;
         PresentationTurn = 0;
         LastThrust = LastSlow = LastYaw = LastPitch = 0;
+        _fryYaw = _fryPitch = 0;
         if (stopMotion)
         {
             _state.Speed = 0;
