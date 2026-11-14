@@ -1,6 +1,6 @@
 # C5 — Post-P5 ecology, Bass lifecycle and qualification polish
 
-**Decisions:** S24 approved 2026-11-13 and S25 approved 2026-11-14 (automatic feeding and limited Spacebar boost). **Status:** approved working design; M1 Bass-player/Bluegill-prey and M2 hatch/fry have headless T2 evidence; M1 native contact recheck and corrected M2 native review remain open. M2A and M3–M8 and native qualification remain open. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
+**Decisions:** S24 approved 2026-11-13 and S25 approved 2026-11-14 (automatic feeding and limited Spacebar boost). **Status:** approved working design; M1 Bass-player/Bluegill-prey and M2 hatch/fry have headless T2 evidence; M1 native contact recheck and corrected M2 native review remain open. Owner reports C5 progression through M6 (local evidence not independently verified from published GitHub); M2A is superseded as a separate task, and revised M7/M8 remain for S25 implementation/qualification. Historical P5 is **OWNER CLOSED FOR PROGRESSION / NOT GREEN** with G5.1–G5.3 open. At design review `main` HEAD `23e08c93189d94acbe3c9032ce39bf871d9f301d` had subject `0.5.13`, while `package.json` remained **`0.5.12`**. Correction tasks must preserve that actual root version unless separately authorized. [P5 closeout](../tasks/p5/closeout.md) retains its earlier Bluegill-versus-Bass evidence.
 
 [Manual execution instructions](../tasks/c5-polish/README.md) · [Ecology](../systems/ecology-and-growth.md) · [Sensing](../systems/stealth-and-detection.md) · [Validation](../validation.md) · [Roadmap](../roadmap.md)
 
@@ -12,11 +12,14 @@ Keep the **third World Select destination** (the Pike Encounter / development te
 
 ## S25 — feeding/contact and speed-boost change
 
+**2026-11-14 C5 sequencing update:** The owner reports completion through P6/M6. Current GitHub may not include unpushed local work; inspect local source and evidence before starting. Do not rerun M1–M6 or execute M2A retroactively. **Revised M7** implements S25 automatic mouth feeding and limited Spacebar boost, plus T2 integration preflight, directly against existing C5 food/schools/Pike/blood; **M8** provides owner-native T3 qualification. Prior M2A is superseded planning only; S25 is NOT yet claimed implemented.
+
+
 The Bass automatically consumes genuine eligible microfood, invertebrates and smaller Bluegill **only by unobstructed forward mouth contact**, scaled by its actual life stage, without a bite key, prey magnetism, duplicate nutrition, side/tail feeding or swallowing invalid larger fish. An optional reachable shed shell remains zero-nutrition contact food; yolk does not count as feeding. Live fish prey triggers an automatic physical bite/swallow and real event-only blood/audio where appropriate; microfood is subtle.
 
 **Spacebar holds a finite-energy swimming boost** for pursuit/escape. It drains while active, recharges when not boosting, stops on release/exhaustion and must clear through pause, focus, hatching, menu and retry. Actual faster movement increases realistic disturbance evidence, not magical prey detection or guaranteed school-assisted escape. Energy belongs to simulation, not camera/UI. Multipliers, ranges and recharge values remain tunable.
 
-**Implementation order:** after corrected M2 native review, execute [M2A](../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt) before M3; M7/M8 test V42. Existing `Space: bite` source is **not** S25 implementation. Preserve historical P5 reports.
+**Updated execution order:** after owner-reported M6 completion, implement S25 with [revised M7](../tasks/c5-polish/manual/M7-regression-and-native-playtest-preflight.txt) against the local completed work, then qualify natively in [M8](../tasks/c5-polish/manual/M8-owner-native-launch-and-qualification.txt). [M2A](../tasks/c5-polish/manual/M2A-auto-feeding-and-speed-boost.txt) is superseded planning only. Existing `Space: bite` source is **not** S25 implementation. Preserve historical P5 reports.
 
 ## Current source reality (do not rewrite history)
 
