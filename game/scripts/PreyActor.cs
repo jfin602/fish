@@ -22,11 +22,13 @@ public partial class PreyActor : CharacterBody3D
     public PreyAwareness Mind => _mind;
     public Vector3 CoverGoal => _coverGoal;
     public float ActualSpeed => Velocity.Length();
+    public int MotorStepCount { get; private set; }
     public string StableId { get; private set; } = "";
     public bool IsAlive { get; private set; } = true;
     public string SpeciesId { get; private set; } = "";
     public string Stage { get; private set; } = "";
     public float Length { get; private set; }
+    public string SchoolId { get; internal set; } = "";
 
     public void SetIdentity(string id, string speciesId, string stage, float length)
     {
@@ -42,6 +44,7 @@ public partial class PreyActor : CharacterBody3D
 
     public void Consume()
     {
+        if (!IsAlive) return;
         IsAlive = false;
         Velocity = Vector3.Zero;
         CollisionLayer = 0;
@@ -64,6 +67,7 @@ public partial class PreyActor : CharacterBody3D
     {
         _mind.Reset();
         _speed = 0;
+        MotorStepCount = 0;
         Velocity = Vector3.Zero;
         _coverGoal = _home;
         _nextChoiceAt = 0;
@@ -71,10 +75,13 @@ public partial class PreyActor : CharacterBody3D
     }
 
     public void Tick(SightEvidence sight, DisturbanceEvidence disturbance,
-        double seconds, float delta, bool paused)
+        double seconds, float delta, bool paused, SchoolSteering school = default)
     {
         if (!IsAlive || paused || delta <= 0) return;
         _mind.Step(sight, disturbance, seconds, false);
+        if (school.Alarm is { } alarm && _mind.Mode is (PreyMode.Forage or PreyMode.Settle))
+            _mind.Step(default, new DisturbanceEvidence(.06f, 1, false, 1f,
+                alarm, seconds), seconds, false);
         if (_mind.Mode == PreyMode.Flee && _mind.LastSensedPosition is { } threat &&
             (seconds >= _nextChoiceAt || GlobalPosition.DistanceTo(_coverGoal) < .45f))
         {
@@ -88,15 +95,25 @@ public partial class PreyActor : CharacterBody3D
             _ => _home,
         };
         var to = goal - GlobalPosition;
-        var desiredSpeed = _mind.Mode switch
+        var sizeSpeed = Stage switch
         {
-            PreyMode.Flee => 2.3f,
-            PreyMode.Alert => .6f,
-            PreyMode.Settle => .45f,
+            "larva" => .34f,
+            "juvenile" => .68f,
+            "subadult" => 1.05f,
+            "adult" => 1.35f,
             _ => .48f,
         };
-        if (to.Length() < .15f) desiredSpeed = 0;
+        var desiredSpeed = _mind.Mode switch
+        {
+            PreyMode.Flee => sizeSpeed * 1.7f,
+            PreyMode.Alert => sizeSpeed * .8f,
+            PreyMode.Settle => sizeSpeed * .7f,
+            _ => sizeSpeed,
+        };
+        if (to.Length() < .15f && school.Direction.LengthSquared() < .001f) desiredSpeed = 0;
         var direct = to.LengthSquared() > .01f ? to.Normalized() : -GlobalBasis.Z;
+        if (school.Direction.LengthSquared() > .001f && _mind.Mode is (PreyMode.Forage or PreyMode.Settle))
+            direct = (direct * .45f + school.Direction * .55f).Normalized();
         var direction = ClearDirection(direct);
         if (direction is null) desiredSpeed = 0;
         else
@@ -112,6 +129,7 @@ public partial class PreyActor : CharacterBody3D
         _speed = Mathf.MoveToward(_speed, desiredSpeed, 5f * delta);
         Velocity = -GlobalBasis.Z * _speed;
         MoveAndSlide();
+        MotorStepCount++;
         _speed = Mathf.Min(_speed, Velocity.Length() + .25f);
         if (_animation is not null)
         {

@@ -21,23 +21,24 @@ public partial class FishController : CharacterBody3D
             ? capsule.Radius : 0f;
     public float BodyForwardReach => GetNode<CollisionShape3D>("Collision") is { Shape: CapsuleShape3D capsule } collision
         ? capsule.Height * .5f - collision.Position.Z : BodyRadius;
-    public void SetEncounterBassBody(float radius, float length)
+    public void SetEncounterBassBody(BassBodyProfile body)
     {
+        var (radius, length, centerZ, visualLength) = body;
         if (!float.IsFinite(radius) || !float.IsFinite(length) || radius <= 0f ||
-            length < radius * 2f ||
+            length < radius * 2f || !float.IsFinite(centerZ) ||
+            !float.IsFinite(visualLength) || visualLength <= 0f ||
             GetNodeOrNull<CollisionShape3D>("Collision") is not { } collision)
             throw new InvalidOperationException("BASS_BODY_DIMENSIONS_INVALID");
         collision.Shape = new CapsuleShape3D { Radius = radius, Height = length };
         collision.Rotation = new Vector3(Mathf.Pi * .5f, 0f, 0f);
-        // Mesh bounds put the larva nose/tail midpoint at +4.5% of its length.
-        // The former +8% offset left the visible mouth beyond the collider.
-        collision.Position = new Vector3(0f, 0f, length * .045f);
+        // Each registered Bass rig has a different pivot-to-nose/tail offset.
+        collision.Position = new Vector3(0f, 0f, centerZ);
         // Godot's default 1 mm recovery margin is a large fraction of a fry.
         // Keep its contact response proportional to the registered body.
         SafeMargin = Mathf.Clamp(radius * .08f, .00025f, .001f);
         MaxSlides = 8;
         PondColliderRadius = radius;
-        BodyScale = length;
+        BodyScale = visualLength;
         if (float.IsFinite(PondWaterlineHeight))
             _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
@@ -80,10 +81,10 @@ public partial class FishController : CharacterBody3D
     }
 
     public static Vector3 ConstrainPondAscent(Vector3 velocity, float centerY,
-        float centerLimitY, float delta)
+        float centerLimitY, float delta, float approachBand = 0.35f)
     {
         if (velocity.Y <= 0f || delta <= 0f) return velocity;
-        const float approachBand = 0.35f;
+        approachBand = Mathf.Max(.01f, approachBand);
         var remaining = Mathf.Max(0f, centerLimitY - centerY);
         if (remaining >= approachBand) return velocity;
         var vertical = Mathf.Min(velocity.Y * Mathf.SmoothStep(0f, 1f,
@@ -225,7 +226,8 @@ public partial class FishController : CharacterBody3D
             : 0;
         Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
         Velocity = _pondSurfaceCenterLimit is { } limit
-            ? ConstrainPondAscent(_state.Velocity, Position.Y, limit, (float)delta)
+            ? ConstrainPondAscent(_state.Velocity, Position.Y, limit, (float)delta,
+                Mathf.Min(.35f, Mathf.Max(.03f, BodyScale * .35f)))
             : _state.Velocity;
         MoveAndSlide();
 

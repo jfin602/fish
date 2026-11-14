@@ -24,6 +24,7 @@ public static class PikeCoverFixture
     public const float WaterY = GeneratedBasin.WaterSurfaceY;
     public const string WorldPath = "res://worlds/encounters/pike-m1-5266";
     public const string CatalogPath = "res://assets/faf/pond/p5_cover_catalog.json";
+    public static readonly Vector2 BassNestShore = new(-24f, 26f);
     private static readonly GeneratedBasin PondBasin = new(Seed, pond: true);
     // Repeated fixture retry reuses the same imported scene wrappers. Keeping
     // them alive also avoids a Godot/.NET finalizer race during rapid scene churn.
@@ -107,6 +108,9 @@ public static class PikeCoverFixture
 
     public static float Bed(float x, float z)
         => PondBasin.HeightAt(x, z);
+
+    public static float ShoreDistance(float x, float z)
+        => PondBasin.DistanceToShore(x, z);
 
     public static IReadOnlyList<PikeCoverPlacement> Plan(PikeCoverCatalog catalog)
     {
@@ -209,8 +213,93 @@ public static class PikeCoverFixture
             node.Scale = Vector3.One * placement.Scale;
             node.SetMeta("faf_id", placement.Id);
             node.SetMeta("zone", placement.Zone);
+            if (asset.Id.StartsWith("FAF-WOOD-", StringComparison.Ordinal))
+                StaticVisualCollision.Install(node, node.GetNode<StaticBody3D>("AuthoredWoodCollision"), asset.Id);
         }
 
+        BuildShoreGrowth(scene, byId);
+
+    }
+
+    private static void BuildShoreGrowth(Node3D scene, Dictionary<string, PikeCoverAsset> byId)
+    {
+        // Scene-local shallow cover follows the baked shoreline. The authored
+        // P5 cover route and ordinary generated Pond dressing stay unchanged.
+        var growth = new Node3D { Name = "ShoreGrowth" };
+        scene.AddChild(growth);
+        var random = new Random(Seed ^ 0x5A27);
+        var plantIds = new[] { "FAF-PLANT-010A", "FAF-PLANT-012A",
+            "FAF-PLANT-013A", "FAF-PLANT-010B" };
+        var plantOffsets = new[] { 2.7f, 4.1f, 6f, 8f };
+        var cluster = 0;
+        for (var index = 0; index < PondBasin.ShorePointCount;)
+        {
+            var shore = PondBasin.ShorePoint(index);
+            var tangent = (PondBasin.ShorePoint(index + 1) -
+                PondBasin.ShorePoint(index - 1)).Normalized();
+            var inward = new Vector2(-tangent.Y, tangent.X);
+            if (inward.Dot(-shore) < 0f) inward = -inward;
+            var alongShore = Mathf.Atan2(tangent.X, tangent.Y);
+            var plantCount = 3 + random.Next(2);
+            for (var j = 0; j < plantCount; j++)
+            {
+                var point = shore + inward * (plantOffsets[j] +
+                    (float)(random.NextDouble() - .5) * .45f) + tangent *
+                    ((float)(random.NextDouble() - .5) * 1.6f);
+                var scale = .82f + (float)random.NextDouble() * .16f;
+                Add(plantIds[j], point, scale,
+                    (float)random.NextDouble() * Mathf.Tau, false);
+            }
+            var stick = shore + inward * 5.4f + tangent *
+                ((float)(random.NextDouble() - .5) * 2f);
+            Add("FAF-WOOD-009A", stick, .085f +
+                (float)random.NextDouble() * .035f,
+                alongShore + (float)(random.NextDouble() - .5) * 1.3f, true);
+            if (cluster % 5 == 0)
+            {
+                var log = shore + inward * 8.2f + tangent *
+                    ((float)(random.NextDouble() - .5) * 2.6f);
+                Add("FAF-WOOD-008A", log, .27f +
+                    (float)random.NextDouble() * .06f,
+                    alongShore + (float)(random.NextDouble() - .5) * .5f, true);
+            }
+            cluster++;
+            index += 6 + random.Next(5);
+        }
+
+        void Add(string id, Vector2 point, float scale, float yaw, bool solid)
+        {
+            var distance = ShoreDistance(point.X, point.Y);
+            var bed = Bed(point.X, point.Y);
+            var depth = WaterY - bed;
+            var asset = byId[id];
+            if (distance is < 1.5f or > 10f || depth is < .6f or > 3.5f ||
+                depth + .12f < asset.Size[2] * scale) return;
+            var nestDistance = point.DistanceTo(BassNestShore);
+            if (nestDistance < (solid ? 2.5f : .65f)) return;
+            if (solid)
+            {
+                var axis = new Vector2(Mathf.Sin(yaw), Mathf.Cos(yaw));
+                var halfLength = asset.Size[1] * scale * .35f;
+                var support = Mathf.Max(
+                    Mathf.Abs(Bed(point.X + axis.X * halfLength,
+                        point.Y + axis.Y * halfLength) - bed),
+                    Mathf.Abs(Bed(point.X - axis.X * halfLength,
+                        point.Y - axis.Y * halfLength) - bed));
+                if (support > .3f) return;
+            }
+            var node = Scene(asset.Wrapper ?? asset.Glb)!.Instantiate<Node3D>();
+            node.Name = "Shore_" + id.Replace("-", "_") + "_" + growth.GetChildCount();
+            growth.AddChild(node);
+            node.Position = new Vector3(point.X, bed - .035f, point.Y);
+            node.Rotation = new Vector3(id == "FAF-WOOD-009A" ? -Mathf.Pi * .5f : 0f,
+                yaw, 0f);
+            node.Scale = Vector3.One * scale;
+            node.SetMeta("faf_id", id);
+            node.SetMeta("zone", "shore");
+            if (solid)
+                StaticVisualCollision.Install(node, node.GetNode<StaticBody3D>("AuthoredWoodCollision"), id);
+        }
     }
 
     public static Vector3 ConcealedSpawn(IReadOnlyList<PikeCoverPlacement> plan, Vector3 pikePosition)

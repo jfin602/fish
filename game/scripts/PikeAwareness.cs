@@ -1,6 +1,7 @@
 #nullable enable
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace Fish;
 
@@ -26,6 +27,16 @@ public sealed class PikeAwareness
     public bool HadVerifiedChase => _confirmed;
     public bool StrikeReady { get; private set; }
     public bool Escaped { get; private set; }
+    public string TargetId { get; private set; } = "";
+    public bool TargetIsBass { get; private set; } = true;
+
+    public void Retarget(string id, bool bass)
+    {
+        if (TargetId == id) return;
+        Reset();
+        TargetId = id;
+        TargetIsBass = bass;
+    }
 
     public bool ConsumeEscape()
     {
@@ -46,6 +57,8 @@ public sealed class PikeAwareness
         _searchIndex = 0;
         StrikeReady = false;
         Escaped = false;
+        TargetId = "";
+        TargetIsBass = true;
         Mode = PikeMode.Patrol;
     }
 
@@ -108,7 +121,7 @@ public sealed class PikeAwareness
             case PikeMode.Search:
                 if (seconds - _lastSightAt > SearchSeconds)
                 {
-                    Escaped = _confirmed;
+                    Escaped = _confirmed && TargetIsBass;
                     Enter(PikeMode.Disengage, seconds);
                 }
                 else if (_memory is { } last && pikePosition.DistanceTo(SearchPoint(last)) < 1.2f)
@@ -174,4 +187,129 @@ public sealed class PikeAwareness
 
     private static bool Finite(Vector3 v) => float.IsFinite(v.X) &&
         float.IsFinite(v.Y) && float.IsFinite(v.Z);
+}
+
+/// <summary>One living fish, with evidence made by that fish's own sensors.</summary>
+public readonly record struct PikeCandidate(string Id, bool IsBass, bool Alive, float Length,
+    SightEvidence Sight, DisturbanceEvidence Disturbance);
+
+/// <summary>Bounded choice over actual fish; no position enters from an unsensed transform.</summary>
+public sealed class PikeTargetSelector
+{
+    public const int MaxCandidates = 17;
+    private string _targetId = "";
+    private double _lastSwitchAt = double.NegativeInfinity;
+    private readonly Dictionary<string, (Vector3 Position, double Time)> _memory = new();
+    private float _maxEdibleLength = 1.3f;
+    public string TargetId => _targetId;
+    public int Evaluated { get; private set; }
+
+    public void SetPhysicalEdibility(float pikeColliderLength)
+    {
+        if (!float.IsFinite(pikeColliderLength) || pikeColliderLength <= 0)
+            throw new ArgumentOutOfRangeException(nameof(pikeColliderLength));
+        _maxEdibleLength = pikeColliderLength * .5f;
+    }
+
+    public void Reset()
+    {
+        _targetId = "";
+        _lastSwitchAt = double.NegativeInfinity;
+        Evaluated = 0;
+        _memory.Clear();
+    }
+
+    public Vector3? LastKnown(string id, double seconds) =>
+        _memory.TryGetValue(id, out var seen) && seconds - seen.Time is >= 0 and <= 7.0
+            ? seen.Position : null;
+
+    public PikeCandidate? Select(IReadOnlyList<PikeCandidate> candidates, Vector3 pike,
+        double seconds, bool paused)
+    {
+        if (paused || !double.IsFinite(seconds)) return null;
+        if (candidates.Count > MaxCandidates) throw new ArgumentOutOfRangeException(nameof(candidates));
+        Evaluated = 0;
+        PikeCandidate? current = null, best = null;
+        var currentScore = 0f;
+        var bestScore = 0f;
+        foreach (var candidate in candidates)
+        {
+            Evaluated++;
+            if (!candidate.Alive) _memory.Remove(candidate.Id);
+            else if (candidate.Sight.Detected && candidate.Sight.SensedPosition is { } seen &&
+                Finite(seen) && seconds - candidate.Sight.SensedAt is >= 0 and <= .26)
+                _memory[candidate.Id] = (seen, candidate.Sight.SensedAt);
+            else if (candidate.Disturbance.Position is { } cue && Finite(cue) &&
+                candidate.Disturbance.Strength >= .035f &&
+                seconds - candidate.Disturbance.SensedAt is >= 0 and <= MovementDisturbanceField.LifetimeSeconds)
+                _memory[candidate.Id] = (cue, candidate.Disturbance.SensedAt);
+            if (candidate.Id == _targetId && candidate.Alive) current = candidate;
+            var score = Score(candidate, pike, seconds, _maxEdibleLength);
+            if (candidate.Id == _targetId) currentScore = score;
+            if (score <= bestScore) continue;
+            best = candidate;
+            bestScore = score;
+        }
+        if (current is null) _targetId = "";
+        if (best is { } opportunity && opportunity.Id != _targetId &&
+            seconds - _lastSwitchAt >= 1.2 &&
+            bestScore > currentScore * 1.45f + .055f)
+        {
+            _targetId = opportunity.Id;
+            _lastSwitchAt = seconds;
+            return opportunity;
+        }
+        return current;
+    }
+
+    public void Remove(string id)
+    {
+        if (_targetId == id) _targetId = "";
+        _memory.Remove(id);
+    }
+
+    private static float Score(PikeCandidate c, Vector3 pike, double seconds,
+        float maxEdibleLength)
+    {
+        if (!c.Alive || string.IsNullOrWhiteSpace(c.Id) || !float.IsFinite(c.Length) ||
+            c.Length <= 0 || c.Length > maxEdibleLength) return 0f;
+        var score = 0f;
+        if (c.Sight.Detected && c.Sight.SensedPosition is { } seen && Finite(seen) &&
+            double.IsFinite(c.Sight.SensedAt) && seconds - c.Sight.SensedAt is >= 0 and <= .26)
+            score = c.Sight.Strength + .24f / (1f + pike.DistanceTo(seen) * .2f);
+        if (c.Disturbance.Position is { } cue && Finite(cue) &&
+            c.Disturbance.Strength >= .035f && double.IsFinite(c.Disturbance.SensedAt) &&
+            seconds - c.Disturbance.SensedAt is >= 0 and <= MovementDisturbanceField.LifetimeSeconds)
+            score = Mathf.Max(score, c.Disturbance.Strength * .4f);
+        return score;
+    }
+
+    private static bool Finite(Vector3 v) => float.IsFinite(v.X) &&
+        float.IsFinite(v.Y) && float.IsFinite(v.Z);
+}
+
+/// <summary>Credits a Bass diversion only after the Pike has truly left that pursuit.</summary>
+public sealed class PikeBassDiversion
+{
+    private double _switchedAt;
+    public bool Pending { get; private set; }
+
+    public void Reset() => Pending = false;
+
+    public void SwitchedFromBass(double seconds, bool verifiedChase)
+    {
+        if (!verifiedChase || !double.IsFinite(seconds)) return;
+        Pending = true;
+        _switchedAt = seconds;
+    }
+
+    public bool Step(double seconds, bool bassVisible, bool bassTargeted, bool paused)
+    {
+        if (!Pending || paused || !double.IsFinite(seconds)) return false;
+        if (bassTargeted || (bassVisible && seconds - _switchedAt > .26))
+        { Pending = false; return false; }
+        if (seconds - _switchedAt < 6.5) return false;
+        Pending = false;
+        return true;
+    }
 }

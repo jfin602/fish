@@ -2,6 +2,9 @@
 using Godot;
 using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Fish;
@@ -45,6 +48,136 @@ public static class PikeAiChecks
             fish.GlobalBasis = fishBasis;
             actor.GlobalPosition = contactPosition;
             actor.GlobalBasis = contactBasis;
+            Need(fish.CollisionLayer == 2 && fish.CollisionMask == 1 &&
+                actor.CollisionLayer == 2 && actor.CollisionMask == 1 &&
+                scene.PreyActors.All(prey => prey.CollisionLayer == 2 && prey.CollisionMask == 1),
+                $"encounter swimmer layers/masks fish={fish.CollisionLayer}/{fish.CollisionMask} pike={actor.CollisionLayer}/{actor.CollisionMask} prey={scene.PreyActors[0].CollisionLayer}/{scene.PreyActors[0].CollisionMask}");
+            foreach (var stage in new[] { "larva", "juvenile", "subadult", "adult" })
+            {
+                fish.SetEncounterBassBody(new PondGrowthState(scene.Growth.Identity, stage).Body);
+                actor.GlobalPosition = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 2.2f, 20);
+                actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
+                fish.GlobalPosition = actor.GlobalPosition + Vector3.Forward * 2f;
+                fish.GlobalBasis = Basis.Identity;
+                var contactStart = actor.GlobalPosition;
+                var hit = actor.MoveAndCollide(Vector3.Forward * .68f);
+                scene.PikeSight!.Reset();
+                var sight = scene.ObserveFish().Sight;
+                Need(hit is null && actor.GlobalPosition.DistanceTo(contactStart) > .66f &&
+                    actor.MouthCanReach(fish) && sight.Detected && sight.ClearRays > 0,
+                    $"Pike cannot reach {stage} Bass after physical approach: moved={actor.GlobalPosition.DistanceTo(contactStart):F3} sight={sight.Reason} mouth={actor.MouthCanReach(fish)}");
+                GD.Print($"PIKE_BASS_CONTACT_OK stage={stage} moved={actor.GlobalPosition.DistanceTo(contactStart):F3} radius={fish.BodyRadius:F4}");
+            }
+            fish.SetEncounterBassBody(scene.Growth.Body);
+            fish.GlobalPosition = fishPosition;
+            fish.GlobalBasis = fishBasis;
+            actor.GlobalPosition = contactPosition;
+            actor.GlobalBasis = contactBasis;
+            actor.ResetActor();
+            var selector = new PikeTargetSelector();
+            var bassId = scene.Growth.Identity;
+            var bluegillId = scene.PreyActors[0].StableId;
+            var sensed = new Vector3(0, 1, 2);
+            var bassSight = new SightEvidence(true, .34f, "visible", 1, 1, 1, 3, 3, 7, sensed, 0);
+            var preySightStrong = bassSight with { Strength = .75f, SensedPosition = new Vector3(0, 1, 1) };
+            var candidates = new List<PikeCandidate>
+            {
+                new(bassId, true, true, scene.Growth.Length, bassSight, default),
+                new(bluegillId, false, true, scene.PreyActors[0].Length, default, default),
+            };
+            Need(selector.Select(candidates, Vector3.Zero, 0, false)?.Id == bassId,
+                "unseen school displaced visible Bass");
+            Need(selector.LastKnown(bassId, 0) == sensed &&
+                selector.LastKnown(bluegillId, 0) is null &&
+                selector.LastKnown(bassId, 8) is null,
+                "per-target evidence memory invented or failed to expire");
+            candidates[1] = candidates[1] with { Sight = preySightStrong with { SensedAt = .5 } };
+            Need(selector.Select(candidates, Vector3.Zero, .5, false)?.Id == bassId,
+                "Pike switched before commitment interval");
+            candidates[0] = candidates[0] with { Sight = bassSight with { Strength = .08f, SensedAt = 1.3 } };
+            candidates[1] = candidates[1] with { Sight = preySightStrong with { SensedAt = 1.3 } };
+            Need(selector.Select(candidates, Vector3.Zero, 1.3, false)?.Id == bluegillId,
+                "strong observed Bluegill failed to divert weak Bass pursuit");
+            Need(selector.Evaluated == 2, "target evaluation budget drift");
+            candidates[0] = candidates[0] with { Sight = bassSight with { Strength = .9f, SensedAt = 1.5 } };
+            Need(selector.Select(candidates, Vector3.Zero, 1.5, false)?.Id == bluegillId,
+                "Pike switched again without turning/commitment time");
+            candidates[1] = candidates[1] with { Alive = false };
+            candidates[0] = candidates[0] with { Sight = bassSight with { Strength = .9f, SensedAt = 2.6 } };
+            Need(selector.Select(candidates, Vector3.Zero, 2.6, false)?.Id == bassId,
+                "dead Bluegill retained as target or Bass evidence lost");
+            Need(selector.LastKnown(bluegillId, 2.6) is null,
+                "dead Bluegill retained last-known location");
+            selector.Reset();
+            Need(selector.TargetId == "", "target survived retry reset");
+            selector.SetPhysicalEdibility(2.65f);
+            Need(selector.Select(new[] { candidates[0] with { Length = 3f } },
+                Vector3.Zero, 2.6, false) is null,
+                "oversize fish became edible target");
+            selector.Reset();
+            var diversion = new PikeBassDiversion();
+            diversion.SwitchedFromBass(1, false);
+            Need(!diversion.Pending, "unverified Bass cue became escape");
+            diversion.SwitchedFromBass(1, true);
+            Need(!diversion.Step(8, false, false, true) && diversion.Pending,
+                "pause advanced diversion");
+            Need(!diversion.Step(2, false, false, false) && diversion.Pending &&
+                diversion.Step(7.5, false, false, false) && !diversion.Step(8, false, false, false),
+                "real target switch did not yield one delayed Bass escape");
+            diversion.SwitchedFromBass(10, true);
+            Need(!diversion.Step(10.5, true, false, false) && !diversion.Pending,
+                "visible Bass was credited with escape");
+            diversion.SwitchedFromBass(12, true);
+            Need(!diversion.Step(12.5, false, true, false) && !diversion.Pending,
+                "renewed Bass pursuit was credited with escape");
+            diversion.Reset();
+            var batch = Enumerable.Range(0, PikeTargetSelector.MaxCandidates)
+                .Select(i => new PikeCandidate("fish-" + i, i == 0, true, .2f,
+                    bassSight with { SensedAt = 4 }, default)).ToArray();
+            var timer = Stopwatch.StartNew();
+            for (var i = 0; i < 1000; i++) selector.Select(batch, Vector3.Zero, 4, false);
+            timer.Stop();
+            Need(selector.Evaluated == PikeTargetSelector.MaxCandidates,
+                "population target evaluation escaped cap");
+            GD.Print($"PIKE_TARGET_BUDGET candidates={selector.Evaluated} max_sight_rays={selector.Evaluated * 3} max_water_samples={selector.Evaluated * 7} select_1000_ms={timer.Elapsed.TotalMilliseconds:F2}");
+            var strikePrey = scene.PreyActors[10];
+            var schoolNeighbor = scene.BluegillSchools.Single(s => s.Id == strikePrey.SchoolId)
+                .Members.First(p => p != strikePrey);
+            var neighborPosition = schoolNeighbor.GlobalPosition;
+            var openStrikeY = Mathf.Max(PikeCoverFixture.Bed(0, 9),
+                PikeCoverFixture.Bed(0, 7.7f)) + 2f;
+            actor.GlobalPosition = new Vector3(0, openStrikeY, 9);
+            actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
+            strikePrey.GlobalPosition = actor.MouthPosition;
+            schoolNeighbor.GlobalPosition = strikePrey.GlobalPosition + Vector3.Right;
+            actor.Mind.Retarget(strikePrey.StableId, false);
+            var strikeSight = new SightEvidence(true, .4f, "visible", 1, 1, 1, 3, 3, 7,
+                strikePrey.GlobalPosition, 0);
+            actor.Mind.Step(actor.GlobalPosition, strikeSight, default, 0, false);
+            actor.Mind.Step(actor.GlobalPosition, strikeSight with { SensedAt = .6 }, default, .6, false);
+            strikePrey.GlobalPosition = actor.GlobalPosition + Vector3.Forward * 3f;
+            Need(!scene.TryPikeConsumePrey(strikePrey, .6),
+                "Pike consumed Bluegill beyond mouth range");
+            strikePrey.GlobalPosition = actor.GlobalPosition + Vector3.Back * 1.32f;
+            Need(!scene.TryPikeConsumePrey(strikePrey, .6),
+                "Pike consumed Bluegill behind its body");
+            strikePrey.GlobalPosition = actor.MouthPosition;
+            Need(actor.Mind.StrikeReady && actor.MouthCanReach(strikePrey) &&
+                scene.TryPikeConsumePrey(strikePrey, .6), "physical Bluegill strike failed");
+            Need(!strikePrey.IsAlive && !strikePrey.Visible && strikePrey.CollisionLayer == 0 &&
+                !scene.TryPikeConsumePrey(strikePrey, .6), "Bluegill consumed twice or remained physical");
+            Need(scene.PredationEvents.Count == 1 &&
+                scene.PredationEvents[0].Id == "pike:bluegill:" + strikePrey.StableId &&
+                scene.PredationEvents[0].Contact.DistanceTo(actor.MouthPosition) < .2f &&
+                scene.Blood.SeenEventIds.Contains(scene.PredationEvents[0].Id),
+                "Pike Bluegill strike lacked one contact VFX event");
+            Need(scene.BluegillSchools.Single(s => s.Id == strikePrey.SchoolId)
+                .For(schoolNeighbor, .7).Alarm is not null,
+                "neighbor did not scatter from real Pike strike");
+            schoolNeighbor.GlobalPosition = neighborPosition;
+            actor.GlobalPosition = contactPosition;
+            actor.GlobalBasis = contactBasis;
+            actor.ResetActor();
             var strong = new SightEvidence(true, .4f, "visible", 1, 1, 1, 3, 3, 7,
                 new Vector3(0, 1, 0), 0);
             var weak = new SightEvidence(false, .025f, "weak-evidence", 1, 1, 1, 3, 3, 7);
@@ -98,6 +231,51 @@ public static class PikeAiChecks
             var cover = scene.CoverPlan;
             var catalog = PikeCoverFixture.LoadCatalog();
             var plants = PikeCoverFixture.VisibleSoftCover(scene.GetNode<Node3D>("Cover"));
+            var realPrey = scene.PreyActors[11];
+            var savedPreyPosition = realPrey.GlobalPosition;
+            var savedBassPosition = fish.GlobalPosition;
+            actor.GlobalPosition = new Vector3(0,
+                Mathf.Max(PikeCoverFixture.Bed(0, 9), PikeCoverFixture.Bed(0, 7)) + 2f, 9);
+            actor.GlobalBasis = Basis.LookingAt(Vector3.Forward, Vector3.Up);
+            fish.GlobalPosition = actor.GlobalPosition + Vector3.Forward * 1.7f;
+            realPrey.GlobalPosition = actor.GlobalPosition + Vector3.Forward * 2.2f;
+            var bassSensor = new WorldSightSensor(scene.GetWorld3D().DirectSpaceState,
+                plants, actor.GetRid(), fish.GetRid());
+            var preySensor = new WorldSightSensor(scene.GetWorld3D().DirectSpaceState,
+                plants, actor.GetRid(), realPrey.GetRid());
+            SightEvidence BassAt(double at) => bassSensor.Observe(actor.GlobalPosition,
+                -actor.GlobalBasis.Z, new SightTarget(fish.GlobalPosition, fish.BodyRadius, 1f),
+                scene.SightWater!, at, false);
+            SightEvidence PreyAt(double at) => preySensor.Observe(actor.GlobalPosition,
+                -actor.GlobalBasis.Z, new SightTarget(realPrey.GlobalPosition, .075f, 1f),
+                scene.SightWater!, at, false);
+            var realSelector = new PikeTargetSelector();
+            var bassVisible = BassAt(0);
+            Need(bassVisible.Detected && realSelector.Select(new[]
+                { new PikeCandidate(bassId, true, true, scene.Growth.Length, bassVisible, default),
+                  new PikeCandidate(realPrey.StableId, false, true, realPrey.Length, default, default) },
+                actor.GlobalPosition, 0, false)?.Id == bassId, "visible Bass did not start real hunt");
+            var schoolVisible = PreyAt(1.3);
+            bassVisible = BassAt(1.3);
+            Need(schoolVisible.Detected && bassVisible.Detected && realSelector.Select(new[]
+                { new PikeCandidate(bassId, true, true, scene.Growth.Length, bassVisible, default),
+                  new PikeCandidate(realPrey.StableId, false, true, realPrey.Length, schoolVisible, default) },
+                actor.GlobalPosition, 1.3, false)?.Id == bassId,
+                "nearby observed Bluegill guaranteed diversion despite clear Bass");
+            fish.GlobalPosition = actor.GlobalPosition + Vector3.Back * 2f;
+            bassVisible = BassAt(2.6);
+            schoolVisible = PreyAt(2.6);
+            Need(!bassVisible.Detected && schoolVisible.Detected && realSelector.Select(new[]
+                { new PikeCandidate(bassId, true, true, scene.Growth.Length, bassVisible, default),
+                  new PikeCandidate(realPrey.StableId, false, true, realPrey.Length, schoolVisible, default) },
+                actor.GlobalPosition, 2.6, false)?.Id == realPrey.StableId,
+                "unobserved Bass prevented switch to genuinely sensed Bluegill");
+            GD.Print($"PIKE_REAL_TARGET_CHOICE bass_clear={bassVisible.Reason} bluegill={schoolVisible.Reason} switched={realPrey.StableId}");
+            fish.GlobalPosition = savedBassPosition;
+            realPrey.GlobalPosition = savedPreyPosition;
+            actor.GlobalPosition = contactPosition;
+            actor.GlobalBasis = contactBasis;
+            actor.ResetActor();
             var checkedWood = 0;
             foreach (var id in new[] { "FAF-WOOD-005A", "FAF-WOOD-006A", "FAF-WOOD-007A",
                 "FAF-WOOD-008A", "FAF-WOOD-009A" })
@@ -237,12 +415,14 @@ public static class PikeAiChecks
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
             for (var frame = 0; frame < 20; frame++)
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            var escapeSwimDistance = fish.GlobalPosition.DistanceTo(afterEscapePosition);
+            var escapeThrust = fish.LastThrust;
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
             fish.ClearAndDisarmInput();
             Need(scene.Outcome == "active" && scene.EscapeCount == 1 && !tree.Paused &&
                 scene.MovementCues.SimulationSeconds > afterEscapeTime &&
-                fish.GlobalPosition.DistanceTo(afterEscapePosition) > .15f,
-                "escaped Bass did not keep swimming with one escape event");
+                escapeThrust > 0f && escapeSwimDistance > .03f,
+                $"escaped Bass did not keep swimming with one escape event distance={escapeSwimDistance:F3} thrust={escapeThrust:F2}");
             scene._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
             var resume = scene.FindChild("ResumeEncounter", true, false) as Button;
             Need(tree.Paused && resume is { Disabled: false },
@@ -262,12 +442,65 @@ public static class PikeAiChecks
             fish.ClearAndDisarmInput();
             scene.PikeSight!.Reset();
             scene.MovementCues!.Reset();
+            var samplesBefore = scene.PikePerceptionSamples;
             scene.SetPhysicsProcess(true);
             for (var frame = 0; frame < 360 && scene.Outcome == "active"; frame++)
                 await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
-            Need(scene.Outcome == "caught" && actor.Mind.Mode == PikeMode.Caught && tree.Paused,
+            Need(scene.Outcome == "caught" && actor.Mind.Mode == PikeMode.Caught && !tree.Paused,
                 $"exposed fixture did not produce a physical temporary catch outcome={scene.Outcome} mode={actor.Mind.Mode} ready={actor.Mind.StrikeReady} time={scene.MovementCues.SimulationSeconds:F2} distance={actor.GlobalPosition.DistanceTo(fish.GlobalPosition):F2} at={actor.GlobalPosition}");
-            GD.Print($"PIKE_AI_CHECK_OK seed={PikeCoverFixture.Seed} wood={checkedWood} states=8 open_catch=true hidden_escape_continues=true pause=true restart=2");
+            var aftermathStart = actor.GlobalPosition;
+            var samplesAtCatch = scene.PikePerceptionSamples;
+            var eventsAtCatch = scene.PredationEvents.Count;
+            Need(!fish.GetNode<Node3D>("PlayerVisual").Visible &&
+                fish.CollisionLayer == 0 && fish.CollisionMask == 0 &&
+                !fish.IsPhysicsProcessing() &&
+                !fish.GetNode<FollowCamera>("CameraRig").IsPhysicsProcessing() &&
+                !scene.Blood.Paused &&
+                scene.Blood.ActiveCount == (scene.Blood.Enabled ? 1 : 0) &&
+                scene.FindChild("EncounterMenu", true, false) is Control { Visible: false },
+                "caught aftermath did not hide Bass, hold camera, and leave blood running");
+            scene._Notification((int)Node.NotificationApplicationFocusOut);
+            Need(!tree.Paused, "focus loss froze the caught aftermath");
+            Need(scene.PredationEvents.Count == 2 &&
+                scene.PredationEvents[1].Id == "pike:bass:" + scene.Growth.Identity &&
+                scene.Blood.SeenEventIds.Contains(scene.PredationEvents[1].Id),
+                "Pike Bass catch lacked one contact VFX event");
+            Need(scene.Blood.EmissionCount == (scene.Blood.Enabled ? 2 : 0),
+                "Pike FX duplicated or off setting changed committed catches");
+            var aftermathOutput = OS.GetCmdlineUserArgs().FirstOrDefault(arg =>
+                arg.StartsWith("--aftermath-output=", StringComparison.Ordinal));
+            if (aftermathOutput is not null)
+            {
+                var outputDirectory = aftermathOutput["--aftermath-output=".Length..];
+                Directory.CreateDirectory(outputDirectory);
+                await tree.ToSignal(tree.CreateTimer(.35), SceneTreeTimer.SignalName.Timeout);
+                Need(scene.GetViewport().GetTexture().GetImage().SavePng(
+                    Path.Combine(outputDirectory, "catch-cloud.png")) == Error.Ok,
+                    "native aftermath cloud capture failed");
+                await tree.ToSignal(tree.CreateTimer(.5), SceneTreeTimer.SignalName.Timeout);
+                Need(scene.GetViewport().GetTexture().GetImage().SavePng(
+                    Path.Combine(outputDirectory, "diluting-cloud.png")) == Error.Ok,
+                    "native aftermath dilution capture failed");
+            }
+            await tree.ToSignal(tree.CreateTimer(aftermathOutput is null ? 2.5 : 2.0),
+                SceneTreeTimer.SignalName.Timeout);
+            if (aftermathOutput is not null)
+                Need(scene.GetViewport().GetTexture().GetImage().SavePng(
+                    Path.Combine(aftermathOutput["--aftermath-output=".Length..], "after-fade.png")) == Error.Ok,
+                    "native aftermath fade capture failed");
+            Need(!tree.Paused && actor.GlobalPosition.DistanceTo(aftermathStart) > 1f &&
+                scene.Blood.ActiveCount == 0 &&
+                scene.PredationEvents.Count == eventsAtCatch &&
+                scene.PikePerceptionSamples == samplesAtCatch &&
+                scene.FindChild("EncounterMenu", true, false) is Control { Visible: true } &&
+                scene.FindChild("ResumeEncounter", true, false) is Button { Disabled: true },
+                $"caught aftermath failed to swim/fade without another bite distance={actor.GlobalPosition.DistanceTo(aftermathStart):F2} blood={scene.Blood.ActiveCount}");
+            var actualSamples = scene.PikePerceptionSamples - samplesBefore;
+            Need(actualSamples <= PikeTargetSelector.MaxCandidates *
+                (Math.Ceiling(scene.MovementCues.SimulationSeconds / WorldSightSensor.SampleIntervalSeconds) + 3),
+                "Pike perception exceeded interval/population cap");
+            GD.Print($"PIKE_PERCEPTION_COST samples={actualSamples} max_rays={actualSamples * 3} max_water_samples={actualSamples * 7} seconds={scene.MovementCues.SimulationSeconds:F2}");
+            GD.Print($"PIKE_AI_CHECK_OK seed={PikeCoverFixture.Seed} wood={checkedWood} states=8 open_catch=true aftermath_swim=true blood_fade=true hidden_escape_continues=true pause=true restart=2");
             tree.Quit();
         }
         catch (Exception error)

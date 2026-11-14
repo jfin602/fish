@@ -37,11 +37,17 @@ public static class PondWorldChecks
             "Pond FAF habitat restriction failed");
         var hero = faf.GetChildren().OfType<Node3D>()
             .Single(n => n.Name.ToString().StartsWith("FAF_WOOD_002A_", StringComparison.Ordinal));
-        Require(hero.GetNode<StaticBody3D>("SimpleWoodCollision").GetChildCount() == 16,
-            "hero log collision lacks open segmented inner passage");
+        Require(hero.GetNode<StaticBody3D>("SimpleWoodCollision") is { } heroBody &&
+            heroBody.HasMeta("displayed_mesh_collision") && heroBody.GetChildCount() == 1 &&
+            heroBody.GetChild<CollisionShape3D>(0).Shape is ConcavePolygonShape3D,
+            "hero log collision does not follow its visible mesh");
         var space = habitat.GetWorld3D().DirectSpaceState;
         var staticBodies = faf.GetChildren().OfType<Node3D>()
             .SelectMany(n => n.GetChildren().OfType<StaticBody3D>()).ToArray();
+        Require(staticBodies.Length > 40 && staticBodies.All(body =>
+                body.HasMeta("displayed_mesh_collision") && body.GetChildCount() == 1 &&
+                body.GetChild<CollisionShape3D>(0).Shape is ConcavePolygonShape3D),
+            "Pond structural props still use hand-sized collision");
         var excluded = new Godot.Collections.Array<Rid> { fish.GetRid(),
             habitat.GetNode<StaticBody3D>("HiddenLimits").GetRid() };
         foreach (var body in staticBodies) excluded.Add(body.GetRid());

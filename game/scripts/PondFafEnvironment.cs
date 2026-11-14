@@ -225,6 +225,10 @@ public static class PondFafEnvironment
                 piece.Name = asset.Id.Replace('-', '_') + "_" + root.GetChildCount();
                 piece.Transform = transform;
                 root.AddChild(piece);
+                var solid = piece.FindChild("SimpleWoodCollision", true, false) as StaticBody3D ??
+                    piece.FindChild("BankSolid", true, false) as StaticBody3D ??
+                    throw new InvalidDataException($"Pond solid body missing: {asset.Id}");
+                StaticVisualCollision.Install(piece, solid, asset.Id);
                 if (asset.Family is "hollow_trunk" or "fallen_log" or "stump")
                     foreach (var visual in FindMeshes(piece))
                         for (var surface = 0; surface < visual.Mesh!.GetSurfaceCount(); surface++)

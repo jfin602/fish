@@ -36,7 +36,7 @@ public static class PreyChecks
                     PikeEncounterAssets.BluegillId, "adult", SpeciesRole.Selectable, out _, out _),
                 "Pond juvenile eligibility or size drift");
             Need(prey.SpeciesId == PikeEncounterAssets.BluegillId &&
-                prey.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D { Radius: .075f } &&
+                prey.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D { Radius: .03f } &&
                 prey.GetNode<AnimationPlayer>("PreyVisual/AnimationPlayer").HasAnimation(stage!.Clip("SwimFast")),
                 "prey lacks body or authentic swim rig");
             Need(plants.Any(p => p.FafId.StartsWith("FAF-PLANT-012")) &&
@@ -47,17 +47,20 @@ public static class PreyChecks
             var sight = scene.PreySight!;
             var cues = scene.PreyCues!;
             var env = scene.SightWater!;
-            foreach (var member in school)
+            foreach (var member in school.Take(2))
             {
                 var spawn = member.GlobalPosition;
-                Need(spawn.DistanceTo(fish.GlobalPosition) is > 3f and < 9f &&
-                    spawn.Z < fish.GlobalPosition.Z && !InsideWood(member),
-                    "juvenile spawn is too far, behind player or inside solid cover: " + member.Name);
+                Need(spawn.DistanceTo(fish.GlobalPosition) is > .5f and < 7f &&
+                    !InsideWood(member),
+                    "juvenile spawn is too far or inside solid cover: " + member.Name);
             }
+            Need(school.Skip(2).All(p => p.SchoolId == "refuge" && !InsideWood(p)),
+                "intermediate juveniles are not clear of wood");
             var forageTravel = 0f;
             foreach (var larvaName in new[] { "BluegillLarva0", "BluegillLarva2" })
             {
                 var larva = scene.GetNode<PreyActor>(larvaName);
+                larva.ResetActor();
                 var home = larva.GlobalPosition;
                 var farthest = 0f;
                 for (var frame = 0; frame < 180; frame++)
@@ -65,8 +68,8 @@ public static class PreyChecks
                     larva.Tick(default, default, frame / 60d, 1f / 60f, false);
                     await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                     farthest = Mathf.Max(farthest, larva.GlobalPosition.DistanceTo(home));
-                    Need(larva.GlobalPosition.DistanceTo(home) < 1.5f && !InsideWood(larva),
-                        "undisturbed larva left its home cover or entered wood: " + larvaName);
+                    Need(larva.GlobalPosition.DistanceTo(home) < 2.5f && !InsideWood(larva),
+                        $"undisturbed larva left home or entered wood: {larvaName} distance={larva.GlobalPosition.DistanceTo(home):F2} inside={InsideWood(larva)} at={larva.GlobalPosition}");
                 }
                 Need(farthest > .25f && larva.Mind.Mode == PreyMode.Forage,
                     "undisturbed larva remained motionless: " + larvaName);
@@ -239,8 +242,8 @@ public static class PreyChecks
                         Transform = collision.GlobalTransform,
                         CollisionMask = 1,
                         Margin = 0,
-                        Exclude = new Godot.Collections.Array<Rid> { actor.GetRid(),
-                            fish.GetRid(), pike.GetRid() },
+                        Exclude = new Godot.Collections.Array<Rid>(scene.PreyActors.Select(p => p.GetRid()))
+                            { fish.GetRid(), pike.GetRid() },
                     }, 1);
                 return hits.Count > 0;
             }

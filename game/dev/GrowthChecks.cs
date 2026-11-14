@@ -22,79 +22,128 @@ public static class GrowthChecks
             foreach (var prey in scene.PreyActors) prey.SetPhysicsProcess(false);
             var camera = fish.GetNode<FollowCamera>("CameraRig");
             var identity = scene.Growth.Identity;
-            Need(DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
-                scene.Growth.Stage == "juvenile" &&
-                Near(fish.BodyRadius, scene.Growth.ColliderRadius), "juvenile identity or collider");
-            var juvenileCollision = fish.GetNode<CollisionShape3D>("Collision");
-            Need(juvenileCollision.Shape is CapsuleShape3D { } juvenileCapsule &&
-                Near(juvenileCapsule.Height, scene.Growth.ColliderLength) &&
-                Near(juvenileCapsule.Radius, scene.Growth.ColliderRadius) &&
-                Near(fish.BodyForwardReach, scene.Growth.ColliderLength * .455f),
-                "juvenile Bass physical body does not follow registered dimensions");
+            var stages = new PondGrowthState(identity, "egg");
+            Need(stages.Stage == "egg" && stages.Next(100) is null &&
+                stages.Asset.ModelPath == PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "egg")!.ModelPath,
+                "egg asset or nonfeeding policy invalid");
+            stages.Hatch();
+            Need(stages.Stage == "larva" && stages.Next(5) is null &&
+                stages.Next(6)?.Stage == "juvenile" &&
+                stages.ColliderLength < scene.Growth.ColliderLength &&
+                PondCreatureCatalog.ExportMatches(stages.Asset), "larva stage/threshold invalid");
+            stages.Commit(stages.Next(6)!);
+            Need(stages.Next(13) is null && stages.Next(14)?.Stage == "subadult",
+                "juvenile threshold invalid");
+            stages.Commit(stages.Next(14)!);
+            Need(stages.Next(25) is null && stages.Next(26)?.Stage == "adult",
+                "subadult threshold invalid");
+            stages.Commit(stages.Next(26)!);
+            Need(stages.Stage == "adult" && stages.Identity == identity &&
+                PondCreatureCatalog.ExportMatches(stages.Asset), "adult stage/identity invalid");
+            var baseline = fish.Tuning;
+            var speeds = new[] { "larva", "juvenile", "subadult", "adult" }
+                .Select(stage => new PondGrowthState(identity, stage).StageTuning(baseline).MaxSpeed).ToArray();
+            Need(speeds[0] > 0f && speeds.Zip(speeds.Skip(1), (before, after) =>
+                after > before && after / before < 3f).All(valid => valid) &&
+                speeds[^1] < 4f,
+                "Bass stage swim speed progression invalid");
+            var subadultTuning = new PondGrowthState(identity, "subadult").StageTuning(baseline);
+            var subadultMotor = new SwimState();
+            var subadultTravel = 0f;
+            for (var frame = 0; frame < 60; frame++)
+            {
+                subadultMotor = SwimMotor.Step(subadultMotor, new SwimIntent(1f, 0f, 0f, 0f),
+                    1f / 60f, subadultTuning);
+                subadultTravel += subadultMotor.Velocity.Length() / 60f;
+            }
+            Need(subadultMotor.Speed >= 1.35f && subadultTravel >= .95f &&
+                subadultMotor.Speed < speeds[^1],
+                $"subadult sustained forward swim too slow speed={subadultMotor.Speed:F2} travel={subadultTravel:F2}");
+            GD.Print($"GROWTH_SUBADULT_SWIM_OK speed={subadultMotor.Speed:F2} travel_1s={subadultTravel:F2}");
+
+            Need(scene.Growth.Stage == "juvenile" && scene.Feeding.Nutrition == 0 &&
+                DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
+                Near(fish.BodyRadius, scene.Growth.ColliderRadius), "initial fixture state invalid");
             CheckRig();
-            var larva = scene.PreyActors[4];
+            await CheckStageWall();
+            await CheckJuvenileShoreAscent();
             var open = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
             fish.GlobalPosition = open;
             fish.GlobalBasis = Basis.Identity;
-            larva.GlobalPosition = open + new Vector3(0, 0, -.8f);
-            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             camera.ResetFollow();
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             var juvenileCameraDistance = camera.GlobalPosition.DistanceTo(fish.GlobalPosition);
-            Need(juvenileCameraDistance > fish.BodyRadius + .1f &&
-                CameraClear(scene, fish, camera), "juvenile camera clearance");
-            var stageBeforeCamera = scene.Growth.Stage;
-            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(scene.Growth.Stage == stageBeforeCamera && scene.Feeding.Nutrition == 0,
-                "camera update mutated growth");
-            Need(FeedingLedger.IsEligiblePrey(larva.SpeciesId, larva.Stage, larva.Length,
-                    scene.Growth.Stage, scene.Growth.Length),
-                "registered Bluegill larva should be edible from juvenile Bass");
+            Need(juvenileCameraDistance > fish.BodyRadius + .1f && CameraClear(scene, fish, camera),
+                "juvenile camera clearance invalid");
+            var nymphs = scene.FoodActors.Where(f => f.Kind == FeedingLedger.InsectId).ToArray();
+            Need(nymphs.Length >= 7, "insufficient nymph food for legacy fixture start");
             var wall = new StaticBody3D { Name = "GrowthTestWall", CollisionLayer = 1 };
             scene.AddChild(wall);
-            wall.GlobalPosition = fish.GlobalPosition + new Vector3(.16f, 0, 0);
+            wall.GlobalPosition = open + Vector3.Right * .11f;
             wall.AddChild(new CollisionShape3D { Shape = new BoxShape3D
-                { Size = new Vector3(.08f, 1f, 1f) } });
+                { Size = new Vector3(.04f, 1f, 1f) } });
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(scene.TryBite(larva).Consumed && scene.Feeding.Nutrition == 4 &&
-                scene.Growth.Stage == "juvenile" && !scene.TryAdvanceGrowth(),
-                "near-wall stage should defer after real Bluegill bite");
-            wall.QueueFree();
-            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(scene.TryAdvanceGrowth() && scene.Growth.Stage == "subadult" &&
-                Near(fish.BodyRadius, scene.Growth.ColliderRadius) &&
-                scene.Growth.Identity == identity && scene.Feeding.Nutrition == 4,
-                "subadult stage did not apply after clearance");
-            CheckRig();
-            tree.Paused = true;
-            Need(!scene.TryBite(larva).Consumed && !scene.TryAdvanceGrowth() &&
-                scene.Feeding.Nutrition == 4, "paused scene advanced feeding/growth");
-            tree.Paused = false;
-            foreach (var prey in scene.PreyActors.Skip(5).Take(2))
+            for (var i = 0; i < 7; i++)
             {
                 fish.GlobalPosition = open;
                 fish.GlobalBasis = Basis.Identity;
-                prey.GlobalPosition = open + new Vector3(0, 0, -.95f);
-                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-                Need(scene.TryBite(prey).Consumed, "subadult Bluegill larva bite failed");
-                Need(!scene.TryBite(prey).Consumed, "duplicate Bluegill bite awarded");
+                nymphs[i].GlobalPosition = open + Vector3.Forward * .43f;
+                Need(scene.TryBiteFood(nymphs[i]).Consumed &&
+                    !scene.TryBiteFood(nymphs[i]).Consumed, "nymph duplicate/threshold failure " + i);
             }
-            Need(scene.Growth.Stage == "adult" && scene.Feeding.Nutrition == 12 &&
-                scene.Feeding.Events.Count == 3 && scene.Growth.Identity == identity &&
-                DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
-                Near(fish.BodyRadius, PondGrowthState.AdultColliderRadius),
-                "adult stage, one-time awards or identity changed");
+            Need(scene.Feeding.Nutrition == 14 && scene.Feeding.Events.Count == 7 &&
+                scene.Growth.Stage == "juvenile" && !scene.TryAdvanceGrowth(),
+                "wall did not defer earned stage");
+            wall.QueueFree();
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            fish.GlobalPosition = new Vector3(open.X,
+                fish.PondWaterlineHeight - .65f * scene.Growth.RadiusForNext() + .01f,
+                open.Z);
+            Need(!scene.TryAdvanceGrowth() && scene.Feeding.Nutrition == 14 &&
+                scene.Growth.Stage == "juvenile", "surface did not defer earned stage");
+            fish.GlobalPosition = open;
+            Need(scene.TryAdvanceGrowth() && scene.Growth.Stage == "subadult" &&
+                scene.Feeding.Nutrition == 14 && scene.Growth.Identity == identity,
+                "growth did not resume after clearance");
             CheckRig();
+            await CheckStageWall();
+            tree.Paused = true;
+            Need(!scene.TryAdvanceGrowth() && !scene.TryBiteFood(nymphs[7]).Consumed &&
+                scene.Feeding.Nutrition == 14, "pause advanced nutrition/growth");
+            tree.Paused = false;
+            var larvae = scene.PreyActors.Where(p => p.Stage == "larva").Take(3).ToArray();
+            foreach (var prey in larvae)
+            {
+                fish.GlobalPosition = open;
+                fish.GlobalBasis = Basis.Identity;
+                prey.GlobalPosition = open + Vector3.Forward * .75f;
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                Need(scene.TryBite(prey).Consumed && !scene.TryBite(prey).Consumed,
+                    "Bluegill larva bite/duplicate failed");
+                Need(scene.PredationEvents.Count == scene.Feeding.Events.Count - 7 &&
+                    scene.PredationEvents[^1].Id == "bass:bluegill:" + prey.StableId &&
+                    scene.PredationEvents[^1].TargetId == prey.StableId &&
+                    scene.Blood.SeenEventIds.Contains(scene.PredationEvents[^1].Id),
+                    "Bass fish bite did not produce one visual event");
+            }
+            Need(scene.Growth.Stage == "adult" && scene.Feeding.Nutrition == 26 &&
+                scene.Feeding.Events.Count == 10 && scene.Growth.Identity == identity &&
+                DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
+                Near(fish.BodyRadius, scene.Growth.BodyFor("adult").Radius),
+                "adult threshold/identity failed");
+            CheckRig();
+            await CheckStageWall();
             var juvenileBluegill = scene.PreyActors[0];
             fish.GlobalPosition = open;
             fish.GlobalBasis = Basis.Identity;
-            juvenileBluegill.GlobalPosition = open + new Vector3(0, 0, -.95f);
+            juvenileBluegill.GlobalPosition = open + Vector3.Forward * .75f;
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(juvenileBluegill).Consumed &&
-                !scene.TryBite(juvenileBluegill).Consumed && scene.Feeding.Events.Count == 4,
-                "adult Bass did not gain a one-time Bluegill-juvenile hunt");
-            Need(camera.GetNode<Camera3D>("Camera3D").Current &&
-                Near(fish.BodyScale, 1f), "camera/body scale lost at adult");
+                !scene.TryBite(juvenileBluegill).Consumed && scene.Feeding.Nutrition == 32,
+                "adult Bluegill-juvenile limit/transaction failed");
+            Need(scene.PredationEvents.Count == 4 &&
+                scene.Blood.EmissionCount == (scene.Blood.Enabled ? 4 : 0),
+                "Bass predation VFX duplicated or FX-off affected nutrition");
             fish.GlobalPosition = open;
             camera.ResetFollow();
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
@@ -102,9 +151,10 @@ public static class GrowthChecks
             var adultCameraDistance = camera.GlobalPosition.DistanceTo(fish.GlobalPosition);
             Need(adultCameraDistance > juvenileCameraDistance * 1.5f &&
                 CameraClear(scene, fish, camera) && !scene.TryAdvanceGrowth(),
-                "adult camera framing/clearance or spurious growth");
+                "adult camera clearance or spurious growth failed");
             ClearanceSurvey(scene, fish);
-            GD.Print($"GROWTH_CHECK_OK seed={PikeCoverFixture.Seed} fixture=pike identity={identity} stage={scene.Growth.Stage} nutrition={scene.Feeding.Nutrition} events={scene.Feeding.Events.Count} radius={fish.BodyRadius:F3} camera_juvenile={juvenileCameraDistance:F2} camera_adult={adultCameraDistance:F2}");
+            ShelterCameraSurvey(scene, fish, camera);
+            GD.Print($"GROWTH_CHECK_OK identity={identity} stage={scene.Growth.Stage} nutrition={scene.Feeding.Nutrition} events={scene.Feeding.Events.Count} camera_juvenile={juvenileCameraDistance:F2} camera_adult={adultCameraDistance:F2}");
             tree.Quit();
 
             void CheckRig()
@@ -113,33 +163,161 @@ public static class GrowthChecks
                 var visual = fish.GetNode<Node3D>("PlayerVisual");
                 var player = visual.FindChild("AnimationPlayer", true, false) as AnimationPlayer;
                 var motion = visual.GetNode<CatalogFishVisualMotion>("SwimPresentation");
-                var adultBass = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!;
+                var adult = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!;
+                var body = fish.GetNode<CollisionShape3D>("Collision").Shape as CapsuleShape3D;
+                CheckMeshInsideBody(fish, scene.Growth);
                 Need(asset.Id == PikeEncounterAssets.BassId &&
-                    Near(visual.Scale.X, 1f / adultBass.Dimensions[1]) &&
-                    Near(fish.BodyRadius, asset.Dimensions[0] /
-                        (2f * adultBass.Dimensions[1])) &&
-                    fish.GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D body &&
-                    Near(body.Height, asset.Dimensions[1] / adultBass.Dimensions[1]) &&
-                    PondCreatureCatalog.ExportMatches(asset) &&
-                    player is not null && player.HasAnimation(asset.Clip("Glide")) &&
-                    player.HasAnimation(asset.Clip("Swim")) &&
-                    player.HasAnimation(asset.Clip("SwimFast")) &&
-                    motion is not null && visual.GetChildCount() > 0,
-                    "registered rig or clips missing at " + scene.Growth.Stage);
+                    Near(visual.Scale.X, 1f / adult.Dimensions[1]) &&
+                    Near(fish.BodyRadius, scene.Growth.ColliderRadius) &&
+                    body is not null && Near(body.Height, scene.Growth.ColliderLength) &&
+                    Near(body.Radius, scene.Growth.ColliderRadius) &&
+                    Near(fish.BodyForwardReach, scene.Growth.ColliderLength * .5f -
+                        scene.Growth.ColliderCenterZ) &&
+                    Near(fish.GetNode<CollisionShape3D>("Collision").Position.Z,
+                        scene.Growth.ColliderCenterZ) &&
+                    Near(fish.BodyScale, scene.Growth.VisualLength) &&
+                    Near(fish.Tuning.MaxSpeed, scene.Growth.StageTuning(baseline).MaxSpeed) &&
+                    PondCreatureCatalog.ExportMatches(asset) && player is not null &&
+                    player.HasAnimation(asset.Clip("Glide")) && player.HasAnimation(asset.Clip("Swim")) &&
+                    player.HasAnimation(asset.Clip("SwimFast")) && motion is not null,
+                    "registered stage rig/collider invalid at " + scene.Growth.Stage);
+            }
+
+            async System.Threading.Tasks.Task CheckStageWall()
+            {
+                fish.ClearAndDisarmInput();
+                fish.SetActivePreset(ControlPreset.Builtins().Single(p => p.Id == ControlPreset.KeyboardId));
+                var at = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
+                fish.GlobalPosition = at;
+                fish.GlobalBasis = Basis.Identity;
+                var wall = new StaticBody3D { Name = "BassStageWallProbe", CollisionLayer = 1 };
+                scene.AddChild(wall);
+                wall.GlobalPosition = at + Vector3.Forward * (fish.BodyForwardReach + .15f);
+                wall.AddChild(new CollisionShape3D { Shape = new BoxShape3D
+                    { Size = new Vector3(2f, 6f, .02f) } });
+                fish.SetPhysicsProcess(true);
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+                var previous = fish.GlobalPosition;
+                for (var frame = 0; frame < 120; frame++)
+                {
+                    await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                    Need(fish.GlobalPosition.DistanceTo(previous) <= fish.Tuning.MaxSpeed / 60f + .02f &&
+                        fish.Velocity.Length() <= fish.Tuning.MaxSpeed + .02f,
+                        "Bass stage motion jumped at " + scene.Growth.Stage);
+                    previous = fish.GlobalPosition;
+                }
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
+                Need(fish.GlobalPosition.Z >= wall.GlobalPosition.Z + .01f +
+                    fish.BodyRadius - .005f,
+                    $"Bass stage crossed thin wall at {scene.Growth.Stage} fish={fish.GlobalPosition} wall={wall.GlobalPosition}");
+                fish.SetPhysicsProcess(false);
+                fish.ClearAndDisarmInput();
+                wall.QueueFree();
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                GD.Print($"GROWTH_STAGE_WALL_OK stage={scene.Growth.Stage} speed_cap={fish.Tuning.MaxSpeed:F2} radius={fish.BodyRadius:F4}");
+            }
+
+            async System.Threading.Tasks.Task CheckJuvenileShoreAscent()
+            {
+                fish.ClearAndDisarmInput();
+                fish.GlobalPosition = new Vector3(scene.NestPosition.X,
+                    fish.PondWaterlineHeight - .4f, scene.NestPosition.Z);
+                fish.GlobalBasis = Basis.Identity;
+                fish.SetPhysicsProcess(true);
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.Up, Pressed = true });
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+                for (var frame = 0; frame < 240; frame++)
+                {
+                    await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                    Need(fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .001f &&
+                        fish.Velocity.Length() <= fish.Tuning.MaxSpeed + .02f,
+                        "juvenile shore ascent breached surface or speed cap");
+                }
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.Up, Pressed = false });
+                fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
+                fish.SetPhysicsProcess(false);
+                fish.ClearAndDisarmInput();
+                GD.Print($"GROWTH_JUVENILE_SHORE_OK y={fish.GlobalPosition.Y:F3} waterline={fish.PondWaterlineHeight:F3} speed_cap={fish.Tuning.MaxSpeed:F2}");
             }
         }
         catch (Exception error)
         {
             GD.PushError("GROWTH_CHECK_FAILED " + error);
+            tree.Paused = false;
             tree.Quit(1);
+        }
+    }
+
+    public static void CheckMeshInsideBody(FishController fish, PondGrowthState growth)
+    {
+        var visual = fish.GetNode<Node3D>("PlayerVisual");
+        var profile = growth.Body;
+        var vertices = 0;
+        foreach (var found in visual.FindChildren("*", "MeshInstance3D", true, false))
+        {
+            if (found is not MeshInstance3D { Mesh: not null } mesh) continue;
+            for (var surface = 0; surface < mesh.Mesh.GetSurfaceCount(); surface++)
+            {
+                foreach (var vertex in mesh.Mesh.SurfaceGetArrays(surface)
+                    [(int)Mesh.ArrayType.Vertex].AsVector3Array())
+                {
+                    var point = fish.ToLocal(mesh.GlobalTransform * vertex);
+                    Need(profile.Contains(point, .0001f),
+                        $"Bass mesh escapes {growth.Stage} collider at {point}");
+                    vertices++;
+                }
+            }
+        }
+        Need(vertices > 0, "Bass stage mesh has no measured vertices");
+        GD.Print($"BASS_BODY_FIT_OK stage={growth.Stage} vertices={vertices} radius={profile.Radius:F4} height={profile.Height:F4} center_z={profile.CenterZ:F4}");
+    }
+
+    private static void ShelterCameraSurvey(PikeEncounter scene, FishController fish,
+        FollowCamera camera)
+    {
+        foreach (var id in new[] { "FAF-WOOD-007A", "FAF-WOOD-008A" })
+        {
+            var placement = scene.CoverPlan.Single(p => p.Id == id);
+            var passed = false;
+            for (var radius = 1.2f; radius <= 3f && !passed; radius += .3f)
+            for (var i = 0; i < 8 && !passed; i++)
+            {
+                var angle = i * Mathf.Tau / 8f;
+                var x = placement.Position.X + Mathf.Cos(angle) * radius;
+                var z = placement.Position.Z + Mathf.Sin(angle) * radius;
+                var at = new Vector3(x, PikeCoverFixture.Bed(x, z) + .9f, z);
+                if (at.Y > fish.PondSurfaceCenterLimit) continue;
+                using var shape = new CapsuleShape3D
+                { Radius = fish.BodyRadius, Height = scene.Growth.ColliderLength };
+                using var query = new PhysicsShapeQueryParameters3D
+                {
+                    Shape = shape,
+                    Transform = new Transform3D(fish.GlobalBasis *
+                        new Basis(Vector3.Right, Mathf.Pi * .5f),
+                        at + fish.GlobalBasis.Z * scene.Growth.ColliderCenterZ),
+                    CollisionMask = fish.CollisionMask,
+                    Exclude = new Godot.Collections.Array<Rid> { fish.GetRid() },
+                };
+                if (scene.GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0)
+                    continue;
+                fish.GlobalPosition = at;
+                camera.SnapToFish();
+                passed = CameraClear(scene, fish, camera);
+            }
+            Need(passed, "adult camera/body has no clear pose near " + id);
+            GD.Print($"GROWTH_SHELTER_CAMERA_OK id={id} distance={fish.GlobalPosition.DistanceTo(placement.Position):F2}");
         }
     }
 
     private static void ClearanceSurvey(PikeEncounter scene, FishController fish)
     {
         var catalog = PikeCoverFixture.LoadCatalog();
-        var juvenileRadius = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "juvenile")!.Dimensions[0] /
-            (2f * PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!.Dimensions[1]);
+        var juvenileRadius = scene.Growth.BodyFor("juvenile").Radius;
+        var adultRadius = scene.Growth.BodyFor("adult").Radius;
         var exclude = new Godot.Collections.Array<Rid> { fish.GetRid(),
             scene.GetNode<PikeActor>("NorthernPike").GetRid() };
         foreach (var prey in scene.PreyActors) exclude.Add(prey.GetRid());
@@ -161,9 +339,9 @@ public static class GrowthChecks
                     {
                         var local = new Vector3((ix - 8) * .3f, .55f + iy * .35f, (iz - 8) * .3f);
                         var at = placement.Position + basis * local;
-                        if (at.Y > PikeCoverFixture.WaterY - .65f * PondGrowthState.AdultColliderRadius) continue;
+                        if (at.Y > PikeCoverFixture.WaterY - .65f * adultRadius) continue;
                         var juvenile = Clear(juvenileRadius, at);
-                        var adult = Clear(PondGrowthState.AdultColliderRadius, at);
+                        var adult = Clear(adultRadius, at);
                         juvenileCells[ix, iz] = juvenile;
                         adultCells[ix, iz] = adult;
                         if (juvenile) small++;
@@ -223,7 +401,7 @@ public static class GrowthChecks
                     new SightTarget(center, juvenileRadius, 1f), scene.SightWater!, 1, false);
                 sensor.Reset();
                 var adult = sensor.Observe(observer, -Vector3.Right,
-                    new SightTarget(center, PondGrowthState.AdultColliderRadius, 1f),
+                    new SightTarget(center, adultRadius, 1f),
                     scene.SightWater!, 2, false);
                 if (juvenile.ClearRays == 0 || adult.ClearRays == 0 ||
                     adult.Strength <= juvenile.Strength) continue;
@@ -236,9 +414,10 @@ public static class GrowthChecks
 
         bool Clear(float radius, Vector3 at)
         {
+            using var shape = new SphereShape3D { Radius = radius };
             using var query = new PhysicsShapeQueryParameters3D
             {
-                Shape = new SphereShape3D { Radius = radius },
+                Shape = shape,
                 Transform = new Transform3D(Basis.Identity, at), CollisionMask = 1, Exclude = exclude,
             };
             return scene.GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count == 0;

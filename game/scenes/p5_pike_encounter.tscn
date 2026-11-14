@@ -22,7 +22,8 @@ light_energy = 1.4
 
 [node name="Fish" type="CharacterBody3D" parent="."]
 position = Vector3(13, 1, 24)
-collision_layer = 1
+# Encounter swimmers occupy layer 2 and move against solid Pond cover on layer 1.
+collision_layer = 2
 collision_mask = 1
 script = ExtResource("2_fish")
 Tuning = ExtResource("4_tuning")
@@ -38,7 +39,7 @@ current = true
 
 [node name="NorthernPike" type="CharacterBody3D" parent="."]
 position = Vector3(0, 0, 5)
-collision_layer = 1
+collision_layer = 2
 collision_mask = 1
 motion_mode = 1
 script = ExtResource("5_pike")

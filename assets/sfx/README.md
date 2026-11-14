@@ -2,14 +2,14 @@
 
 This is the named file list for the first complete Fish life: choose a habitat and fish, hatch, swim, hide, feed, grow, evade predators, save and continue, die, and view Life History. It also covers the Bass/Pike encounter used to prove that loop. Every row is one **sound role** to audition and eventually place in the game, not a claim that the current generated take is accepted. The current [run 1/run 2 pick list](../../docs/assets/audio-base-pack/pick-list.md) contains candidates for the rows marked **Candidate**.
 
-Put approved, game-ready files in this folder using the exact filenames below. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg`; short effects use `.wav`. Do not copy a candidate into this folder merely because it passed technical checks—choose it by listening first.
+Put approved, game-ready files under `game/assets/audio/` using the exact filenames below. This folder holds the inventory. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg`; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. [The audio review log](../../docs/assets/audio-base-pack/review-log.md) records locks.
 
 ## Habitat ambience — 8 loops
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
 | `pond_underwater_shallows.ogg` | Pond, underwater in the shallows | Candidate |
-| `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Candidate |
+| `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Locked candidate |
 | `pond_surface_day.ogg` | Pond, camera at or above the surface by day | Candidate |
 | `pond_surface_night.ogg` | Pond, camera at or above the surface by night | Candidate |
 | `ocean_underwater_reef.ogg` | Ocean, underwater around the reef and shallows | Candidate |
@@ -23,13 +23,13 @@ Blend these by habitat, depth, surface position, and time of day. Existing under
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
-| `swim_gentle.wav` | Quiet ordinary swimming by a small or medium fish | Candidate |
-| `swim_accelerate.wav` | A real increase in propulsion | Candidate |
-| `swim_turn.wav` | A distinct hard turn, with a cooldown | Candidate |
-| `swim_large.wav` | Heavier swimming once the same fish has grown large | Candidate |
-| `escape_burst.wav` | A genuine limited Spacebar boost begins for pursuit or escape | Candidate |
-| `surface_breach.wav` | Fish breaks the water surface | Candidate |
-| `surface_reentry.wav` | Fish returns below the surface | Candidate |
+| `swim_gentle.wav` | Quiet ordinary swimming by a small or medium fish | Locked candidate |
+| `swim_accelerate.wav` | A real increase in propulsion | Locked candidate |
+| `swim_turn.wav` | A distinct hard turn, with a cooldown | Locked candidate |
+| `swim_large.wav` | Heavier swimming once the same fish has grown large | Locked candidate |
+| `escape_burst.wav` | A genuine limited Spacebar boost begins for pursuit or escape | Locked candidate (reuses `swim_accelerate.wav`) |
+| `surface_breach.wav` | Fish breaks the water surface | Locked candidate |
+| `surface_reentry.wav` | Fish returns below the surface | Skipped for now; candidates retained |
 
 Swimming beds should be subtle and follow actual speed and body size. A turn or acceleration must not start a new one-shot on every frame.
 
@@ -37,7 +37,7 @@ Swimming beds should be subtle and follow actual speed and body size. A turn or 
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
-| `vegetation_brush.wav` | Body brushes reeds, weeds, or other soft cover | Candidate |
+| `vegetation_brush.wav` (gentle), `vegetation_brush_02.wav` (hard) | Body brushes reeds, weeds, or other soft cover | Locked; [review record](../../docs/assets/audio-base-pack/review-log.md) |
 | `wood_contact.wav` | Meaningful contact with a log or root | Candidate |
 | `rock_contact.wav` | Meaningful contact with rock or hard ground | Candidate |
 | `small_bubbles.wav` | Visible local bubble release | Candidate |

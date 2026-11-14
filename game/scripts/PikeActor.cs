@@ -11,6 +11,7 @@ public partial class PikeActor : CharacterBody3D
     private Vector3 _patrolOrigin;
     private float _speed;
     private Vector3 _steeringDirection = Vector3.Forward;
+    private Vector3 _afterCatchGoal;
     public PikeAwareness Mind => _mind;
     public Vector3 LastSteeringTarget { get; private set; }
     public float ActualSpeed => Velocity.Length();
@@ -30,6 +31,15 @@ public partial class PikeActor : CharacterBody3D
             forward.Dot((fish.GlobalPosition - GlobalPosition).Normalized()) > .65f;
     }
 
+    public bool MouthCanReach(PreyActor prey)
+    {
+        if (!prey.IsAlive || prey.GetNode<CollisionShape3D>("Collision").Shape is not SphereShape3D sphere)
+            return false;
+        var to = prey.GlobalPosition - MouthPosition;
+        return to.Length() <= sphere.Radius + .13f &&
+            (-GlobalBasis.Z).Dot((prey.GlobalPosition - GlobalPosition).Normalized()) > .65f;
+    }
+
     public void Configure()
     {
         _patrolOrigin = GlobalPosition;
@@ -43,6 +53,47 @@ public partial class PikeActor : CharacterBody3D
         _steeringDirection = -GlobalBasis.Z;
         Velocity = Vector3.Zero;
         LastSteeringTarget = _patrolOrigin;
+        _afterCatchGoal = Vector3.Zero;
+    }
+
+    /// <summary>Continue the committed strike into open water after the Bass is caught.</summary>
+    public void BeginAfterCatch()
+    {
+        var forward = -GlobalBasis.Z;
+        var side = forward.Cross(Vector3.Up).Normalized();
+        // Veer away from the held catch view, leaving the contact cloud in frame.
+        _afterCatchGoal = GlobalPosition + side * 10f + forward * 3f;
+        _afterCatchGoal.Y = Mathf.Clamp(_afterCatchGoal.Y,
+            PikeCoverFixture.Bed(_afterCatchGoal.X, _afterCatchGoal.Z) + 1.7f,
+            PikeCoverFixture.WaterY - 1f);
+        LastSteeringTarget = _afterCatchGoal;
+    }
+
+    public void TickAfterCatch(float delta)
+    {
+        if (_mind.Mode != PikeMode.Caught || delta <= 0f) return;
+        var to = _afterCatchGoal - GlobalPosition;
+        if (to.LengthSquared() < .7f * .7f)
+        {
+            _speed = Mathf.MoveToward(_speed, 0f, 3f * delta);
+            Velocity = -GlobalBasis.Z * _speed;
+            MoveAndSlide();
+            return;
+        }
+        var direction = ClearDirection(to.Normalized());
+        _steeringDirection = _steeringDirection.Slerp(direction,
+            1f - Mathf.Exp(-4f * delta)).Normalized();
+        var targetBasis = Basis.LookingAt(_steeringDirection,
+            Mathf.Abs(_steeringDirection.Dot(Vector3.Up)) > .95f ? Vector3.Forward : Vector3.Up);
+        var current = GlobalBasis.GetRotationQuaternion();
+        var desired = targetBasis.GetRotationQuaternion();
+        var angle = current.AngleTo(desired);
+        GlobalBasis = new Basis(current.Slerp(desired,
+            angle < .0001f ? 1f : Mathf.Min(1f, Mathf.DegToRad(80f) * delta / angle)));
+        _speed = Mathf.MoveToward(_speed, 2.3f, 3f * delta);
+        Velocity = -GlobalBasis.Z * _speed;
+        MoveAndSlide();
+        _speed = Mathf.Min(_speed, Velocity.Length() + .5f);
     }
 
     public void Tick(SightEvidence sight, DisturbanceEvidence disturbance,
@@ -87,7 +138,6 @@ public partial class PikeActor : CharacterBody3D
 
     private Vector3 ClearDirection(Vector3 direct)
     {
-        if (_mind.Mode == PikeMode.Commit) return direct;
         var ahead = GlobalPosition + direct * 1.2f;
         if (ahead.Y >= PikeCoverFixture.Bed(ahead.X, ahead.Z) + 1.5f &&
             ahead.Y <= PikeCoverFixture.WaterY - 1.0f &&

@@ -16,7 +16,9 @@
       "license_conditions": "Commercial use under Stability AI Community License for individuals/organizations below USD 1M annual revenue (including affiliates); commercial users must register with Stability AI and comply with its Acceptable Use Policy. Enterprise license needed above threshold. Model card also notes Gemma component terms. Owner must confirm eligibility before shipping.",
       "final_path": "game/assets/audio/sfx/movement/swim_gentle_01.wav",
       "processing": "Trim low-energy edges (0.0-0.879 s of source); 20 ms fades; peak attenuation if needed; 16-bit PCM WAV; 1.8 kHz low-pass for underwater perspective; gain -8.68 dB",
-      "validation_status": "technical checks and Godot import passed; owner listening review pending",
+      "validation_status": "technical checks and Godot import passed; owner approved take 01; canonical asset imported",
+      "selection_status": "LOCKED",
+      "selected_final_path": "game/assets/audio/sfx/movement/swim_gentle.wav",
       "final_duration_s": 0.879,
       "validation": {
         "source_peak_dbfs": -0.32,
@@ -84,7 +86,10 @@
       "license_conditions": "Commercial use under Stability AI Community License for individuals/organizations below USD 1M annual revenue (including affiliates); commercial users must register with Stability AI and comply with its Acceptable Use Policy. Enterprise license needed above threshold. Model card also notes Gemma component terms. Owner must confirm eligibility before shipping.",
       "final_path": "game/assets/audio/sfx/movement/swim_accelerate_01.wav",
       "processing": "Trim low-energy edges (0.0-0.8 s of source); 20 ms fades; peak attenuation if needed; 16-bit PCM WAV; 1.8 kHz low-pass for underwater perspective; gain -8.9 dB",
-      "validation_status": "technical checks and Godot import passed; owner listening review pending",
+      "validation_status": "technical checks and Godot import passed; owner approved take 01; canonical asset imported",
+      "selection_status": "LOCKED",
+      "selected_final_path": "game/assets/audio/sfx/movement/swim_accelerate.wav",
+      "also_selected_for": "game/assets/audio/sfx/predators/escape_burst.wav",
       "final_duration_s": 0.8,
       "validation": {
         "source_peak_dbfs": -0.1,
@@ -186,7 +191,9 @@
       "license_conditions": "Commercial use under Stability AI Community License for individuals/organizations below USD 1M annual revenue (including affiliates); commercial users must register with Stability AI and comply with its Acceptable Use Policy. Enterprise license needed above threshold. Model card also notes Gemma component terms. Owner must confirm eligibility before shipping.",
       "final_path": "game/assets/audio/sfx/movement/swim_large_01.wav",
       "processing": "Trim low-energy edges (0.02-0.88 s of source); 20 ms fades; peak attenuation if needed; 16-bit PCM WAV; 1.8 kHz low-pass for underwater perspective; gain -6.66 dB",
-      "validation_status": "technical checks and Godot import passed; owner listening review pending",
+      "validation_status": "technical checks and Godot import passed; owner approved take 01; canonical asset imported",
+      "selection_status": "LOCKED",
+      "selected_final_path": "game/assets/audio/sfx/movement/swim_large.wav",
       "final_duration_s": 0.86,
       "validation": {
         "source_peak_dbfs": -2.34,
@@ -288,7 +295,16 @@
       "license_conditions": "Commercial use under Stability AI Community License for individuals/organizations below USD 1M annual revenue (including affiliates); commercial users must register with Stability AI and comply with its Acceptable Use Policy. Enterprise license needed above threshold. Model card also notes Gemma component terms. Owner must confirm eligibility before shipping.",
       "final_path": "game/assets/audio/sfx/environment/vegetation_brush_01.wav",
       "processing": "Trim low-energy edges (0.0-1.047 s of source); 20 ms fades; peak attenuation if needed; 16-bit PCM WAV; 1.8 kHz low-pass for underwater perspective; gain -8.9 dB",
-      "validation_status": "technical checks and Godot import passed; owner listening review pending",
+      "validation_status": "technical checks and Godot import passed; owner approved clip 3 as gentle default and clip 1 as hard variation",
+      "selection_status": "LOCKED",
+      "selected_final_paths": {
+        "gentle_clip_3": "game/assets/audio/sfx/environment/vegetation_brush.wav",
+        "hard_clip_1": "game/assets/audio/sfx/environment/vegetation_brush_02.wav"
+      },
+      "selected_final_sha256": {
+        "gentle_clip_3": "b421402e8dbb1c5c18fd4726f18bf95bfafb17f1598e7f83bf933e25f65b9f6e",
+        "hard_clip_1": "f2d09ba91855ea6fb01d7ef5d26850663f0bfb560cbfc24457acd173c2a4e72c"
+      },
       "final_duration_s": 1.047,
       "validation": {
         "source_peak_dbfs": -0.1,

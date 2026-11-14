@@ -54,11 +54,23 @@ public static class PikeCoverChecks
                 "grass height bands");
             var cover = scene.GetNode<Node3D>("Cover");
             Require(cover.GetChildCount() == plan.Count, "missing instantiated cover");
-            var expectedShapes = plan.Sum(p => catalog.Assets.Single(a => a.Id == p.Id).CollisionShapes);
-            var actualShapes = cover.GetChildren().Sum(n =>
-                ((Node3D)n).FindChild("AuthoredWoodCollision", true, false)?.GetChildCount() ?? 0);
-            Require(expectedShapes == actualShapes && actualShapes >= 193,
-                "wood wrapper collision missing");
+            var wood = cover.GetChildren().OfType<Node3D>()
+                .Where(n => n.Name.ToString().StartsWith("FAF_WOOD_", StringComparison.Ordinal)).ToArray();
+            var actualShapes = 0;
+            foreach (var prop in wood)
+                actualShapes += RequireDisplayedCollision(prop, "AuthoredWoodCollision");
+            Require(actualShapes == wood.Length, "wood visual collision missing");
+            var shoreWood = scene.GetNode<Node3D>("ShoreGrowth").GetChildren().OfType<Node3D>()
+                .Where(n => n.Name.ToString().Contains("FAF_WOOD_", StringComparison.Ordinal)).ToArray();
+            Require(shoreWood.Any(n => n.Scale.X < .15f) &&
+                shoreWood.Any(n => n.Scale.X is > .25f and < .35f),
+                "scaled shore wood examples missing");
+            foreach (var prop in shoreWood)
+                RequireDisplayedCollision(prop, "AuthoredWoodCollision");
+            foreach (var prop in scene.GetNode<Node3D>("Habitat/PondFafEnvironment")
+                         .GetChildren().OfType<Node3D>()
+                         .Where(n => n.Name.ToString().StartsWith("FAF_TERRAIN_", StringComparison.Ordinal)))
+                RequireDisplayedCollision(prop, "BankSolid");
             Require(cover.GetChildren().Where(n => n.Name.ToString().StartsWith("FAF_PLANT_"))
                 .All(n => !HasCollision(n)),
                 "soft plants gained hard collision");
@@ -149,37 +161,44 @@ public static class PikeCoverChecks
                 "exposed lane has unexpected hard cover");
             var tris = plan.Sum(p => catalog.Assets.Single(a => a.Id == p.Id).Triangles);
             var mats = plan.Sum(p => catalog.Assets.Single(a => a.Id == p.Id).Materials);
-            Require(tris < 60000 && mats < 85 && actualShapes < 270,
+            Require(tris < 60000 && mats < 85 && actualShapes == wood.Length &&
+                StaticVisualCollision.CachedShapeCount <= 24,
                 "fixture cover geometry budget");
-            fish.SetInputMode("keyboard");
+            fish.SetPhysicsProcess(false);
             var start = fish.GlobalPosition;
-            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+            var laneStart = new Vector3(0f, PikeCoverFixture.Bed(0f, 18f) + 1.35f, 18f);
+            fish.GlobalPosition = laneStart;
+            fish.GlobalBasis = Basis.Identity;
+            camera.SnapToFish();
             var minCamera = float.PositiveInfinity;
             var cameraHits = 0;
             for (var frame = 0; frame < 520; frame++)
             {
+                var nextZ = fish.GlobalPosition.Z - .04f;
+                var destination = new Vector3(0f, PikeCoverFixture.Bed(0f, nextZ) + 1.35f, nextZ);
+                Require(fish.MoveAndCollide(destination - fish.GlobalPosition) is null,
+                    "Bass collider blocked in displayed open lane at z=" + nextZ);
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 if (frame % 12 != 0) continue;
                 var eye = camera.GlobalPosition;
                 minCamera = Mathf.Min(minCamera, eye.DistanceTo(fish.GlobalPosition));
                 if (Blocked(scene, cameraSphere, eye, fish, pike)) cameraHits++;
             }
-            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
-            fish.ClearAndDisarmInput();
             var end = fish.GlobalPosition;
-            Require(end.Z < 8f && start.DistanceTo(end) > 14f && cameraHits == 0 &&
+            Require(end.Z < 4f && laneStart.DistanceTo(end) > 14f && cameraHits == 0 &&
                 minCamera > .65f,
-                $"real fish/camera crossing failed start={start} end={end} camera_hits={cameraHits} min_camera={minCamera:F2}");
+                $"real fish/camera crossing failed start={start} end={end} camera_hits={cameraHits} min_camera={minCamera:F2} ahead={Blocker(scene, fishSphere, end + Vector3.Forward * .6f, fish, pike)}");
             var hollow = plan.Single(p => p.Id == "FAF-WOOD-008A");
             fish.GlobalPosition = hollow.Position + new Basis(Vector3.Up, hollow.Yaw) *
                 new Vector3(0, 1.95f, 7.7f * .55f + 1.4f);
-            fish.ClearAndDisarmInput();
             for (var i = 0; i < 3; i++) await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             var hollowStart = fish.GlobalPosition;
-            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
             var hollowHits = 0;
             for (var frame = 0; frame < 400; frame++)
             {
+                Require(fish.MoveAndCollide(new Basis(Vector3.Up, hollow.Yaw) *
+                    new Vector3(0, 0, -.03f)) is null,
+                    "Bass collider blocked in displayed hollow at frame=" + frame);
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 if (frame % 12 == 0 && Blocked(scene, cameraSphere, camera.GlobalPosition, fish, pike))
                 {
@@ -188,8 +207,6 @@ public static class PikeCoverChecks
                 }
                 if (fish.GlobalPosition.Z < hollow.Position.Z - 4.6f) break;
             }
-            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
-            fish.ClearAndDisarmInput();
             var hollowEnd = fish.GlobalPosition;
             Require(hollowEnd.Z < hollow.Position.Z - 4f && hollowHits == 0,
                 $"real split-hollow traverse failed start={hollowStart} end={hollowEnd} camera_hits={hollowHits}");
@@ -242,6 +259,9 @@ public static class PikeCoverChecks
             for (var i = 0; i < 3; i++) await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Require(!BodyBlocked(fish.GlobalPosition, fish.GlobalBasis),
                 "Bass turn starts intersecting bent branch");
+            fish.SetPhysicsProcess(true);
+            fish.SetInputMode("keyboard");
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.D, Pressed = true });
             var bodyHits = 0;
             for (var frame = 0; frame < 50; frame++)
@@ -257,7 +277,7 @@ public static class PikeCoverChecks
             Require(fish.GetLastYaw() > 0f && bodyHits == 0 && turnDegrees < 90f,
                 $"Bass rotated through bent branch input={fish.GetLastYaw():F2} turn={turnDegrees:F1} overlaps={bodyHits}");
             GD.Print($"PIKE_BASS_BRANCH_TURN_OK pose={turnPose} turn_degrees={turnDegrees:F1} overlaps={bodyHits}");
-            GD.Print($"PIKE_COVER_CHECK_OK seed={PikeCoverFixture.Seed} variants=23 families=10 instances={plan.Count} triangles={tris} materials={mats} shapes={actualShapes} zones=3 wood_support_max={supportMax:F2} fish_end={end} hollow_end={hollowEnd} pike_hollow_end={pike.GlobalPosition} camera_hits={cameraHits + hollowHits}");
+            GD.Print($"PIKE_COVER_CHECK_OK seed={PikeCoverFixture.Seed} variants=23 families=10 instances={plan.Count} triangles={tris} materials={mats} shapes={actualShapes} cached_mesh_shapes={StaticVisualCollision.CachedShapeCount} zones=3 wood_support_max={supportMax:F2} fish_end={end} hollow_end={hollowEnd} pike_hollow_end={pike.GlobalPosition} camera_hits={cameraHits + hollowHits}");
             tree.Quit();
 
             bool BodyBlocked(Vector3 at, Basis heading)
@@ -367,6 +387,36 @@ public static class PikeCoverChecks
             if (Blocked(scene, probe, from.Lerp(to, i / (float)count), fish, pike))
                 return true;
         return false;
+    }
+
+    private static int RequireDisplayedCollision(Node3D prop, string bodyName)
+    {
+        var body = prop.FindChild(bodyName, true, false) as StaticBody3D;
+        var meshes = prop.FindChildren("*", "MeshInstance3D", true, false)
+            .OfType<MeshInstance3D>().Where(mesh => mesh.IsVisibleInTree()).ToArray();
+        Require(body is not null && body.HasMeta("displayed_mesh_collision") &&
+            meshes.Length > 0 && body.GetChildCount() == meshes.Length,
+            "solid prop still uses authored boxes: " + prop.Name);
+        for (var i = 0; i < meshes.Length; i++)
+        {
+            var collision = body!.GetChild<CollisionShape3D>(i);
+            Require(collision.Shape is ConcavePolygonShape3D { Data.Length: > 0 } &&
+                collision.GlobalTransform.IsEqualApprox(meshes[i].GlobalTransform),
+                "solid prop mesh/collision mismatch: " + prop.Name);
+            var points = ((ConcavePolygonShape3D)collision.Shape).Data;
+            var min = Vector3.Inf;
+            var max = -Vector3.Inf;
+            foreach (var point in points)
+            {
+                min = min.Min(point);
+                max = max.Max(point);
+            }
+            var displayed = meshes[i].Mesh!.GetAabb();
+            Require(min.DistanceTo(displayed.Position) < .005f &&
+                (max - min).DistanceTo(displayed.Size) < .005f,
+                "solid prop collision size differs from display: " + prop.Name);
+        }
+        return meshes.Length;
     }
 
     private static void Require(bool condition, string message)

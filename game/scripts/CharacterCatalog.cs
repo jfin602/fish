@@ -26,6 +26,17 @@ public sealed record CharacterEntry(
 public static class CharacterCatalog
 {
     private const string Faf = "res://assets/faf/fish/";
+    // Keep managed wrappers for imported GLBs across repeated fixture Retry.
+    // Godot 4.7 can otherwise finalize a wrapper still present in its native cache.
+    private static readonly Dictionary<string, PackedScene> ModelScenes = new();
+    internal static PackedScene? ModelScene(string path)
+    {
+        if (!Godot.FileAccess.FileExists(path)) return null;
+        if (ModelScenes.TryGetValue(path, out var scene)) return scene;
+        scene = ResourceLoader.Load<PackedScene>(path);
+        if (scene is not null) ModelScenes.Add(path, scene);
+        return scene;
+    }
     private static readonly CharacterEntry[] Marine =
     {
         new("FAF-FISH-001", "Yellow Tang", "Reef fish", "A bright, agile reef swimmer.", Faf + "fish_001_yellow_tang.glb", 4.3f, 180, 30, "fish_001_yellow_tang__Glide", "fish_001_yellow_tang__Swim", "fish_001_yellow_tang__SwimFast", WorldHabitat.Marine, true, true, true),
@@ -67,7 +78,7 @@ public static class CharacterCatalog
             diagnostic = $"FISH_ASSET_CHANGED item={entry.Id} action=restore-owner-export";
             return false;
         }
-        var scene = ResourceLoader.Load<PackedScene>(entry.ModelPath);
+        var scene = ModelScene(entry.ModelPath);
         if (scene is null)
         {
             diagnostic = $"FISH_ASSET_INVALID item={entry.Id} path={entry.ModelPath} action=run-tools-dev-import";
@@ -146,7 +157,7 @@ public static class SpeciesCompatibility
         { diagnostic = "SPECIES_ROLE_INELIGIBLE action=choose-eligible-species"; return false; }
         if (string.IsNullOrWhiteSpace(candidate.ModelPath) ||
             !Godot.FileAccess.FileExists(candidate.ModelPath) ||
-            ResourceLoader.Load<PackedScene>(candidate.ModelPath) is null)
+            CharacterCatalog.ModelScene(candidate.ModelPath) is null)
         { diagnostic = "SPECIES_MODEL_MISSING action=restore-and-import-model"; return false; }
         if (candidate.NativeHabitat == WorldHabitat.Freshwater && !candidate.FixtureOnly &&
             (PondCreatureCatalog.Stage(candidate.Id, "adult") is not { } pond ||
@@ -175,7 +186,7 @@ public static class SpeciesCompatibility
         if (role != SpeciesRole.Ambient && !(stage is not null && role == SpeciesRole.Ecological))
         { diagnostic = "SPECIES_ROLE_INELIGIBLE action=choose-eligible-species"; return false; }
         if (!Godot.FileAccess.FileExists(candidate.ModelPath) ||
-            ResourceLoader.Load<PackedScene>(candidate.ModelPath) is null)
+            CharacterCatalog.ModelScene(candidate.ModelPath) is null)
         { diagnostic = "SPECIES_MODEL_MISSING action=restore-and-import-model"; return false; }
         if (!PondCreatureCatalog.ExportMatches(candidate))
         { diagnostic = "SPECIES_MODEL_CHANGED action=restore-owner-export"; return false; }

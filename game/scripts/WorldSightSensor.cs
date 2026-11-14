@@ -53,6 +53,7 @@ public sealed class WorldSightSensor
     private readonly float _acuity;
     private double _lastTime = double.NegativeInfinity;
     private SightEvidence _last;
+    public int SampleCount { get; private set; }
 
     public WorldSightSensor(PhysicsDirectSpaceState3D space, IReadOnlyList<SoftSightCover> plants,
         Rid observer, Rid target, float range = Range, float acuity = 1f)
@@ -87,6 +88,7 @@ public sealed class WorldSightSensor
             return _last;
         if (gameSeconds < _lastTime) Reset();
         _lastTime = gameSeconds;
+        SampleCount++;
         var to = fish.Position - observer;
         var distance = to.Length();
         if (distance < .01f || distance > _range) return _last = Empty("range");

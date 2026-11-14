@@ -66,6 +66,8 @@ public static class PikeEncounterChecks
             initial.EncounterCatalog = null;
             Button(initial, "ChooseWorldButton").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
+            var firstSpawns = Array.Empty<Vector3>();
+            var firstIds = Array.Empty<string>();
             for (var visit = 0; visit < 3; visit++)
             {
                 var encounter = tree.CurrentScene as PikeEncounter;
@@ -77,19 +79,33 @@ public static class PikeEncounterChecks
                     encounter.Feeding.Events.Count == 0 &&
                     encounter.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual") is not null &&
                     encounter.GetNode<Node3D>("NorthernPike").GetNodeOrNull<Node3D>("PikeVisual") is not null &&
-                    encounter.PreyActors.Count == 10 &&
+                    encounter.PreyActors.Count == 16 && encounter.BluegillSchools.Count == 3 &&
                     encounter.GetNodeOrNull<PreyActor>("BluegillPrey0") is not null &&
                     encounter.PreyActors.All(p => p.SpeciesId == PikeEncounterAssets.BluegillId) &&
                     encounter.PreyActors.All(p => p.StableId.Contains("bluegill", StringComparison.Ordinal)) &&
                     encounter.PreyActors.Count(p => p.Stage == "juvenile") == 4 &&
                     encounter.PreyActors.Count(p => p.Stage == "larva") == 6 &&
+                    encounter.PreyActors.Count(p => p.Stage == "subadult") == 4 &&
+                    encounter.PreyActors.Count(p => p.Stage == "adult") == 2 &&
+                    encounter.PreyActors.Select(p => p.StableId).Distinct().Count() == 16 &&
                     encounter.FindChild("NonShippingInvertebrateProxy", true, false) is null &&
                     encounter.FindChild("CharacterSelect", true, false) is null &&
                     encounter.FindChild("AmbientLife", true, false) is null,
                     "direct fixture entry or isolation failed");
                 var fish = encounter!.GetNode<FishController>("Fish");
                 var prey = encounter.PreyActors.ToArray();
+                if (firstSpawns.Length == 0)
+                {
+                    firstSpawns = prey.Select(actor => actor.GlobalPosition).ToArray();
+                    firstIds = prey.Select(actor => actor.StableId).ToArray();
+                }
+                else Require(prey.Select(actor => actor.GlobalPosition).SequenceEqual(firstSpawns) &&
+                    prey.Select(actor => actor.StableId).SequenceEqual(firstIds),
+                    "school spawn or IDs changed across deterministic Retry");
                 Require(fish.GetHeldInputCount() == 0, "held control leaked into fixture");
+                Require(encounter.Blood.ActiveCount == 0 &&
+                    encounter.Blood.SeenEventIds.Count == 0,
+                    "retry retained prior blood render state");
                 if (visit == 0)
                 {
                     fish.SetActivePreset(ControlPreset.Builtins().Single(p => p.Id == ControlPreset.KeyboardId));
@@ -107,27 +123,37 @@ public static class PikeEncounterChecks
                     fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
                     fish.ClearAndDisarmInput();
                 }
+                Require(encounter.Blood.TryEmit("route:cleanup-probe:" + visit,
+                    fish.GlobalPosition) && encounter.Blood.ActiveCount == 1,
+                    "cleanup probe did not activate blood pool");
+                var oldBlood = encounter.Blood;
                 encounter._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
                 Require(tree.Paused && Input.MouseMode == Input.MouseModeEnum.Visible &&
-                    encounter.FindChild("EncounterMenu", true, false) is Control { Visible: true },
+                    encounter.FindChild("EncounterMenu", true, false) is Control { Visible: true } &&
+                    oldBlood.Paused && oldBlood.GetNode<GpuParticles3D>("BloodCloud0").SpeedScale == 0,
                     "fixture pause failed");
                 Button(encounter, "RetryEncounter").EmitSignal(BaseButton.SignalName.Pressed);
                 await Scene(tree);
                 Require(!GodotObject.IsInstanceValid(encounter) &&
+                    !GodotObject.IsInstanceValid(oldBlood) &&
                     prey.All(actor => !GodotObject.IsInstanceValid(actor)) && !tree.Paused,
                     "retry retained old actor or pause");
             }
             var final = tree.CurrentScene as PikeEncounter;
             Require(final is not null && final.Growth.Stage == "juvenile" &&
                 final.Feeding.Nutrition == 0, "fixture growth leaked across retries");
-            final!._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
+            Require(final!.Blood.TryEmit("route:return-probe", final.GetNode<FishController>("Fish").GlobalPosition),
+                "return cleanup probe did not emit");
+            var returnBlood = final.Blood;
+            final._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
             Button(final, "ReturnToWorldSelect").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
             var menu = tree.CurrentScene as WorldSelect;
             Require(menu is not null && !tree.Paused && Input.MouseMode == Input.MouseModeEnum.Visible &&
                 DemoSelection.CharacterId is null && WorldSession.ActiveHabitat is null &&
                 WorldSession.ActiveManifest is null && WorldSession.SelectedWorldId == WorldCatalog.OceanId &&
-                !GodotObject.IsInstanceValid(final), "return leaked fixture state");
+                !GodotObject.IsInstanceValid(final) &&
+                !GodotObject.IsInstanceValid(returnBlood), "return leaked fixture state");
             if (fullIsolation)
                 menu = await CheckOrdinaryWorldCycles(tree, menu!);
             foreach (var worldId in new[] { WorldCatalog.OceanId, WorldCatalog.PondId })

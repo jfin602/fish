@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-world-isolation|inspect-hatch|inspect-growth|inspect-feeding|inspect-prey|inspect-pike-seeds|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|inspect-pike-ai|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-world-isolation|inspect-hatch|inspect-growth|inspect-feeding|inspect-blood-fx|inspect-prey|inspect-bluegill-schools|inspect-pike-seeds|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|inspect-pike-ai|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -161,6 +161,25 @@ case "${1:-help}" in
     logged feeding 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --feeding-check
     grep -Fq 'FEEDING_CHECK_OK' "$LOGS/feeding.log" || { echo 'Feeding check marker missing' >&2; exit 1; }
     ;;
+  inspect-blood-fx)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/blood-fx.XXXXXX")
+    for setting in normal off low; do
+      args=(--blood-fx-check)
+      case "$setting" in
+        off) args+=(--effects=off) ;;
+        low) args+=(--graphics=low) ;;
+      esac
+      logged "blood-fx-$setting" 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- "${args[@]}"
+      grep -Fq 'BLOOD_FX_CHECK_OK' "$LOGS/blood-fx-$setting.log" || { echo 'Blood FX check marker missing' >&2; exit 1; }
+    done
+    ;;
+  inspect-microfauna)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/microfauna.XXXXXX")
+    logged microfauna 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --microfauna-check
+    grep -Fq 'MICROFAUNA_CHECK_OK' "$LOGS/microfauna.log" || { echo 'Microfauna check marker missing' >&2; exit 1; }
+    ;;
   inspect-growth)
     need_tools
     profile=$(mktemp -d "$ROOT/artifacts/growth.XXXXXX")
@@ -172,6 +191,12 @@ case "${1:-help}" in
     profile=$(mktemp -d "$ROOT/artifacts/prey.XXXXXX")
     logged prey 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --prey-check
     grep -Fq 'PREY_CHECK_OK' "$LOGS/prey.log" || { echo 'Prey check marker missing' >&2; exit 1; }
+    ;;
+  inspect-bluegill-schools)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/bluegill-schools.XXXXXX")
+    logged bluegill-schools 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --bluegill-school-check
+    grep -Fq 'BLUEGILL_SCHOOL_CHECK_OK' "$LOGS/bluegill-schools.log" || { echo 'Bluegill school check marker missing' >&2; exit 1; }
     ;;
   inspect-pike-seeds)
     need_tools
