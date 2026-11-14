@@ -12,14 +12,14 @@ GOAL
 Verify all integrated Bass life, Bluegill prey schools, Pike multi-target, blood and older outstanding P5 mechanics before asking the owner to play.
 
 NARROW SOURCES
-All C5 M1–M6 actual source/evidence, P5 closeout P1–P12 historical source/qualification, game/dev focused checks, game project.godot, tools/dev, current UX/validation V03–V05/V33–V41, actual 5+5 FAF cover records.
+All C5 M1–M6 plus inserted M2A actual source/evidence, P5 closeout P1–P12 historical source/qualification, game/dev focused checks, game project.godot, tools/dev, current UX/validation V03–V05/V33–V42, actual 5+5 FAF cover records.
 
 IMPLEMENT / QUALIFY
-1. Run or repair the meaningful suite of existing focused checks: actual Bass/Bluegill stage identities, egg/skip and tiniest playable larva, multiple food types/idempotence, true growth/camera clearance, school age/depth/target identities and normal movement, Pike target-switch and prey catch, blood events and reset.
+1. Run or repair the meaningful suite of existing focused checks: actual Bass/Bluegill stage identities, egg/skip and tiniest playable larva, multiple automatic contact-feeding types/no manual bite/idempotence, boost reserve drain/recovery and pause/focus input cleanup, true growth/camera clearance, school age/depth/target identities and normal movement, Pike target-switch and prey catch, blood events and reset.
 2. Check three World Select destinations with a **Bass-only** Pike Encounter and no Character Select, ordinary Ocean/Pond species selection and unchanged baked package hashes, standard controls/pause/focus/mouse capture, no actor leak and no permanent save/death/history changes. Preserve original P5 closeout evidence.
 3. Inspect seed-5266 fixture's three contiguous grass→root/wood→deeper crown cover zones and all 5+5 FAF families for true body/camera/Pike gaps, soft/hard concealment, natural plants/wood terrain contact and plausible food visibility; compare real render/source evidence and note unobserved native items.
 4. Record realistic Forward+ runtime baseline, active school/particles update budgets, clear errors and known potential visual/camera/input blockers. Fix bounded test failures before M8; if native project cannot be launched (no display/Godot executable, wrong MCP peer), log the precise blocker instead of promising a playthrough.
-5. Write a **C5 qualification preflight** under docs/tasks/c5-polish/qualification/preflight.md with exact HEAD/dirty state, commands, observed results and an **owner checklist** for V03–V05/V33–V41; don't mark native T3 cells PASS without owner observation.
+5. Write a **C5 qualification preflight** under docs/tasks/c5-polish/qualification/preflight.md with exact HEAD/dirty state, commands, observed results and an **owner checklist** for V03–V05/V33–V42; don't mark native T3 cells PASS without owner observation.
 
 VALIDATION / REPORT
 T2: `./tools/dev doctor`, `./tools/dev build`, `./tools/dev inspect-pike-encounter`, `./tools/dev inspect-pike-ai`, `./tools/dev inspect-prey`, `./tools/dev inspect-feeding`, `./tools/dev inspect-growth`, `./tools/dev inspect-pike-cover`, `./tools/dev inspect-world-isolation`, affected environment checks and `git diff --check`; de-duplicate command composition. Do not launch/close the final owner's native session yet.
