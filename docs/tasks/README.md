@@ -15,6 +15,7 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [p3](p3/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at `0.3.6`; [closeout](p3/closeout.md) preserves native gaps. |
 | [p4](p4/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; [closeout](p4/closeout.md) preserves Pond waterline/camera/visual gaps and historical `0.4.11` prefix. |
 | [p5](p5/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; [closeout](p5/closeout.md) preserves G5.1–G5.3 native evidence debt at package `0.5.12`. |
+| [p6](p6/README.md) | **AUTHORED / NOT EXECUTED**: S27 Living Pond Bass survival, 13 runner-compatible prompts, manual P2/P8/P12/P13 stops; [assessment](p6/prompt-assessment.md) and [plan](p6/implementation-plan.md). Root still needs reviewed `0.6.0` baseline before execution. |
 | [c5-polish](c5-polish/README.md) | Existing manual Bass hatch, ecology, feeding/boost and [local evidence](c5-polish/README.md); owner native qualification still open. |
 | [c5-wake](c5-wake/README.md) | **W1–W3 MANUAL BRIEFS AUTHORED / NOT EXECUTED**: body-generated Pond surface wake, rendering, stages/boost, owner-native review. No version bump. |
 | [p5 entry](p5/entry.md) | Historical `0.5.0` progression baseline and P4 handoff, not current implementation status. |
