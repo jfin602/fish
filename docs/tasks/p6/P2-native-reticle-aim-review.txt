@@ -1,0 +1,31 @@
+TASK: Phase 6 / P2 — Native reticle and feeding-aim review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.6.2`.
+
+GOAL
+Have the owner genuinely swim and try to eat small food with the new reticle before P6 expands ecology. The reticle should make aiming easier, not give false camera-based eligibility.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Review P1 changed source, real tests/evidence, V44, current control bindings, FishController, FollowCamera, PikeEncounter feeding and the native run wrapper. Confirm correct Fish editor/Game window and native Forward+ rendering.
+
+IMPLEMENT / REVIEW
+1. Write an honest owner reticle review record under docs/tasks/p6/qualification/p2-reticle-native.md with branch, SHA, dirty status, stage/seed, renderer, control presets, viewport and blank expected/observed columns; do not prefill PASS.
+2. Recheck only affected reticle/feeding build or targeted test results; no redundant full suite. Open/launch the **real** native game with ./tools/dev run --display-mode=windowed-fullscreen and LEAVE IT OPEN for the owner.
+3. Owner tests P5/C5 Pike Encounter Bass small food and later Bluegill through front mouth, edge/side/behind targets, true obstruction and zero duplicate feeding. Compare centered follow, camera lag, Hybrid 2 independent orbit and Adaptive Follow free-look, mouse/keyboard, zoom, surface crossing, tiny larva and later adult, hatch skip/pause/refocus.
+4. Record exact user-observed reticle readability/alignment, false-positive/false-negative experience and native frame pacing, not hypothetical results. If it misleads or remains frustrating, STOP and plan bounded repair; do not proceed to normal-Pond integration on an unaccepted aiming interface.
+
+VALIDATION
+T3 MANUAL: real native owner play and screenshot evidence only if captured. Existing headless projection tests are supportive but cannot pass V44. Check P5 fixture still works and Ocean/Pond menu routing is unaffected.
+
+DONE / VERSION / REPORT
+A real owner-observed reticle review and explicit owner decision to proceed or STOP. G6.1 remains incomplete for ordinary Pond until P3 and final V44. Version 0.6.2 and a legitimate manual runner checkpoint only after completed owner observation; do not self-commit/force checkpoint or abandon the game window.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. This is an owner/native handoff: STOP the runner before execution and resume only with a legitimate reviewed manual checkpoint. 
