@@ -26,7 +26,7 @@ void fragment() {
     // The camera side is deliberate: strip winding changes around tight turns.
     // Air-facing crests read as soft white highlights; underwater they keep
     // the Pond's green water tint rather than becoming white foam.
-    bool from_above = CAMERA_POSITION_WORLD.y >= wake_world.y;
+    bool from_above = CAMERA_POSITION_WORLD.y >= wake_world.y && COLOR.r > 0.5;
     vec3 underwater_green = mix(surface_dark, surface_light, 0.28 + 0.06 * grain);
     vec3 above_white = mix(vec3(0.82, 0.89, 0.85), vec3(0.96, 0.98, 0.96),
         clamp(reflected * 2.0, 0.0, 1.0));

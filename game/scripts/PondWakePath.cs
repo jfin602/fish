@@ -11,6 +11,7 @@ public readonly record struct PondWakeContacts(Vector3 Bow, Vector3 Left, Vector
     public Vector3 FinLeft { get; init; }
     public Vector3 FinRight { get; init; }
     public bool HasFinOrigins { get; init; }
+    public bool UnderwaterTurn { get; init; }
     public const float NearSurfaceDepth = .2f;
     public const float NearSurfaceReleaseDepth = .25f;
 
@@ -59,6 +60,7 @@ public readonly record struct PondWakeSample(Vector2 Center, Vector2 Heading,
     public float LeftY { get; init; }
     public float RightY { get; init; }
     public bool HasFinDepth { get; init; }
+    public bool UnderwaterTurn { get; init; }
 }
 
 /// <summary>Fixed storage for historical world paths. Time advances only with active physics.</summary>
@@ -73,6 +75,7 @@ public sealed class PondWakePath
     private float _lastBirth;
     private float _travelSinceBirth;
     private int _segment;
+    private bool? _lastUnderwaterTurn;
     public float Seconds { get; private set; }
     public int Count => _count;
     public int Segment => _segment;
@@ -85,6 +88,7 @@ public sealed class PondWakePath
         _lastObserved = null;
         _lastBirth = Seconds;
         _travelSinceBirth = 0f;
+        _lastUnderwaterTurn = null;
         _segment++;
     }
 
@@ -106,11 +110,19 @@ public sealed class PondWakePath
         {
             if (_lastObserved is not null) _segment++;
             _lastObserved = null;
+            _lastUnderwaterTurn = null;
             _travelSinceBirth = 0f;
             _lastBirth = Seconds;
             return false;
         }
         if (_count > 0 && this[_count - 1].StageRevision != stageRevision) Clear();
+        if (_lastUnderwaterTurn is { } priorMode && priorMode != contact.UnderwaterTurn)
+        {
+            _lastObserved = null;
+            _travelSinceBirth = 0f;
+            _segment++;
+        }
+        _lastUnderwaterTurn = contact.UnderwaterTurn;
         if (_lastObserved is not { } previous)
         { _lastObserved = center; _lastBirth = Seconds; return false; }
         var displacement = center.DistanceTo(previous);
@@ -129,7 +141,8 @@ public sealed class PondWakePath
             new Vector2(contact.Right.X, contact.Right.Z), Seconds, length,
             contact.Width, Mathf.Clamp(energy, 0f, 1f), stageRevision, _segment)
         { LeftY = contact.FinLeft.Y, RightY = contact.FinRight.Y,
-            HasFinDepth = contact.HasFinOrigins };
+            HasFinDepth = contact.HasFinOrigins,
+            UnderwaterTurn = contact.UnderwaterTurn };
         if (_count == Capacity) _start = (_start + 1) % Capacity;
         else _count++;
         _samples[(_start + _count - 1) % Capacity] = sample;

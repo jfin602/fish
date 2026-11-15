@@ -57,6 +57,7 @@ public partial class WaterReaction : Node3D
     private int _wakeRepairMode = 3; // Owner-selected hybrid Pond presentation.
     private PondWakeContacts? _latestContact;
     private bool _wakeBandActive;
+    private bool _underwaterTurnActive;
     private float _latestContactEnergy;
     private ImmediateMesh? _ribbonMesh;
     private MeshInstance3D? _ribbonView;
@@ -69,6 +70,7 @@ public partial class WaterReaction : Node3D
     private readonly bool _lowSurfaceEffects = Array.Exists(OS.GetCmdlineUserArgs(),
         arg => arg == "--effects=low");
     public int ActiveWakeTriangles { get; private set; }
+    public bool UnderwaterTurnWakeActive => _underwaterTurnActive;
     private int _stageRevision;
     private ImmediateMesh? _wakeDebugMesh;
     private MeshInstance3D? _wakeDebugView;
@@ -129,6 +131,7 @@ public partial class WaterReaction : Node3D
         _finVisual = _fish.GetNodeOrNull<Node3D>("PlayerVisual");
         _finVisualAtConfigure = _finVisual?.Transform ?? Transform3D.Identity;
         _wakeBandActive = false;
+        _underwaterTurnActive = false;
         _stageRevision++;
         _wakePath.Clear();
         _bodyRadius = body.Radius;
@@ -331,12 +334,23 @@ public partial class WaterReaction : Node3D
                 visualDelta * _contactBody.LeftFin,
                 visualDelta * _contactBody.RightFin);
             _wakeBandActive = contact.Touching;
+            var surfaceDepth = _fish.PondSurfaceHeightAt(_fish.GlobalPosition.X,
+                _fish.GlobalPosition.Z) - _fish.GlobalPosition.Y;
+            var yawDegreesPerSecond = Mathf.Abs(_fish.PresentationTurn) * tuning.YawRateDegrees;
+            var pitchDegreesPerSecond = Mathf.Abs(_fish.PresentationPitchTurn) * tuning.PitchRateDegrees;
+            var turnRate = new Vector2(yawDegreesPerSecond, pitchDegreesPerSecond).Length();
+            _underwaterTurnActive = PondUnderwaterTurnWake.Update(_underwaterTurnActive,
+                turnRate, speed01, surfaceDepth, contact.Touching, _fish.BoostActive);
+            var wakeContact = _underwaterTurnActive
+                ? contact with { Touching = true, UnderwaterTurn = true }
+                : contact;
             var horizontalSpeed = new Vector2(_fish.Velocity.X, _fish.Velocity.Z).Length();
-            var energy = horizontalSpeed / Mathf.Max(.001f, _fish.Tuning.MaxSpeed) *
+            var wakeSpeed = _underwaterTurnActive ? actualSpeed : horizontalSpeed;
+            var energy = wakeSpeed / Mathf.Max(.001f, _fish.Tuning.MaxSpeed) *
                 (.2f + .8f * Mathf.Clamp(_fish.PresentationEffort, 0f, 1f)) *
                 (1f + .35f * _boostBlend);
-            _wakePath.Step(contact, _contactBody.Length, energy, _stageRevision, (float)delta);
-            _latestContact = contact.Touching && energy > .03f ? contact : null;
+            _wakePath.Step(wakeContact, _contactBody.Length, energy, _stageRevision, (float)delta);
+            _latestContact = wakeContact.Touching && energy > .03f ? wakeContact : null;
             _latestContactEnergy = energy;
             DrawWakeDebug(contact);
             if (_showLegacyRings)
@@ -702,6 +716,7 @@ public partial class WaterReaction : Node3D
     {
         _wakePath.Suspend();
         _wakeBandActive = false;
+        _underwaterTurnActive = false;
         _latestContact = null;
         _latestContactEnergy = 0f;
         if (!IsNodeReady()) return;

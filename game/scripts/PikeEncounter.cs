@@ -341,6 +341,7 @@ public partial class PikeEncounter : Node3D
             _audio = new WorldAudio { Name = "WorldAudio" };
             _audio.ConfigurePond(_fish, _growth);
             AddChild(_audio);
+            foreach (var prey in _prey) _audio.RegisterSurfaceActor(prey);
         }
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-cover-check"))
             PikeCoverChecks.Run(this);

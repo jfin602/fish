@@ -23,18 +23,30 @@ public static class AudioChecks
             var fish = encounter.GetNode<FishController>("Fish");
             Require(encounter.GetChildren().Count(node => node is WorldAudio) == 1,
                 "one world audio node");
+            Require(audio.SurfaceActorCount == encounter.PreyActors.Count,
+                "all moving Bluegill actors share surface observation");
             Require(audio.AmbiencePlayer.GetParent() == audio, "bed is non-positional");
+            Require(audio.ShallowAmbiencePlayer.GetParent() == audio,
+                "shallow layer is non-positional");
             Require(audio.AmbiencePlayer.Playing && audio.AmbienceStarts == 1,
                 "one continuous bed");
+            Require(audio.ShallowAmbiencePlayer.Playing && audio.ShallowAmbienceStarts == 1,
+                "one continuous shallow layer");
             Require(audio.AmbiencePlayer.Stream is AudioStreamOggVorbis { Loop: true },
                 "approved bed loops");
+            Require(audio.ShallowAmbiencePlayer.Stream is AudioStreamOggVorbis { Loop: true } &&
+                audio.ShallowAmbiencePlayer.Stream.ResourcePath == WorldAudio.PondShallows,
+                "approved shallow import loops");
             Require(audio.AmbiencePlayer.Bus == "Ambience" &&
-                audio.SwimEmitter.Bus == "SFX" && audio.BoostEmitter.Bus == "SFX",
+                audio.ShallowAmbiencePlayer.Bus == "Ambience" &&
+                audio.SwimEmitter.Bus == "SFX" && audio.BoostEmitter.Bus == "SFX" &&
+                audio.SplashEmitter.Bus == "SFX",
                 "bus routing");
             Require(AudioServer.GetBusIndex("Ambience") >= 0 &&
                 AudioServer.GetBusIndex("SFX") >= 0, "installed bus layout");
             Require(audio.SwimEmitter.GetParent() == fish &&
-                audio.BoostEmitter.GetParent() == fish, "fish body emitters");
+                audio.BoostEmitter.GetParent() == fish &&
+                audio.SplashEmitter.GetParent() == fish, "fish body emitters");
             Require(encounter.GetViewport().GetCamera3D() is { Current: true },
                 "active camera listener");
             Require(audio.SwimEmitter.MaxDistance == 14f &&
@@ -75,6 +87,29 @@ public static class AudioChecks
                 current = next;
             }
             Require(audio.AmbienceStarts == 1, "gain does not restart loop");
+            var movingSurface = fish.PondSurfaceHeightAt(fish.GlobalPosition.X,
+                fish.GlobalPosition.Z);
+            var shallowPrevious = float.PositiveInfinity;
+            for (var i = 0; i <= 500; i++)
+            {
+                var depth = i * .01f;
+                var gain = WorldAudio.ShallowTargetVolume(movingSurface,
+                    movingSurface - depth, audio.ShallowSurfaceVolumeDb,
+                    audio.ShallowFadeDepth);
+                Require(float.IsFinite(gain) && gain <= shallowPrevious + .0001f &&
+                    gain >= -80f, "shallow depth curve is finite and monotone");
+                if (i > 0) Require(shallowPrevious - gain < .2f,
+                    "shallow fade is continuous");
+                shallowPrevious = gain;
+            }
+            Require(Mathf.IsEqualApprox(WorldAudio.ShallowTargetVolume(movingSurface,
+                movingSurface, audio.ShallowSurfaceVolumeDb, audio.ShallowFadeDepth),
+                audio.ShallowSurfaceVolumeDb) &&
+                WorldAudio.ShallowTargetVolume(movingSurface, movingSurface - 5f,
+                    audio.ShallowSurfaceVolumeDb, audio.ShallowFadeDepth) == -80f &&
+                WorldAudio.ShallowTargetVolume(movingSurface, movingSurface - 12f,
+                    audio.ShallowSurfaceVolumeDb, audio.ShallowFadeDepth) == -80f,
+                "shallow layer is quiet at surface and silent by five metres");
             audio.SwimEmitter.VolumeDb = WorldAudio.SwimGainDb("juvenile");
             audio.BoostEmitter.VolumeDb = WorldAudio.BoostGainDb("juvenile");
             var swimDb = audio.SwimEmitter.VolumeDb;
@@ -85,15 +120,35 @@ public static class AudioChecks
                 Mathf.IsEqualApprox(audio.AmbiencePlayer.VolumeDb, audio.CurrentVolumeDb) &&
                 audio.AmbiencePlayer.Playing && audio.AmbienceStarts == 1,
                 "live depth gain without replay");
+            Require(audio.CurrentShallowVolumeDb < -78f &&
+                Mathf.IsEqualApprox(audio.ShallowAmbiencePlayer.VolumeDb,
+                    audio.CurrentShallowVolumeDb) &&
+                audio.ShallowAmbiencePlayer.Playing && audio.ShallowAmbienceStarts == 1,
+                "shallow layer fades without replay at deep fish position");
             var deeperDb = audio.CurrentVolumeDb;
             for (var i = 0; i < 120; i++) audio.UpdateDepth(surface, 1f / 60f);
             Require(audio.CurrentVolumeDb < deeperDb && audio.AmbienceStarts == 1,
                 "live ascent without replay");
+            Require(audio.CurrentShallowVolumeDb > -40f &&
+                audio.ShallowAmbienceStarts == 1 && audio.ShallowAmbiencePlayer.Playing,
+                "shallow layer rises smoothly on fish ascent");
+            var deepBeforeShallowTuning = audio.CurrentVolumeDb;
+            audio.ShallowSurfaceVolumeDb = -40f;
+            audio.UpdateDepth(surface, 1f / 60f);
+            var expectedDeep = WorldAudio.SmoothVolume(deepBeforeShallowTuning,
+                WorldAudio.TargetVolume(surface, surface, audio.SurfaceVolumeDb,
+                    audio.DeepVolumeDb, audio.RiseDepth, audio.FullDepth,
+                    audio.ResponsePower), 1f / 60f, audio.FadeSpeed);
+            Require(Mathf.IsEqualApprox(audio.CurrentVolumeDb, expectedDeep) &&
+                Mathf.IsEqualApprox(audio.AmbiencePlayer.VolumeDb, expectedDeep) &&
+                audio.AmbienceStarts == 1, "shallow tuning cannot alter deep response");
+            audio.ShallowSurfaceVolumeDb = -26f;
             Require(audio.SwimEmitter.VolumeDb == swimDb &&
                 audio.BoostEmitter.VolumeDb == boostDb,
                 "depth does not change swim or boost gain");
             CheckGate();
             CheckVariation();
+            CheckSurface(encounter.Growth);
             Require(!WorldAudio.UsesLargeSwim("larva") &&
                 !WorldAudio.UsesLargeSwim("juvenile") &&
                 WorldAudio.UsesLargeSwim("subadult") &&
@@ -126,6 +181,20 @@ public static class AudioChecks
             var secondBoost = audio.PlayBoostCue();
             Require(firstBoost != secondBoost && firstBoost.Playing && secondBoost.Playing,
                 "boost cues can overlap");
+            var splashPoint = fish.GlobalPosition + new Vector3(0f, .25f, 0f);
+            var firstSplash = audio.PlaySurfaceCue(SurfaceSplashEvent.Arrival, splashPoint, .4f)!;
+            var firstSplashPitch = firstSplash.PitchScale;
+            var firstSplashGain = firstSplash.VolumeDb;
+            var firstSplashLength = audio.ScheduledLength(firstSplash);
+            var secondSplash = audio.PlaySurfaceCue(SurfaceSplashEvent.Arrival, splashPoint, .8f)!;
+            Require(firstSplash != secondSplash && firstSplash.Playing && secondSplash.Playing &&
+                firstBoost.Playing && firstSplash.Stream == secondSplash.Stream &&
+                firstSplash.Bus == "SFX" && firstSplash.GlobalPosition.DistanceTo(splashPoint) < .001f &&
+                firstSplash.PitchScale == firstSplashPitch && firstSplash.VolumeDb == firstSplashGain &&
+                audio.ScheduledLength(firstSplash) == firstSplashLength &&
+                Mathf.Abs(firstSplash.PitchScale - secondSplash.PitchScale) >= .044f &&
+                Mathf.Abs(firstSplash.VolumeDb - secondSplash.VolumeDb) >= .999f,
+                "positional splash overlaps boost with independent variation");
             audio.ResetEvents();
             var timedFirst = audio.PlaySwimCue();
             var originalGain = timedFirst.VolumeDb;
@@ -138,7 +207,23 @@ public static class AudioChecks
             audio.AdvanceCueLengths(.07f);
             Require(!timedFirst.Playing && timedSecond.Playing,
                 "first cue ends without cutting off a later cue");
+            var sceneTree = encounter.GetTree();
+            sceneTree.Paused = true;
+            try
+            {
+                Require(!audio.CanProcess() && !audio.ShallowAmbiencePlayer.CanProcess() &&
+                    audio.AmbienceStarts == 1 && audio.ShallowAmbienceStarts == 1,
+                    "scene pause holds both ambience layers without restart");
+            }
+            finally { sceneTree.Paused = false; }
+            Require(audio.AmbiencePlayer.Playing && audio.ShallowAmbiencePlayer.Playing &&
+                audio.AmbienceStarts == 1 && audio.ShallowAmbienceStarts == 1,
+                "ambience resumes without replay");
             audio.Shutdown();
+            Require(!audio.AmbiencePlayer.Playing && !audio.ShallowAmbiencePlayer.Playing &&
+                audio.AmbiencePlayer.Stream is null &&
+                audio.ShallowAmbiencePlayer.Stream is null,
+                "both ambience layers release on scene shutdown");
             audio.Free();
             var tree = encounter.GetTree();
             if (_scenePass == 1)
@@ -172,7 +257,7 @@ public static class AudioChecks
                             tree.Quit(1);
                             return;
                         }
-                        GD.Print("AUDIO_CHECK_OK bed=1 curve=monotone,smooth swim_depth=fixed buses=Ambience,SFX emitter=fish listener=active-camera events=motion,turn-strength,pitch,turn-volume,length,overlap,boost retry=one-bed return=no-bed");
+                        GD.Print("AUDIO_CHECK_OK deep=1 shallow=1 shallow_fade=surface-to-5m shallow_loop=on deep_independent=ok pause=held retry=one-pair return=no-bed events=motion,turn,boost,splash");
                         tree.Quit();
                     };
                 };
@@ -292,6 +377,84 @@ public static class AudioChecks
                 Mathf.Abs(length - previous) >= .0799f,
                 "cue length varies independently within the selected range");
             previous = length;
+        }
+        var profile = new SfxVariationProfile(1f, .86f, 1.14f, .045f,
+            -20f, -2.5f, 2.5f, 1f, .68f, .98f, .07f,
+            .74f, .98f, 3f);
+        var splash = new SfxVariationState(17);
+        var independent = new SfxVariationState(17);
+        var swim = new SfxVariationState(99);
+        SfxVariation? priorSplash = null;
+        for (var i = 0; i < 100; i++)
+        {
+            var cue = splash.Next(profile, .5f);
+            swim.Next(profile);
+            var untouched = independent.Next(profile, .5f);
+            Require(cue == untouched && cue.Pitch is >= .86f and <= 1.14f &&
+                cue.VolumeDb is >= -21f and <= -16f &&
+                cue.DurationFraction is >= .71f and <= .98f &&
+                Mathf.Abs(cue.PlayedSeconds(1.335f) -
+                    1.335f * cue.DurationFraction / cue.Pitch) < .00001f,
+                "seeded variation is bounded, independent and pitch-scaled");
+            if (priorSplash is { } last)
+                Require(Mathf.Abs(cue.Pitch - last.Pitch) >= .0449f &&
+                    Mathf.Abs(cue.DurationFraction - last.DurationFraction) >= .0699f &&
+                    Mathf.Abs(cue.VolumeDb - last.VolumeDb) >= .999f,
+                    "adjacent splash choices differ");
+            priorSplash = cue;
+        }
+    }
+
+    private static void CheckSurface(PondGrowthState growth)
+    {
+        const float tick = .05f;
+        var gate = new SurfaceSplashDetector();
+        SurfaceSplashEvent Step(float bodyY, float surfaceY = 0f, bool eligible = true,
+            float speed = 1f) => gate.Step(bodyY, surfaceY, .1f, speed,
+                tick, eligible, out _);
+        Require(Step(-.30f) == SurfaceSplashEvent.None, "initial submerged sample silent");
+        for (var i = 0; i < 3; i++) Step(-.30f);
+        Require(Step(-.06f) == SurfaceSplashEvent.Arrival,
+            "first upward body contact splashes once");
+        for (var i = 0; i < 8; i++)
+            Require(Step(-.06f) == SurfaceSplashEvent.None,
+                "sustained contact stays quiet");
+        Require(Step(-.11f) == SurfaceSplashEvent.RapidDive,
+            "measured fast descent after contact splashes once");
+        for (var i = 0; i < 8; i++)
+            Require(Step(-.11f - i * .06f) == SurfaceSplashEvent.None,
+                "one dive has one event");
+        Require(Step(-.06f) == SurfaceSplashEvent.Arrival,
+            "meaningful submersion rearms arrival");
+        Require(Step(-.06f, eligible: false) == SurfaceSplashEvent.None &&
+            Step(-.06f) == SurfaceSplashEvent.None,
+            "pause or hatch reset has no ghost event");
+
+        gate.Reset();
+        Step(-.30f);
+        for (var i = 0; i < 3; i++) Step(-.30f);
+        for (var i = 0; i < 8; i++)
+            Require(Step(-.06f, surfaceY: i % 2 == 0 ? .025f : -.025f) ==
+                SurfaceSplashEvent.None, "waves alone do not trigger arrival");
+        gate.Reset();
+        Step(-.30f);
+        for (var i = 0; i < 3; i++) Step(-.30f);
+        Step(-.06f);
+        for (var i = 0; i < 8; i++) Step(-.06f);
+        for (var i = 1; i <= 8; i++)
+            Require(Step(-.06f - i * .01f) == SurfaceSplashEvent.None,
+                "gentle descent remains quiet");
+        for (var i = 0; i < 4; i++)
+            Require(Step(-.14f) == SurfaceSplashEvent.None,
+                "boost without vertical movement is silent");
+        foreach (var stage in new[] { "larva", "juvenile", "subadult", "adult" })
+        {
+            var radius = growth.BodyFor(stage).Radius;
+            Require(float.IsFinite(radius) && radius > 0f &&
+                gate.ContactRadiusFraction * radius <
+                    Mathf.Max(gate.MinimumRearmDepth, gate.RearmRadiusFraction * radius),
+                "all Bass stages have usable contact and rearm distances");
+            GD.Print($"SURFACE_SPLASH_STAGE stage={stage} radius={radius:F4} contact={gate.ContactRadiusFraction * radius:F4} rearm={Mathf.Max(gate.MinimumRearmDepth, gate.RearmRadiusFraction * radius):F4}");
         }
     }
 }

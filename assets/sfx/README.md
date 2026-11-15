@@ -4,7 +4,7 @@ This is the named file list for the first complete Fish life: choose a habitat a
 
 `assets/sfx/` is the only approval location for **all game-ready audio**, including ambience loops. Put an owner-approved sound here with the exact canonical filename below before any gameplay code or scene loads it. Files under `game/assets/audio/`, `docs/assets/audio-base-pack/`, or `assets/audio-source/` are source or audition material, even if Godot can import them. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg` and have their own listening review; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. Record the selected source, processing, owner approval and canonical file in [the audio review log](../../docs/assets/audio-base-pack/review-log.md).
 
-The locked `swim_gentle.wav`, `swim_large.wav`, and `escape_burst.wav` now have byte-identical canonical copies here for the Pike Encounter audio pass. Their `*_mono.wav` files are derived runtime downmixes for actual 3D playback, not alternate owner-approved takes. [Runtime tuning and pending native qualification](../../docs/systems/audio.md) are separate from the take locks.
+The locked `swim_gentle.wav`, `swim_large.wav`, `escape_burst.wav`, and `surface_breach.wav` are canonical approved effects. Their `*_mono.wav` files are derived runtime downmixes for actual 3D playback, not alternate owner-approved takes. `surface_breach_mono.wav` is the equal-channel 44.1 kHz/16-bit mono derivative of the approved stereo master, SHA-256 `a23cb8de75d9ff3926b2dd9ee1480c9937e3f50712deaf13f9d345b5d083cca0`; the master remains unchanged. [Runtime tuning and pending native qualification](../../docs/systems/audio.md) are separate from the take locks.
 
 The Godot project links `game/assets/sfx/` to this folder. Runtime code and scenes must load **every audio stream** only as `res://assets/sfx/<filename>`; the link is an import route, not a second approval folder. Keep masters and source material elsewhere for provenance, but never point gameplay at those copies. Before adding or changing an audio load, confirm its exact file is present here and marked approved in the review log. `./tools/dev build` and `./tools/dev inspect-audio` run the path check in `tools/check-audio-paths.py`, which rejects literal audio paths outside this folder or missing approved files. Review dynamic audio paths manually too.
 
@@ -12,7 +12,7 @@ The Godot project links `game/assets/sfx/` to this folder. Runtime code and scen
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
-| `pond_underwater_shallows.ogg` | Pond, underwater in the shallows | Candidate |
+| `pond_underwater_shallows.ogg` | Pike Encounter shallow Pond layer, -26 dB at the fish's moving surface, fading to -80 dB by 5 m | Locked; approved loop in `assets/sfx/`; mix pending owner listen |
 | `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Locked; approved loop in `assets/sfx/` |
 | `pond_surface_day.ogg` | Pond, camera at or above the surface by day | Candidate |
 | `pond_surface_night.ogg` | Pond, camera at or above the surface by night | Candidate |
@@ -32,7 +32,7 @@ Blend these by habitat, depth, surface position, and time of day. Existing under
 | `swim_turn.wav` | A distinct hard turn, with a cooldown | Locked candidate |
 | `swim_large.wav` | Heavier swimming once the same fish has grown large | Locked candidate |
 | `escape_burst.wav` | A genuine limited Spacebar boost begins for pursuit or escape | Locked candidate (reuses `swim_accelerate.wav`) |
-| `surface_breach.wav` | Fish reaches and breaks the water surface | Locked; approved take in `assets/sfx/` |
+| `surface_breach.wav` | Fish reaches the water surface or rapidly dives away; positional playback uses `surface_breach_mono.wav` | Locked; approved stereo master in `assets/sfx/`; new mix pending owner listen |
 | `surface_reentry.wav` | Fish returns below the surface | Skipped for now; candidates retained |
 
 Swimming beds should be subtle and follow actual speed and body size. A turn or acceleration must not start a new one-shot on every frame.

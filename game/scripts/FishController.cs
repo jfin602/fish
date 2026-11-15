@@ -205,6 +205,7 @@ public partial class FishController : CharacterBody3D
     public float PresentationSpeed => _state.Speed;
     public float PresentationEffort { get; private set; }
     public float PresentationTurn { get; private set; }
+    public float PresentationPitchTurn { get; private set; }
     public float PresentationAngularTurn { get; private set; }
     public float LastThrust { get; private set; }
     public float LastSlow { get; private set; }
@@ -310,11 +311,11 @@ public partial class FishController : CharacterBody3D
             ? Mathf.Clamp(Mathf.Wrap(_state.Yaw - previousYaw, -Mathf.Pi, Mathf.Pi) /
                 (Mathf.DegToRad(Tuning.YawRateDegrees) * (float)delta), -1, 1)
             : 0;
-        var pitchTurn = delta > 0 && Tuning.PitchRateDegrees > 0
+        PresentationPitchTurn = delta > 0 && Tuning.PitchRateDegrees > 0
             ? Mathf.Clamp((_state.Pitch - previousPitch) /
                 (Mathf.DegToRad(Tuning.PitchRateDegrees) * (float)delta), -1, 1)
             : 0;
-        PresentationAngularTurn = Mathf.Clamp(new Vector2(PresentationTurn, pitchTurn).Length(), 0, 1);
+        PresentationAngularTurn = Mathf.Clamp(new Vector2(PresentationTurn, PresentationPitchTurn).Length(), 0, 1);
         Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
         var surfaceLimit = _pondSurfaceCenterLimit is not null
             ? PondSurfaceLimitAt(GlobalPosition.X, GlobalPosition.Z) : float.NaN;
@@ -392,6 +393,7 @@ public partial class FishController : CharacterBody3D
         _input.ClearQueued();
         PresentationEffort = 0;
         PresentationTurn = 0;
+        PresentationPitchTurn = 0;
         PresentationAngularTurn = 0;
         LastThrust = LastSlow = LastYaw = LastPitch = 0;
         _fryYaw = _fryPitch = 0;

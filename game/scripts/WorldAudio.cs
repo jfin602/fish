@@ -86,52 +86,79 @@ public sealed class SwimAudioGate
 /// <summary>One habitat ambience bed and reusable positional player event emitters.</summary>
 public partial class WorldAudio : Node3D
 {
-    private sealed class TimedCue(AudioStreamPlayer3D voice, float duration, float gainDb)
+    private sealed class SurfaceActorCue(PreyActor actor, float radius,
+        SfxOneShotPlayer arrival, SfxOneShotPlayer dive)
     {
-        public AudioStreamPlayer3D Voice { get; } = voice;
-        public float Duration { get; } = duration;
-        public float GainDb { get; } = gainDb;
-        public float Elapsed { get; set; }
+        public PreyActor Actor = actor;
+        public float Radius = radius;
+        public SurfaceSplashDetector Detector = new();
+        public SfxOneShotPlayer Arrival = arrival;
+        public SfxOneShotPlayer Dive = dive;
     }
-
     [Export] public float SurfaceVolumeDb { get; set; } = -39f;
     [Export] public float DeepVolumeDb { get; set; } = -14f;
     [Export] public float RiseDepth { get; set; } = .5f;
     [Export] public float FullDepth { get; set; } = 9f;
     [Export] public float ResponsePower { get; set; } = 1.25f;
     [Export] public float FadeSpeed { get; set; } = 1.5f;
+    [Export] public float ShallowSurfaceVolumeDb { get; set; } = -26f;
+    [Export] public float ShallowFadeDepth { get; set; } = 5f;
+    [Export] public float ShallowFadeSpeed { get; set; } = 2f;
+    [Export] public float SplashArrivalVolumeDb { get; set; } = -20f;
+    [Export] public float SplashDiveVolumeDb { get; set; } = -18f;
+    [Export] public float SplashSizeGainDb { get; set; } = 9f;
+    [Export] public float SplashForceGainDb { get; set; } = 3f;
+    [Export] public float SplashPitchSpread { get; set; } = .14f;
+    [Export] public float SplashDurationMin { get; set; } = .68f;
+    [Export] public float SplashDurationMax { get; set; } = .98f;
 
     public const string PondBed = "res://assets/sfx/pond_underwater_deep.ogg";
+    public const string PondShallows = "res://assets/sfx/pond_underwater_shallows.ogg";
     private FishController _fish = null!;
     private Func<string> _stage = null!;
     private string _bedPath = "";
     private AudioStreamPlayer _ambience = null!;
-    private AudioStreamPlayer3D _swim = null!;
-    private AudioStreamPlayer3D _boost = null!;
-    private readonly List<AudioStreamPlayer3D> _swimVoices = [];
-    private readonly List<AudioStreamPlayer3D> _boostVoices = [];
-    private readonly List<TimedCue> _timedCues = [];
+    private AudioStreamPlayer _shallowAmbience = null!;
+    private SfxOneShotPlayer _swim = null!;
+    private SfxOneShotPlayer _turn = null!;
+    private SfxOneShotPlayer _boost = null!;
+    private SfxOneShotPlayer _arrival = null!;
+    private SfxOneShotPlayer _dive = null!;
     private readonly SwimAudioGate _gate = new();
+    private readonly SurfaceSplashDetector _surface = new();
+    private readonly List<SurfaceActorCue> _surfaceActors = [];
     private float _waterline;
     private float _currentDb;
+    private float _currentShallowDb;
     private bool _focusPaused;
+    private bool _wasEligible;
     private AudioStream _gentle = null!;
     private AudioStream? _bed;
+    private AudioStream? _shallowBed;
     private AudioStream _large = null!;
     private AudioStream _largeBoost = null!;
-    private readonly RandomNumberGenerator _pitchRandom = new();
-    private float _lastSwimPitch = 1f;
-    private float _lastBoostPitch = 1f;
-    private float _lastTurnVolumeDb;
-    private float _lastLengthFraction = 1f;
-    private float _lastTurnLengthFraction = 1f;
+    private AudioStream _splash = null!;
     public int AmbienceStarts { get; private set; }
+    public int ShallowAmbienceStarts { get; private set; }
     public int SwimStarts { get; private set; }
     public int BoostStarts { get; private set; }
     public float CurrentVolumeDb => _currentDb;
+    public float CurrentShallowVolumeDb => _currentShallowDb;
     public AudioStreamPlayer AmbiencePlayer => _ambience;
-    public AudioStreamPlayer3D SwimEmitter => _swim;
-    public AudioStreamPlayer3D BoostEmitter => _boost;
+    public AudioStreamPlayer ShallowAmbiencePlayer => _shallowAmbience;
+    public AudioStreamPlayer3D SwimEmitter => _swim.Primary;
+    public AudioStreamPlayer3D BoostEmitter => _boost.Primary;
+    public AudioStreamPlayer3D SplashEmitter => _arrival.Primary;
+    internal int SurfaceActorCount => _surfaceActors.Count;
+
+    public void RegisterSurfaceActor(PreyActor actor)
+    {
+        if (_surfaceActors.Exists(entry => entry.Actor == actor)) return;
+        var radius = ((SphereShape3D)actor.GetNode<CollisionShape3D>("Collision").Shape).Radius;
+        _surfaceActors.Add(new SurfaceActorCue(actor, radius,
+            new SfxOneShotPlayer(actor, "SurfaceArrival", 3),
+            new SfxOneShotPlayer(actor, "SurfaceDive", 3)));
+    }
 
     public void ConfigurePond(FishController fish, PondGrowthState growth)
     {
@@ -177,6 +204,21 @@ public partial class WorldAudio : Node3D
         return Mathf.Clamp(Mathf.Lerp(current, target, 1f - Mathf.Exp(-rate * seconds)), -80f, 0f);
     }
 
+    public static float ShallowTargetVolume(float surfaceY, float fishY,
+        float surfaceDb, float fadeDepth)
+    {
+        const float silentDb = -80f;
+        if (!float.IsFinite(surfaceY) || !float.IsFinite(fishY)) return silentDb;
+        var startDb = Mathf.Clamp(float.IsFinite(surfaceDb) ? surfaceDb : -26f,
+            silentDb, 0f);
+        var depthLimit = Mathf.Max(.01f,
+            float.IsFinite(fadeDepth) ? fadeDepth : 5f);
+        var depth = Mathf.Max(0f, surfaceY - fishY);
+        var x = Mathf.Clamp(depth / depthLimit, 0f, 1f);
+        var smooth = x * x * (3f - 2f * x);
+        return Mathf.Lerp(startDb, silentDb, smooth);
+    }
+
     public static bool UsesLargeSwim(string stage) => stage is "subadult" or "adult";
     public static float SwimGainDb(string stage) => stage switch
     {
@@ -188,51 +230,38 @@ public partial class WorldAudio : Node3D
     };
 
     public static float VariedPitch(float basePitch, float previousPitch, float sample)
-    {
-        var offset = Mathf.Lerp(-.16f, .16f, Mathf.Clamp(sample, 0f, 1f));
-        var pitch = basePitch * (1f + offset);
-        if (Mathf.Abs(pitch - previousPitch) < .05f * basePitch)
-            pitch = basePitch * (1f + (offset >= 0f ? -.12f : .12f));
-        return pitch;
-    }
+        => SfxVariationState.Sample(PitchProfile(basePitch), 0f,
+            previousPitch, null, null, sample, 0f, 0f).Pitch;
 
     public static float VariedTurnGain(float baseDb, float previousDb, float sample)
-    {
-        var offset = Mathf.Lerp(-3f, 3f, Mathf.Clamp(sample, 0f, 1f));
-        var gain = baseDb + offset;
-        if (Mathf.Abs(gain - previousDb) < 1.5f)
-            gain = baseDb + (offset >= 0f ? -3f : 3f);
-        return gain;
-    }
+        => SfxVariationState.Sample(TurnProfile(baseDb, 0f), 0f,
+            null, previousDb, null, 0f, sample, 0f).VolumeDb;
 
     public static float VariedLengthFraction(float previous, float sample)
-    {
-        var fraction = Mathf.Lerp(.72f, .98f, Mathf.Clamp(sample, 0f, 1f));
-        if (Mathf.Abs(fraction - previous) < .08f)
-            fraction = previous > .85f ? .72f : .98f;
-        return fraction;
-    }
+        => SfxVariationState.Sample(PitchProfile(1f), 0f,
+            null, null, previous, 0f, 0f, sample).DurationFraction;
 
     public static float VariedTurnLengthFraction(float turnStrength, float previous, float sample)
-    {
-        var center = Mathf.Lerp(.54f, .84f, Mathf.Clamp(turnStrength, 0f, 1f));
-        var low = center - .1f;
-        var high = center + .1f;
-        var fraction = Mathf.Lerp(low, high, Mathf.Clamp(sample, 0f, 1f));
-        if (Mathf.Abs(fraction - previous) < .08f)
-            fraction = Mathf.Abs(low - previous) > Mathf.Abs(high - previous) ? low : high;
-        return fraction;
-    }
+        => SfxVariationState.Sample(TurnProfile(0f, turnStrength), 0f,
+            null, null, previous, 0f, 0f, sample).DurationFraction;
+
+    private static SfxVariationProfile PitchProfile(float pitch, float gain = 0f) =>
+        new(pitch, .84f, 1.16f, .05f, gain, 0f, 0f, 0f, .72f, .98f, .08f);
+
+    private static SfxVariationProfile TurnProfile(float gain, float strength) =>
+        new(1f, .84f, 1.16f, .05f, gain, -3f, 3f, 1.5f,
+            .44f + .3f * Mathf.Clamp(strength, 0f, 1f),
+            .64f + .3f * Mathf.Clamp(strength, 0f, 1f), .08f);
 
     public override void _Ready()
     {
         if (_fish is null || _stage is null || !IsInstanceValid(_fish))
             throw new InvalidOperationException("World audio must be configured before entering the tree");
         ProcessPriority = 20; // Observe the completed fish motor tick.
-        _pitchRandom.Randomize();
         _gentle = Load("res://assets/sfx/swim_gentle_mono.wav");
         _large = Load("res://assets/sfx/swim_large_mono.wav");
         _largeBoost = Load("res://assets/sfx/escape_burst_mono.wav");
+        _splash = Load("res://assets/sfx/surface_breach_mono.wav");
         _currentDb = TargetVolume(_waterline, _fish.GlobalPosition.Y, SurfaceVolumeDb,
             DeepVolumeDb, RiseDepth, FullDepth, ResponsePower);
         _bed = Load(_bedPath);
@@ -241,10 +270,24 @@ public partial class WorldAudio : Node3D
         AddChild(_ambience);
         _ambience.Play();
         AmbienceStarts++;
-        _swim = CreateEmitter(_fish, "SwimStart");
-        _boost = CreateEmitter(_fish, "BoostStart");
-        _swimVoices.Add(_swim);
-        _boostVoices.Add(_boost);
+        if (_bedPath == PondBed)
+        {
+            _shallowBed = Load(PondShallows);
+            var fishPosition = _fish.GlobalPosition;
+            var shallowSurface = _fish.PondSurfaceHeightAt(fishPosition.X, fishPosition.Z);
+            _currentShallowDb = ShallowTargetVolume(shallowSurface, fishPosition.Y,
+                ShallowSurfaceVolumeDb, ShallowFadeDepth);
+            _shallowAmbience = new AudioStreamPlayer { Name = "UnderwaterShallows",
+                Bus = "Ambience", Stream = _shallowBed, VolumeDb = _currentShallowDb };
+            AddChild(_shallowAmbience);
+            _shallowAmbience.Play();
+            ShallowAmbienceStarts++;
+        }
+        _swim = new SfxOneShotPlayer(_fish, "SwimStart");
+        _turn = new SfxOneShotPlayer(_fish, "SwimTurn");
+        _boost = new SfxOneShotPlayer(_fish, "BoostStart");
+        _arrival = new SfxOneShotPlayer(_fish, "SurfaceArrival", 4);
+        _dive = new SfxOneShotPlayer(_fish, "SurfaceDive", 4);
     }
 
     private static AudioStream Load(string path) => ResourceLoader.Load<AudioStream>(path)
@@ -264,9 +307,10 @@ public partial class WorldAudio : Node3D
         var seconds = (float)delta;
         UpdateDepth(_fish.GlobalPosition.Y, seconds);
         AdvanceCueLengths(seconds);
+        var eligible = CanPlayCue();
         switch (_gate.Step(_fish.PresentationEffort, _fish.PresentationSpeed,
             _fish.Tuning.MaxSpeed, _fish.PresentationAngularTurn,
-            _fish.BoostActive, CanPlayCue(), seconds))
+            _fish.BoostActive, eligible, seconds))
         {
             case SwimAudioEvent.Start:
                 PlaySwimCue();
@@ -278,97 +322,103 @@ public partial class WorldAudio : Node3D
                 PlayBoostCue();
                 break;
         }
-    }
-
-    private AudioStreamPlayer3D AvailableVoice(List<AudioStreamPlayer3D> voices, string name)
-    {
-        foreach (var voice in voices)
-            if (!voice.Playing)
+        if (!eligible && _wasEligible) ResetEvents();
+        _wasEligible = eligible;
+        var point = _fish.GlobalPosition;
+        var surfaceY = _fish.PondSurfaceHeightAt(point.X, point.Z);
+        var surfaceEvent = _surface.Step(point.Y, surfaceY, _fish.BodyRadius,
+            _fish.Tuning.MaxSpeed, seconds, eligible, out var verticalSpeed);
+        if (surfaceEvent != SurfaceSplashEvent.None)
+            PlaySurfaceCue(surfaceEvent, new Vector3(point.X, surfaceY, point.Z), verticalSpeed);
+        foreach (var entry in _surfaceActors)
+        {
+            entry.Arrival.Advance(seconds);
+            entry.Dive.Advance(seconds);
+            var actor = entry.Actor;
+            if (!IsInstanceValid(actor)) continue;
+            if (!actor.IsAlive)
             {
-                _timedCues.RemoveAll(cue => cue.Voice == voice);
-                return voice;
+                entry.Arrival.Cancel();
+                entry.Dive.Cancel();
             }
-        var added = CreateEmitter(_fish, name + (voices.Count + 1));
-        voices.Add(added);
-        return added;
-    }
-
-    private void ScheduleLength(AudioStreamPlayer3D voice, float? fraction = null)
-    {
-        if (fraction is null)
-            _lastLengthFraction = VariedLengthFraction(_lastLengthFraction, _pitchRandom.Randf());
-        var sourceSeconds = (float)(voice.Stream?.GetLength() ?? 0d);
-        var duration = Mathf.Max(.1f, sourceSeconds / voice.PitchScale *
-            (fraction ?? _lastLengthFraction));
-        _timedCues.Add(new TimedCue(voice, duration, voice.VolumeDb));
+            var actorPoint = actor.GlobalPosition;
+            var actorSurface = _fish.PondSurfaceHeightAt(actorPoint.X, actorPoint.Z);
+            var speed = actor.Stage switch
+            {
+                "larva" => .34f, "juvenile" => .68f,
+                "subadult" => 1.05f, "adult" => 1.35f, _ => .48f,
+            };
+            var actorEvent = entry.Detector.Step(actorPoint.Y, actorSurface,
+                entry.Radius, speed, seconds, eligible && actor.IsAlive, out var actorVertical);
+            if (actorEvent != SurfaceSplashEvent.None)
+                PlaySurfaceCue(actorEvent,
+                    new Vector3(actorPoint.X, actorSurface, actorPoint.Z), actorVertical,
+                    entry.Radius, speed, entry.Arrival, entry.Dive);
+        }
     }
 
     internal void AdvanceCueLengths(float seconds)
     {
-        if (!float.IsFinite(seconds) || seconds <= 0f) return;
-        for (var i = _timedCues.Count - 1; i >= 0; i--)
-        {
-            var cue = _timedCues[i];
-            if (!cue.Voice.Playing)
-            {
-                _timedCues.RemoveAt(i);
-                continue;
-            }
-            cue.Elapsed += seconds;
-            if (cue.Elapsed >= cue.Duration)
-            {
-                cue.Voice.Stop();
-                _timedCues.RemoveAt(i);
-                continue;
-            }
-            var fade = Mathf.Min(.12f, cue.Duration * .25f);
-            var fadeProgress = Mathf.Clamp((cue.Elapsed - (cue.Duration - fade)) / fade, 0f, 1f);
-            cue.Voice.VolumeDb = cue.GainDb - 35f * fadeProgress;
-        }
+        _swim.Advance(seconds);
+        _turn.Advance(seconds);
+        _boost.Advance(seconds);
+        _arrival.Advance(seconds);
+        _dive.Advance(seconds);
     }
 
-    internal float ScheduledLength(AudioStreamPlayer3D voice)
-    {
-        foreach (var cue in _timedCues)
-            if (cue.Voice == voice) return cue.Duration;
-        return 0f;
-    }
+    internal float ScheduledLength(AudioStreamPlayer3D voice) =>
+        Mathf.Max(_swim.ScheduledLength(voice),
+            Mathf.Max(_turn.ScheduledLength(voice),
+            Mathf.Max(_boost.ScheduledLength(voice),
+            Mathf.Max(_arrival.ScheduledLength(voice), _dive.ScheduledLength(voice)))));
 
     internal AudioStreamPlayer3D PlaySwimCue(bool turning = false, float turnStrength = 0f)
     {
-        var voice = AvailableVoice(_swimVoices, "SwimStart");
-        voice.Stream = UsesLargeSwim(_stage()) ? _large : _gentle;
-        var baseDb = SwimGainDb(_stage());
-        if (turning)
-        {
-            _lastTurnVolumeDb = VariedTurnGain(baseDb, _lastTurnVolumeDb,
-                _pitchRandom.Randf());
-            voice.VolumeDb = _lastTurnVolumeDb;
-        }
-        else voice.VolumeDb = baseDb;
-        _lastSwimPitch = VariedPitch(1f, _lastSwimPitch, _pitchRandom.Randf());
-        voice.PitchScale = _lastSwimPitch;
-        voice.Play();
-        if (turning)
-            _lastTurnLengthFraction = VariedTurnLengthFraction(turnStrength,
-                _lastTurnLengthFraction, _pitchRandom.Randf());
-        ScheduleLength(voice, turning ? _lastTurnLengthFraction : null);
+        var large = UsesLargeSwim(_stage());
+        var stream = large ? _large : _gentle;
+        var gain = SwimGainDb(_stage());
+        var voice = turning
+            ? _turn.Play(stream, TurnProfile(gain, turnStrength))
+            : _swim.Play(stream, PitchProfile(1f, gain));
+        if (voice is null) return turning ? _turn.Primary : _swim.Primary;
         SwimStarts++;
         return voice;
     }
 
     internal AudioStreamPlayer3D PlayBoostCue()
     {
-        var voice = AvailableVoice(_boostVoices, "BoostStart");
-        voice.Stream = UsesLargeSwim(_stage()) ? _large : _largeBoost;
-        _lastBoostPitch = VariedPitch(UsesLargeSwim(_stage()) ? .82f : 1f,
-            _lastBoostPitch, _pitchRandom.Randf());
-        voice.PitchScale = _lastBoostPitch;
-        voice.VolumeDb = BoostGainDb(_stage());
-        voice.Play();
-        ScheduleLength(voice);
+        var large = UsesLargeSwim(_stage());
+        var voice = _boost.Play(large ? _large : _largeBoost,
+            PitchProfile(large ? .82f : 1f, BoostGainDb(_stage())));
+        if (voice is null) return _boost.Primary;
         BoostStarts++;
         return voice;
+    }
+
+    internal AudioStreamPlayer3D? PlaySurfaceCue(SurfaceSplashEvent kind,
+        Vector3 contact, float verticalSpeed)
+        => PlaySurfaceCue(kind, contact, verticalSpeed, _fish.BodyRadius,
+            _fish.Tuning.MaxSpeed, _arrival, _dive);
+
+    private AudioStreamPlayer3D? PlaySurfaceCue(SurfaceSplashEvent kind,
+        Vector3 contact, float verticalSpeed, float radius, float maximumSpeed,
+        SfxOneShotPlayer arrival, SfxOneShotPlayer dive)
+    {
+        // The size term is deliberately restrained for fry, yet reaches its full
+        // value only on a large Bass. Speed is measured after collision resolution.
+        var size = Mathf.Clamp((Mathf.Log(Mathf.Max(radius, .001f)) - Mathf.Log(.005f)) /
+            (Mathf.Log(.5f) - Mathf.Log(.005f)), 0f, 1f);
+        var force = Mathf.Clamp(Mathf.Abs(verticalSpeed) /
+            Mathf.Max(.05f, maximumSpeed), 0f, 1f);
+        var gain = (kind == SurfaceSplashEvent.Arrival
+            ? SplashArrivalVolumeDb : SplashDiveVolumeDb) - SplashSizeGainDb * (1f - size);
+        var profile = new SfxVariationProfile(1f, 1f - SplashPitchSpread,
+            1f + SplashPitchSpread, .045f, gain, -2.5f, 2.5f, 1f,
+            SplashDurationMin, SplashDurationMax, .07f,
+            SplashDurationMin + .06f, SplashDurationMax,
+            SplashForceGainDb, .10f);
+        var player = kind == SurfaceSplashEvent.Arrival ? arrival : dive;
+        return player.Play(_splash, profile, force, contact);
     }
 
     private bool CanPlayCue() => !_focusPaused && !GetTree().Paused &&
@@ -381,37 +431,63 @@ public partial class WorldAudio : Node3D
             DeepVolumeDb, RiseDepth, FullDepth, ResponsePower);
         _currentDb = SmoothVolume(_currentDb, target, seconds, FadeSpeed);
         _ambience.VolumeDb = _currentDb;
+        if (_shallowAmbience is not null)
+        {
+            var fishPosition = _fish.GlobalPosition;
+            var shallowSurface = _fish.PondSurfaceHeightAt(fishPosition.X, fishPosition.Z);
+            var shallowTarget = ShallowTargetVolume(shallowSurface, fishY,
+                ShallowSurfaceVolumeDb, ShallowFadeDepth);
+            _currentShallowDb = SmoothVolume(_currentShallowDb, shallowTarget,
+                seconds, ShallowFadeSpeed);
+            _shallowAmbience.VolumeDb = _currentShallowDb;
+        }
     }
 
     public void ResetEvents()
     {
+        _wasEligible = false;
         _gate.Reset();
-        foreach (var voice in _swimVoices) voice.Stop();
-        foreach (var voice in _boostVoices) voice.Stop();
-        _timedCues.Clear();
+        _surface.Reset();
+        _swim?.Cancel();
+        _turn?.Cancel();
+        _boost?.Cancel();
+        _arrival?.Cancel();
+        _dive?.Cancel();
+        foreach (var entry in _surfaceActors)
+        {
+            entry.Detector.Reset();
+            entry.Arrival.Cancel();
+            entry.Dive.Cancel();
+        }
     }
 
     public void Shutdown()
     {
-        _timedCues.Clear();
+        _surface.Reset();
         if (_ambience is not null)
         {
             _ambience.Stop();
             _ambience.Stream = null;
         }
+        if (_shallowAmbience is not null)
+        {
+            _shallowAmbience.Stop();
+            _shallowAmbience.Stream = null;
+        }
         _bed?.Dispose();
         _bed = null;
-        foreach (var voice in _swimVoices)
+        _shallowBed?.Dispose();
+        _shallowBed = null;
+        _swim?.Shutdown();
+        _turn?.Shutdown();
+        _boost?.Shutdown();
+        _arrival?.Shutdown();
+        _dive?.Shutdown();
+        foreach (var entry in _surfaceActors)
         {
-            if (!IsInstanceValid(voice)) continue;
-            voice.Stop();
-            voice.Stream = null;
-        }
-        foreach (var voice in _boostVoices)
-        {
-            if (!IsInstanceValid(voice)) continue;
-            voice.Stop();
-            voice.Stream = null;
+            entry.Detector.Reset();
+            entry.Arrival.Shutdown();
+            entry.Dive.Shutdown();
         }
     }
 
@@ -423,11 +499,13 @@ public partial class WorldAudio : Node3D
             _focusPaused = true;
             ResetEvents();
             _ambience.StreamPaused = true;
+            if (_shallowAmbience is not null) _shallowAmbience.StreamPaused = true;
         }
         else if (what == NotificationApplicationFocusIn)
         {
             _focusPaused = false;
             _ambience.StreamPaused = false;
+            if (_shallowAmbience is not null) _shallowAmbience.StreamPaused = false;
         }
     }
 

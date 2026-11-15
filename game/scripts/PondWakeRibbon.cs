@@ -20,6 +20,7 @@ public static class PondWakeRibbon
         public float FinY { get; init; }
         public float SurfaceLift { get; init; }
         public bool HasFinDepth { get; init; }
+        public bool UnderwaterTurn { get; init; }
     }
 
     public static Station Project(PondWakeSample sample, float seconds, int side)
@@ -39,8 +40,9 @@ public static class PondWakeRibbon
             Mathf.Max(.001f, width), sample.Energy * fade * breakup, sample.Segment)
         {
             FinY = side < 0 ? sample.LeftY : sample.RightY,
-            SurfaceLift = Mathf.SmoothStep(0f, .9f, age),
+            SurfaceLift = sample.UnderwaterTurn ? 0f : Mathf.SmoothStep(0f, .9f, age),
             HasFinDepth = sample.HasFinDepth,
+            UnderwaterTurn = sample.UnderwaterTurn,
         };
     }
 
@@ -112,7 +114,8 @@ public static class PondWakeRibbon
                         var to = new Station(new Vector2(edge.X, edge.Z), outward,
                             Mathf.Max(.001f, live.Width * .028f), currentEnergy * .26f,
                             last.Segment)
-                        { FinY = edge.Y, HasFinDepth = true };
+                        { FinY = edge.Y, HasFinDepth = true,
+                            UnderwaterTurn = live.UnderwaterTurn };
                         if (shore is not null && (shore(from.Position.X, from.Position.Y) < .16f ||
                             shore(to.Position.X, to.Position.Y) < .16f)) continue;
                         BeginIfNeeded();
@@ -139,10 +142,12 @@ public static class PondWakeRibbon
                 var fin = side < 0 ? contact.FinLeft : contact.FinRight;
                 var water = side < 0 ? contact.Left : contact.Right;
                 var start = new Station(new Vector2(fin.X, fin.Z), outward,
-                    Mathf.Max(.001f, contact.Width * .018f), currentEnergy * .28f, 0);
+                    Mathf.Max(.001f, contact.Width * .018f), currentEnergy * .28f, 0)
+                { UnderwaterTurn = contact.UnderwaterTurn };
                 var end = new Station(new Vector2(water.X, water.Z), outward,
                     Mathf.Max(.001f, contact.Width * .04f), currentEnergy * .32f, 0)
-                { FinY = water.Y, HasFinDepth = true };
+                { FinY = water.Y, HasFinDepth = true,
+                    UnderwaterTurn = contact.UnderwaterTurn };
                 if (shore is not null && shore(end.Position.X, end.Position.Y) < .16f) continue;
                 BeginIfNeeded();
                 for (var c = 0; c < CrossVertices - 1; c++)
@@ -167,7 +172,10 @@ public static class PondWakeRibbon
             var wobble = Mathf.Sin(sample.BirthSeconds * 13.1f + sample.Center.X * 8f) *
                 sample.Width * .09f;
             var first = new Station(tail + sideways * wobble, sideways,
-                sample.Width * .10f, fade, sample.Segment);
+                sample.Width * .10f, fade, sample.Segment)
+            { FinY = (sample.LeftY + sample.RightY) * .5f,
+                HasFinDepth = sample.HasFinDepth,
+                UnderwaterTurn = sample.UnderwaterTurn };
             var second = first with { Position = first.Position - sample.Heading * sample.Length * .12f,
                 Strength = fade * .3f };
             BeginIfNeeded();
@@ -188,7 +196,9 @@ public static class PondWakeRibbon
             var y = originY ?? (station.HasFinDepth
                 ? Mathf.Lerp(station.FinY, surfaceY, station.SurfaceLift) : surfaceY);
             mesh.SurfaceSetNormal(Vector3.Up);
-            mesh.SurfaceSetColor(new Color(1f, 1f, 1f,
+            // The shader uses red only as a trail-mode flag. A submerged turn
+            // keeps the Pond tint even when the camera sits above the fish.
+            mesh.SurfaceSetColor(new Color(station.UnderwaterTurn ? 0f : 1f, 1f, 1f,
                 Mathf.Clamp(station.Strength * Feather[cross] * gain, 0f, 1f)));
             mesh.SurfaceSetUV(new Vector2(Cross[cross], station.Position.X * 3.7f + station.Position.Y * 2.1f));
             mesh.SurfaceAddVertex(new Vector3(point.X, y, point.Y));
@@ -222,6 +232,7 @@ public static class PondWakeRibbon
             FinY = Mathf.Lerp(p1.FinY, p2.FinY, t),
             SurfaceLift = Mathf.Lerp(p1.SurfaceLift, p2.SurfaceLift, t),
             HasFinDepth = p1.HasFinDepth && p2.HasFinDepth,
+            UnderwaterTurn = p1.UnderwaterTurn,
         };
     }
 }

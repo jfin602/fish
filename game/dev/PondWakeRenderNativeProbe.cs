@@ -24,6 +24,15 @@ public static class PondWakeRenderNativeProbe
             var lightScenario = args.Contains("--wake-scenario=light");
             var breachScenario = args.Contains("--wake-scenario=breach");
             var followScenario = args.Contains("--wake-scenario=follow");
+            var turnScenario = args.Contains("--wake-scenario=under-turn");
+            var turnArg = args.FirstOrDefault(x => x.StartsWith("--wake-turn=", StringComparison.Ordinal));
+            var turnName = turnArg?["--wake-turn=".Length..] ?? "left";
+            var turnKey = turnName switch
+            {
+                "left" => Key.A, "right" => Key.D,
+                "up" => Key.Up, "down" => Key.Down,
+                _ => throw new Exception("invalid underwater wake turn"),
+            };
             var stageArg = args.FirstOrDefault(x => x.StartsWith("--wake-stage=", StringComparison.Ordinal));
             var stage = stageArg?["--wake-stage=".Length..];
             var depthArg = args.FirstOrDefault(x => x.StartsWith("--wake-depth=", StringComparison.Ordinal));
@@ -52,15 +61,16 @@ public static class PondWakeRenderNativeProbe
                 if (!PlayerArt.TryReplacePondStage(fish, growth.Entry(growth.Asset), out var reason))
                     throw new Exception("stage visual " + stage + " " + reason);
                 fish.SetEncounterBassBody(growth.Body);
+                if (turnScenario) fish.Tuning = growth.StageTuning(fish.Tuning);
                 water.ConfigureFromPlayerVisual();
             }
             if (water.GetNodeOrNull<MeshInstance3D>("SurfaceRing0") is null)
                 throw new Exception("debug A/B ring pool missing");
             water.SetWakeLegacyComparison(mode.StartsWith("rings", StringComparison.Ordinal));
             var rig = fish.GetNode<FollowCamera>("CameraRig");
-            if (followScenario && stage is not null)
+            if ((followScenario || turnScenario) && stage is not null)
                 rig.ConfigureEncounterLarvaView(stage == "larva");
-            if (!followScenario)
+            if (!followScenario && !turnScenario)
             {
                 rig.SetProcess(false);
                 rig.SetPhysicsProcess(false);
@@ -108,7 +118,7 @@ public static class PondWakeRenderNativeProbe
                 GD.Print($"WAKE_RENDER_SHORE start_z={bestZ:F3} shore_distance={basin.DistanceToShore(0f, bestZ):F3}");
             }
             fish.GlobalBasis = Basis.Identity;
-            if (followScenario) rig.SnapToFish();
+            if (followScenario || turnScenario) rig.SnapToFish();
             water.Suspend();
             // Capture PNGs can skip arbitrary engine physics frames. Advance the
             // three dependent owners once per scripted tick so A/B input, motor,
@@ -133,6 +143,13 @@ public static class PondWakeRenderNativeProbe
                 {
                     (25, "shore-top", "top"),
                     (60, "shore-oblique", "oblique"),
+                }
+                : turnScenario
+                ? new (int Tick, string Name, string View)[]
+                {
+                    (25, "under-straight-before", "follow"),
+                    (55, "under-turn", "follow"),
+                    (95, "under-straight-after", "follow"),
                 }
                 : followScenario
                 ? new (int Tick, string Name, string View)[]
@@ -170,9 +187,14 @@ public static class PondWakeRenderNativeProbe
             KeyInput(fish, Key.W, true);
             if (breachScenario) KeyInput(fish, Key.Up, true);
             var lastFrame = Time.GetTicksUsec();
-            for (var tick = 0; tick <= (breachScenario ? 65 : lightScenario ? 100 : shoreScenario ? 70 : stage is not null ? 100 : 365); tick++)
+            for (var tick = 0; tick <= (breachScenario ? 65 : lightScenario ? 100 : shoreScenario ? 70 : turnScenario ? 100 : stage is not null ? 100 : 365); tick++)
             {
-                if (!shoreScenario && !breachScenario)
+                if (turnScenario)
+                {
+                    if (tick == 35) KeyInput(fish, turnKey, true);
+                    if (tick == 70) KeyInput(fish, turnKey, false);
+                }
+                else if (!shoreScenario && !breachScenario)
                 {
                     if (tick == 40) KeyInput(fish, Key.D, true);
                     if (tick == 76) { KeyInput(fish, Key.D, false); KeyInput(fish, Key.Space, true); }
@@ -196,19 +218,42 @@ public static class PondWakeRenderNativeProbe
                 while (captureIndex < captures.Length && captures[captureIndex].Tick == tick)
                 {
                 var shot = captures[captureIndex++];
-                if (!followScenario) PlaceCamera(camera, fish, surface, shot.View);
+                if (!followScenario && !turnScenario) PlaceCamera(camera, fish, surface, shot.View);
                 await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
                 var file = Path.Combine(folder, shot.Name + ".png");
                 if (scene.GetViewport().GetTexture().GetImage().SavePng(file) != Error.Ok)
                     throw new Exception("capture failed " + file);
                 var position = fish.GlobalPosition;
-                if (!shoreScenario && tick == 25 && position.Z > routeZ - .05f)
+                if (!shoreScenario && !turnScenario && tick == 25 && position.Z > routeZ - .05f)
                     throw new Exception("central replay did not translate through water");
-                if (!shoreScenario && !breachScenario && tick == 95 && !fish.BoostActive)
+                if (!shoreScenario && !breachScenario && !turnScenario && tick == 95 && !fish.BoostActive)
                     throw new Exception("central replay did not engage boost");
+                if (followScenario && startDepth > .3f && tick == 95 &&
+                    (!water.UnderwaterTurnWakeActive || water.WakePath.Count < 2 ||
+                     water.ActiveWakeTriangles == 0))
+                    throw new Exception("underwater boost did not create a fin trail");
                 var body = PlayerBodyGeometry.Measure(fish);
                 var contact = PondWakeContacts.At(body, fish.GlobalTransform,
                     surface.GetSurfaceHeight);
+                if (turnScenario)
+                {
+                    var shouldTurn = tick == 55;
+                    if (water.UnderwaterTurnWakeActive != shouldTurn ||
+                        contact.Touching || (shouldTurn &&
+                            (water.WakePath.Count < 2 ||
+                             !water.WakePath[water.WakePath.Count - 1].UnderwaterTurn ||
+                             water.ActiveWakeTriangles == 0)) ||
+                        (tick == 95 && water.WakePath.Count > 0 &&
+                         water.WakePath.Seconds -
+                         water.WakePath[water.WakePath.Count - 1].BirthSeconds < .16f))
+                        throw new Exception($"underwater turn wake state {turnName} tick={tick} " +
+                            $"active={water.UnderwaterTurnWakeActive} surface={contact.Touching} " +
+                            $"samples={water.WakePath.Count} triangles={water.ActiveWakeTriangles}");
+                    GD.Print($"WAKE_UNDER_TURN turn={turnName} tick={tick} " +
+                        $"active={water.UnderwaterTurnWakeActive} " +
+                        $"yaw={fish.PresentationTurn:F3} pitch={fish.PresentationPitchTurn:F3} " +
+                        $"samples={water.WakePath.Count} triangles={water.ActiveWakeTriangles}");
+                }
                 if (followScenario && water.WakePath.Count > 1)
                 {
                     var first = water.WakePath[0];
@@ -221,6 +266,7 @@ public static class PondWakeRenderNativeProbe
                 }
                 GD.Print($"WAKE_RENDER_CAPTURE mode={mode} stage={stage ?? "fixture"} tick={tick} name={shot.Name} view={shot.View} " +
                     $"pos={position} speed={fish.Velocity.Length():F3} boost={fish.BoostActive} " +
+                    $"underwater_trail={water.UnderwaterTurnWakeActive} yaw={fish.PresentationTurn:F3} pitch={fish.PresentationPitchTurn:F3} " +
                     $"samples={water.WakePath.Count} triangles={water.ActiveWakeTriangles} " +
                     $"rings={water.ActivePondRings} surface={surface.GetSurfaceHeight(position.X, position.Z):F4} " +
                     $"clock={surface.SurfaceTime:F4} solar_hour={surface.Solar.HourOfDay:F2} " +
@@ -239,6 +285,7 @@ public static class PondWakeRenderNativeProbe
             KeyInput(fish, Key.D, false);
             KeyInput(fish, Key.Down, false);
             KeyInput(fish, Key.Up, false);
+            KeyInput(fish, Key.A, false);
             if (captureIndex != captures.Length) throw new Exception("missing capture");
             GD.Print($"WAKE_RENDER_COST mode={mode} frames={frames.Count} " +
                 $"frame_median_ms={Percentile(frames, .5):F3} frame_p95_ms={Percentile(frames, .95):F3} " +

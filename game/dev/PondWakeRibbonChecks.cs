@@ -80,6 +80,16 @@ public static class PondWakeRibbonChecks
             Need(spreadY, "wake was flattened to one Y");
             var finDepthPath = new PondWakePath();
             var finDepthY = atmosphere.GetRenderedSurfaceHeight(0f, 0f) - .12f;
+            Need(!PondUnderwaterTurnWake.Update(false, 41f, .6f, .7f, false, false) &&
+                PondUnderwaterTurnWake.Update(false, 42f, .6f, .7f, false, false) &&
+                PondUnderwaterTurnWake.Update(true, 22f, .6f, .7f, false, false) &&
+                !PondUnderwaterTurnWake.Update(true, 21f, .6f, .7f, false, false) &&
+                !PondUnderwaterTurnWake.Update(false, 90f, .6f, .2f, true, false) &&
+                !PondUnderwaterTurnWake.Update(false, 90f, .1f, .7f, false, false) &&
+                PondUnderwaterTurnWake.Update(false, 0f, .01f, .7f, false, true) &&
+                !PondUnderwaterTurnWake.Update(true, 0f, .6f, .7f, false, false) &&
+                !PondUnderwaterTurnWake.Update(false, 0f, .6f, .1f, true, true),
+                "underwater turn/boost entry, release, surface or motion gate");
             for (var i = 0; i < 4; i++)
             {
                 var offset = i * .08f;
@@ -90,6 +100,7 @@ public static class PondWakeRibbonChecks
                     FinLeft = new Vector3(offset, finDepthY, -.12f),
                     FinRight = new Vector3(offset, finDepthY, .12f),
                     HasFinOrigins = true,
+                    UnderwaterTurn = true,
                 };
                 finDepthPath.Step(deepContact, .5f, .72f, 1, .06f);
             }
@@ -98,11 +109,28 @@ public static class PondWakeRibbonChecks
                 "fin-depth trail missing");
             var depthVertices = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex]
                 .AsVector3Array();
-            var belowSurface = false;
             foreach (var vertex in depthVertices)
-                if (vertex.Y < atmosphere.GetRenderedSurfaceHeight(vertex.X, vertex.Z) - .04f)
-                    belowSurface = true;
-            Need(belowSurface, "new wake flattened onto surface instead of fin depth");
+                Need(Mathf.Abs(vertex.Y - finDepthY) < .001f,
+                    "underwater turn ribbon rose from the fins to the surface");
+            var turnColors = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Color].AsColorArray();
+            foreach (var color in turnColors)
+                Need(color.R < .5f, "underwater turn used air-facing surface tint");
+            var turnSegment = finDepthPath[finDepthPath.Count - 1].Segment;
+            for (var i = 0; i < 3; i++)
+            {
+                var offset = .32f + i * .08f;
+                finDepthPath.Step(new PondWakeContacts(Vector3.Zero,
+                    new Vector3(offset, finDepthY, -.12f),
+                    new Vector3(offset, finDepthY, .12f), Vector3.Zero,
+                    Vector3.Right, 0f, .24f, true)
+                {
+                    FinLeft = new Vector3(offset, finDepthY, -.12f),
+                    FinRight = new Vector3(offset, finDepthY, .12f),
+                    HasFinOrigins = true,
+                }, .5f, .72f, 1, .06f);
+            }
+            Need(finDepthPath[finDepthPath.Count - 1].Segment != turnSegment,
+                "surface/underwater mode switch bridged two water levels");
             Need(PondWakeRibbon.Draw(mesh, path, path.Seconds,
                 atmosphere.GetRenderedSurfaceHeight, (_, _) => 0f, material) == 0 &&
                 mesh.GetSurfaceCount() == 0, "dry shoreline rendered fronts");
