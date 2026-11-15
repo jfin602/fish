@@ -1,0 +1,31 @@
+TASK: Phase 6 / P8 — Native early Bass survival qualification
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.6.8`.
+
+GOAL
+Owner-control an actual hatchling/juvenile Bass experience now that food patches, adult Bluegill, frog and snake threats are integrated. Stop if the opening remains repetitive or unfair.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read current P6 P1–P7 evidence/source, G6.1–G6.4 and V44–V47, current normal Pond entry, actual registered creature identity, camera and input presets, the native launch wrapper.
+
+IMPLEMENT / REVIEW
+1. Author docs/tasks/p6/qualification/p8-early-survival-native.md first with revision, dirty state, seed/world manifest, Bass identity, controls, renderer/lighting, actual expected actions and blank observed/PASS/FAIL/NOT OBSERVED fields; do not prefill owner conclusions.
+2. Run the smallest necessary current preflight checks; verify proper Godot .NET Fish project/Forward+ desktop. Launch ./tools/dev run --display-mode=windowed-fullscreen and LEAVE THE GAME WINDOW OPEN.
+3. Owner hatches Bass in **ordinary Pond**, uses reticle to eat, explores several nursery/shore/reed patches, sees food deplete, takes a careful hidden feeding route and an exposed risky route, experiences adult Bluegill detection, observes real frog and water snake behaviors, escape or catch and fair return/retry. Compare body stages, zoom, independent camera look and night/surface visibility if pertinent.
+4. Record exact owner feedback, user-observed predator causes, audio/visual/collider issues, actual frame times and screenshots if captured. Do not infer a PASS from a scripted headless event or the fact a game window opened. If any essential early loop cannot be fairly played, STOP with targeted repair plan; do not continue to P9 automatically.
+
+VALIDATION
+T3 MANUAL: native owner play V44–V47; targeted T2 regressions supplementary. Full G6.8/V51 remains unobserved. If environment cannot launch, report concrete blocker rather than fabricate desktop use.
+
+DONE / VERSION / REPORT
+Owner-reviewed early survival gate with actual observed actions and clear proceed/repair decision; manual checkpoint/version 0.6.8 only after genuine completion and authorization. No automatic owner PASS or self-commit.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. This is an owner/native handoff: STOP the runner before execution and resume only with a legitimate reviewed manual checkpoint. 
