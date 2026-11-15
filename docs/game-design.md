@@ -2,7 +2,7 @@
 
 ## Status and scope
 
-This document organizes the Fish concept approved in the project discussion. [Decisions and open questions](decisions-and-questions.md) records provenance and decision status. Detailed mechanics below are working designs unless identified as confirmed. P0/P1 core play, Ocean/Pond environments and the P5 isolated stealth/feeding/growth fixture now exist. P5 is owner-closed for progression / NOT GREEN; the post-P5 Bass ecology/lifecycle correction is approved as **future work**, not implemented or qualified.
+This document organizes the Fish concept approved in the project discussion. [Decisions and open questions](decisions-and-questions.md) records provenance and decision status. Detailed mechanics below are working designs unless identified as confirmed. P0/P1 core play, Ocean/Pond environments and the P5 isolated stealth/feeding/growth fixture now exist. P5 is owner-closed for progression / NOT GREEN; the C5 Bass ecology/lifecycle correction has focused evidence but incomplete native review. **S27 approves a future P6 Living Pond survival progression**, not implemented or qualified. Persistence/death, Life History and integrated qualification now follow as P7–P9.
 
 ## Confirmed core
 
@@ -25,6 +25,23 @@ World choice is a new-life choice, not an ability to transfer an existing fish b
 ## C5 — Bass encounter evolution (owner-approved, pending implementation)
 
 Historical P5 used **Bluegill as player, Bass as larval/juvenile prey**, as recorded in the [P5 closeout](tasks/p5/closeout.md); its source/evidence remains intact. **S24 supersedes only that isolated encounter's player/prey roles**: the Pike Encounter becomes a Bass's first life from shallow egg hatch through controllable fry, invertebrate/microfauna feeding and later Bluegill hunting. Bluegill form age-structured shallow/intermediate/deep schools, and Pike hunts any legitimately sensed Bass or Bluegill, permitting but not guaranteeing escape near a scattered school. A real predatory strike may emit brief dissipating blood. [C5 design](planning/c5-post-p5-ecology-lifecycle.md) owns scope. Ocean and ordinary Pond retain Character Select and passive non-enemy experimentation. The scene is a **development fixture**, not permanent death/history gameplay.
+
+## P6 — The Living Pond full Bass lifecycle (S27 approved; not implemented)
+
+**Why now:** the existing isolated Pike Encounter can be progressed by circling small fixed nursery food for too long before significant danger or discovery. Before persistence, build an actually interesting full life in the **ordinary Freshwater Pond**, preserving Ocean and the separate Pike Encounter regression fixture. [P6 design](planning/p6/living-pond.md) defines the gate sequence.
+
+| Bass stage | Food and activity | Threats and new knowledge |
+| --- | --- | --- |
+| Egg/larva | Hatch, use yolk, seek small dispersed zooplankton/invertebrates among shallow vegetation. | Larger Bluegill can opportunistically catch genuinely tiny Bass; shelter and slow approach matter immediately. |
+| Juvenile | Find insects and other eligible small prey across reeds, shore and wood; begin exploring. | Water snakes, occasional suitable frog encounters and larger Bass force different escape routes. |
+| Subadult | Hunt size-eligible Bluegill, stalk schools near roots/logs and compete for food. | Solitary larger Bass also hunt smaller Bass; role reversal requires real size/diet checks. |
+| Adult/mature | Follow depleted local feeding patches toward richer, deeper vegetation edges and larger prey. | Pike and competing predators threaten even a capable Bass; depth access remains continuous, not age-locked. |
+
+**Food ecology:** locally depleting and recovering, spatially plausible food patches and increasingly valuable fish prey replace endless nest circles. Animals hunt one another independently based on real sensing/contact. No absolute seasonal/full population simulation is required. The previously sourced Northern leopard frog and Northern water snake assets are candidates for gameplay integration, not already functioning predators; common snapping turtle is optional.
+
+**Feeding aim:** a small center-screen viewing reticle aids orientation. When camera look deviates from the Bass's actual forward mouth vector under follow lag/orbit/free-look, provide a distinct unobtrusive mouth-heading reference. Reticle overlap never overrides automatic unobstructed stage-eligible mouth contact. Hide during inactive controls, give confirmed feeding feedback only, and keep all rendering separate from authoritative ecology. See [swimming/camera](systems/swimming-and-camera.md) and [UX](ux-and-presentation.md).
+
+The first full survival path is Bass-specific. Other ordinary Pond fish remain their established test/demo choices; do not present them as fully simulated survival lives until they receive separate work. A P6 caught fish may restart a **session-local** hatchling; durable permanent death/save is **P7**, factual Life History **P8**, and integrated acceptance **P9**.
 
 ## Connected loops
 
@@ -88,7 +105,7 @@ A real death is terminal for that run. Technical failures, unreadable save files
 
 After the P3 ocean-world repair and qualification, P4 adds Freshwater Pond and World Select while preserving the Ocean. The P5 stealth/feed/escape/grow prototype starts with an isolated Bluegill-versus-Pike cover-network fixture to establish honest sensory detection and escape; later P5 work adds small food, one prey type, nutrition and growth within the same framework. It should prove concealment before detection, suspicion and investigation, fair pursuit and loss of contact, stealth hunting, readable escape, visible growth and a meaningful change in what the player can eat. Specific content and quantities remain prototype choices.
 
-The integrated slice adds saved continuation, permanent death, factual life events, the brief recounting, and the main-menu history archive. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
+After P6 qualifies the living Pond loop, P7 adds saved continuation and permanent death, P8 adds factual life events/recounting and the main-menu history archive, and P9 qualifies the integrated experience. An empty history is a legitimate first-launch state. The optional first-person view can follow the main camera's basic qualification.
 
 P2, P3, P4 and P5 are owner-closed **for progression / NOT GREEN** with historical native gaps. The current root package version remains `0.5.12` even though the latest commit subject is `0.5.13`. The [P5 closeout](tasks/p5/closeout.md) owns actual executed facts; C5 Bass/lifecycle polish is approved planning, not a new finished Phase. The original bootstrap task established the Godot project and development workflow. It does not authorize implementing every system described here. [The roadmap](roadmap.md) owns the Phase order and acceptance Gates.
 
