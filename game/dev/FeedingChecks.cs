@@ -69,6 +69,9 @@ public static class FeedingChecks
 
             var open = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
             fish.GlobalBasis = Basis.Identity;
+            // This headless policy check exits immediately after feeding; keep
+            // audio playback from outliving the process shutdown.
+            fish.GetNode<AudioStreamPlayer3D>("SmallFeedSound").Stream = null;
             var nymphs = food.Where(f => f.Kind == FeedingLedger.InsectId).ToArray();
             PutAhead(nymphs[0], .02f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);

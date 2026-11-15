@@ -314,7 +314,8 @@ public partial class PikeEncounter : Node3D
         BuildInterface();
         _reticle = FeedingReticle.Attach(this, _fish,
             _fish.GetNode<Camera3D>("CameraRig/Camera3D"),
-            () => !_introActive && !_menu.Visible && !_transitioning && !_ended && !_failed);
+            () => !_introActive && !_menu.Visible && !_transitioning && !_ended && !_failed,
+            GuideFoodCandidates);
         _smallFeedSound = FeedSound("SmallFeedSound", "res://assets/sfx/feeding_small.wav", -24f);
         _fishFeedSound = FeedSound("FishFeedSound", "res://assets/sfx/feeding_small.wav", -18f);
         _blood = new FishBloodFx { Name = "FishBloodFx" };
@@ -398,7 +399,8 @@ public partial class PikeEncounter : Node3D
             "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--p6-reticle-check" or "--growth-check" or
             "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe" or "--wake-path-check" or "--wake-path-native-probe" or "--wake-ribbon-check" or "--wake-render-native-probe");
         _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass",
-            legacyCheck ? "juvenile" : "egg");
+            Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-reticle-check")
+                ? "larva" : legacyCheck ? "juvenile" : "egg");
         // Swim bodies must pass through one another so a Pike mouth can reach a
         // Bass at every stage. Their masks still collide with solid Pond cover.
         _fish.CollisionLayer = 2;
@@ -1008,6 +1010,27 @@ public partial class PikeEncounter : Node3D
         return to.Length() > .005f && to.Length() <= _growth.MouthRadius * 1.5f &&
             (-_fish.GlobalBasis.Z).Dot(to.Normalized()) >= .65f &&
             ClearPath(mouth, target.GlobalPosition);
+    }
+
+    private System.Collections.Generic.IEnumerable<FoodAimCandidate> GuideFoodCandidates()
+    {
+        var camera = _fish.GetNode<Camera3D>("CameraRig/Camera3D");
+        var now = MovementCues?.SimulationSeconds ?? 0;
+        var mouth = _fish.MouthPosition;
+        var forward = _fish.MouthForward;
+        foreach (var food in _food)
+        {
+            var toFood = food.GlobalPosition - mouth;
+            if (toFood.LengthSquared() > 1.2f * 1.2f ||
+                toFood.LengthSquared() < .000025f ||
+                forward.Dot(toFood.Normalized()) < .35f) continue;
+            if (!food.Available || !food.IsVisibleInTree() ||
+                _feeding.IsConsumed(food.StableId) ||
+                FeedingLedger.FoodAward(food.Kind, _growth.Stage, now) <= 0 ||
+                !ClearPath(mouth, food.GlobalPosition) ||
+                !ClearPath(camera.GlobalPosition, food.GlobalPosition)) continue;
+            yield return new FoodAimCandidate(food.StableId, food.GlobalPosition);
+        }
     }
 
     private string FoodCue(double now)
