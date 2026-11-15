@@ -42,6 +42,7 @@ public partial class PikeEncounter : Node3D
     private ProgressBar _boostMeter = null!;
     private AudioStreamPlayer3D _smallFeedSound = null!;
     private AudioStreamPlayer3D _fishFeedSound = null!;
+    private FeedingReticle _reticle = null!;
     private WorldAudio _audio = null!;
     private Control _menu = null!;
     private Button _retry = null!;
@@ -311,6 +312,9 @@ public partial class PikeEncounter : Node3D
         DemoSelection.Clear();
         WorldSession.Select(WorldCatalog.PondId);
         BuildInterface();
+        _reticle = FeedingReticle.Attach(this, _fish,
+            _fish.GetNode<Camera3D>("CameraRig/Camera3D"),
+            () => !_introActive && !_menu.Visible && !_transitioning && !_ended && !_failed);
         _smallFeedSound = FeedSound("SmallFeedSound", "res://assets/sfx/feeding_small.wav", -24f);
         _fishFeedSound = FeedSound("FishFeedSound", "res://assets/sfx/feeding_small.wav", -18f);
         _blood = new FishBloodFx { Name = "FishBloodFx" };
@@ -359,6 +363,8 @@ public partial class PikeEncounter : Node3D
             FeedingChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--auto-feed-boost-check"))
             AutoFeedBoostChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-reticle-check"))
+            P6ReticleChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--growth-check"))
             GrowthChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-path-check"))
@@ -389,7 +395,7 @@ public partial class PikeEncounter : Node3D
         var legacyCheck = Array.Exists(OS.GetCmdlineUserArgs(), arg => arg is
             "--pike-encounter-check" or "--world-isolation-check" or "--pike-cover-check" or
             "--pike-sight-check" or "--pike-disturbance-check" or "--pike-ai-check" or
-            "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--growth-check" or
+            "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--p6-reticle-check" or "--growth-check" or
             "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe" or "--wake-path-check" or "--wake-path-native-probe" or "--wake-ribbon-check" or "--wake-render-native-probe");
         _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass",
             legacyCheck ? "juvenile" : "egg");
@@ -919,7 +925,11 @@ public partial class PikeEncounter : Node3D
             TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={target.StableId} kind=prey stage={target.Stage} nutrition={_feeding.Nutrition}");
         }
-        if (result.Consumed) ShowFeedFeedback("Bluegill " + target.Stage + " eaten");
+        if (result.Consumed)
+        {
+            ShowFeedFeedback("Bluegill " + target.Stage + " eaten");
+            _reticle.ConfirmCommittedFeed();
+        }
         return result;
     }
 
@@ -938,13 +948,16 @@ public partial class PikeEncounter : Node3D
             TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={target.StableId} kind={target.Kind} nutrition={_feeding.Nutrition}");
         }
-        if (result.Consumed) ShowFeedFeedback(target.Kind == FeedingLedger.MicrofaunaId
-            ? "Zooplankton eaten" : "Aquatic nymph eaten");
+        if (result.Consumed)
+        {
+            ShowFeedFeedback(target.Kind == FeedingLedger.MicrofaunaId
+                ? "Zooplankton eaten" : "Aquatic nymph eaten");
+            _reticle.ConfirmCommittedFeed();
+        }
         return result;
     }
 
-    private Vector3 MouthPosition() => _fish.GlobalPosition - _fish.GlobalBasis.Z *
-        _fish.BodyForwardReach;
+    private Vector3 MouthPosition() => _fish.MouthPosition;
 
     private bool ShellContact(Vector3 mouth)
     {

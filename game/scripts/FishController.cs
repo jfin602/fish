@@ -39,6 +39,8 @@ public partial class FishController : CharacterBody3D
             ? capsule.Radius : 0f;
     public float BodyForwardReach => GetNode<CollisionShape3D>("Collision") is { Shape: CapsuleShape3D capsule } collision
         ? capsule.Height * .5f - collision.Position.Z : BodyRadius;
+    public Vector3 MouthPosition => GlobalPosition - GlobalBasis.Z * BodyForwardReach;
+    public Vector3 MouthForward => -GlobalBasis.Z;
     public void SetEncounterBassBody(BassBodyProfile body)
     {
         var (radius, length, centerZ, visualLength) = body;
