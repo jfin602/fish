@@ -1,6 +1,6 @@
 # Fish roadmap
 
-**Status: 2026-11-13. P0 and P1 are COMPLETE. P2, P3, P4 and P5 are OWNER CLOSED FOR PROGRESSION / NOT GREEN.** The owner accepted P5 as a baseline to build from after the real P12 `0.5.12` checkpoint; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native qualification gaps. No P5 Gate passed and the assigned `0.5.13` was not applied. [P4 direct closeout](tasks/p4/closeout.md) retains G4.1–G4.4 limits, historical P12/V32 failure, unapproved R2–R5 underwater candidates and c4 day/night gaps. [P3 direct closeout](tasks/p3/closeout.md) retains G3.1–G3.3 FAIL, G3.4 NOT GREEN and V25–V27 limits; P2 G2.3/V20 remains an accepted gap. This is the single Phase/Gate status authority.
+**Status: 2026-11-15 (S27 design approval). P0 and P1 are COMPLETE. P2, P3, P4 and P5 are OWNER CLOSED FOR PROGRESSION / NOT GREEN.** The owner accepted P5 as a baseline to build from after the real P12 `0.5.12` checkpoint; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native qualification gaps. No P5 Gate passed and the assigned `0.5.13` was not applied. [P4 direct closeout](tasks/p4/closeout.md) retains G4.1–G4.4 limits, historical P12/V32 failure, unapproved R2–R5 underwater candidates and c4 day/night gaps. [P3 direct closeout](tasks/p3/closeout.md) retains G3.1–G3.3 FAIL, G3.4 NOT GREEN and V25–V27 limits; P2 G2.3/V20 remains an accepted gap. This is the single Phase/Gate status authority.
 
 The dated `0.4.11` candidate notes below record when each visual iteration was made; they are historical evidence, not the current root version or a Gate decision.
 
@@ -20,7 +20,7 @@ A Gate passes only with source-bound evidence for all of its criteria. A Phase p
 
 ## Delivery direction
 
-Build one small, complete fish life in deliberate layers: first make swimming enjoyable, then make the place worth swimming through, then add the food chain, persistence/death, remembered lives, and full integrated qualification. The current P2 decision intentionally puts the underwater world before ecology. The owner then selected P4 to add World Select and a freshwater Pond alongside the preserved Ocean; feeding/predators/growth move to P5 after both habitats are established.
+Build one small, complete fish life in deliberate layers: first make swimming enjoyable, then make the place worth swimming through, then add the food chain, **qualify a dangerous full Bass lifecycle in the normal Pond**, persistence/death, remembered lives, and full integrated qualification. The current P2 decision intentionally puts the underwater world before ecology. The owner then selected P4 to add World Select and a freshwater Pond alongside the preserved Ocean; feeding/predators/growth move to P5 after both habitats are established.
 
 | Phase | Observable outcome | State |
 | --- | --- | --- |
@@ -30,9 +30,10 @@ Build one small, complete fish life in deliberate layers: first make swimming en
 | **P3 — Rebuild and dress the reef** | Rebuild the accepted varying-depth world with the complete original FAF environment library, caves/tunnels and depth-based living density, plus a five-fish Character Select and clean return-to-select flow. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at implemented `0.3.6`; [direct closeout](tasks/p3/closeout.md) preserves failed and unobserved criteria, with no P7/P8 runner checkpoints. |
 | **P4 — Freshwater Pond and World Select** | Add Ocean and Pond as distinct selectable worlds, compatible fish/ambient populations, freshwater assets, bank/sky and surface-swimming/camera immersion. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at deliberate P5 baseline `0.5.0`; G4.1–G4.4 retain incomplete native/owner qualification. [Direct closeout](tasks/p4/closeout.md). |
 | **P5 — Stealth, feed, escape and grow** | Naturalistic detection, concealment, investigation, pursuit/escape and stealth hunting anchor the feeding/growth loop in compatible habitats. | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at real P12 checkpoint `0.5.12`; [closeout](tasks/p5/closeout.md). G5.1–G5.3 remain open. |
-| P6 — A life across sessions | Continue one living fish in its original world; death permanently ends it with recoverable durable records. | NOT STARTED; formerly P5. |
-| P7 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED; formerly P6. |
-| P8 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation across the selected habitat scope. | NOT STARTED; formerly P7. |
+| **P6 — The Living Pond** | Give the ordinary Freshwater Pond a complete Bass egg-to-adult survival progression: feeding reticle, distributed/depleting food, early Bluegill/frog/snake threats, competing Bass, independent ecology and deeper Pike exploration. | **DESIGN APPROVED / NOT STARTED**; [P6 plan](planning/p6/living-pond.md); G6.1–G6.8/V44–V51 pending. |
+| P7 — A life across sessions | Continue one living fish in its original world; death permanently ends it with recoverable durable records. | NOT STARTED; former P6 scope, unchanged. |
+| P8 — Remember every life | Show a brief true recounting and revisit all saved stories from Life History. | NOT STARTED; former P7 scope, unchanged. |
+| P9 — Qualify the complete experience | Observe the integrated life loop, optional first person and chosen desktop presentation across the selected habitat scope. | NOT STARTED; former P8 scope, unchanged. |
 
 ## P0 — Godot and MCP foundation
 
@@ -270,11 +271,75 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Player and NPC outcomes share coherent movement, sight, obstruction, distance, body-size/cover and prey-eligibility rules; gameplay cannot derive knowledge from a hidden UI or camera-only state.
 - At least one native stealth-hunt encounter demonstrates a fair approach and prey response. More sophisticated species sensors and full ecosystem simulation are later scope.
 
-## P6 — A life across sessions
+## P6 — The Living Pond
 
-**Status: NOT STARTED.** Scenarios V06–V09. [Run/persistence contract](systems/survival-and-runs.md).
+**Status: DESIGN APPROVED / NOT STARTED (S27, 2026-11-15).** The owner postponed persistence until the full Bass survival loop offers meaningful risk and exploration. [P6 design](planning/p6/living-pond.md) defines the approved progression. Native scenarios **V44–V51** are not yet implemented or observed. Existing P5 G5.1–G5.3 debt remains NOT GREEN and [C5](planning/c5-post-p5-ecology-lifecycle.md) execution/evidence is not rewritten.
 
-### G6.1 — Suspend and resume one living fish
+P6 develops the **ordinary Freshwater Pond** as the first complete Bass survival environment: select Bass, hatch in shallow cover, feed while avoiding adult Bluegill and other shallow threats, learn stealth, become a Bluegill hunter, contend with larger solitary Bass, and venture toward deeper feeding grounds with Pike. Local food depletion/recovery, habitat ecology and size-dependent reward motivate exploration **without scripted level/depth gates**. The third **Pike Encounter** remains an isolated regression fixture; Ocean, other species' current demonstration routes, baked world identities and FAF history are preserved.
+
+### G6.1 — Feeding reticle and mouth-direction readability
+
+**Result: NOT OBSERVED.** V44.
+
+- Show a small centered active-play reticle; distinguish camera view center from the actual fish-forward mouth direction during follow lag, independent camera orbit and free-look. Display a subtle mouth-heading indicator when needed.
+- Support larva through adult body proportions, all current camera presets, zoom/viewport and above/below waterline. Hide/disarm cues for cinematics, menus, pause and focus loss.
+- Provide brief feedback only on actual valid automatic mouth feeding; the reticle must not aim, move the fish, expand bite range, pull prey, identify hidden targets or create rewards.
+
+### G6.2 — Living, distributed and depleting food
+
+**Result: NOT OBSERVED.** V45.
+
+- Distribute stage-eligible prey/food across actual vegetation, shoreline, wood, transition and deeper habitat patches rather than a permanently productive nest loop.
+- Consumption has stable identity and a once-only reward; depleted patches recover or receive migrating food through bounded game-time rules, without instant same-place replacement or permanent starvation deadlocks.
+- Food opportunities, nutrition and risk change with Bass size; early local feeding is insufficient as the only sensible route to adulthood. Preserve alternative forage and no unapproved hunger meter.
+
+### G6.3 — Early Bluegill predation and stealth
+
+**Result: NOT OBSERVED.** V46.
+
+- Adult Bluegill can realistically opportunistically hunt tiny Bass/fry when sensed and size-eligible, with readable approach, physical catch, evasion and loss of contact.
+- Shallow cover and careful motion make a real difference within the first part of play; no predator sees magically through wood/foliage, and no age gate grants automatic safety.
+
+### G6.4 — Frogs and water snakes
+
+**Result: NOT OBSERVED.** V47.
+
+- Reuse registered Northern leopard frog `FAF-CREATURE-001` and Northern water snake `FAF-CREATURE-002` candidate art/animation first, adding actual shallow/surface/bank behavior, sensed pursuit and physically valid stage-limited attacks.
+- Keep frog predation occasional and plausibly restricted to very small fish; snake can patrol/swim/hunt appropriate fish. No perpetual tracking or teleport catches. Snapping turtle remains optional.
+
+### G6.5 — Solitary Bass competitors
+
+**Result: NOT OBSERVED.** V48.
+
+- Deploy independent Bass NPCs of varied registered stages in realistic cover; larger Bass can opportunistically consume eligible smaller Bass, including the player, using fair shared sensing and actual mouth/contact.
+- Avoid Bass schools, endless aggro, magic target tracking, duplicate consumption and excessive population counts.
+
+### G6.6 — Independent multi-species ecosystem
+
+**Result: NOT OBSERVED.** V49.
+
+- Legitimate Bluegill, Bass, Pike, frog and snake interactions occur without player targeting; competing predator choices use actual sensed world-space evidence and finite commitment.
+- Preserve prey IDs, once-only death/nutrition, bounded AI costs and physical access. A predator switching to nearby prey may help the player but never guarantees escape.
+
+### G6.7 — Spatial exploration and risk progression
+
+**Result: NOT OBSERVED.** V50.
+
+- Habitat-based forage, shelter, prey size, visibility, predator frequency and prey movement create reasons to explore from nursery to reeds/logs to deeper edges and Pike territory.
+- No invisible stage-depth boundary; risky early deep trips and later shallow return remain possible, with real routes, body-size clearance and retreat options.
+
+### G6.8 — Owner-native egg-to-adult survival qualification
+
+**Result: NOT OBSERVED.** V51.
+
+- Owner plays an unbroken ordinary Pond Bass life: hatch, aim and auto-feed, navigate early Bluegill and shoreline danger, hide, hunt prey, survive competing Bass, experience local depletion and independently active NPCs, and discover a deeper Pike encounter.
+- Capture observed progression, predator fairness, stage/collider/camera/controls, Forward+ frame pacing, repeat/restart hygiene and preserved Ocean/Pike Encounter regressions. No headless-only GREEN; identify unobserved/failed checks honestly.
+
+## P7 — A life across sessions
+
+**Status: NOT STARTED (former P6, deferred rather than cancelled by S27).** Scenarios V06–V09 retain their original IDs and requirements; [run/persistence contract](systems/survival-and-runs.md). No P6 session-local catch/retry is durable permanent death.
+
+### G7.1 — Suspend and resume one living fish
 
 **Result: NOT OBSERVED.**
 
@@ -283,7 +348,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Continue/New Life follows an explicitly chosen active-slot/checkpoint policy; replacing a living save cannot silently erase it.
 - Storage incompatibility/corruption is reported with recoverable data preserved, separately from in-world death.
 
-### G6.2 — Durable death and independent history records
+### G7.2 — Durable death and independent history records
 
 **Result: NOT OBSERVED.**
 
@@ -292,11 +357,11 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Interruption/retry at material death/archive boundaries converges to one terminal outcome and one completed-life record.
 - A new hatchling receives a new run identity without clearing prior completed-life records.
 
-## P7 — Remember every life
+## P8 — Remember every life
 
-**Status: NOT STARTED.** Scenarios V10–V12. [Story/archive contract](systems/life-stories-and-history.md).
+**Status: NOT STARTED (former P7, deferred rather than cancelled).** Scenarios V10–V12; [story/archive contract](systems/life-stories-and-history.md).
 
-### G7.1 — Brief, factual recounting
+### G8.1 — Brief, factual recounting
 
 **Result: NOT OBSERVED.**
 
@@ -304,7 +369,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Short and eventful lives produce appropriate accounts without fabricated achievements, intent or attacker identity.
 - Skipping presentation preserves the final saved narrative; presentation failure cannot reverse death.
 
-### G7.2 — Main-menu Life History
+### G8.2 — Main-menu Life History
 
 **Result: NOT OBSERVED.**
 
@@ -312,11 +377,11 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Open/read/return/start another life/restart: prior entries and text remain intact and dead fish remain unplayable.
 - A representative larger archive preserves reachability/readability with no silent truncation or duplicate lives.
 
-## P8 — Qualify the complete experience
+## P9 — Qualify the complete experience
 
-**Status: NOT STARTED.** Scenarios V13–V15.
+**Status: NOT STARTED (former P8, deferred rather than cancelled).** Scenarios V13–V15.
 
-### G8.1 — Optional first person and presentation
+### G9.1 — Optional first person and presentation
 
 **Result: NOT OBSERVED.**
 
@@ -324,7 +389,7 @@ P4 adds a World Select step that offers **Ocean** (the existing reef project) an
 - Observe camera clipping, input/focus, threat feedback, text readability and recap navigation across the implemented size range.
 - Keep the primary third-person experience readable and record the selected visual/performance scope from measured play.
 
-### G8.2 — Full life and platform qualification
+### G9.2 — Full life and platform qualification
 
 **Result: NOT OBSERVED.**
 
