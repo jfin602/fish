@@ -83,7 +83,74 @@ public sealed class SwimAudioGate
         Mathf.Clamp((angularTurn - .4f) / .6f, 0f, 1f);
 }
 
-/// <summary>One habitat ambience bed and reusable positional player event emitters.</summary>
+/// <summary>Presentation-only clock for sparse underwater environmental accents.</summary>
+public sealed class BubbleAccentSchedule
+{
+    public const float WindowSeconds = 60f;
+    public const float MinimumSpacingSeconds = 10f;
+    private readonly Random _random;
+    private readonly float[] _eventTimes = new float[4];
+    private float _elapsed;
+    private int _eventCount;
+    private int _nextEvent;
+    private int _lastTake = -1;
+
+    public BubbleAccentSchedule(int? seed = null) => _random = seed is { } value
+        ? new Random(value) : new Random();
+
+    public void Reset()
+    {
+        _elapsed = 0f;
+        _eventCount = 0;
+        _nextEvent = 0;
+    }
+
+    public int? Step(float seconds, bool active)
+    {
+        if (!active || !float.IsFinite(seconds) || seconds < 0f || seconds > 5f)
+        {
+            Reset(); // A disabled or stalled clock cannot release queued accents later.
+            return null;
+        }
+        if (_eventCount == 0) BuildWindow();
+        _elapsed += seconds;
+        if (_elapsed >= WindowSeconds)
+        {
+            var remainder = _elapsed - WindowSeconds;
+            BuildWindow(); // Never catch up missed events with a burst.
+            _elapsed = remainder;
+        }
+        if (_nextEvent >= _eventCount || _elapsed < _eventTimes[_nextEvent]) return null;
+        _nextEvent++;
+        var take = _random.Next(_lastTake < 0 ? 3 : 2);
+        if (_lastTake >= 0 && take >= _lastTake) take++;
+        _lastTake = take;
+        return take;
+    }
+
+    private void BuildWindow()
+    {
+        _elapsed = 0f;
+        _eventCount = _random.Next(1, 5);
+        _nextEvent = 0;
+        var weights = new double[_eventCount + 1];
+        var total = 0d;
+        for (var i = 0; i < weights.Length; i++)
+        {
+            weights[i] = -Math.Log(Math.Max(1e-9, _random.NextDouble()));
+            total += weights[i];
+        }
+        var slack = WindowSeconds - MinimumSpacingSeconds * _eventCount - 2f;
+        var time = 0f;
+        for (var i = 0; i < _eventCount; i++)
+        {
+            time += MinimumSpacingSeconds + slack * (float)(weights[i] / total);
+            _eventTimes[i] = time;
+        }
+    }
+}
+
+/// <summary>Scene-scoped ambience and positional presentation sounds.</summary>
 public partial class WorldAudio : Node3D
 {
     private sealed class SurfaceActorCue(PreyActor actor, float radius,
@@ -101,9 +168,10 @@ public partial class WorldAudio : Node3D
     [Export] public float FullDepth { get; set; } = 9f;
     [Export] public float ResponsePower { get; set; } = 1.25f;
     [Export] public float FadeSpeed { get; set; } = 1.5f;
-    [Export] public float ShallowSurfaceVolumeDb { get; set; } = -26f;
+    [Export] public float ShallowSurfaceVolumeDb { get; set; } = -20f;
     [Export] public float ShallowFadeDepth { get; set; } = 5f;
     [Export] public float ShallowFadeSpeed { get; set; } = 2f;
+    [Export] public float BubbleVolumeDb { get; set; } = -8f;
     [Export] public float SplashArrivalVolumeDb { get; set; } = -20f;
     [Export] public float SplashDiveVolumeDb { get; set; } = -18f;
     [Export] public float SplashSizeGainDb { get; set; } = 9f;
@@ -114,11 +182,22 @@ public partial class WorldAudio : Node3D
 
     public const string PondBed = "res://assets/sfx/pond_underwater_deep.ogg";
     public const string PondShallows = "res://assets/sfx/pond_underwater_shallows.ogg";
+    public static readonly string[] PondBubblePaths =
+    [
+        "res://assets/sfx/small_bubbles_mono.wav",
+        "res://assets/sfx/small_bubbles_02_mono.wav",
+        "res://assets/sfx/small_bubbles_03_mono.wav",
+    ];
     private FishController _fish = null!;
     private Func<string> _stage = null!;
     private string _bedPath = "";
     private AudioStreamPlayer _ambience = null!;
     private AudioStreamPlayer _shallowAmbience = null!;
+    private AudioStreamPlayer3D _bubbleAccent = null!;
+    private AudioStream[] _bubbleStreams = [];
+    private SeabedSurface? _bubbleSeabed;
+    private readonly BubbleAccentSchedule _bubbleSchedule = new();
+    private readonly Random _bubblePositionRandom = new();
     private SfxOneShotPlayer _swim = null!;
     private SfxOneShotPlayer _turn = null!;
     private SfxOneShotPlayer _boost = null!;
@@ -140,12 +219,14 @@ public partial class WorldAudio : Node3D
     private AudioStream _splash = null!;
     public int AmbienceStarts { get; private set; }
     public int ShallowAmbienceStarts { get; private set; }
+    public int BubbleStarts { get; private set; }
     public int SwimStarts { get; private set; }
     public int BoostStarts { get; private set; }
     public float CurrentVolumeDb => _currentDb;
     public float CurrentShallowVolumeDb => _currentShallowDb;
     public AudioStreamPlayer AmbiencePlayer => _ambience;
     public AudioStreamPlayer ShallowAmbiencePlayer => _shallowAmbience;
+    public AudioStreamPlayer3D BubbleAccentPlayer => _bubbleAccent;
     public AudioStreamPlayer3D SwimEmitter => _swim.Primary;
     public AudioStreamPlayer3D BoostEmitter => _boost.Primary;
     public AudioStreamPlayer3D SplashEmitter => _arrival.Primary;
@@ -209,7 +290,7 @@ public partial class WorldAudio : Node3D
     {
         const float silentDb = -80f;
         if (!float.IsFinite(surfaceY) || !float.IsFinite(fishY)) return silentDb;
-        var startDb = Mathf.Clamp(float.IsFinite(surfaceDb) ? surfaceDb : -26f,
+        var startDb = Mathf.Clamp(float.IsFinite(surfaceDb) ? surfaceDb : -20f,
             silentDb, 0f);
         var depthLimit = Mathf.Max(.01f,
             float.IsFinite(fadeDepth) ? fadeDepth : 5f);
@@ -282,6 +363,11 @@ public partial class WorldAudio : Node3D
             AddChild(_shallowAmbience);
             _shallowAmbience.Play();
             ShallowAmbienceStarts++;
+            _bubbleSeabed = GetParent().GetNodeOrNull<SeabedSurface>("Habitat/Seabed")
+                ?? throw new InvalidOperationException("Pond seabed required for bubble positions");
+            _bubbleStreams = Array.ConvertAll(PondBubblePaths, Load);
+            _bubbleAccent = CreateEmitter(this, "UnderwaterBubbles", 12f);
+            _bubbleAccent.VolumeDb = BubbleVolumeDb;
         }
         _swim = new SfxOneShotPlayer(_fish, "SwimStart");
         _turn = new SfxOneShotPlayer(_fish, "SwimTurn");
@@ -326,6 +412,7 @@ public partial class WorldAudio : Node3D
         _wasEligible = eligible;
         var point = _fish.GlobalPosition;
         var surfaceY = _fish.PondSurfaceHeightAt(point.X, point.Z);
+        AdvanceBubbleAccents(seconds, eligible);
         var surfaceEvent = _surface.Step(point.Y, surfaceY, _fish.BodyRadius,
             _fish.Tuning.MaxSpeed, seconds, eligible, out var verticalSpeed);
         if (surfaceEvent != SurfaceSplashEvent.None)
@@ -425,6 +512,65 @@ public partial class WorldAudio : Node3D
         _fish.GetInputArmed() && GetViewport().GetCamera3D() is not null &&
         !_stage().Equals("egg", StringComparison.Ordinal) && _fish.IsPhysicsProcessing();
 
+    public static bool IsFullyUnderwater(float fishY, float surfaceY, float bodyRadius) =>
+        float.IsFinite(fishY) && float.IsFinite(surfaceY) &&
+        float.IsFinite(bodyRadius) && bodyRadius >= 0f &&
+        fishY + bodyRadius + .05f < surfaceY;
+
+    internal void AdvanceBubbleAccents(float seconds, bool gameplayEligible)
+    {
+        if (_bubbleAccent is null) return;
+        var fishPosition = _fish.GlobalPosition;
+        var surfaceY = _fish.PondSurfaceHeightAt(fishPosition.X, fishPosition.Z);
+        var active = gameplayEligible && !_focusPaused && !GetTree().Paused &&
+            IsFullyUnderwater(fishPosition.Y, surfaceY, _fish.BodyRadius);
+        var take = _bubbleSchedule.Step(seconds, active);
+        if (!active)
+        {
+            _bubbleAccent.Stop();
+            return;
+        }
+        if (take is not { } index || !TryChooseBubblePosition(fishPosition, out var position))
+            return;
+        _bubbleAccent.GlobalPosition = position;
+        _bubbleAccent.Stream = _bubbleStreams[index];
+        _bubbleAccent.VolumeDb = BubbleVolumeDb;
+        _bubbleAccent.Play();
+        BubbleStarts++;
+    }
+
+    internal bool TryChooseBubblePosition(Vector3 fishPosition, out Vector3 position)
+    {
+        position = default;
+        if (_bubbleSeabed is null) return false;
+        for (var attempt = 0; attempt < 16; attempt++)
+        {
+            var angle = (float)(_bubblePositionRandom.NextDouble() * Mathf.Tau);
+            var radius = 3f + 6f * (float)_bubblePositionRandom.NextDouble();
+            var x = fishPosition.X + Mathf.Cos(angle) * radius;
+            var z = fishPosition.Z + Mathf.Sin(angle) * radius;
+            var local = _bubbleSeabed.ToLocal(new Vector3(x, 0f, z));
+            if (Mathf.Abs(local.X) > 35f || Mathf.Abs(local.Z) > 35f) continue;
+            var floorY = _bubbleSeabed.ToGlobal(new Vector3(local.X,
+                _bubbleSeabed.GetHeightAt(local.X, local.Z), local.Z)).Y;
+            var surfaceY = _fish.PondSurfaceHeightAt(x, z);
+            var bottom = floorY + .35f;
+            var top = surfaceY - .35f;
+            if (!float.IsFinite(bottom) || !float.IsFinite(top) || bottom >= top) continue;
+            var y = Mathf.Clamp(fishPosition.Y - 1.2f +
+                2.4f * (float)_bubblePositionRandom.NextDouble(), bottom, top);
+            position = new Vector3(x, y, z);
+            return true;
+        }
+        return false;
+    }
+
+    private void ResetBubbleAccents()
+    {
+        _bubbleSchedule.Reset();
+        if (_bubbleAccent is not null) _bubbleAccent.Stop();
+    }
+
     public void UpdateDepth(float fishY, float seconds)
     {
         var target = TargetVolume(_waterline, fishY, SurfaceVolumeDb,
@@ -448,6 +594,7 @@ public partial class WorldAudio : Node3D
         _wasEligible = false;
         _gate.Reset();
         _surface.Reset();
+        ResetBubbleAccents();
         _swim?.Cancel();
         _turn?.Cancel();
         _boost?.Cancel();
@@ -464,6 +611,9 @@ public partial class WorldAudio : Node3D
     public void Shutdown()
     {
         _surface.Reset();
+        ResetBubbleAccents();
+        if (_bubbleAccent is not null) _bubbleAccent.Stream = null;
+        _bubbleStreams = [];
         if (_ambience is not null)
         {
             _ambience.Stop();
@@ -494,6 +644,7 @@ public partial class WorldAudio : Node3D
     public override void _Notification(int what)
     {
         if (_ambience is null) return;
+        if (what == NotificationPaused) ResetBubbleAccents();
         if (what == NotificationApplicationFocusOut)
         {
             _focusPaused = true;

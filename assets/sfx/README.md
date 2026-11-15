@@ -12,7 +12,7 @@ The Godot project links `game/assets/sfx/` to this folder. Runtime code and scen
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
-| `pond_underwater_shallows.ogg` | Pike Encounter shallow Pond layer, -26 dB at the fish's moving surface, fading to -80 dB by 5 m | Locked; approved loop in `assets/sfx/`; mix pending owner listen |
+| `pond_underwater_shallows.ogg` | Pike Encounter shallow Pond layer, -20 dB at the fish's moving surface, fading to -80 dB by 5 m | Locked; approved loop in `assets/sfx/`; revised mix pending owner listen |
 | `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Locked; approved loop in `assets/sfx/` |
 | `pond_surface_day.ogg` | Pond, camera at or above the surface by day | Candidate |
 | `pond_surface_night.ogg` | Pond, camera at or above the surface by night | Candidate |
@@ -44,10 +44,12 @@ Swimming beds should be subtle and follow actual speed and body size. A turn or 
 | `vegetation_brush.wav` (gentle), `vegetation_brush_02.wav` (hard) | Body brushes reeds, weeds, or other soft cover | Locked; [review record](../../docs/assets/audio-base-pack/review-log.md) |
 | `wood_contact.wav` | Meaningful contact with a log or root | Candidate |
 | `rock_contact.wav` | Meaningful contact with rock or hard ground | Candidate |
-| `small_bubbles.wav` | Visible local bubble release | Candidate |
+| `small_bubbles.wav`, `small_bubbles_02.wav`, `small_bubbles_03.wav` | Occasional underwater bubble accents at varying distances from the player; 1–4 events per active underwater minute | Locked; three owner-approved stereo masters; Pike Encounter uses matching `*_mono.wav` derivatives |
 | `sediment_disturbance.wav` | Actual bed disturbance or silt plume | Candidate |
 
 Contact sounds need impact thresholds and cooldowns so sustained overlap does not chatter. These are presentation effects; a sound does not create a predator sensing event by itself.
+
+The locked bubble variations are environmental accents, not contact or visible-release cues. Pike Encounter plays them on the SFX bus with sparse, irregular timing; the original stereo masters remain unchanged. The positional mono derivatives are `small_bubbles_mono.wav`, `small_bubbles_02_mono.wav`, and `small_bubbles_03_mono.wav`.
 
 ## Feeding and prey — 4 effects
 

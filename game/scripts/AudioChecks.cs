@@ -32,6 +32,8 @@ public static class AudioChecks
                 "one continuous bed");
             Require(audio.ShallowAmbiencePlayer.Playing && audio.ShallowAmbienceStarts == 1,
                 "one continuous shallow layer");
+            Require(Mathf.IsEqualApprox(audio.ShallowSurfaceVolumeDb, -20f),
+                "shallow surface level is doubled");
             Require(audio.AmbiencePlayer.Stream is AudioStreamOggVorbis { Loop: true },
                 "approved bed loops");
             Require(audio.ShallowAmbiencePlayer.Stream is AudioStreamOggVorbis { Loop: true } &&
@@ -44,6 +46,8 @@ public static class AudioChecks
                 "bus routing");
             Require(AudioServer.GetBusIndex("Ambience") >= 0 &&
                 AudioServer.GetBusIndex("SFX") >= 0, "installed bus layout");
+            CheckBubbleSchedule();
+            CheckBubbleRuntime(encounter, audio, fish);
             Require(audio.SwimEmitter.GetParent() == fish &&
                 audio.BoostEmitter.GetParent() == fish &&
                 audio.SplashEmitter.GetParent() == fish, "fish body emitters");
@@ -142,7 +146,7 @@ public static class AudioChecks
             Require(Mathf.IsEqualApprox(audio.CurrentVolumeDb, expectedDeep) &&
                 Mathf.IsEqualApprox(audio.AmbiencePlayer.VolumeDb, expectedDeep) &&
                 audio.AmbienceStarts == 1, "shallow tuning cannot alter deep response");
-            audio.ShallowSurfaceVolumeDb = -26f;
+            audio.ShallowSurfaceVolumeDb = -20f;
             Require(audio.SwimEmitter.VolumeDb == swimDb &&
                 audio.BoostEmitter.VolumeDb == boostDb,
                 "depth does not change swim or boost gain");
@@ -207,23 +211,33 @@ public static class AudioChecks
             audio.AdvanceCueLengths(.07f);
             Require(!timedFirst.Playing && timedSecond.Playing,
                 "first cue ends without cutting off a later cue");
+            var bubbleBeforePause = audio.BubbleStarts;
+            for (var i = 0; i < 240 && audio.BubbleStarts == bubbleBeforePause; i++)
+                audio.AdvanceBubbleAccents(.25f, true);
+            Require(audio.BubbleStarts == bubbleBeforePause + 1,
+                "underwater accent scheduled before pause");
             var sceneTree = encounter.GetTree();
             sceneTree.Paused = true;
             try
             {
                 Require(!audio.CanProcess() && !audio.ShallowAmbiencePlayer.CanProcess() &&
+                    !audio.BubbleAccentPlayer.CanProcess() && !audio.BubbleAccentPlayer.Playing &&
                     audio.AmbienceStarts == 1 && audio.ShallowAmbienceStarts == 1,
-                    "scene pause holds both ambience layers without restart");
+                    "scene pause holds beds and clears bubble accent");
             }
             finally { sceneTree.Paused = false; }
+            audio.AdvanceBubbleAccents(.25f, true);
+            Require(audio.BubbleStarts == bubbleBeforePause + 1,
+                "scene resume has no queued bubble burst");
             Require(audio.AmbiencePlayer.Playing && audio.ShallowAmbiencePlayer.Playing &&
                 audio.AmbienceStarts == 1 && audio.ShallowAmbienceStarts == 1,
                 "ambience resumes without replay");
             audio.Shutdown();
             Require(!audio.AmbiencePlayer.Playing && !audio.ShallowAmbiencePlayer.Playing &&
+                !audio.BubbleAccentPlayer.Playing && audio.BubbleAccentPlayer.Stream is null &&
                 audio.AmbiencePlayer.Stream is null &&
                 audio.ShallowAmbiencePlayer.Stream is null,
-                "both ambience layers release on scene shutdown");
+                "ambience layers and bubble accent release on scene shutdown");
             audio.Free();
             var tree = encounter.GetTree();
             if (_scenePass == 1)
@@ -257,7 +271,7 @@ public static class AudioChecks
                             tree.Quit(1);
                             return;
                         }
-                        GD.Print("AUDIO_CHECK_OK deep=1 shallow=1 shallow_fade=surface-to-5m shallow_loop=on deep_independent=ok pause=held retry=one-pair return=no-bed events=motion,turn,boost,splash");
+                        GD.Print("AUDIO_CHECK_OK deep=1 shallow=1 shallow_fade=surface-to-5m shallow_loop=on deep_independent=ok bubbles=mono,sparse,underwater,cleanup pause=held retry=one-pair return=no-bed events=motion,turn,boost,splash");
                         tree.Quit();
                     };
                 };
@@ -269,6 +283,101 @@ public static class AudioChecks
             GD.PushError(error.ToString());
             encounter.GetTree().CreateTimer(.1).Timeout += () => encounter.GetTree().Quit(1);
         }
+    }
+
+    private static void CheckBubbleSchedule()
+    {
+        var schedule = new BubbleAccentSchedule(7931);
+        var previousTime = float.NegativeInfinity;
+        var previousTake = -1;
+        var seen = new bool[3];
+        for (var minute = 0; minute < 24; minute++)
+        {
+            var count = 0;
+            for (var tick = 0; tick < 240; tick++)
+            {
+                var take = schedule.Step(.25f, true);
+                if (take is not { } index) continue;
+                var time = minute * 60f + (tick + 1) * .25f;
+                Require(index >= 0 && index < 3 && index != previousTake,
+                    "bubble take changes on each event");
+                Require(time - previousTime >= BubbleAccentSchedule.MinimumSpacingSeconds - .001f,
+                    "bubble schedule avoids clusters");
+                seen[index] = true;
+                previousTake = index;
+                previousTime = time;
+                count++;
+            }
+            Require(count is >= 1 and <= 4, "one to four irregular bubble accents per active minute");
+        }
+        Require(seen.All(value => value), "all three bubble takes selected");
+        schedule.Step(60f, false);
+        Require(schedule.Step(.25f, true) is null,
+            "inactive time cannot queue bubble accents");
+    }
+
+    private static void CheckBubbleRuntime(PikeEncounter encounter, WorldAudio audio,
+        FishController fish)
+    {
+        foreach (var path in WorldAudio.PondBubblePaths)
+            Require(path.StartsWith("res://assets/sfx/", StringComparison.Ordinal) &&
+                ResourceLoader.Load<AudioStreamWav>(path) is { Stereo: false },
+                "approved mono bubble derivatives import");
+        Require(audio.BubbleAccentPlayer.GetParent() == audio &&
+            audio.BubbleAccentPlayer.Bus == "SFX" &&
+            audio.BubbleAccentPlayer.MaxDistance == 12f &&
+            audio.BubbleAccentPlayer.UnitSize == 2f &&
+            audio.BubbleAccentPlayer.MaxDb == -8f &&
+            audio.BubbleAccentPlayer.VolumeDb == -8f,
+            "bubble accent is a positional environment voice");
+        var originalPosition = fish.GlobalPosition;
+        var surface = fish.PondSurfaceHeightAt(originalPosition.X, originalPosition.Z);
+        Require(WorldAudio.IsFullyUnderwater(originalPosition.Y, surface, fish.BodyRadius) &&
+            !WorldAudio.IsFullyUnderwater(surface, surface, fish.BodyRadius) &&
+            !WorldAudio.IsFullyUnderwater(surface + 1f, surface, fish.BodyRadius),
+            "moving surface and fish body gate bubble playback");
+        var seabed = encounter.GetNode<SeabedSurface>("Habitat/Seabed");
+        for (var i = 0; i < 24; i++)
+        {
+            Require(audio.TryChooseBubblePosition(originalPosition, out var point),
+                "underwater bubble position available");
+            var horizontal = new Vector2(point.X - originalPosition.X,
+                point.Z - originalPosition.Z).Length();
+            var local = seabed.ToLocal(new Vector3(point.X, 0f, point.Z));
+            var floorY = seabed.ToGlobal(new Vector3(local.X,
+                seabed.GetHeightAt(local.X, local.Z), local.Z)).Y;
+            Require(horizontal >= 2.999f && horizontal <= 9.001f &&
+                point.Y >= floorY + .349f &&
+                point.Y <= fish.PondSurfaceHeightAt(point.X, point.Z) - .349f,
+                "bubble positions stay in the water column at varied distances");
+        }
+        for (var i = 0; i < 240 && audio.BubbleStarts == 0; i++)
+            audio.AdvanceBubbleAccents(.25f, true);
+        Require(audio.BubbleStarts == 1 && audio.BubbleAccentPlayer.Playing &&
+            audio.BubbleAccentPlayer.Stream is AudioStreamWav { Stereo: false } &&
+            WorldAudio.PondBubblePaths.Contains(audio.BubbleAccentPlayer.Stream.ResourcePath),
+            "scheduled mono bubble accent plays once on SFX");
+        fish.GlobalPosition = new Vector3(originalPosition.X, surface + 1f,
+            originalPosition.Z);
+        try
+        {
+            audio.AdvanceBubbleAccents(.25f, true);
+            Require(!audio.BubbleAccentPlayer.Playing, "surface gate stops bubble playback");
+        }
+        finally { fish.GlobalPosition = originalPosition; }
+        audio.AdvanceBubbleAccents(.25f, true);
+        Require(audio.BubbleStarts == 1, "underwater return cannot release queued accents");
+        for (var i = 0; i < 240 && audio.BubbleStarts == 1; i++)
+            audio.AdvanceBubbleAccents(.25f, true);
+        Require(audio.BubbleStarts == 2, "underwater accent restarts after fresh spacing");
+        audio._Notification((int)Node.NotificationApplicationFocusOut);
+        Require(!audio.BubbleAccentPlayer.Playing &&
+            audio.AmbiencePlayer.StreamPaused && audio.ShallowAmbiencePlayer.StreamPaused,
+            "focus loss stops accent and pauses beds");
+        audio._Notification((int)Node.NotificationApplicationFocusIn);
+        audio.AdvanceBubbleAccents(.25f, true);
+        Require(audio.BubbleStarts == 2 && !audio.BubbleAccentPlayer.Playing,
+            "focus return cannot release queued accents");
     }
 
     private static void CheckGate()
