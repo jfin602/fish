@@ -4,6 +4,8 @@ This is the named file list for the first complete Fish life: choose a habitat a
 
 `assets/sfx/` is the only approval location for game-ready **sound effects**. Put an approved effect in this folder with the exact canonical filename below. Files under `game/assets/audio/sfx/`, `docs/assets/audio-base-pack/`, or `assets/audio-source/` are source or audition material, even if Godot can import them. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg` and follow their separate audio review path; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. [The audio review log](../../docs/assets/audio-base-pack/review-log.md) records locks.
 
+The locked `swim_gentle.wav`, `swim_large.wav`, and `escape_burst.wav` now have byte-identical canonical copies here for the Pike Encounter audio pass. Their `*_mono.wav` files are derived runtime downmixes for actual 3D playback, not alternate owner-approved takes. [Runtime tuning and pending native qualification](../../docs/systems/audio.md) are separate from the take locks.
+
 The Godot project links `game/assets/sfx/` to this folder so gameplay can load an approved effect as `res://assets/sfx/<filename>`. The link is an import route, not a second approval folder. Gameplay must not load a provisional effect from `res://assets/audio/sfx/`.
 
 ## Habitat ambience — 8 loops

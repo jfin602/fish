@@ -9,6 +9,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Vision](vision.md) | Player fantasy, pillars, and scope boundaries. |
 | [Game design](game-design.md) | Overall life loop and relationship between systems. |
 | [Swimming and camera](systems/swimming-and-camera.md) | Approved core controls, movement feel, camera/body presentation and later movement integration. |
+| [Runtime audio](systems/audio.md) | Pike Encounter Pond bed, spatial swim/boost cues, selected takes, tuning and pending owner listening. |
 | [Swim controls worksheet](planning/p1/swim-controls-worksheet.md) | Historical owner discussion/provenance for the ten P1 control questions. |
 | [P1 core swimming plan](planning/p1/core-swimming.md) | Selected-asset/fullscreen delivery, implementation starting points, tuning loop and P1 finish line. |
 | [Movement abilities](planning/p1/movement-abilities.md) | Approved future burst/precision/evasive-turn group; immediate sequencing superseded by P2 worldbuilding. |

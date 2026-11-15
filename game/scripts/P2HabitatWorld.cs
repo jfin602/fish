@@ -64,6 +64,7 @@ public static class P2HabitatWorld
                     fish.Rotation = new Vector3(0, hero.Rotation.Y, 0);
                     GD.Print($"FISH_POND_VISUAL_HERO_START position={fish.Position} yaw={fish.Rotation.Y:F3}");
                 }
+                fish.GetNode<FollowCamera>("CameraRig").SnapToFish();
                 WorldSession.Bind(bakedHabitat, manifest);
                 diagnostic = "";
                 var playerLabel = pondVisualFixture && WorldSession.SelectedWorldId == WorldCatalog.PondId
@@ -146,6 +147,7 @@ public static class P2HabitatWorld
         }
 
         fish.Position = spawn.Position;
+        fish.GetNode<FollowCamera>("CameraRig").SnapToFish();
         diagnostic = "";
         GD.Print($"FISH_HABITAT_READY player={DemoSelection.CharacterId ?? "legacy-Fish3"} seabed=continuous palette=CoastSand01,Ground060,Gravel041,Rock063 course=fixture-only");
         return true;

@@ -42,6 +42,7 @@ public partial class PikeEncounter : Node3D
     private ProgressBar _boostMeter = null!;
     private AudioStreamPlayer3D _smallFeedSound = null!;
     private AudioStreamPlayer3D _fishFeedSound = null!;
+    private WorldAudio _audio = null!;
     private Control _menu = null!;
     private Button _retry = null!;
     private Button _resume = null!;
@@ -310,8 +311,8 @@ public partial class PikeEncounter : Node3D
         DemoSelection.Clear();
         WorldSession.Select(WorldCatalog.PondId);
         BuildInterface();
-        _smallFeedSound = FeedSound("SmallFeedSound", "res://assets/sfx/feeding_small.wav", -18f);
-        _fishFeedSound = FeedSound("FishFeedSound", "res://assets/sfx/feeding_small.wav", -12f);
+        _smallFeedSound = FeedSound("SmallFeedSound", "res://assets/sfx/feeding_small.wav", -24f);
+        _fishFeedSound = FeedSound("FishFeedSound", "res://assets/sfx/feeding_small.wav", -18f);
         _blood = new FishBloodFx { Name = "FishBloodFx" };
         AddChild(_blood);
         var args = OS.GetCmdlineUserArgs();
@@ -331,6 +332,16 @@ public partial class PikeEncounter : Node3D
         }
         try { InitializeActors(); }
         catch (Exception error) { Fail("PIKE_ACTOR_UNAVAILABLE " + error.Message); return; }
+        var otherHeadlessCheck = DisplayServer.GetName() == "headless" &&
+            Array.Exists(OS.GetCmdlineUserArgs(), arg => arg != "--audio-check" &&
+                (arg.EndsWith("-check", StringComparison.Ordinal) ||
+                 arg == "--blood-fx-native-probe"));
+        if (!_failed && !otherHeadlessCheck)
+        {
+            _audio = new WorldAudio { Name = "WorldAudio" };
+            _audio.ConfigurePond(_fish, _growth);
+            AddChild(_audio);
+        }
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-cover-check"))
             PikeCoverChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--pike-sight-check"))
@@ -351,6 +362,8 @@ public partial class PikeEncounter : Node3D
             GrowthChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--hatch-check"))
             HatchChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--audio-check"))
+            AudioChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--microfauna-check"))
             MicrofaunaChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--blood-fx-check"))
@@ -632,6 +645,9 @@ public partial class PikeEncounter : Node3D
     {
         if (!_introActive || !_emergenceStarted) return;
         _fish.GlobalPosition = _larvaSpawn;
+        _fish.PhysicsInterpolationMode = PhysicsInterpolationModeEnum.On;
+        _fish.ResetPhysicsInterpolation();
+        _fish.GetNode<FollowCamera>("CameraRig").SnapToFish();
         var fryCamera = _fish.GetNode<Camera3D>("CameraRig/Camera3D");
         _introCamera!.GlobalTransform = fryCamera.GlobalTransform;
         _introCamera.Fov = fryCamera.Fov;
@@ -639,6 +655,7 @@ public partial class PikeEncounter : Node3D
         fryCamera.Current = true;
         _fish.SetEncounterHatchLocked(false);
         _fish.ClearAndDisarmInput();
+        _audio?.ResetEvents();
         _introActive = false;
         _skip.Visible = false;
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
@@ -1038,7 +1055,7 @@ public partial class PikeEncounter : Node3D
     {
         var stream = ResourceLoader.Load<AudioStream>(path)
             ?? throw new InvalidOperationException("FEED_SOUND_UNAVAILABLE " + path);
-        var player = new AudioStreamPlayer3D { Name = name, Stream = stream,
+        var player = new AudioStreamPlayer3D { Name = name, Stream = stream, Bus = "SFX",
             VolumeDb = volumeDb, MaxDistance = 12f };
         _fish.AddChild(player);
         return player;
@@ -1127,6 +1144,7 @@ public partial class PikeEncounter : Node3D
     private void Pause()
     {
         _fish.ClearAndDisarmInput();
+        _audio?.ResetEvents();
         _blood.SetPaused(true);
         GetTree().Paused = true;
         Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -1138,6 +1156,7 @@ public partial class PikeEncounter : Node3D
     {
         if (_failed || _transitioning || _ended) return;
         _fish.ClearAndDisarmInput();
+        _audio?.ResetEvents();
         _menu.Visible = false;
         GetTree().Paused = false;
         _blood.SetPaused(false);
@@ -1155,11 +1174,14 @@ public partial class PikeEncounter : Node3D
         _aftermathSeconds = 0;
         _pike.BeginAfterCatch();
         _fish.ClearAndDisarmInput();
+        _audio?.ResetEvents();
         _fish.SetPhysicsProcess(false);
         _fish.CollisionLayer = 0;
         _fish.CollisionMask = 0;
         _fish.GetNode<Node3D>("PlayerVisual").Hide();
-        _fish.GetNode<FollowCamera>("CameraRig").SetPhysicsProcess(false);
+        var rig = _fish.GetNode<FollowCamera>("CameraRig");
+        rig.SetPhysicsProcess(false);
+        rig.SetProcess(false);
         var contact = _pike.MouthPosition;
         var forward = -_pike.GlobalBasis.Z;
         var side = forward.Cross(Vector3.Up).Normalized();
@@ -1167,6 +1189,7 @@ public partial class PikeEncounter : Node3D
         view.Y = Mathf.Clamp(view.Y, PikeCoverFixture.Bed(view.X, view.Z) + .5f,
             PikeCoverFixture.WaterY - .35f);
         var camera = _fish.GetNode<Camera3D>("CameraRig/Camera3D");
+        camera.PhysicsInterpolationMode = PhysicsInterpolationModeEnum.Off;
         camera.GlobalPosition = view;
         camera.LookAt(contact, Vector3.Up);
         Input.MouseMode = Input.MouseModeEnum.Visible;
@@ -1205,6 +1228,8 @@ public partial class PikeEncounter : Node3D
         _bassDiversion.Reset();
         _transitioning = true;
         _fish.ClearAndDisarmInput();
+        _audio?.ResetEvents();
+        _audio?.Shutdown();
         GetTree().Paused = false;
         Input.MouseMode = Input.MouseModeEnum.Visible;
         DemoSelection.Clear();

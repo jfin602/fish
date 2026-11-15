@@ -12,6 +12,9 @@ public partial class FollowCamera : Node3D
     private const float PitchHeightFraction = 0.35f;
     private const float AdaptiveFollowResponse = 4.0f; // About 0.25 seconds.
     private const float AdaptiveHeadingLimit = 35.0f;
+    private const float QuietVerticalResponse = 8f;
+    private const float ActiveVerticalResponse = 16f;
+    private const float PitchPresentationResponse = 12f;
 
     private FishController _fish = null!;
     private Camera3D _camera = null!;
@@ -33,6 +36,12 @@ public partial class FollowCamera : Node3D
     private float _zoomDistance;
     private bool _resetPending = true;
     private bool _larvaView;
+    private float _followY;
+    private float _viewForwardY;
+    private bool _followTargetInitialized;
+    private Vector3 _previousLookTarget;
+    private Vector3 _currentLookTarget;
+    private bool _collisionCompressed;
 
     public void ConfigureEncounterLarvaView(bool enabled)
     {
@@ -53,10 +62,16 @@ public partial class FollowCamera : Node3D
     public override void _Ready()
     {
         TopLevel = true; // Do not inherit fish pitch or later visual banking.
+        PhysicsInterpolationMode = PhysicsInterpolationModeEnum.On;
         ProcessMode = ProcessModeEnum.Always;
         _fish = GetParent<FishController>();
+        // The egg emergence moves in render time; enable body interpolation at
+        // the handoff to physics-driven swimming instead of during the intro.
+        if (_fish.GetParent() is not PikeEncounter)
+            _fish.PhysicsInterpolationMode = PhysicsInterpolationModeEnum.On;
         _zoomDistance = _fish.Tuning.CameraDistance;
         _camera = GetNode<Camera3D>("Camera3D");
+        _camera.PhysicsInterpolationMode = PhysicsInterpolationModeEnum.Off;
         _camera.Position = Vector3.Zero;
         _camera.Rotation = Vector3.Zero;
         _camera.Fov = _fish.Tuning.CameraFieldOfView;
@@ -64,9 +79,13 @@ public partial class FollowCamera : Node3D
         _camera.KeepAspect = Camera3D.KeepAspectEnum.Height;
         _probe = new SphereShape3D { Radius = ProbeRadius };
         _previousFishPosition = _fish.GlobalPosition;
+        UpdateFollowTarget(0f, true);
+        GlobalBasis = Basis.Identity;
         GlobalPosition = DesiredPosition(out var lookTarget, out _);
-        FaceTarget(lookTarget);
-        GetViewport().SizeChanged += ResetFollow;
+        _previousLookTarget = _currentLookTarget = lookTarget;
+        FaceTarget(lookTarget, GlobalPosition);
+        ResetPhysicsInterpolation();
+        GetViewport().SizeChanged += SnapToFish;
     }
 
     public void ResetFollow()
@@ -77,10 +96,29 @@ public partial class FollowCamera : Node3D
 
     public void SnapToFish()
     {
+        UpdateFollowTarget(0f, true);
+        var horizontalForward = -_fish.GlobalBasis.Z;
+        horizontalForward.Y = 0;
+        _adaptiveRear = horizontalForward.LengthSquared() > .0001f
+            ? horizontalForward.Normalized() : _lastHorizontalForward;
+        var distance = _zoomDistance * ViewScale;
+        var eyeRise = (_fish.Tuning.CameraHeight - .35f) * ViewScale *
+            _zoomDistance / Mathf.Max(.01f, _fish.Tuning.CameraDistance) -
+            _viewForwardY * distance * PitchHeightFraction;
+        _adaptiveElevation = Mathf.Atan2(eyeRise, distance);
+        _adaptiveLookAhead = 1f;
+        _adaptiveInitialized = true;
+        _adaptiveFreeLookActive = false;
+        _adaptiveReturning = false;
         _probe.Radius = _larvaView ? .012f : ProbeRadius * ViewScale;
         var desired = DesiredPosition(out var target, out var anchor);
-        GlobalPosition = ResolveEncounterOverlap(anchor, UnobstructedPosition(anchor, desired));
-        FaceTarget(target);
+        var safe = UnobstructedPosition(anchor, desired);
+        GlobalPosition = ResolveEncounterOverlap(anchor, safe);
+        _collisionCompressed = safe.DistanceTo(desired) > .02f * ViewScale;
+        _previousLookTarget = _currentLookTarget = target;
+        FaceTarget(target, GlobalPosition);
+        _fish.ResetPhysicsInterpolation();
+        ResetPhysicsInterpolation();
         _previousFishPosition = _fish.GlobalPosition;
         _resetPending = false;
     }
@@ -144,33 +182,81 @@ public partial class FollowCamera : Node3D
         _probe.Radius = _larvaView ? .012f : ProbeRadius * ViewScale;
 
         var fishPosition = _fish.GlobalPosition;
-        if (fishPosition.DistanceTo(_previousFishPosition) > TeleportDistance) _resetPending = true;
+        var teleported = fishPosition.DistanceTo(_previousFishPosition) > TeleportDistance;
+        if (teleported) _resetPending = true;
         _previousFishPosition = fishPosition;
+        UpdateFollowTarget((float)delta, _resetPending);
 
         var desired = DesiredPosition(out var lookTarget, out var anchor);
+        _previousLookTarget = _currentLookTarget;
+        _currentLookTarget = lookTarget;
         var safeDesired = UnobstructedPosition(anchor, desired);
+        var obstructed = safeDesired.DistanceTo(desired) > .02f * ViewScale;
         if (_resetPending)
         {
             GlobalPosition = ResolveEncounterOverlap(anchor, safeDesired);
+            _collisionCompressed = obstructed;
+            if (teleported) _fish.ResetPhysicsInterpolation();
             _resetPending = false;
+            _previousLookTarget = _currentLookTarget;
+            ResetPhysicsInterpolation();
         }
         else
         {
-            var compressed = safeDesired.DistanceTo(anchor) + 0.05f < GlobalPosition.DistanceTo(anchor);
-            var recovering = safeDesired.DistanceTo(anchor) > GlobalPosition.DistanceTo(anchor) + 0.05f;
+            if (obstructed) _collisionCompressed = true;
+            var compressed = obstructed &&
+                safeDesired.DistanceTo(anchor) + .05f * ViewScale < GlobalPosition.DistanceTo(anchor);
+            var recovering = !obstructed && _collisionCompressed;
             var response = compressed ? 30.0f : recovering
                 ? _fish.Tuning.CameraRecoveryResponse : _fish.Tuning.CameraFollowResponse;
             var fraction = 1.0f - Mathf.Exp(-Mathf.Max(0.01f, response) * (float)delta);
             var candidate = GlobalPosition.Lerp(safeDesired, fraction);
             GlobalPosition = ResolveEncounterOverlap(anchor, UnobstructedPosition(anchor, candidate));
+            if (recovering && GlobalPosition.DistanceTo(safeDesired) < .05f * ViewScale)
+                _collisionCompressed = false;
         }
-        FaceTarget(lookTarget);
+        FaceTarget(lookTarget, GlobalPosition);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (GetTree().Paused || !IsPhysicsProcessing()) return;
+        // Collision and the follow solve remain in physics. Only the horizon is
+        // reconstructed per rendered frame from interpolated, already-safe poses.
+        var fraction = Mathf.Clamp((float)Engine.GetPhysicsInterpolationFraction(), 0f, 1f);
+        var eye = GetGlobalTransformInterpolated().Origin;
+        var target = _previousLookTarget.Lerp(_currentLookTarget, fraction);
+        FaceTarget(target, eye);
+    }
+
+    private void UpdateFollowTarget(float delta, bool snap)
+    {
+        var fishY = _fish.GlobalPosition.Y;
+        var fishForwardY = (-_fish.GlobalBasis.Z).Y;
+        if (snap || !_followTargetInitialized)
+        {
+            _followY = fishY;
+            _viewForwardY = fishForwardY;
+            _followTargetInitialized = true;
+            return;
+        }
+        // Swimming upward or downward should be responsive. Near level travel,
+        // filter tiny contact and animation-scale changes from the eye height.
+        var verticalResponse = Mathf.Abs(_fish.Velocity.Y) > .35f
+            ? ActiveVerticalResponse : QuietVerticalResponse;
+        _followY = Mathf.Lerp(_followY, fishY,
+            1f - Mathf.Exp(-verticalResponse * delta));
+        _viewForwardY = Mathf.Lerp(_viewForwardY, fishForwardY,
+            1f - Mathf.Exp(-PitchPresentationResponse * delta));
     }
 
     private Vector3 DesiredPosition(out Vector3 lookTarget, out Vector3 anchor)
     {
-        var fishPosition = _fish.GlobalPosition;
-        var forward = (-_fish.GlobalBasis.Z).Normalized();
+        var actualPosition = _fish.GlobalPosition;
+        var fishPosition = new Vector3(actualPosition.X, _followY, actualPosition.Z);
+        var forward = -_fish.GlobalBasis.Z;
+        forward.Y = _viewForwardY;
+        forward = forward.Normalized();
         var horizontal = new Vector3(forward.X, 0, forward.Z);
         if (horizontal.LengthSquared() > 0.0001f) _lastHorizontalForward = horizontal.Normalized();
         var tuning = _fish.Tuning;
@@ -261,13 +347,14 @@ public partial class FollowCamera : Node3D
 
     private void UpdateAdaptiveFollow(float delta)
     {
-        var anchor = _fish.GlobalPosition + Vector3.Up * (0.35f * ViewScale);
+        var anchor = new Vector3(_fish.GlobalPosition.X, _followY, _fish.GlobalPosition.Z) +
+            Vector3.Up * (0.35f * ViewScale);
         var fishForward = new Vector3(-_fish.GlobalBasis.Z.X, 0, -_fish.GlobalBasis.Z.Z);
         if (fishForward.LengthSquared() > 0.0001f) fishForward = fishForward.Normalized();
         else fishForward = _lastHorizontalForward;
         var tuning = _fish.Tuning;
         var distance = _zoomDistance * ViewScale;
-        var forwardY = (-_fish.GlobalBasis.Z).Y;
+        var forwardY = _viewForwardY;
         var eyeHeight = ViewScale * 0.35f + (tuning.CameraHeight - 0.35f) * ViewScale *
             _zoomDistance / Mathf.Max(0.01f, tuning.CameraDistance) - forwardY * distance * PitchHeightFraction;
         var normalElevation = Mathf.Atan2(eyeHeight - 0.35f * ViewScale, distance);
@@ -411,23 +498,29 @@ public partial class FollowCamera : Node3D
         return GetWorld3D().DirectSpaceState.IntersectShape(query, 1).Count != 0;
     }
 
-    private void FaceTarget(Vector3 target)
+    private void FaceTarget(Vector3 target, Vector3 eye)
     {
-        var toward = target - GlobalPosition;
+        var toward = target - eye;
         if (toward.LengthSquared() < 0.0001f) return;
+        var back = -toward.Normalized();
+        var horizontal = new Vector3(toward.X, 0, toward.Z);
+        var azimuthRight = horizontal.LengthSquared() > 0.0001f
+            ? horizontal.Normalized().Cross(Vector3.Up)
+            : _lastCameraRear.Cross(Vector3.Up);
         if (_fish.CameraControl is CameraControlPolicy.MouseOrbit360 or CameraControlPolicy.AdaptiveFollow)
         {
-            var back = -toward.Normalized();
-            var azimuthRight = _lastCameraRear.Cross(Vector3.Up).Normalized();
             var right = azimuthRight - back * azimuthRight.Dot(back);
             if (right.LengthSquared() < 0.0001f)
                 right = back.Cross(Vector3.Up);
             if (right.LengthSquared() < 0.0001f)
                 right = back.Cross(Vector3.Forward);
             right = right.Normalized();
-            GlobalBasis = new Basis(right, back.Cross(right).Normalized(), back);
+            _camera.GlobalBasis = new Basis(right, back.Cross(right).Normalized(), back);
             return;
         }
-        LookAt(target, Vector3.Up);
+        var levelRight = Vector3.Up.Cross(back);
+        if (levelRight.LengthSquared() < 0.0001f) levelRight = azimuthRight;
+        levelRight = levelRight.Normalized();
+        _camera.GlobalBasis = new Basis(levelRight, back.Cross(levelRight).Normalized(), back);
     }
 }

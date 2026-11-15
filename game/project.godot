@@ -14,6 +14,10 @@ config/name="Fish"
 run/main_scene="res://scenes/world_select.tscn"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 
+[audio]
+
+buses/default_bus_layout="res://resources/audio_bus_layout.tres"
+
 [autoload]
 
 MCPRuntimeProbe="*res://addons/godot_mcp/mcp_runtime_probe.gd"
@@ -33,6 +37,10 @@ project/assembly_name="Fish"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_mcp/plugin.cfg")
+
+[physics]
+
+common/physics_interpolation=true
 
 [input]
 
@@ -66,7 +74,3 @@ swim_pitch_down={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194322,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
-
-[rendering]
-
-renderer/rendering_method="forward_plus"

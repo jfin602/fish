@@ -62,10 +62,11 @@ func _run() -> void:
 		return
 	# Freeze only the motor in this fixture; camera still reads the real fish transform.
 	fish.set_physics_process(false)
+	rig.call("ClearLookOffset")
 	for yaw in [0.0, 1.57, -2.4]:
 		for pitch in [-0.96, 0.0, 0.96]:
 			_set_fish(fish, Vector3(0, 0, 0), yaw, pitch)
-			rig.call("ResetFollow")
+			rig.call("SnapToFish")
 			await _tick(2)
 			if not _require(camera.global_transform.is_finite() and
 					absf(camera.global_basis.x.y) < 0.001 and
@@ -82,7 +83,7 @@ func _run() -> void:
 	visual.rotation.z = 0
 
 	_set_fish(fish, Vector3(3, -2.05, 0), 0, 0)
-	rig.call("ResetFollow")
+	rig.call("SnapToFish")
 	await _tick(3)
 	var blocked_z := camera.global_position.z
 	if not _require(blocked_z > 0.7 and blocked_z < 2.3 and
@@ -90,7 +91,7 @@ func _run() -> void:
 			"post failed to retract camera without moving fish"):
 		return
 	_set_fish(fish, Vector3(3, -2.05, 1.5), 0, 0)
-	rig.call("ResetFollow")
+	rig.call("SnapToFish")
 	await _tick(3)
 	if not _require(camera.global_position.distance_to(fish.global_position) > 0.8 and
 			absf(camera.global_position.x - 3.0) > 0.7 and
@@ -103,7 +104,7 @@ func _run() -> void:
 			"near-post shoulder view oscillated while fish was still"):
 		return
 	_set_fish(fish, Vector3(3, -2.05, 0), 0, 0)
-	rig.call("ResetFollow")
+	rig.call("SnapToFish")
 	await _tick(2)
 	post.position.x += 5.0
 	await _tick(2)

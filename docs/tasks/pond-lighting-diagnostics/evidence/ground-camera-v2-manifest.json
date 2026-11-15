@@ -1,0 +1,273 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "ambient_energy": 0.428999990224838,
+  "camera_test": {
+    "fish_fixed": true,
+    "presentation_frozen": true,
+    "rotate_step_deg": 5.0,
+    "solar_fixed": true,
+    "translate_step_m": 0.8
+  },
+  "character": "FAF-FISH-006 adult Bluegill",
+  "directional_shadow_size": 4096,
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "ground_contact": {
+    "camera": "(-30.0, 6.294959, 3.8)",
+    "camera_mode": "actual FollowCamera.SnapToFish",
+    "collider": "<StaticBody3D#54274295277>",
+    "contact": "(-30.11457, 3.814294, 0.025251)",
+    "fish": "(-30.0, 4.294959, 0.0)",
+    "normal": "(0.261526, 0.963474, -0.05764)"
+  },
+  "lighting": "Pond Overcast",
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "shadow_bias": 0.100000001490116,
+  "shadow_blur": 1.0,
+  "shadow_fade_start": 0.800000011920929,
+  "shadow_max_distance": 28.0,
+  "shadow_mode": 0,
+  "shadow_normal_bias": 2.0,
+  "sun_basis": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]",
+  "sun_color": "(0.78, 0.72, 0.43, 1.0)",
+  "sun_energy": 0.566999971866608,
+  "sun_shadow_enabled": true,
+  "time_hour": 12.0,
+  "viewport": "(1920, 1200)",
+  "views": {
+    "C_00_base": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_00_base.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_01_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-29.2, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_01_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_02_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-28.4, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_02_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_03_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-27.6, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_03_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_04_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.8, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_04_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_05_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_05_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_06_rotate": {
+      "basin_time": null,
+      "camera": "[X: (0.996195, -0.03252, -0.080861), Y: (0.0, 0.92778, -0.373129), Z: (0.087156, 0.371709, 0.924249), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_06_rotate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_07_rotate": {
+      "basin_time": null,
+      "camera": "[X: (0.984808, -0.064793, -0.161107), Y: (0.0, 0.92778, -0.373129), Z: (0.173648, 0.36746, 0.913685), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_07_rotate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_08_rotate": {
+      "basin_time": null,
+      "camera": "[X: (0.965926, -0.096573, -0.240127), Y: (0.0, 0.92778, -0.373129), Z: (0.258819, 0.360415, 0.896166), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_08_rotate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_09_rotate": {
+      "basin_time": null,
+      "camera": "[X: (0.939693, -0.127618, -0.317319), Y: (0.0, 0.92778, -0.373129), Z: (0.34202, 0.350626, 0.871828), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_09_rotate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_10_return": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_10_return.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_11_no_shadow_base": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_11_no_shadow_base.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_12_no_shadow_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-29.2, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_12_no_shadow_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_13_no_shadow_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-28.4, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_13_no_shadow_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_14_no_shadow_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-27.6, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_14_no_shadow_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_15_no_shadow_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.8, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_15_no_shadow_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_16_no_shadow_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_16_no_shadow_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": false
+    },
+    "C_17_no_depth_fog_base": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_17_no_depth_fog_base.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_18_no_depth_fog_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-29.2, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_18_no_depth_fog_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_19_no_depth_fog_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-28.4, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_19_no_depth_fog_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_20_no_depth_fog_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-27.6, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_20_no_depth_fog_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_21_no_depth_fog_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.8, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_21_no_depth_fog_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "C_22_no_depth_fog_translate": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-26.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-camera-v2/C_22_no_depth_fog_translate.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    }
+  },
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

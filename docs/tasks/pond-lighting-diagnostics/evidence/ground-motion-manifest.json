@@ -1,0 +1,373 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "ambient_energy": 0.428999990224838,
+  "character": "FAF-FISH-006 adult Bluegill",
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "ground_contact": {
+    "camera": "(-30.0, 6.294959, 3.8)",
+    "camera_mode": "actual FollowCamera.SnapToFish",
+    "collider": "<StaticBody3D#54274295277>",
+    "contact": "(-30.11457, 3.814294, 0.025251)",
+    "fish": "(-30.0, 4.294959, 0.0)",
+    "normal": "(0.261526, 0.963474, -0.05764)"
+  },
+  "ground_motion": {
+    "draws": 233.0,
+    "follow_camera": true,
+    "frames": [
+      {
+        "camera": "(-30.0, 6.294959, 3.8)",
+        "fish": "(-30.0, 4.294959, 0.0)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_00_forward.png",
+        "second": 0.00081,
+        "section": "forward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, 2.669288)",
+        "fish": "(-30.0, 4.294959, -1.233334)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_01_forward.png",
+        "second": 0.503328,
+        "section": "forward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, 0.669433)",
+        "fish": "(-30.0, 4.294959, -3.233333)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_02_forward.png",
+        "second": 1.005294,
+        "section": "forward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -1.330565)",
+        "fish": "(-30.0, 4.294959, -5.233331)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_03_forward.png",
+        "second": 1.503693,
+        "section": "forward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -3.330563)",
+        "fish": "(-30.0, 4.294959, -7.233329)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_04_forward.png",
+        "second": 2.002604,
+        "section": "forward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -3.788557)",
+        "fish": "(-30.0, 4.294959, -7.687552)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_05_backward.png",
+        "second": 0.00211,
+        "section": "backward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -4.643026)",
+        "fish": "(-30.0, 4.294959, -8.463941)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_06_backward.png",
+        "second": 0.501373,
+        "section": "backward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -4.574998)",
+        "fish": "(-30.0, 4.294959, -8.176442)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_07_backward.png",
+        "second": 1.004645,
+        "section": "backward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -4.049552)",
+        "fish": "(-30.0, 4.294959, -7.426443)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_08_backward.png",
+        "second": 1.503327,
+        "section": "backward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -3.349655)",
+        "fish": "(-30.0, 4.294959, -6.67644)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_09_backward.png",
+        "second": 2.001788,
+        "section": "backward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.0, 6.294959, -3.180598)",
+        "fish": "(-30.0, 4.294959, -6.513884)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_10_turn_right.png",
+        "second": 0.001444,
+        "section": "turn_right",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-32.18531, 6.294959, -3.756907)",
+        "fish": "(-30.12079, 4.294959, -6.086109)",
+        "fish_basis": "[X: (0.216443, 0.0, 0.976295), Y: (0.0, 1.0, 0.0), Z: (-0.976295, 0.0, 0.216443)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_11_turn_right.png",
+        "second": 0.502279,
+        "section": "turn_right",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-32.87721, 6.294959, -7.151757)",
+        "fish": "(-30.18249, 4.294959, -6.055293)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_12_turn_right.png",
+        "second": 1.00472,
+        "section": "turn_right",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-32.63358, 6.294959, -7.741171)",
+        "fish": "(-30.18249, 4.294959, -6.055293)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_13_lateral_out.png",
+        "second": 0.001408,
+        "section": "lateral_out",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-31.32382, 6.294959, -8.244878)",
+        "fish": "(-29.52062, 4.294959, -4.78393)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_14_lateral_out.png",
+        "second": 0.500802,
+        "section": "lateral_out",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-30.39926, 6.294959, -6.471684)",
+        "fish": "(-28.59708, 4.294959, -3.009934)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_15_lateral_out.png",
+        "second": 1.003689,
+        "section": "lateral_out",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-29.47573, 6.294959, -4.697686)",
+        "fish": "(-27.67354, 4.294959, -1.235935)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_16_lateral_out.png",
+        "second": 1.501852,
+        "section": "lateral_out",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-28.55219, 6.294959, -2.923687)",
+        "fish": "(-26.75, 4.294959, 0.538063)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_17_lateral_out.png",
+        "second": 2.00254,
+        "section": "lateral_out",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-28.37035, 6.294959, -2.57441)",
+        "fish": "(-26.5696, 4.294959, 0.884584)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_18_lateral_back.png",
+        "second": 0.000979,
+        "section": "lateral_back",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.97226, 6.294959, -1.809719)",
+        "fish": "(-26.20596, 4.294959, 1.583096)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_19_lateral_back.png",
+        "second": 0.501365,
+        "section": "lateral_back",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-28.00192, 6.294959, -1.866679)",
+        "fish": "(-26.33873, 4.294959, 1.328084)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_20_lateral_back.png",
+        "second": 1.006364,
+        "section": "lateral_back",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-28.24445, 6.294959, -2.332529)",
+        "fish": "(-26.68508, 4.294959, 0.662835)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_21_lateral_back.png",
+        "second": 1.505648,
+        "section": "lateral_back",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-28.55644, 6.294959, -2.931766)",
+        "fish": "(-27.01989, 4.294959, 0.019761)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_22_lateral_back.png",
+        "second": 2.002725,
+        "section": "lateral_back",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-28.64539, 6.294959, -3.102616)",
+        "fish": "(-27.10486, 4.294959, -0.143447)",
+        "fish_basis": "[X: (-0.886999, 0.0, 0.461771), Y: (0.0, 1.0, 0.0), Z: (-0.461771, 0.0, -0.886999)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_23_turn_left.png",
+        "second": 0.002095,
+        "section": "turn_left",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-30.27329, 6.294959, -1.682913)",
+        "fish": "(-27.39231, 4.294959, -0.456242)",
+        "fish_basis": "[X: (0.216443, 0.0, 0.976295), Y: (0.0, 1.0, 0.0), Z: (-0.976295, 0.0, 0.216443)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_24_turn_left.png",
+        "second": 0.505147,
+        "section": "turn_left",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-29.349, 6.294959, 1.75846)",
+        "fish": "(-27.46127, 4.294959, -0.457903)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_25_turn_left.png",
+        "second": 1.001384,
+        "section": "turn_left",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-28.85973, 6.294959, 2.16891)",
+        "fish": "(-27.46127, 4.294959, -0.457903)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_26_shoreward.png",
+        "second": 0.001477,
+        "section": "shoreward",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.46254, 6.294959, 2.011287)",
+        "fish": "(-27.46127, 4.294959, -1.891238)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_27_shoreward.png",
+        "second": 0.500497,
+        "section": "shoreward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, 0.01153)",
+        "fish": "(-27.46127, 4.294959, -3.891236)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_28_shoreward.png",
+        "second": 1.002641,
+        "section": "shoreward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -1.988468)",
+        "fish": "(-27.46127, 4.294959, -5.891234)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_29_shoreward.png",
+        "second": 1.504249,
+        "section": "shoreward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -3.988466)",
+        "fish": "(-27.46127, 4.294959, -7.891232)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_30_shoreward.png",
+        "second": 2.00102,
+        "section": "shoreward",
+        "thrust": 1.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -4.317589)",
+        "fish": "(-27.46127, 4.294959, -8.217899)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_31_return.png",
+        "second": 0.001159,
+        "section": "return",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -5.192014)",
+        "fish": "(-27.46127, 4.294959, -9.01651)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_32_return.png",
+        "second": 0.50352,
+        "section": "return",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -5.127071)",
+        "fish": "(-27.46127, 4.294959, -8.729012)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_33_return.png",
+        "second": 1.004198,
+        "section": "return",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -4.602015)",
+        "fish": "(-27.46127, 4.294959, -7.979023)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_34_return.png",
+        "second": 1.502817,
+        "section": "return",
+        "thrust": 0.0
+      },
+      {
+        "camera": "(-27.46127, 6.294959, -3.877911)",
+        "fish": "(-27.46127, 4.294959, -7.20402)",
+        "fish_basis": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0)]",
+        "image": "artifacts/pond-lighting-diagnostics/ground-motion/N_35_return.png",
+        "second": 2.029915,
+        "section": "return",
+        "thrust": 0.0
+      }
+    ],
+    "median_ms": 5.62,
+    "p95_ms": 9.265,
+    "primitives": 348938.0,
+    "route": [
+      "forward",
+      "backward",
+      "turn_right",
+      "lateral_out",
+      "lateral_back",
+      "turn_left",
+      "shoreward",
+      "return"
+    ],
+    "samples": 1849,
+    "solar_fixed": true
+  },
+  "lighting": "Pond Overcast",
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "sun_basis": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]",
+  "sun_color": "(0.78, 0.72, 0.43, 1.0)",
+  "sun_energy": 0.566999971866608,
+  "sun_shadow_enabled": true,
+  "time_hour": 12.0,
+  "viewport": "(1920, 1200)",
+  "views": {},
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

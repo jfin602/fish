@@ -1,0 +1,155 @@
+{
+  "adapter": "AMD Radeon 880M (RADV GFX1150)",
+  "ambient_energy": 0.428999990224838,
+  "character": "FAF-FISH-006 adult Bluegill",
+  "daynight": {
+    "camera_fixed": true,
+    "debug_acceleration": 120.0,
+    "fish_fixed": true,
+    "full_day_seconds": 900.0
+  },
+  "fps_cap": 0,
+  "godot": "4.7.2-stable (official)",
+  "ground_contact": {
+    "camera": "(-30.0, 6.294959, 3.8)",
+    "camera_mode": "actual FollowCamera.SnapToFish",
+    "collider": "<StaticBody3D#54274295277>",
+    "contact": "(-30.11457, 3.814294, 0.025251)",
+    "fish": "(-30.0, 4.294959, 0.0)",
+    "normal": "(0.261526, 0.963474, -0.05764)"
+  },
+  "lighting": "Pond Overcast",
+  "project": "Fish",
+  "renderer": "forward_plus",
+  "seed": 71,
+  "sun_basis": "[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]",
+  "sun_color": "(0.78, 0.72, 0.43, 1.0)",
+  "sun_energy": 0.566999971866608,
+  "sun_shadow_enabled": true,
+  "time_hour": 12.0,
+  "viewport": "(1920, 1200)",
+  "views": {
+    "T_0000": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_0000.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 0.0,
+      "sun_shadow_enabled": false
+    },
+    "T_1200": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_1200.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 12.0,
+      "sun_shadow_enabled": true
+    },
+    "T_1700": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_1700.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 17.0,
+      "sun_shadow_enabled": true
+    },
+    "T_1850": {
+      "basin_time": null,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_1850.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 18.5,
+      "sun_shadow_enabled": false
+    },
+    "T_accel_00": {
+      "basin_time": 0.504344463348389,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_00.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 13.6139022545455,
+      "sun_shadow_enabled": true
+    },
+    "T_accel_01": {
+      "basin_time": 1.00896835327148,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_01.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 15.2286986666667,
+      "sun_shadow_enabled": true
+    },
+    "T_accel_02": {
+      "basin_time": 1.50909090042114,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_02.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 16.8290909090909,
+      "sun_shadow_enabled": true
+    },
+    "T_accel_03": {
+      "basin_time": 2.00944447517395,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_03.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 18.4302222222222,
+      "sun_shadow_enabled": false
+    },
+    "T_accel_04": {
+      "basin_time": 2.51240468025208,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_04.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 20.0396949333334,
+      "sun_shadow_enabled": false
+    },
+    "T_accel_05": {
+      "basin_time": 3.01405668258667,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_05.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 21.6449813333333,
+      "sun_shadow_enabled": false
+    },
+    "T_accel_06": {
+      "basin_time": 3.51666665077209,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_06.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 23.2533333333334,
+      "sun_shadow_enabled": false
+    },
+    "T_accel_07": {
+      "basin_time": 4.01866769790649,
+      "camera": "[X: (1.0, 0.0, 0.0), Y: (0.0, 0.92778, -0.373129), Z: (0.0, 0.373129, 0.92778), O: (-30.0, 6.294959, 3.8)]",
+      "fish": "[X: (1.0, 0.0, -0.0), Y: (0.0, 1.0, 0.0), Z: (0.0, 0.0, 1.0), O: (-30.0, 4.294959, 0.0)]",
+      "image": "artifacts/pond-lighting-diagnostics/ground-daynight/T_accel_07.png",
+      "shadow_distance": 28.0,
+      "shadow_mode": 0,
+      "solar_hour": 0.859736533333356,
+      "sun_shadow_enabled": false
+    }
+  },
+  "vsync": "disabled",
+  "world": "pond-p4-71"
+}

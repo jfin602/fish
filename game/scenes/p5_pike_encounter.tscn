@@ -14,6 +14,7 @@ radius = 0.42
 height = 2.65
 
 [node name="PikeEncounter" type="Node3D"]
+physics_interpolation_mode = 2
 script = ExtResource("1_encounter")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]

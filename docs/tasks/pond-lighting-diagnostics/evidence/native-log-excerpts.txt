@@ -1,0 +1,80 @@
+== ground-fog-settings ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1674 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=ground views=1
+
+== ground-stationary ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1625 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54475621880> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=stationary views=11
+
+== ground-stationary_pool_frozen ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2063 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=stationary_pool_frozen views=11
+
+== ground-stationary_pool_off ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2229 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=stationary_pool_off views=11
+
+== ground-camera-v2 ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1539 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=camera views=23
+
+== ground-motion ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1552 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=ground_motion views=0
+
+== ground-daynight ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1687 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_DONE mode=daynight views=12
+
+== ground-ablation-v2 ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=1398 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_SAMPLE view=B_base median=5.722 p95=9.388 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/B_base.png
+CLARITY_R3_SAMPLE view=E1_shadows_off median=4.253 p95=7.311 draws=145.0 primitives=126566.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E1_shadows_off.png
+CLARITY_R3_SAMPLE view=E2a_pool_frozen median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E2a_pool_frozen.png
+CLARITY_R3_SAMPLE view=E2b_pool_off median=5.805 p95=8.844 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E2b_pool_off.png
+CLARITY_R3_SAMPLE view=E3_range_16 median=5.359 p95=8.51 draws=213.0 primitives=294732.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E3_range_16.png
+CLARITY_R3_SAMPLE view=E3_range_42 median=5.495 p95=6.263 draws=261.0 primitives=298548.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E3_range_42.png
+CLARITY_R3_SAMPLE view=E4_mode_2 median=5.756 p95=9.975 draws=289.0 primitives=464084.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E4_mode_2.png
+CLARITY_R3_SAMPLE view=E4_mode_4 median=6.179 p95=8.363 draws=414.0 primitives=695136.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E4_mode_4.png
+CLARITY_R3_SAMPLE view=E5_caustics_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E5_caustics_off.png
+CLARITY_R3_SAMPLE view=E6_shafts_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E6_shafts_off.png
+CLARITY_R3_SAMPLE view=E7a_global_volume_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E7a_global_volume_off.png
+CLARITY_R3_SAMPLE view=E7b_turbidity_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E7b_turbidity_off.png
+CLARITY_R3_SAMPLE view=E7c_sun_volume_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E7c_sun_volume_off.png
+CLARITY_R3_SAMPLE view=E8_screen_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E8_screen_off.png
+CLARITY_R3_SAMPLE view=E8b_depth_fog_off median=5.72 p95=9.355 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E8b_depth_fog_off.png
+CLARITY_R3_SAMPLE view=E8c_height_fog_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E8c_height_fog_off.png
+CLARITY_R3_SAMPLE view=E8d_all_fog_off median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E8d_all_fog_off.png
+CLARITY_R3_SAMPLE view=E9_minimal median=2.9 p95=7.591 draws=143.0 primitives=126548.0 image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/E9_minimal.png
+CLARITY_R3_SAMPLE view=B_restored median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/ground-ablation-v2/B_restored.png
+CLARITY_R3_DONE mode=ablation views=19
+
+== material-components ==
+WORLD_BAKED_LOAD_OK id=world-5e3b4fee759acbe3 seed=71 content=d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347 elapsed_ms=2067 generator_invocations=0
+CLARITY_R3_SETUP {"adapter":"AMD Radeon 880M (RADV GFX1150)","ambient_energy":0.428999990224838,"character":"FAF-FISH-006 adult Bluegill","directional_shadow_size":4096,"fps_cap":0,"godot":"4.7.2-stable (official)","lighting":"Pond Overcast","project":"Fish","renderer":"forward_plus","seed":71,"shadow_bias":0.100000001490116,"shadow_blur":1.0,"shadow_fade_start":0.800000011920929,"shadow_max_distance":28.0,"shadow_mode":0,"shadow_normal_bias":2.0,"sun_basis":"[X: (-1.0, 0.0, 0.0), Y: (0.0, 0.0, 1.0), Z: (0.0, 1.0, -0.0)]","sun_color":"(0.78, 0.72, 0.43, 1.0)","sun_energy":0.566999971866608,"sun_shadow_enabled":true,"time_hour":12.0,"viewport":"(1920, 1200)","views":{},"vsync":"disabled","world":"pond-p4-71"}
+POND_GROUND_CONTACT collider=<StaticBody3D#54274295277> position=(-30.11457, 3.814294, 0.025251) normal=(0.261526, 0.963474, -0.05764) fish=(-30.0, 4.294959, 0.0) camera=(-30.0, 6.294959, 3.8)
+CLARITY_R3_SAMPLE view=M0_original median=5.516 p95=7.397 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/material-components/M0_original.png
+CLARITY_R3_SAMPLE view=M1_flat_color_pools_on median=5.444 p95=7.744 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/material-components/M1_flat_color_pools_on.png
+CLARITY_R3_SAMPLE view=M2_flat_color_pools_off median=5.49 p95=6.994 draws=234.0 primitives=296714.0 image=artifacts/pond-lighting-diagnostics/material-components/M2_flat_color_pools_off.png
+CLARITY_R3_SAMPLE view=M4_no_broad median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/material-components/M4_no_broad.png
+CLARITY_R3_SAMPLE view=M5_no_alluvial median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/material-components/M5_no_alluvial.png
+CLARITY_R3_SAMPLE view=M6_no_gain median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/material-components/M6_no_gain.png
+CLARITY_R3_SAMPLE view=M3_restored median=na p95=na draws=na primitives=na image=artifacts/pond-lighting-diagnostics/material-components/M3_restored.png
+CLARITY_R3_DONE mode=material views=7
+
