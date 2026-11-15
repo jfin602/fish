@@ -4,6 +4,8 @@
 
 ## Provenance
 
+- **S27 — Living Pond lifecycle before persistence + feeding reticle (2026-11-15):** After P5 owner progression closeout, the owner rejected saves as the next priority because near-nest food collection until adulthood lacks early risk and exploration. Replace planned P6 persistence with **P6 Living Pond**, adding a subtle center-screen reticle with truthful fish-mouth heading guidance, local food depletion/distribution, adult Bluegill predation of tiny Bass, shallow frogs and water snakes, larger solitary/cannibalistic Bass, independent multi-species interactions, and scarcity-motivated deeper Pike exploration through one ordinary Freshwater Pond Bass life. Defer the previous P6 save/durable-death phase to **P7**, Life History to **P8**, and integrated qualification to **P9**, without deleting those requirements. Preserve historical P5/C5 evidence, normal Ocean and separate Pike Encounter regression fixture. Existing rigged Northern leopard frog/water snake asset candidates must be reused/tested before requesting new modeling; snapping turtle optional. The central reticle is presentation only, not a camera-driven feeding or AI aid. [P6 approved plan](planning/p6/living-pond.md), [roadmap](roadmap.md).
+
 - **S1 — Initial concept:** the owner described a 3D game in which the player is a fish, begins as a hatchling, grows by eating food and smaller fish, and tries to avoid being eaten. Third person is primary; first person is optional and mainly for fun.
 - **S2 — Life continuity:** the owner chose the same fish across multiple sessions while retaining roguelike permanent death: dying means restarting as a hatchling.
 - **S3 — Accepted continuity and records:** the owner affirmed the described save/resume and death behavior, including a paused world while closed, and liked keeping a history of fish lives. The owner then requested a brief recounting of a fish's life after it dies.
@@ -127,6 +129,12 @@ Assistant examples, names, locations, quantities, and proposed features remain w
 | C79 | Wake fronts retain bounded historical world-space paths, curve through turns, propagate outward, and soften/fade while following the same moving surface height; no camera-following artifacts. | S26 |
 | C80 | Wake prominence scales by real speed, turning, surface contact and Bass growth stage; genuine Spacebar boost increases it without creating deep-water or blocked-motion surface effects. | S26 |
 | C81 | One low-cost, presentation-only surface-wake system is shared by ordinary Pond/Pike Encounter; preserve Ocean underwater effects and gameplay authority, with owner native V43 evidence required. | S26 |
+| C82 | P6 is **Living Pond**: one full Bass egg-to-adult ordinary Pond survival loop before persistence; former P6/P7/P8 become P7/P8/P9 respectively. Preserve their scope and original V06–V15 scenario IDs; C62's earlier phase schedule is historical and superseded only in sequence. | S27 |
+| C83 | Early Bass survival must involve stage/size-appropriate risk from adult Bluegill, Northern leopard frog, Northern water snake and larger solitary Bass; Pike becomes more common around deeper feeding opportunities, never a hard age/depth lock. | S27 |
+| C84 | Fixed nursery food is not an endlessly productive growth route: distributed, locally depletable, bounded-recovering habitat forage and changing nutritional value motivate exploration without permanent food soft locks. | S27 |
+| C85 | Independent prey/predator activity uses actual sensed world evidence, reachable physical contacts, stable IDs, once-only consumption and bounded performance; other NPCs can hunt without player involvement. | S27 |
+| C86 | The small center-screen reticle aids orientation; when camera forward diverges from fish-mouth forward, show separate subtle truthful heading guidance. Presentation/feedback cannot alter fish aim, feeding collision/eligibility, detection, prey motion or nutrition. | S27 |
+| C87 | Normal Freshwater Pond gains the Bass survival loop; keep Pike Encounter as an isolated fixture, other ordinary Pond fish as existing demos until separately implemented, Ocean unchanged, and original FAF models/evidence intact. | S27 |
 
 ## Working designs
 
