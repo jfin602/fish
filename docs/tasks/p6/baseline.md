@@ -5,7 +5,7 @@
 ## Included state and provenance
 
 - The checkpoint follows the published P6 S27 planning commits and the preserved local audio commit replayed as `e990a12` after resolving its `BOOT.md` overlap. The original local audio commit was `fd31517`; its source, assets, review log and historical evidence were retained. No P6 gameplay was added by this checkpoint.
-- Three concurrently published P6 assessment/plan commits were merged into the final `main` tree after the version checkpoint. The [P6 task plan](README.md) is authored; its P1–P13 execution prompts have not been written or run.
+- Concurrently published P6 assessment/plan and P1–P13 execution-brief commits were merged into the final `main` tree after the version checkpoint. The [P6 task stack](README.md) is authored and its prompt grammar validated; no P6 implementation prompt was run.
 - The ordinary Ocean and Pond remain separate baked worlds; Pike Encounter remains the isolated seed-5266 regression destination. The existing C5 Bass hatch/fry, staged feeding/growth, automatic mouth-contact feeding, finite boost, Bluegill schools, Pike targeting and blood FX are present in the fixture. Pond cover/collision, dynamic waterline, follow camera, wake and positional audio/splash/bubble work are preserved. See [C5](../c5-polish/README.md), [wake](../c5-wake/README.md), [audio](../../systems/audio.md) and [swimming/camera](../../systems/swimming-and-camera.md) for implementation boundaries.
 - Historical P5 P12 actually used `0.5.12`; assigned P13 `0.5.13` was not applied. [P5 closeout](../p5/closeout.md) stays owner-closed for progression / NOT GREEN. P2/P3/P4/c4 failures and accepted gaps remain in their original records. M8 owner-native C5 qualification and W3 wake qualification remain open. P7 persistence/permanent death and P8 Life History are deferred.
 
@@ -21,6 +21,7 @@ The preflight found `main` in an interrupted rebase with a `BOOT.md` conflict. W
 | Automatic feeding and boost | **PASS** | `./tools/dev inspect-auto-feed-boost` emitted `AUTO_FEED_BOOST_CHECK_OK food=auto-once`, with ordinary and boosted speeds and remaining energy. Fixture-only, headless. |
 | Positional audio and splash | **PASS** | `./tools/dev inspect-audio` emitted `AUDIO_CHECK_OK` for deep/shallow loops, mono sparse bubbles, pause/retry cleanup and motion/turn/boost/splash events. Audible mix quality is unobserved. |
 | Dynamic waterline and wake path | **PASS** | `./tools/dev inspect-dynamic-waterline` and `./tools/dev inspect-wake-path` emitted their OK markers for moving surface sampling and four Bass stages. Headless checks do not establish native appearance or feel. |
+| P6 prompt grammar | **PASS** | `npm run fish:phase:validate -- p6` accepted all thirteen authored briefs; the runner was not executed. |
 | Editor MCP identity/live play | **BLOCKED** | Godot MCP `2026.11.04` reported `bridge_connected=false`; port `19080` was already in use. No editor mutation or live MCP play was attempted. |
 | Owner visual/gameplay/performance qualification | **NOT OBSERVED** | No owner M8 playthrough, complete P5 three-zone route, C5 wake W3 review, sustained Forward+ frame-pacing run, or P6 V44–V51 scenario was run for this checkpoint. Earlier native evidence remains historical. |
 

@@ -1,0 +1,33 @@
+TASK: Phase 6 / P12 — Native complete Bass life and regression review
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.6.12`.
+
+GOAL
+Owner hand-plays the entire actual normal-Pond Bass survival progression and judges whether it is finally dangerous, exploratory and worth persisting. Qualify G6.1–G6.8/V44–V51 without pretending scripts prove player experience.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read all P6 P1–P11 evidence and actual source SHAs plus G6.1–G6.8, V44–V51, original P5/C5 debt, active camera/boost/reticle/food/predators/scene routing, native display/renderer identity and tools/dev run.
+
+IMPLEMENT / REVIEW
+1. BEFORE launching, write docs/tasks/p6/qualification/p12-owner-playthrough.md containing actual branch/HEAD/dirty status, Pond seed/manifest, engine/GPU/Forward+, control preset, player stage and blank expected/observed PASS/FAIL/NOT OBSERVED cells for V44–V51. Record actual targeted import/build/inspect checks and their results, not fictional historical passes.
+2. Launch in real desktop: ./tools/dev run --display-mode=windowed-fullscreen. LEAVE THE ACTUAL GAME WINDOW OPEN for the owner; do not use headless scene capture, scripted input or an immediate exit as a substitute.
+3. Owner starts World Select → Freshwater Pond → Bass, watches or skips egg hatch and uses reticle to find/consume food without a bite key. Test camera center vs mouth heading through Follow/Hybrid 2/Adaptive Free Look, growth stage changes, above-water camera, valid/invalid contact, repeated nutrition and Space boost/energy.
+4. Continue genuine larva→juvenile→subadult→adult via distributed food and legitimate Bluegill prey. Deliberately compare hidden feeding versus exposed adult Bluegill pursuit; look for plausible frog and snake shoreline encounters, larger solitary Bass competition/cannibalism, autonomous NPC-on-NPC pursuit, local patch depletion/recovery, and natural movement toward deeper Pike territory. Test caught/retry/new hatch and viable escape/retreat.
+5. Repeat normal Ocean demo, other Pond fish Character Select, the independent Pike Encounter and controls/pausing/focus to verify habitat/world identity, source art, dynamic waterline and no wildlife leakage. Record actual Forward+ pacing and native screenshots/short recordings only if really captured, plus owner impressions and fairness defects.
+6. If any hard scope fails or cannot be observed, mark the exact Gate/cell NOT GREEN or BLOCKED and request bounded repair before proceeding to closeout; no invented PASS or automatic 0.6.12 checkpoint.
+
+VALIDATION
+T3 MANUAL: owner native complete life and regression V44–V51 with supporting T2 source checks. Each Gate needs evidence from actual actions; a game window opening is not enough. If no usable desktop/MCP, report exact blocker, leave native unobserved.
+
+DONE / VERSION / REPORT
+Owner-observed full-life result, per-Gate honest evidence, named repair/closure decision and real native window left open for owner at handoff. Version 0.6.12 only after valid manual completion and checkpoint; do not self-commit/push.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. This is an owner/native handoff: STOP the runner before execution and resume only with a legitimate reviewed manual checkpoint.

@@ -1,6 +1,6 @@
 # P6 implementation plan — The Living Pond
 
-**Status: plan authored, execution prompts not yet written.** P6 plans thirteen runner-compatible prompts including four manual/native pauses. Read the [assessment](prompt-assessment.md) and [approved S27 design](../../planning/p6/living-pond.md). [Roadmap](../../roadmap.md) owns G6.1–G6.8; [validation](../../validation.md) owns V44–V51. A task report and prompt file are **not** implementation.
+**Status: plan and thirteen execution prompts authored, NOT EXECUTED.** Four briefs require manual/native pauses. Read the [assessment](prompt-assessment.md) and [approved S27 design](../../planning/p6/living-pond.md). [Roadmap](../../roadmap.md) owns G6.1–G6.8; [validation](../../validation.md) owns V44–V51. A task report and prompt file are **not** implementation.
 
 ## Entry and source/phase contract
 

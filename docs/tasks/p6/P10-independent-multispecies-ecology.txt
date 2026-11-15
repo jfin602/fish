@@ -1,0 +1,32 @@
+TASK: Phase 6 / P10 — Independent multi-species sensing and predation
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol XHigh`.
+- Browser required: no.
+- This prompt's assigned project version is `0.6.10`.
+
+GOAL
+Make Bass, Bluegill, water snakes, leopard frogs and Pike interact with each other independently of the player under one bounded, fair prey-selection/contact contract.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read G6.6/V49, P5 PikeTargetSelector/PikeActor/PreyActor/BluegillSchool, P6 frog/snake/Bass actors and food ledger, WorldSightSensor, MovementDisturbanceField and existing scene tick/time ownership.
+
+IMPLEMENT / REVIEW
+1. Define narrow shared predator/prey candidates exposing identity, species, life stage, physical body/mouth reach, real location, alive state and bounded sensed evidence; keep source of truth in actual world simulation, not player UI or pooled VFX.
+2. Give Pike, adult Bluegill, Bass rivals, snake and frog species-appropriate candidate preferences with finite search/pursuit commitment and stable target switching; species need not all eat every other species. Include real NPC fish caught/consumed without needing a camera/player nearby. A school is individuals, never a magically visible aggregate.
+3. Resolve contested prey once via authoritative event/consumed identity, update prey death/actor cleanup and forage consequences without double feeding or duplicate blood/sound/caught screens; preserve player terminal events separately. Do not let a dead/evaded NPC stay targetable on the next tick.
+4. Budget AI sensing with nearby partitions or bounded candidate pools/update cadence, no unbounded all-to-all per frame. Expose diagnostics for active actors, search states, interactions and CPU work without turning overlays on for normal play.
+5. Add inspect-p6-ecology and seeded player-absent NPC-vs-NPC multi-species tests, simultaneous-claim arbitration, pause/focus, scene exit, case of missing assets and two-world isolation.
+
+VALIDATION
+T2: inspect-p6-ecology and targeted original Pike/Prey/Bluegill plus P6 actors/world-isolation checks, source/build and bounded timing logs. Frame pacing in real Forward+ owner play still belongs to P12.
+
+DONE / VERSION / REPORT
+Real autonomous Pond interactions with physically valid attacker/prey choices and one outcome/ID; no duplicated death, fake AI knowledge or all-pond CPU explosion.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. On supported completion, update the assigned root package version for the runner checkpoint; do not commit (the runner owns checkpoint commits).

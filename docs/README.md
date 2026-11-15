@@ -26,7 +26,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [C5 Bass lifecycle and ecology design](planning/c5-post-p5-ecology-lifecycle.md) | Historical/ongoing Bass player, egg hatch, Bluegill schools, Pike targeting and blood correction with M1–M7 focused evidence; M8 native review open. |
 | [P6 Living Pond design](planning/p6/living-pond.md) | **S27 approved / NOT STARTED**: feeding reticle and mouth heading, nursery predators, frogs, snakes, competing Bass, living food, spatial exploration and full Bass survival in normal Freshwater Pond; V44–V51. |
 | [P6 development baseline](tasks/p6/baseline.md) | Root `0.6.0` checkpoint, focused validation and outstanding native qualification; no P6 gameplay or Gate pass. |
-| [P6 task plan](tasks/p6/README.md) | Assessment and implementation plan authored; execution prompts and gameplay not started. |
+| [P6 task stack](tasks/p6/README.md) | Assessment, plan and thirteen execution briefs authored and grammar-validated; gameplay not started. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |

@@ -1,0 +1,31 @@
+TASK: Phase 6 / P9 — Solitary age-diverse Bass rivals and cannibalism
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.6.9`.
+
+GOAL
+Add independent Bass of different growth stages to the normal Pond so larger Bass can genuinely hunt smaller Bass, including the player, but do not make Bass into a school or spawn a constant attacking wall.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read G6.5/V48, registered FAF-FISH-007 stage catalog, PondGrowthState/body fitting, PreyActor/BluegillSchool (to avoid copying schooling), world-space sensory/cover and new Pond ecology/actor registry.
+
+IMPLEMENT / REVIEW
+1. Spawn a bounded number of stage-registered solitary Bass in plausible size/depth/cover ranges; each has its own stable ID, physics/animation body, local resting/foraging/moving and habitat preference. Verify adult stage silhouette/scale against player and avoid in-collider generation.
+2. Allow larger Bass to treat smaller Bass (player or legitimate NPC) as prey only if stage/size/mouth eligibility and real sensing confirm it. Smaller Bass can escape through narrower logs/weeds, finite memory or legitimate turning/boost; do not hard-code every stranger as aggressive.
+3. Preserve once-only nutrition, prey removal, predator event, target invalidation and pause/return cleanup; do not create a second Bass species or share the player's growth identity with NPCs.
+4. Add inspect-p6-bass-rivals and negative size/diet/occlusion tests; verify no schooling/cohesion and reasonable actor cost.
+
+VALIDATION
+T2: new inspect-p6-bass-rivals plus inspect-p6-bluegill-threat, inspect-growth and world isolation as relevant. Use native sample evidence if available but do not self-award T3 fairness PASS.
+
+DONE / VERSION / REPORT
+At least one genuinely larger solitary Bass can physically consume an eligible smaller Bass and one smaller fish can escape by real movement/cover; per-actor identity survives normal gameplay lifecycle.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. On supported completion, update the assigned root package version for the runner checkpoint; do not commit (the runner owns checkpoint commits).
