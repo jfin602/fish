@@ -126,6 +126,13 @@ public partial class UnderwaterAtmosphere : Node3D
     public float SurfaceTime => (float)_presentationSeconds;
     public float GetSurfaceHeight(float worldX, float worldZ)
         => SampleSurfaceHeight(worldX, worldZ, SurfaceTime);
+    /// <summary>The same interpolated wave phase sent to the visible surface shader.</summary>
+    public float GetRenderedSurfaceHeight(float worldX, float worldZ)
+        => SampleSurfaceHeight(worldX, worldZ, _renderSurfaceTime);
+    public float SurfaceWakeIllumination => _solarWater.SurfaceIllumination;
+    public float SurfaceWakeNightWeight => _nightWeight;
+    public Vector3 SurfaceWakeSunDirection => _sun?.GlobalTransform.Basis.Z.Normalized() ?? Vector3.Up;
+    public Color SurfaceWakeSunColor => _solarLighting.DirectColor;
 
     private float SampleSurfaceHeight(float worldX, float worldZ, float time)
     {

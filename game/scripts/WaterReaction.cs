@@ -50,6 +50,25 @@ public partial class WaterReaction : Node3D
     private float _visualTopReach = .2f;
     private float _tailZ = .43f;
     private float _trailTimeScale = 1f;
+    private PlayerBodyGeometry _contactBody;
+    private readonly PondWakePath _wakePath = new();
+    private PondWakeContacts? _latestContact;
+    private float _latestContactEnergy;
+    private ImmediateMesh? _ribbonMesh;
+    private MeshInstance3D? _ribbonView;
+    private ShaderMaterial? _ribbonMaterial;
+    private UnderwaterAtmosphere? _pondAtmosphere;
+    private SeabedSurface? _pondSeabed;
+    private readonly bool _legacyRings = OS.IsDebugBuild() &&
+        Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-legacy-rings");
+    private bool _showLegacyRings;
+    private readonly bool _lowSurfaceEffects = Array.Exists(OS.GetCmdlineUserArgs(),
+        arg => arg == "--effects=low");
+    public int ActiveWakeTriangles { get; private set; }
+    private int _stageRevision;
+    private ImmediateMesh? _wakeDebugMesh;
+    private MeshInstance3D? _wakeDebugView;
+    public PondWakePath WakePath => _wakePath;
 
     public WaterReaction(FishController fish, WaterVisualProfile? surfaceProfile = null)
     {
@@ -61,10 +80,24 @@ public partial class WaterReaction : Node3D
 
     public override void _Ready()
     {
+        _showLegacyRings = _legacyRings;
         _left = MakeWake("LeftWake", -0.20f, -1);
         _right = MakeWake("RightWake", 0.20f, 1);
         _bubbles = MakeBubbles();
-        if (_surfaceProfile is not null) MakePondSurfaceEffects();
+        if (_surfaceProfile is not null)
+        {
+            _pondAtmosphere = _fish.GetParent()?.GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere");
+            _pondSeabed = _fish.GetParent()?.GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
+            MakePondSurfaceEffects();
+            if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--effects=off"))
+                _enabled = false;
+        }
+        #if DEBUG
+        if (_surfaceProfile is not null &&
+            (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-path-debug") ||
+             OS.GetEnvironment("FISH_WAKE_PATH_DEBUG") == "1"))
+            MakeWakeDebugView();
+        #endif
         Clear();
         if (_fish.GetNodeOrNull<Node3D>("PlayerVisual") is not null)
             ConfigureFromPlayerVisual();
@@ -75,6 +108,9 @@ public partial class WaterReaction : Node3D
     public void ConfigureFromPlayerVisual()
     {
         var body = PlayerBodyGeometry.Measure(_fish);
+        _contactBody = body;
+        _stageRevision++;
+        _wakePath.Clear();
         _bodyRadius = body.Radius;
         _visualTopReach = body.TopReach;
         _bodyScale = Mathf.Clamp(body.Length / .95f, .025f, 4f);
@@ -265,7 +301,65 @@ public partial class WaterReaction : Node3D
             ((SphereMesh)_right.DrawPass1).Radius = width;
         }
         if (_surfaceProfile is not null)
-            SamplePondSurface(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort, (float)delta);
+        {
+            var contact = PondWakeContacts.At(_contactBody, _fish.GlobalTransform,
+                _fish.PondSurfaceHeightAt);
+            var horizontalSpeed = new Vector2(_fish.Velocity.X, _fish.Velocity.Z).Length();
+            var energy = horizontalSpeed / Mathf.Max(.001f, _fish.Tuning.MaxSpeed) *
+                (.2f + .8f * Mathf.Clamp(_fish.PresentationEffort, 0f, 1f)) *
+                (1f + .35f * _boostBlend);
+            _wakePath.Step(contact, _contactBody.Length, energy, _stageRevision, (float)delta);
+            _latestContact = contact.Touching && energy > .03f ? contact : null;
+            _latestContactEnergy = energy;
+            DrawWakeDebug(contact);
+            if (_showLegacyRings)
+                SamplePondSurface(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort, (float)delta);
+            else
+                SampleBreach(contact, (float)delta);
+        }
+    }
+
+    public override void _Process(double delta)
+    {
+        if (_surfaceProfile is null || _ribbonMesh is null || _ribbonMaterial is null ||
+            _pondAtmosphere is null || _showLegacyRings) return;
+        if (!_enabled || _suspended || GetTree().Paused)
+        {
+            _ribbonMesh.ClearSurfaces();
+            ActiveWakeTriangles = 0;
+            return;
+        }
+        _ribbonMaterial.SetShaderParameter("surface_illumination", _pondAtmosphere.SurfaceWakeIllumination);
+        _ribbonMaterial.SetShaderParameter("night_weight", _pondAtmosphere.SurfaceWakeNightWeight);
+        _ribbonMaterial.SetShaderParameter("sun_direction", _pondAtmosphere.SurfaceWakeSunDirection);
+        var sun = _pondAtmosphere.SurfaceWakeSunColor;
+        _ribbonMaterial.SetShaderParameter("sun_color", new Vector3(sun.R, sun.G, sun.B));
+        ActiveWakeTriangles = PondWakeRibbon.Draw(_ribbonMesh, _wakePath, _wakePath.Seconds,
+            _pondAtmosphere.GetRenderedSurfaceHeight, ShoreDistance, _ribbonMaterial,
+            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy);
+    }
+
+    private float ShoreDistance(float worldX, float worldZ)
+    {
+        if (_pondSeabed is null) return float.MaxValue;
+        var point = _pondSeabed.ToLocal(new Vector3(worldX, 0f, worldZ));
+        return _pondSeabed.Basin.DistanceToShore(point.X, point.Z);
+    }
+
+    private void SampleBreach(PondWakeContacts contact, float delta)
+    {
+        _splashCooldown = Mathf.Max(0f, _splashCooldown - delta);
+        if (_splash is null || _splashCooldown > 0f || !contact.Touching ||
+            _wakePath.Count < 2 || _fish.Velocity.Y < .12f ||
+            _fish.PresentationEffort < .45f || _lowSurfaceEffects) return;
+        // Only a rising body crossing its interface makes droplets. Cruise/boost
+        // at a fixed depth leaves the paired surface fronts without splashes.
+        var y = _fish.GlobalPosition.Y + _visualTopReach * .35f;
+        if (Mathf.Abs(y - contact.SurfaceY) > _bodyRadius * .3f) return;
+        _splash.GlobalPosition = contact.Bow + Vector3.Up * .02f;
+        _splash.Restart();
+        _splash.Emitting = true;
+        _splashCooldown = 1.25f;
     }
 
     public int ActivePondRings
@@ -298,7 +392,7 @@ public partial class WaterReaction : Node3D
     /// <summary>Presentation-only sampling of the motor's world pose and velocity.</summary>
     public void SamplePondSurface(Vector3 position, Vector3 velocity, float effort, float delta)
     {
-        if (_surfaceProfile is null || delta <= 0f) return;
+        if (_surfaceProfile is null || !_showLegacyRings || delta <= 0f) return;
         for (var i = 0; i < PondRingCapacity; i++)
         {
             if (!_rings[i].Visible) continue;
@@ -357,6 +451,50 @@ public partial class WaterReaction : Node3D
 
     private void MakePondSurfaceEffects()
     {
+        _ribbonMesh = new ImmediateMesh();
+        _ribbonMaterial = new ShaderMaterial
+        {
+            Shader = ResourceLoader.Load<Shader>("res://shaders/pond_wake.gdshader"),
+            // Both the water plane and wake are transparent. Draw the wake after
+            // the plane from either camera side so the green underside survives.
+            RenderPriority = 1,
+        };
+        _ribbonMaterial.SetShaderParameter("surface_dark", new Vector3(
+            _waterProfile.SurfaceDark.R, _waterProfile.SurfaceDark.G, _waterProfile.SurfaceDark.B));
+        _ribbonMaterial.SetShaderParameter("surface_light", new Vector3(
+            _waterProfile.SurfaceLight.R, _waterProfile.SurfaceLight.G, _waterProfile.SurfaceLight.B));
+        _ribbonView = new MeshInstance3D
+        {
+            Name = "PondWakeFronts", Mesh = _ribbonMesh, TopLevel = true,
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+            ExtraCullMargin = 4f,
+        };
+        AddChild(_ribbonView);
+        if (_legacyRings) MakeLegacyRings();
+        _splash = new GpuParticles3D
+        {
+            Name = "SurfaceSplash", TopLevel = true, Amount = 6, Lifetime = .28,
+            OneShot = true, Emitting = false, LocalCoords = false,
+            VisibilityAabb = new Aabb(new Vector3(-.5f, -.3f, -.5f), Vector3.One),
+            ProcessMaterial = new ParticleProcessMaterial
+            {
+                Direction = Vector3.Up, Spread = 33f, Gravity = new Vector3(0, -2.1f, 0),
+                InitialVelocityMin = .3f, InitialVelocityMax = .8f,
+                ScaleMin = .5f, ScaleMax = 1f,
+            },
+            DrawPass1 = new SphereMesh { Radius = .014f, Height = .028f,
+                Material = new StandardMaterial3D { AlbedoColor = new Color(
+                    _waterProfile.SurfaceLight.R, _waterProfile.SurfaceLight.G,
+                    _waterProfile.SurfaceLight.B, .24f),
+                    Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+                    ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded } },
+        };
+        AddChild(_splash);
+    }
+
+    /// <summary>Debug-only comparison mode for fixed-route native A/B captures.</summary>
+    private void MakeLegacyRings()
+    {
         using var tool = new SurfaceTool();
         tool.Begin(Mesh.PrimitiveType.Triangles);
         const int segments = 20;
@@ -388,25 +526,121 @@ public partial class WaterReaction : Node3D
             AddChild(ring);
             _rings[i] = ring;
         }
-        _splash = new GpuParticles3D
+    }
+
+    private void MakeWakeDebugView()
+    {
+        _wakeDebugMesh = new ImmediateMesh();
+        _wakeDebugView = new MeshInstance3D
         {
-            Name = "SurfaceSplash", TopLevel = true, Amount = 6, Lifetime = .28,
-            OneShot = true, Emitting = false, LocalCoords = false,
-            VisibilityAabb = new Aabb(new Vector3(-.5f, -.3f, -.5f), Vector3.One),
-            ProcessMaterial = new ParticleProcessMaterial
+            Name = "WakePathDebug", Mesh = _wakeDebugMesh, TopLevel = true,
+            CastShadow = GeometryInstance3D.ShadowCastingSetting.Off,
+            MaterialOverride = new StandardMaterial3D
             {
-                Direction = Vector3.Up, Spread = 33f, Gravity = new Vector3(0, -2.1f, 0),
-                InitialVelocityMin = .3f, InitialVelocityMax = .8f,
-                ScaleMin = .5f, ScaleMax = 1f,
+                ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
+                Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
+                VertexColorUseAsAlbedo = true,
+                NoDepthTest = true,
             },
-            DrawPass1 = new SphereMesh { Radius = .014f, Height = .028f,
-                Material = new StandardMaterial3D { AlbedoColor = new Color(
-                    _waterProfile.SurfaceLight.R, _waterProfile.SurfaceLight.G,
-                    _waterProfile.SurfaceLight.B, .40f),
-                    Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
-                    ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded } },
         };
-        AddChild(_splash);
+        AddChild(_wakeDebugView);
+    }
+
+    private void DrawWakeDebug(PondWakeContacts contact)
+    {
+        if (_wakeDebugMesh is null) return;
+        _wakeDebugMesh.ClearSurfaces();
+        _wakeDebugMesh.SurfaceBegin(Mesh.PrimitiveType.Lines);
+        // Display lift only: sample records keep the true local surface height.
+        static Vector3 Raised(Vector3 point) => point + Vector3.Up * .06f;
+        void Line(Vector3 a, Vector3 b, Color color)
+        {
+            _wakeDebugMesh.SurfaceSetColor(color);
+            _wakeDebugMesh.SurfaceAddVertex(Raised(a));
+            _wakeDebugMesh.SurfaceSetColor(color);
+            _wakeDebugMesh.SurfaceAddVertex(Raised(b));
+        }
+        var center = (contact.Left + contact.Right) * .5f;
+        Line(contact.Bow, center, Colors.Yellow);
+        Line(contact.Left, contact.Right, contact.Touching ? Colors.Lime : Colors.Red);
+        Line(center, contact.Tail, Colors.Yellow);
+        Line(center, center + contact.Heading * Mathf.Max(.08f, _contactBody.Length * .3f),
+            Colors.Cyan);
+        for (var i = 0; i < _wakePath.Count; i++)
+        {
+            var sample = _wakePath[i];
+            var age = _wakePath.Seconds - sample.BirthSeconds;
+            var fade = 1f - Mathf.Clamp(age / PondWakePath.Lifetime, 0f, 1f);
+            var outward = new Vector2(-sample.Heading.Y, sample.Heading.X) *
+                sample.Width * .65f * age / PondWakePath.Lifetime;
+            var y = _fish.PondSurfaceHeightAt(sample.Center.X, sample.Center.Y);
+            var centerPoint = new Vector3(sample.Center.X, y, sample.Center.Y);
+            var leftPoint = new Vector3(sample.Left.X - outward.X,
+                _fish.PondSurfaceHeightAt(sample.Left.X - outward.X, sample.Left.Y - outward.Y),
+                sample.Left.Y - outward.Y);
+            var rightPoint = new Vector3(sample.Right.X + outward.X,
+                _fish.PondSurfaceHeightAt(sample.Right.X + outward.X, sample.Right.Y + outward.Y),
+                sample.Right.Y + outward.Y);
+            var color = new Color(.2f, .85f, 1f, fade);
+            if (i > 0 && _wakePath[i - 1].Segment == sample.Segment)
+            {
+                var prior = _wakePath[i - 1];
+                var priorY = _fish.PondSurfaceHeightAt(prior.Center.X, prior.Center.Y);
+                Line(new Vector3(prior.Center.X, priorY, prior.Center.Y), centerPoint, color);
+                var priorAge = _wakePath.Seconds - prior.BirthSeconds;
+                var priorOutward = new Vector2(-prior.Heading.Y, prior.Heading.X) *
+                    prior.Width * .65f * priorAge / PondWakePath.Lifetime;
+                var priorLeft = prior.Left - priorOutward;
+                var priorRight = prior.Right + priorOutward;
+                Line(new Vector3(priorLeft.X, _fish.PondSurfaceHeightAt(priorLeft.X, priorLeft.Y),
+                    priorLeft.Y), leftPoint, Colors.Magenta * fade);
+                Line(new Vector3(priorRight.X, _fish.PondSurfaceHeightAt(priorRight.X, priorRight.Y),
+                    priorRight.Y), rightPoint, Colors.Green * fade);
+            }
+            Line(centerPoint, leftPoint, Colors.Magenta * fade);
+            Line(centerPoint, rightPoint, Colors.Green * fade);
+        }
+        _wakeDebugMesh.SurfaceEnd();
+    }
+
+    /// <summary>Development probe refresh after a staged diagnostic pose.</summary>
+    public void RefreshWakeDebug()
+    {
+        if (_wakeDebugMesh is null) return;
+        DrawWakeDebug(PondWakeContacts.At(_contactBody, _fish.GlobalTransform,
+            _fish.PondSurfaceHeightAt));
+    }
+
+    /// <summary>Native diagnostic redraw after a controlled historical route.</summary>
+    public void RefreshWakeRenderForProbe()
+    {
+        if (!OS.IsDebugBuild() || _ribbonMesh is null || _ribbonMaterial is null ||
+            _pondAtmosphere is null) return;
+        ActiveWakeTriangles = PondWakeRibbon.Draw(_ribbonMesh, _wakePath, _wakePath.Seconds,
+            _pondAtmosphere.GetRenderedSurfaceHeight, ShoreDistance, _ribbonMaterial,
+            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy);
+    }
+
+    /// <summary>Native fixed-route comparison only; never changes the motor.</summary>
+    public void SetWakeProbeContact(PondWakeContacts contact, float energy)
+    {
+        if (!OS.IsDebugBuild()) return;
+        _latestContact = contact.Touching && energy > .03f ? contact : null;
+        _latestContactEnergy = energy;
+    }
+
+    /// <summary>Debug-only A/B toggle. Production never allocates the ring pool.</summary>
+    public void SetWakeLegacyComparison(bool legacy)
+    {
+        if (!OS.IsDebugBuild() || !_legacyRings) return;
+        _showLegacyRings = legacy;
+        if (legacy)
+        {
+            _ribbonMesh?.ClearSurfaces();
+            ActiveWakeTriangles = 0;
+        }
+        else
+            foreach (var ring in _rings) if (ring is not null) ring.Visible = false;
     }
 
     private static void Apply(GpuParticles3D emitter, float ratio)
@@ -430,8 +664,13 @@ public partial class WaterReaction : Node3D
 
     public void Suspend()
     {
+        _wakePath.Suspend();
+        _latestContact = null;
+        _latestContactEnergy = 0f;
         if (!IsNodeReady()) return;
         Clear();
+        _ribbonMesh?.ClearSurfaces();
+        ActiveWakeTriangles = 0;
         for (var i = 0; i < PondRingCapacity; i++)
             if (_rings[i] is not null) { _rings[i].Visible = false; _ringAges[i] = 0f; }
         _surfaceClock = 0f;
@@ -441,6 +680,7 @@ public partial class WaterReaction : Node3D
         _boostBlend = 0f;
         _boostVisualStep = -1;
         _suspended = true;
+        _wakeDebugMesh?.ClearSurfaces();
     }
 
     private void Clear()

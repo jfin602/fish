@@ -1,6 +1,6 @@
 # C5 Wake — natural fish-generated surface wakes
 
-**Decision:** S26 (2026-11-15), owner-approved design. **Status:** proposed implementation, not executed or native-qualified. **Execution:** [manual W1–W3](../tasks/c5-wake/README.md). No package-version or Roadmap Gate change.
+**Decision:** S26 (2026-11-15), owner-approved design. **Status:** W1 path foundation and W2 curved-front rendering implemented locally with [W1 evidence](../tasks/c5-wake/qualification/w1.md) and [W2 native A/B](../tasks/c5-wake/qualification/w2.md); W2 is not GREEN pending owner visual review of faint underwater/waterline fronts. W3 remains open. **Execution:** [manual W1–W3](../tasks/c5-wake/README.md). No package-version or Roadmap Gate change.
 
 ## Player-visible objective
 

@@ -133,29 +133,34 @@ public static class PondSurfaceSceneryChecks
                 "surface contact, glide or Ocean isolation mapping failed");
             var fishBefore = fish.GlobalTransform;
             var velocityBefore = fish.Velocity;
+            var body = PlayerBodyGeometry.Measure(fish);
+            water.WakePath.Clear();
             var start = Time.GetTicksUsec();
-            for (var tick = 0; tick < 240; tick++)
+            for (var tick = 0; tick < 120; tick++)
             {
-                water.SamplePondSurface(new Vector3(core.X,
-                    atmosphere.GetSurfaceHeight(core.X, core.Y) - .25f, core.Y),
-                    new Vector3(0, 0, fish.Tuning.MaxSpeed), 1f, 1f / 60f);
-                Require(water.ActivePondRings <= WaterReaction.PondRingCapacity,
-                    "surface effect pool overran");
+                var z = core.Y + tick * body.Length * .05f;
+                var pose = new Transform3D(Basis.Identity, new Vector3(core.X,
+                    atmosphere.GetSurfaceHeight(core.X, z) - body.TopReach * .35f, z));
+                water.WakePath.Step(PondWakeContacts.At(body, pose, atmosphere.GetSurfaceHeight),
+                    body.Length, .7f, 1, 1f / 60f);
+                water.RefreshWakeRenderForProbe();
+                Require(water.ActiveWakeTriangles <= PondWakeRibbon.MaxTriangles,
+                    "surface front budget overran");
             }
             var cpuMs = (Time.GetTicksUsec() - start) / 1000.0;
-            Require(water.ActivePondRings > 0 && water.GetNode<GpuParticles3D>("SurfaceSplash").Amount == 6 &&
+            Require(water.ActiveWakeTriangles > 0 && water.GetNode<GpuParticles3D>("SurfaceSplash").Amount == 6 &&
                 fish.GlobalTransform == fishBefore && fish.Velocity == velocityBefore,
                 "surface sampling changed motor or failed to emit");
             water.Suspend();
-            Require(water.ActivePondRings == 0 &&
+            Require(water.ActiveWakeTriangles == 0 &&
                 !water.GetNode<GpuParticles3D>("SurfaceSplash").Emitting,
-                "surface ring or splash survived pause/focus reset");
+                "surface front or splash survived pause/focus reset");
             camera.GlobalPosition = new Vector3(core.X, atmosphere.SurfaceHeight - 2f, core.Y);
             atmosphere.RefreshDepth(true, 2f);
             Require(atmosphere.CameraImmersion01 > .999f && env.FogDepthBegin > 2.9f &&
                 WaterVisualProfile.For(WorldEnvironmentProfile.Ocean) == WaterVisualProfile.Ocean,
                 "water profile failed to restore or Ocean profile leaked");
-            GD.Print($"POND_SCENERY_CHECK_OK vertices={vertices.Length} shore_samples={covered}/16 shore_faf={shoreCount} camera_fish_clearance={clearance}/32 authored_obstructions={authoredObstructions} structures={decorative.Length} rings={WaterReaction.PondRingCapacity} splash=6 sample_cpu_ms={cpuMs:F2} ocean_profile=isolated");
+            GD.Print($"POND_SCENERY_CHECK_OK vertices={vertices.Length} shore_samples={covered}/16 shore_faf={shoreCount} camera_fish_clearance={clearance}/32 authored_obstructions={authoredObstructions} structures={decorative.Length} wake_triangles_max={PondWakeRibbon.MaxTriangles} splash=6 sample_cpu_ms={cpuMs:F2} ocean_profile=isolated");
         }
         finally
         {

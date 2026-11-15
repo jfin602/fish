@@ -17,7 +17,7 @@ fi
 if [[ -n ${GODOT_MCP_BRIDGE_URL:-} ]]; then export GODOT_MCP_BRIDGE_URL; fi
 
 usage() {
-  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-dynamic-waterline|inspect-audio|inspect-world-isolation|inspect-hatch|inspect-growth|inspect-feeding|inspect-auto-feed-boost|inspect-control-presets|inspect-input-lifecycle|inspect-blood-fx|inspect-prey|inspect-bluegill-schools|inspect-pike-seeds|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|inspect-pike-ai|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
+  echo 'Usage: tools/dev doctor|import|build|check|smoke-world|inspect-dynamic-waterline|inspect-wake-path|inspect-wake-native|inspect-audio|inspect-world-isolation|inspect-hatch|inspect-growth|inspect-feeding|inspect-auto-feed-boost|inspect-control-presets|inspect-input-lifecycle|inspect-blood-fx|inspect-prey|inspect-bluegill-schools|inspect-pike-seeds|inspect-pike-encounter|inspect-pike-cover-assets|inspect-pike-cover|inspect-pike-sight|inspect-pike-disturbance|inspect-pike-ai|measure-pike-cover|inspect-environment-time|inspect-solar-lighting|inspect-pond-surface|inspect-pond-camera-immersion|inspect-pond-scenery|inspect-ocean-equal-input|inspect-pond-creatures|inspect-pond-atmosphere|inspect-species|inspect-world-catalog|inspect-world-select|editor|run [--display-mode=fullscreen|--display-mode=windowed-fullscreen]|generate-world <seed> <name>|generate-pond <seed> <name>|inspect-candidate <name>|inspect-pond-candidate <name>|smoke-baked-candidate <name>|run-baked-candidate <name>|promote-world <name> <base-name> [--dry-run]|promote-pond <name> <base-name> [--dry-run]|inspect-character-select|collision-debug|prepare-faf-collision|compare compatibility|forward-plus [--effects=off]|measure-atmosphere|measure-visibility|measure-pond-surface|measure-solar-water|inspect-scene <path>|inspect-course|inspect-habitat|inspect-reef|inspect-collision|inspect-terrain|inspect-geology|inspect-generated-geology|inspect-route-fields|inspect-route-anchors|inspect-placement|inspect-dressing|inspect-ambient|inspect-atmosphere|inspect-depth|inspect-water|inspect-faf|inspect-world-compiler|inspect-basin|inspect-shore-field|inspect-geology-sites|compile-world-fixture <seed>|automation-smoke'
 }
 world_profile="$ROOT/artifacts/world-data"
 world_name() { [[ ${1:-} =~ ^[a-z0-9][a-z0-9-]{0,47}$ ]] || { echo 'World name must use lowercase letters, digits and hyphens' >&2; exit 2; }; }
@@ -285,6 +285,36 @@ case "${1:-help}" in
     need_tools
     logged dynamic-waterline 120 env XDG_DATA_HOME="$world_profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/main.tscn -- --dynamic-waterline-check
     grep -Fq 'DYNAMIC_WATERLINE_CHECK_OK' "$LOGS/dynamic-waterline.log" || { echo 'Dynamic waterline marker missing' >&2; exit 1; }
+    ;;
+  inspect-wake-path)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/wake-path.XXXXXX")
+    logged wake-path 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --wake-path-check
+    grep -Fq 'WAKE_PATH_CHECK_OK' "$LOGS/wake-path.log" || { echo 'Wake path marker missing' >&2; exit 1; }
+    ;;
+  inspect-wake-ribbon)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/wake-ribbon.XXXXXX")
+    logged wake-ribbon 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --wake-ribbon-check
+    grep -Fq 'WAKE_RIBBON_CHECK_OK' "$LOGS/wake-ribbon.log" || { echo 'Wake ribbon marker missing' >&2; exit 1; }
+    ;;
+  inspect-wake-render-native)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/wake-render.XXXXXX")
+    logged wake-render-rings 180 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --scene res://scenes/p5_pike_encounter.tscn -- --wake-render-native-probe --wake-legacy-rings --wake-render-output="$ROOT/artifacts/wake-render/native"
+    grep -Fq 'WAKE_RENDER_NATIVE_OK mode=rings captures=11' "$LOGS/wake-render-rings.log" || { echo 'Wake ring A/B captures missing' >&2; exit 1; }
+    logged wake-render-new 180 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --scene res://scenes/p5_pike_encounter.tscn -- --wake-render-native-probe --wake-legacy-rings --wake-comparison=new --wake-render-output="$ROOT/artifacts/wake-render/native"
+    grep -Fq 'WAKE_RENDER_NATIVE_OK mode=new captures=11' "$LOGS/wake-render-new.log" || { echo 'Wake new A/B captures missing' >&2; exit 1; }
+    logged wake-render-rings-shore 180 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --scene res://scenes/p5_pike_encounter.tscn -- --wake-render-native-probe --wake-legacy-rings --wake-scenario=shore --wake-render-output="$ROOT/artifacts/wake-render/native"
+    grep -Fq 'WAKE_RENDER_NATIVE_OK mode=rings-shore captures=2' "$LOGS/wake-render-rings-shore.log" || { echo 'Wake ring shore captures missing' >&2; exit 1; }
+    logged wake-render-new-shore 180 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --scene res://scenes/p5_pike_encounter.tscn -- --wake-render-native-probe --wake-legacy-rings --wake-comparison=new --wake-scenario=shore --wake-render-output="$ROOT/artifacts/wake-render/native"
+    grep -Fq 'WAKE_RENDER_NATIVE_OK mode=new-shore captures=2' "$LOGS/wake-render-new-shore.log" || { echo 'Wake new shore captures missing' >&2; exit 1; }
+    ;;
+  inspect-wake-native)
+    need_tools
+    profile=$(mktemp -d "$ROOT/artifacts/wake-native.XXXXXX")
+    logged wake-native 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --path "$PROJECT" --rendering-method forward_plus --scene res://scenes/p5_pike_encounter.tscn -- --wake-path-native-probe --wake-path-debug --wake-output="$ROOT/artifacts/wake-path/native"
+    grep -Fq 'WAKE_NATIVE_OK captures=6' "$LOGS/wake-native.log" || { echo 'Wake native captures missing' >&2; exit 1; }
     ;;
   inspect-pond-surface)
     need_tools

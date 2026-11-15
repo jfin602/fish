@@ -330,7 +330,7 @@ public partial class Main : Node3D
             skeleton is null || skeleton.GetBoneCount() == 0 ||
             animation is null || !animation.HasAnimation("Armature|Swim") ||
             (course is null && (water is null || water.GetChildCount() !=
-                (WorldSession.SelectedWorldId == WorldCatalog.PondId ? 3 + WaterReaction.PondRingCapacity + 1 : 3) ||
+                (WorldSession.SelectedWorldId == WorldCatalog.PondId ? 5 : 3) ||
                 seabed?.GetNodeOrNull<MeshInstance3D>("Mesh")?.Mesh is null ||
                 seabed.GetNodeOrNull<CollisionShape3D>("Collision")?.Shape is null ||
                 GetNodeOrNull<StaticBody3D>("Habitat/HiddenLimits") is null ||

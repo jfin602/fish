@@ -115,32 +115,45 @@ public static class DynamicWaterlineChecks
             var radius = fish.BodyRadius;
             Require(WaterReaction.SurfaceContactLevel(1f, 1f, radius * .65f, radius) > 0f &&
                 WaterReaction.SurfaceContactLevel(1f, 1f, radius * 3f, radius) == 0f,
-                "deep boost incorrectly eligible for surface rings");
-            water.SamplePondSurface(new Vector3(x, atmosphere.GetSurfaceHeight(x, z) -
-                    FishController.PondCenterClearanceFraction * radius, z),
-                new Vector3(0f, 0f, fish.Tuning.MaxSpeed), 1f, 1f);
-            Require(water.ActivePondRings > 0, "contact ring missing");
-            var ring = water.GetNode<MeshInstance3D>("SurfaceRing0");
-            var ringPosition = ring.GlobalPosition;
-            Require(Mathf.Abs(ringPosition.Y - atmosphere.GetSurfaceHeight(
-                ringPosition.X, ringPosition.Z) - .045f) < .001f,
-                "ring not placed on its own local wave");
+                "deep boost incorrectly eligible for surface fronts");
+            water.SetPhysicsProcess(false);
+            var body = PlayerBodyGeometry.Measure(fish);
+            water.WakePath.Clear();
+            for (var i = 0; i < 35; i++)
+            {
+                var travel = z + i * body.Length * .065f;
+                var pose = new Transform3D(Basis.Identity, new Vector3(x,
+                    atmosphere.GetSurfaceHeight(x, travel) - body.TopReach * .35f, travel));
+                water.WakePath.Step(PondWakeContacts.At(body, pose, atmosphere.GetSurfaceHeight),
+                    body.Length, .7f, 1, 1f / 60f);
+            }
+            water.RefreshWakeRenderForProbe();
+            var contactTriangles = water.ActiveWakeTriangles;
+            Require(contactTriangles is > 0 and <= PondWakeRibbon.MaxTriangles,
+                "contact fronts missing or unbounded");
+            var wakeMesh = (ImmediateMesh)water.GetNode<MeshInstance3D>("PondWakeFronts").Mesh;
+            var wakeVertex = wakeMesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
+            Require(Mathf.Abs(wakeVertex.Y - atmosphere.GetRenderedSurfaceHeight(
+                wakeVertex.X, wakeVertex.Z) - .032f) < .002f,
+                "front vertex not placed on its own local rendered wave");
             await Frames(tree, 30);
-            Require(Mathf.Abs(ring.GlobalPosition.X - ringPosition.X) < .001f &&
-                Mathf.Abs(ring.GlobalPosition.Z - ringPosition.Z) < .001f &&
-                Mathf.Abs(ring.GlobalPosition.Y - atmosphere.GetSurfaceHeight(
-                    ringPosition.X, ringPosition.Z) - .045f) < .002f,
-                "ring did not remain world anchored on moving water");
-            var contactRings = water.ActivePondRings;
+            water.RefreshWakeRenderForProbe();
+            wakeVertex = wakeMesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
+            Require(Mathf.Abs(wakeVertex.Y - atmosphere.GetRenderedSurfaceHeight(
+                wakeVertex.X, wakeVertex.Z) - .032f) < .002f,
+                "front did not follow moving water");
             water.Suspend();
-            water.SamplePondSurface(new Vector3(x,
-                    atmosphere.GetSurfaceHeight(x, z) - radius * 3f, z),
-                new Vector3(0f, 0f, fish.Tuning.MaxSpeed * 1.8f), 1f, 1f);
-            Require(water.ActivePondRings == 0, "deep boosted fish emitted a surface ring");
-            water.SamplePondSurface(new Vector3(x,
-                    atmosphere.GetSurfaceHeight(x, z) + radius * .4f, z),
-                new Vector3(0f, 0f, fish.Tuning.MaxSpeed), 1f, 1f);
-            Require(water.ActivePondRings == 0, "airborne fish emitted a surface ring");
+            var deepPose = new Transform3D(Basis.Identity, new Vector3(x,
+                atmosphere.GetSurfaceHeight(x, z) - radius * 4f, z));
+            for (var i = 0; i < 35; i++)
+            {
+                deepPose.Origin.Z += body.Length * .065f;
+                water.WakePath.Step(PondWakeContacts.At(body, deepPose, atmosphere.GetSurfaceHeight),
+                    body.Length, 1f, 1, 1f / 60f);
+            }
+            water.RefreshWakeRenderForProbe();
+            Require(water.ActiveWakeTriangles == 0, "deep boosted fish emitted surface fronts");
+            water.SetPhysicsProcess(true);
             var start = Time.GetTicksUsec();
             var sum = 0f;
             for (var i = 0; i < 100000; i++)
@@ -150,7 +163,7 @@ public static class DynamicWaterlineChecks
             GD.Print($"DYNAMIC_WATERLINE_CHECK_OK vertex_error={maxError:F7} " +
                 $"shore={shoreSamples} open={openSamples} follow_gap={maxFollowGap:F4} " +
                 $"step={maxStep:F4} deep_drift={Mathf.Abs(fish.GlobalPosition.Y - deepY):F4} " +
-                $"sample_100k_ms={sampleMs:F2} contact_rings={contactRings} deep_boost_rings=0");
+                $"sample_100k_ms={sampleMs:F2} contact_triangles={contactTriangles} deep_boost_triangles=0");
             tree.Quit();
         }
         catch (Exception error)

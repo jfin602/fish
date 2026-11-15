@@ -297,13 +297,14 @@ public static class HatchChecks
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .001f,
                 "fry body breached the waterline");
-            crossed |= eye.GlobalPosition.Y > water + .01f;
+            crossed |= eye.GlobalPosition.Y > fish.PondSurfaceHeightAt(
+                eye.GlobalPosition.X, eye.GlobalPosition.Z) + .01f;
         }
         fish._Input(new InputEventKey { PhysicalKeycode = Key.Up, Pressed = false });
         fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
         Need(crossed && scene.GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere")
                 .CameraSignedImmersionDepth < 0f,
-            "normal fry ascent never brought the camera into air");
+            "normal fry ascent never brought the camera above the local wave");
     }
 
     private static void CheckShoreGrowth(PikeEncounter scene)

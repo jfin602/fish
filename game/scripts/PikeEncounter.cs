@@ -335,7 +335,7 @@ public partial class PikeEncounter : Node3D
         var otherHeadlessCheck = DisplayServer.GetName() == "headless" &&
             Array.Exists(OS.GetCmdlineUserArgs(), arg => arg != "--audio-check" &&
                 (arg.EndsWith("-check", StringComparison.Ordinal) ||
-                 arg == "--blood-fx-native-probe"));
+                 arg is "--blood-fx-native-probe" or "--wake-path-native-probe"));
         if (!_failed && !otherHeadlessCheck)
         {
             _audio = new WorldAudio { Name = "WorldAudio" };
@@ -360,6 +360,14 @@ public partial class PikeEncounter : Node3D
             AutoFeedBoostChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--growth-check"))
             GrowthChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-path-check"))
+            PondWakePathChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-ribbon-check"))
+            PondWakeRibbonChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-path-native-probe"))
+            PondWakeNativeProbe.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--wake-render-native-probe"))
+            PondWakeRenderNativeProbe.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--hatch-check"))
             HatchChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--audio-check"))
@@ -381,7 +389,7 @@ public partial class PikeEncounter : Node3D
             "--pike-encounter-check" or "--world-isolation-check" or "--pike-cover-check" or
             "--pike-sight-check" or "--pike-disturbance-check" or "--pike-ai-check" or
             "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--growth-check" or
-            "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe");
+            "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe" or "--wake-path-check" or "--wake-path-native-probe" or "--wake-ribbon-check" or "--wake-render-native-probe");
         _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass",
             legacyCheck ? "juvenile" : "egg");
         // Swim bodies must pass through one another so a Pike mouth can reach a

@@ -40,7 +40,8 @@ public static class WaterReactionChecks
             !left.TrailEnabled && !right.TrailEnabled &&
             !left.LocalCoords && !right.LocalCoords && !bubbles.LocalCoords &&
             water.GetNode<GpuParticles3D>("SurfaceSplash").Amount == 6 &&
-            water.ActivePondRings <= WaterReaction.PondRingCapacity,
+            water.GetNode<MeshInstance3D>("PondWakeFronts").Mesh is ImmediateMesh &&
+            water.GetNodeOrNull<MeshInstance3D>("SurfaceRing0") is null,
             "stage scale or particle budget invalid");
         return water;
     }
@@ -51,7 +52,7 @@ public static class WaterReactionChecks
         Need(fish.GetChildren().OfType<WaterReaction>().Count() == 1 &&
             fish.GetNode<GpuParticles3D>("WaterReaction/LeftWake").AmountRatio == 0f &&
             fish.GetNode<GpuParticles3D>("WaterReaction/RightWake").AmountRatio == 0f &&
-            fish.GetNode<WaterReaction>("WaterReaction").ActivePondRings == 0,
+            fish.GetNode<WaterReaction>("WaterReaction").ActiveWakeTriangles == 0,
             "egg emitted swimming effects");
     }
 
@@ -64,20 +65,25 @@ public static class WaterReactionChecks
         Need(WaterReaction.SurfaceContactLevel(1f, 1f, depth, radius) > .025f &&
             WaterReaction.SurfaceContactLevel(1f, 1f, radius * 2f, radius) == 0f,
             "body-dependent surface proximity invalid");
-        var position = new Vector3(0f, fish.PondSurfaceHeightAt(0f, 0f) - depth, 0f);
+        var body = PlayerBodyGeometry.Measure(fish);
         for (var i = 0; i < 35; i++)
-            water.SamplePondSurface(position, Vector3.Forward * fish.Tuning.MaxSpeed, 1f, 1f / 60f);
-        Need(water.ActivePondRings is > 0 and <= WaterReaction.PondRingCapacity,
-            "near-surface movement did not emit bounded rings");
-        var ring = water.GetChildren().OfType<MeshInstance3D>().First(r => r.Visible);
-        Need(Mathf.Abs(ring.GlobalPosition.Y - fish.PondSurfaceHeightAt(
-            ring.GlobalPosition.X, ring.GlobalPosition.Z) - .045f) < .002f,
-            "growth-stage ring was not placed at the local wave");
+        {
+            var z = -body.Length + i * body.Length * .06f;
+            var pose = new Transform3D(Basis.Identity, new Vector3(0f,
+                fish.PondSurfaceHeightAt(0f, z) - body.TopReach * .35f, z));
+            var contact = PondWakeContacts.At(body, pose, fish.PondSurfaceHeightAt);
+            water.WakePath.Step(contact, body.Length, .7f, 1, 1f / 60f);
+        }
+        water.RefreshWakeRenderForProbe();
+        Need(water.ActiveWakeTriangles is > 0 and <= PondWakeRibbon.MaxTriangles,
+            "near-surface movement did not emit bounded fronts");
+        var mesh = (ImmediateMesh)water.GetNode<MeshInstance3D>("PondWakeFronts").Mesh;
+        var vertex = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
+        Need(Mathf.Abs(vertex.Y - fish.PondSurfaceHeightAt(vertex.X, vertex.Z) - .032f) < .003f,
+            "wake vertex did not follow its own local wave");
         water.Suspend();
-        for (var i = 0; i < 35; i++)
-            water.SamplePondSurface(position - Vector3.Up * 3f,
-                Vector3.Forward * fish.Tuning.MaxSpeed, 1f, 1f / 60f);
-        Need(water.ActivePondRings == 0, "deep movement emitted rings");
+        Need(water.ActiveWakeTriangles == 0 && mesh.GetSurfaceCount() == 0,
+            "pause retained surface fronts");
     }
 
     private static void Need(bool valid, string message)

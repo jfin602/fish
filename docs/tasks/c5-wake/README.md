@@ -1,6 +1,6 @@
 # C5 Wake — natural surface wake correction
 
-**Status: W1–W3 authored / NOT EXECUTED / NOT QUALIFIED.** [Approved S26 design](../../planning/c5-wake.md). Manual Codex work only; package version remains unchanged. Do not advance historical P2/P4/P5 Gate status from documentation.
+**Status: W1 foundation and W2 rendering are implemented locally; W2 is not GREEN pending owner visual review of the faint underwater/waterline fronts. W3 has not started.** [Approved S26 design](../../planning/c5-wake.md). [W1 evidence](qualification/w1.md) records path checks; [W2 evidence](qualification/w2.md) records native A/B and limits. Manual Codex work only; package version remains unchanged. Do not advance historical P2/P4/P5 Gate status from documentation.
 
 The existing shared `WaterReaction` produces submerged tail trails/bubbles and a pool of eight colored Pond `SurfaceRing` meshes. Change **only the surface presentation** to body-originated diverging wave fronts, curved historical trails and gentle tail/bow turbulence, with stage-appropriate boost. Preserve the underwater effects and shared normal Pond/Pike Encounter source ownership.
 
@@ -8,8 +8,8 @@ The existing shared `WaterReaction` produces submerged tail trails/bubbles and a
 
 | Prompt | Responsibility | Evidence and stop |
 | --- | --- | --- |
-| [W1 — Contact and world-space wake paths](manual/W1-body-contact-and-wake-paths.txt) | Derive real model/water anchors; bounded world history; debug-only paths | T2 deterministic source/scene and debug native images; stop for review |
-| [W2 — Natural wake rendering](manual/W2-natural-wake-rendering.txt) | Replace circles; fade/propagate curved soft fronts with restrained highlights | T2 plus native A/B and performance; stop for review |
+| [W1 — Contact and world-space wake paths](manual/W1-body-contact-and-wake-paths.txt) | Implemented candidate: stage/body anchors, shared wave Y, bounded history and debug-only paths | [T2 and native diagnostic evidence](qualification/w1.md); owner review open |
+| [W2 — Natural wake rendering](manual/W2-natural-wake-rendering.txt) | Implemented candidate: white-from-above, green-from-below curved fronts replace production circles | [T2 plus native A/B and performance](qualification/w2.md); underwater/waterline visibility needs owner review |
 | [W3 — Growth, boost and owner qualification](manual/W3-growth-boost-native-qualification.txt) | Tune fry/adult stages, boost, water height and lifecycle; confirm Pond/Ocean isolation | T2 and real native T3; leave Pike Encounter running for owner playthrough |
 
 [Assessment](prompt-assessment.md) · [Implementation plan](implementation-plan.md) · [V43](../../validation.md)
