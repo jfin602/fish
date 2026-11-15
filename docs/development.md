@@ -34,7 +34,7 @@ Execution also requires a locally available/authenticated Codex CLI:
 npm run fish:phase -- p0
 ```
 
-The root `package.json` is private development metadata; P0 began at `0.0.0` and the passing direct closeout reaches `0.0.3`. It is independent of engine pins and public release versions. Do not add a root package lock or npm dependencies to run the inherited tools. [The runner guide](phase-runner.md) owns its exact contract.
+The root `package.json` is private development metadata; P0 began at `0.0.0` and its passing direct closeout reached `0.0.3`. The current root version is `0.6.0`, the [P6 development baseline](tasks/p6/baseline.md); it does not qualify any open Gate or denote a public release. It is independent of engine pins. No root package lock or npm dependencies are needed for the inherited tools. [The runner guide](phase-runner.md) owns its exact contract.
 
 The completed direct P0 stack assigned checkpoint `0.0.3`. To use the Godot project from any working directory:
 

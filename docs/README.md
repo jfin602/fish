@@ -1,6 +1,6 @@
 # Documentation index
 
-Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete. P2–P5 are owner-closed for progression / NOT GREEN with explicit remaining native evidence. The current package baseline is `0.5.12`; C5 Bass lifecycle/ecology polish is owner-approved **manual correction work**, not yet implemented. [The roadmap](roadmap.md) owns exact Phase/Gate status.
+Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only the routes needed for the task. P0 and P1 are complete. P2–P5 are owner-closed for progression / NOT GREEN with explicit remaining native evidence. The current package baseline is `0.6.0` for P6 development; C5 M1–M7 implementation is included, while owner-native qualification remains open. [The roadmap](roadmap.md) owns exact Phase/Gate status.
 
 ## Ownership
 
@@ -22,9 +22,10 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 | [Day/night and weather](systems/day-night-and-weather.md) | Shared environmental time/solar cycle contract; weather is a later modifier layered on the day/night baseline. |
 | [Stealth and detection](systems/stealth-and-detection.md) | Owner-approved naturalistic stealth core; physical shelter, exposure, sensory detection, investigation, escape, stealth hunting and P4/P5 boundary. |
 | [P5 executed stealth foundation and closeout](tasks/p5/closeout.md) | Historical Bluegill player, Bass prey and Pike fixture implementation; owner-closed / NOT GREEN with native test debt. |
-| [C5 Wake — natural surface waves](planning/c5-wake.md) | Approved S26 design for body-originated, world-space Pond wakes; [manual W1–W3](tasks/c5-wake/README.md) authored but not executed. |
+| [C5 Wake — natural surface waves](planning/c5-wake.md) | Approved S26 design for body-originated, world-space Pond wakes; [W1/W2 and refinements](tasks/c5-wake/README.md) implemented, W3 owner-native qualification open. |
 | [C5 Bass lifecycle and ecology design](planning/c5-post-p5-ecology-lifecycle.md) | Historical/ongoing Bass player, egg hatch, Bluegill schools, Pike targeting and blood correction with M1–M7 focused evidence; M8 native review open. |
 | [P6 Living Pond design](planning/p6/living-pond.md) | **S27 approved / NOT STARTED**: feeding reticle and mouth heading, nursery predators, frogs, snakes, competing Bass, living food, spatial exploration and full Bass survival in normal Freshwater Pond; V44–V51. |
+| [P6 development baseline](tasks/p6/baseline.md) | Root `0.6.0` checkpoint, focused validation and outstanding native qualification; no P6 gameplay or Gate pass. |
 | [Ecology and growth](systems/ecology-and-growth.md) | Food, prey, predator interaction, growth and habitat use. |
 | [Survival and runs](systems/survival-and-runs.md) | One life across sessions, pause, permanent death, saving and recovery. |
 | [Life stories and history](systems/life-stories-and-history.md) | Meaningful event capture, factual recap and durable main-menu archive. |
@@ -50,7 +51,7 @@ Start at [AGENTS.md](../AGENTS.md) and [BOOT.md](../BOOT.md), then follow only t
 
 P0 and P1 are complete. P2 is **owner-closed for progression / NOT GREEN**: G2.3/V20 remains an accepted open gap. P3 is also **owner-closed for progression / NOT GREEN**, with corrected Ocean `ocean-m4-42` at completed `0.3.6`, documented visual/native/visibility gaps and [direct closeout](tasks/p3/closeout.md). Do not convert accepted gaps into PASS.
 
-**P4 and P5 are owner-closed for progression / NOT GREEN.** [P4 closeout](tasks/p4/closeout.md) retains underwater clarity, route and surface/camera qualification limits; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native evidence debt at package `0.5.12`. The third World Select encounter is implemented, while normal Ocean/Pond remain separate test worlds. **C5 is approved/manual only**: [Bass lifecycle and ecological correction](planning/c5-post-p5-ecology-lifecycle.md), [M1–M8 manual prompts](tasks/c5-polish/README.md). [C5 Wake](tasks/c5-wake/README.md) W1–W3 are a separate, unexecuted manual surface-wake correction; V43 remains pending. **P6 Living Pond** is the next approved but NOT STARTED gameplay phase; former P6 saves/permanent death are **P7**, Life History **P8** and integrated qualification **P9**, all future work. Preserve old V06–V15 IDs with their new Gate mapping. The normal Pond remains a passive demo in current source; P6 predator integration is design, not shipped behavior.
+**P4 and P5 are owner-closed for progression / NOT GREEN.** [P4 closeout](tasks/p4/closeout.md) retains underwater clarity, route and surface/camera qualification limits; [P5 closeout](tasks/p5/closeout.md) retains G5.1–G5.3 native evidence debt from its historical `0.5.12` package. The third World Select encounter is implemented, while normal Ocean/Pond remain separate test worlds. [C5 Bass correction](tasks/c5-polish/README.md) has M1–M7 implementation in the `0.6.0` baseline, with M8 owner-native review open. [C5 Wake](tasks/c5-wake/README.md) has W1/W2 and refinements implemented, while W3/V43 native review remains open. **P6 Living Pond** is the next approved but NOT STARTED gameplay phase; former P6 saves/permanent death are **P7**, Life History **P8** and integrated qualification **P9**, all future work. Preserve old V06–V15 IDs with their new Gate mapping. The normal Pond remains a passive demo in current source; P6 predator integration is design, not shipped behavior.
 
 ## Status language
 
