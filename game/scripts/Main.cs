@@ -138,6 +138,7 @@ public partial class Main : Node3D
         if (OS.GetCmdlineUserArgs().Contains("--pond-surface-check") ||
             OS.GetCmdlineUserArgs().Contains("--pond-camera-immersion-check") ||
             OS.GetCmdlineUserArgs().Contains("--pond-scenery-check") ||
+            OS.GetCmdlineUserArgs().Contains("--dynamic-waterline-check") ||
             OS.GetCmdlineUserArgs().Contains("--pond-surface-probe") ||
             OS.GetCmdlineUserArgs().Contains("--solar-lighting-pond-check"))
         {
@@ -209,15 +210,20 @@ public partial class Main : Node3D
             GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").ConfigureProfile(profile);
             var atmosphere = GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere");
             atmosphere.Initialize(this);
+            if (profile == WorldEnvironmentProfile.Pond) fish.BindPondSurface(atmosphere);
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish,
-                profile == WorldEnvironmentProfile.Pond ? WaterVisualProfile.Pond : null,
-                atmosphere.SurfaceHeight));
+                profile == WorldEnvironmentProfile.Pond ? WaterVisualProfile.Pond : null));
         }
 
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))
         {
             PondSurfaceChecks.Start(this);
+            return;
+        }
+        if (populated && OS.GetCmdlineUserArgs().Contains("--dynamic-waterline-check"))
+        {
+            DynamicWaterlineChecks.Start(this);
             return;
         }
 #if DEBUG

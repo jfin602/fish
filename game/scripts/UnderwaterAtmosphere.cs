@@ -4,9 +4,10 @@ using System;
 
 namespace Fish;
 
-/// <summary>Owns normal-play P2 rendering only. No fish, input, camera, or clock writes.</summary>
+/// <summary>Owns water presentation and its scene-local wave clock; never writes fish state.</summary>
 public partial class UnderwaterAtmosphere : Node3D
 {
+    public UnderwaterAtmosphere() => ProcessPriority = -100;
     [Export] public Color BackgroundWater { get; set; } = new(0.035f, 0.17f, 0.22f);
     [Export] public Color AmbientWater { get; set; } = new(0.56f, 0.73f, 0.76f);
     [Export] public Color DistanceFogColor { get; set; } = new(0.10f, 0.37f, 0.42f);
@@ -79,6 +80,9 @@ public partial class UnderwaterAtmosphere : Node3D
     private bool _visibilityBypass;
     private float _legacyDistanceFogDensity = 0.0035f;
     private double _presentationSeconds;
+    private double _previousPresentationSeconds;
+    private float _renderSurfaceTime;
+    private SeabedSurface? _pondSeabed;
     private EnvironmentClock? _environmentClock;
     private SolarLightingState _solarLighting;
     private SolarWaterState _solarWater;
@@ -119,6 +123,21 @@ public partial class UnderwaterAtmosphere : Node3D
     public CanvasLayer? ScreenLayer => _screenLayer;
     public Godot.Environment? WaterEnvironment => _environment;
     public float SurfaceHeight => _surfaceHeight;
+    public float SurfaceTime => (float)_presentationSeconds;
+    public float GetSurfaceHeight(float worldX, float worldZ)
+        => SampleSurfaceHeight(worldX, worldZ, SurfaceTime);
+
+    private float SampleSurfaceHeight(float worldX, float worldZ, float time)
+    {
+        if (_profile.Id != WorldEnvironmentProfile.Pond || _surface is null || _pondSeabed is null)
+            return _surfaceHeight;
+        var local = _surface.ToLocal(new Vector3(worldX, _surfaceHeight, worldZ));
+        var basinPoint = _pondSeabed.ToLocal(new Vector3(worldX, _surfaceHeight, worldZ));
+        var shore = PondWaterline.ShoreBlend(_pondSeabed.Basin, basinPoint.X, basinPoint.Z);
+        return _surface.ToGlobal(new Vector3(local.X,
+            PondWaterline.Displacement(local.X, local.Z, time, SurfaceWaveHeight,
+                SurfaceWaveSpeed, SurfaceWaveDetail, shore), local.Z)).Y;
+    }
     public float DeepReferenceHeight => _deepReferenceHeight;
     public float EffectiveDepth01 { get; private set; }
     public float CameraSignedImmersionDepth { get; private set; }
@@ -367,15 +386,26 @@ public partial class UnderwaterAtmosphere : Node3D
         GD.Print($"POND_TURBIDITY_READY seed={seabed.Basin.Seed} texture={PondTurbidityField.TextureWidth}x{PondTurbidityField.TextureHeight}x{PondTurbidityField.TextureWidth} size={field.Size} density_max={PondTurbidityField.VolumeDensity:F3} build_ms={(Time.GetTicksUsec() - start) / 1000.0:F2}");
     }
 
+    public override void _PhysicsProcess(double delta)
+    {
+        if (_effects is null) return;
+        _previousPresentationSeconds = _presentationSeconds;
+        _presentationSeconds += delta;
+    }
+
     public override void _Process(double delta)
     {
         if (!_enabled || _effects is null) return;
         var solarChanged = UpdateSolar(false);
         if (solarChanged) ApplySolarLightLevels(EffectiveDepth01);
+        // Both the fish and shader read this physics clock. Render the same
+        // interpolation interval as physics-interpolated world transforms.
+        var renderSeconds = Mathf.Lerp((float)_previousPresentationSeconds,
+            (float)_presentationSeconds, Engine.GetPhysicsInterpolationFraction());
+        _renderSurfaceTime = (float)renderSeconds;
         RefreshDepth(false, (float)delta);
-        _presentationSeconds += delta;
-        _surfaceMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
-        _pondBasinMaterial?.SetShaderParameter("surface_time", (float)_presentationSeconds);
+        _surfaceMaterial?.SetShaderParameter("surface_time", renderSeconds);
+        _pondBasinMaterial?.SetShaderParameter("surface_time", renderSeconds);
         _shaftMaterial?.SetShaderParameter("shaft_time", (float)_presentationSeconds);
         _screenMaterial?.SetShaderParameter("screen_time", (float)_presentationSeconds);
         // Slow projected movement is world anchored. Pause stops this node's process.
@@ -454,13 +484,15 @@ public partial class UnderwaterAtmosphere : Node3D
             return;
         var camera = GetViewport().GetCamera3D();
         if (camera is null) return;
-        // A positive signed depth places the eye below the real, level Pond plane.
+        // A positive signed depth places the eye below the local rendered wave.
         // No fish transform, collider or motor state is consulted here.
         if (_profile.Id == WorldEnvironmentProfile.Pond)
         {
             var seabed = GetParent()?.GetNodeOrNull<SeabedSurface>("Habitat/Seabed");
-            if (seabed is not null && seabed.TryGetPondWaterSurfaceHeight(out var height))
+            if (seabed is not null && seabed.TryGetPondWaterSurfaceHeight(out _))
             {
+                var height = SampleSurfaceHeight(camera.GlobalPosition.X,
+                    camera.GlobalPosition.Z, _renderSurfaceTime);
                 CameraSignedImmersionDepth = height - camera.GlobalPosition.Y;
                 var target = TargetCameraImmersion(height, camera.GlobalPosition.Y);
                 if (!_immersionInitialized) { _immersion = target; _immersionInitialized = true; }
@@ -471,7 +503,10 @@ public partial class UnderwaterAtmosphere : Node3D
             else { CameraSignedImmersionDepth = float.NaN; _immersion = 1f; _immersionInitialized = false; }
         }
         else { CameraSignedImmersionDepth = _surfaceHeight - camera.GlobalPosition.Y; _immersion = 1f; }
-        var raw = Mathf.Clamp((_surfaceHeight - camera.GlobalPosition.Y) /
+        var localSurfaceHeight = _profile.Id == WorldEnvironmentProfile.Pond
+            ? SampleSurfaceHeight(camera.GlobalPosition.X, camera.GlobalPosition.Z, _renderSurfaceTime)
+            : _surfaceHeight;
+        var raw = Mathf.Clamp((localSurfaceHeight - camera.GlobalPosition.Y) /
             (_surfaceHeight - _deepReferenceHeight), 0f, 1f);
         var depth = raw * raw * (3f - 2f * raw);
         if (!force && Mathf.Abs(depth - _lastDepth) < 0.001f &&
@@ -597,6 +632,7 @@ public partial class UnderwaterAtmosphere : Node3D
         }
         var extent = box.Size;
         var seabed = main.GetNode<SeabedSurface>("Habitat/Seabed");
+        _pondSeabed = seabed.Basin.IsPond ? seabed : null;
         var pondWaterHeight = 0f;
         if (seabed.Basin.IsPond && !seabed.TryGetPondWaterSurfaceHeight(out pondWaterHeight))
         {

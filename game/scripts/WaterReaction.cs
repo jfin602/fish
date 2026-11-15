@@ -23,14 +23,13 @@ public readonly record struct WaterReactionLevels(float Left, float Right, float
     }
 }
 
-/// <summary>World-space GPU wake below the player root; never drives the fish body.</summary>
+/// <summary>World-space wake and surface effects; never drives the fish body.</summary>
 public partial class WaterReaction : Node3D
 {
     public const int PondRingCapacity = 8;
     private readonly FishController _fish;
     private readonly WaterVisualProfile _waterProfile;
     private readonly WaterVisualProfile? _surfaceProfile;
-    private readonly float _pondWaterY;
     private readonly MeshInstance3D[] _rings = new MeshInstance3D[PondRingCapacity];
     private readonly float[] _ringAges = new float[PondRingCapacity];
     private readonly float[] _ringSizes = new float[PondRingCapacity];
@@ -48,15 +47,15 @@ public partial class WaterReaction : Node3D
     private int _boostVisualStep = -1;
     private float _bodyScale = 1f;
     private float _bodyRadius = .48f;
+    private float _visualTopReach = .2f;
     private float _tailZ = .43f;
     private float _trailTimeScale = 1f;
 
-    public WaterReaction(FishController fish, WaterVisualProfile? surfaceProfile = null, float pondWaterY = 0f)
+    public WaterReaction(FishController fish, WaterVisualProfile? surfaceProfile = null)
     {
         _fish = fish;
         _waterProfile = surfaceProfile ?? WaterVisualProfile.Ocean;
         _surfaceProfile = surfaceProfile?.Id == WorldEnvironmentProfile.Pond ? surfaceProfile : null;
-        _pondWaterY = pondWaterY;
         Name = "WaterReaction";
     }
 
@@ -77,6 +76,7 @@ public partial class WaterReaction : Node3D
     {
         var body = PlayerBodyGeometry.Measure(_fish);
         _bodyRadius = body.Radius;
+        _visualTopReach = body.TopReach;
         _bodyScale = Mathf.Clamp(body.Length / .95f, .025f, 4f);
         _trailTimeScale = Mathf.Clamp(Mathf.Sqrt(_bodyScale), .55f, 1.2f);
         _boostVisualStep = -1;
@@ -302,6 +302,10 @@ public partial class WaterReaction : Node3D
         for (var i = 0; i < PondRingCapacity; i++)
         {
             if (!_rings[i].Visible) continue;
+            var ringPosition = _rings[i].GlobalPosition;
+            _rings[i].GlobalPosition = new Vector3(ringPosition.X,
+                _fish.PondSurfaceHeightAt(ringPosition.X, ringPosition.Z) + .045f,
+                ringPosition.Z);
             _ringAges[i] += delta;
             if (_ringAges[i] >= .95f) { _rings[i].Visible = false; continue; }
             var progress = _ringAges[i] / .95f;
@@ -314,10 +318,11 @@ public partial class WaterReaction : Node3D
         _splashCooldown = Mathf.Max(0f, _splashCooldown - delta);
         var horizontal = new Vector3(velocity.X, 0, velocity.Z);
         var speed01 = horizontal.Length() / Mathf.Max(.001f, _fish.Tuning.MaxSpeed);
-        var depth = _pondWaterY - position.Y;
-        var level = SurfaceContactLevel(speed01, effort, depth, _bodyRadius);
+        var depth = _fish.PondSurfaceHeightAt(position.X, position.Z) - position.Y;
+        var contactReach = _visualTopReach + Mathf.Max(.002f, _bodyRadius * .08f);
+        var level = SurfaceContactLevel(speed01, effort, depth, contactReach);
         level = Mathf.Clamp(level * (1f + .45f * _boostBlend), 0f, 1f);
-        if (level < .025f || depth < -_bodyRadius * .2f || depth > _bodyRadius * 1.5f)
+        if (level < .025f || depth < -_bodyRadius * .2f || depth > contactReach)
         {
             _surfaceClock = 0f;
             return;
@@ -329,15 +334,17 @@ public partial class WaterReaction : Node3D
         var ring = _rings[_ringCursor];
         _ringCursor = (_ringCursor + 1) % PondRingCapacity;
         var trail = new Vector3(velocity.X, 0f, velocity.Z).Normalized();
-        ring.GlobalPosition = new Vector3(position.X, _pondWaterY + .045f, position.Z) -
-            trail * Mathf.Min(_bodyRadius, _bodyScale * .4f);
+        var ringX = position.X - trail.X * Mathf.Min(_bodyRadius, _bodyScale * .4f);
+        var ringZ = position.Z - trail.Z * Mathf.Min(_bodyRadius, _bodyScale * .4f);
+        ring.GlobalPosition = new Vector3(ringX,
+            _fish.PondSurfaceHeightAt(ringX, ringZ) + .045f, ringZ);
         ring.GlobalRotation = new Vector3(0, Mathf.Atan2(horizontal.X, horizontal.Z), 0);
         var emitted = (_ringCursor + PondRingCapacity - 1) % PondRingCapacity;
         _ringSizes[emitted] = _bodyScale * (1f + .22f * _boostBlend);
         ring.Scale = new Vector3(.22f * _ringSizes[emitted], 1f, .31f * _ringSizes[emitted]);
         _ringAges[emitted] = 0f;
         ring.Visible = true;
-        if (_splash is not null && depth < _bodyRadius * .7f &&
+        if (_splash is not null && depth <= _visualTopReach &&
             level > .42f && effort > .4f &&
             _splashCooldown <= 0f)
         {

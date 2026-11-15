@@ -381,7 +381,7 @@ public partial class PikeEncounter : Node3D
             "--pike-encounter-check" or "--world-isolation-check" or "--pike-cover-check" or
             "--pike-sight-check" or "--pike-disturbance-check" or "--pike-ai-check" or
             "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--growth-check" or
-            "--blood-fx-check" or "--blood-fx-native-probe");
+            "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe");
         _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass",
             legacyCheck ? "juvenile" : "egg");
         // Swim bodies must pass through one another so a Pike mouth can reach a
@@ -392,6 +392,7 @@ public partial class PikeEncounter : Node3D
             GetNode<SeabedSurface>("Habitat/Seabed").DeepFloorY - 2f,
             PikeCoverFixture.WaterY - .31f);
         _fish.ConfigurePondWaterline(GetNode<SeabedSurface>("Habitat/Seabed"));
+        _fish.BindPondSurface(GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere"));
         _standardTuning = _fish.Tuning;
         if (legacyCheck)
         {
@@ -454,7 +455,7 @@ public partial class PikeEncounter : Node3D
         var water = _fish.GetNodeOrNull<WaterReaction>("WaterReaction");
         if (water is null)
         {
-            water = new WaterReaction(_fish, WaterVisualProfile.Pond, _fish.PondWaterlineHeight);
+            water = new WaterReaction(_fish, WaterVisualProfile.Pond);
             _fish.AddChild(water);
         }
         if (_growth.Stage != "egg") water.ConfigureFromPlayerVisual();
@@ -1030,7 +1031,9 @@ public partial class PikeEncounter : Node3D
         var nextBody = _growth.BodyForNext();
         var radius = nextBody.Radius;
         var length = nextBody.Height;
-        if (_fish.GlobalPosition.Y > _fish.PondWaterlineHeight - .65f * radius)
+        if (_fish.GlobalPosition.Y > _fish.PondSurfaceHeightAt(
+                _fish.GlobalPosition.X, _fish.GlobalPosition.Z) -
+                FishController.PondCenterClearanceFraction * radius)
         { _growthClearanceBlocked = true; return false; }
         using var grownShape = new CapsuleShape3D { Radius = radius, Height = length };
         using var query = new PhysicsShapeQueryParameters3D

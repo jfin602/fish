@@ -60,15 +60,19 @@ public static class WaterReactionChecks
         var water = CheckStage(scene);
         var fish = scene.GetNode<FishController>("Fish");
         var radius = scene.Growth.Body.Radius;
-        var depth = radius * .7f;
+        var depth = PlayerBodyGeometry.Measure(fish).TopReach * .8f;
         Need(WaterReaction.SurfaceContactLevel(1f, 1f, depth, radius) > .025f &&
             WaterReaction.SurfaceContactLevel(1f, 1f, radius * 2f, radius) == 0f,
             "body-dependent surface proximity invalid");
-        var position = new Vector3(0f, fish.PondWaterlineHeight - depth, 0f);
+        var position = new Vector3(0f, fish.PondSurfaceHeightAt(0f, 0f) - depth, 0f);
         for (var i = 0; i < 35; i++)
             water.SamplePondSurface(position, Vector3.Forward * fish.Tuning.MaxSpeed, 1f, 1f / 60f);
         Need(water.ActivePondRings is > 0 and <= WaterReaction.PondRingCapacity,
             "near-surface movement did not emit bounded rings");
+        var ring = water.GetChildren().OfType<MeshInstance3D>().First(r => r.Visible);
+        Need(Mathf.Abs(ring.GlobalPosition.Y - fish.PondSurfaceHeightAt(
+            ring.GlobalPosition.X, ring.GlobalPosition.Z) - .045f) < .002f,
+            "growth-stage ring was not placed at the local wave");
         water.Suspend();
         for (var i = 0; i < 35; i++)
             water.SamplePondSurface(position - Vector3.Up * 3f,

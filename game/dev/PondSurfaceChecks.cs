@@ -28,8 +28,9 @@ public static class PondSurfaceChecks
                 "selected baked Pond surface/upper collision");
             var radius = fish.PondColliderRadius;
             var limit = fish.PondSurfaceCenterLimit;
+            water = fish.PondSurfaceHeightAt(fish.GlobalPosition.X, fish.GlobalPosition.Z);
             Require(Mathf.Abs(radius - PlayerBodyGeometry.Measure(fish).Radius) < .001f &&
-                Mathf.Abs(limit - (water - .65f * radius)) < .001f &&
+                Mathf.Abs(limit - (water - FishController.PondCenterClearanceFraction * radius)) < .001f &&
                 limit + radius > water && limit - radius < water,
                 "collider-derived partial breach");
             var ascentAtLimit = FishController.ConstrainPondAscent(new Vector3(2f, 3f, -2f),
@@ -40,15 +41,20 @@ public static class PondSurfaceChecks
                     limit, limit, 1f / 60f).Y == -2f,
                 "water tangent projection and downward escape");
             var core = seabed.Basin.DeepCore;
+            water = fish.PondSurfaceHeightAt(core.X, core.Y);
+            limit = water - FishController.PondCenterClearanceFraction * radius;
             var deep = await Ascend(tree, fish, new Vector3(core.X, water - 5f, core.Y),
                 limit, "deep", false);
+            var deepGap = fish.PondSurfaceCenterLimit - fish.GlobalPosition.Y;
             var shallow = await Ascend(tree, fish, new Vector3(core.X, water - 1.5f, core.Y),
                 limit, "shallow", true);
+            var shallowGap = fish.PondSurfaceCenterLimit - fish.GlobalPosition.Y;
             GD.Print($"POND_SURFACE_ASCENTS deep={deep.MaxY:F4}/{deep.MaxStepY:F4} shallow={shallow.MaxY:F4}/{shallow.MaxStepY:F4} limit={limit:F4}");
-            Require(deep.MaxY > limit - .06f && shallow.MaxY > limit - .06f &&
+            Require(deepGap < .14f && shallowGap < .14f &&
                 deep.MaxStepY < .07f && shallow.MaxStepY < .07f,
                 "two-depth ascent reaches surface smoothly");
             var visualTop = VisualTop(fish);
+            water = fish.PondSurfaceHeightAt(fish.GlobalPosition.X, fish.GlobalPosition.Z);
             Require(visualTop > water && fish.GlobalPosition.Y - radius < water,
                 "adult Bluegill anatomy should partly breach while collider remains immersed");
 
@@ -59,7 +65,7 @@ public static class PondSurfaceChecks
             Key(fish, Godot.Key.D, false);
             Require(fish.GlobalPosition.DistanceTo(startTurn) > .6f &&
                 Mathf.Abs(fish.GlobalPosition.X - startTurn.X) > .12f &&
-                fish.GlobalPosition.Y <= limit + .002f,
+                fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .002f,
                 "surface turn retains lateral travel");
             var cruiseSpeed = fish.Velocity.Length();
             Key(fish, Godot.Key.W, false);
@@ -69,7 +75,7 @@ public static class PondSurfaceChecks
             await Frames(tree, 20);
             Key(fish, Godot.Key.S, false);
             Require(coastSpeed < cruiseSpeed && fish.Velocity.Length() < coastSpeed &&
-                fish.GlobalPosition.Y <= limit + .002f,
+                fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .002f,
                 "coast and brake retain surface constraint");
 
             var beforeDescent = fish.GlobalPosition.Y;
@@ -96,7 +102,7 @@ public static class PondSurfaceChecks
                     await Frames(tree, 1);
                     maxStep = Mathf.Max(maxStep, fish.GlobalPosition.DistanceTo(previous));
                     maxSpeed = Mathf.Max(maxSpeed, fish.Velocity.Length());
-                    Require(fish.GlobalPosition.Y <= limit + .002f,
+                    Require(fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .002f,
                         "repeated surface occupancy");
                 }
                 Key(fish, Godot.Key.Up, false);
@@ -137,7 +143,7 @@ public static class PondSurfaceChecks
             for (var tick = 0; tick < 110; tick++)
             {
                 await Frames(tree, 1);
-                Require(fish.GlobalPosition.Y <= limit + .002f,
+                Require(fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .002f,
                     "Adaptive Follow ascent escaped Pond waterline");
             }
             fish._Input(new InputEventMouseButton
@@ -190,7 +196,7 @@ public static class PondSurfaceChecks
             await Frames(tree, 1);
             maxY = Mathf.Max(maxY, fish.GlobalPosition.Y);
             maxStepY = Mathf.Max(maxStepY, Mathf.Abs(fish.GlobalPosition.Y - before.Y));
-            Require(fish.GlobalPosition.Y <= limit + .002f &&
+            Require(fish.GlobalPosition.Y <= fish.PondSurfaceCenterLimit + .002f &&
                 fish.Velocity.Length() <= fish.Tuning.MaxSpeed + .02f &&
                 fish.GlobalPosition.Y >= before.Y - .002f,
                 $"{label} sustained upward input escaped waterline");

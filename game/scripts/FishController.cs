@@ -6,15 +6,33 @@ namespace Fish;
 /// <summary>Authoritative fish transform, velocity and collision body.</summary>
 public partial class FishController : CharacterBody3D
 {
+    public const float PondCenterClearanceFraction = .35f;
     [Export] public SwimTuning Tuning { get; set; } = new();
     // Safety clamp sits just inside the physical wall (inner face 37.2 m, fish radius .48 m).
     private float _horizontalLimit = 36.7f;
     private float _minimumY = -9f;
     private float _maximumY = 9f;
     private float? _pondSurfaceCenterLimit;
+    private UnderwaterAtmosphere _pondAtmosphere;
+    private float? _previousSurfaceLimit;
+    private bool _surfaceFollowing;
     public float PondWaterlineHeight { get; private set; } = float.NaN;
     public float PondColliderRadius { get; private set; }
-    public float PondSurfaceCenterLimit => _pondSurfaceCenterLimit ?? float.NaN;
+    public float PondSurfaceCenterLimit => float.IsFinite(PondWaterlineHeight)
+        ? PondSurfaceLimitAt(GlobalPosition.X, GlobalPosition.Z) : float.NaN;
+    public float PondSurfaceHeightAt(float worldX, float worldZ) =>
+        _pondAtmosphere?.GetSurfaceHeight(worldX, worldZ) ?? PondWaterlineHeight;
+    public float PondSurfaceLimitAt(float worldX, float worldZ) =>
+        PondSurfaceHeightAt(worldX, worldZ) - PondCenterClearanceFraction * BodyRadius;
+    public void BindPondSurface(UnderwaterAtmosphere atmosphere)
+    {
+        if (atmosphere.ProfileId != WorldEnvironmentProfile.Pond ||
+            !float.IsFinite(PondWaterlineHeight))
+            throw new InvalidOperationException("POND_SURFACE_BIND_INVALID");
+        _pondAtmosphere = atmosphere;
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
+    }
     public float BodyScale { get; private set; } = 1f;
     public float BodyRadius => GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D sphere
         ? sphere.Radius : GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D capsule
@@ -40,7 +58,9 @@ public partial class FishController : CharacterBody3D
         PondColliderRadius = radius;
         BodyScale = visualLength;
         if (float.IsFinite(PondWaterlineHeight))
-            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
+            _pondSurfaceCenterLimit = PondWaterlineHeight - PondCenterClearanceFraction * radius;
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
     }
     public void FitCollisionToPlayerVisual()
@@ -54,7 +74,9 @@ public partial class FishController : CharacterBody3D
         PondColliderRadius = body.Radius;
         BodyScale = Mathf.Clamp(body.Length / .95f, .025f, 4f);
         if (float.IsFinite(PondWaterlineHeight))
-            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * body.Radius;
+            _pondSurfaceCenterLimit = PondWaterlineHeight - PondCenterClearanceFraction * body.Radius;
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
     }
     public void SetPondBodyRadius(float radius)
@@ -66,7 +88,9 @@ public partial class FishController : CharacterBody3D
         PondColliderRadius = radius;
         BodyScale = radius / .48f;
         if (float.IsFinite(PondWaterlineHeight))
-            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
+            _pondSurfaceCenterLimit = PondWaterlineHeight - PondCenterClearanceFraction * radius;
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
     }
     public void ConfigureWorldBounds(float horizontalLimit, float minimumY, float maximumY)
@@ -88,9 +112,11 @@ public partial class FishController : CharacterBody3D
                 "POND_WATERLINE_INVALID action=check-generated-surface-and-fish-collider");
         PondWaterlineHeight = waterline;
         PondColliderRadius = BodyRadius;
-        // The collider remains mostly submerged. At the level plane its top
-        // can emerge by 35% of its radius; dorsal anatomy can emerge farther.
-        _pondSurfaceCenterLimit = waterline - 0.65f * BodyRadius;
+        // The collider remains partly submerged. The registered body radius
+        // allows the visible dorsal surface to reach the moving interface.
+        _pondSurfaceCenterLimit = waterline - PondCenterClearanceFraction * BodyRadius;
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
         GD.Print($"POND_WATERLINE_READY water_y={waterline:F3} radius={BodyRadius:F3} center_max={_pondSurfaceCenterLimit:F3} upper_collision=disabled");
     }
 
@@ -290,28 +316,50 @@ public partial class FishController : CharacterBody3D
             : 0;
         PresentationAngularTurn = Mathf.Clamp(new Vector2(PresentationTurn, pitchTurn).Length(), 0, 1);
         Basis = new Basis(Vector3.Up, -_state.Yaw) * new Basis(Vector3.Right, _state.Pitch);
-        Velocity = _pondSurfaceCenterLimit is { } limit
-            ? ConstrainPondAscent(_state.Velocity, Position.Y, limit, (float)delta,
+        var surfaceLimit = _pondSurfaceCenterLimit is not null
+            ? PondSurfaceLimitAt(GlobalPosition.X, GlobalPosition.Z) : float.NaN;
+        var followVelocity = 0f;
+        if (float.IsFinite(surfaceLimit) && _previousSurfaceLimit is { } previousLimit &&
+            _surfaceFollowing && Mathf.Abs(_state.Velocity.Y) < .15f)
+            followVelocity = SurfaceFollowVelocity(previousLimit, surfaceLimit, (float)delta);
+        Velocity = _pondSurfaceCenterLimit is not null
+            ? ConstrainPondAscent(_state.Velocity, GlobalPosition.Y, surfaceLimit, (float)delta,
                 Mathf.Min(.35f, Mathf.Max(.03f, BodyScale * .35f)))
             : _state.Velocity;
+        Velocity += Vector3.Up * followVelocity;
+        var requestedY = Velocity.Y;
         MoveAndSlide();
 
         // Collision and the existing habitat bounds remain authoritative.
         var clamped = new Vector3(
             Mathf.Clamp(Position.X, -_horizontalLimit, _horizontalLimit),
-            _pondSurfaceCenterLimit is { } surfaceLimit
-                ? Mathf.Clamp(Position.Y, _minimumY, surfaceLimit)
+            _pondSurfaceCenterLimit is not null
+                ? Mathf.Clamp(Position.Y, _minimumY,
+                    PondSurfaceLimitAt(GlobalPosition.X, GlobalPosition.Z))
                 : Mathf.Clamp(Position.Y, _minimumY, _maximumY),
             Mathf.Clamp(Position.Z, -_horizontalLimit, _horizontalLimit));
         var effective = Velocity;
+        var clampedY = !Mathf.IsEqualApprox(clamped.Y, Position.Y);
         if (!Mathf.IsEqualApprox(clamped.X, Position.X)) effective.X = 0;
         if (!Mathf.IsEqualApprox(clamped.Y, Position.Y)) effective.Y = 0;
         if (!Mathf.IsEqualApprox(clamped.Z, Position.Z)) effective.Z = 0;
         Position = clamped;
         Velocity = effective;
         _state.Velocity = effective;
-        _state.Speed = effective.Length();
+        if (!clampedY && Mathf.Abs(effective.Y - requestedY) < .001f)
+            _state.Velocity -= Vector3.Up * followVelocity;
+        _state.Speed = _state.Velocity.Length();
+        if (_pondSurfaceCenterLimit is not null)
+        {
+            var currentLimit = PondSurfaceLimitAt(GlobalPosition.X, GlobalPosition.Z);
+            _surfaceFollowing = currentLimit - GlobalPosition.Y <=
+                Mathf.Max(.012f, BodyRadius * .15f) && _state.Velocity.Y >= -.15f;
+            _previousSurfaceLimit = currentLimit;
+        }
     }
+
+    public static float SurfaceFollowVelocity(float previousLimit, float currentLimit, float delta) =>
+        delta > 0f ? Mathf.Clamp((currentLimit - previousLimit) / delta, -1f, 1f) : 0f;
 
     private bool EncounterTurnOverlaps(SwimState state)
     {
@@ -334,6 +382,8 @@ public partial class FishController : CharacterBody3D
 
     public void ClearAndDisarmInput(bool stopMotion)
     {
+        _previousSurfaceLimit = null;
+        _surfaceFollowing = false;
         _boostBlockedUntilRelease |= _boostHeld;
         _boostHeld = false;
         BoostActive = false;

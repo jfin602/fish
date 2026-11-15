@@ -123,7 +123,7 @@ public static class PondSurfaceSceneryChecks
             Require(atmosphere.CameraImmersion01 < .001f &&
                 Mathf.Abs(env.FogDepthBegin - WaterVisualProfile.Pond.AirFogBegin) < .01f &&
                 Mathf.Abs(env.FogDepthEnd - WaterVisualProfile.Pond.AirFogEnd) < .01f &&
-                env.FogDensity > .9f &&
+                env.FogDensity < .02f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("overcast") == 1f,
                 "overcast air/far-bound concealment profile missing");
             Require(WaterReaction.SurfaceContactLevel(1f, 1f, .3f) >
@@ -136,7 +136,8 @@ public static class PondSurfaceSceneryChecks
             var start = Time.GetTicksUsec();
             for (var tick = 0; tick < 240; tick++)
             {
-                water.SamplePondSurface(new Vector3(core.X, atmosphere.SurfaceHeight - .25f, core.Y),
+                water.SamplePondSurface(new Vector3(core.X,
+                    atmosphere.GetSurfaceHeight(core.X, core.Y) - .25f, core.Y),
                     new Vector3(0, 0, fish.Tuning.MaxSpeed), 1f, 1f / 60f);
                 Require(water.ActivePondRings <= WaterReaction.PondRingCapacity,
                     "surface effect pool overran");

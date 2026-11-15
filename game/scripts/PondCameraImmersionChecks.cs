@@ -45,12 +45,14 @@ public static class PondCameraImmersionChecks
         {
             var core = seabed.Basin.DeepCore;
             var x = core.X; var z = core.Y;
+            water = atmosphere.GetSurfaceHeight(x, z);
             void At(float y, int frames = 1)
             {
                 rig.GlobalPosition = new Vector3(x, y, z);
                 for (var tick = 0; tick < frames; tick++)
                     atmosphere.RefreshDepth(true, 1f / 60f);
-                Require(Mathf.Abs(atmosphere.CameraSignedImmersionDepth - (water - y)) < .001f,
+                Require(Mathf.Abs(atmosphere.CameraSignedImmersionDepth -
+                    (atmosphere.GetSurfaceHeight(x, z) - y)) < .001f,
                     "signed depth did not follow actual eye");
             }
             At(water - 2f, 120);
@@ -100,12 +102,14 @@ public static class PondCameraImmersionChecks
                 "camera/fish water occupancy");
             x = 0f; z = 0f;
             while (seabed.Basin.DistanceToShore(x, z) > 5f) z -= 1f;
+            water = atmosphere.GetSurfaceHeight(x, z);
             Require(seabed.Basin.HeightAt(x, z) > seabed.Basin.HeightAt(core.X, core.Y),
                 "bank terrain probe did not rise");
             At(water + 1.5f, 120);
             Require(atmosphere.CameraImmersion01 < .001f,
                 "camera waterline drifted over bank terrain");
             x = core.X; z = core.Y;
+            water = atmosphere.GetSurfaceHeight(x, z);
             main.GetTree().Paused = true;
             var custom = originalSettings.Copy();
             custom.SunEnergy = .9f;

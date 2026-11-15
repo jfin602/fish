@@ -64,6 +64,18 @@ public static class GrowthChecks
             Need(scene.Growth.Stage == "juvenile" && scene.Feeding.Nutrition == 0 &&
                 DemoSelection.CharacterId == PondGrowthState.SpeciesId &&
                 Near(fish.BodyRadius, scene.Growth.ColliderRadius), "initial fixture state invalid");
+            var juvenileBody = scene.Growth.Body;
+            foreach (var stage in new[] { "larva", "juvenile", "subadult", "adult" })
+            {
+                var body = scene.Growth.BodyFor(stage);
+                fish.SetEncounterBassBody(body);
+                Need(Near(fish.BodyRadius, body.Radius) &&
+                    Near(fish.PondSurfaceCenterLimit,
+                        fish.PondSurfaceHeightAt(fish.GlobalPosition.X, fish.GlobalPosition.Z)
+                        - FishController.PondCenterClearanceFraction * body.Radius),
+                    "moving waterline did not adopt registered Bass body: " + stage);
+            }
+            fish.SetEncounterBassBody(juvenileBody);
             CheckRig();
             await CheckStageWall();
             await CheckJuvenileShoreAscent();
@@ -97,7 +109,8 @@ public static class GrowthChecks
             wall.QueueFree();
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             fish.GlobalPosition = new Vector3(open.X,
-                fish.PondWaterlineHeight - .65f * scene.Growth.RadiusForNext() + .01f,
+                fish.PondSurfaceHeightAt(open.X, open.Z) -
+                    FishController.PondCenterClearanceFraction * scene.Growth.RadiusForNext() + .01f,
                 open.Z);
             Need(!scene.TryAdvanceGrowth() && scene.Feeding.Nutrition == 14 &&
                 scene.Growth.Stage == "juvenile", "surface did not defer earned stage");

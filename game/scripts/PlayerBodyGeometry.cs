@@ -6,7 +6,7 @@ namespace Fish;
 
 /// <summary>Rest-pose bounds of the actual attached player mesh, in fish coordinates.</summary>
 public readonly record struct PlayerBodyGeometry(float Radius, float Height, float CenterZ,
-    float Length, float TailZ)
+    float Length, float TailZ, float TopReach)
 {
     public static PlayerBodyGeometry Measure(FishController fish)
     {
@@ -15,6 +15,7 @@ public readonly record struct PlayerBodyGeometry(float Radius, float Height, flo
         var radialMaximum = 0f;
         var minimumZ = float.PositiveInfinity;
         var maximumZ = float.NegativeInfinity;
+        var maximumY = float.NegativeInfinity;
         var count = 0;
         foreach (var found in visual.FindChildren("*", "MeshInstance3D", true, false))
         {
@@ -38,18 +39,19 @@ public readonly record struct PlayerBodyGeometry(float Radius, float Height, flo
                         Mathf.Sqrt(point.X * point.X + point.Y * point.Y));
                     minimumZ = Mathf.Min(minimumZ, point.Z);
                     maximumZ = Mathf.Max(maximumZ, point.Z);
+                    maximumY = Mathf.Max(maximumY, point.Y);
                     count++;
                 }
             }
         }
         if (count == 0 || !float.IsFinite(radialMaximum) ||
-            !float.IsFinite(minimumZ) || !float.IsFinite(maximumZ))
+            !float.IsFinite(minimumZ) || !float.IsFinite(maximumZ) || !float.IsFinite(maximumY))
             throw new InvalidOperationException("PLAYER_BODY_GEOMETRY_INVALID");
         // Allow for animation at fin tips. The longitudinal capsule encloses
         // the measured mesh without treating every species as the same sphere.
         var radius = radialMaximum * 1.08f + .0005f;
         var height = Mathf.Max(radius * 2f, maximumZ - minimumZ + radius * 2f);
         return new PlayerBodyGeometry(radius, height, (minimumZ + maximumZ) * .5f,
-            maximumZ - minimumZ, maximumZ);
+            maximumZ - minimumZ, maximumZ, maximumY);
     }
 }
