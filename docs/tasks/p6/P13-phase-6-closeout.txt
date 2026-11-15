@@ -1,0 +1,32 @@
+TASK: Phase 6 / P13 — Phase 6 closeout
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: yes.
+- This prompt's assigned project version is `0.6.13`.
+
+GOAL
+Close the approved P6 Living Pond implementation honestly with an owner-evidence-backed G6.1–G6.8 disposition and preserved P5/C5 history, or record exact NOT GREEN/blocked gaps without manufacturing a PASS.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read AGENTS/BOOT/workflow, current roadmap P6, design, task README/assessment/plan, all genuine P6 qualification records, P12 owner native feedback, current source/tree/version, historical P5 and C5 evidence and later P7–P9 boundaries.
+
+IMPLEMENT / REVIEW
+1. Confirm the real preceding P12 checkpoint and manual owner play evidence exist, with source/seed/renderer identity. If not, stop and report missing prerequisites rather than invent a native review or advance Phase version.
+2. For each G6.1–G6.8 and V44–V51, list actual implementation, focused test and native owner observation separately with supported PASS/FAIL/NOT OBSERVED/BLOCKED. Reticle feel, early predator fairness, auto feeding, autonomous NPCs, food-driven exploration and sustained Forward+ frame pacing are distinct criteria.
+3. Create one docs/tasks/p6/closeout.md with source identity, actual commands/results, supported disposition, unqualified cells, owner decision and next bounded scope. Reconcile docs/roadmap.md, BOOT.md, MODULES.md and affected system docs only to **observed** behavior; preserve executed task evidence and earlier P5/C5 failures/limitations. Do not silently close unrelated Pond/Ocean visual Gates.
+4. Keep P7 active life save/permanent death, P8 factual Life History, P9 integrated qualification deferred and not implemented by P6. Ensure remaining P6 vulnerabilities are either repaired before progression or explicitly owner-accepted as honest gaps. Validate changed Markdown links/diffs and git diff --check.
+5. Leave final closeout changes **uncommitted for owner review**; the runner will not grant GREEN from a successful Codex exit. Never self-commit, push or claim `0.6.13` unless actual native evidence and owner-reviewed version/disposition support it.
+
+VALIDATION
+T3 MANUAL owner review plus narrow documentary link/diff checks, git diff --check and targeted source tests only if required to substantiate a claim. A headless build/screenshot alone cannot replace the native owner matrix.
+
+DONE / VERSION / REPORT
+Truthful single P6 closeout, per-Gate results with evidence and explicit owner-go decision toward P7 or repairs. Version 0.6.13 is conditional on actual owner review; otherwise retain latest proven checkpoint and leave P6 NOT GREEN.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. This is an owner/native handoff: STOP the runner before execution and resume only with a legitimate reviewed manual checkpoint. 
