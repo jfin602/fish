@@ -11,6 +11,9 @@ Make Bass, Bluegill, water snakes, leopard frogs and Pike interact with each oth
 ENTRY / NARROW READING
 Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
 
+EDITOR BRIDGE PREFLIGHT — HARD STOP
+Before source edits, validation, native review or version/checkpoint work, follow the bridge recovery procedure in docs/tasks/p6/README.md: close stale/conflicting Fish Godot MCP bridges, start this task's own Fish MCP server and Godot .NET editor, and verify the live editor bridge is connected to this checkout's game/ project. If the bridge cannot be established, or drops later, STOP and report BLOCKED. Do not continue with disk-only C# edits or tools/dev checks as a substitute.
+
 SCOPE / INVARIANTS
 This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
 
