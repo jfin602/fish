@@ -72,26 +72,74 @@ public static class PondWakePathChecks
                 var cameraIndependent = PondWakeContacts.At(body, pose, fish.PondSurfaceHeightAt);
                 camera.GlobalTransform = cameraPose;
                 Need(contact == cameraIndependent, "camera altered body contacts " + stage);
-                Need(contact.Touching && contact.Width > 0f &&
-                    contact.Bow.DistanceTo(contact.Tail) > body.Length * .5f &&
-                    contact.Left.DistanceTo(contact.Right) > body.Radius &&
-                    contact.Left.DistanceTo(contact.Right) < body.Radius * 1.4f,
-                    "stage rest-pose anchor geometry " + stage);
-                foreach (var point in new[] { contact.Bow, contact.Left, contact.Right, contact.Tail })
+                Need(contact.Touching && contact.HasFinOrigins && contact.Width > 0f &&
+                    contact.Bow.DistanceTo(contact.Tail) > body.Length * .4f &&
+                    contact.Left.DistanceTo(contact.Right) > .002f &&
+                    body.LeftFin.X < body.RightFin.X,
+                    "stage fin anchor geometry " + stage);
+                var bodyNoseZ = body.TailZ - body.Length;
+                var bowLocal = pose.AffineInverse() * contact.Bow;
+                var flankLocal = pose.AffineInverse() *
+                    ((contact.Left + contact.Right) * .5f);
+                Need(Mathf.Abs(bowLocal.Z - (bodyNoseZ + body.Length * .48f)) < .0001f &&
+                    Mathf.Abs(flankLocal.Z - (body.LeftFin.Z + body.RightFin.Z) * .5f -
+                        body.Length * .12f) < .0001f &&
+                    contact.FinLeft.DistanceTo(pose * body.LeftFin) < .0001f &&
+                    contact.FinRight.DistanceTo(pose * body.RightFin) < .0001f,
+                    "wake did not follow fin rim " + stage);
+                foreach (var point in new[] { contact.Bow, contact.Tail })
                     Need(Mathf.Abs(point.Y - atmosphere.GetSurfaceHeight(point.X, point.Z)) < .0001f,
                         "anchor used a different wave provider " + stage);
+                Need(Mathf.Abs(contact.Left.Y - contact.FinLeft.Y) < .0001f &&
+                    Mathf.Abs(contact.Right.Y - contact.FinRight.Y) < .0001f,
+                    "fin contact was flattened onto the surface " + stage);
                 var tilted = PondWakeContacts.At(body,
                     new Transform3D(new Basis(Vector3.Up, .8f) *
                         new Basis(Vector3.Right, .25f), pose.Origin), fish.PondSurfaceHeightAt);
                 Need(tilted.Left.DistanceTo(contact.Left) > body.Radius * .1f &&
                     tilted.Heading.DistanceTo(contact.Heading) > .1f,
                     "yaw/pitch ignored " + stage);
+                var centerSurfaceY = fish.PondSurfaceHeightAt(pose.Origin.X, pose.Origin.Z);
+                var halfMeter = PondWakeContacts.At(body,
+                    new Transform3D(pose.Basis, new Vector3(pose.Origin.X,
+                        centerSurfaceY - PondWakeContacts.NearSurfaceDepth,
+                        pose.Origin.Z)), fish.PondSurfaceHeightAt);
+                var pastBand = PondWakeContacts.At(body,
+                    new Transform3D(pose.Basis, new Vector3(pose.Origin.X,
+                        centerSurfaceY - PondWakeContacts.NearSurfaceDepth - .02f,
+                        pose.Origin.Z)), fish.PondSurfaceHeightAt);
+                Need(halfMeter.Touching && !pastBand.Touching,
+                    "0.2-meter surface band " + stage);
+                var releasePose = new Transform3D(pose.Basis, new Vector3(pose.Origin.X,
+                    centerSurfaceY - .24f, pose.Origin.Z));
+                Need(PondWakeContacts.At(body, releasePose, fish.PondSurfaceHeightAt,
+                        PondWakeContacts.NearSurfaceReleaseDepth).Touching &&
+                    !PondWakeContacts.At(body, releasePose.Translated(Vector3.Down * .02f),
+                        fish.PondSurfaceHeightAt,
+                        PondWakeContacts.NearSurfaceReleaseDepth).Touching,
+                    "release hysteresis " + stage);
+                var shallowRoute = new PondWakePath();
+                for (var step = 0; step < 40; step++)
+                {
+                    var x = pose.Origin.X + step * .02f;
+                    var z = pose.Origin.Z;
+                    var depth = step % 6 < 3 ? .08f : .19f;
+                    var localY = fish.PondSurfaceHeightAt(x, z);
+                    var station = PondWakeContacts.At(body,
+                        new Transform3D(pose.Basis, new Vector3(x, localY - depth, z)),
+                        fish.PondSurfaceHeightAt);
+                    Need(station.Touching, "minor dip lost wake " + stage);
+                    shallowRoute.Step(station, body.Length, .7f, 1, 1f / 60f);
+                }
+                Need(shallowRoute.Count > 3 &&
+                    shallowRoute[0].Segment == shallowRoute[shallowRoute.Count - 1].Segment,
+                    "minor dip split historical wake " + stage);
                 var deep = PondWakeContacts.At(body,
-                    new Transform3D(pose.Basis, pose.Origin - Vector3.Up * body.Radius * 5f),
+                    new Transform3D(pose.Basis, pose.Origin - Vector3.Up * 2f),
                     fish.PondSurfaceHeightAt);
                 Need(!deep.Touching, "deep contact " + stage);
                 Need(water.WakePath.Count == 0, "growth did not reset history " + stage);
-                GD.Print($"WAKE_STAGE stage={stage} length={body.Length:F4} radius={body.Radius:F4} top={body.TopReach:F4} width={contact.Width:F4} surface={contact.SurfaceY:F4}");
+                GD.Print($"WAKE_STAGE stage={stage} length={body.Length:F4} radius={body.Radius:F4} side={body.SideReach:F4} top={body.TopReach:F4} width={contact.Width:F4} fin_left={body.LeftFin} fin_right={body.RightFin} surface={contact.SurfaceY:F4}");
             }
             Need(stageLengths.Zip(stageLengths.Skip(1), (a, b) => b > a).All(x => x),
                 "stage dimensions did not grow");
@@ -114,7 +162,7 @@ public static class PondWakePathChecks
             }
             Need(crest > .08f && trough < -.08f, "wave extrema were not exercised");
             CheckPaths();
-            GD.Print($"WAKE_PATH_CHECK_OK live_samples={liveCount} stages=4 frame_rates=30,60,120 turns=ok reverse=ok deep_blocked=ok pause_growth_retry=ok capacity=48 wave=shared crest={crest:F4} trough={trough:F4}");
+            GD.Print($"WAKE_PATH_CHECK_OK live_samples={liveCount} stages=4 near_surface_0.2m=ok frame_rates=30,60,120 turns=ok reverse=ok deep_blocked=ok pause_growth_retry=ok capacity=48 wave=shared crest={crest:F4} trough={trough:F4}");
             tree.Quit();
         }
         catch (Exception error)

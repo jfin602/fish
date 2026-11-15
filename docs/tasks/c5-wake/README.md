@@ -1,6 +1,6 @@
 # C5 Wake — natural surface wake correction
 
-**Status: W1 foundation and W2 rendering are implemented locally; W2 is not GREEN pending owner visual review of the faint underwater/waterline fronts. W3 has not started.** [Approved S26 design](../../planning/c5-wake.md). [W1 evidence](qualification/w1.md) records path checks; [W2 evidence](qualification/w2.md) records native A/B and limits. Manual Codex work only; package version remains unchanged. Do not advance historical P2/P4/P5 Gate status from documentation.
+**Status: W1 and W2 are implemented; [W2-R1](qualification/w2-r1.md) is the historical visibility trial. The owner selected hybrid, and [W2-R2](qualification/w2-r2.md) promotes it with stage-aligned rear-body anchors and a 0.2 m near-surface band. Native owner playfeel and W3 remain open.** [Approved S26 design](../../planning/c5-wake.md). [W1 evidence](qualification/w1.md) records path checks; [W2 evidence](qualification/w2.md) records the original native A/B. Manual Codex work only; package version remains unchanged. Do not advance historical P2/P4/P5 Gate status from documentation.
 
 The existing shared `WaterReaction` produces submerged tail trails/bubbles and a pool of eight colored Pond `SurfaceRing` meshes. Change **only the surface presentation** to body-originated diverging wave fronts, curved historical trails and gentle tail/bow turbulence, with stage-appropriate boost. Preserve the underwater effects and shared normal Pond/Pike Encounter source ownership.
 

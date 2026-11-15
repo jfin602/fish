@@ -133,6 +133,28 @@ public partial class UnderwaterAtmosphere : Node3D
     public float SurfaceWakeNightWeight => _nightWeight;
     public Vector3 SurfaceWakeSunDirection => _sun?.GlobalTransform.Basis.Z.Normalized() ?? Vector3.Up;
     public Color SurfaceWakeSunColor => _solarLighting.DirectColor;
+    private static readonly string[] WakeSurfaceParameters =
+    [
+        "surface_time", "sun_direction", "wave_height", "wave_speed", "wave_detail",
+        "camera_depth", "surface_half_size", "surface_dark", "surface_light",
+        "overcast", "air_surface_enabled", "shore_mask_enabled", "air_fog_begin",
+        "air_fog_end", "water_scatter", "underwater_scatter", "surface_extinction",
+        "surface_daylight", "surface_illumination", "night_surface_glow",
+        "night_underwater_color", "night_weight", "moon_glow",
+        "reflection_sun_energy", "reflection_sun_color", "reflection_strength",
+        "reflection_distortion", "ripple_strength", "fine_normal_strength",
+        "reflected_sky_horizon", "reflected_sky_zenith",
+    ];
+
+    /// <summary>Mirror the Pond's current optics onto a small wake-only surface material.</summary>
+    public void SyncWakeSurfaceMaterial(ShaderMaterial target)
+    {
+        if (_profile.Id != WorldEnvironmentProfile.Pond || _surfaceMaterial is null)
+            throw new InvalidOperationException("Pond surface material is not ready");
+        foreach (var name in WakeSurfaceParameters)
+            target.SetShaderParameter(name, _surfaceMaterial.GetShaderParameter(name));
+        target.SetShaderParameter("wake_ribbon_mode", 1f);
+    }
 
     private float SampleSurfaceHeight(float worldX, float worldZ, float time)
     {

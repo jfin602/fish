@@ -4,46 +4,62 @@ using System;
 
 namespace Fish;
 
-/// <summary>Rest-pose body contacts projected onto the current local Pond interface.</summary>
+/// <summary>Fin origins and their trailing contacts on the local Pond interface.</summary>
 public readonly record struct PondWakeContacts(Vector3 Bow, Vector3 Left, Vector3 Right,
     Vector3 Tail, Vector3 Heading, float SurfaceY, float Width, bool Touching)
 {
+    public Vector3 FinLeft { get; init; }
+    public Vector3 FinRight { get; init; }
+    public bool HasFinOrigins { get; init; }
+    public const float NearSurfaceDepth = .2f;
+    public const float NearSurfaceReleaseDepth = .25f;
+
     public static PondWakeContacts At(PlayerBodyGeometry body, Transform3D pose,
-        Func<float, float, float> surfaceHeight)
+        Func<float, float, float> surfaceHeight, float depthLimit = NearSurfaceDepth,
+        Vector3? leftFinLocal = null, Vector3? rightFinLocal = null)
     {
-        // FishController faces local -Z. The imported rig's presentation transform
-        // is already included in PlayerBodyGeometry. These stable shoulder/skin
-        // proxies deliberately ignore animated fin and tail-tip excursions.
+        // FishController faces local -Z. The measured fin rim is already in
+        // fish coordinates and follows the current fish pose and growth stage.
         var noseZ = body.TailZ - body.Length;
-        var shoulderZ = noseZ + body.Length * .32f;
-        var halfWidth = body.Radius * .62f;
-        var bow = pose * new Vector3(0f, body.TopReach * .35f, noseZ + body.Length * .16f);
-        var left = pose * new Vector3(-halfWidth, body.TopReach * .35f, shoulderZ);
-        var right = pose * new Vector3(halfWidth, body.TopReach * .35f, shoulderZ);
+        var bow = pose * new Vector3(0f, body.TopReach * .35f, noseZ + body.Length * .48f);
+        var finLeft = pose * (leftFinLocal ?? body.LeftFin);
+        var finRight = pose * (rightFinLocal ?? body.RightFin);
         var tail = pose * new Vector3(0f, body.TopReach * .18f,
             body.TailZ - body.Length * .08f);
         var heading = pose.Basis * Vector3.Forward;
         heading.Y = 0f;
         heading = heading.LengthSquared() > .000001f ? heading.Normalized() : Vector3.Forward;
+        var rear = -heading * body.Length * .12f;
+        var left = finLeft + rear;
+        var right = finRight + rear;
+        var halfWidth = Mathf.Max(new Vector2(left.X - right.X, left.Z - right.Z).Length() * .5f,
+            .002f);
         var y = surfaceHeight((left.X + right.X) * .5f, (left.Z + right.Z) * .5f);
-        var reach = Mathf.Max(body.Radius * .55f, body.TopReach * .55f);
-        // The cross-section intersects water when its upper skin reaches the
-        // interface, while a fully exposed fish cannot leave a submerged wake.
-        var touching = float.IsFinite(y) &&
-            y >= Mathf.Min(left.Y, right.Y) - body.Radius * .20f &&
-            y <= Mathf.Max(left.Y, right.Y) + reach;
+        var centerY = surfaceHeight(pose.Origin.X, pose.Origin.Z);
+        // The moving surface still carries a pressure wake during shallow dips.
+        // Measure from the fish origin so the 0.2 m band has the same meaning
+        // for every growth stage, while retaining the exposed-body cutoff.
+        var depth = centerY - pose.Origin.Y;
+        var touching = float.IsFinite(y) && float.IsFinite(centerY) &&
+            depth <= depthLimit + .0001f && depth >= -body.Radius * .20f;
         return new PondWakeContacts(
             new Vector3(bow.X, surfaceHeight(bow.X, bow.Z), bow.Z),
-            new Vector3(left.X, surfaceHeight(left.X, left.Z), left.Z),
-            new Vector3(right.X, surfaceHeight(right.X, right.Z), right.Z),
+            left,
+            right,
             new Vector3(tail.X, surfaceHeight(tail.X, tail.Z), tail.Z),
-            heading, y, halfWidth * 2f, touching);
+            heading, y, halfWidth * 2f, touching)
+        { FinLeft = finLeft, FinRight = finRight, HasFinOrigins = true };
     }
 }
 
 public readonly record struct PondWakeSample(Vector2 Center, Vector2 Heading,
     Vector2 Left, Vector2 Right, float BirthSeconds, float Length, float Width,
-    float Energy, int StageRevision, int Segment);
+    float Energy, int StageRevision, int Segment)
+{
+    public float LeftY { get; init; }
+    public float RightY { get; init; }
+    public bool HasFinDepth { get; init; }
+}
 
 /// <summary>Fixed storage for historical world paths. Time advances only with active physics.</summary>
 public sealed class PondWakePath
@@ -59,6 +75,7 @@ public sealed class PondWakePath
     private int _segment;
     public float Seconds { get; private set; }
     public int Count => _count;
+    public int Segment => _segment;
     public PondWakeSample this[int index] => index >= 0 && index < _count
         ? _samples[(_start + index) % Capacity] : throw new ArgumentOutOfRangeException(nameof(index));
 
@@ -110,7 +127,9 @@ public sealed class PondWakePath
         var sample = new PondWakeSample(center, direction,
             new Vector2(contact.Left.X, contact.Left.Z),
             new Vector2(contact.Right.X, contact.Right.Z), Seconds, length,
-            contact.Width, Mathf.Clamp(energy, 0f, 1f), stageRevision, _segment);
+            contact.Width, Mathf.Clamp(energy, 0f, 1f), stageRevision, _segment)
+        { LeftY = contact.FinLeft.Y, RightY = contact.FinRight.Y,
+            HasFinDepth = contact.HasFinOrigins };
         if (_count == Capacity) _start = (_start + 1) % Capacity;
         else _count++;
         _samples[(_start + _count - 1) % Capacity] = sample;

@@ -3,6 +3,7 @@ render_mode unshaded, cull_disabled, blend_mix, fog_disabled;
 
 // Time is supplied by the atmosphere so pause freezes the waves.
 uniform float surface_time = 0.0;
+uniform float wake_ribbon_mode = 0.0;
 uniform vec3 sun_direction = vec3(0.0, 1.0, 0.0);
 uniform float wave_height = 1.0;
 uniform float wave_speed = 1.0;
@@ -107,7 +108,8 @@ void vertex() {
     float b = VERTEX.x * -0.11 + VERTEX.z * 0.17 - t * 0.27;
     float c = VERTEX.x * 0.31 - VERTEX.z * 0.24 + t * 0.47;
     shore_blend = mix(1.0, COLOR.r, shore_mask_enabled);
-    VERTEX.y += shore_blend * wave_height * (0.10 * sin(a) + 0.065 * sin(b) + wave_detail * 0.045 * sin(c));
+    if (wake_ribbon_mode < 0.5)
+        VERTEX.y += shore_blend * wave_height * (0.10 * sin(a) + 0.065 * sin(b) + wave_detail * 0.045 * sin(c));
     vec3 slope = vec3(wave_height * (0.019 * cos(a) - 0.00715 * cos(b) + wave_detail * 0.01395 * cos(c)),
                       1.0,
                       wave_height * (0.007 * cos(a) + 0.01105 * cos(b) - wave_detail * 0.0108 * cos(c)));
@@ -117,6 +119,8 @@ void vertex() {
 
 void fragment() {
     vec3 ray_up = normalize(surface_world - CAMERA_POSITION_WORLD);
+    bool air_facing = wake_ribbon_mode > 0.5 ?
+        CAMERA_POSITION_WORLD.y >= surface_world.y : FRONT_FACING;
     float t = surface_time * wave_speed;
     float ripple = sin(surface_world.x * 0.57 + surface_world.z * 0.23 + t * 0.53)
                  * sin(surface_world.z * 0.43 - surface_world.x * 0.14 - t * 0.39);
@@ -124,6 +128,12 @@ void fragment() {
                  * sin(surface_world.z * 0.94 + surface_world.x * 0.32 + t * 0.44);
     vec3 normal = normalize(surface_normal + vec3(0.025 * ripple + 0.018 * wave_detail * detail,
         0.0, -0.02 * ripple + 0.016 * wave_detail * detail));
+    float wake_slope = 0.0;
+    if (wake_ribbon_mode > 0.5) {
+        float wake_grain = sin(UV.y * 11.7 + surface_time * 1.3);
+        wake_slope = 0.58 * UV.x * (1.0 - abs(UV.x)) * (0.86 + 0.14 * wake_grain);
+        normal = normalize(normal + vec3(wake_slope, 0.0, wake_grain * 0.018));
+    }
     float fresnel = pow(1.0 - clamp(dot(normal, ray_up), 0.0, 1.0), 3.0);
     float sun = max(dot(ray_up, normalize(sun_direction)), 0.0);
     float halo = pow(sun, 18.0);
@@ -143,7 +153,7 @@ void fragment() {
     // Night water keeps the same dark water-column tone. Celestial light is
     // transmitted as small directional points instead of a luminous ceiling.
     ALBEDO = mix(ALBEDO, night_underwater_color, night_weight);
-    if (!FRONT_FACING) {
+    if (!air_facing) {
         float celestial_transmission = upward * (1.0 - smoothstep(8.0, 24.0,
             distance(surface_world, CAMERA_POSITION_WORLD)));
         float celestial = night_stars(ray_up);
@@ -166,21 +176,26 @@ void fragment() {
     // A faint scattered night-sky cue belongs to the overhead interface only.
     ALBEDO += night_surface_glow * upward * (1.0 - 0.55 * camera_depth)
         * (0.78 + 0.22 * ripple);
+    if (wake_ribbon_mode > 0.5) {
+        float transmitted_slope = dot(normal - surface_normal, normalize(sun_direction))
+            + 0.8 * (abs(dot(normal, ray_up)) - abs(dot(surface_normal, ray_up)));
+        ALBEDO += surface_illumination * vec3(0.20, 0.27, 0.22) * transmitted_slope;
+    }
     float edge_distance = max(abs(surface_world.x), abs(surface_world.z));
     float edge_fade = 1.0 - smoothstep(surface_half_size - 16.0,
         surface_half_size - 2.0, edge_distance);
     ALPHA = mix(mix(0.62, 0.88, fresnel), 0.9, deep_cue * 0.65) * edge_fade * mix(1.0, smoothstep(0.0, 0.55, shore_blend), shore_mask_enabled);
     // The air side explicitly composes shallow transmission from opaque
     // color/depth, so a fish just beneath the interface remains readable.
-    if (FRONT_FACING && air_surface_enabled < 0.5) discard;
-    if (FRONT_FACING) {
+    if (air_facing && air_surface_enabled < 0.5) discard;
+    if (air_facing) {
         vec2 broad = vec2(0.026, 0.016) * cos(surface_world.x * 0.71 + surface_world.z * 0.24 + t * 0.63)
             + vec2(-0.019, 0.034) * cos(surface_world.x * -0.34 + surface_world.z * 1.21 - t * 0.41);
         vec2 fine = vec2(0.019, -0.029) * cos(surface_world.x * 1.92 - surface_world.z * 0.83 + t * 0.97)
             + vec2(-0.014, -0.018) * cos(surface_world.x * -2.83 - surface_world.z * 1.52 - t * 1.37)
             + vec2(0.012, 0.007) * cos(surface_world.x * 4.17 + surface_world.z * 2.21 + t * 1.61);
         vec2 slopes = (broad * ripple_strength + fine * fine_normal_strength) * shore_blend;
-        vec3 air_normal = normalize(surface_normal + vec3(slopes.x, 0.0, slopes.y));
+        vec3 air_normal = normalize(surface_normal + vec3(slopes.x + wake_slope, 0.0, slopes.y));
         float facing = clamp(abs(dot(air_normal, ray_up)), 0.0, 1.0);
         float air_fresnel = 0.025 + 0.975 * pow(1.0 - facing, 4.0);
         vec2 bend = vec2(normal.x, -normal.z) * 0.003;
@@ -222,4 +237,6 @@ void fragment() {
         ALPHA = edge_fade * smoothstep(0.0, 0.75, shore_blend);
         if (scene_depth > 0.0001 && !opaque_water_target) ALPHA = 0.0;
     }
+    if (wake_ribbon_mode > 0.5)
+        ALPHA *= clamp(COLOR.a * 1.85, 0.0, 0.82) * mix(1.0, 0.30, night_weight);
 }

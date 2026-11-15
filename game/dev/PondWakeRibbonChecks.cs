@@ -49,6 +49,23 @@ public static class PondWakeRibbonChecks
                 atmosphere.GetRenderedSurfaceHeight, null, material);
             Need(triangles is > 0 and <= PondWakeRibbon.MaxTriangles && mesh.GetSurfaceCount() == 1,
                 "mesh triangle budget or assembly");
+            var last = path[path.Count - 1];
+            var live = new PondWakeContacts(
+                new Vector3(last.Center.X, 0f, last.Center.Y - last.Length * .2f),
+                new Vector3(last.Left.X, 0f, last.Left.Y),
+                new Vector3(last.Right.X, 0f, last.Right.Y), Vector3.Zero,
+                new Vector3(last.Heading.X, 0f, last.Heading.Y), 0f, last.Width, true)
+            {
+                FinLeft = new Vector3(last.Left.X, -.12f, last.Left.Y - .04f),
+                FinRight = new Vector3(last.Right.X, -.12f, last.Right.Y - .04f),
+                HasFinOrigins = true,
+            };
+            var liveTriangles = PondWakeRibbon.Draw(mesh, path, path.Seconds,
+                atmosphere.GetRenderedSurfaceHeight, null, material, 1f, live, .72f, 1.85f);
+            Need(liveTriangles == triangles + 32 && liveTriangles <= PondWakeRibbon.MaxTriangles,
+                "current fins not bridged to historical fronts");
+            triangles = PondWakeRibbon.Draw(mesh, path, path.Seconds,
+                atmosphere.GetRenderedSurfaceHeight, null, material);
             var vertices = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array();
             Need(vertices.Length == triangles * 3, "mesh triangle count");
             var spreadY = false;
@@ -61,6 +78,31 @@ public static class PondWakeRibbonChecks
                 if (Mathf.Abs(vertex.Y - firstY) > .0001f) spreadY = true;
             }
             Need(spreadY, "wake was flattened to one Y");
+            var finDepthPath = new PondWakePath();
+            var finDepthY = atmosphere.GetRenderedSurfaceHeight(0f, 0f) - .12f;
+            for (var i = 0; i < 4; i++)
+            {
+                var offset = i * .08f;
+                var deepContact = new PondWakeContacts(Vector3.Zero,
+                    new Vector3(offset, 0f, -.12f), new Vector3(offset, 0f, .12f),
+                    Vector3.Zero, Vector3.Right, 0f, .24f, true)
+                {
+                    FinLeft = new Vector3(offset, finDepthY, -.12f),
+                    FinRight = new Vector3(offset, finDepthY, .12f),
+                    HasFinOrigins = true,
+                };
+                finDepthPath.Step(deepContact, .5f, .72f, 1, .06f);
+            }
+            Need(PondWakeRibbon.Draw(mesh, finDepthPath, finDepthPath.Seconds,
+                atmosphere.GetRenderedSurfaceHeight, null, material) > 0,
+                "fin-depth trail missing");
+            var depthVertices = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex]
+                .AsVector3Array();
+            var belowSurface = false;
+            foreach (var vertex in depthVertices)
+                if (vertex.Y < atmosphere.GetRenderedSurfaceHeight(vertex.X, vertex.Z) - .04f)
+                    belowSurface = true;
+            Need(belowSurface, "new wake flattened onto surface instead of fin depth");
             Need(PondWakeRibbon.Draw(mesh, path, path.Seconds,
                 atmosphere.GetRenderedSurfaceHeight, (_, _) => 0f, material) == 0 &&
                 mesh.GetSurfaceCount() == 0, "dry shoreline rendered fronts");

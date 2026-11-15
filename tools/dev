@@ -38,7 +38,8 @@ logged() {
   fi
 }
 do_import() { logged import 120 "${GODOT_CMD[@]}" --headless --path "$PROJECT" --import; }
-do_build() { (cd "$PROJECT" && logged build 180 "$DOTNET_BIN" build Fish.csproj --nologo); }
+check_audio_paths() { python3 "$ROOT/tools/check-audio-paths.py"; }
+do_build() { check_audio_paths; (cd "$PROJECT" && logged build 180 "$DOTNET_BIN" build Fish.csproj --nologo); }
 smoke() {
   local profile
   profile=$(mktemp -d "$ROOT/artifacts/smoke-world.XXXXXX")
@@ -151,6 +152,7 @@ generated_geology_check() {
 case "${1:-help}" in
   inspect-audio)
     need_tools
+    check_audio_paths
     profile=$(mktemp -d "$ROOT/artifacts/audio.XXXXXX")
     logged audio 120 env XDG_DATA_HOME="$profile" "${GODOT_CMD[@]}" --headless --path "$PROJECT" --scene res://scenes/p5_pike_encounter.tscn -- --audio-check
     grep -Fq 'AUDIO_CHECK_OK' "$LOGS/audio.log" || { echo 'Audio check marker missing' >&2; exit 1; }

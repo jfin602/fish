@@ -133,15 +133,19 @@ public static class DynamicWaterlineChecks
                 "contact fronts missing or unbounded");
             var wakeMesh = (ImmediateMesh)water.GetNode<MeshInstance3D>("PondWakeFronts").Mesh;
             var wakeVertex = wakeMesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
-            Require(Mathf.Abs(wakeVertex.Y - atmosphere.GetRenderedSurfaceHeight(
-                wakeVertex.X, wakeVertex.Z) - .032f) < .002f,
-                "front vertex not placed on its own local rendered wave");
+            Require(wakeVertex.IsFinite() &&
+                wakeVertex.Y <= atmosphere.GetRenderedSurfaceHeight(
+                    wakeVertex.X, wakeVertex.Z) + .033f &&
+                wakeVertex.Y >= water.WakePath[0].LeftY - .02f,
+                "front vertex left its fin-to-surface depth range");
             await Frames(tree, 30);
             water.RefreshWakeRenderForProbe();
             wakeVertex = wakeMesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
-            Require(Mathf.Abs(wakeVertex.Y - atmosphere.GetRenderedSurfaceHeight(
-                wakeVertex.X, wakeVertex.Z) - .032f) < .002f,
-                "front did not follow moving water");
+            Require(wakeVertex.IsFinite() &&
+                wakeVertex.Y <= atmosphere.GetRenderedSurfaceHeight(
+                    wakeVertex.X, wakeVertex.Z) + .033f &&
+                wakeVertex.Y >= water.WakePath[0].LeftY - .02f,
+                "aged front left its fin-to-surface depth range");
             water.Suspend();
             var deepPose = new Transform3D(Basis.Identity, new Vector3(x,
                 atmosphere.GetSurfaceHeight(x, z) - radius * 4f, z));

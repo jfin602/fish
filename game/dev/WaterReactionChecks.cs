@@ -79,8 +79,9 @@ public static class WaterReactionChecks
             "near-surface movement did not emit bounded fronts");
         var mesh = (ImmediateMesh)water.GetNode<MeshInstance3D>("PondWakeFronts").Mesh;
         var vertex = mesh.SurfaceGetArrays(0)[(int)Mesh.ArrayType.Vertex].AsVector3Array()[0];
-        Need(Mathf.Abs(vertex.Y - fish.PondSurfaceHeightAt(vertex.X, vertex.Z) - .032f) < .003f,
-            "wake vertex did not follow its own local wave");
+        Need(vertex.Y < fish.PondSurfaceHeightAt(vertex.X, vertex.Z) + .033f &&
+            vertex.Y > fish.PondSurfaceHeightAt(vertex.X, vertex.Z) - .30f,
+            "wake vertex left its fin-to-surface depth range");
         water.Suspend();
         Need(water.ActiveWakeTriangles == 0 && mesh.GetSurfaceCount() == 0,
             "pause retained surface fronts");

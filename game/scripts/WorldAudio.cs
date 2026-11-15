@@ -101,7 +101,7 @@ public partial class WorldAudio : Node3D
     [Export] public float ResponsePower { get; set; } = 1.25f;
     [Export] public float FadeSpeed { get; set; } = 1.5f;
 
-    public const string PondBed = "res://assets/audio/ambience/pond/pond_underwater_deep.ogg";
+    public const string PondBed = "res://assets/sfx/pond_underwater_deep.ogg";
     private FishController _fish = null!;
     private Func<string> _stage = null!;
     private string _bedPath = "";
@@ -145,6 +145,8 @@ public partial class WorldAudio : Node3D
     {
         if (!float.IsFinite(waterline) || stage is null || string.IsNullOrWhiteSpace(bedPath))
             throw new ArgumentException("A valid habitat waterline, growth stage and bed are required");
+        if (!bedPath.StartsWith("res://assets/sfx/", StringComparison.Ordinal))
+            throw new ArgumentException("Runtime audio must use an approved assets/sfx path", nameof(bedPath));
         _fish = fish;
         _stage = stage;
         _bedPath = bedPath;

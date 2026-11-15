@@ -51,8 +51,12 @@ public partial class WaterReaction : Node3D
     private float _tailZ = .43f;
     private float _trailTimeScale = 1f;
     private PlayerBodyGeometry _contactBody;
+    private Node3D? _finVisual;
+    private Transform3D _finVisualAtConfigure;
     private readonly PondWakePath _wakePath = new();
+    private int _wakeRepairMode = 3; // Owner-selected hybrid Pond presentation.
     private PondWakeContacts? _latestContact;
+    private bool _wakeBandActive;
     private float _latestContactEnergy;
     private ImmediateMesh? _ribbonMesh;
     private MeshInstance3D? _ribbonView;
@@ -80,6 +84,19 @@ public partial class WaterReaction : Node3D
 
     public override void _Ready()
     {
+#if DEBUG
+        // Fixed-route native comparisons select one presentation at a time.
+        _wakeRepairMode = Array.Find(OS.GetCmdlineUserArgs(), arg =>
+            arg.StartsWith("--wake-repair=", StringComparison.Ordinal)) switch
+        {
+            "--wake-repair=soft" => 1,
+            "--wake-repair=normal" => 2,
+            "--wake-repair=hybrid" => 3,
+            "--wake-repair=water" => 4,
+            "--wake-repair=baseline" => 0,
+            _ => 3,
+        };
+#endif
         _showLegacyRings = _legacyRings;
         _left = MakeWake("LeftWake", -0.20f, -1);
         _right = MakeWake("RightWake", 0.20f, 1);
@@ -109,6 +126,9 @@ public partial class WaterReaction : Node3D
     {
         var body = PlayerBodyGeometry.Measure(_fish);
         _contactBody = body;
+        _finVisual = _fish.GetNodeOrNull<Node3D>("PlayerVisual");
+        _finVisualAtConfigure = _finVisual?.Transform ?? Transform3D.Identity;
+        _wakeBandActive = false;
         _stageRevision++;
         _wakePath.Clear();
         _bodyRadius = body.Radius;
@@ -302,8 +322,15 @@ public partial class WaterReaction : Node3D
         }
         if (_surfaceProfile is not null)
         {
+            var visualDelta = _finVisual is null ? Transform3D.Identity :
+                _finVisual.Transform * _finVisualAtConfigure.AffineInverse();
             var contact = PondWakeContacts.At(_contactBody, _fish.GlobalTransform,
-                _fish.PondSurfaceHeightAt);
+                _fish.PondSurfaceHeightAt, _wakeBandActive
+                    ? PondWakeContacts.NearSurfaceReleaseDepth
+                    : PondWakeContacts.NearSurfaceDepth,
+                visualDelta * _contactBody.LeftFin,
+                visualDelta * _contactBody.RightFin);
+            _wakeBandActive = contact.Touching;
             var horizontalSpeed = new Vector2(_fish.Velocity.X, _fish.Velocity.Z).Length();
             var energy = horizontalSpeed / Mathf.Max(.001f, _fish.Tuning.MaxSpeed) *
                 (.2f + .8f * Mathf.Clamp(_fish.PresentationEffort, 0f, 1f)) *
@@ -329,14 +356,21 @@ public partial class WaterReaction : Node3D
             ActiveWakeTriangles = 0;
             return;
         }
-        _ribbonMaterial.SetShaderParameter("surface_illumination", _pondAtmosphere.SurfaceWakeIllumination);
-        _ribbonMaterial.SetShaderParameter("night_weight", _pondAtmosphere.SurfaceWakeNightWeight);
-        _ribbonMaterial.SetShaderParameter("sun_direction", _pondAtmosphere.SurfaceWakeSunDirection);
-        var sun = _pondAtmosphere.SurfaceWakeSunColor;
-        _ribbonMaterial.SetShaderParameter("sun_color", new Vector3(sun.R, sun.G, sun.B));
+        if (_wakeRepairMode == 4)
+            _pondAtmosphere.SyncWakeSurfaceMaterial(_ribbonMaterial);
+        else
+        {
+            _ribbonMaterial.SetShaderParameter("surface_illumination", _pondAtmosphere.SurfaceWakeIllumination);
+            _ribbonMaterial.SetShaderParameter("night_weight", _pondAtmosphere.SurfaceWakeNightWeight);
+            _ribbonMaterial.SetShaderParameter("sun_direction", _pondAtmosphere.SurfaceWakeSunDirection);
+            var sun = _pondAtmosphere.SurfaceWakeSunColor;
+            _ribbonMaterial.SetShaderParameter("sun_color", new Vector3(sun.R, sun.G, sun.B));
+            _ribbonMaterial.SetShaderParameter("repair_mode", _wakeRepairMode);
+        }
         ActiveWakeTriangles = PondWakeRibbon.Draw(_ribbonMesh, _wakePath, _wakePath.Seconds,
             _pondAtmosphere.GetRenderedSurfaceHeight, ShoreDistance, _ribbonMaterial,
-            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy);
+            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy,
+            _wakeRepairMode is 1 or 3 or 4 ? 1.85f : 1f);
     }
 
     private float ShoreDistance(float worldX, float worldZ)
@@ -454,7 +488,8 @@ public partial class WaterReaction : Node3D
         _ribbonMesh = new ImmediateMesh();
         _ribbonMaterial = new ShaderMaterial
         {
-            Shader = ResourceLoader.Load<Shader>("res://shaders/pond_wake.gdshader"),
+            Shader = ResourceLoader.Load<Shader>(_wakeRepairMode == 4 ?
+                "res://shaders/water_surface.gdshader" : "res://shaders/pond_wake.gdshader"),
             // Both the water plane and wake are transparent. Draw the wake after
             // the plane from either camera side so the green underside survives.
             RenderPriority = 1,
@@ -618,7 +653,8 @@ public partial class WaterReaction : Node3D
             _pondAtmosphere is null) return;
         ActiveWakeTriangles = PondWakeRibbon.Draw(_ribbonMesh, _wakePath, _wakePath.Seconds,
             _pondAtmosphere.GetRenderedSurfaceHeight, ShoreDistance, _ribbonMaterial,
-            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy);
+            _lowSurfaceEffects ? .5f : 1f, _latestContact, _latestContactEnergy,
+            _wakeRepairMode is 1 or 3 or 4 ? 1.85f : 1f);
     }
 
     /// <summary>Native fixed-route comparison only; never changes the motor.</summary>
@@ -665,6 +701,7 @@ public partial class WaterReaction : Node3D
     public void Suspend()
     {
         _wakePath.Suspend();
+        _wakeBandActive = false;
         _latestContact = null;
         _latestContactEnergy = 0f;
         if (!IsNodeReady()) return;

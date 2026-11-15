@@ -26,6 +26,8 @@ public static class AudioChecks
             Require(audio.AmbiencePlayer.GetParent() == audio, "bed is non-positional");
             Require(audio.AmbiencePlayer.Playing && audio.AmbienceStarts == 1,
                 "one continuous bed");
+            Require(audio.AmbiencePlayer.Stream is AudioStreamOggVorbis { Loop: true },
+                "approved bed loops");
             Require(audio.AmbiencePlayer.Bus == "Ambience" &&
                 audio.SwimEmitter.Bus == "SFX" && audio.BoostEmitter.Bus == "SFX",
                 "bus routing");

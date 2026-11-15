@@ -2,18 +2,18 @@
 
 This is the named file list for the first complete Fish life: choose a habitat and fish, hatch, swim, hide, feed, grow, evade predators, save and continue, die, and view Life History. It also covers the Bass/Pike encounter used to prove that loop. Every row is one **sound role** to audition and eventually place in the game, not a claim that the current generated take is accepted. The current [run 1/run 2 pick list](../../docs/assets/audio-base-pack/pick-list.md) contains candidates for the rows marked **Candidate**.
 
-`assets/sfx/` is the only approval location for game-ready **sound effects**. Put an approved effect in this folder with the exact canonical filename below. Files under `game/assets/audio/sfx/`, `docs/assets/audio-base-pack/`, or `assets/audio-source/` are source or audition material, even if Godot can import them. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg` and follow their separate audio review path; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. [The audio review log](../../docs/assets/audio-base-pack/review-log.md) records locks.
+`assets/sfx/` is the only approval location for **all game-ready audio**, including ambience loops. Put an owner-approved sound here with the exact canonical filename below before any gameplay code or scene loads it. Files under `game/assets/audio/`, `docs/assets/audio-base-pack/`, or `assets/audio-source/` are source or audition material, even if Godot can import them. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg` and have their own listening review; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. Record the selected source, processing, owner approval and canonical file in [the audio review log](../../docs/assets/audio-base-pack/review-log.md).
 
 The locked `swim_gentle.wav`, `swim_large.wav`, and `escape_burst.wav` now have byte-identical canonical copies here for the Pike Encounter audio pass. Their `*_mono.wav` files are derived runtime downmixes for actual 3D playback, not alternate owner-approved takes. [Runtime tuning and pending native qualification](../../docs/systems/audio.md) are separate from the take locks.
 
-The Godot project links `game/assets/sfx/` to this folder so gameplay can load an approved effect as `res://assets/sfx/<filename>`. The link is an import route, not a second approval folder. Gameplay must not load a provisional effect from `res://assets/audio/sfx/`.
+The Godot project links `game/assets/sfx/` to this folder. Runtime code and scenes must load **every audio stream** only as `res://assets/sfx/<filename>`; the link is an import route, not a second approval folder. Keep masters and source material elsewhere for provenance, but never point gameplay at those copies. Before adding or changing an audio load, confirm its exact file is present here and marked approved in the review log. `./tools/dev build` and `./tools/dev inspect-audio` run the path check in `tools/check-audio-paths.py`, which rejects literal audio paths outside this folder or missing approved files. Review dynamic audio paths manually too.
 
 ## Habitat ambience — 8 loops
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
 | `pond_underwater_shallows.ogg` | Pond, underwater in the shallows | Candidate |
-| `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Locked candidate |
+| `pond_underwater_deep.ogg` | Pond, underwater in deeper water | Locked; approved loop in `assets/sfx/` |
 | `pond_surface_day.ogg` | Pond, camera at or above the surface by day | Candidate |
 | `pond_surface_night.ogg` | Pond, camera at or above the surface by night | Candidate |
 | `ocean_underwater_reef.ogg` | Ocean, underwater around the reef and shallows | Candidate |
@@ -32,7 +32,7 @@ Blend these by habitat, depth, surface position, and time of day. Existing under
 | `swim_turn.wav` | A distinct hard turn, with a cooldown | Locked candidate |
 | `swim_large.wav` | Heavier swimming once the same fish has grown large | Locked candidate |
 | `escape_burst.wav` | A genuine limited Spacebar boost begins for pursuit or escape | Locked candidate (reuses `swim_accelerate.wav`) |
-| `surface_breach.wav` | Fish breaks the water surface | Locked candidate |
+| `surface_breach.wav` | Fish reaches and breaks the water surface | Locked; approved take in `assets/sfx/` |
 | `surface_reentry.wav` | Fish returns below the surface | Skipped for now; candidates retained |
 
 Swimming beds should be subtle and follow actual speed and body size. A turn or acceleration must not start a new one-shot on every frame.

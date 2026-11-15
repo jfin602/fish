@@ -10,12 +10,17 @@ public static class PondWakeRibbon
     public const int CrossVertices = 5;
     public const int Substeps = 2;
     public const int MaxTriangles = 2 * (PondWakePath.Capacity - 1) * Substeps *
-        (CrossVertices - 1) * 2 + 16 + 8 * (PondWakePath.Capacity / 4 + 1);
+        (CrossVertices - 1) * 2 + 32 + 8 * (PondWakePath.Capacity / 4 + 1);
     private static readonly float[] Cross = [-1f, -.48f, 0f, .48f, 1f];
     private static readonly float[] Feather = [0f, .38f, 1f, .38f, 0f];
 
     public readonly record struct Station(Vector2 Position, Vector2 Outward,
-        float HalfWidth, float Strength, int Segment);
+        float HalfWidth, float Strength, int Segment)
+    {
+        public float FinY { get; init; }
+        public float SurfaceLift { get; init; }
+        public bool HasFinDepth { get; init; }
+    }
 
     public static Station Project(PondWakeSample sample, float seconds, int side)
     {
@@ -31,16 +36,22 @@ public static class PondWakeRibbon
         var breakup = .82f + .18f * Mathf.Sin(sample.Center.X * 21.3f +
             sample.Center.Y * 9.8f + sample.BirthSeconds * 7.3f);
         return new Station(basePoint + outward * (spread + noise), outward,
-            Mathf.Max(.001f, width), sample.Energy * fade * breakup, sample.Segment);
+            Mathf.Max(.001f, width), sample.Energy * fade * breakup, sample.Segment)
+        {
+            FinY = side < 0 ? sample.LeftY : sample.RightY,
+            SurfaceLift = Mathf.SmoothStep(0f, .9f, age),
+            HasFinDepth = sample.HasFinDepth,
+        };
     }
 
     public static int Draw(ImmediateMesh mesh, PondWakePath path, float seconds,
         Func<float, float, float> height, Func<float, float, float>? shore,
         Material material, float strength = 1f,
-        PondWakeContacts? currentContact = null, float currentEnergy = 0f)
+        PondWakeContacts? currentContact = null, float currentEnergy = 0f,
+        float widthScale = 1f)
     {
         mesh.ClearSurfaces();
-        if (path.Count < 2 || strength <= 0f) return 0;
+        if (strength <= 0f) return 0;
         var begun = false;
         var triangles = 0;
         for (var side = -1; side <= 1; side += 2)
@@ -77,28 +88,67 @@ public static class PondWakeRibbon
                 }
             }
         }
-        // A short shoulder pressure line leads the historical fronts. It is
-        // absent at rest or below the interface and uses the same vertex Y.
-        if (currentContact is { Touching: true } contact && currentEnergy > .03f)
+        // Bridge the most recent historical station to the current measured
+        // rear flanks. The discrete sampler can otherwise leave a visible gap,
+        // especially on a small larva or during an uneven frame.
+        if (currentContact is { Touching: true } live && currentEnergy > .03f &&
+            path.Count > 0)
         {
-            var bow = new Vector2(contact.Bow.X, contact.Bow.Z);
+            var last = path[path.Count - 1];
+            var flank = new Vector2((live.Left.X + live.Right.X) * .5f,
+                (live.Left.Z + live.Right.Z) * .5f);
+            if (last.Segment == path.Segment && seconds - last.BirthSeconds <= .14f &&
+                flank.DistanceTo(last.Center) <= Mathf.Max(last.Length * .45f, .08f))
+            {
+                var heading = new Vector2(live.Heading.X, live.Heading.Z);
+                if (heading.LengthSquared() > .9f)
+                {
+                    var leftward = new Vector2(-heading.Y, heading.X);
+                    for (var side = -1; side <= 1; side += 2)
+                    {
+                        var outward = leftward * (side < 0 ? -1f : 1f);
+                        var edge = side < 0 ? live.Left : live.Right;
+                        var from = Project(last, seconds, side);
+                        var to = new Station(new Vector2(edge.X, edge.Z), outward,
+                            Mathf.Max(.001f, live.Width * .028f), currentEnergy * .26f,
+                            last.Segment)
+                        { FinY = edge.Y, HasFinDepth = true };
+                        if (shore is not null && (shore(from.Position.X, from.Position.Y) < .16f ||
+                            shore(to.Position.X, to.Position.Y) < .16f)) continue;
+                        BeginIfNeeded();
+                        for (var c = 0; c < CrossVertices - 1; c++)
+                        {
+                            Emit(from, c, strength); Emit(to, c, strength); Emit(from, c + 1, strength);
+                            Emit(from, c + 1, strength); Emit(to, c, strength); Emit(to, c + 1, strength);
+                            triangles += 2;
+                        }
+                    }
+                }
+            }
+        }
+        // The live lead is a short 3D slope from each actual pectoral fin rim
+        // to the water contact. Only the older wake remains on the surface.
+        if (currentContact is { Touching: true, HasFinOrigins: true } contact &&
+            currentEnergy > .03f)
+        {
             var heading = new Vector2(contact.Heading.X, contact.Heading.Z).Normalized();
             var left = new Vector2(-heading.Y, heading.X);
             for (var side = -1; side <= 1; side += 2)
             {
                 var outward = left * (side < 0 ? -1f : 1f);
-                var shoulder = side < 0 ? contact.Left : contact.Right;
-                var end = new Vector2(shoulder.X, shoulder.Z);
-                var front = new Station(bow + outward * contact.Width * .10f,
-                    outward, contact.Width * .025f, currentEnergy * .16f, 0);
-                var back = new Station(bow.Lerp(end, .63f), outward,
-                    contact.Width * .055f, currentEnergy * .10f, 0);
-                if (shore is not null && shore(back.Position.X, back.Position.Y) < .16f) continue;
+                var fin = side < 0 ? contact.FinLeft : contact.FinRight;
+                var water = side < 0 ? contact.Left : contact.Right;
+                var start = new Station(new Vector2(fin.X, fin.Z), outward,
+                    Mathf.Max(.001f, contact.Width * .018f), currentEnergy * .28f, 0);
+                var end = new Station(new Vector2(water.X, water.Z), outward,
+                    Mathf.Max(.001f, contact.Width * .04f), currentEnergy * .32f, 0)
+                { FinY = water.Y, HasFinDepth = true };
+                if (shore is not null && shore(end.Position.X, end.Position.Y) < .16f) continue;
                 BeginIfNeeded();
                 for (var c = 0; c < CrossVertices - 1; c++)
                 {
-                    Emit(front, c, strength); Emit(back, c, strength); Emit(front, c + 1, strength);
-                    Emit(front, c + 1, strength); Emit(back, c, strength); Emit(back, c + 1, strength);
+                    Emit(start, c, strength, fin.Y); Emit(end, c, strength); Emit(start, c + 1, strength, fin.Y);
+                    Emit(start, c + 1, strength, fin.Y); Emit(end, c, strength); Emit(end, c + 1, strength);
                     triangles += 2;
                 }
             }
@@ -131,15 +181,17 @@ public static class PondWakeRibbon
         if (begun) mesh.SurfaceEnd();
         return triangles;
 
-        void Emit(Station station, int cross, float gain)
+        void Emit(Station station, int cross, float gain, float? originY = null)
         {
-            var point = station.Position + station.Outward * Cross[cross] * station.HalfWidth;
-            var y = height(point.X, point.Y);
+            var point = station.Position + station.Outward * Cross[cross] * station.HalfWidth * widthScale;
+            var surfaceY = height(point.X, point.Y) + .032f;
+            var y = originY ?? (station.HasFinDepth
+                ? Mathf.Lerp(station.FinY, surfaceY, station.SurfaceLift) : surfaceY);
             mesh.SurfaceSetNormal(Vector3.Up);
             mesh.SurfaceSetColor(new Color(1f, 1f, 1f,
                 Mathf.Clamp(station.Strength * Feather[cross] * gain, 0f, 1f)));
             mesh.SurfaceSetUV(new Vector2(Cross[cross], station.Position.X * 3.7f + station.Position.Y * 2.1f));
-            mesh.SurfaceAddVertex(new Vector3(point.X, y + .032f, point.Y));
+            mesh.SurfaceAddVertex(new Vector3(point.X, y, point.Y));
         }
         void BeginIfNeeded()
         {
@@ -165,6 +217,11 @@ public static class PondWakeRibbon
             (t3 - t2) * tangentB;
         return new Station(point, p1.Outward.Lerp(p2.Outward, t).Normalized(),
             Mathf.Lerp(p1.HalfWidth, p2.HalfWidth, t),
-            Mathf.Lerp(p1.Strength, p2.Strength, t), p1.Segment);
+            Mathf.Lerp(p1.Strength, p2.Strength, t), p1.Segment)
+        {
+            FinY = Mathf.Lerp(p1.FinY, p2.FinY, t),
+            SurfaceLift = Mathf.Lerp(p1.SurfaceLift, p2.SurfaceLift, t),
+            HasFinDepth = p1.HasFinDepth && p2.HasFinDepth,
+        };
     }
 }
