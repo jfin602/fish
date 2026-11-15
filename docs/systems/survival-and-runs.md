@@ -4,6 +4,8 @@
 
 **Planned; no save, death, or recovery behavior is implemented or qualified.** One fish's life is one run and can span multiple sessions. Save-and-quit preserves that living fish. Death permanently ends the life, and the next run begins as a hatchling. The closed game does not advance the world.
 
+P6 first makes ordinary Pond an actual session-local Bass survival loop with real catches/restarts, but does **not** save a living fish or durably mark a dead run. P7 adds save/resume and authoritative permanent death once that loop is worth preserving; P8 builds factual Life History and P9 performs full integration qualification. [P6 Living Pond design](../planning/p6/living-pond.md) owns the boundary. Existing required persistence invariants below are **unchanged**.
+
 [Life stories and history](life-stories-and-history.md) owns the completed-life archive. [Technical direction](../technical-direction.md) owns implementation boundaries; exact storage format belongs to the future persistence task.
 
 ## Life and session are different
@@ -12,11 +14,11 @@ A **run** has a stable identity from hatching until death. A **session** is one 
 
 The intended initial interface offers **Continue** for a living saved fish and **New life** when no living fish exists. Multiple simultaneous living save slots are an open design choice. Starting another life while one exists must have an explicit policy; it must not silently erase or narrate the existing fish as dead.
 
-## Habitat and world identity (P4/P6 boundary)
+## Habitat and world identity (P4/P7 boundary)
 
-**P4 planned; persistence implementation deferred until P6.** A new life starts with World Select (Ocean or Freshwater Pond), then a compatible species. World Select is not available as a way to move a living fish across habitats. On persistent runs store an authoritative stable **habitat/world ID**, species ID, and the exact generated/baked Base World identity (including any seed/settings/version data needed to reload it), alongside existing fish, encounter and resource state. These values must survive save/close/resume unchanged.
+**P4 implemented as distinct Ocean/Pond demos; persistence implementation deferred until P7 by S27.** A new life starts with World Select (Ocean or Freshwater Pond), then a compatible species. World Select is not available as a way to move a living fish across habitats. On persistent runs store an authoritative stable **habitat/world ID**, species ID, and the exact generated/baked Base World identity (including any seed/settings/version data needed to reload it), alongside existing fish, encounter and resource state. These values must survive save/close/resume unchanged.
 
-**Continue** must reopen the stored world directly. Do not let menu navigation or failed loading switch a fish from Pond to Ocean or the reverse; an incompatible species/world or missing resource is an explicit save/load/recovery error, never automatic migration, death, or a reset of danger/food. Historical Life History entries retain enough habitat identity to label a completed life truthfully without claiming cross-habitat travel. Exact save format remains a P6 choice.
+**Continue** must reopen the stored world directly. Do not let menu navigation or failed loading switch a fish from Pond to Ocean or the reverse; an incompatible species/world or missing resource is an explicit save/load/recovery error, never automatic migration, death, or a reset of danger/food. Historical Life History entries retain enough habitat identity to label a completed life truthfully without claiming cross-habitat travel. Exact save format remains a P7 choice.
 
 ## Suspend and resume
 
