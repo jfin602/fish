@@ -401,6 +401,7 @@ public partial class PikeEncounter : Node3D
             _fish.Tuning = _growth.StageTuning(_standardTuning);
         }
         else _fish.SetEncounterHatchLocked(true);
+        EnsureWaterReaction();
         if (!CharacterCatalog.TryInstantiate(pike!, out var pikeModel, out var animation, out diagnostic))
         { Fail(diagnostic); return; }
         var actor = GetNode<PikeActor>("NorthernPike");
@@ -446,6 +447,18 @@ public partial class PikeEncounter : Node3D
         }
         else StartIntro();
         GD.Print($"PIKE_ENCOUNTER_READY player={PondGrowthState.SpeciesId} identity={_growth.Identity} stage={_growth.Stage} pike={PikeEncounterAssets.PikeId} prey={PikeEncounterAssets.BluegillId} schools={_schools.Count} prey_count={_prey.Count} world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed} player_pos={_fish.GlobalPosition} prey_pos={_prey[0].GlobalPosition} larva_pos={_prey[4].GlobalPosition}");
+    }
+
+    private WaterReaction EnsureWaterReaction()
+    {
+        var water = _fish.GetNodeOrNull<WaterReaction>("WaterReaction");
+        if (water is null)
+        {
+            water = new WaterReaction(_fish, WaterVisualProfile.Pond, _fish.PondWaterlineHeight);
+            _fish.AddChild(water);
+        }
+        if (_growth.Stage != "egg") water.ConfigureFromPlayerVisual();
+        return water;
     }
 
     private void BuildNest(PikeCoverCatalog catalog)
@@ -611,6 +624,7 @@ public partial class PikeEncounter : Node3D
         { Fail("BASS_LARVA_VISUAL_UNAVAILABLE " + diagnostic); return; }
         _fish.SetEncounterBassBody(_growth.Body);
         _fish.Tuning = _growth.StageTuning(_standardTuning!);
+        EnsureWaterReaction();
         var fryCamera = _fish.GetNode<FollowCamera>("CameraRig");
         fryCamera.ConfigureEncounterLarvaView(true);
         var opening = _eggVisual!.GlobalBasis.Z.Normalized();
@@ -1034,6 +1048,7 @@ public partial class PikeEncounter : Node3D
         _fish.SetEncounterBassBody(nextBody);
         _growth.Commit(next);
         _fish.Tuning = _growth.StageTuning(_standardTuning!);
+        EnsureWaterReaction();
         _growthClearanceBlocked = false;
         if (_growth.Stage == "juvenile")
         {
@@ -1144,6 +1159,7 @@ public partial class PikeEncounter : Node3D
     private void Pause()
     {
         _fish.ClearAndDisarmInput();
+        _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
         _audio?.ResetEvents();
         _blood.SetPaused(true);
         GetTree().Paused = true;
@@ -1174,6 +1190,7 @@ public partial class PikeEncounter : Node3D
         _aftermathSeconds = 0;
         _pike.BeginAfterCatch();
         _fish.ClearAndDisarmInput();
+        _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
         _audio?.ResetEvents();
         _fish.SetPhysicsProcess(false);
         _fish.CollisionLayer = 0;
@@ -1228,6 +1245,7 @@ public partial class PikeEncounter : Node3D
         _bassDiversion.Reset();
         _transitioning = true;
         _fish.ClearAndDisarmInput();
+        _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
         _audio?.ResetEvents();
         _audio?.Shutdown();
         GetTree().Paused = false;

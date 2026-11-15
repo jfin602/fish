@@ -62,8 +62,8 @@ public static class CharacterChecks
                 Require(visual is not null && camera is not null && camera.Current &&
                     fish.Tuning.ResourcePath == "res://resources/swim_tuning.tres" &&
                     fish.ActivePresetId == ControlPreset.KeyboardId &&
-                    collider.Shape is SphereShape3D shape &&
-                    Mathf.Abs(shape.Radius - .48f) < .001f &&
+                    collider.Shape is CapsuleShape3D shape &&
+                    Mathf.Abs(shape.Radius - PlayerBodyGeometry.Measure(fish).Radius) < .001f &&
                     visual.Scale.DistanceTo(Vector3.One * entry.WorldScale) < .001f,
                     $"{entry.Id} missing visual, camera or presentation");
                 Require(world.GetNodeOrNull<Node3D>("Habitat/Composition") is not null &&
@@ -169,7 +169,7 @@ public static class CharacterChecks
             next.GetNode<FishController>("Fish").GetNodeOrNull<Node3D>("PlayerVisual")?.Scale
                 .IsEqualApprox(Vector3.One * CharacterCatalog.All[4].WorldScale) == true &&
             next.GetNode<FishController>("Fish").GetNode<CollisionShape3D>("Collision").Shape
-                is SphereShape3D { Radius: 0.48f },
+                is CapsuleShape3D,
             "second start did not create fresh shared-authority shark world");
         GD.Print("CHARACTER_ROUTE_OK first=FAF-FISH-001 second=FAF-FISH-005 input=cleared session=replaced persistence=untouched");
     }

@@ -19,6 +19,7 @@ public static class HatchChecks
         {
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             var fish = first.GetNode<FishController>("Fish");
+            WaterReactionChecks.CheckEgg(first);
             var identity = first.Growth.Identity;
             var start = fish.GlobalPosition;
             Need(first.IntroActive && first.Growth.Stage == "egg" &&
@@ -164,6 +165,8 @@ public static class HatchChecks
     private static void CheckLarva(PikeEncounter scene, string identity, Vector3 start)
     {
         var fish = scene.GetNode<FishController>("Fish");
+        WaterReactionChecks.CheckStage(scene);
+        WaterReactionChecks.CheckSurface(scene);
         var camera = fish.GetNode<Camera3D>("CameraRig/Camera3D");
         Need(!scene.IntroActive && scene.Growth.Identity == identity &&
             scene.Growth.Stage == "larva" && scene.Feeding.Nutrition == 0 &&

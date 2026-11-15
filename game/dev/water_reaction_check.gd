@@ -49,9 +49,12 @@ func _configuration(fish: CharacterBody3D, water: Node3D) -> bool:
 	var left: GPUParticles3D = water.get_node("LeftWake")
 	var right: GPUParticles3D = water.get_node("RightWake")
 	var bubbles: GPUParticles3D = water.get_node("TailBubbles")
-	if not _require(left.amount == 16 and right.amount == 16 and bubbles.amount == 12 and left.lifetime <= 0.55 and right.lifetime <= 0.55 and bubbles.lifetime <= 0.42, "emitter budget"):
+	if not _require(left.amount == 16 and right.amount == 16 and bubbles.amount == 12 and left.lifetime <= 1.02 and right.lifetime <= 1.02 and bubbles.lifetime <= 0.72, "emitter budget"):
 		return false
-	if not _require(left.trail_enabled and right.trail_enabled and left.draw_pass_1 is RibbonTrailMesh and right.draw_pass_1 is RibbonTrailMesh and bubbles.draw_pass_1 is SphereMesh, "Forward+ draw passes"):
+	if not _require(not left.trail_enabled and not right.trail_enabled and left.draw_pass_1 is SphereMesh and right.draw_pass_1 is SphereMesh and bubbles.draw_pass_1 is SphereMesh, "bounded wake draw passes"):
+		return false
+	var ocean_tint: Color = (left.draw_pass_1.material as StandardMaterial3D).albedo_color
+	if not _require(ocean_tint.g > 0.6 and ocean_tint.b > 0.6, "Ocean wake lost light water tint"):
 		return false
 	for emitter in [left, right, bubbles]:
 		if not _require(not emitter.local_coords and emitter.process_material is ParticleProcessMaterial and emitter.amount_ratio == 0.0 and not emitter.emitting and emitter.preprocess == 0.0 and emitter.explosiveness == 0.0, "world-space/no-prewarm config"):

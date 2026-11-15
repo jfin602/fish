@@ -65,6 +65,7 @@ public static class PlayerArt
         visual.Transform = entry.PresentationTransform;
         visual.AddChild(new CatalogFishVisualMotion(fish, animation!, entry));
         ApplyPresentation(fish, entry);
+        fish.FitCollisionToPlayerVisual();
         diagnostic = "";
         return true;
     }
@@ -143,6 +144,7 @@ public static class PlayerArt
         visual.AddChild(motion);
         foreach (var part in new[] { "Body", "Tail", "TopFin", "LeftEye", "RightEye" })
             if (fish.GetNodeOrNull<MeshInstance3D>(part) is { } placeholder) placeholder.Visible = false;
+        fish.FitCollisionToPlayerVisual();
         diagnostic = "";
         return true;
     }

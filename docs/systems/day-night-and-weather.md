@@ -108,6 +108,8 @@ The solar state is shared, but visual response remains habitat-specific.
 
 **Pond:** muddy olive-green transmission, stronger local canopy/bank contrast, limited shallow readability and darker deep response.
 
+The [Pond depth-fog R1 candidate](../tasks/pond-lighting-diagnostics/r1/README.md) replaces the conspicuous finite camera-distance fog interval with exponential absorption. Its density follows the existing depth-adjusted visibility control; the global volumetric layer and local turbidity field retain their prior values. The owner's later screenshot prompted a Pond-only angular Sun shadow: near-log ground shade fades over a broad penumbra in a fixed native replay, with higher measured frame cost. Owner free-swim visual qualification remains open.
+
 **Ocean:** preserve the accepted blue/turquoise Forward+ identity and its existing depth structure.
 
 Switching habitats must not leak previous profile values, time controls or transient shader state.

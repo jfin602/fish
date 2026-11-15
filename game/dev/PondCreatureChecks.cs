@@ -102,8 +102,8 @@ public static class PondCreatureChecks
                 var ambient = world.GetNodeOrNull<FafAmbientPondLife>("Habitat/PondAmbientLife");
                 Require(visual is not null && ambient is not null &&
                     ambient.Population.Count == 12 &&
-                    fish.GetNode<CollisionShape3D>("Collision").Shape is SphereShape3D shape &&
-                    Mathf.Abs(shape.Radius - .48f) < .001f &&
+                    fish.GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D shape &&
+                    Mathf.Abs(shape.Radius - PlayerBodyGeometry.Measure(fish).Radius) < .001f &&
                     fish.GetNodeOrNull<WaterReaction>("WaterReaction") is not null,
                     $"Pond world/player/ambient {entry.Id}");
                 var visualAnimation = visual!.FindChildren("*", "AnimationPlayer", true, false)

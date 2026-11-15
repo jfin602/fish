@@ -28,10 +28,12 @@ public partial class WaterReaction : Node3D
 {
     public const int PondRingCapacity = 8;
     private readonly FishController _fish;
+    private readonly WaterVisualProfile _waterProfile;
     private readonly WaterVisualProfile? _surfaceProfile;
     private readonly float _pondWaterY;
     private readonly MeshInstance3D[] _rings = new MeshInstance3D[PondRingCapacity];
     private readonly float[] _ringAges = new float[PondRingCapacity];
+    private readonly float[] _ringSizes = new float[PondRingCapacity];
     private GpuParticles3D? _splash;
     private int _ringCursor;
     private float _surfaceClock;
@@ -42,10 +44,17 @@ public partial class WaterReaction : Node3D
     private bool _enabled = true;
     private bool _suspended = true;
     private float _lastSpeed;
+    private float _boostBlend;
+    private int _boostVisualStep = -1;
+    private float _bodyScale = 1f;
+    private float _bodyRadius = .48f;
+    private float _tailZ = .43f;
+    private float _trailTimeScale = 1f;
 
     public WaterReaction(FishController fish, WaterVisualProfile? surfaceProfile = null, float pondWaterY = 0f)
     {
         _fish = fish;
+        _waterProfile = surfaceProfile ?? WaterVisualProfile.Ocean;
         _surfaceProfile = surfaceProfile?.Id == WorldEnvironmentProfile.Pond ? surfaceProfile : null;
         _pondWaterY = pondWaterY;
         Name = "WaterReaction";
@@ -53,34 +62,86 @@ public partial class WaterReaction : Node3D
 
     public override void _Ready()
     {
-        // Fish3 is 0.12 scale and turned 180 degrees under this unscaled fish root.
-        // Its tail is near local +Z. The emitters inherit fish pitch/yaw, while
-        // emitted particles keep their world positions instead of following camera/fish.
         _left = MakeWake("LeftWake", -0.20f, -1);
         _right = MakeWake("RightWake", 0.20f, 1);
         _bubbles = MakeBubbles();
         if (_surfaceProfile is not null) MakePondSurfaceEffects();
         Clear();
+        if (_fish.GetNodeOrNull<Node3D>("PlayerVisual") is not null)
+            ConfigureFromPlayerVisual();
         _lastSpeed = _fish.PresentationSpeed;
+    }
+
+    /// <summary>Fit the same wake to the current player mesh in any world or life stage.</summary>
+    public void ConfigureFromPlayerVisual()
+    {
+        var body = PlayerBodyGeometry.Measure(_fish);
+        _bodyRadius = body.Radius;
+        _bodyScale = Mathf.Clamp(body.Length / .95f, .025f, 4f);
+        _trailTimeScale = Mathf.Clamp(Mathf.Sqrt(_bodyScale), .55f, 1.2f);
+        _boostVisualStep = -1;
+        _tailZ = body.TailZ + body.Radius * .08f;
+        if (!IsNodeReady()) return;
+        var side = body.Radius * .42f;
+        var wakeCenterZ = _tailZ - body.Length * .22f;
+        _left.Position = new Vector3(-side, -body.Radius * .08f, wakeCenterZ);
+        _right.Position = new Vector3(side, -body.Radius * .08f, wakeCenterZ);
+        _bubbles.Position = new Vector3(0f, body.Radius * .15f,
+            _tailZ - body.Length * .10f);
+        foreach (var wake in new[] { _left, _right })
+        {
+            var puff = (SphereMesh)wake.DrawPass1;
+            puff.Radius = .012f * _bodyScale;
+            puff.Height = .042f * _bodyScale;
+            wake.Lifetime = .85f * _trailTimeScale;
+            var process = (ParticleProcessMaterial)wake.ProcessMaterial;
+            process.InitialVelocityMin = .20f * _bodyScale;
+            process.InitialVelocityMax = .42f * _bodyScale;
+            process.EmissionBoxExtents = new Vector3(body.Radius * .28f,
+                body.Radius * .12f, body.Length * .25f);
+            wake.VisibilityAabb = new Aabb(new Vector3(-2f, -2f, -1f) * _bodyScale,
+                new Vector3(4f, 4f, 4f) * _bodyScale);
+        }
+        var bubble = (SphereMesh)_bubbles.DrawPass1;
+        bubble.Radius = .018f * _bodyScale;
+        bubble.Height = .036f * _bodyScale;
+        _bubbles.Lifetime = .60f * _trailTimeScale;
+        var bubbleProcess = (ParticleProcessMaterial)_bubbles.ProcessMaterial;
+        bubbleProcess.InitialVelocityMin = .10f * _bodyScale;
+        bubbleProcess.InitialVelocityMax = .28f * _bodyScale;
+        bubbleProcess.EmissionBoxExtents = new Vector3(body.Radius * .3f,
+            body.Radius * .15f, body.Length * .15f);
+        if (_splash is not null)
+        {
+            var drop = (SphereMesh)_splash.DrawPass1;
+            drop.Radius = .014f * _bodyScale;
+            drop.Height = .028f * _bodyScale;
+            var splashProcess = (ParticleProcessMaterial)_splash.ProcessMaterial;
+            splashProcess.InitialVelocityMin = .3f * _bodyScale;
+            splashProcess.InitialVelocityMax = .8f * _bodyScale;
+        }
+        Suspend();
     }
 
     private GpuParticles3D MakeWake(string name, float x, int side)
     {
+        var wakeColor = _waterProfile.Id == WorldEnvironmentProfile.Pond
+            ? _waterProfile.SkyHorizon.Lerp(_waterProfile.UnderwaterSurfaceScatter, .5f)
+            : _waterProfile.SurfaceLight.Lerp(_waterProfile.Volume, .5f);
         var material = new StandardMaterial3D
         {
-            AlbedoColor = new Color(0.54f, 0.85f, 0.88f, 0.30f),
+            AlbedoColor = new Color(wakeColor.R, wakeColor.G, wakeColor.B, .21f),
             Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
             ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
             CullMode = BaseMaterial3D.CullModeEnum.Disabled,
             VertexColorUseAsAlbedo = true,
-            UseParticleTrails = true,
         };
-        var ribbon = new RibbonTrailMesh
+        // Short individual puffs cannot stretch into a screen-spanning GPU ribbon
+        // when the fish changes scale, turns quickly, or enters from a hatch.
+        var puff = new SphereMesh
         {
-            Size = 0.06f,
-            Sections = 3,
-            SectionLength = 0.12f,
-            SectionSegments = 1,
+            Radius = .012f,
+            Height = .042f,
             Material = material,
         };
         var process = new ParticleProcessMaterial
@@ -93,6 +154,9 @@ public partial class WaterReaction : Node3D
             ScaleMin = 0.65f,
             ScaleMax = 1.0f,
             Color = Colors.White,
+            EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Box,
+            EmissionBoxExtents = new Vector3(.08f, .03f, .2f),
+            LifetimeRandomness = .55f,
         };
         var particles = new GpuParticles3D
         {
@@ -100,15 +164,13 @@ public partial class WaterReaction : Node3D
             Position = new Vector3(x, -0.04f, 0.43f),
             Amount = 16,
             AmountRatio = 0,
-            Lifetime = 0.55,
+            Lifetime = 0.85,
             Preprocess = 0,
             Explosiveness = 0,
             LocalCoords = false,
-            TrailEnabled = true,
-            TrailLifetime = 0.22,
             VisibilityAabb = new Aabb(new Vector3(-1.5f, -1.2f, -0.4f), new Vector3(3, 2.4f, 2.8f)),
             ProcessMaterial = process,
-            DrawPass1 = ribbon,
+            DrawPass1 = puff,
             Emitting = false,
         };
         AddChild(particles);
@@ -117,9 +179,12 @@ public partial class WaterReaction : Node3D
 
     private GpuParticles3D MakeBubbles()
     {
+        var bubbleColor = _waterProfile.Id == WorldEnvironmentProfile.Pond
+            ? _waterProfile.SkyHorizon.Lerp(_waterProfile.UnderwaterSurfaceScatter, .35f)
+            : _waterProfile.SurfaceLight.Lerp(_waterProfile.Volume, .65f);
         var material = new StandardMaterial3D
         {
-            AlbedoColor = new Color(0.75f, 0.95f, 0.97f, 0.34f),
+            AlbedoColor = new Color(bubbleColor.R, bubbleColor.G, bubbleColor.B, .28f),
             Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
             ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
             CullMode = BaseMaterial3D.CullModeEnum.Disabled,
@@ -136,6 +201,9 @@ public partial class WaterReaction : Node3D
             ScaleMin = 0.6f,
             ScaleMax = 1,
             Color = Colors.White,
+            EmissionShape = ParticleProcessMaterial.EmissionShapeEnum.Box,
+            EmissionBoxExtents = new Vector3(.08f, .04f, .12f),
+            LifetimeRandomness = .45f,
         };
         var particles = new GpuParticles3D
         {
@@ -143,13 +211,13 @@ public partial class WaterReaction : Node3D
             Position = new Vector3(0, 0.08f, 0.43f),
             Amount = 12,
             AmountRatio = 0,
-            Lifetime = 0.42,
+            Lifetime = 0.60,
             Preprocess = 0,
             Explosiveness = 0,
             LocalCoords = false,
             VisibilityAabb = new Aabb(new Vector3(-1, -1, -0.3f), new Vector3(2, 2, 2)),
             ProcessMaterial = process,
-            DrawPass1 = new SphereMesh { Radius = 0.025f, Height = 0.05f, Material = material },
+            DrawPass1 = new SphereMesh { Radius = 0.018f, Height = 0.036f, Material = material },
             Emitting = false,
         };
         AddChild(particles);
@@ -173,12 +241,29 @@ public partial class WaterReaction : Node3D
         var acceleration = Mathf.Max(0, (speed - _lastSpeed) / (float)delta) /
             Mathf.Max(0.001f, tuning.Acceleration);
         _lastSpeed = speed;
+        var actualSpeed = _fish.Velocity.Length();
+        var speed01 = actualSpeed / Mathf.Max(.001f, tuning.MaxSpeed);
         var levels = WaterReactionLevels.FromMovement(
-            speed / Mathf.Max(0.001f, tuning.MaxSpeed),
+            speed01,
             _fish.PresentationEffort, acceleration, _fish.PresentationTurn);
-        Apply(_left, levels.Left);
-        Apply(_right, levels.Right);
-        Apply(_bubbles, levels.Bubbles);
+        var boostTarget = _fish.BoostActive && _fish.BoostEnergy > 0f
+            ? Mathf.Clamp(speed01, 0f, 1f) * Mathf.Clamp(_fish.PresentationEffort, 0f, 1f) : 0f;
+        _boostBlend = Mathf.Lerp(_boostBlend, boostTarget, 1f - Mathf.Exp(-5f * (float)delta));
+        var rateScale = _trailTimeScale;
+        Apply(_left, Mathf.Clamp(levels.Left * rateScale * (1f + .55f * _boostBlend), 0f, 1f));
+        Apply(_right, Mathf.Clamp(levels.Right * rateScale * (1f + .55f * _boostBlend), 0f, 1f));
+        Apply(_bubbles, Mathf.Clamp(levels.Bubbles * rateScale * (1f + .4f * _boostBlend), 0f, 1f));
+        var visualStep = Mathf.RoundToInt(_boostBlend * 6f);
+        if (visualStep != _boostVisualStep)
+        {
+            _boostVisualStep = visualStep;
+            var visualBoost = visualStep / 6f;
+            _left.Lifetime = _right.Lifetime = .85f * _trailTimeScale *
+                (1f + .28f * visualBoost);
+            var width = .012f * _bodyScale * (1f + .18f * visualBoost);
+            ((SphereMesh)_left.DrawPass1).Radius = width;
+            ((SphereMesh)_right.DrawPass1).Radius = width;
+        }
         if (_surfaceProfile is not null)
             SamplePondSurface(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort, (float)delta);
     }
@@ -200,6 +285,16 @@ public partial class WaterReaction : Node3D
         return proximity * Mathf.Clamp(speed01, 0f, 1f) * (.18f + .82f * Mathf.Clamp(effort, 0f, 1f));
     }
 
+    public static float SurfaceContactLevel(float speed01, float effort, float depth, float radius)
+    {
+        if (!float.IsFinite(radius) || radius <= 0f) return 0f;
+        var reach = radius * 1.5f;
+        var proximity = Mathf.SmoothStep(0f, 1f,
+            Mathf.Clamp((reach - depth) / Mathf.Max(.002f, radius * 1.2f), 0f, 1f));
+        return proximity * Mathf.Clamp(speed01, 0f, 1f) *
+            (.18f + .82f * Mathf.Clamp(effort, 0f, 1f));
+    }
+
     /// <summary>Presentation-only sampling of the motor's world pose and velocity.</summary>
     public void SamplePondSurface(Vector3 position, Vector3 velocity, float effort, float delta)
     {
@@ -210,33 +305,40 @@ public partial class WaterReaction : Node3D
             _ringAges[i] += delta;
             if (_ringAges[i] >= .95f) { _rings[i].Visible = false; continue; }
             var progress = _ringAges[i] / .95f;
-            var scale = .22f + progress * (1.0f + .55f * _surfaceProfile.SurfaceWakeStrength);
+            var scale = _ringSizes[i] * (.22f + progress * (1.0f + .55f * _surfaceProfile.SurfaceWakeStrength));
             _rings[i].Scale = new Vector3(scale, 1f, scale * 1.42f);
             var material = (StandardMaterial3D)_rings[i].MaterialOverride;
-            material.AlbedoColor = new Color(.61f, .67f, .53f, .25f * (1f - progress));
+            var tint = _waterProfile.SurfaceDark.Lerp(_waterProfile.SurfaceLight, .25f);
+            material.AlbedoColor = new Color(tint.R, tint.G, tint.B, .25f * (1f - progress));
         }
         _splashCooldown = Mathf.Max(0f, _splashCooldown - delta);
         var horizontal = new Vector3(velocity.X, 0, velocity.Z);
         var speed01 = horizontal.Length() / Mathf.Max(.001f, _fish.Tuning.MaxSpeed);
         var depth = _pondWaterY - position.Y;
-        var level = SurfaceContactLevel(speed01, effort, depth);
-        if (level < .025f || depth < -.1f || depth > 1.1f)
+        var level = SurfaceContactLevel(speed01, effort, depth, _bodyRadius);
+        level = Mathf.Clamp(level * (1f + .45f * _boostBlend), 0f, 1f);
+        if (level < .025f || depth < -_bodyRadius * .2f || depth > _bodyRadius * 1.5f)
         {
             _surfaceClock = 0f;
             return;
         }
         _surfaceClock += delta;
-        var interval = _surfaceProfile.SurfaceRippleInterval / (0.65f + level);
+        var interval = _surfaceProfile.SurfaceRippleInterval / (0.65f + level + .2f * _boostBlend);
         if (_surfaceClock < interval) return;
         _surfaceClock = 0f;
         var ring = _rings[_ringCursor];
         _ringCursor = (_ringCursor + 1) % PondRingCapacity;
-        ring.GlobalPosition = new Vector3(position.X, _pondWaterY + .045f, position.Z);
+        var trail = new Vector3(velocity.X, 0f, velocity.Z).Normalized();
+        ring.GlobalPosition = new Vector3(position.X, _pondWaterY + .045f, position.Z) -
+            trail * Mathf.Min(_bodyRadius, _bodyScale * .4f);
         ring.GlobalRotation = new Vector3(0, Mathf.Atan2(horizontal.X, horizontal.Z), 0);
-        ring.Scale = new Vector3(.22f, 1f, .31f);
-        _ringAges[(_ringCursor + PondRingCapacity - 1) % PondRingCapacity] = 0f;
+        var emitted = (_ringCursor + PondRingCapacity - 1) % PondRingCapacity;
+        _ringSizes[emitted] = _bodyScale * (1f + .22f * _boostBlend);
+        ring.Scale = new Vector3(.22f * _ringSizes[emitted], 1f, .31f * _ringSizes[emitted]);
+        _ringAges[emitted] = 0f;
         ring.Visible = true;
-        if (_splash is not null && depth < .32f && level > .42f && effort > .4f &&
+        if (_splash is not null && depth < _bodyRadius * .7f &&
+            level > .42f && effort > .4f &&
             _splashCooldown <= 0f)
         {
             _splash.GlobalPosition = ring.GlobalPosition;
@@ -267,7 +369,8 @@ public partial class WaterReaction : Node3D
         {
             var material = new StandardMaterial3D
             {
-                AlbedoColor = new Color(.61f, .67f, .53f, 0f),
+                AlbedoColor = new Color(_waterProfile.SurfaceDark.R,
+                    _waterProfile.SurfaceDark.G, _waterProfile.SurfaceDark.B, 0f),
                 Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
                 ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded,
                 CullMode = BaseMaterial3D.CullModeEnum.Disabled,
@@ -289,8 +392,10 @@ public partial class WaterReaction : Node3D
                 InitialVelocityMin = .3f, InitialVelocityMax = .8f,
                 ScaleMin = .5f, ScaleMax = 1f,
             },
-            DrawPass1 = new SphereMesh { Radius = .018f, Height = .036f,
-                Material = new StandardMaterial3D { AlbedoColor = new Color(.68f, .72f, .60f, .55f),
+            DrawPass1 = new SphereMesh { Radius = .014f, Height = .028f,
+                Material = new StandardMaterial3D { AlbedoColor = new Color(
+                    _waterProfile.SurfaceLight.R, _waterProfile.SurfaceLight.G,
+                    _waterProfile.SurfaceLight.B, .40f),
                     Transparency = BaseMaterial3D.TransparencyEnum.Alpha,
                     ShadingMode = BaseMaterial3D.ShadingModeEnum.Unshaded } },
         };
@@ -326,6 +431,8 @@ public partial class WaterReaction : Node3D
         _splashCooldown = 0f;
         if (_splash is not null) { _splash.Restart(); _splash.Emitting = false; }
         _lastSpeed = _fish.PresentationSpeed;
+        _boostBlend = 0f;
+        _boostVisualStep = -1;
         _suspended = true;
     }
 

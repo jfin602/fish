@@ -67,18 +67,24 @@ public static class AutoFeedBoostChecks
             fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
             await Frames(45);
             var ordinary = fish.Velocity.Length();
+            var water = WaterReactionChecks.CheckStage(scene);
+            var wake = water.GetNode<GpuParticles3D>("LeftWake");
+            var ordinaryWake = wake.AmountRatio;
             Need(ordinary > .25f && ordinary <= fish.Tuning.MaxSpeed + .01f,
                 "ordinary propulsion lost");
             fish._Input(new InputEventKey { PhysicalKeycode = Key.Space, Pressed = true });
             await Frames(50);
             var boosted = fish.Velocity.Length();
+            var boostedWake = wake.AmountRatio;
             Need(boosted > ordinary * 1.25f && fish.BoostEnergy < 1f && fish.BoostActive &&
+                boostedWake > ordinaryWake + .03f && boostedWake <= 1f &&
                 MovementDisturbanceField.Energy(boosted, 0f, 1f, 0f) >
                 MovementDisturbanceField.Energy(ordinary, 0f, 1f, 0f),
                 "Space did not produce real faster, louder movement");
             await Frames(160);
             Need(fish.BoostEnergy < 1f && !fish.BoostActive &&
-                fish.Velocity.Length() <= fish.Tuning.MaxSpeed + .02f,
+                fish.Velocity.Length() <= fish.Tuning.MaxSpeed + .02f &&
+                wake.AmountRatio < boostedWake,
                 "boost did not exhaust and return to normal speed");
             fish._Input(new InputEventKey { PhysicalKeycode = Key.Space, Pressed = false });
             fish._Input(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
@@ -90,7 +96,8 @@ public static class AutoFeedBoostChecks
             await Frames(3);
             Need(fish.BoostActive, "fresh press did not re-arm boost");
             scene._Input(new InputEventKey { Keycode = Key.Escape, Pressed = true });
-            Need(tree.Paused && !fish.BoostActive, "pause retained active boost");
+            Need(tree.Paused && !fish.BoostActive && wake.AmountRatio == 0f,
+                "pause retained active boost or wake");
             var pausedEnergy = fish.BoostEnergy;
             for (var i = 0; i < 3; i++) await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
             Need(Mathf.IsEqualApprox(fish.BoostEnergy, pausedEnergy),

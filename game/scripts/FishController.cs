@@ -43,6 +43,20 @@ public partial class FishController : CharacterBody3D
             _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * radius;
         GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
     }
+    public void FitCollisionToPlayerVisual()
+    {
+        var body = PlayerBodyGeometry.Measure(this);
+        var collision = GetNode<CollisionShape3D>("Collision");
+        collision.Shape = new CapsuleShape3D { Radius = body.Radius, Height = body.Height };
+        collision.Rotation = new Vector3(Mathf.Pi * .5f, 0f, 0f);
+        collision.Position = new Vector3(0f, 0f, body.CenterZ);
+        SafeMargin = Mathf.Clamp(body.Radius * .08f, .00025f, .001f);
+        PondColliderRadius = body.Radius;
+        BodyScale = Mathf.Clamp(body.Length / .95f, .025f, 4f);
+        if (float.IsFinite(PondWaterlineHeight))
+            _pondSurfaceCenterLimit = PondWaterlineHeight - .65f * body.Radius;
+        GetNodeOrNull<FollowCamera>("CameraRig")?.ResetFollow();
+    }
     public void SetPondBodyRadius(float radius)
     {
         if (!float.IsFinite(radius) || radius <= 0f ||
@@ -67,17 +81,17 @@ public partial class FishController : CharacterBody3D
     public void ConfigurePondWaterline(SeabedSurface seabed)
     {
         if (!seabed.TryGetPondWaterSurfaceHeight(out var waterline) ||
-            GetNodeOrNull<CollisionShape3D>("Collision") is not { Shape: SphereShape3D sphere } collision ||
-            !collision.Position.IsZeroApprox() || !collision.Scale.IsEqualApprox(Vector3.One) ||
-            !Scale.IsEqualApprox(Vector3.One) || !float.IsFinite(sphere.Radius) || sphere.Radius <= 0f)
+            GetNodeOrNull<CollisionShape3D>("Collision") is not { } collision ||
+            !collision.Scale.IsEqualApprox(Vector3.One) || !Scale.IsEqualApprox(Vector3.One) ||
+            !float.IsFinite(BodyRadius) || BodyRadius <= 0f)
             throw new InvalidOperationException(
                 "POND_WATERLINE_INVALID action=check-generated-surface-and-fish-collider");
         PondWaterlineHeight = waterline;
-        PondColliderRadius = sphere.Radius;
+        PondColliderRadius = BodyRadius;
         // The collider remains mostly submerged. At the level plane its top
         // can emerge by 35% of its radius; dorsal anatomy can emerge farther.
-        _pondSurfaceCenterLimit = waterline - 0.65f * sphere.Radius;
-        GD.Print($"POND_WATERLINE_READY water_y={waterline:F3} radius={sphere.Radius:F3} center_max={_pondSurfaceCenterLimit:F3} upper_collision=disabled");
+        _pondSurfaceCenterLimit = waterline - 0.65f * BodyRadius;
+        GD.Print($"POND_WATERLINE_READY water_y={waterline:F3} radius={BodyRadius:F3} center_max={_pondSurfaceCenterLimit:F3} upper_collision=disabled");
     }
 
     public static Vector3 ConstrainPondAscent(Vector3 velocity, float centerY,

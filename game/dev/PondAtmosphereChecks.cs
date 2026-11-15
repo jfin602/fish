@@ -91,6 +91,7 @@ public static class PondAtmosphereChecks
                 atmosphere.BackgroundWater == WaterVisualProfile.Ocean.Background &&
                 WaterVisualProfile.Ocean.SurfaceExtinctionPerMeter == 0f &&
                 atmosphere.DistanceFogColor == WaterVisualProfile.Ocean.Fog &&
+                atmosphere.WaterEnvironment!.FogMode == Godot.Environment.FogModeEnum.Depth &&
                 Mathf.Abs(atmosphere.WaterEnvironment!.FogDensity - .96f) < .001f &&
                 Mathf.Abs(atmosphere.WaterEnvironment!.FogDepthBegin - 5f) < .001f &&
                 atmosphere.CaptureLighting().VisibilityDistanceMeters == 35f &&
@@ -183,7 +184,10 @@ public static class PondAtmosphereChecks
         Require(sun.ShadowEnabled == (atmosphere.ProfileId == WorldEnvironmentProfile.Pond &&
                 solar.DirectLight > .08f) &&
             (atmosphere.ProfileId != WorldEnvironmentProfile.Pond ||
-                sun.DirectionalShadowMode == DirectionalLight3D.ShadowMode.Orthogonal),
+                sun.DirectionalShadowMode == DirectionalLight3D.ShadowMode.Orthogonal &&
+                Mathf.Abs(sun.LightAngularDistance - 4f) < .0001f &&
+                Mathf.Abs(sun.ShadowBlur - 3f) < .0001f &&
+                Mathf.Abs(sun.ShadowOpacity - 1f) < .0001f),
             "Pond-only solar shadows did not follow the shared clock");
         if (atmosphere.ProfileId == WorldEnvironmentProfile.Pond)
         {
@@ -268,17 +272,21 @@ public static class PondAtmosphereChecks
             return env.FogDepthEnd;
         }
         var shallow = At(surfaceY);
+        var shallowDensity = env.FogDensity;
         var middle = At((surfaceY + deepY) * 0.5f);
+        var middleDensity = env.FogDensity;
         var deep = At(deepY);
-        var extinction = env.FogDensity;
-        Require(shallow > middle && middle > deep && deep > env.FogDepthBegin + 7f &&
-            Mathf.Abs(env.FogDepthBegin - 4.5f) < .001f &&
-            extinction > .77f && extinction < .79f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(5f, deep, extinction, env.FogDepthBegin) > .85f &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(12f, shallow, extinction, env.FogDepthBegin) >
-                UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) &&
-            UnderwaterAtmosphere.EstimateDistanceRetention(12f, deep, extinction, env.FogDepthBegin) < .5f,
-            "Pond depth/distance extinction lost near-to-far progression");
+        var deepDensity = env.FogDensity;
+        Require(env.FogMode == Godot.Environment.FogModeEnum.Exponential &&
+            shallow > middle && middle > deep &&
+            shallowDensity < middleDensity && middleDensity < deepDensity &&
+            Mathf.Abs(shallowDensity - .09f * 18f / shallow) < .001f &&
+            Mathf.Abs(deepDensity - .09f * 18f / deep) < .001f &&
+            UnderwaterAtmosphere.EstimatePondDistanceRetention(5f, deep) > .5f &&
+            UnderwaterAtmosphere.EstimatePondDistanceRetention(12f, shallow) >
+                UnderwaterAtmosphere.EstimatePondDistanceRetention(12f, deep) &&
+            UnderwaterAtmosphere.EstimatePondDistanceRetention(12f, deep) < .25f,
+            "Pond exponential extinction lost depth and distance progression");
         Require(Mathf.Abs(At(surfaceY + 0.001f) - At(surfaceY - 0.001f)) < 0.01f &&
             Mathf.Abs(At(deepY + 0.001f) - At(deepY - 0.001f)) < 0.01f,
             "Pond depth endpoint is discontinuous");

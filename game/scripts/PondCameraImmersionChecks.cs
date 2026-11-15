@@ -55,8 +55,8 @@ public static class PondCameraImmersionChecks
             }
             At(water - 2f, 120);
             Require(atmosphere.CameraImmersion01 > .999f &&
-                env.FogDensity > .77f && env.FogDensity < .79f &&
-                Mathf.Abs(env.FogDepthBegin - 4.5f) < .001f &&
+                env.FogMode == Godot.Environment.FogModeEnum.Exponential &&
+                Mathf.Abs(env.FogDensity - .09f * 18f / atmosphere.EffectiveUsefulRange) < .001f &&
                 localFog.Density > .04f &&
                 (float)((ShaderMaterial)env.Sky.SkyMaterial).GetShaderParameter("air_mix") < .001f,
                 "submerged profile did not restore");
@@ -73,9 +73,7 @@ public static class PondCameraImmersionChecks
             }
             At(water + 2f, 120);
             Require(atmosphere.CameraImmersion01 < .001f &&
-                Mathf.Abs(env.FogDensity - WaterVisualProfile.Pond.AirFogDensity) < .001f &&
-                Mathf.Abs(env.FogDepthBegin - WaterVisualProfile.Pond.AirFogBegin) < .001f &&
-                Mathf.Abs(env.FogDepthEnd - WaterVisualProfile.Pond.AirFogEnd) < .001f &&
+                Mathf.Abs(env.FogDensity - .01f) < .001f &&
                 env.VolumetricFogDensity < .001f &&
                 localFog.Density < .001f &&
                 Mathf.Abs(sun.LightEnergy - 1f) < .001f &&

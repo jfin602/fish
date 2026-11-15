@@ -28,7 +28,7 @@ public static class PondSurfaceChecks
                 "selected baked Pond surface/upper collision");
             var radius = fish.PondColliderRadius;
             var limit = fish.PondSurfaceCenterLimit;
-            Require(Mathf.Abs(radius - .48f) < .001f &&
+            Require(Mathf.Abs(radius - PlayerBodyGeometry.Measure(fish).Radius) < .001f &&
                 Mathf.Abs(limit - (water - .65f * radius)) < .001f &&
                 limit + radius > water && limit - radius < water,
                 "collider-derived partial breach");

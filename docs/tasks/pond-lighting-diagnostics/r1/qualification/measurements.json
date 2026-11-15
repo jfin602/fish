@@ -1,0 +1,84 @@
+{
+  "source_base_revision": "7866d7b500cbd6c148c99cfb30753f2efd9709f6",
+  "world": "pond-p4-71",
+  "seed": 71,
+  "character": "FAF-FISH-006 adult Bluegill",
+  "renderer": "Godot 4.7.2 Forward+",
+  "sample_column_x": 800,
+  "sample_band_y": [
+    350,
+    850
+  ],
+  "camera_translation_m": 4.0,
+  "samples": {
+    "before_ground": {
+      "red_green_crossover_y": 476,
+      "max_50px_smoothed_red_green_gradient": 0.209
+    },
+    "after_ground": {
+      "red_green_crossover_y": 630,
+      "max_50px_smoothed_red_green_gradient": 0.113
+    },
+    "before_translated": {
+      "red_green_crossover_y": 600,
+      "max_50px_smoothed_red_green_gradient": 0.131
+    },
+    "after_translated": {
+      "red_green_crossover_y": null,
+      "max_50px_smoothed_red_green_gradient": 0.071
+    }
+  },
+  "performance": {
+    "P0_legacy": {
+      "median_ms": 5.396,
+      "p95_ms": 8.362,
+      "draws": 234.0,
+      "primitives": 296714.0,
+      "samples": 90,
+      "fog_density": 0.779999971389771,
+      "fog_color": "(0.0874, 0.1991, 0.1697, 1.0)"
+    },
+    "P1_candidate": {
+      "median_ms": 5.062,
+      "p95_ms": 11.196,
+      "draws": 234.0,
+      "primitives": 296714.0,
+      "samples": 90,
+      "fog_density": 0.101455591619015,
+      "fog_color": "(0.1397, 0.1859, 0.1262, 1.0)"
+    },
+    "P2_candidate": {
+      "median_ms": 5.088,
+      "p95_ms": 7.452,
+      "draws": 234.0,
+      "primitives": 296714.0,
+      "samples": 90,
+      "fog_density": 0.101455591619015,
+      "fog_color": "(0.1397, 0.1859, 0.1262, 1.0)"
+    },
+    "P3_legacy": {
+      "median_ms": 5.274,
+      "p95_ms": 6.859,
+      "draws": 234.0,
+      "primitives": 296714.0,
+      "samples": 90,
+      "fog_density": 0.779999971389771,
+      "fog_color": "(0.0874, 0.1991, 0.1697, 1.0)"
+    }
+  },
+  "source_sha256": {
+    "game/scripts/UnderwaterAtmosphere.cs": "2b437632765525901176ccbc013e418a8391d49f75fcd019894f2387a39eec5f",
+    "game/scripts/WaterVisualProfile.cs": "15750ffca85d3757ce0ecaec266114763679f649e861098f7872b9d9a2981ff0",
+    "game/dev/PondAtmosphereChecks.cs": "cfe5c8472ad75c7b0eb81fd7d4ab7d5287bde9cc191f7848c965d9529f411943",
+    "game/scripts/PondCameraImmersionChecks.cs": "0dcc1528003f315c17010953d50d1d052672074de6e92cf3413051b0631a464e"
+  },
+  "owner_shadow_followup": {
+    "pose": "fish x=-38 z=4 y=terrain(-38,0)+2 yaw=23 degrees, hour=14",
+    "previous": { "shadow_blur": 6, "shadow_opacity": 0.6, "light_angular_distance_degrees": 0, "median_ms": 4.899, "draws": 244, "primitives": 296874 },
+    "candidate": { "shadow_blur": 3, "shadow_opacity": 1, "light_angular_distance_degrees": 4, "median_ms": 8.612, "draws": 244, "primitives": 296874 },
+    "followup_source_sha256": {
+      "game/scripts/UnderwaterAtmosphere.cs": "38844d0d4b7e50581ca7f28e5efb53668bfbfc534dc035c164c1f38f8340f115",
+      "game/dev/PondAtmosphereChecks.cs": "fb85271f76bbdb8f70077660533b06bda8f701ebd5e18ece46d599eed19f7518"
+    }
+  }
+}

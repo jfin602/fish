@@ -157,10 +157,19 @@ public static class GrowthChecks
             ClearanceSurvey(scene, fish);
             ShelterCameraSurvey(scene, fish, camera);
             GD.Print($"GROWTH_CHECK_OK identity={identity} stage={scene.Growth.Stage} nutrition={scene.Feeding.Nutrition} events={scene.Feeding.Events.Count} camera_juvenile={juvenileCameraDistance:F2} camera_adult={adultCameraDistance:F2}");
+            var waterOwner = fish.GetNode<WaterReaction>("WaterReaction");
+            fish.GetNode<AudioStreamPlayer3D>("SmallFeedSound").Stop();
+            fish.GetNode<AudioStreamPlayer3D>("FishFeedSound").Stop();
+            scene.QueueFree();
+            await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+            Need(!GodotObject.IsInstanceValid(waterOwner), "growth scene retained water effects");
+            await tree.ToSignal(tree.CreateTimer(.3f), SceneTreeTimer.SignalName.Timeout);
             tree.Quit();
 
             void CheckRig()
             {
+                WaterReactionChecks.CheckStage(scene);
+                WaterReactionChecks.CheckSurface(scene);
                 var asset = scene.Growth.Asset;
                 var visual = fish.GetNode<Node3D>("PlayerVisual");
                 var player = visual.FindChild("AnimationPlayer", true, false) as AnimationPlayer;
