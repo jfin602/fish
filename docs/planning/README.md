@@ -17,6 +17,7 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | [C5 — Bass first-life and ecology correction](c5-post-p5-ecology-lifecycle.md) | Approved post-P5 Bass hatch/fry, Bluegill schooling, Pike multi-target and blood design; [manual prompts](../tasks/c5-polish/README.md) not yet executed. |
 | [P4 — Freshwater Pond and World Selection](p4/freshwater-world.md) | Historical accepted design; [P4 closeout](../tasks/p4/closeout.md) is owner-closed for progression / NOT GREEN with native gaps. |
 | [P5 — Pike Encounter foundation](p5/stealth-foundation.md) | Historical design implemented and [owner-closed for progression / NOT GREEN](../tasks/p5/closeout.md); [entry](../tasks/p5/entry.md) is a past checkpoint. |
-| [C5 Wake — natural surface wake](c5-wake.md) | S26 approved; [manual W1–W3](../tasks/c5-wake/README.md) authored, not executed or qualified. |
+| [C5 Wake — natural surface wake](c5-wake.md) | S26 approved; [manual W1–W3](../tasks/c5-wake/README.md) authored; qualification remains task-specific. |
+| [P6 — The Living Pond](p6/living-pond.md) | **S27 owner-approved design / NOT STARTED**: truthful feeding reticle, local food ecology, early predators, competing Bass, independent Pond wildlife, shallow-to-deep exploration and native full-life qualification. Persistence moves to P7, Life History to P8 and integrated qualification to P9. |
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md).
