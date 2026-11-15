@@ -18,6 +18,7 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [c5-polish](c5-polish/README.md) | Existing manual Bass hatch, ecology, feeding/boost and [local evidence](c5-polish/README.md); owner native qualification still open. |
 | [c5-wake](c5-wake/README.md) | W1/W2 and later refinements implemented; W3 owner-native review remains open. |
 | [p6 baseline](p6/baseline.md) | Root `0.6.0` development checkpoint and actual validation; P6 Living Pond gameplay is NOT STARTED. |
+| [p6 plan](p6/README.md) | P6 assessment and implementation plan authored; P1–P13 execution prompts have not been written. |
 | [p5 entry](p5/entry.md) | Historical `0.5.0` progression baseline and P4 handoff, not current implementation status. |
 | [c3-world-gen](c3-world-gen/README.md) | **P1–P6 IMPLEMENTED / P7 NATIVE FAILED** at `0.3.6`: seeded compiler/bake/load works partly, while visual naturalness and alternate-seed routes fail; four [manual M1–M4 repairs](c3-world-gen/manual/README.md) and owner review are pending before P4. |
 | [c3-visibility](c3-visibility/README.md) | **P1–P3 IMPLEMENTED / P4 NATIVE NOT GREEN** at `0.3.6`: visibility source exists but clearance/native observation failed; revisit after accepted C3 world repair, without inventing V25 PASS. |

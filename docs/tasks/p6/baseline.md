@@ -5,6 +5,7 @@
 ## Included state and provenance
 
 - The checkpoint follows the published P6 S27 planning commits and the preserved local audio commit replayed as `e990a12` after resolving its `BOOT.md` overlap. The original local audio commit was `fd31517`; its source, assets, review log and historical evidence were retained. No P6 gameplay was added by this checkpoint.
+- Three concurrently published P6 assessment/plan commits were merged into the final `main` tree after the version checkpoint. The [P6 task plan](README.md) is authored; its P1–P13 execution prompts have not been written or run.
 - The ordinary Ocean and Pond remain separate baked worlds; Pike Encounter remains the isolated seed-5266 regression destination. The existing C5 Bass hatch/fry, staged feeding/growth, automatic mouth-contact feeding, finite boost, Bluegill schools, Pike targeting and blood FX are present in the fixture. Pond cover/collision, dynamic waterline, follow camera, wake and positional audio/splash/bubble work are preserved. See [C5](../c5-polish/README.md), [wake](../c5-wake/README.md), [audio](../../systems/audio.md) and [swimming/camera](../../systems/swimming-and-camera.md) for implementation boundaries.
 - Historical P5 P12 actually used `0.5.12`; assigned P13 `0.5.13` was not applied. [P5 closeout](../p5/closeout.md) stays owner-closed for progression / NOT GREEN. P2/P3/P4/c4 failures and accepted gaps remain in their original records. M8 owner-native C5 qualification and W3 wake qualification remain open. P7 persistence/permanent death and P8 Life History are deferred.
 
