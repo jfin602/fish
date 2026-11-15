@@ -1,0 +1,27 @@
+FISH / C5-WAKE / W2 — NATURAL WAKE RENDERING
+MODE: MANUAL CODEX IMPLEMENTATION + T2 / FOCUSED NATIVE A/B
+MODEL: GPT-6 Sol High
+BOUNDARY: Stop for owner review after W2. No auto-commit, auto-push or version bump.
+
+ENTRY
+Review W1 actual code, test outputs, body anchors, world-space history, current dynamic waterline and owner's feedback. If W1 data or water-height agreement is missing, report BLOCKED or repair only its direct defect with evidence; do not fabricate completion. Read AGENTS.md, BOOT.md, docs/workflow.md and the c5-wake design/assessment/plan. Preserve dirty work.
+
+OBJECTIVE
+Replace Pond's solid-color expanding ring surface effects with a believable moving-fish disturbance: small bow/shoulder pressure, paired diverging wave fronts following the actual curved route, and modest irregular tail turbulence. Rendering should look like rippling water rather than drawn geometry.
+
+IMPLEMENT
+1. Consume W1's historical body contact samples. For left/right fronts, propagate sideways based on the heading and width when each sample was created; old world path must not rotate/translate with current fish. Smooth joins and irregular breakup through sharp turns.
+2. Replace the production SurfaceRing pool, not the underwater tail particles. Use reusable, strictly bounded curved wake strips or a similarly economical surface-normal/highlight method. Fronts should narrow at their origin, expand laterally with age, gradually attenuate and dissolve; no obvious repeating circles, flat opaque lines, sharp ribbon corners, fixed giant V or bright white/green overlay.
+3. Match current Pond water normal, color, reflection and day/night response. Prefer subtle normal/specular contrast and feathered translucency. Add barely perceptible head/bow disturbance and moving-tail breakup, with occasional plausible small splash on actual breach only. Avoid exaggerated foam or particle spam.
+4. Sample the SAME moving-water height for each wake vertex/segment as the real visible surface; do not place an entire curved strip at one frozen Y. Keep consistent near shore, during wave rise/fall and across camera immersion; prevent Z-fighting, flying, sinking and clipping.
+5. Make all effects read-only presentation: no swimming/collision, boost balance, AI disturbance, environment time, camera or audio changes. Respect effects disabled/low and pause/focus/reset lifecycles. No per-frame full-water remesh, new fluid engine or unbounded nodes.
+6. Reuse one shared WaterReaction path in normal Pond and Pike Encounter. Preserve Ocean underwater visual identity.
+
+NATIVE A/B QUALIFICATION
+Capture original ring appearance and new design in actual Godot Forward+ at matching world, seed, fish stage, input route, clock and camera. Use above-water top-down, oblique side, waterline and underwater look-up views. Compare straight cruise, sharp curve, slow glide, real boost, rest, dive, partial breach, shoreline and rising/falling wave. Record per-frame visual continuity and world attachment, representative frame median/p95/draws/primitive counts, any actual available GPU timing. Run focused import/build/pond surface/scene checks after inspecting ./tools/dev. One fixed screenshot cannot qualify moving paths.
+
+IF NOT GREEN
+Preserve before/after evidence, report specific failure (painted stripe, clipped wave, incorrect path, rendering cost) and attempt a focused in-scope refinement. Do not hide failure with changes to lighting/fog or simply declare it fine. If a major new renderer is needed, outline alternatives for owner choice and stop.
+
+REPORT / STOP
+List actual source changes, materials/geometry, performance and identical-route comparisons; PASS/FAIL/NOT OBSERVED and remaining issues. Mark "W2 NATURAL WAKE CANDIDATE — OWNER VISUAL REVIEW REQUIRED" only if supported. Do NOT auto-start W3, mark V43/Gates GREEN or bump version.

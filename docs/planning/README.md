@@ -15,12 +15,8 @@ Start with [AGENTS.md](../../AGENTS.md), current BOOT routing, and the affected 
 | [P3 — Procedural realistic world generation](p3/procedural-world-generation.md) | Owner-approved deterministic finite world compiler: irregular basin, true 3D geology, natural placement, bake/load and curated Base Worlds; implemented by c3-world-gen. |
 | [P5 — historical stealth fixture plan](p5/stealth-foundation.md) | Earlier Bluegill-player/Pike foundation; implemented then owner-closed / NOT GREEN under P5 closeout. |
 | [C5 — Bass first-life and ecology correction](c5-post-p5-ecology-lifecycle.md) | Approved post-P5 Bass hatch/fry, Bluegill schooling, Pike multi-target and blood design; [manual prompts](../tasks/c5-polish/README.md) not yet executed. |
-<<<<<<< HEAD
-| [P4 — Freshwater Pond and World Select](p4/freshwater-world.md) | In progress through P11 at `0.4.11`; P12 native V32 NOT GREEN; preserve in-flight stack and Gate evidence. |
-| [P5 — Stealth foundation / Pike Encounter](p5/stealth-foundation.md) | Approved F1–F8 plan; separate Bluegill/Pike fixture and World Select route, without implementing P5 or changing P4. |
-=======
-| [P4 — Freshwater Pond and World Selection](p4/freshwater-world.md) | Historical approved design; [P4 direct closeout](../tasks/p4/closeout.md) records implemented scope and remaining native/visual gaps. |
-| [P5 entry](../tasks/p5/entry.md) | Active next phase handoff at `0.5.0`; assessment and implementation plan remain to be authored separately. |
->>>>>>> ec90b05 (fixed nighttime)
+| [P4 — Freshwater Pond and World Selection](p4/freshwater-world.md) | Historical accepted design; [P4 closeout](../tasks/p4/closeout.md) is owner-closed for progression / NOT GREEN with native gaps. |
+| [P5 — Pike Encounter foundation](p5/stealth-foundation.md) | Historical design implemented and [owner-closed for progression / NOT GREEN](../tasks/p5/closeout.md); [entry](../tasks/p5/entry.md) is a past checkpoint. |
+| [C5 Wake — natural surface wake](c5-wake.md) | S26 approved; [manual W1–W3](../tasks/c5-wake/README.md) authored, not executed or qualified. |
 
 Task-specific assessments, implementation plans and runnable prompts belong in [docs/tasks](../tasks/README.md).

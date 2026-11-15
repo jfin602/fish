@@ -1,0 +1,27 @@
+FISH / C5-WAKE / W1 — BODY CONTACT & WORLD-SPACE WAKE PATHS
+MODE: MANUAL CODEX IMPLEMENTATION + T2
+MODEL: GPT-6 Sol High
+BOUNDARY: Stop after W1 review. No auto-commit, auto-push or version bump.
+
+OUTCOME
+Build the foundation of a natural fish-generated Pond surface wake: contact origins derived from actual playable fish body geometry and a bounded world-space motion history that curves with the fish's route. W1 supplies diagnostic path visualization only; do not ship the final wake render or replace circular rings yet.
+
+READ AND PREFLIGHT
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/planning/c5-wake.md, docs/tasks/c5-wake/README.md, prompt-assessment.md and implementation-plan.md. Inspect HEAD/branch, git status and uncommitted changes. Reconcile the latest LOCAL dynamic-waterline/collision, recent wake/boost, camera smoothing and audio work; it may be newer than GitHub. Verify Fish Godot editor/MCP project identity before native work. Never reset unrelated changes.
+
+TRACE NARROW SOURCE
+Inspect WaterReaction.cs, PlayerBodyGeometry.cs, FishController.cs, PondGrowthState.cs, PikeEncounter.cs, Main.cs, UnderwaterAtmosphere.cs, PondSurfaceGeometry.cs, water_surface.gdshader and current wave-height sampling owner. Confirm actual model axes/transforms and surface/physics time relationship in Pond and Pike Encounter.
+
+IMPLEMENT
+1. Derive stable front/shoulder, left/right side and tail anchors for the visible model at the real water interface, accounting for body radius/length, pitch, yaw, larva/fry through adult size, animation origin and stage changes. Treat PlayerBodyGeometry as rest-pose bounds, not exact animated skin; document any sound approximation. No fixed adult offsets.
+2. Use the SAME current local animated-water height/phase that drives fish surface boundary and displayed waves. Check shoreline displacement damping where relevant. Reject any second wave clock, hardcoded Y or costly GPU readback.
+3. Create a reusable, capped sample history with world X/Z, historical heading, left/right body-source positions, time/age, current stage dimensions and disturbance energy. Sample by real displacement plus bounded time intervals so 30/60/120 FPS produce comparable paths; do not emit merely because boost is held or camera moves. Preserve old world positions and curve history through turns.
+4. Ignore true rest/deep/blocked/egg states. Break or clear history at teleports, hatch transitions, growth reconfiguration, reset/retry and world exit. Pause/focus cannot cause a backlog of samples or a path linking two remote locations.
+5. Provide a development-only debug view showing true body anchors, local surface Y, centerline history, left/right outward projected paths and wake lifetime. Keep debug off in normal production; do NOT remove old surface rings in W1.
+6. No writes to authoritative swimming, boost energy, collider, AI sensing, atmosphere, camera or clock.
+
+VALIDATE
+Write focused T2 checks for contact anchors at each playable stage, sharp turns, accelerating/reversing, deep and blocked movement, time/space bounds, wave-height extrema, pause, growth, retry and fixed-length budget. Test path independence from camera and frame-rate variations; compare against actual visible model positions. Inspect ./tools/dev commands before running necessary build/import/pond surface/growth checks. Capture native debug contact sheets at straight, curved, fry, adult, near-surface and deep positions; record limitations.
+
+REPORT / STOP
+State actual branch/revision/dirty tree, changed files, wave-provider API, body-contact assumptions, sample capacity, tests, real debug captures and evidence gaps. "W1 PATH FOUNDATION READY FOR REVIEW" only if supported. Stop before W2, production visual effects, version change or Roadmap Gate pass.

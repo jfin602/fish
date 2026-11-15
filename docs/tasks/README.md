@@ -12,19 +12,20 @@ Task folders contain the finite material needed to execute a selected outcome. F
 | [c2-watet-light-fx](c2-watet-light-fx/README.md) | **OWNER GREEN / COMPLETE FOR CORRECTION SCOPE**: overhead water, organic moving caustics, caustic-aligned shafts, GFX presets and native owner acceptance; root remains `0.2.6`. |
 | [c2-depth](c2-depth/README.md) | **AUTHORED / NOT EXECUTED** Correction 2 follow-up for a five-ledged default basin plus actual water-column depth/extinction; root remains `0.2.6`. |
 | [p2](p2/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: G2.1/G2.2 pass; G2.3/V20 remains an accepted gap under S16. P3 transition authorized. |
-<<<<<<< HEAD
-| [p3](p3/README.md) | **IN PROGRESS at `0.3.6` / NOT GREEN**: FAF Ocean world C3 corrections, native route/style acceptance pending; preserve historical failures. |
-| [p4](p4/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: P4 closeout retains native Pond/world/air–water gaps; historical runner prefix through `0.4.11`. |
-| [p5](p5/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**: executed stealth/Bass-prey fixture through `0.5.12`; G5.1–G5.3 remain open with source/native evidence in closeout. |
-| [c5-polish](c5-polish/README.md) | **MANUAL BRIEFS AUTHORED / NOT EXECUTED**: M1–M8 Bass hatch/fry, Bluegill schools, Pike multi-target and dissipating blood; final M8 must launch native game for owner's playthrough. Root stays `0.5.12`. |
-| [p5 entry](p5/entry.md) | Historical deliberate `0.5.0` development baseline and P4 handoff, not current P5 implementation status. |
-=======
-| [p3](p3/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at implemented `0.3.6`; [direct closeout](p3/closeout.md) preserves Ocean visual/native gaps. |
->>>>>>> ec90b05 (fixed nighttime)
+| [p3](p3/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN** at `0.3.6`; [closeout](p3/closeout.md) preserves native gaps. |
+| [p4](p4/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; [closeout](p4/closeout.md) preserves Pond waterline/camera/visual gaps and historical `0.4.11` prefix. |
+| [p5](p5/README.md) | **OWNER CLOSED FOR PROGRESSION / NOT GREEN**; [closeout](p5/closeout.md) preserves G5.1–G5.3 native evidence debt at package `0.5.12`. |
+| [c5-polish](c5-polish/README.md) | Existing manual Bass hatch, ecology, feeding/boost and [local evidence](c5-polish/README.md); owner native qualification still open. |
+| [c5-wake](c5-wake/README.md) | **W1–W3 MANUAL BRIEFS AUTHORED / NOT EXECUTED**: body-generated Pond surface wake, rendering, stages/boost, owner-native review. No version bump. |
+| [p5 entry](p5/entry.md) | Historical `0.5.0` progression baseline and P4 handoff, not current implementation status. |
 | [c3-world-gen](c3-world-gen/README.md) | **P1–P6 IMPLEMENTED / P7 NATIVE FAILED** at `0.3.6`: seeded compiler/bake/load works partly, while visual naturalness and alternate-seed routes fail; four [manual M1–M4 repairs](c3-world-gen/manual/README.md) and owner review are pending before P4. |
 | [c3-visibility](c3-visibility/README.md) | **P1–P3 IMPLEMENTED / P4 NATIVE NOT GREEN** at `0.3.6`: visibility source exists but clearance/native observation failed; revisit after accepted C3 world repair, without inventing V25 PASS. |
 | [c4-day-night](c4-day-night/README.md) | P1–P3 directly implemented; native P4 candidate **NOT GREEN** pending player-view/owner full-cycle judgment. Weather remains deferred. |
 | [repository-bootstrap](repository-bootstrap/qualification.md) | Evidence for the original documentation/runner import; no gameplay qualification. |
+
+## Manual corrections
+
+The [c5-wake](c5-wake/README.md) W1–W3 and [c5-polish](c5-polish/README.md) M-series are manually copied Codex briefs in their `manual/` folders, not phase-runner P-number prompts. They must not be passed to `fish:phase` or `fish:phase:validate`; each correction README defines its own stop and owner gate.
 
 ## Stack layout
 

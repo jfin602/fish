@@ -1,0 +1,30 @@
+FISH / C5-WAKE / W3 — GROWTH, BOOST & OWNER NATIVE QUALIFICATION
+MODE: MANUAL CODEX IMPLEMENTATION + T2/T3 + REAL GAME HANDOFF
+MODEL: GPT-6 Sol High
+BOUNDARY: Owner visual qualification; no auto-commit/push/version bump.
+
+ENTRY
+Read AGENTS.md, BOOT.md, docs/workflow.md, docs/planning/c5-wake.md, the c5-wake assessment/plan, and actual W1/W2 implementation/evidence. Reconcile current local dirty state and owner feedback. If W2 remains NOT GREEN, report blocker rather than progressing. Review V20/V32/V43 and the actual running game entry route.
+
+OBJECTIVE
+Finalize the realistic body-generated surface wake across every playable Bass stage, ordinary movement, Space boost, changing water height and gameplay lifecycle. Preserve natural appearance, readability, performance and existing Ocean/water simulation.
+
+TUNING
+1. Exercise registered Bass larva/fry, juvenile, subadult and adult. Use the real current mesh dimensions/contact geometry at each stage, not uniform adult offsets; growth updates without a detached ghost wake. Egg/hatch-locked scene generates no swimming wake.
+2. Compare true still, glide, cruise, acceleration, coasting, hard yaw/turn and real finite Spacebar boost. Boost makes the surface wake visibly stronger, a bit wider and more textural only when actual horizontal travel and body/surface contact justify it. Boost held while blocked, exhausted or deep underwater produces no strong surface effect. Smooth response on activation/release.
+3. Wake remains world-anchored through turns: older fronts spread/fade, don't snap or rotate with fish. Dive stops new surface wake and keeps fading old history. Breach creates a small coherent disturbance, no spawned circles.
+4. Verify wake geometry continues to match latest dynamic water height through peaks/troughs, skimming, pitch changes, shoreline and camera crossings; no hovering or sunken strips. Preserve silky-smooth camera, physically bounded fish body, underwater trailing bubbles and normal Pond/Ocean graphics.
+5. Exercise pause, focus loss, hatch/skip, growth, retry, caught/end state, world/menu transitions, scene unload and low/disabled effects. No delayed particle blasts, stale connections or duplicate WaterReaction instances.
+6. Surface wake remains presentation-only, never modifies authoritative fish movement/velocity, collider, environment time, actual MovementDisturbanceField or AI/prey sensing.
+
+T2 VALIDATION
+Add/extend narrow tests for all body stages, moving water heights, sample capacity, world attachment, no deep/blocked emission, boost versus matched genuine speed/effort, pause/retry lifecycle and Ocean isolation. Inspect ./tools/dev command composition; run focused build/import, inspect-pond-surface/scenery, inspect-growth, inspect-auto-feed-boost, inspect-pike-encounter and narrow world-isolation checks only where applicable. Record actual PASS/FAIL and errors.
+
+T3 NATIVE MATRIX
+In real Forward+ gameplay use matching seed/preset/solar time, actual controls and side/overhead/underwater camera views. Test tiny fry slow/boost; juvenile turning beside vegetation; subadult normal versus boost; adult partial breach, faster turn and dive; rest and deep return. Repeat on normal Pond and Pike Encounter; compare Ocean underwater after switching. Observe waves over time, not just screenshots. Measure frame-rate behavior at feasible 30/60/120 FPS, median/p95 frame intervals, draw/primitive counts and GPU timings only if available. Retain paired before/after captures and explain any defects.
+
+EVIDENCE AND HANDOFF
+Write docs/tasks/c5-wake/qualification/ evidence only after genuine execution: revision/dirty identity, relevant source diffs, scene IDs, stage, height/wave settings, test commands, image sequences, perf, regressions and owner judgment. Preserve prior failures. Do not mark V43, V20, V32 or any Phase/Gate GREEN from source/headless alone.
+
+FINAL ACTION
+After all runnable checks, launch the actual Fish game using the current verified ./tools/dev run --display-mode=windowed-fullscreen (or documented native equivalent). Enter/prepare the Pike Encounter and leave the window running for the owner's own playthrough. If environment cannot support native launch, say BLOCKED and do not claim T3 success. Report "C5 WAKE READY — AWAITING OWNER VISUAL QUALIFICATION" only with real candidate evidence, then STOP.
