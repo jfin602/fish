@@ -1,0 +1,32 @@
+TASK: Phase 6 / P5 — Adult Bluegill threat in shallow survival
+
+MODEL / REASONING / USAGE
+- Recommended configuration: `GPT-6 Sol High`.
+- Browser required: no.
+- This prompt's assigned project version is `0.6.5`.
+
+GOAL
+Give tiny Bass an explainable predator at the first feeding stage, without making every Bluegill a permanently omniscient attacker.
+
+ENTRY / NARROW READING
+Read AGENTS.md then BOOT.md, docs/workflow.md, docs/phase-runner.md, docs/tasks/p6/README.md, prompt-assessment.md and implementation-plan.md. Check actual branch/HEAD, dirty tree, root version, relevant previous checkpoint/evidence, current Fish-only Godot .NET project identity and the narrow source/doc owners for this task. Preserve compatible in-flight C5 camera, S25 mouth feeding/boost, wake, waterline, sound, lighting and art work. Do not reset/rebase, overwrite the owner's partial work, install a second unrelated engine, change other Worlds or blindly run broad test aggregates. Runner owns checkpoint commits; do not self-commit or push.
+
+SCOPE / INVARIANTS
+This is Phase 6 **ordinary Freshwater Pond Bass** survival gameplay. Keep third Pike Encounter a separate ephemeral test fixture; preserve Ocean and its native species, baked-world identity, existing Pond Base World and other Pond demo character choices. Keep scene/world-space sensing and fish motor, mouth eligibility, stable identities, game-time and exactly-once consumption authoritative. Camera/reticle, wake, water fog, sound, FX and UI only observe. Never implement P7 durable save/permanent death, P8 Life History or P9 all-life platform release work. Do not pretend an asset import/headless build is owner play.
+
+TASK-SPECIFIC READ
+Read P6 G6.3/V46, existing BluegillSchool, PreyActor, PreyAwareness, WorldSightSensor, MovementDisturbanceField, PikeActor/awareness, species stage catalog, physical mouth tests and the new ordinary Pond Bass session.
+
+IMPLEMENT / REVIEW
+1. Reuse individual Bluegill stage identities and real school movement. Add an opportunistic size/diet-eligible attack path for adult Bluegill against sufficiently tiny Bass fry; no arbitrary killing of larger juvenile/subadult/adult Bass. Use shared physical body sizes/registered species rules.
+2. Sense player via real world-space line of sight, soft vegetation cover, speed disturbance, distance and bounded memory. A careful swim around wood/grass must improve survival; an exposed approach can legitimately trigger pursuit/strike, without guaranteed loss of contact on every bush touch.
+3. Move fish and commit attack contact physically with readable facing and a short escape window; on success produce one genuine session-local catch/event and new-hatch option. Preserve fish-as-player later hunting of small Bluegill and continued school flee/scatter. Separate Bluegill detection from Pike's target store where ownership differs.
+4. Test adults hunting tiny Bass, non-adult Bluegill being ineligible where applicable, mouth obstruction/no through-log strike, successful concealment and actual disengagement, pause/retry/old identity invalidation and no camera/reticle information leak.
+5. Add inspect-p6-bluegill-threat and focused seeded encounter diagnostics.
+
+VALIDATION
+T2: run implemented inspect-p6-bluegill-threat plus existing inspect-bluegill-schools, inspect-prey, inspect-pike-sight, inspect-feeding and inspect-world-isolation as appropriate; inspect direct contact/double-callback event traces. Native V46 waits for P8.
+
+DONE / VERSION / REPORT
+Tiny Bass can genuinely be detected/chased/caught or hide from appropriately sized adult Bluegill; food-chain reversal remains real. Record fairness limitations explicitly.
+Before declaring complete, report changed files, actual commands and exact outcomes, source revision/dirty-state identity, relevant seed/actor IDs, newly retained evidence and explicit limitations; no vague 'all tests pass'. On supported completion, update the assigned root package version for the runner checkpoint; do not commit (the runner owns checkpoint commits). 
