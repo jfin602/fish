@@ -10,9 +10,19 @@ public partial class CatalogFishVisualMotion : Node
     private readonly CharacterEntry _entry;
     private string _active = "";
     private float _activity;
+    private float _feedingCueSeconds;
 
     public float Activity => _activity;
     public string ActiveClip => _active;
+    public bool FeedingCueActive => _feedingCueSeconds > 0f;
+
+    public void TriggerFeedingCue()
+    {
+        if (_entry.FastClip.Length == 0) return;
+        _feedingCueSeconds = .32f;
+        Play(_entry.FastClip);
+        _player.SpeedScale = 1.5f;
+    }
 
     public CatalogFishVisualMotion(FishController fish, AnimationPlayer player, CharacterEntry entry)
     {
@@ -27,6 +37,11 @@ public partial class CatalogFishVisualMotion : Node
     public override void _PhysicsProcess(double delta)
     {
         if (delta <= 0 || GetTree().Paused) return;
+        if (_feedingCueSeconds > 0f)
+        {
+            _feedingCueSeconds = Mathf.Max(0f, _feedingCueSeconds - (float)delta);
+            if (_feedingCueSeconds > 0f) return;
+        }
         var effort = Mathf.Clamp(_fish.PresentationEffort, 0, 1);
         var speed = Mathf.Clamp(_fish.PresentationSpeed / Mathf.Max(.001f, _fish.Tuning.MaxSpeed), 0, 1);
         var target = effort > .02f ? effort : speed * .2f;

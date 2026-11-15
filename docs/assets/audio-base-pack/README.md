@@ -6,7 +6,7 @@ Generated locally on 2026-11-13 with Soundbox's installed `audiocpp-stable-audio
 
 - 28 requested sound types, 33 processed files. Second takes exist for `swim_gentle`, `swim_accelerate`, `feeding_small`, `predator_lunge`, and `ui_navigate`.
 - Original, byte-identical Soundbox WAVs: `assets/audio-source/soundbox/run1/` and `assets/audio-source/soundbox/run2/`.
-- Game-ready effects: `game/assets/audio/sfx/` (16-bit PCM WAV, 44.1 kHz stereo).
+- Provisional processed effects: `game/assets/audio/sfx/` (16-bit PCM WAV, 44.1 kHz stereo). Only canonical files promoted to [`assets/sfx/`](../../../assets/sfx/README.md) are game-ready effects.
 - Game-ready ambiences: `game/assets/audio/ambience/` (Ogg Vorbis, 44.1 kHz stereo).
 - Full prompt, seed, Soundbox library ID, processing, duration, hashes, and per-file checks: [manifest.json](manifest.json).
 - Review folders: [run1](run1/) has the first 27 effects and six ambiences; [run2](run2/) has the 27 regenerated effects. Each folder has individual playable files, a manifest, an audition Ogg, and a sample order with start times. The auditions have 400 ms silence between samples and do not contain spoken labels.

@@ -2,7 +2,9 @@
 
 This is the named file list for the first complete Fish life: choose a habitat and fish, hatch, swim, hide, feed, grow, evade predators, save and continue, die, and view Life History. It also covers the Bass/Pike encounter used to prove that loop. Every row is one **sound role** to audition and eventually place in the game, not a claim that the current generated take is accepted. The current [run 1/run 2 pick list](../../docs/assets/audio-base-pack/pick-list.md) contains candidates for the rows marked **Candidate**.
 
-Put approved, game-ready files under `game/assets/audio/` using the exact filenames below. This folder holds the inventory. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg`; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. [The audio review log](../../docs/assets/audio-base-pack/review-log.md) records locks.
+`assets/sfx/` is the only approval location for game-ready **sound effects**. Put an approved effect in this folder with the exact canonical filename below. Files under `game/assets/audio/sfx/`, `docs/assets/audio-base-pack/`, or `assets/audio-source/` are source or audition material, even if Godot can import them. One approved take is enough per row. If a sound needs several variations, add `_02`, `_03`, etc. after the canonical name; the unsuffixed file remains the default. Ambience loops use `.ogg` and follow their separate audio review path; short effects use `.wav`. Do not promote a candidate merely because it passed technical checks—choose it by listening first. [The audio review log](../../docs/assets/audio-base-pack/review-log.md) records locks.
+
+The Godot project links `game/assets/sfx/` to this folder so gameplay can load an approved effect as `res://assets/sfx/<filename>`. The link is an import route, not a second approval folder. Gameplay must not load a provisional effect from `res://assets/audio/sfx/`.
 
 ## Habitat ambience — 8 loops
 
@@ -49,12 +51,14 @@ Contact sounds need impact thresholds and cooldowns so sustained overlap does no
 
 | Final filename | When it plays | Source |
 | --- | --- | --- |
-| `feeding_small.wav` | Confirmed zooplankton or other tiny-food consumption | Candidate |
+| `feeding_small.wav` | Confirmed zooplankton or other tiny-food consumption; currently also used for confirmed fish consumption | Approved eating cue; run 2 take 01 |
 | `feeding_strike.wav` | A real automatic mouth-contact strike connects with an eligible fish | Candidate |
 | `feeding_swallow.wav` | A valid fish prey target is consumed and nutrition is awarded | New |
 | `prey_scatter.wav` | A real nearby prey group breaks formation or flees | Candidate |
 
 The hit and swallow cues represent different outcomes. Never play a success cue for an invalid or duplicate bite. The S25 design removes manual bite/miss input; invalid contact needs no missed-bite sound. Existing audio takes are not deleted.
+
+The approved `feeding_small.wav` is currently reused at a stronger playback level when a Bluegill meal commits. `feeding_strike.wav` remains a candidate and is not triggered until separately approved.
 
 ## Predator and injury — 6 effects
 

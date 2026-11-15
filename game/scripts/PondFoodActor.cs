@@ -29,10 +29,22 @@ public partial class PondFoodActor : Node3D
     {
         if (!Available) return;
         // A tiny bounded water-column drift, frozen with the encounter clock.
+        GlobalPosition = _home + Drift(seconds);
+    }
+
+    private Vector3 Drift(double seconds)
+    {
         var t = (float)seconds;
-        GlobalPosition = _home + new Vector3(Mathf.Sin(t * .63f + _phase) * .025f,
+        return new Vector3(Mathf.Sin(t * .63f + _phase) * .025f,
             Mathf.Sin(t * .81f + _phase) * .013f,
             Mathf.Cos(t * .59f + _phase) * .025f);
+    }
+
+    // Keeps the food's drift origin aligned when a fixture relocates it.
+    public void Relocate(Vector3 at, double seconds = 0)
+    {
+        _home = at - Drift(seconds);
+        GlobalPosition = at;
     }
 
     public void Consume()

@@ -20,7 +20,8 @@ public static class SwimMotor
 {
     private const float ReverseTransitionPauseSeconds = 0.25f;
 
-    public static SwimState Step(SwimState state, SwimIntent intent, float delta, SwimTuning tuning)
+    public static SwimState Step(SwimState state, SwimIntent intent, float delta, SwimTuning tuning,
+        float forwardMultiplier = 1f)
     {
         if (delta <= 0) return state;
         var yaw = Mathf.Clamp(intent.Yaw, -1, 1);
@@ -80,13 +81,16 @@ public static class SwimMotor
             }
             else
             {
-                var rate = intent.Thrust > 0 ? tuning.Acceleration * Mathf.Clamp(intent.Thrust, 0, 1)
+                var rate = intent.Thrust > 0 ? tuning.Acceleration * forwardMultiplier * Mathf.Clamp(intent.Thrust, 0, 1)
                     : tuning.CoastDeceleration;
-                var targetSpeed = intent.Thrust > 0 ? tuning.MaxSpeed : 0;
+                var targetSpeed = intent.Thrust > 0 ? tuning.MaxSpeed * forwardMultiplier : 0;
                 state.Speed = Mathf.MoveToward(state.Speed, targetSpeed, rate * delta);
             }
         }
-        state.Speed = Mathf.Clamp(state.Speed, 0, state.Reversing ? tuning.ReverseMaxSpeed : tuning.MaxSpeed);
+        // Releasing boost does not instantaneously erase momentum; normal coasting
+        // and collision still own the resulting velocity.
+        state.Speed = Mathf.Clamp(state.Speed, 0,
+            state.Reversing ? tuning.ReverseMaxSpeed : Mathf.Max(tuning.MaxSpeed, state.Speed));
 
         var forward = Forward(state.Yaw, state.Pitch) * (state.Reversing ? -1 : 1);
         var direction = state.Velocity.LengthSquared() > 0.000001f

@@ -1,6 +1,13 @@
 # Fish audio review log
 
-Review one canonical role at a time against the [MVP inventory](../../../assets/sfx/README.md). Roles without an entry here are **NOT STARTED**. A provisional file in `game/assets/audio/` is not a locked or approved asset.
+Review one canonical role at a time against the [MVP inventory](../../../assets/sfx/README.md). Roles without an entry here are **NOT STARTED**. Only a canonical sound effect in `assets/sfx/` is game ready. Earlier lock entries that name `game/assets/audio/sfx/` record the owner's take selection and processing history; those copies are not the game-ready placement under the current rule. A provisional file in `game/assets/audio/` is not approved merely because it imports.
+
+## `feeding_small.wav` — APPROVED
+
+- **Owner feedback:** The eating sound effect is good (2026-11-14).
+- **Selected take:** Processed run 2 take 01, preserved as `game/assets/audio/sfx/feeding/feeding_small_01.wav`; original source and generation details remain in the [run 2 manifest](run2/manifest.json).
+- **Game-ready asset:** `assets/sfx/feeding_small.wav`, copied byte-for-byte from that processed take and named for the canonical role. SHA-256 `bb30c1191b9a5fb30abd7bad4d909521222439870b17c430d6d007bcf6998805`. Godot uses the `game/assets/sfx/` link to import it.
+- **Current trigger:** Valid tiny-food, egg-shell, and Bluegill consumption in the C5 Pike Encounter; different playback levels for small food and fish. The separate `feeding_strike.wav` role remains unapproved.
 
 ## `pond_underwater_shallows.ogg` — NEEDS REVISION
 

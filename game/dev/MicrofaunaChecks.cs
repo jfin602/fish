@@ -40,7 +40,15 @@ public static class MicrofaunaChecks
             clock.Step(origin, Vector3.Zero, 0, 0, .2, int.MaxValue - 1, false);
             Need(clock.SimulationSeconds >= FeedingLedger.YolkSeconds,
                 "game clock did not advance to first feeding");
-            for (var i = 0; i < 6; i++)
+            first.Relocate(origin + Vector3.Forward * (fish.BodyForwardReach + .012f),
+                clock.SimulationSeconds);
+            scene.SetPhysicsProcess(true);
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            scene.SetPhysicsProcess(false);
+            Need(!first.Available && scene.Feeding.Nutrition == 1 &&
+                scene.Feeding.Events.Count == 1, "larval microfauna did not auto-feed on contact");
+            for (var i = 1; i < 6; i++)
             {
                 Place(cloud[i]);
                 Need(scene.TryBiteFood(cloud[i]).Consumed && !cloud[i].Available &&
@@ -58,18 +66,19 @@ public static class MicrofaunaChecks
             var nymphs = scene.FoodActors.Where(f => f.Kind == FeedingLedger.InsectId).Take(4).ToArray();
             foreach (var nymph in nymphs)
             {
-                Place(nymph, .43f);
+                Place(nymph, .02f);
                 Need(scene.TryBiteFood(nymph).Consumed, "juvenile did not eat aquatic nymph");
             }
             Need(scene.Growth.Stage == "subadult" && scene.Feeding.Nutrition == 14 &&
                 scene.Growth.Identity == $"pike-{PikeCoverFixture.Seed}:player-bass",
                 "real hatch path did not reach subadult");
-            Need(Mathf.IsEqualApprox(fish.Tuning.MaxSpeed, .95f), "subadult speed cap invalid");
+            Need(Mathf.IsEqualApprox(fish.Tuning.MaxSpeed, 1.4f), "subadult speed cap invalid");
             foreach (var prey in scene.PreyActors.Where(p => p.Stage == "larva").Take(3))
             {
                 fish.GlobalPosition = origin;
                 fish.GlobalBasis = Basis.Identity;
-                prey.GlobalPosition = origin + Vector3.Forward * .75f;
+                prey.GlobalPosition = origin + Vector3.Forward * (fish.BodyForwardReach +
+                    ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius + .01f);
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 Need(scene.TryBite(prey).Consumed, "subadult did not eat size-eligible Bluegill");
             }
@@ -81,11 +90,11 @@ public static class MicrofaunaChecks
             GD.Print($"MICROFAUNA_CHECK_OK stage={scene.Growth.Stage} nutrition={scene.Feeding.Nutrition} events={scene.Feeding.Events.Count} yolk_seconds={FeedingLedger.YolkSeconds} chain=zooplankton,nymph,bluegill");
             tree.Quit();
 
-            void Place(PondFoodActor food, float distance = .095f)
+            void Place(PondFoodActor food, float distance = .015f)
             {
                 fish.GlobalPosition = origin;
                 fish.GlobalBasis = Basis.Identity;
-                food.GlobalPosition = origin + Vector3.Forward * distance;
+                food.GlobalPosition = origin + Vector3.Forward * (fish.BodyForwardReach + distance);
             }
         }
         catch (Exception error)

@@ -134,10 +134,12 @@ public static class PikeDisturbanceChecks
             fish.SetInputMode("keyboard");
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = true });
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.Space, Pressed = true });
             for (var i = 0; i < 45; i++) await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.Space, Pressed = false });
             Input.ParseInputEvent(new InputEventKey { PhysicalKeycode = Key.W, Pressed = false });
             Need(fish.MotorStepCount > 40 && live.Events.Count > 0,
-                "real fish motor generated no movement cues");
+                "real boosted fish motor generated no movement cues");
             var velocityBeforeSense = fish.Velocity;
             _ = scene.ObserveFish();
             Need(fish.Velocity.IsEqualApprox(velocityBeforeSense),

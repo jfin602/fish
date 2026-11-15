@@ -70,7 +70,7 @@ public static class FeedingChecks
             var open = new Vector3(0, PikeCoverFixture.Bed(0, 20) + 1.2f, 20);
             fish.GlobalBasis = Basis.Identity;
             var nymphs = food.Where(f => f.Kind == FeedingLedger.InsectId).ToArray();
-            PutAhead(nymphs[0], .45f);
+            PutAhead(nymphs[0], .02f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(!scene.TryBiteFood(food[0]).Consumed && scene.Feeding.Nutrition == 0,
                 "juvenile ate microfauna");
@@ -79,17 +79,17 @@ public static class FeedingChecks
             Need(scene.TryBiteFood(nymphs[0]).Consumed && !nymphs[0].Available &&
                 !scene.TryBiteFood(nymphs[0]).Consumed && scene.Feeding.Nutrition == 2,
                 "nymph transaction failed");
-            PutAhead(nymphs[1], .45f);
+            PutAhead(nymphs[1], .02f);
             nymphs[1].GlobalPosition = open + Vector3.Back * .9f;
             Need(!scene.TryBiteFood(nymphs[1]).Consumed, "rear nymph eaten");
             nymphs[1].GlobalPosition = open + Vector3.Forward * 2f;
             Need(!scene.TryBiteFood(nymphs[1]).Consumed, "distant nymph eaten");
             var wall = new StaticBody3D { Name = "M3FoodWall", CollisionLayer = 1 };
             scene.AddChild(wall);
-            wall.GlobalPosition = open + Vector3.Forward * .3f;
+            wall.GlobalPosition = open + Vector3.Forward * (fish.BodyForwardReach + .01f);
             wall.AddChild(new CollisionShape3D { Shape = new BoxShape3D
-                { Size = new Vector3(1f, 1f, .04f) } });
-            PutAhead(nymphs[1], .45f);
+                { Size = new Vector3(1f, 1f, .004f) } });
+            PutAhead(nymphs[1], .02f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(!scene.TryBiteFood(nymphs[1]).Consumed && scene.Feeding.Nutrition == 2,
                 "wall did not block nymph");
@@ -97,7 +97,7 @@ public static class FeedingChecks
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             for (var i = 1; i < 4; i++)
             {
-                PutAhead(nymphs[i], .45f);
+                PutAhead(nymphs[i], .02f);
                 Need(scene.TryBiteFood(nymphs[i]).Consumed, "nymph growth bite failed " + i);
             }
             Need(scene.Growth.Stage == "juvenile" && scene.Feeding.Nutrition == 8 &&
@@ -109,7 +109,7 @@ public static class FeedingChecks
             {
                 fish.GlobalPosition = open;
                 fish.GlobalBasis = Basis.Identity;
-                target.GlobalPosition = open + Vector3.Forward * distance;
+                target.GlobalPosition = open + Vector3.Forward * (fish.BodyForwardReach + distance);
             }
         }
         catch (Exception error)

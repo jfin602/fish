@@ -37,7 +37,6 @@ public sealed class PondGrowthState
     public float ColliderCenterZ => _bodies[_index].CenterZ;
     public float VisualLength => _bodies[_index].VisualLength;
     public BassBodyProfile Body => _bodies[_index];
-    public float BiteReach => Mathf.Clamp(VisualLength * 1.75f, .08f, 1.1f);
     public float MouthRadius => Mathf.Max(.012f, ColliderRadius * .55f);
     public string Identity { get; }
     public int NextThreshold => _index + 1 < Stages.Length ? Thresholds[Stages[_index + 1]] : int.MaxValue;

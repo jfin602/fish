@@ -87,7 +87,7 @@ public static class GrowthChecks
             {
                 fish.GlobalPosition = open;
                 fish.GlobalBasis = Basis.Identity;
-                nymphs[i].GlobalPosition = open + Vector3.Forward * .43f;
+                nymphs[i].GlobalPosition = open + Vector3.Forward * (fish.BodyForwardReach + .02f);
                 Need(scene.TryBiteFood(nymphs[i]).Consumed &&
                     !scene.TryBiteFood(nymphs[i]).Consumed, "nymph duplicate/threshold failure " + i);
             }
@@ -116,7 +116,8 @@ public static class GrowthChecks
             {
                 fish.GlobalPosition = open;
                 fish.GlobalBasis = Basis.Identity;
-                prey.GlobalPosition = open + Vector3.Forward * .75f;
+                prey.GlobalPosition = open + Vector3.Forward * (fish.BodyForwardReach +
+                    ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius + .01f);
                 await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
                 Need(scene.TryBite(prey).Consumed && !scene.TryBite(prey).Consumed,
                     "Bluegill larva bite/duplicate failed");
@@ -136,7 +137,8 @@ public static class GrowthChecks
             var juvenileBluegill = scene.PreyActors[0];
             fish.GlobalPosition = open;
             fish.GlobalBasis = Basis.Identity;
-            juvenileBluegill.GlobalPosition = open + Vector3.Forward * .75f;
+            juvenileBluegill.GlobalPosition = open + Vector3.Forward * (fish.BodyForwardReach +
+                ((SphereShape3D)juvenileBluegill.GetNode<CollisionShape3D>("Collision").Shape).Radius + .01f);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             Need(scene.TryBite(juvenileBluegill).Consumed &&
                 !scene.TryBite(juvenileBluegill).Consumed && scene.Feeding.Nutrition == 32,

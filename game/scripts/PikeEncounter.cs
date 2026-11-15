@@ -39,6 +39,9 @@ public partial class PikeEncounter : Node3D
     private AnimationPlayer? _pikeAnimation;
     private CharacterEntry? _pikeEntry;
     private Label _status = null!;
+    private ProgressBar _boostMeter = null!;
+    private AudioStreamPlayer3D _smallFeedSound = null!;
+    private AudioStreamPlayer3D _fishFeedSound = null!;
     private Control _menu = null!;
     private Button _retry = null!;
     private Button _resume = null!;
@@ -204,6 +207,7 @@ public partial class PikeEncounter : Node3D
                 Mathf.Clamp(actor.ActualSpeed / 2f, 0f, 1f), 0f,
                 delta, actor.MotorStepCount, GetTree().Paused);
         }
+        TryBite(); // Validated forward mouth contact; no player bite input.
         TryAdvanceGrowth();
         UpdatePikeAnimation(delta);
         if (_pike.Mind.StrikeReady)
@@ -242,9 +246,10 @@ public partial class PikeEncounter : Node3D
             _escapeFeedbackUntil = now + 6.0;
             GD.Print($"PIKE_ENCOUNTER_ESCAPE count={_escapeCount} seconds={now:F2} bass={_fish.GlobalPosition} pike={_pike.GlobalPosition}");
         }
+        _boostMeter.Value = _fish.BoostEnergy * 100f;
         _status.Text = $"PIKE ENCOUNTER · Bass {_growth.Stage} · nutrition {_feeding.Nutrition}/" +
             (_growth.NextThreshold == int.MaxValue ? "mature" : _growth.NextThreshold.ToString()) +
-            FoodCue(now) + " · Esc: pause" +
+            FoodCue(now) + " · Hold Space: boost · Esc: pause" +
             (_growthClearanceBlocked ? " · growth ready: swim into open water" : "") +
             (now < _escapeFeedbackUntil ? $" · Escaped Pike {_escapeCount} — keep swimming" : "") +
             (now < _biteFeedbackUntil ? " · " + _biteFeedback : "");
@@ -305,6 +310,8 @@ public partial class PikeEncounter : Node3D
         DemoSelection.Clear();
         WorldSession.Select(WorldCatalog.PondId);
         BuildInterface();
+        _smallFeedSound = FeedSound("SmallFeedSound", "res://assets/sfx/feeding_small.wav", -18f);
+        _fishFeedSound = FeedSound("FishFeedSound", "res://assets/sfx/feeding_small.wav", -12f);
         _blood = new FishBloodFx { Name = "FishBloodFx" };
         AddChild(_blood);
         var args = OS.GetCmdlineUserArgs();
@@ -338,6 +345,8 @@ public partial class PikeEncounter : Node3D
             BluegillSchoolChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--feeding-check"))
             FeedingChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--auto-feed-boost-check"))
+            AutoFeedBoostChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--growth-check"))
             GrowthChecks.Run(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--hatch-check"))
@@ -358,7 +367,7 @@ public partial class PikeEncounter : Node3D
         var legacyCheck = Array.Exists(OS.GetCmdlineUserArgs(), arg => arg is
             "--pike-encounter-check" or "--world-isolation-check" or "--pike-cover-check" or
             "--pike-sight-check" or "--pike-disturbance-check" or "--pike-ai-check" or
-            "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--growth-check" or
+            "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--growth-check" or
             "--blood-fx-check" or "--blood-fx-native-probe");
         _growth = new PondGrowthState($"pike-{PikeCoverFixture.Seed}:player-bass",
             legacyCheck ? "juvenile" : "egg");
@@ -414,12 +423,13 @@ public partial class PikeEncounter : Node3D
         var presets = new ControlPresetStore();
         presets.Load();
         _fish.SetActivePreset(presets.Current);
+        _fish.EncounterBoostEnabled = true;
         _fish.ClearAndDisarmInput();
         if (legacyCheck)
         {
             Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
             if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-            _status.Text = "PIKE ENCOUNTER · juvenile Bass: aquatic nymphs near nest · Space: bite · Esc: pause";
+            _status.Text = "PIKE ENCOUNTER · juvenile Bass: aquatic nymphs near nest · Hold Space: boost · Esc: pause";
         }
         else StartIntro();
         GD.Print($"PIKE_ENCOUNTER_READY player={PondGrowthState.SpeciesId} identity={_growth.Identity} stage={_growth.Stage} pike={PikeEncounterAssets.PikeId} prey={PikeEncounterAssets.BluegillId} schools={_schools.Count} prey_count={_prey.Count} world=fixture cover={CoverPlan.Count} seed={PikeCoverFixture.Seed} player_pos={_fish.GlobalPosition} prey_pos={_prey[0].GlobalPosition} larva_pos={_prey[4].GlobalPosition}");
@@ -633,7 +643,7 @@ public partial class PikeEncounter : Node3D
         _skip.Visible = false;
         Input.MouseMode = _fish.UsesMouseInput ? Input.MouseModeEnum.Captured : Input.MouseModeEnum.Visible;
         if (_fish.UsesMouseInput) _fish.ResetMouseCapture();
-        _status.Text = "BASS FRY · yolk reserves · Space: bite egg shell · Esc: pause";
+        _status.Text = "BASS FRY · yolk reserves · mouth contact: feed · Hold Space: boost · Esc: pause";
         GD.Print($"BASS_HATCH_COMPLETE identity={_growth.Identity} stage={_growth.Stage} nutrition={_feeding.Nutrition} position={_fish.GlobalPosition}");
     }
 
@@ -817,25 +827,22 @@ public partial class PikeEncounter : Node3D
     {
         if (_failed || _transitioning || _ended || _introActive || GetTree().Paused)
             return new(false, "encounter inactive", 0);
-        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * _fish.BodyForwardReach;
+        var mouth = MouthPosition();
         if (target is null && ShellAvailable && _growth.Stage == "larva" &&
-            mouth.DistanceTo(_eggVisual!.GlobalPosition) <= .14f)
+            ShellContact(mouth))
         {
-            var shell = _eggVisual.GlobalPosition - mouth;
-            var shellReachable = shell.Length() > .001f &&
-                (-_fish.GlobalBasis.Z).Dot(shell.Normalized()) >= .1f &&
-                ClearPath(mouth, _eggVisual.GlobalPosition);
-            var shellResult = _feeding.TryConsumeEggShell(_growth.Identity + ":shell", shellReachable,
+            var shellVisual = _eggVisual!;
+            var shellResult = _feeding.TryConsumeEggShell(_growth.Identity + ":shell", true,
                 MovementCues?.SimulationSeconds ?? 0);
             if (shellResult.Consumed)
             {
                 _shellEaten = true;
-                _eggVisual.QueueFree();
+                shellVisual.QueueFree();
                 _eggVisual = null;
+                _smallFeedSound.Play();
                 GD.Print($"FEED_EVENT id={_growth.Identity}:shell kind=egg-shell nutrition={_feeding.Nutrition}");
             }
-            _biteFeedback = shellResult.Consumed ? "Egg shell eaten" : "Bite missed: " + shellResult.Reason;
-            _biteFeedbackUntil = (MovementCues?.SimulationSeconds ?? 0) + 1.6;
+            if (shellResult.Consumed) ShowFeedFeedback("Egg shell eaten");
             return shellResult;
         }
         if (target is null)
@@ -849,16 +856,11 @@ public partial class PikeEncounter : Node3D
         target ??= _prey.Where(p => p.IsAlive &&
                 FeedingLedger.IsEligiblePrey(p.SpeciesId, p.Stage, p.Length,
                     _growth.Stage, _growth.Length) &&
-                p.GlobalPosition.DistanceTo(mouth) <= _growth.BiteReach + _growth.MouthRadius &&
-                (-_fish.GlobalBasis.Z).Dot((p.GlobalPosition - mouth).Normalized()) >= .35f &&
-                ClearPath(mouth, p.GlobalPosition, p.GetRid()))
+                PreyReachable(p))
             .OrderBy(p => p.GlobalPosition.DistanceTo(mouth)).FirstOrDefault();
         if (target is null || !_prey.Contains(target))
-            return ReportBite(new(false, "no eligible prey", 0));
-        var to = target.GlobalPosition - mouth;
-        var reachable = target.IsAlive && to.Length() <= _growth.BiteReach + _growth.MouthRadius && to.Length() > .01f &&
-            (-_fish.GlobalBasis.Z).Dot(to.Normalized()) >= .35f &&
-            ClearPath(mouth, target.GlobalPosition, target.GetRid());
+            return new(false, "no eligible prey", 0);
+        var reachable = PreyReachable(target);
         var result = _feeding.TryConsume(new FeedCandidate(target.StableId,
             target.SpeciesId, target.Stage, WorldCatalog.PondId, WorldSession.SelectedWorldId,
             target.Length, _growth.Stage, _growth.Length, target.IsAlive), reachable,
@@ -870,10 +872,14 @@ public partial class PikeEncounter : Node3D
             CommitPredation("bass:bluegill:" + target.StableId,
                 _growth.Identity, target.StableId, contact,
                 MovementCues?.SimulationSeconds ?? 0);
+            _fish.GetNode<Node3D>("PlayerVisual").GetNode<CatalogFishVisualMotion>("SwimPresentation")
+                .TriggerFeedingCue();
+            _fishFeedSound.Play();
             TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={target.StableId} kind=prey stage={target.Stage} nutrition={_feeding.Nutrition}");
         }
-        return ReportBite(result, target.Stage);
+        if (result.Consumed) ShowFeedFeedback("Bluegill " + target.Stage + " eaten");
+        return result;
     }
 
     public FeedResult TryBiteFood(PondFoodActor? target)
@@ -887,21 +893,66 @@ public partial class PikeEncounter : Node3D
         if (result.Consumed)
         {
             target.Consume();
+            _smallFeedSound.Play();
             TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={target.StableId} kind={target.Kind} nutrition={_feeding.Nutrition}");
         }
-        _biteFeedback = result.Consumed ? (target.Kind == FeedingLedger.MicrofaunaId
-            ? "Zooplankton eaten" : "Aquatic nymph eaten") : "Bite missed: " + result.Reason;
-        _biteFeedbackUntil = (MovementCues?.SimulationSeconds ?? 0) + 1.6;
+        if (result.Consumed) ShowFeedFeedback(target.Kind == FeedingLedger.MicrofaunaId
+            ? "Zooplankton eaten" : "Aquatic nymph eaten");
         return result;
+    }
+
+    private Vector3 MouthPosition() => _fish.GlobalPosition - _fish.GlobalBasis.Z *
+        _fish.BodyForwardReach;
+
+    private bool ShellContact(Vector3 mouth)
+    {
+        if (_eggVisual is null) return false;
+        var forward = -_fish.GlobalBasis.Z;
+        foreach (var found in _eggVisual.FindChildren("*", "MeshInstance3D", true, false))
+        {
+            if (found is not MeshInstance3D { Mesh: not null } mesh || !mesh.Visible ||
+                !mesh.Name.ToString().Contains("shell", StringComparison.OrdinalIgnoreCase)) continue;
+            var bounds = mesh.GetAabb();
+            var local = mesh.ToLocal(mouth);
+            var corner = bounds.Position + bounds.Size;
+            var nearest = mesh.ToGlobal(new Vector3(
+                Mathf.Clamp(local.X, bounds.Position.X, corner.X),
+                Mathf.Clamp(local.Y, bounds.Position.Y, corner.Y),
+                Mathf.Clamp(local.Z, bounds.Position.Z, corner.Z)));
+            var to = nearest - mouth;
+            var fromBody = nearest - _fish.GlobalPosition;
+            if (to.Length() <= _growth.MouthRadius * 1.5f &&
+                fromBody.LengthSquared() > .000001f &&
+                forward.Dot(fromBody.Normalized()) >= .65f &&
+                (to.LengthSquared() < .000001f || forward.Dot(to.Normalized()) >= .35f) &&
+                ClearPath(mouth, nearest)) return true;
+        }
+        return false;
+    }
+
+    private bool PreyReachable(PreyActor target)
+    {
+        if (!target.IsAlive) return false;
+        var mouth = MouthPosition();
+        var to = target.GlobalPosition - mouth;
+        var radius = ((SphereShape3D)target.GetNode<CollisionShape3D>("Collision").Shape).Radius;
+        var forward = -_fish.GlobalBasis.Z;
+        // Surface contact with a small jaw volume; the prey centre may be
+        // farther away by its own physical radius, but cannot be behind or to the side.
+        return to.LengthSquared() > .000001f &&
+            to.Length() <= radius + _growth.MouthRadius * 1.5f &&
+            forward.Dot((target.GlobalPosition - _fish.GlobalPosition).Normalized()) >= .8f &&
+            forward.Dot(to.Normalized()) >= .35f &&
+            ClearPath(mouth, target.GlobalPosition, target.GetRid());
     }
 
     private bool FoodReachable(PondFoodActor target)
     {
-        var mouth = _fish.GlobalPosition - _fish.GlobalBasis.Z * _fish.BodyForwardReach;
+        var mouth = MouthPosition();
         var to = target.GlobalPosition - mouth;
-        return to.Length() > .005f && to.Length() <= _growth.BiteReach + _growth.MouthRadius &&
-            (-_fish.GlobalBasis.Z).Dot(to.Normalized()) >= .25f &&
+        return to.Length() > .005f && to.Length() <= _growth.MouthRadius * 1.5f &&
+            (-_fish.GlobalBasis.Z).Dot(to.Normalized()) >= .65f &&
             ClearPath(mouth, target.GlobalPosition);
     }
 
@@ -910,7 +961,7 @@ public partial class PikeEncounter : Node3D
         if (_growth.Stage == "egg") return " · yolk · hatching";
         if (_growth.Stage == "larva" && now < FeedingLedger.YolkSeconds)
             return $" · yolk reserves · zooplankton in {Mathf.CeilToInt((float)(FeedingLedger.YolkSeconds - now))}s" +
-                (ShellAvailable ? " · shell: Space nearby" : "");
+                (ShellAvailable ? " · shell: touch with mouth" : "");
         var kind = _growth.Stage switch
         {
             "larva" => FeedingLedger.MicrofaunaId,
@@ -930,7 +981,7 @@ public partial class PikeEncounter : Node3D
             right >= 0 ? "right" : "left";
         var label = kind == FeedingLedger.MicrofaunaId ? "zooplankton cloud" :
             kind == FeedingLedger.InsectId ? "aquatic nymph" : "size-eligible Bluegill";
-        return $" · {label} {direction} {delta.Length():F1}m · Space: bite";
+        return $" · {label} {direction} {delta.Length():F1}m · touch with mouth to feed";
     }
 
     private bool ClearPath(Vector3 from, Vector3 to, Rid target = default)
@@ -977,11 +1028,20 @@ public partial class PikeEncounter : Node3D
         return true;
     }
 
-    private FeedResult ReportBite(FeedResult result, string? stage = null)
+    private void ShowFeedFeedback(string message)
     {
-        _biteFeedback = result.Consumed ? "Bluegill " + stage + " eaten" : "Bite missed: " + result.Reason;
+        _biteFeedback = message;
         _biteFeedbackUntil = (MovementCues?.SimulationSeconds ?? 0) + 1.6;
-        return result;
+    }
+
+    private AudioStreamPlayer3D FeedSound(string name, string path, float volumeDb)
+    {
+        var stream = ResourceLoader.Load<AudioStream>(path)
+            ?? throw new InvalidOperationException("FEED_SOUND_UNAVAILABLE " + path);
+        var player = new AudioStreamPlayer3D { Name = name, Stream = stream,
+            VolumeDb = volumeDb, MaxDistance = 12f };
+        _fish.AddChild(player);
+        return player;
     }
 
     private static Vector3 PreyContact(Vector3 mouth, PreyActor prey)
@@ -1017,8 +1077,6 @@ public partial class PikeEncounter : Node3D
         if (_introActive && !_menu.Visible &&
             (key.Keycode is Key.Enter or Key.KpEnter or Key.Space))
         { CompleteHatch(); GetViewport().SetInputAsHandled(); return; }
-        if ((key.PhysicalKeycode == Key.Space || key.Keycode == Key.Space) && !_menu.Visible)
-        { TryBite(); GetViewport().SetInputAsHandled(); return; }
         if (key.Keycode != Key.Escape) return;
         if (_menu.Visible) Resume(); else Pause();
         GetViewport().SetInputAsHandled();
@@ -1038,6 +1096,10 @@ public partial class PikeEncounter : Node3D
             CustomMinimumSize = new Vector2(420, 60), AutowrapMode = TextServer.AutowrapMode.WordSmart,
             MouseFilter = Control.MouseFilterEnum.Ignore };
         canvas.AddChild(_status);
+        _boostMeter = new ProgressBar { Name = "BoostEnergy", Position = new Vector2(18, 68),
+            CustomMinimumSize = new Vector2(180, 12), MaxValue = 100, Value = 100,
+            ShowPercentage = false, MouseFilter = Control.MouseFilterEnum.Ignore };
+        canvas.AddChild(_boostMeter);
         _skip = new Button { Name = "SkipIntro", Text = "Skip Intro",
             Position = new Vector2(18, 82), Visible = false,
             FocusMode = Control.FocusModeEnum.All };

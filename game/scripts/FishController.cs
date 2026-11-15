@@ -106,6 +106,17 @@ public partial class FishController : CharacterBody3D
     private bool _hatchLocked;
     private float _fryYaw;
     private float _fryPitch;
+    private bool _boostHeld;
+    private bool _boostBlockedUntilRelease;
+    private bool _boostExhausted;
+    private float _boostEnergy = 1f;
+    public bool EncounterBoostEnabled { get; set; }
+    [Export] public float BoostSpeedMultiplier { get; set; } = 1.8f;
+    [Export] public float BoostDrainSeconds { get; set; } = 2.5f;
+    [Export] public float BoostRechargeSeconds { get; set; } = 5f;
+    [Export] public float BoostRearmFraction { get; set; } = .25f;
+    public float BoostEnergy => _boostEnergy;
+    public bool BoostActive { get; private set; }
 
     public void SetEncounterHatchLocked(bool locked)
     {
@@ -165,13 +176,29 @@ public partial class FishController : CharacterBody3D
     public float GetLastYaw() => LastYaw;
     public float GetLastPitch() => LastPitch;
     public bool GetInputArmed() => _inputArmed;
-    public int GetHeldInputCount() => _input.HeldCount;
+    public int GetHeldInputCount() => _input.HeldCount + (_boostHeld ? 1 : 0);
     public int GetMotorStepCount() => MotorStepCount;
 
     public override void _Ready() => MotionMode = MotionModeEnum.Floating;
 
     public override void _Input(InputEvent @event)
     {
+        if (EncounterBoostEnabled && @event is InputEventKey key && !key.Echo &&
+            (key.PhysicalKeycode == Key.Space || key.Keycode == Key.Space))
+        {
+            if (!key.Pressed)
+            {
+                _boostHeld = false;
+                _boostBlockedUntilRelease = false;
+            }
+            else if (!_boostBlockedUntilRelease && _inputArmed && !_hatchLocked && !GetTree().Paused &&
+                (!_boostExhausted || _boostEnergy >= BoostRearmFraction))
+            {
+                _boostHeld = true;
+                _boostExhausted = false;
+            }
+            return; // Space is reserved for boost in this encounter, even in old custom presets.
+        }
         if (_hatchLocked) return;
         _input.Accept(@event, _mouseCaptureActive && _inputArmed && !GetTree().Paused);
     }
@@ -179,6 +206,8 @@ public partial class FishController : CharacterBody3D
     public override void _PhysicsProcess(double delta)
     {
         if (_hatchLocked) return;
+        if (_boostBlockedUntilRelease && !Input.IsKeyPressed(Key.Space))
+            _boostBlockedUntilRelease = false;
         var intent = new SwimIntent(0, 0, 0, 0);
         if (!_inputArmed)
         {
@@ -201,19 +230,34 @@ public partial class FishController : CharacterBody3D
         LastSlow = intent.Slow;
         LastYaw = intent.Yaw;
         LastPitch = intent.Pitch;
+        BoostActive = EncounterBoostEnabled && _boostHeld && !_boostExhausted &&
+            intent.Thrust > 0 && intent.Slow <= 0 && _boostEnergy > 0;
+        if (BoostActive)
+        {
+            _boostEnergy = Mathf.Max(0f, _boostEnergy - (float)delta / Mathf.Max(.1f, BoostDrainSeconds));
+            if (_boostEnergy <= 0f)
+            {
+                _boostExhausted = true;
+                _boostHeld = false;
+                _boostBlockedUntilRelease = true;
+            }
+        }
+        else if (EncounterBoostEnabled)
+            _boostEnergy = Mathf.Min(1f, _boostEnergy + (float)delta / Mathf.Max(.1f, BoostRechargeSeconds));
+        var boostMultiplier = BoostActive ? Mathf.Max(1f, BoostSpeedMultiplier) : 1f;
         var previousYaw = _state.Yaw;
-        var next = SwimMotor.Step(_state, intent, (float)delta, Tuning);
+        var next = SwimMotor.Step(_state, intent, (float)delta, Tuning, boostMultiplier);
         if (GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D &&
             (intent.Yaw != 0f || intent.Pitch != 0f) &&
             EncounterTurnOverlaps(next))
         {
             // A long body can rotate into a branch without translating. Keep
             // motor state and physical heading together when a turn is blocked.
-            var yawOnly = SwimMotor.Step(_state, intent with { Pitch = 0f }, (float)delta, Tuning);
-            var pitchOnly = SwimMotor.Step(_state, intent with { Yaw = 0f }, (float)delta, Tuning);
+            var yawOnly = SwimMotor.Step(_state, intent with { Pitch = 0f }, (float)delta, Tuning, boostMultiplier);
+            var pitchOnly = SwimMotor.Step(_state, intent with { Yaw = 0f }, (float)delta, Tuning, boostMultiplier);
             next = !EncounterTurnOverlaps(yawOnly) ? yawOnly
                 : !EncounterTurnOverlaps(pitchOnly) ? pitchOnly
-                : SwimMotor.Step(_state, intent with { Yaw = 0f, Pitch = 0f }, (float)delta, Tuning);
+                : SwimMotor.Step(_state, intent with { Yaw = 0f, Pitch = 0f }, (float)delta, Tuning, boostMultiplier);
         }
         _state = next;
         MotorStepCount++;
@@ -269,6 +313,9 @@ public partial class FishController : CharacterBody3D
 
     public void ClearAndDisarmInput(bool stopMotion)
     {
+        _boostBlockedUntilRelease |= _boostHeld;
+        _boostHeld = false;
+        BoostActive = false;
         _inputArmed = false;
         _mouseCaptureActive = false;
         _input.ClearQueued();

@@ -124,15 +124,20 @@ public static class HatchChecks
             CheckVisualBodyBounds(fry);
             var shell = second.GetNode<Node3D>("BassEggVisual");
             CheckShellGrounded(shell, second.NestPosition, "skipped");
-            // Approach the grounded shell from above the bed, as a swimming
-            // fry would, rather than placing its body inside the substrate.
-            fry.GlobalPosition = shell.GlobalPosition + Vector3.Up * .08f + Vector3.Back * .10f;
+            fry.GlobalPosition = shell.GlobalPosition + Vector3.Right * .05f + Vector3.Up * .04f;
             fry.GlobalBasis = Basis.Identity;
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
-            Need(second.TryBite().Consumed && !second.ShellAvailable &&
+            Need(second.ShellAvailable && second.Feeding.Events.Count == 0,
+                "side approach consumed the shell");
+            // Approach the grounded shell from above the bed, as a swimming
+            // fry would, rather than placing its body inside the substrate.
+            fry.GlobalPosition = shell.GlobalPosition + Vector3.Up * .04f + Vector3.Back * .045f;
+            fry.LookAt(shell.GlobalPosition, Vector3.Up);
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            Need(!second.ShellAvailable &&
                 second.Feeding.Events.Count == 1 && second.Feeding.Nutrition == 0 &&
                 second.Growth.Stage == "larva" && !second.TryBite().Consumed,
-                "shell was not a one-time first bite without premature growth");
+                "shell was not automatically consumed once without premature growth");
             fry.SetActivePreset(ControlPreset.Builtins().Single(p => p.Id == ControlPreset.KeyboardId));
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
             await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);

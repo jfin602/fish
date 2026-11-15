@@ -121,7 +121,7 @@ V28–V31 establish world routing, habitat identity, natural freshwater generati
 | C63–C65: naturalistic stealth-survival identity, exposure/cover/feeding risk and ecologically grounded detection | V05, V33–V35; P5 fixture source/focused checks exist, final native Gate qualification remains open. |
 | C69: historical third destination and separate original Bluegill encounter | V36 P5 history; C5 changes the fixture player under V37 without adding a habitat. |
 | C70–C74: Bass egg/fry lifecycle, Bluegill-only fish prey schools, Pike prey switching, dissipating blood and owner-native correction review | V37–V41 plus pending V03–V05/V33–V36 scenario comparisons; C5 is planned, no Gate PASS. |
-| C75–C77 / S25: automatic mouth feeding and limited Spacebar chase/escape boost | V42 plus V03/V35/V38; M2A is approved design, not implemented or qualified. |
+| C75–C77 / S25: automatic mouth feeding and limited Spacebar chase/escape boost | V42 plus V03/V35/V38; M2A was superseded, and [M7](tasks/c5-polish/qualification/preflight.md) has headless T2 implementation evidence. Native owner qualification remains open. |
 | C66: spatially variable freshwater water clarity, with turbidity separate from illumination and preserved Pond near-field visibility | V29 (future native Pond water-clarity comparison), V32 (surface consistency and Ocean regression); S21 is a requirement, not passed qualification. |
 | C05–C07: one life across sessions, permanent death, no offline simulation | V06–V09; V14. |
 | C08–C10: brief factual recounting and all stories in main-menu history | V08; V10–V12; V14. |
