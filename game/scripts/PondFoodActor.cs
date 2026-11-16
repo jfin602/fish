@@ -4,7 +4,7 @@ using System;
 
 namespace Fish;
 
-/// <summary>Fixture-only non-fish food. The stable ID, not a visual particle, is consumed.</summary>
+/// <summary>Pond non-fish food. The stable ID, not a visual particle, is consumed.</summary>
 public partial class PondFoodActor : Node3D
 {
     private Vector3 _home;
@@ -28,7 +28,7 @@ public partial class PondFoodActor : Node3D
     public void Tick(double seconds)
     {
         if (!Available) return;
-        // A tiny bounded water-column drift, frozen with the encounter clock.
+        // A tiny bounded water-column drift, frozen with the session clock.
         GlobalPosition = _home + Drift(seconds);
     }
 
@@ -40,7 +40,7 @@ public partial class PondFoodActor : Node3D
             Mathf.Cos(t * .59f + _phase) * .025f);
     }
 
-    // Keeps the food's drift origin aligned when a fixture relocates it.
+    // Keeps the food's drift origin aligned when a check relocates it.
     public void Relocate(Vector3 at, double seconds = 0)
     {
         _home = at - Drift(seconds);

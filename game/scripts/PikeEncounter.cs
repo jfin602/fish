@@ -538,36 +538,12 @@ public partial class PikeEncounter : Node3D
 
     private void StartIntro()
     {
-        var egg = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "egg")
-            ?? throw new InvalidOperationException("BASS_EGG_UNREGISTERED");
-        if (!PondCreatureCatalog.ExportMatches(egg))
-            throw new InvalidOperationException("BASS_EGG_EXPORT_MISMATCH");
-        var scene = CharacterCatalog.ModelScene(egg.ModelPath)
-            ?? throw new InvalidOperationException("BASS_EGG_IMPORT_UNAVAILABLE");
-        _eggVisual = scene.Instantiate<Node3D>();
-        _eggVisual.Name = "BassEggVisual";
-        AddChild(_eggVisual);
-        _eggVisual.GlobalPosition = NestPosition + Vector3.Up * .045f;
-        // The registered egg export is 3.4 mm long while its larva is 58 mm.
-        // Enlarge only the nest prop so the actual larva can emerge through it.
-        _eggVisual.Scale = Vector3.One * (12f /
-            PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!.Dimensions[1]);
-        GroundEggShell();
-        _eggAnimation = _eggVisual.FindChild("AnimationPlayer", true, false) as AnimationPlayer;
-        if (_eggAnimation is null || !_eggAnimation.HasAnimation(egg.Clip("Idle")) ||
-            !_eggAnimation.HasAnimation(egg.Clip("Hatch")))
-            throw new InvalidOperationException("BASS_EGG_HATCH_ACTION_UNAVAILABLE");
-        var hatch = _eggAnimation.GetAnimation(egg.Clip("Hatch"));
-        if (hatch is null || hatch.Length <= 0f || hatch.GetTrackCount() == 0)
-            throw new InvalidOperationException("BASS_EGG_HATCH_ACTION_EMPTY");
-        _eggAnimation.Play(egg.Clip("Idle"));
-        // The export includes a separate embryo mesh offset to the right. The
-        // registered shell halves and their Hatch Action remain untouched.
-        foreach (var node in _eggVisual.FindChildren("*", "MeshInstance3D", true, false))
-            if (node is MeshInstance3D mesh && mesh.Name.ToString().Contains("embryo", StringComparison.OrdinalIgnoreCase))
-                mesh.Visible = false;
-        _hatchEndSeconds = .85 + hatch.Length;
-        _emergenceStartSeconds = .85 + hatch.Length * .55;
+        var egg = BassHatchPresentation.Create(this, NestPosition, _larvaSpawn,
+            PikeCoverFixture.Bed);
+        _eggVisual = egg.Visual;
+        _eggAnimation = egg.Animation;
+        _hatchEndSeconds = .85 + egg.HatchLength;
+        _emergenceStartSeconds = .85 + egg.HatchLength * .55;
         _cameraPanStartSeconds = _emergenceStartSeconds + .25;
         _introEndSeconds = _hatchEndSeconds + 1.7;
         _introCamera = new Camera3D { Name = "HatchCamera", Near = .003f, Far = 200f,
@@ -584,46 +560,6 @@ public partial class PikeEncounter : Node3D
         Input.MouseMode = Input.MouseModeEnum.Visible;
         _status.Text = "BASS NEST · yolk-fed egg · Enter or Skip Intro to hatch · Esc: pause";
         GD.Print($"BASS_HATCH_BEGIN identity={_growth.Identity} stage={_growth.Stage} nest={NestPosition}");
-    }
-
-    private void GroundEggShell()
-    {
-        // The imported shell's pivot is above its actual lowest mesh point.
-        // Aim its visible +Z opening at the fry, then settle that lowest point
-        // onto the local bed. Repeating accounts for the changed exit pitch.
-        var bed = PikeCoverFixture.Bed(NestPosition.X, NestPosition.Z);
-        for (var pass = 0; pass < 3; pass++)
-        {
-            var emergence = (_larvaSpawn - _eggVisual!.GlobalPosition).Normalized();
-            var pitch = Mathf.Atan2(emergence.Y, -emergence.Z);
-            _eggVisual.Rotation = new Vector3(-pitch, Mathf.Pi, 0f);
-            var (bottom, _) = ShellBounds(_eggVisual, emergence);
-            _eggVisual.GlobalPosition += Vector3.Up * (bed + .001f - bottom);
-        }
-    }
-
-    private static (float Bottom, float Front) ShellBounds(Node3D egg, Vector3 opening)
-    {
-        var bottom = float.PositiveInfinity;
-        var front = float.NegativeInfinity;
-        foreach (var child in egg.FindChildren("*", "MeshInstance3D", true, false))
-        {
-            if (child is not MeshInstance3D mesh ||
-                !mesh.Name.ToString().Contains("shell", StringComparison.OrdinalIgnoreCase)) continue;
-            var box = mesh.GetAabb();
-            for (var x = 0; x <= 1; x++)
-            for (var y = 0; y <= 1; y++)
-            for (var z = 0; z <= 1; z++)
-            {
-                var corner = mesh.GlobalTransform *
-                    (box.Position + box.Size * new Vector3(x, y, z));
-                bottom = Mathf.Min(bottom, corner.Y);
-                front = Mathf.Max(front, (corner - egg.GlobalPosition).Dot(opening));
-            }
-        }
-        if (!float.IsFinite(bottom) || !float.IsFinite(front))
-            throw new InvalidOperationException("BASS_EGG_SHELL_MESH_MISSING");
-        return (bottom, front);
     }
 
     public void CompleteHatch()
@@ -648,7 +584,7 @@ public partial class PikeEncounter : Node3D
         var opening = _eggVisual!.GlobalBasis.Z.Normalized();
         _fish.GlobalPosition = _eggVisual.GlobalPosition;
         _fish.LookAt(_fish.GlobalPosition + opening, Vector3.Up);
-        var (_, lip) = ShellBounds(_eggVisual, opening);
+        var (_, lip) = BassHatchPresentation.ShellBounds(_eggVisual, opening);
         var rear = 0f;
         var visual = _fish.GetNode<Node3D>("PlayerVisual");
         foreach (var child in visual.FindChildren("*", "MeshInstance3D", true, false))

@@ -18,7 +18,7 @@ public readonly record struct BassBodyProfile(float Radius, float Height,
     }
 }
 
-/// <summary>One fixture Bass identity from egg through registered swimming stages.</summary>
+/// <summary>One Bass identity from egg through registered swimming stages.</summary>
 public sealed class PondGrowthState
 {
     public const string SpeciesId = PikeEncounterAssets.BassId;
@@ -167,7 +167,7 @@ public sealed class PondGrowthState
     }
 
     public CharacterEntry Entry(PondCreatureAsset asset) => new(SpeciesId, asset.Name,
-        "Pond growth fixture", "Registered Bass stage", asset.ModelPath,
+        "Pond Bass growth", "Registered Bass stage", asset.ModelPath,
         1f / _assets[^1].Dimensions[1], asset.FacingDegrees, 30f,
         asset.Clip("Glide"), asset.Clip("Swim"), asset.Clip("SwimFast"),
         WorldHabitat.Freshwater, true, false, true, true);

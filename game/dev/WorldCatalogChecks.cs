@@ -8,7 +8,7 @@ using System.Text.Json;
 
 public static class WorldCatalogChecks
 {
-    public static void Run()
+    public static void Run(Node3D main)
     {
         var stages = WorldGenerationAudit.StageInvocations;
         var fish = DemoSelection.CharacterId;
@@ -33,6 +33,8 @@ public static class WorldCatalogChecks
             throw new InvalidDataException("Installed Pond identity changed");
         WorldSession.Select(WorldCatalog.PondId);
         var pondHabitat = pond.LoadHabitatScene().Instantiate<Node3D>();
+        pondHabitat.Name = "CatalogPondHabitat";
+        main.AddChild(pondHabitat);
         try
         {
             var loaded = WorldCatalog.Load(WorldSession.SelectedWorldId, pondHabitat);

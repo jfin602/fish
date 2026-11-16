@@ -18,6 +18,8 @@ public partial class PreyActor : CharacterBody3D
     private AnimationPlayer? _animation;
     private string _swim = "";
     private string _fast = "";
+    private Func<float, float, float> _bed = PikeCoverFixture.Bed;
+    private Func<float, float, float> _water = (_, _) => PikeCoverFixture.WaterY;
 
     public PreyAwareness Mind => _mind;
     public Vector3 CoverGoal => _coverGoal;
@@ -61,6 +63,13 @@ public partial class PreyActor : CharacterBody3D
         _fast = fast;
         _home = GlobalPosition;
         ResetActor();
+    }
+
+    public void ConfigureHabitat(Func<float, float, float> bed,
+        Func<float, float, float> water)
+    {
+        _bed = bed;
+        _water = water;
     }
 
     public void ResetActor()
@@ -149,7 +158,7 @@ public partial class PreyActor : CharacterBody3D
         var target = _home + new Vector3(Mathf.Cos(angle) * .72f,
             Mathf.Sin(angle * .7f) * .12f, Mathf.Sin(angle) * .72f);
         target.Y = Mathf.Clamp(target.Y,
-            PikeCoverFixture.Bed(target.X, target.Z) + .32f, PikeCoverFixture.WaterY - .35f);
+            _bed(target.X, target.Z) + .32f, _water(target.X, target.Z) - .35f);
         return target;
     }
 
@@ -166,8 +175,8 @@ public partial class PreyActor : CharacterBody3D
                 plant.FafId.StartsWith("FAF-PLANT-010", StringComparison.Ordinal) ? 1f : .3f;
             var box = plant.VisibleBounds;
             var center = box.GetCenter();
-            center.Y = Mathf.Clamp(center.Y, PikeCoverFixture.Bed(center.X, center.Z) + .32f,
-                PikeCoverFixture.WaterY - .35f);
+            center.Y = Mathf.Clamp(center.Y, _bed(center.X, center.Z) + .32f,
+                _water(center.X, center.Z) - .35f);
             var delta = center - GlobalPosition;
             var distance = delta.Length();
             if (distance < .5f || distance > 14f ||
@@ -180,7 +189,7 @@ public partial class PreyActor : CharacterBody3D
             chosen = center;
         }
         chosen.Y = Mathf.Clamp(chosen.Y,
-            PikeCoverFixture.Bed(chosen.X, chosen.Z) + .32f, PikeCoverFixture.WaterY - .35f);
+            _bed(chosen.X, chosen.Z) + .32f, _water(chosen.X, chosen.Z) - .35f);
         return chosen;
     }
 
@@ -197,8 +206,8 @@ public partial class PreyActor : CharacterBody3D
         foreach (var option in options)
         {
             var next = GlobalPosition + option * .7f;
-            if (next.Y < PikeCoverFixture.Bed(next.X, next.Z) + .25f ||
-                next.Y > PikeCoverFixture.WaterY - .25f ||
+            if (next.Y < _bed(next.X, next.Z) + .25f ||
+                next.Y > _water(next.X, next.Z) - .25f ||
                 TestMove(GlobalTransform, option * .7f)) continue;
             var score = option.Dot(direct) + .25f * option.Dot(-GlobalBasis.Z);
             if (score <= best) continue;

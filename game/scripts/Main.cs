@@ -53,7 +53,7 @@ public partial class Main : Node3D
         }
         if (OS.GetCmdlineUserArgs().Contains("--world-catalog-check"))
         {
-            try { WorldCatalogChecks.Run(); GetTree().Quit(); }
+            try { WorldCatalogChecks.Run(this); GetTree().Quit(); }
             catch (Exception error) { GD.PushError($"WORLD_CATALOG_CHECK_FAILED {error}"); GetTree().Quit(1); }
             return;
         }
@@ -155,10 +155,11 @@ public partial class Main : Node3D
         }
 
         AddChild(new EnvironmentClock { Name = "EnvironmentClock" });
-        AddChild(new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences)
+        var playShell = new PlayShell(fish, GetNode<Label>("PrototypeHelp/Help"), _preferences)
         {
             Name = "PlayShell",
-        });
+        };
+        AddChild(playShell);
 
         var populated = isCourseFixture
             ? StarterWorld.TryPopulate(this, fish, out var assetDiagnostic)
@@ -214,6 +215,16 @@ public partial class Main : Node3D
             GetNode<PlayShell>("PlayShell").ApplySavedLighting();
             fish.AddChild(new WaterReaction(fish,
                 profile == WorldEnvironmentProfile.Pond ? WaterVisualProfile.Pond : null));
+        }
+
+        if (populated && !isCourseFixture && GetParent() is not RendererComparison &&
+            PondBassSession.IsSelected(WorldSession.SelectedWorldId, DemoSelection.CharacterId))
+        {
+            var session = new PondBassSession(fish, playShell,
+                GetNode<SeabedSurface>("Habitat/Seabed"));
+            AddChild(session);
+            if (session.ReadyForChecks && OS.GetCmdlineUserArgs().Contains("--p6-pond-entry-check"))
+                P6PondEntryChecks.Run(session);
         }
 
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))

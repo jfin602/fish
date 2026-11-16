@@ -33,6 +33,30 @@ public partial class PlayShell : Node
     private double _quickPresetSeconds;
     private readonly ControlPresetStore _presets = new();
     private readonly List<ControlPreset> _profileChoices = [];
+    private VBoxContainer _items = null!;
+    private bool _sessionTerminal;
+
+    public bool PauseMenuVisible => _overlay?.Visible ?? false;
+
+    public void ConfigureSessionRetry(Action retry)
+    {
+        var button = new Button { Name = "RetryPondBass", Text = "Start a new Bass life",
+            FocusMode = Control.FocusModeEnum.All };
+        ApplyFocusStyle(button);
+        button.Pressed += retry;
+        _items.AddChild(button);
+        _items.MoveChild(button, _items.GetChildCount() - 2);
+    }
+
+    public void SetSessionTerminal(bool terminal)
+    {
+        _sessionTerminal = terminal;
+        if (terminal)
+        {
+            _overlay.Visible = false;
+            _options.Visible = false;
+        }
+    }
 
     public PlayShell(FishController fish, Label help, DisplayPreferences preferences)
     {
@@ -105,6 +129,7 @@ public partial class PlayShell : Node
         margin.AddThemeConstantOverride("margin_bottom", 12);
         _panel.AddChild(margin);
         var items = new VBoxContainer();
+        _items = items;
         items.AddThemeConstantOverride("separation", 6);
         margin.AddChild(items);
 
@@ -310,6 +335,7 @@ public partial class PlayShell : Node
 
     public override void _Input(InputEvent @event)
     {
+        if (_sessionTerminal) return;
         if (_overlay.Visible && _debugPanel.Visible)
         {
             if (@event is InputEventKey { Pressed: true, Echo: false, PhysicalKeycode: Key.Escape })
@@ -410,6 +436,7 @@ public partial class PlayShell : Node
 
     private void Pause()
     {
+        if (_sessionTerminal) return;
         _fish.ClearAndDisarmInput();
         _fish.GetNodeOrNull<WaterReaction>("WaterReaction")?.Suspend();
         if (_overlay.Visible) return;
@@ -423,6 +450,7 @@ public partial class PlayShell : Node
 
     private void Resume()
     {
+        if (_sessionTerminal) return;
         if (_debugPanel.Visible) CloseDebugPanel();
         if (_graphicsPanel.Visible)
         {

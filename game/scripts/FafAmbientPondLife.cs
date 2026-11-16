@@ -15,16 +15,18 @@ public partial class FafAmbientPondLife : Node3D
     private readonly List<Node3D> _actors = new();
     private readonly List<AnimationPlayer> _animations = new();
     private SeabedSurface _seabed = null!;
+    private HashSet<string> _ecologicalSpecies = new(StringComparer.Ordinal);
     private float _time;
     public IReadOnlyList<ActorInfo> Population => _population;
 
-    public static FafAmbientPondLife Install(Node3D habitat)
+    public static FafAmbientPondLife Install(Node3D habitat, params string[] ecologicalSpecies)
     {
         if (habitat.GetNodeOrNull<FafAmbientPondLife>("PondAmbientLife") is not null)
             throw new InvalidOperationException("POND_AMBIENT_ALREADY_INSTALLED");
         var seabed = habitat.GetNode<SeabedSurface>("Seabed");
         if (!seabed.Basin.IsPond) throw new InvalidOperationException("POND_AMBIENT_WRONG_HABITAT");
-        var life = new FafAmbientPondLife { Name = "PondAmbientLife", _seabed = seabed };
+        var life = new FafAmbientPondLife { Name = "PondAmbientLife", _seabed = seabed,
+            _ecologicalSpecies = new HashSet<string>(ecologicalSpecies, StringComparer.Ordinal) };
         habitat.AddChild(life);
         try { life.Populate(); }
         catch { habitat.RemoveChild(life); life.Free(); throw; }
@@ -33,12 +35,19 @@ public partial class FafAmbientPondLife : Node3D
 
     private void Populate()
     {
+        var allSpecies = PondCreatureCatalog.Ambient.Select(asset => asset.Id)
+            .Concat(PondCreatureCatalog.AdultChoices().Select(fish => fish.Id)).ToHashSet(StringComparer.Ordinal);
+        if (!_ecologicalSpecies.IsSubsetOf(allSpecies))
+            throw new InvalidOperationException("POND_AMBIENT_EXCLUSION_UNKNOWN");
         var entries = PondCreatureCatalog.Ambient
+            .Where(asset => !_ecologicalSpecies.Contains(asset.Id))
             .Select(asset => (Asset: asset, Fish: (CharacterEntry?)null))
-            .Concat(PondCreatureCatalog.AdultChoices().Select(fish =>
+            .Concat(PondCreatureCatalog.AdultChoices()
+                .Where(fish => !_ecologicalSpecies.Contains(fish.Id)).Select(fish =>
                 (Asset: PondCreatureCatalog.Stage(fish.Id, "adult")!, Fish: (CharacterEntry?)fish)))
             .ToArray();
-        if (entries.Length != 12) throw new InvalidOperationException("POND_AMBIENT_ROSTER_INCOMPLETE");
+        if (entries.Length != 12 - _ecologicalSpecies.Count)
+            throw new InvalidOperationException("POND_AMBIENT_ROSTER_INCOMPLETE");
         for (var i = 0; i < entries.Length; i++)
         {
             var (asset, fish) = entries[i];
@@ -102,7 +111,7 @@ public partial class FafAmbientPondLife : Node3D
             _animations.Add(animation);
             actor.Transform = GetPose(i, 0);
         }
-        GD.Print($"POND_AMBIENT_READY actors={_population.Count} creatures=3 insects=4 fish=5");
+        GD.Print($"POND_AMBIENT_READY actors={_population.Count} creatures=3 insects=4 fish={_population.Count - 7}");
     }
 
     private Vector2 Site(int index, bool fish)

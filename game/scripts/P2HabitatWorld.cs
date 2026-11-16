@@ -48,7 +48,9 @@ public static class P2HabitatWorld
                             WorldSession.SelectedWorldId).Manifest;
                 if (!PlayerArt.TryLoadAndAttach(fish, out diagnostic)) return false;
                 if (WorldSession.SelectedWorldId == WorldCatalog.PondId)
-                    FafAmbientPondLife.Install(bakedHabitat);
+                    FafAmbientPondLife.Install(bakedHabitat,
+                        PondBassSession.IsSelected(WorldSession.SelectedWorldId, DemoSelection.CharacterId)
+                            ? new[] { PikeEncounterAssets.BluegillId } : Array.Empty<string>());
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 if (WorldSession.SelectedWorldId == WorldCatalog.PondId)

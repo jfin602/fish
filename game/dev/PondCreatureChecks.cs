@@ -100,6 +100,25 @@ public static class PondCreatureChecks
                 fish.SetActivePreset(ControlPreset.Builtins()[0]);
                 var visual = fish.GetNodeOrNull<Node3D>("PlayerVisual");
                 var ambient = world.GetNodeOrNull<FafAmbientPondLife>("Habitat/PondAmbientLife");
+                if (entry.Id == PikeEncounterAssets.BassId)
+                {
+                    var session = world.GetNodeOrNull<PondBassSession>("PondBassSession");
+                    Require(session is not null && session.IntroActive &&
+                        session.Growth.Stage == "egg" && !fish.Visible &&
+                        ambient is not null && ambient.Population.Count == 11 &&
+                        ambient.Population.All(a => a.Id != PikeEncounterAssets.BluegillId),
+                        "normal Pond Bass did not enter its egg session");
+                    session!.SkipIntro();
+                    for (var frame = 0; frame < 300 && session.IntroActive; frame++)
+                        await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+                    Require(!session.IntroActive && session.Growth.Stage == "larva" &&
+                        fish.Visible && Mathf.Abs(fish.BodyRadius - session.Growth.Body.Radius) < .001f,
+                        "normal Pond Bass did not hatch to fitted larva");
+                    world.Free();
+                    WorldSession.Unload();
+                    GD.Print($"POND_CHARACTER_OK id={entry.Id} stage=larva ambient=11 route=survival");
+                    continue;
+                }
                 Require(visual is not null && ambient is not null &&
                     ambient.Population.Count == 12 &&
                     fish.GetNode<CollisionShape3D>("Collision").Shape is CapsuleShape3D shape &&
@@ -161,7 +180,7 @@ public static class PondCreatureChecks
             Require(SpeciesCompatibility.Available(WorldCatalog.OceanId, SpeciesRole.Selectable).Count == 5 &&
                 SpeciesCompatibility.Available(WorldCatalog.PondId, SpeciesRole.Selectable).Count == 5,
                 "cross-world selection census");
-            GD.Print("POND_CREATURE_CHECK_OK fish=5 stages=25 creatures=3 insects=4 ambient=12");
+            GD.Print("POND_CREATURE_CHECK_OK fish=5 stages=25 creatures=3 insects=4 ambient=12-demo,11-bass");
             tree.Quit();
         }
         catch (Exception error)
