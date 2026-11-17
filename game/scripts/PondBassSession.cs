@@ -14,6 +14,7 @@ public partial class PondBassSession : Node3D
     private readonly SeabedSurface _bed;
     private readonly FeedingLedger _feeding = new();
     private readonly List<PondFoodActor> _food = new();
+    private PondFoodPatches _patches = null!;
     private readonly List<PreyActor> _prey = new();
     private PondGrowthState _growth = null!;
     private SwimTuning _baseline = null!;
@@ -64,6 +65,8 @@ public partial class PondBassSession : Node3D
     public PondGrowthState Growth => _growth;
     public FeedingLedger Feeding => _feeding;
     public IReadOnlyList<PondFoodActor> FoodActors => _food;
+    public IReadOnlyList<PondFoodPatchSite> FoodPatchSites => _patches.Sites;
+    public int AvailableFoodCount => _patches.AvailableCount;
     public IReadOnlyList<PreyActor> PreyActors => _prey;
     public bool IntroActive => _introActive;
     public bool Caught => _caught;
@@ -75,10 +78,27 @@ public partial class PondBassSession : Node3D
 
     internal void SetHatchSecondsForCheck(double seconds)
     {
-        if (!OS.GetCmdlineUserArgs().Contains("--p6-pond-entry-check"))
+        if (!OS.GetCmdlineUserArgs().Any(arg => arg is "--p6-pond-entry-check" or "--p6-food-check"))
             throw new InvalidOperationException("P6_POND_CHECK_CLOCK_FORBIDDEN");
         _hatchSeconds = seconds;
         _gameSeconds = seconds;
+    }
+
+    internal void AdvanceFoodForCheck(double seconds)
+    {
+        if (!OS.GetCmdlineUserArgs().Contains("--p6-food-check"))
+            throw new InvalidOperationException("P6_FOOD_CHECK_CLOCK_FORBIDDEN");
+        if (GetTree().Paused) return;
+        _gameSeconds += seconds;
+        _hatchSeconds += seconds;
+        _patches.Tick(_gameSeconds);
+    }
+
+    internal bool CanReachFoodForCheck(PondFoodActor food)
+    {
+        if (!OS.GetCmdlineUserArgs().Contains("--p6-food-check"))
+            throw new InvalidOperationException("P6_FOOD_CHECK_REACH_FORBIDDEN");
+        return _food.Contains(food) && food.Available && FoodReachable(food);
     }
 
     public override void _Ready()
@@ -177,23 +197,11 @@ public partial class PondBassSession : Node3D
 
     private void AddFood()
     {
-        for (var kindIndex = 0; kindIndex < 2; kindIndex++)
-        for (var i = 0; i < 8; i++)
-        {
-            var kind = kindIndex == 0 ? FeedingLedger.MicrofaunaId : FeedingLedger.InsectId;
-            var angle = i * Mathf.Tau / 8f;
-            var distance = kindIndex == 0 ? .30f + i % 3 * .13f : 1.05f + i % 2 * .18f;
-            var x = _nest.X + Mathf.Sin(angle) * distance;
-            var z = _nest.Z + Mathf.Cos(angle) * distance;
-            var floor = _bed.GetHeightAt(x, z);
-            var at = new Vector3(x, floor + (kindIndex == 0 ? .16f : .22f), z);
-            if (_fish.PondSurfaceHeightAt(x, z) - at.Y < .12f || !ClearSphere(at, .03f))
-                throw new InvalidOperationException($"POND_BASS_FOOD_SITE_BLOCKED kind={kind} index={i}");
-            var actor = new PondFoodActor { Name = kindIndex == 0 ? "Zooplankton" + i : "DarnerNymph" + i };
-            AddChild(actor);
-            actor.Configure($"{WorldSession.ActiveManifest!.WorldId}:food:{kind}:{i}", kind, at, i);
-            _food.Add(actor);
-        }
+        var manifest = WorldSession.ActiveManifest!;
+        var habitat = WorldSession.ActiveHabitat!;
+        var placements = habitat.GetNode<PondFafHabitat>("PondFafEnvironment").Placements;
+        _patches = new PondFoodPatches(this, _fish, _bed, _food,
+            manifest.WorldId, manifest.Seed, _nest, placements);
     }
 
     private void AddPrey()
@@ -426,7 +434,7 @@ public partial class PondBassSession : Node3D
         if (_introActive || _caught || _failed || _transitioning || GetTree().Paused) return;
         _gameSeconds += delta;
         _hatchSeconds += delta;
-        foreach (var food in _food) food.Tick(_gameSeconds);
+        _patches.Tick(_gameSeconds);
         foreach (var prey in _prey)
             prey.Tick(default, default, _gameSeconds, (float)delta, false);
         TryAutoFeed();
@@ -458,7 +466,8 @@ public partial class PondBassSession : Node3D
             return result;
         }
         var food = _food.Where(f => f.Available &&
-                FeedingLedger.FoodAward(f.Kind, _growth.Stage, _hatchSeconds) > 0 &&
+                FeedingLedger.FoodAward(f.Kind, _growth.Stage, _hatchSeconds,
+                    normalPondSurvival: true) > 0 &&
                 FoodReachable(f)).OrderBy(f => f.GlobalPosition.DistanceTo(mouth)).FirstOrDefault();
         if (food is not null) return TryConsumeFood(food);
         var prey = _prey.Where(p => p.IsAlive && FeedingLedger.IsEligiblePrey(
@@ -472,10 +481,12 @@ public partial class PondBassSession : Node3D
         if (_introActive || _caught || _failed || GetTree().Paused || !_food.Contains(food))
             return new(false, "session inactive or foreign food", 0);
         var result = _feeding.TryConsumeFood(food.StableId, food.Kind, _growth.Stage,
-            food.Available && FoodReachable(food), _gameSeconds, _hatchSeconds);
+            food.Available && FoodReachable(food), _gameSeconds, _hatchSeconds,
+            normalPondSurvival: true);
         if (result.Consumed)
         {
             food.Consume();
+            _patches.Consumed(food, _gameSeconds);
             _smallFeedSound.Play();
             _reticle.ConfirmCommittedFeed();
             Feedback(food.Kind == FeedingLedger.MicrofaunaId ? "Zooplankton eaten" : "Aquatic nymph eaten");
@@ -571,7 +582,8 @@ public partial class PondBassSession : Node3D
             var to = food.GlobalPosition - mouth;
             if (!food.Available || !food.IsVisibleInTree() ||
                 _feeding.IsConsumed(food.StableId) ||
-                FeedingLedger.FoodAward(food.Kind, _growth.Stage, _hatchSeconds) <= 0 ||
+                FeedingLedger.FoodAward(food.Kind, _growth.Stage, _hatchSeconds,
+                    normalPondSurvival: true) <= 0 ||
                 to.LengthSquared() < .000025f || to.LengthSquared() > 1.44f ||
                 _fish.MouthForward.Dot(to.Normalized()) < .35f ||
                 !ClearPath(mouth, food.GlobalPosition) ||

@@ -26,21 +26,24 @@ public sealed class FeedingLedger
          stage == "juvenile" && playerStage == "adult" &&
          length <= playerLength * BluegillJuvenileRatio);
 
-    public static int FoodAward(string kind, string playerStage, double secondsSinceHatch) =>
+    public static int FoodAward(string kind, string playerStage, double secondsSinceHatch,
+        bool normalPondSurvival = false) =>
         kind switch
         {
             MicrofaunaId when playerStage == "larva" && double.IsFinite(secondsSinceHatch) &&
                 secondsSinceHatch >= YolkSeconds => 1,
-            InsectId when playerStage is "juvenile" or "subadult" => 2,
+            InsectId when playerStage == "juvenile" ||
+                (playerStage == "subadult" && !normalPondSurvival) => 2,
             _ => 0,
         };
 
     public FeedResult TryConsumeFood(string id, string kind, string playerStage,
-        bool accessible, double gameSeconds, double secondsSinceHatch)
+        bool accessible, double gameSeconds, double secondsSinceHatch,
+        bool normalPondSurvival = false)
     {
         if (string.IsNullOrWhiteSpace(id) || _consumed.Contains(id))
             return new(false, "already consumed or invalid ID", 0);
-        var award = FoodAward(kind, playerStage, secondsSinceHatch);
+        var award = FoodAward(kind, playerStage, secondsSinceHatch, normalPondSurvival);
         if (award == 0) return new(false, "food is not available at this stage", 0);
         if (!accessible) return new(false, "out of reach or blocked", 0);
         if (!double.IsFinite(gameSeconds) || gameSeconds < 0)

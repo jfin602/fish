@@ -19,6 +19,12 @@ public sealed record PondFafCatalog(IReadOnlyList<PondFafAsset> Entries);
 public sealed record PondFafPlacement(string Id, Vector3 Position, float Yaw, float Scale,
     string Zone);
 
+/// <summary>The installed, seed-derived Pond dressing anchors, shared with habitat ecology.</summary>
+public partial class PondFafHabitat : Node3D
+{
+    public IReadOnlyList<PondFafPlacement> Placements { get; init; } = Array.Empty<PondFafPlacement>();
+}
+
 public static class PondFafEnvironment
 {
     private const string CatalogPath = "res://assets/faf/pond/pond_environment_catalog.json";
@@ -202,7 +208,7 @@ public static class PondFafEnvironment
             throw new InvalidOperationException("Pond FAF already installed");
         var assets = LoadCatalog();
         var plan = Plan(data, habitat.GetNode<SeabedSurface>("Seabed").Basin, assets);
-        var root = new Node3D { Name = "PondFafEnvironment" };
+        var root = new PondFafHabitat { Name = "PondFafEnvironment", Placements = plan };
         habitat.AddChild(root);
         var basinShader = ResourceLoader.Load<Shader>(
             "res://assets/faf/pond/materials/pond_basin_variation.gdshader")

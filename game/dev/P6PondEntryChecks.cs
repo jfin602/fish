@@ -89,10 +89,11 @@ public static class P6PondEntryChecks
                 ambient.Population.All(info => info.Id != PikeEncounterAssets.BluegillId) &&
                 ambient.Population.Any(info => info.Id == "FAF-CREATURE-001") &&
                 ambient.Population.Any(info => info.Id == "FAF-CREATURE-002") &&
-                session.PreyActors.Count == 6 && session.FoodActors.Count == 16 &&
+                session.PreyActors.Count == 6 && session.FoodActors.Count == PondFoodPatches.MaximumActors &&
                 session.PreyActors.All(prey => prey.SpeciesId == PikeEncounterAssets.BluegillId) &&
                 session.FoodActors.Select(food => food.StableId)
-                    .Concat(session.PreyActors.Select(prey => prey.StableId)).Distinct().Count() == 22,
+                    .Concat(session.PreyActors.Select(prey => prey.StableId)).Distinct().Count() ==
+                    PondFoodPatches.MaximumActors + 6,
                 "ambient/ecological roster or stable IDs duplicated");
             var identity = session.Growth.Identity;
             Need(session.IntroActive && session.Growth.Stage == "egg" &&
@@ -164,6 +165,12 @@ public static class P6PondEntryChecks
             { Place(food, .025f); Need(session.TryConsumeFood(food).Consumed, "juvenile nymph missed"); }
             Need(session.Growth.Stage == "subadult" && session.Growth.Identity == identity,
                 "subadult growth failed");
+            var ineligibleNymph = session.FoodActors.First(food =>
+                food.Kind == FeedingLedger.InsectId && food.Available);
+            Place(ineligibleNymph, .025f);
+            Need(!session.TryConsumeFood(ineligibleNymph).Consumed &&
+                session.Feeding.Nutrition == 14,
+                "normal Pond subadult advanced on nymph instead of broader prey");
             foreach (var prey in session.PreyActors.Where(prey => prey.Stage == "larva").Take(3))
             {
                 var radius = ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius;

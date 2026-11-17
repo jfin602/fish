@@ -1,0 +1,31 @@
+# P6 P4 — Distributed food patches and recovery
+
+**Disposition: implemented T2 candidate at assigned `0.6.4`; G6.2/V45 NOT GREEN.** The normal Pond Bass has habitat-anchored food patches and bounded game-time renewal. Owner-native exploration and feeding feel have not been observed. This does not qualify the later predator ecology or complete life.
+
+## Source, bridge and world identity
+
+- Entry: `main` at `f8eff008562038b80e401f43dbb708ebd296771c`, root `0.6.3`, with the P4 source partially written and uncommitted after an interrupted turn. The resumed task kept that work; no reset, rebase, commit, push, world promotion or asset overwrite occurred. Root `0.6.4` is this uncommitted P4 checkpoint, not a Gate PASS.
+- A new Fish editor session started through `./tools/dev editor` with the project-local MCP server on `ws://127.0.0.1:19080`. `godot_health_check` returned `bridge_connected=true`, `editor_status=ready`, addon/server `2026.11.04`. `godot_get_server_info` returned `/home/jfin/dev/fish/game/`, Godot `4.7.2-stable`, .NET C# support and project true (MCP C# build false). The separate `9080` listener remained outside Fish. The native editor reported Forward+ on AMD Radeon 880M (RADV GFX1150). No owner gameplay or frame pacing was captured.
+- The normal pinned Pond loaded world `world-5e3b4fee759acbe3`, seed `71`, content `d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347`, with `generator_invocations=0`. The Bass is `FAF-FISH-007`; life IDs retain the `pond-world-5e3b4fee759acbe3:bass-life:` prefix and change on retry. Example patch actor: `world-5e3b4fee759acbe3:patch:71:reeds-west:pond:zooplankton:0:g0`.
+
+## Behavior installed
+
+`PondFoodPatches` uses the seed-derived Pond FAF placement anchors already installed with the baked Pond, the signed shore/depth field, actual bed height, dynamic surface limit and solid collision probes. It places small existing copepod cloud visuals and registered `FAF-INSECT-001A` nymphs. It rejects shallow, dry or obstructed sites. The full population is 9 patches and 23 actors: 15 zooplankton in nursery/reeds/roots/vegetation and 8 nymphs in reeds/wood/transition/midwater. The nursery holds three clouds and never renews; other patches renew one actor only after full depletion, with a new generation ID and a moved position. Timers are 150 seconds for reed clouds, 180 for roots/vegetation clouds, 210 for reed/wood insects and 240 for transition/midwater insects. These are **game seconds**, paused with the session. A depleted generation is removed before its replacement, so actors remain at or below 23.
+
+The shared `FeedingLedger` remains the sole nutrition commit; the normal Pond session still requires eligible forward mouth contact and a clear path. Larvae need six distinct clouds after the 12-second yolk interval to reach juvenile. Juveniles gain two nutrition per nymph until the 14-nutrition subadult threshold; normal-Pond subadults gain zero from nymphs and must catch genuine size-eligible Bluegill to reach adult at 26. The separate fixture retains its existing nymph policy. Later insects remain distributed for juvenile foraging, while replenishment cannot bypass the subadult prey requirement. Local depletion does not remove the alternate reed and vegetation routes. The reticle only inspects visible, nearby eligible actors; the fixture's bounded original 16-food test was not changed.
+
+For baked seed 71, the check recorded patch anchor distances from the nest: nursery `0.00 m`; reeds `3.74/4.91 m`; roots `5.72 m`; vegetation `16.80 m`; reed insect `10.16 m`; wood insect `18.15 m`; transition insect `25.43 m`; midwater insect `37.39 m`. These are anchor distances, not measured swim times. On full reed depletion at game time `12.10`, the patch remained empty at `162.00` and renewed at `162.20` with ID `world-5e3b4fee759acbe3:patch:71:reeds-west:pond:zooplankton:1:g1`, position `(-50.593967, 9.103793, 8.334373)`, 18 available actors and 21 retained actors. The old IDs stayed consumed; nutrition remained 6 until a later actual meal.
+
+## Focused checks and limits
+
+| Command | Observed result |
+| --- | --- |
+| `./tools/dev build` | PASS after final code changes; 0 warnings, 0 errors. |
+| `./tools/dev inspect-p6-food` | PASS, `P6_FOOD_CHECK_OK`; normal seed-71 route, 23 water-column/approach probes, real mouth-reach probes at original nursery and wood-root sites plus installed wood-anchor checks, nursery exhaustion, mouth-only/duplicate ledger behavior, pause hold, reed renewal after 150 game seconds at a different initial patch position, stale actor rejection, juvenile insect value and subadult policy, actor cap, retry with new life and full initial stock. Pure planner samples were repeatable for seeds 71 and 72 using seed-derived basins and diagnostic habitat anchors. |
+| `./tools/dev inspect-feeding` | PASS, `FEEDING_CHECK_OK`; fixture food=16, juvenile nutrition=8, obstruction blocked. |
+| `./tools/dev inspect-growth` | PASS, `GROWTH_CHECK_OK`; fixture adult stage nutrition=32/events=11 and shelter/camera probes. |
+| `./tools/dev inspect-hatch` | PASS, `HATCH_CHECK_OK`; fixture watch/skip, pause, shell, retry and body checks. |
+| `./tools/dev inspect-world-isolation` | PASS, `WORLD_ISOLATION_CHECK_OK`; two Ocean/Pond/Pike cycles with three repeats. |
+| `./tools/dev inspect-p6-pond-entry` | PASS, `P6_POND_ENTRY_OK`; 23 food actors, six Bluegill, egg-to-adult and fresh retry. An earlier run failed because the count assertion had been edited after the previous C# build; rebuilding resolved it without a gameplay change. |
+
+The seed-72 case checks deterministic planning with sampled anchors; it is **not** a second baked-world runtime or native clearance qualification. The source checks move actors to the mouth to assert feed commits; they do not show a person swimming a viable path to each patch or judge visibility, cover, reticle comfort, route choice or difficulty. The local collision and mouth probes establish water-column and immediate approach clearance at sampled sites; the roots/wood patches use installed solid wood anchors. They do not prove a continuous swim route through shelter. Native P8/P12 must review genuine discoverability, shelter traversal, recovery pacing and whether the larva can collect the first six small targets. No FPS or owner judgment is claimed.
