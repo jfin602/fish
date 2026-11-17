@@ -67,6 +67,8 @@ public partial class WorldSelect : Control
             P6PondEntryChecks.RunRoute(this);
         if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-food-check"))
             P6FoodChecks.RunRoute(this);
+        if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-bluegill-threat-check"))
+            P6BluegillThreatChecks.RunRoute(this);
         if (Array.Exists(OS.GetCmdlineUserArgs(), arg => arg is "--pike-encounter-check" or "--world-isolation-check") &&
             !PikeEncounterChecks.Started)
             PikeEncounterChecks.Run(this);

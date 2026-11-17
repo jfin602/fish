@@ -89,11 +89,11 @@ public static class P6PondEntryChecks
                 ambient.Population.All(info => info.Id != PikeEncounterAssets.BluegillId) &&
                 ambient.Population.Any(info => info.Id == "FAF-CREATURE-001") &&
                 ambient.Population.Any(info => info.Id == "FAF-CREATURE-002") &&
-                session.PreyActors.Count == 6 && session.FoodActors.Count == PondFoodPatches.MaximumActors &&
+                session.PreyActors.Count == 8 && session.FoodActors.Count == PondFoodPatches.MaximumActors &&
                 session.PreyActors.All(prey => prey.SpeciesId == PikeEncounterAssets.BluegillId) &&
                 session.FoodActors.Select(food => food.StableId)
                     .Concat(session.PreyActors.Select(prey => prey.StableId)).Distinct().Count() ==
-                    PondFoodPatches.MaximumActors + 6,
+                    PondFoodPatches.MaximumActors + 8,
                 "ambient/ecological roster or stable IDs duplicated");
             var identity = session.Growth.Identity;
             Need(session.IntroActive && session.Growth.Stage == "egg" &&

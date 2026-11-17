@@ -24,6 +24,8 @@ public partial class PreyActor : CharacterBody3D
     public PreyAwareness Mind => _mind;
     public Vector3 CoverGoal => _coverGoal;
     public float ActualSpeed => Velocity.Length();
+    public Vector3 MouthPosition => GlobalPosition - GlobalBasis.Z *
+        (Length / PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!.Dimensions[1]) * .42f;
     public int MotorStepCount { get; private set; }
     public string StableId { get; private set; } = "";
     public bool IsAlive { get; private set; } = true;
@@ -84,7 +86,8 @@ public partial class PreyActor : CharacterBody3D
     }
 
     public void Tick(SightEvidence sight, DisturbanceEvidence disturbance,
-        double seconds, float delta, bool paused, SchoolSteering school = default)
+        double seconds, float delta, bool paused, SchoolSteering school = default,
+        Vector3? huntGoal = null)
     {
         if (!IsAlive || paused || delta <= 0) return;
         _mind.Step(sight, disturbance, seconds, false);
@@ -97,12 +100,12 @@ public partial class PreyActor : CharacterBody3D
             _coverGoal = ChooseCover(threat);
             _nextChoiceAt = seconds + 1.2;
         }
-        var goal = _mind.Mode switch
+        var goal = huntGoal ?? (_mind.Mode switch
         {
             PreyMode.Flee or PreyMode.Alert => _coverGoal,
             PreyMode.Forage => ForagePoint(seconds),
             _ => _home,
-        };
+        });
         var to = goal - GlobalPosition;
         var sizeSpeed = Stage switch
         {
@@ -119,9 +122,11 @@ public partial class PreyActor : CharacterBody3D
             PreyMode.Settle => sizeSpeed * .7f,
             _ => sizeSpeed,
         };
+        if (huntGoal is not null) desiredSpeed = sizeSpeed * 1.55f;
         if (to.Length() < .15f && school.Direction.LengthSquared() < .001f) desiredSpeed = 0;
         var direct = to.LengthSquared() > .01f ? to.Normalized() : -GlobalBasis.Z;
-        if (school.Direction.LengthSquared() > .001f && _mind.Mode is (PreyMode.Forage or PreyMode.Settle))
+        if (huntGoal is null && school.Direction.LengthSquared() > .001f &&
+            _mind.Mode is (PreyMode.Forage or PreyMode.Settle))
             direct = (direct * .45f + school.Direction * .55f).Normalized();
         var direction = ClearDirection(direct);
         if (direction is null) desiredSpeed = 0;
@@ -142,7 +147,7 @@ public partial class PreyActor : CharacterBody3D
         _speed = Mathf.Min(_speed, Velocity.Length() + .25f);
         if (_animation is not null)
         {
-            var clip = _mind.Mode == PreyMode.Flee ? _fast : _swim;
+            var clip = _mind.Mode == PreyMode.Flee || huntGoal is not null ? _fast : _swim;
             if (_animation.CurrentAnimation != clip) _animation.Play(clip, .15);
             _animation.SpeedScale = Mathf.Clamp(.8f + ActualSpeed * .2f, .8f, 1.5f);
             var source = _animation.GetAnimation(clip);

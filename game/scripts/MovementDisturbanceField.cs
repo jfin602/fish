@@ -20,6 +20,7 @@ public sealed class MovementDisturbanceField
     private readonly IReadOnlyList<SoftSightCover> _plants;
     private readonly PhysicsDirectSpaceState3D _space;
     private readonly Godot.Collections.Array<Rid> _exclude;
+    private readonly float _speedReference;
     private Vector3 _previousVelocity;
     private int _lastMotorStep = -1;
     private double _lastEmission = double.NegativeInfinity;
@@ -28,12 +29,16 @@ public sealed class MovementDisturbanceField
     public IReadOnlyList<MovementCue> Events => _events;
 
     public MovementDisturbanceField(PhysicsDirectSpaceState3D space,
-        IReadOnlyList<SoftSightCover> plants, Rid observer, Rid target)
+        IReadOnlyList<SoftSightCover> plants, Rid observer, Rid target,
+        float speedReference = 6f)
     {
         if (plants.Count > 128) throw new ArgumentOutOfRangeException(nameof(plants));
+        if (!float.IsFinite(speedReference) || speedReference <= 0)
+            throw new ArgumentOutOfRangeException(nameof(speedReference));
         _space = space;
         _plants = plants;
         _exclude = new Godot.Collections.Array<Rid> { observer, target };
+        _speedReference = speedReference;
     }
 
     public void Reset()
@@ -58,7 +63,7 @@ public sealed class MovementDisturbanceField
         SimulationSeconds += delta;
         _events.RemoveAll(cue => SimulationSeconds - cue.CreatedAt >= LifetimeSeconds);
         var speed = velocity.Length();
-        var energy = Energy(speed, acceleration, effort, turn);
+        var energy = Energy(speed, acceleration, effort, turn, _speedReference);
         if (energy < .055f || SimulationSeconds - _lastEmission < MinimumIntervalSeconds) return;
         _lastEmission = SimulationSeconds;
         if (_events.Count == Capacity) _events.RemoveAt(0);
@@ -66,9 +71,10 @@ public sealed class MovementDisturbanceField
             energy, SimulationSeconds));
     }
 
-    public static float Energy(float speed, float acceleration, float effort, float turn)
+    public static float Energy(float speed, float acceleration, float effort, float turn,
+        float speedReference = 6f)
     {
-        speed = Mathf.Clamp(float.IsFinite(speed) ? speed / 6f : 0f, 0f, 1f);
+        speed = Mathf.Clamp(float.IsFinite(speed) ? speed / speedReference : 0f, 0f, 1f);
         acceleration = Mathf.Clamp(float.IsFinite(acceleration) ? acceleration / 5f : 0f, 0f, 1f);
         effort = Mathf.Clamp(float.IsFinite(effort) ? effort : 0f, 0f, 1f);
         turn = Mathf.Clamp(float.IsFinite(turn) ? Mathf.Abs(turn) : 0f, 0f, 1f);

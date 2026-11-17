@@ -227,6 +227,8 @@ public partial class Main : Node3D
                 P6PondEntryChecks.Run(session);
             if (session.ReadyForChecks && OS.GetCmdlineUserArgs().Contains("--p6-food-check"))
                 P6FoodChecks.Run(session);
+            if (session.ReadyForChecks && OS.GetCmdlineUserArgs().Contains("--p6-bluegill-threat-check"))
+                P6BluegillThreatChecks.Run(session);
         }
 
         if (populated && OS.GetCmdlineUserArgs().Contains("--pond-surface-check"))

@@ -16,6 +16,12 @@ public partial class PondBassSession : Node3D
     private readonly List<PondFoodActor> _food = new();
     private PondFoodPatches _patches = null!;
     private readonly List<PreyActor> _prey = new();
+    private readonly List<BluegillSchool> _preySchools = new();
+    private readonly List<WorldSightSensor> _preySight = new();
+    private readonly List<MovementDisturbanceField> _preyCues = new();
+    private readonly List<BluegillThreatMind> _threats = new();
+    private PondTurbidityField _turbidity = null!;
+    private PondCatchEvent? _catchEvent;
     private PondGrowthState _growth = null!;
     private SwimTuning _baseline = null!;
     private FeedingReticle _reticle = null!;
@@ -68,6 +74,9 @@ public partial class PondBassSession : Node3D
     public IReadOnlyList<PondFoodPatchSite> FoodPatchSites => _patches.Sites;
     public int AvailableFoodCount => _patches.AvailableCount;
     public IReadOnlyList<PreyActor> PreyActors => _prey;
+    public IReadOnlyList<BluegillSchool> BluegillSchools => _preySchools.Distinct().ToArray();
+    internal IReadOnlyList<BluegillThreatMind> BluegillThreats => _threats;
+    public PondCatchEvent? CatchEvent => _catchEvent;
     public bool IntroActive => _introActive;
     public bool Caught => _caught;
     public Vector3 NestPosition => _nest;
@@ -78,7 +87,8 @@ public partial class PondBassSession : Node3D
 
     internal void SetHatchSecondsForCheck(double seconds)
     {
-        if (!OS.GetCmdlineUserArgs().Any(arg => arg is "--p6-pond-entry-check" or "--p6-food-check"))
+        if (!OS.GetCmdlineUserArgs().Any(arg => arg is "--p6-pond-entry-check" or
+            "--p6-food-check" or "--p6-bluegill-threat-check"))
             throw new InvalidOperationException("P6_POND_CHECK_CLOCK_FORBIDDEN");
         _hatchSeconds = seconds;
         _gameSeconds = seconds;
@@ -131,6 +141,7 @@ public partial class PondBassSession : Node3D
                 () => !_introActive && !_caught && !_failed && !_transitioning &&
                     !_shell.PauseMenuVisible, GuideFoodCandidates);
             AddFood();
+            _turbidity = new PondTurbidityField(_bed.Basin, _fish.PondWaterlineHeight);
             AddPrey();
             StartIntro();
             GD.Print($"P6_POND_BASS_READY world={manifest.WorldId} seed={manifest.Seed} " +
@@ -207,35 +218,44 @@ public partial class PondBassSession : Node3D
     private void AddPrey()
     {
         var worldId = WorldSession.ActiveManifest!.WorldId;
+        var habitat = WorldSession.ActiveHabitat!;
+        var cover = PondSoftCover.Near(habitat.GetNode<PondFafHabitat>("PondFafEnvironment").Placements,
+            _nest, 18f);
         var basinDirection = (_bed.Basin.DeepCore - new Vector2(_nest.X, _nest.Z)).Normalized();
         var toward = new Vector3(basinDirection.X, 0f, basinDirection.Y);
-        for (var i = 0; i < 6; i++)
+        var side = new Vector3(-toward.Z, 0f, toward.X);
+        var adultCenter = _nest + toward * 4.7f + side * 1.5f + Vector3.Up * .72f;
+        var youngSchool = new BluegillSchool("pond-nursery", _nest + toward * 2.6f + Vector3.Up * .5f, .8f);
+        var adultSchool = new BluegillSchool("pond-shallow-adults", adultCenter, 2.4f);
+        var bassAdultLength = PondCreatureCatalog.Stage(PikeEncounterAssets.BassId, "adult")!.Dimensions[1];
+        for (var i = 0; i < 8; i++)
         {
-            var stage = i < 4 ? "larva" : "juvenile";
+            var stage = i < 4 ? "larva" : i < 6 ? "juvenile" : "adult";
+            var school = i < 6 ? youngSchool : adultSchool;
             if (!SpeciesCompatibility.TryResolvePondAsset(WorldCatalog.PondId,
                     PikeEncounterAssets.BluegillId, stage, SpeciesRole.Ecological,
                     out var asset, out var diagnostic) || asset is null)
                 throw new InvalidOperationException("POND_BASS_PREY_STAGE_UNAVAILABLE " + diagnostic);
-            var adult = PondCreatureCatalog.Stage(PikeEncounterAssets.BluegillId, "adult")
-                ?? throw new InvalidOperationException("POND_BLUEGILL_ADULT_UNAVAILABLE");
             var entry = new CharacterEntry(asset.Id, asset.Name, "Pond prey", "Registered Bluegill",
-                asset.ModelPath, 1f / adult.Dimensions[1], asset.FacingDegrees, 30f,
+                asset.ModelPath, 1f / bassAdultLength, asset.FacingDegrees, 30f,
                 asset.Clip("Glide"), asset.Clip("Swim"), asset.Clip("SwimFast"),
                 WorldHabitat.Freshwater, false, false, true, true);
             if (!CharacterCatalog.TryInstantiate(entry, out var model, out var animation, out diagnostic))
                 throw new InvalidOperationException("POND_BASS_PREY_MODEL_UNAVAILABLE " + diagnostic);
-            var side = new Vector3(-toward.Z, 0f, toward.X);
             var at = Vector3.Zero;
             var found = false;
             for (var attempt = 0; attempt < 40; attempt++)
             {
-                var angle = i * Mathf.Tau / 6f + attempt * 2.399f;
-                var candidate = _nest + toward * (2.2f + i % 3 * .7f + attempt * .12f) +
-                    side * Mathf.Sin(angle) * (1.1f + attempt * .045f);
+                var angle = i * Mathf.Tau / 8f + attempt * 2.399f;
+                var candidate = stage == "adult"
+                    ? adultCenter + toward * (attempt * .13f) +
+                        side * Mathf.Sin(angle) * (1.2f + attempt * .05f)
+                    : _nest + toward * (2.2f + i % 3 * .7f + attempt * .12f) +
+                        side * Mathf.Sin(angle) * (1.1f + attempt * .045f);
                 candidate.Y = _bed.GetHeightAt(candidate.X, candidate.Z) +
                     (stage == "larva" ? .38f : .65f);
                 if (candidate.Y > _fish.PondSurfaceHeightAt(candidate.X, candidate.Z) - .3f ||
-                    !ClearSphere(candidate, stage == "larva" ? .04f : .08f) ||
+                    !ClearSphere(candidate, stage == "larva" ? .04f : stage == "adult" ? .13f : .08f) ||
                     _prey.Any(existing => existing.GlobalPosition.DistanceTo(candidate) < .18f))
                     continue;
                 at = candidate;
@@ -252,13 +272,23 @@ public partial class PondBassSession : Node3D
             AddChild(body);
             body.GlobalPosition = at;
             body.AddChild(new CollisionShape3D { Name = "Collision",
-                Shape = new SphereShape3D { Radius = stage == "larva" ? .006f : .03f } });
+                Shape = new SphereShape3D { Radius = stage == "larva" ? .006f : stage == "adult" ? .12f : .03f } });
             body.AddChild(model!);
             model!.Name = "PreyVisual";
             model.Transform = entry.PresentationTransform;
             body.ConfigureHabitat(_bed.GetHeightAt, _fish.PondSurfaceHeightAt);
-            body.Configure(Array.Empty<SoftSightCover>(), animation!, entry.SwimClip, entry.FastClip);
+            var localCover = cover.OrderBy(plant => plant.VisibleBounds.GetCenter().DistanceSquaredTo(at))
+                .Take(128).ToArray();
+            body.Configure(localCover, animation!, entry.SwimClip, entry.FastClip);
+            school.Add(body);
             _prey.Add(body);
+            _preySchools.Add(school);
+            _preySight.Add(new WorldSightSensor(GetWorld3D().DirectSpaceState, localCover,
+                body.GetRid(), _fish.GetRid(), range: stage == "adult" ? 3.2f : 7f,
+                acuity: stage == "adult" ? 3.2f : 1.7f));
+            _preyCues.Add(new MovementDisturbanceField(GetWorld3D().DirectSpaceState,
+                localCover, body.GetRid(), _fish.GetRid(), speedReference: .6f));
+            _threats.Add(new BluegillThreatMind());
         }
     }
 
@@ -435,8 +465,39 @@ public partial class PondBassSession : Node3D
         _gameSeconds += delta;
         _hatchSeconds += delta;
         _patches.Tick(_gameSeconds);
-        foreach (var prey in _prey)
-            prey.Tick(default, default, _gameSeconds, (float)delta, false);
+        var sightWater = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_fish.GlobalPosition.X, _fish.GlobalPosition.Z),
+            _turbidity.Sample, GetParent<Node3D>().GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Solar);
+        for (var i = 0; i < _prey.Count; i++)
+        {
+            var prey = _prey[i];
+            if (!prey.IsAlive) continue;
+            _preyCues[i].Step(_fish.GlobalPosition, _fish.Velocity,
+                _fish.PresentationEffort, _fish.PresentationAngularTurn,
+                delta, _fish.MotorStepCount, false);
+            var eligible = BluegillPredation.Eligible(prey.SpeciesId, prey.Stage, prey.Length,
+                PondGrowthState.SpeciesId, _growth.Stage, _growth.Length);
+            var sight = _preySight[i].Observe(prey.GlobalPosition - prey.GlobalBasis.Z * .08f,
+                -prey.GlobalBasis.Z,
+                new SightTarget(_fish.GlobalPosition, _growth.ColliderRadius, 1f),
+                sightWater, _gameSeconds, false);
+            var cue = _preyCues[i].Sense(prey.GlobalPosition, false);
+            var school = _preySchools[i].For(prey, _gameSeconds);
+            if (eligible)
+            {
+                _threats[i].Step(sight, cue, _gameSeconds, false);
+                prey.Tick(default, default, _gameSeconds, (float)delta, false,
+                    school, _threats[i].Destination);
+                if (_threats[i].StrikeReady && TryBluegillCatch(prey, _growth.Identity)) return;
+            }
+            else
+            {
+                _threats[i].Reset();
+                var flee = _growth.Stage != "egg" && _growth.Length > prey.Length * 1.2f;
+                prey.Tick(flee ? sight : default, flee ? cue : default,
+                    _gameSeconds, (float)delta, false, school);
+            }
+        }
         TryAutoFeed();
         TryAdvanceGrowth();
         _boost.Value = _fish.BoostEnergy * 100f;
@@ -642,6 +703,33 @@ public partial class PondBassSession : Node3D
         GD.Print($"P6_POND_CAUGHT identity={_growth.Identity} source={sourceId} seconds={_gameSeconds:F2}");
     }
 
+    internal bool TryBluegillCatch(PreyActor predator, string bassIdentity)
+    {
+        var index = _prey.IndexOf(predator);
+        if (index < 0 || _caught || _introActive || _failed || _transitioning || GetTree().Paused ||
+            bassIdentity != _growth.Identity || !predator.IsAlive ||
+            !_threats[index].StrikeReady ||
+            !BluegillPredation.Eligible(predator.SpeciesId, predator.Stage, predator.Length,
+                PondGrowthState.SpeciesId, _growth.Stage, _growth.Length) ||
+            predator.GetNode<CollisionShape3D>("Collision").Shape is not SphereShape3D) return false;
+        var mouth = predator.MouthPosition;
+        var collision = _fish.GetNode<CollisionShape3D>("Collision");
+        if (collision.Shape is not CapsuleShape3D capsule) return false;
+        var local = collision.ToLocal(mouth);
+        var spine = Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+            capsule.Height * .5f - capsule.Radius);
+        if (local.DistanceTo(new Vector3(0f, spine, 0f)) > capsule.Radius + .025f ||
+            (-predator.GlobalBasis.Z).Dot((_fish.GlobalPosition - predator.GlobalPosition).Normalized()) < .72f ||
+            !ClearPath(predator.GlobalPosition, mouth, predator.GetRid()) ||
+            !ClearPath(mouth, _fish.GlobalPosition, predator.GetRid())) return false;
+        _catchEvent = new PondCatchEvent(_growth.Identity + ":caught:" + predator.StableId,
+            _growth.Identity, predator.StableId, _gameSeconds, mouth);
+        GD.Print($"P6_BLUEGILL_CONTACT event={_catchEvent.Value.Id} predator={predator.StableId} " +
+            $"prey={_growth.Identity} mouth={mouth} bass={_fish.GlobalPosition}");
+        Catch(predator.StableId);
+        return true;
+    }
+
     public void Retry()
     {
         if (_transitioning) return;
@@ -666,3 +754,6 @@ public partial class PondBassSession : Node3D
         if (error != Error.Ok) GD.PushError($"P6_POND_RETURN_FAILED code={error}");
     }
 }
+
+public readonly record struct PondCatchEvent(string Id, string BassId, string PredatorId,
+    double GameSeconds, Vector3 ContactPosition);
