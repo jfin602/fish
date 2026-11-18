@@ -100,7 +100,9 @@ public partial class PreyActor : CharacterBody3D
             _coverGoal = ChooseCover(threat);
             _nextChoiceAt = seconds + 1.2;
         }
-        var goal = huntGoal ?? (_mind.Mode switch
+        var resting = SpeciesId == PikeEncounterAssets.BassId &&
+            _mind.Mode == PreyMode.Forage && (seconds + _foragePhase) % 12.0 < 3.0;
+        var goal = huntGoal ?? (resting ? _home : _mind.Mode switch
         {
             PreyMode.Flee or PreyMode.Alert => _coverGoal,
             PreyMode.Forage => ForagePoint(seconds),
@@ -123,6 +125,7 @@ public partial class PreyActor : CharacterBody3D
             _ => sizeSpeed,
         };
         if (huntGoal is not null) desiredSpeed = sizeSpeed * 1.55f;
+        else if (resting) desiredSpeed = sizeSpeed * .35f;
         if (to.Length() < .15f && school.Direction.LengthSquared() < .001f) desiredSpeed = 0;
         var direct = to.LengthSquared() > .01f ? to.Normalized() : -GlobalBasis.Z;
         if (huntGoal is null && school.Direction.LengthSquared() > .001f &&

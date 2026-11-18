@@ -4,6 +4,8 @@ Read [AGENTS.md](AGENTS.md) first. This is a concise handoff; [the roadmap](docs
 
 ## Current handoff — 2026-11-18
 
+**P9 focused implementation:** The ordinary seed-5266 Pond now has three separate juvenile/subadult/adult Bass rivals with bounded movement, sensed size-eligible cannibalism and exactly-once catches. [P9 T2 evidence](docs/tasks/p6/qualification/p9-bass-rivals.md) records actor IDs, test outcomes and native V48 fairness limits. Assigned root `0.6.9` is uncommitted for runner checkpoint review; G6.5 is not GREEN. The Fish editor bridge is on `19080`; leave unrelated `9081` work alone. This supersedes “P9 not executed” in the earlier P8 handoff below.
+
 **P8 owner-green checkpoint:** The owner approved the `0.6.8` manual P8 checkpoint after the seed-5266 former Pike environment became the ordinary Bass Pond, frog and snake were integrated there, stone collision was repaired, and World Select was reduced to Ocean/Pond with direct entry. Ocean retains its default Yellow Tang. [P8 evidence and owner decision](docs/tasks/p6/qualification/p8-early-survival-native.md#owner-p8-checkpoint-decision--2026-11-18) preserve the earlier native failures, focused repair checks and still-unobserved V44–V47 details. P8 is green for progression; the later G6.8/V51 whole-life gate is not qualified. P9 has not been executed. Automatic runner resume needs the missing exact-subject P6/P7 checkpoint history reconciled first. Older seed-71/third-fixture/character-choice text below is historical and superseded for the active candidate.
 
 | Area | Actual state |

@@ -75,6 +75,26 @@ public sealed class FeedingLedger
         return new(true, "consumed", award);
     }
 
+    public FeedResult TryConsumeBass(FeedCandidate target, bool accessible, double gameSeconds)
+    {
+        if (string.IsNullOrWhiteSpace(target.Id) || _consumed.Contains(target.Id))
+            return new(false, "already consumed or invalid ID", 0);
+        if (!target.Alive) return new(false, "target is dead", 0);
+        if (target.Habitat != WorldCatalog.PondId || target.PlayerHabitat != target.Habitat)
+            return new(false, "incompatible habitat", 0);
+        if (!BassPredation.Eligible(PikeEncounterAssets.BassId, target.PlayerStage,
+                target.PlayerLength, target.SpeciesId, target.Stage, target.Length))
+            return new(false, "Bass prey is not eligible", 0);
+        if (!accessible) return new(false, "out of reach or blocked", 0);
+        if (!double.IsFinite(gameSeconds) || gameSeconds < 0)
+            return new(false, "invalid game time", 0);
+        var award = target.Stage == "juvenile" ? 6 : 2;
+        _consumed.Add(target.Id);
+        Nutrition += award;
+        _events.Add(new FeedEvent(target.Id, target.Stage, gameSeconds, award));
+        return new(true, "consumed", award);
+    }
+
     public FeedResult TryConsumeEggShell(string id, bool accessible, double gameSeconds)
     {
         if (string.IsNullOrWhiteSpace(id) || _consumed.Contains(id))

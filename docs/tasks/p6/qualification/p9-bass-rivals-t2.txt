@@ -1,0 +1,31 @@
+Godot Engine v4.7.2.stable.mono.official.ed1daf0bf - https://godotengine.org
+
+POND_FAF_READY assets=33 placements=1102 batches=23 triangles_est=216980
+WORLD_BAKED_LOAD_OK id=world-6c98f9e946b4ede8 seed=5266 content=f056c3216989617bb02565ee98a2bbf41d2a72373d11dc0c6a09703e417cd072 elapsed_ms=863 generator_invocations=0
+POND_SURFACE_READY vertices=16074 build_ms=11.81 single_mesh=1
+POND_TURBIDITY_READY seed=5266 texture=64x16x64 size=(148.57939, 15.158495, 129.24728) density_max=0.140 build_ms=18.16
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=26.0 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.222 upper_collision=disabled
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:juvenile:0 stage=juvenile at=(-16, 7.543156, 22) body=0.059/0.334 school=
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:subadult:1 stage=subadult at=(-10, 1.9608818, -1) body=0.144/0.708 school=
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:adult:2 stage=adult at=(-5, 1.3507216, -15) body=0.223/1.052 school=
+BASS_HATCH_BEGIN identity=pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 stage=egg nest=(-24, 9.290619, 26)
+PIKE_ENCOUNTER_READY player=FAF-FISH-007 identity=pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 stage=egg pike=FAF-FISH-010 prey=FAF-FISH-006 schools=4 prey_count=16 bass_rivals=3 world=pond cover=47 seed=5266 player_pos=(-24, 9.410619, 25.95) prey_pos=(-18.708946, 9.053909, 25.804111) larva_pos=(-18.688372, 8.995319, 25.492496)
+BASS_HATCH_COMPLETE identity=pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 stage=larva nutrition=0 position=(-24, 9.410619, 25.95)
+P6_BASS_RIVAL_ESCAPE prey=world-6c98f9e946b4ede8:bass-rival:juvenile:0 displacement=5.64 distance=4.94 memory=Patrol
+P6_BASS_RIVAL_NPC_FEED event=world-6c98f9e946b4ede8:bass-rival:adult:2:ate:world-6c98f9e946b4ede8:bass-rival:juvenile:0 predator=world-6c98f9e946b4ede8:bass-rival:adult:2 prey=world-6c98f9e946b4ede8:bass-rival:juvenile:0 nutrition=6
+P6_BASS_RIVAL_CONTACT event=world-6c98f9e946b4ede8:bass-rival:adult:2:ate:pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 predator=world-6c98f9e946b4ede8:bass-rival:adult:2 prey=pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 mouth=(-2.9102151, 1.3507124, -15.007939)
+PIKE_ENCOUNTER_OUTCOME outcome=caught seconds=0.00
+P6_BASS_RIVAL_CATCH_OK predator=world-6c98f9e946b4ede8:bass-rival:adult:2 prey=world-6c98f9e946b4ede8:bass-rival:juvenile:0 event=world-6c98f9e946b4ede8:bass-rival:adult:2:ate:world-6c98f9e946b4ede8:bass-rival:juvenile:0 player_event=world-6c98f9e946b4ede8:bass-rival:adult:2:ate:pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 samples=94
+POND_FAF_READY assets=33 placements=1102 batches=23 triangles_est=216980
+WORLD_BAKED_LOAD_OK id=world-6c98f9e946b4ede8 seed=5266 content=f056c3216989617bb02565ee98a2bbf41d2a72373d11dc0c6a09703e417cd072 elapsed_ms=729 generator_invocations=0
+POND_SURFACE_READY vertices=16074 build_ms=8.52 single_mesh=1
+POND_TURBIDITY_READY seed=5266 texture=64x16x64 size=(148.57939, 15.158495, 129.24728) density_max=0.140 build_ms=13.92
+FISH_ATMOSPHERE_READY method=forward_plus volumetric=0.024 visibility_base=35.0 visibility_end=26.0 surface=ready shafts=6 shaft_surfaces=1 caustics=1 motes=128 screen=ready
+POND_WATERLINE_READY water_y=10.390 radius=0.480 center_max=10.222 upper_collision=disabled
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:juvenile:0 stage=juvenile at=(-16, 7.543156, 22) body=0.059/0.334 school=
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:subadult:1 stage=subadult at=(-10, 1.9608818, -1) body=0.144/0.708 school=
+P6_BASS_RIVAL_SPAWN id=world-6c98f9e946b4ede8:bass-rival:adult:2 stage=adult at=(-5, 1.3507216, -15) body=0.223/1.052 school=
+BASS_HATCH_BEGIN identity=pond-world-6c98f9e946b4ede8:bass-life:b7bdba830afe4197bafc305de91a08c3 stage=egg nest=(-24, 9.290619, 26)
+PIKE_ENCOUNTER_READY player=FAF-FISH-007 identity=pond-world-6c98f9e946b4ede8:bass-life:b7bdba830afe4197bafc305de91a08c3 stage=egg pike=FAF-FISH-010 prey=FAF-FISH-006 schools=4 prey_count=16 bass_rivals=3 world=pond cover=47 seed=5266 player_pos=(-24, 9.410619, 25.95) prey_pos=(-18.708946, 9.053909, 25.804111) larva_pos=(-18.688372, 8.995319, 25.492496)
+P6_BASS_RIVALS_CHECK_OK seed=5266 actors=world-6c98f9e946b4ede8:bass-rival:juvenile:0,world-6c98f9e946b4ede8:bass-rival:subadult:1,world-6c98f9e946b4ede8:bass-rival:adult:2 old_life=pond-world-6c98f9e946b4ede8:bass-life:cec5c12bad2e4fe99f27a2d2b2b50546 new_life=pond-world-6c98f9e946b4ede8:bass-life:b7bdba830afe4197bafc305de91a08c3 event=world-6c98f9e946b4ede8:bass-rival:adult:2:ate:world-6c98f9e946b4ede8:bass-rival:juvenile:0 retry=clear

@@ -315,7 +315,7 @@ P6 develops the **ordinary Freshwater Pond** as the first complete Bass survival
 
 ### G6.5 — Solitary Bass competitors
 
-**Result: NOT OBSERVED.** V48.
+**Result: IMPLEMENTED / T2 CANDIDATE at `0.6.9`; NOT GREEN.** [P9 focused evidence](tasks/p6/qualification/p9-bass-rivals.md) records three independent FAF-FISH-007 rivals in the owner-approved seed-5266 Pond, physical NPC/player catches, juvenile motor escape, stage/diet/occlusion negatives, retry identity and bounded actor observations. V48 native encounter fairness, adult silhouette and frame pacing remain unobserved. Earlier route-dependent Bluegill threat and world-isolation checks fail at their pre-P8 menu assumptions; the current two-choice world-select check passes.
 
 - Deploy independent Bass NPCs of varied registered stages in realistic cover; larger Bass can opportunistically consume eligible smaller Bass, including the player, using fair shared sensing and actual mouth/contact.
 - Avoid Bass schools, endless aggro, magic target tracking, duplicate consumption and excessive population counts.
