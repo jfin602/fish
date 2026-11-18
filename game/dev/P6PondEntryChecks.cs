@@ -85,10 +85,12 @@ public static class P6PondEntryChecks
                 !PondBassSession.IsSelected(WorldCatalog.PondId, null) &&
                 main.GetNodeOrNull<PikeEncounter>("PikeEncounter") is null,
                 "Bass route or world isolation invalid");
-            Need(ambient.Population.Count == 11 &&
+            Need(ambient.Population.Count == 9 &&
                 ambient.Population.All(info => info.Id != PikeEncounterAssets.BluegillId) &&
-                ambient.Population.Any(info => info.Id == "FAF-CREATURE-001") &&
-                ambient.Population.Any(info => info.Id == "FAF-CREATURE-002") &&
+                ambient.Population.All(info => info.Id != PondFrogActor.SpeciesId) &&
+                ambient.Population.All(info => info.Id != PondSnakeActor.SpeciesId) &&
+                session.Frog.StableId == manifest!.WorldId + ":frog:shore:0" &&
+                session.Snake.StableId == manifest.WorldId + ":snake:shore:0" &&
                 session.PreyActors.Count == 8 && session.FoodActors.Count == PondFoodPatches.MaximumActors &&
                 session.PreyActors.All(prey => prey.SpeciesId == PikeEncounterAssets.BluegillId) &&
                 session.FoodActors.Select(food => food.StableId)

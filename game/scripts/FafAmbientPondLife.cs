@@ -111,7 +111,10 @@ public partial class FafAmbientPondLife : Node3D
             _animations.Add(animation);
             actor.Transform = GetPose(i, 0);
         }
-        GD.Print($"POND_AMBIENT_READY actors={_population.Count} creatures=3 insects=4 fish={_population.Count - 7}");
+        GD.Print($"POND_AMBIENT_READY actors={_population.Count} " +
+            $"creatures={_population.Count(a => a.Id.StartsWith("FAF-CREATURE-", StringComparison.Ordinal))} " +
+            $"insects={_population.Count(a => a.Id.StartsWith("FAF-INSECT-", StringComparison.Ordinal))} " +
+            $"fish={_population.Count(a => a.Id.StartsWith("FAF-FISH-", StringComparison.Ordinal))}");
     }
 
     private Vector2 Site(int index, bool fish)

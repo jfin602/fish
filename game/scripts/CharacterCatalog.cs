@@ -183,7 +183,8 @@ public static class SpeciesCompatibility
         { diagnostic = "SPECIES_WORLD_UNKNOWN action=choose-known-world"; return false; }
         if (world.Habitat != WorldHabitat.Freshwater || candidate.Habitat != WorldCatalog.PondId)
         { diagnostic = "SPECIES_HABITAT_INCOMPATIBLE action=choose-native-species"; return false; }
-        if (role != SpeciesRole.Ambient && !(stage is not null && role == SpeciesRole.Ecological))
+        if (role != SpeciesRole.Ambient && !(role == SpeciesRole.Ecological &&
+            (stage is not null || candidate.Id is PondFrogActor.SpeciesId or PondSnakeActor.SpeciesId)))
         { diagnostic = "SPECIES_ROLE_INELIGIBLE action=choose-eligible-species"; return false; }
         if (!Godot.FileAccess.FileExists(candidate.ModelPath) ||
             CharacterCatalog.ModelScene(candidate.ModelPath) is null)

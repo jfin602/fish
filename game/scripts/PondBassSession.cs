@@ -20,6 +20,11 @@ public partial class PondBassSession : Node3D
     private readonly List<WorldSightSensor> _preySight = new();
     private readonly List<MovementDisturbanceField> _preyCues = new();
     private readonly List<BluegillThreatMind> _threats = new();
+    private readonly HashSet<string> _frogConsumed = new(StringComparer.Ordinal);
+    private readonly HashSet<string> _snakeConsumed = new(StringComparer.Ordinal);
+    private readonly List<PondNpcCatchEvent> _npcCatchEvents = new();
+    private PondFrogActor _frog = null!;
+    private PondSnakeActor _snake = null!;
     private PondTurbidityField _turbidity = null!;
     private PondCatchEvent? _catchEvent;
     private PondGrowthState _growth = null!;
@@ -76,6 +81,9 @@ public partial class PondBassSession : Node3D
     public IReadOnlyList<PreyActor> PreyActors => _prey;
     public IReadOnlyList<BluegillSchool> BluegillSchools => _preySchools.Distinct().ToArray();
     internal IReadOnlyList<BluegillThreatMind> BluegillThreats => _threats;
+    public PondFrogActor Frog => _frog;
+    public PondSnakeActor Snake => _snake;
+    public IReadOnlyList<PondNpcCatchEvent> NpcCatchEvents => _npcCatchEvents;
     public PondCatchEvent? CatchEvent => _catchEvent;
     public bool IntroActive => _introActive;
     public bool Caught => _caught;
@@ -88,10 +96,39 @@ public partial class PondBassSession : Node3D
     internal void SetHatchSecondsForCheck(double seconds)
     {
         if (!OS.GetCmdlineUserArgs().Any(arg => arg is "--p6-pond-entry-check" or
-            "--p6-food-check" or "--p6-bluegill-threat-check"))
+            "--p6-food-check" or "--p6-bluegill-threat-check" or "--p6-frog-check" or
+            "--p6-snake-check"))
             throw new InvalidOperationException("P6_POND_CHECK_CLOCK_FORBIDDEN");
         _hatchSeconds = seconds;
         _gameSeconds = seconds;
+    }
+
+    internal void TickFrogForCheck(double seconds, float delta)
+    {
+        if (!OS.GetCmdlineUserArgs().Contains("--p6-frog-check"))
+            throw new InvalidOperationException("P6_FROG_CHECK_CLOCK_FORBIDDEN");
+        if (GetTree().Paused) return;
+        _gameSeconds = seconds;
+        _hatchSeconds = seconds;
+        var atmosphere = GetParent<Main>().GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere");
+        var environment = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_frog.GlobalPosition.X, _frog.GlobalPosition.Z),
+            _turbidity.Sample, atmosphere.Solar);
+        _frog.Tick(FrogTargets(), environment, seconds, delta, CommitFrogCatch);
+    }
+
+    internal void TickSnakeForCheck(double seconds, float delta)
+    {
+        if (!OS.GetCmdlineUserArgs().Contains("--p6-snake-check"))
+            throw new InvalidOperationException("P6_SNAKE_CHECK_CLOCK_FORBIDDEN");
+        if (GetTree().Paused) return;
+        _gameSeconds = seconds;
+        _hatchSeconds = seconds;
+        var atmosphere = GetParent<Main>().GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere");
+        var environment = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_snake.GlobalPosition.X, _snake.GlobalPosition.Z),
+            _turbidity.Sample, atmosphere.Solar);
+        _snake.Tick(SnakeTargets(), environment, seconds, delta, CommitSnakeCatch);
     }
 
     internal void AdvanceFoodForCheck(double seconds)
@@ -143,6 +180,12 @@ public partial class PondBassSession : Node3D
             AddFood();
             _turbidity = new PondTurbidityField(_bed.Basin, _fish.PondWaterlineHeight);
             AddPrey();
+            _frog = PondFrogActor.Create(this, _bed, _fish.PondSurfaceHeightAt,
+                manifest.WorldId, _nest,
+                WorldSession.ActiveHabitat!.GetNode<PondFafHabitat>("PondFafEnvironment").Placements);
+            _snake = PondSnakeActor.Create(this, _bed, _fish.PondSurfaceHeightAt,
+                manifest.WorldId, _nest,
+                WorldSession.ActiveHabitat!.GetNode<PondFafHabitat>("PondFafEnvironment").Placements);
             StartIntro();
             GD.Print($"P6_POND_BASS_READY world={manifest.WorldId} seed={manifest.Seed} " +
                 $"identity={_growth.Identity} stage={_growth.Stage} nest={_nest} " +
@@ -468,6 +511,16 @@ public partial class PondBassSession : Node3D
         var sightWater = new SightEnvironment(WorldEnvironmentProfile.Pond,
             _fish.PondSurfaceHeightAt(_fish.GlobalPosition.X, _fish.GlobalPosition.Z),
             _turbidity.Sample, GetParent<Node3D>().GetNode<UnderwaterAtmosphere>("UnderwaterAtmosphere").Solar);
+        var frogWater = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_frog.GlobalPosition.X, _frog.GlobalPosition.Z),
+            _turbidity.Sample, sightWater.Solar);
+        _frog.Tick(FrogTargets(), frogWater, _gameSeconds, (float)delta, CommitFrogCatch);
+        if (_caught) return;
+        var snakeWater = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_snake.GlobalPosition.X, _snake.GlobalPosition.Z),
+            _turbidity.Sample, sightWater.Solar);
+        _snake.Tick(SnakeTargets(), snakeWater, _gameSeconds, (float)delta, CommitSnakeCatch);
+        if (_caught) return;
         for (var i = 0; i < _prey.Count; i++)
         {
             var prey = _prey[i];
@@ -506,6 +559,91 @@ public partial class PondBassSession : Node3D
             (_growthBlocked ? " · grow in open water" : "") +
             (_gameSeconds < _feedbackUntil ? " · " + _feedback : "") +
             " · mouth contact: feed · Hold Space: boost · Esc: options";
+    }
+
+    private PondFrogTarget[] FrogTargets()
+    {
+        var targets = new List<PondFrogTarget>(_prey.Count + 1);
+        if (_growth.Stage != "egg")
+            targets.Add(new PondFrogTarget(_growth.Identity, PondGrowthState.SpeciesId,
+                _growth.Stage, _growth.Length, _fish.GlobalPosition, _growth.ColliderRadius,
+                _fish.GetRid(), !_caught, true));
+        foreach (var prey in _prey)
+        {
+            if (prey.GetNode<CollisionShape3D>("Collision").Shape is not SphereShape3D sphere)
+                continue;
+            targets.Add(new PondFrogTarget(prey.StableId, prey.SpeciesId, prey.Stage,
+                prey.Length, prey.GlobalPosition, sphere.Radius, prey.GetRid(), prey.IsAlive, false));
+        }
+        return targets.ToArray();
+    }
+
+    private PondSnakeTarget[] SnakeTargets() => FrogTargets()
+        .Select(t => new PondSnakeTarget(t.Id, t.SpeciesId, t.Stage, t.Length,
+            t.Position, t.Radius, t.BodyRid, t.Alive, t.Player)).ToArray();
+
+    private bool CommitSnakeCatch(PondSnakeTarget target, Vector3 mouth)
+    {
+        if (_caught || _introActive || _failed || _transitioning || GetTree().Paused ||
+            !_snake.CanContact(target) || !PondSnakeActor.Eligible(target)) return false;
+        if (target.Player)
+        {
+            if (target.Id != _growth.Identity || target.BodyRid != _fish.GetRid() ||
+                _fish.GetNode<CollisionShape3D>("Collision").Shape is not CapsuleShape3D capsule)
+                return false;
+            var local = _fish.GetNode<CollisionShape3D>("Collision").ToLocal(mouth);
+            var spine = Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+                capsule.Height * .5f - capsule.Radius);
+            if (local.DistanceTo(new Vector3(0, spine, 0)) > capsule.Radius + .075f)
+                return false;
+            _catchEvent = new PondCatchEvent(_growth.Identity + ":caught:" + _snake.StableId,
+                _growth.Identity, _snake.StableId, _gameSeconds, mouth);
+            GD.Print($"P6_SNAKE_CONTACT event={_catchEvent.Value.Id} predator={_snake.StableId} " +
+                $"prey={target.Id} mouth={mouth}");
+            Catch(_snake.StableId);
+            return true;
+        }
+        var prey = _prey.FirstOrDefault(p => p.StableId == target.Id);
+        if (prey is null || !prey.IsAlive || prey.GetRid() != target.BodyRid ||
+            !_snakeConsumed.Add(target.Id)) return false;
+        prey.Consume();
+        var eventId = _snake.StableId + ":ate:" + prey.StableId;
+        _npcCatchEvents.Add(new PondNpcCatchEvent(eventId, _snake.StableId,
+            prey.StableId, _gameSeconds, mouth));
+        GD.Print($"P6_SNAKE_NPC_FEED event={eventId} predator={_snake.StableId} prey={prey.StableId}");
+        return true;
+    }
+
+    private bool CommitFrogCatch(PondFrogTarget target, Vector3 mouth)
+    {
+        if (_caught || _introActive || _failed || _transitioning || GetTree().Paused ||
+            !_frog.CanContact(target) || !PondFrogActor.Eligible(target)) return false;
+        if (target.Player)
+        {
+            if (target.Id != _growth.Identity || target.BodyRid != _fish.GetRid() ||
+                _fish.GetNode<CollisionShape3D>("Collision").Shape is not CapsuleShape3D capsule)
+                return false;
+            var local = _fish.GetNode<CollisionShape3D>("Collision").ToLocal(mouth);
+            var spine = Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+                capsule.Height * .5f - capsule.Radius);
+            if (local.DistanceTo(new Vector3(0, spine, 0)) > capsule.Radius + .085f)
+                return false;
+            _catchEvent = new PondCatchEvent(_growth.Identity + ":caught:" + _frog.StableId,
+                _growth.Identity, _frog.StableId, _gameSeconds, mouth);
+            GD.Print($"P6_FROG_CONTACT event={_catchEvent.Value.Id} predator={_frog.StableId} " +
+                $"prey={target.Id} mouth={mouth}");
+            Catch(_frog.StableId);
+            return true;
+        }
+        var prey = _prey.FirstOrDefault(p => p.StableId == target.Id);
+        if (prey is null || !prey.IsAlive || prey.GetRid() != target.BodyRid ||
+            !_frogConsumed.Add(target.Id)) return false;
+        prey.Consume();
+        var eventId = _frog.StableId + ":ate:" + prey.StableId;
+        _npcCatchEvents.Add(new PondNpcCatchEvent(eventId, _frog.StableId,
+            prey.StableId, _gameSeconds, mouth));
+        GD.Print($"P6_FROG_NPC_FEED event={eventId} predator={_frog.StableId} prey={prey.StableId}");
+        return true;
     }
 
     public FeedResult TryAutoFeed()
@@ -756,4 +894,7 @@ public partial class PondBassSession : Node3D
 }
 
 public readonly record struct PondCatchEvent(string Id, string BassId, string PredatorId,
+    double GameSeconds, Vector3 ContactPosition);
+
+public readonly record struct PondNpcCatchEvent(string Id, string PredatorId, string PreyId,
     double GameSeconds, Vector3 ContactPosition);

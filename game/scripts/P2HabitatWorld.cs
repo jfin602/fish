@@ -50,7 +50,8 @@ public static class P2HabitatWorld
                 if (WorldSession.SelectedWorldId == WorldCatalog.PondId)
                     FafAmbientPondLife.Install(bakedHabitat,
                         PondBassSession.IsSelected(WorldSession.SelectedWorldId, DemoSelection.CharacterId)
-                            ? new[] { PikeEncounterAssets.BluegillId } : Array.Empty<string>());
+                            ? new[] { PikeEncounterAssets.BluegillId, PondFrogActor.SpeciesId,
+                                PondSnakeActor.SpeciesId } : Array.Empty<string>());
                 if (manifest.GeneratorVersion != "c3-full-1")
                     fish.ConfigureWorldBounds(GeneratedBasin.HalfExtent - 1f, -40f, 9f);
                 if (WorldSession.SelectedWorldId == WorldCatalog.PondId)

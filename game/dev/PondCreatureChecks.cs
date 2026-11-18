@@ -105,8 +105,10 @@ public static class PondCreatureChecks
                     var session = world.GetNodeOrNull<PondBassSession>("PondBassSession");
                     Require(session is not null && session.IntroActive &&
                         session.Growth.Stage == "egg" && !fish.Visible &&
-                        ambient is not null && ambient.Population.Count == 11 &&
-                        ambient.Population.All(a => a.Id != PikeEncounterAssets.BluegillId),
+                        ambient is not null && ambient.Population.Count == 9 &&
+                        ambient.Population.All(a => a.Id != PikeEncounterAssets.BluegillId &&
+                            a.Id != PondFrogActor.SpeciesId && a.Id != PondSnakeActor.SpeciesId) &&
+                        session.Frog.StableId.EndsWith(":frog:shore:0", StringComparison.Ordinal),
                         "normal Pond Bass did not enter its egg session");
                     session!.SkipIntro();
                     for (var frame = 0; frame < 300 && session.IntroActive; frame++)
@@ -116,7 +118,7 @@ public static class PondCreatureChecks
                         "normal Pond Bass did not hatch to fitted larva");
                     world.Free();
                     WorldSession.Unload();
-                    GD.Print($"POND_CHARACTER_OK id={entry.Id} stage=larva ambient=11 route=survival");
+                    GD.Print($"POND_CHARACTER_OK id={entry.Id} stage=larva ambient=9 route=survival");
                     continue;
                 }
                 Require(visual is not null && ambient is not null &&
@@ -180,7 +182,7 @@ public static class PondCreatureChecks
             Require(SpeciesCompatibility.Available(WorldCatalog.OceanId, SpeciesRole.Selectable).Count == 5 &&
                 SpeciesCompatibility.Available(WorldCatalog.PondId, SpeciesRole.Selectable).Count == 5,
                 "cross-world selection census");
-            GD.Print("POND_CREATURE_CHECK_OK fish=5 stages=25 creatures=3 insects=4 ambient=12-demo,11-bass");
+            GD.Print("POND_CREATURE_CHECK_OK fish=5 stages=25 creatures=3 insects=4 ambient=12-demo,9-bass");
             tree.Quit();
         }
         catch (Exception error)
