@@ -126,7 +126,7 @@ public partial class WorldSelect : Control
         Size = GetViewport().GetVisibleRect().Size;
         if (_grid is not null)
         {
-            _grid.Columns = Size.X < 900 ? 1 : 3;
+            _grid.Columns = Size.X < 900 ? 1 : 2;
             foreach (var card in _cards)
                 if (card is not null) card.CustomMinimumSize = new Vector2(250, Size.X < 900 ? 135 : 240);
         }
@@ -147,12 +147,12 @@ public partial class WorldSelect : Control
         column.AddThemeConstantOverride("separation", 18);
         margin.AddChild(column);
         column.AddChild(Text("FISH  /  WORLD SELECT", 32, Colors.White));
-        column.AddChild(Text("Choose a world or development encounter", 19, new Color(.67f, .86f, .85f)));
+        column.AddChild(Text("Choose a world", 19, new Color(.67f, .86f, .85f)));
 
         var scroll = new ScrollContainer { Name = "WorldCardsScroll",
             SizeFlagsVertical = SizeFlags.ExpandFill, HorizontalScrollMode = ScrollContainer.ScrollMode.Disabled };
         column.AddChild(scroll);
-        _grid = new GridContainer { Name = "WorldCards", Columns = Size.X < 900 ? 1 : 3,
+        _grid = new GridContainer { Name = "WorldCards", Columns = Size.X < 900 ? 1 : 2,
             SizeFlagsHorizontal = SizeFlags.ExpandFill };
         _grid.AddThemeConstantOverride("h_separation", 18);
         _grid.AddThemeConstantOverride("v_separation", 18);
@@ -209,8 +209,8 @@ public partial class WorldSelect : Control
             var destination = WorldDestinations.All[i];
             _cards[i].Text = (i == index ? "✓ SELECTED\n\n" : "  SELECT\n\n") +
                 destination.DisplayName + "\n\n" + destination.Description +
-                (destination.WorldId is null ? "\n\nBass player · no Character Select" :
-                    "\n\nPreview art pending" + (WorldCatalog.Resolve(destination.WorldId).Bake is null ? "\nWorld bake pending" : ""));
+                (destination.WorldId == WorldCatalog.PondId ? "\n\nBass survival" :
+                    "\n\nYellow Tang");
         }
     }
 
@@ -230,7 +230,7 @@ public partial class WorldSelect : Control
         var destination = WorldDestinations.All[_selected];
         try
         {
-            if (destination.IsEncounter)
+            if (destination.WorldId == WorldCatalog.PondId)
             {
                 if (!PikeEncounterAssets.TryValidate(out _, out _, out var diagnostic,
                     scenePath: EncounterScenePath, catalog: EncounterCatalog))
@@ -238,19 +238,20 @@ public partial class WorldSelect : Control
                 GetTree().Paused = false;
                 Input.MouseMode = Input.MouseModeEnum.Visible;
                 DemoSelection.Clear();
-                WorldSession.Unload();
+                WorldSession.Select(WorldCatalog.PondId);
+                WorldCatalog.VerifyInstalledManifest(WorldCatalog.Resolve(WorldCatalog.PondId));
                 var error = GetTree().ChangeSceneToFile(EncounterScenePath);
-                if (error != Error.Ok) throw new InvalidDataException($"PIKE_SCENE_LOAD_FAILED code={error}");
+                if (error != Error.Ok) throw new InvalidDataException($"POND_SCENE_LOAD_FAILED code={error}");
                 return;
             }
             var world = WorldCatalog.Resolve(destination.WorldId);
             WorldSession.Select(world.Id);
             WorldCatalog.VerifyInstalledManifest(world);
             world.LoadHabitatScene();
-            DemoSelection.Clear();
+            DemoSelection.CharacterId = CharacterCatalog.Default.Id;
             Input.MouseMode = Input.MouseModeEnum.Visible;
-            if (GetTree().ChangeSceneToFile("res://scenes/character_select.tscn") != Error.Ok)
-                throw new InvalidDataException("CHARACTER_SCENE_LOAD_FAILED action=restore-character-select");
+            if (GetTree().ChangeSceneToFile("res://scenes/main.tscn") != Error.Ok)
+                throw new InvalidDataException("OCEAN_SCENE_LOAD_FAILED action=restore-ocean-scene");
         }
         catch (Exception error)
         {

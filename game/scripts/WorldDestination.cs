@@ -4,22 +4,18 @@ using System.Collections.Generic;
 
 namespace Fish;
 
-/// <summary>Menu routes are distinct from the two persistent habitat identities.</summary>
+/// <summary>The two playable habitat choices.</summary>
 public sealed record WorldDestination(string Id, string DisplayName, string Description,
-    Color Accent, string? WorldId = null)
-{
-    public bool IsEncounter => WorldId is null;
-}
+    Color Accent, string WorldId);
 
 public static class WorldDestinations
 {
+    // Retained for historical P5 check metadata; this is no longer a menu destination.
     public const string PikeId = "pike-encounter";
     public static IReadOnlyList<WorldDestination> All { get; } = new[]
     {
         FromWorld(WorldCatalog.Resolve(WorldCatalog.OceanId)),
         FromWorld(WorldCatalog.Resolve(WorldCatalog.PondId)),
-        new WorldDestination(PikeId, "Pike Encounter", "Bass, Bluegill prey and Northern Pike · isolated development encounter",
-            new Color(.38f, .48f, .22f)),
     };
 
     private static WorldDestination FromWorld(WorldDefinition world) =>

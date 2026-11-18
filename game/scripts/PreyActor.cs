@@ -162,8 +162,7 @@ public partial class PreyActor : CharacterBody3D
         var angle = (float)(seconds * .48) + _foragePhase;
         var target = _home + new Vector3(Mathf.Cos(angle) * .72f,
             Mathf.Sin(angle * .7f) * .12f, Mathf.Sin(angle) * .72f);
-        target.Y = Mathf.Clamp(target.Y,
-            _bed(target.X, target.Z) + .32f, _water(target.X, target.Z) - .35f);
+        target.Y = SafeSwimHeight(target);
         return target;
     }
 
@@ -180,8 +179,9 @@ public partial class PreyActor : CharacterBody3D
                 plant.FafId.StartsWith("FAF-PLANT-010", StringComparison.Ordinal) ? 1f : .3f;
             var box = plant.VisibleBounds;
             var center = box.GetCenter();
-            center.Y = Mathf.Clamp(center.Y, _bed(center.X, center.Z) + .32f,
-                _water(center.X, center.Z) - .35f);
+            if (_water(center.X, center.Z) - _bed(center.X, center.Z) < .67f)
+                continue;
+            center.Y = SafeSwimHeight(center);
             var delta = center - GlobalPosition;
             var distance = delta.Length();
             if (distance < .5f || distance > 14f ||
@@ -193,9 +193,15 @@ public partial class PreyActor : CharacterBody3D
             best = score;
             chosen = center;
         }
-        chosen.Y = Mathf.Clamp(chosen.Y,
-            _bed(chosen.X, chosen.Z) + .32f, _water(chosen.X, chosen.Z) - .35f);
+        chosen.Y = SafeSwimHeight(chosen);
         return chosen;
+    }
+
+    private float SafeSwimHeight(Vector3 point)
+    {
+        var low = _bed(point.X, point.Z) + .32f;
+        var high = _water(point.X, point.Z) - .35f;
+        return low <= high ? Mathf.Clamp(point.Y, low, high) : GlobalPosition.Y;
     }
 
     private Vector3? ClearDirection(Vector3 direct)

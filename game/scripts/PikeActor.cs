@@ -63,9 +63,7 @@ public partial class PikeActor : CharacterBody3D
         var side = forward.Cross(Vector3.Up).Normalized();
         // Veer away from the held catch view, leaving the contact cloud in frame.
         _afterCatchGoal = GlobalPosition + side * 10f + forward * 3f;
-        _afterCatchGoal.Y = Mathf.Clamp(_afterCatchGoal.Y,
-            PikeCoverFixture.Bed(_afterCatchGoal.X, _afterCatchGoal.Z) + 1.7f,
-            PikeCoverFixture.WaterY - 1f);
+        _afterCatchGoal = SubmergedGoal(_afterCatchGoal, 1.7f);
         LastSteeringTarget = _afterCatchGoal;
     }
 
@@ -105,11 +103,11 @@ public partial class PikeActor : CharacterBody3D
         var goal = _mind.Destination(seconds, _patrolOrigin);
         // Keep the body submerged and above the continuous mud bed. This is a
         // movement constraint, never a perception shortcut.
-        goal.Y = Mathf.Clamp(goal.Y, PikeCoverFixture.Bed(goal.X, goal.Z) + 1.5f,
-            PikeCoverFixture.WaterY - 1.0f);
+        goal = SubmergedGoal(goal, 1.5f);
         // Follow the rising bed before descending toward a deeper search point.
-        goal.Y = Mathf.Max(goal.Y,
-            PikeCoverFixture.Bed(GlobalPosition.X, GlobalPosition.Z) + 1.7f);
+        goal.Y = Mathf.Min(PikeCoverFixture.WaterY - 1f,
+            Mathf.Max(goal.Y,
+                PikeCoverFixture.Bed(GlobalPosition.X, GlobalPosition.Z) + 1.7f));
         LastSteeringTarget = goal;
         var to = goal - GlobalPosition;
         if (to.Length() < .7f)
@@ -134,6 +132,21 @@ public partial class PikeActor : CharacterBody3D
         MoveAndSlide();
         // Physics contact, including wood and bed, is authoritative. No direct position writes.
         _speed = Mathf.Min(_speed, Velocity.Length() + .5f);
+    }
+
+    private Vector3 SubmergedGoal(Vector3 requested, float bedClearance)
+    {
+        var upper = PikeCoverFixture.WaterY - 1f;
+        // A large Pike cannot enter the shore's shallow water column. Keep its
+        // pursuit physical by steering back toward deep patrol water.
+        var goal = requested;
+        if (PikeCoverFixture.Bed(goal.X, goal.Z) + bedClearance > upper)
+            goal = _patrolOrigin;
+        var lower = PikeCoverFixture.Bed(goal.X, goal.Z) + bedClearance;
+        if (lower > upper)
+            throw new InvalidOperationException("PIKE_PATROL_DEPTH_INVALID");
+        goal.Y = Mathf.Clamp(goal.Y, lower, upper);
+        return goal;
     }
 
     private Vector3 ClearDirection(Vector3 direct)

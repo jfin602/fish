@@ -70,6 +70,8 @@ public partial class PondFrogActor : CharacterBody3D
             Shape = new CapsuleShape3D { Radius = .07f, Height = .24f } });
         frog.AddChild(rig);
         rig.Name = "Rig";
+        // The imported frog faces +Z while the motor and mouth use local -Z.
+        rig.Rotation = new Vector3(0, Mathf.Pi, 0);
         frog._route = BuildRoute(bed, water, nursery);
         frog._cover = PondSoftCover.Near(placements, frog._route[1], 8f)
             .OrderBy(p => p.VisibleBounds.GetCenter().DistanceSquaredTo(frog._route[1]))

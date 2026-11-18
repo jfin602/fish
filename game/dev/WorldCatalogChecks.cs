@@ -27,9 +27,10 @@ public static class WorldCatalogChecks
             throw new InvalidDataException("Accepted Ocean identity changed");
         Reject(() => WorldCatalog.Resolve("lake"), "unknown ID");
         var pondManifest = WorldCatalog.VerifyInstalledManifest(pond);
-        if (pondManifest.WorldId != "world-5e3b4fee759acbe3" ||
+        if (pondManifest.WorldId != "world-6c98f9e946b4ede8" ||
+            pondManifest.Seed != PikeCoverFixture.Seed ||
             pondManifest.GeneratorVersion != FullWorldPackage.PondGeneratorVersion ||
-            pondManifest.ContentSha256 != "d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347")
+            pondManifest.ContentSha256 != "f056c3216989617bb02565ee98a2bbf41d2a72373d11dc0c6a09703e417cd072")
             throw new InvalidDataException("Installed Pond identity changed");
         WorldSession.Select(WorldCatalog.PondId);
         var pondHabitat = pond.LoadHabitatScene().Instantiate<Node3D>();

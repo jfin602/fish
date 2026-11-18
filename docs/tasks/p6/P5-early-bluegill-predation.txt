@@ -3,8 +3,7 @@ TASK: Phase 6 / P5 — Adult Bluegill threat in shallow survival
 MODEL / REASONING / USAGE
 - Recommended configuration: `GPT-6 Sol High`.
 - Browser required: no.
-- At start project version should be `0.6.4`.
-- Increment version when green to `0.6.5`
+- This prompt's assigned project version is `0.6.5`.
 
 GOAL
 Give tiny Bass an explainable predator at the first feeding stage, without making every Bluegill a permanently omniscient attacker.

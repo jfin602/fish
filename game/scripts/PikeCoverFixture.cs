@@ -184,9 +184,10 @@ public static class PikeCoverFixture
             ?? throw new InvalidDataException("Pond habitat scene missing");
         habitat.Name = "Habitat";
         scene.AddChild(habitat);
-        var loaded = FullWorldPackage.Load(WorldPath, habitat, WorldCatalog.PondId);
-        if (loaded.Manifest.Seed != Seed || loaded.Manifest.GeneratorVersion != FullWorldPackage.PondGeneratorVersion)
+        var manifest = WorldCatalog.Load(WorldCatalog.PondId, habitat);
+        if (manifest.Seed != Seed || manifest.GeneratorVersion != FullWorldPackage.PondGeneratorVersion)
             throw new InvalidDataException("Pike fixture Pond generation identity mismatch");
+        WorldSession.Bind(habitat, manifest);
         // The encounter's ten new wood families own its hard-cover gaps. Keep
         // generated Pond foliage, shore dressing and terrain, but remove the
         // ordinary Pond's older wood wrappers so they cannot fill those gaps.

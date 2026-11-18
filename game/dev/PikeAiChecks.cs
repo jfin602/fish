@@ -346,6 +346,12 @@ public static class PikeAiChecks
             actor.Tick(strong, default, 0, step, false);
             Need(actor.GlobalPosition.DistanceTo(start) <= .11f && actor.ActualSpeed <= .11f,
                 "Pike moved faster than acceleration/turn bound");
+            actor.Tick(strong with { SensedPosition = new Vector3(-24, 9.4f, 26), SensedAt = .1 },
+                default, .1, step, false);
+            var shoreGoal = actor.LastSteeringTarget;
+            Need(PikeCoverFixture.Bed(shoreGoal.X, shoreGoal.Z) + 1.5f <=
+                PikeCoverFixture.WaterY - 1f,
+                "Pike pursued into an impossible shallow water column");
             var pausedPosition = actor.GlobalPosition;
             var pausedMemory = actor.Mind.LastSensedPosition;
             actor.Tick(strong with { SensedPosition = new Vector3(50, 1, 50), SensedAt = 1 },

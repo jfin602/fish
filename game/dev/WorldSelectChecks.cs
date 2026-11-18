@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Fish;
 
-/// <summary>Focused P4 menu and scene-lifecycle integration check.</summary>
+/// <summary>Current two-world menu and direct-play lifecycle check.</summary>
 public static class WorldSelectChecks
 {
     public static async void Run(WorldSelect initial)
@@ -14,98 +14,56 @@ public static class WorldSelectChecks
         var tree = initial.GetTree();
         try
         {
-            Require(tree.CurrentScene == initial && !tree.Paused &&
-                Input.MouseMode == Input.MouseModeEnum.Visible, "startup did not open world selection");
-            var ocean = FindButton(initial, "World_ocean");
-            var pond = FindButton(initial, "World_pond");
-            var choose = FindButton(initial, "ChooseWorldButton");
+            Require(WorldDestinations.All.Count == 2 && WorldCatalog.All.Count == 2,
+                "world choice count");
+            Require(initial.FindChild("World_pike-encounter", true, false) is null &&
+                initial.FindChild("CharacterSelect", true, false) is null,
+                "obsolete menu choice appeared");
+            var ocean = Button(initial, "World_ocean");
+            var pond = Button(initial, "World_pond");
             Require(ocean.Text.Contains("Ocean") && pond.Text.Contains("Freshwater Pond") &&
-                pond.Text.Contains("Preview art pending") && ocean.Text.Contains("SELECTED"), "cards or preview state");
-            initial._Input(KeyEvent(Key.Right));
-            Require(pond.Text.Contains("SELECTED"), "keyboard world browsing");
-            ocean.EmitSignal(Control.SignalName.MouseEntered);
-            Require(ocean.Text.Contains("SELECTED"), "pointer world browsing");
-            pond.GrabFocus();
-            Require(pond.HasFocus() && pond.Text.Contains("SELECTED"), "pointer/keyboard focus state");
-            choose.EmitSignal(Button.SignalName.Pressed);
+                ocean.Text.Contains("SELECTED"), "world cards");
+            initial._Input(new InputEventKey { Keycode = Key.Right, Pressed = true });
+            Require(pond.Text.Contains("SELECTED"), "keyboard Pond selection");
+            Button(initial, "ChooseWorldButton").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
-            var pondCharacters = tree.CurrentScene as CharacterSelect;
-            Require(pondCharacters is not null && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
-                Enumerable.Range(0, 5).All(index =>
-                    pondCharacters.FindChild($"Character_{index}", true, false) is Button) &&
-                pondCharacters.FindChild("EnterWorldButton", true, false) is Button { Disabled: false },
-                "Pond should offer five native fish after P8");
-            FindButton(pondCharacters!, "BackToWorldButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            initial = tree.CurrentScene as WorldSelect ?? throw new Exception("Pond Back did not return to World Select");
-            ocean = FindButton(initial, "World_ocean");
-            choose = FindButton(initial, "ChooseWorldButton");
-            try { WorldSession.Select("not-a-world"); throw new Exception("unknown world accepted"); }
-            catch (InvalidDataException) { }
-            Require(WorldSession.SelectedWorldId == WorldCatalog.PondId, "invalid world changed session");
-
-            ocean.EmitSignal(Button.SignalName.Pressed);
-            choose.EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            var characters = tree.CurrentScene as CharacterSelect;
-            Require(characters is not null && !GodotObject.IsInstanceValid(initial) &&
-                WorldSession.SelectedWorldId == WorldCatalog.OceanId &&
-                Input.MouseMode == Input.MouseModeEnum.Visible, "Ocean did not enter character selection");
-            FindButton(characters!, "BackToWorldButton").EmitSignal(Button.SignalName.Pressed);
+            var pondScene = tree.CurrentScene as PikeEncounter;
+            var bake = WorldCatalog.Resolve(WorldCatalog.PondId).Bake!;
+            Require(pondScene is not null && WorldSession.SelectedWorldId == WorldCatalog.PondId &&
+                WorldSession.ActiveManifest?.WorldId == bake.WorldId &&
+                WorldSession.ActiveManifest.Seed == PikeCoverFixture.Seed &&
+                WorldSession.ActiveHabitat == pondScene.GetNode<Node3D>("Habitat") &&
+                DemoSelection.CharacterId == PikeEncounterAssets.BassId &&
+                pondScene.Frog is not null && pondScene.Snake is not null &&
+                pondScene.FoodActors.Count == PondFoodPatches.MaximumActors &&
+                pondScene.PreyActors.Count == 16 &&
+                pondScene.GetNodeOrNull<UnderwaterAtmosphere>("UnderwaterAtmosphere") is not null,
+                "Pond did not launch the integrated seed-5266 scene");
+            Require(pondScene.FindChild("CharacterSelect", true, false) is null,
+                "character screen appeared in Pond");
+            await tree.ToSignal(tree, SceneTree.SignalName.PhysicsFrame);
+            CheckPondSolidsAndFood(pondScene);
+            var frogId = pondScene.Frog!.StableId;
+            var snakeId = pondScene.Snake!.StableId;
+            Button(pondScene, "ReturnToWorldSelect").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
             var returned = tree.CurrentScene as WorldSelect;
-            Require(returned is not null && !GodotObject.IsInstanceValid(characters) &&
-                DemoSelection.CharacterId is null && WorldSession.ActiveHabitat is null,
-                "Back did not release character scene/session");
-            FindButton(returned!, "ChooseWorldButton").EmitSignal(Button.SignalName.Pressed);
+            Require(returned is not null && WorldSession.ActiveHabitat is null &&
+                WorldSession.ActiveManifest is null, "Pond return leaked session");
+            try { WorldSession.Select("unknown"); throw new Exception("unknown world accepted"); }
+            catch (InvalidDataException) { }
+            Button(returned, "ChooseWorldButton").EmitSignal(BaseButton.SignalName.Pressed);
             await Scene(tree);
-            characters = tree.CurrentScene as CharacterSelect;
-            Require(characters is not null, "Ocean reentry failed");
-            FindButton(characters!, "EnterWorldButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            var world = tree.CurrentScene as Main;
-            Require(world is not null && WorldSession.ActiveHabitat is not null &&
-                WorldSession.ActiveManifest?.WorldId == WorldCatalog.Resolve(WorldCatalog.OceanId).SelectedManifestId,
-                "Ocean play identity failed");
-            var fish = world!.GetNode<FishController>("Fish");
-            var shell = world.GetNode<PlayShell>("PlayShell");
-            fish.SetActivePreset(ControlPreset.Builtins()[1]);
-            fish._Input(KeyEvent(Key.W));
-            fish._Input(KeyEvent(Key.S));
-            await Frames(tree, 2);
-            shell.Notification((int)Node.NotificationApplicationFocusOut);
-            Require(tree.Paused && !fish.GetInputArmed() && fish.GetHeldInputCount() == 0 &&
-                Input.MouseMode == Input.MouseModeEnum.Visible, "focus loss retained thrust/brake/capture");
-            shell.Notification((int)Node.NotificationApplicationFocusIn);
-            Require(tree.Paused, "focus return resumed play without explicit rearm");
-            FindButton(shell, "WorldSelectButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            returned = tree.CurrentScene as WorldSelect;
-            Require(returned is not null && !tree.Paused && !GodotObject.IsInstanceValid(world) &&
-                WorldSession.ActiveHabitat is null && WorldSession.ActiveManifest is null &&
-                DemoSelection.CharacterId is null && Input.MouseMode == Input.MouseModeEnum.Visible &&
-                tree.Root.GetChildren().OfType<Main>().Count() == 0,
-                "Return leaked world, held input, pause or session");
-            FindButton(returned!, "ChooseWorldButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            characters = tree.CurrentScene as CharacterSelect;
-            FindButton(characters!, "Character_4").EmitSignal(Button.SignalName.Pressed);
-            FindButton(characters, "EnterWorldButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            world = tree.CurrentScene as Main;
-            Require(world is not null && DemoSelection.CharacterId == "FAF-FISH-005" &&
-                WorldSession.ActiveManifest?.WorldId == WorldCatalog.Resolve(WorldCatalog.OceanId).SelectedManifestId &&
-                world.GetNode<FishController>("Fish").GetHeldInputCount() == 0,
-                "repeated Ocean selection leaked prior input or lost fish choice");
-            shell = world.GetNode<PlayShell>("PlayShell");
-            FindButton(shell, "OptionsButton").EmitSignal(Button.SignalName.Pressed);
-            FindButton(shell, "WorldSelectButton").EmitSignal(Button.SignalName.Pressed);
-            await Scene(tree);
-            returned = tree.CurrentScene as WorldSelect;
-            Require(returned is not null && FindButton(returned, "WorldBackButton").Text.Contains("Quit demo"),
-                "World Select Back action missing");
-            GD.Print("WORLD_SELECT_CHECK_OK pond=five-native-species ocean=repeated back=clean return=clean");
-            FindButton(returned!, "WorldBackButton").EmitSignal(Button.SignalName.Pressed);
+            var marine = tree.CurrentScene as Main;
+            Require(marine is not null && WorldSession.SelectedWorldId == WorldCatalog.OceanId &&
+                DemoSelection.CharacterId == CharacterCatalog.Default.Id &&
+                WorldSession.ActiveManifest?.WorldId ==
+                    WorldCatalog.Resolve(WorldCatalog.OceanId).SelectedManifestId &&
+                marine.FindChild("CharacterSelect", true, false) is null,
+                "Ocean did not launch its existing default fish directly");
+            GD.Print($"WORLD_SELECT_CHECK_OK entries=2 pond={bake.WorldId} seed={bake.Seed} " +
+                $"frog={frogId} snake={snakeId} ocean_default={CharacterCatalog.Default.Id}");
+            tree.Quit();
         }
         catch (Exception error)
         {
@@ -114,15 +72,45 @@ public static class WorldSelectChecks
         }
     }
 
-    private static Button FindButton(Node root, string name) => root.FindChild(name, true, false) as Button
-        ?? throw new Exception($"missing {name}");
-    private static string Status(Node root) => (root.FindChild("WorldStatus", true, false) as Label)?.Text ?? "";
-    private static InputEventKey KeyEvent(Key key) => new() { Keycode = key, PhysicalKeycode = key, Pressed = true };
-    private static async Task Scene(SceneTree tree) => await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
-    private static async Task Frames(SceneTree tree, int count)
+    private static Button Button(Node root, string name) =>
+        root.FindChild(name, true, false) as Button ?? throw new Exception($"missing {name}");
+    private static void CheckPondSolidsAndFood(PikeEncounter scene)
     {
-        for (var i = 0; i < count; i++) await tree.ToSignal(tree, SceneTree.SignalName.ProcessFrame);
+        var dressing = scene.GetNode<PondFafHabitat>("Habitat/PondFafEnvironment");
+        var stones = dressing.GetChildren().OfType<StaticBody3D>()
+            .Where(body => body.HasMeta("faf_id") &&
+                body.GetMeta("faf_id").AsString() is "FAF-DETAIL-005A" or "FAF-DETAIL-005B" or
+                    "FAF-DETAIL-006A" or "FAF-DETAIL-006B").ToArray();
+        var expected = dressing.Placements.Count(p => p.Zone is "algae_stone" or "pebbles");
+        Require(stones.Length == expected && stones.All(body =>
+            body.CollisionLayer == 1 && body.GetChildren().OfType<CollisionShape3D>()
+                .Any(shape => shape.Shape is ConcavePolygonShape3D)),
+            "visible Pond stone or pebble lacks a physical surface");
+        var space = scene.GetWorld3D().DirectSpaceState;
+        foreach (var id in new[] { "FAF-DETAIL-005A", "FAF-DETAIL-005B" })
+        {
+            var body = stones.First(item => item.GetMeta("faf_id").AsString() == id);
+            using var ray = PhysicsRayQueryParameters3D.Create(
+                body.GlobalPosition + Vector3.Up, body.GlobalPosition + Vector3.Down * .4f, 1);
+            var hit = space.IntersectRay(ray);
+            Require(hit.Count > 0 && ReferenceEquals(hit["collider"].AsGodotObject(), body),
+                "stone is missing at its displayed position: " + id);
+        }
+        using var probe = new SphereShape3D { Radius = .05f };
+        foreach (var food in scene.FoodActors)
+        {
+            using var query = new PhysicsShapeQueryParameters3D {
+                Shape = probe,
+                Transform = new Transform3D(Basis.Identity, food.GlobalPosition),
+                CollisionMask = 1,
+            };
+            Require(space.IntersectShape(query, 1).Count == 0,
+                "food intersects a solid: " + food.StableId);
+        }
+        GD.Print($"POND_SOLID_FOOD_CHECK_OK solids={stones.Length} food={scene.FoodActors.Count}");
     }
+    private static async Task Scene(SceneTree tree) =>
+        await tree.ToSignal(tree, SceneTree.SignalName.SceneChanged);
     private static void Require(bool valid, string message)
     {
         if (!valid) throw new Exception(message);

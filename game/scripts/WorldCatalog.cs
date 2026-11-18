@@ -47,14 +47,14 @@ public static class WorldCatalog
                 "ba397da2b4ff2d2982898a3c3519b0e5cd0443222e9d31650197d8bcb10e3879",
                 "b21b4dd4517b4f66a732bf8834218223912bca5886ffc5c6a511c7187f107865")),
         new WorldDefinition(PondId, "Freshwater Pond", WorldHabitat.Freshwater,
-            new WorldPreview("Overgrown freshwater banks", new Color(0.32f, 0.36f, 0.13f)),
+            new WorldPreview("Bass survival among reeds, cover and shoreline hunters", new Color(0.32f, 0.36f, 0.13f)),
             WorldEnvironmentProfile.Pond, new WorldSpawn("spawn", "safe-spawn"),
             WorldAssetCatalog.FreshwaterFaf, "res://scenes/pond_habitat.tscn",
-            new BakedWorldIdentity("res://worlds/base/pond-p4-71", "world-5e3b4fee759acbe3",
-                71, 2, "pond-full-1",
+            new BakedWorldIdentity("res://worlds/encounters/pike-m1-5266", "world-6c98f9e946b4ede8",
+                5266, 2, "pond-full-1",
                 "d7f9e29007443eb53b09a780028f2176f23fcc01774fbec178cce80d1581cf9a",
-                "d76eabbb5b6fff2f91418b49b2de92dd090541d609b46d0725ad9fc85cbda347",
-                "966a70f784c5398e0071ca098ec07c3765d70fc03c2e0bae4e8c82f3bd2f2173")),
+                "f056c3216989617bb02565ee98a2bbf41d2a72373d11dc0c6a09703e417cd072",
+                "c042b0a7cc847c553f88fbdf75f1a6f19ad6293aadd7b497167567f143814a9b")),
     };
 
     public static WorldDefinition Resolve(string? id)

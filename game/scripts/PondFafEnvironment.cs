@@ -256,6 +256,24 @@ public static class PondFafEnvironment
                 .Instantiate<Node3D>();
             var meshes = FindMeshes(source).ToArray();
             if (meshes.Length == 0) throw new InvalidDataException($"Pond FAF imported mesh missing: {id}");
+            // The stone and pebble visuals are batched for drawing, but each
+            // instance still needs a physical surface. Food placement probes
+            // the same layer as the fish motor, so a visible stone must exist
+            // there before the food patches are populated.
+            StaticBody3D[] solids = Array.Empty<StaticBody3D>();
+            if (asset.Family is "algae_stone" or "pebbles")
+            {
+                solids = new StaticBody3D[transforms.Count];
+                for (var i = 0; i < transforms.Count; i++)
+                {
+                    solids[i] = new StaticBody3D {
+                        Name = id.Replace('-', '_') + "_Solid_" + i,
+                        Transform = transforms[i], CollisionLayer = 1,
+                    };
+                    solids[i].SetMeta("faf_id", id);
+                    root.AddChild(solids[i]);
+                }
+            }
             for (var part = 0; part < meshes.Length; part++)
             {
                 var mesh = meshes[part].Mesh ?? throw new InvalidDataException($"Pond FAF mesh missing: {id}");
@@ -273,6 +291,18 @@ public static class PondFafEnvironment
                 node.SetMeta("faf_habitat", WorldCatalog.PondId);
                 node.SetMeta("placement_count", transforms.Count);
                 root.AddChild(node);
+                if (solids.Length > 0)
+                {
+                    var shape = mesh.CreateTrimeshShape();
+                    if (shape.Data.Length == 0)
+                        throw new InvalidDataException($"Pond solid detail has no triangles: {id}");
+                    shape.BackfaceCollision = true;
+                    for (var i = 0; i < solids.Length; i++)
+                        solids[i].AddChild(new CollisionShape3D {
+                            Name = "DisplayedMeshCollision_" + part,
+                            Shape = shape, Transform = meshes[part].Transform,
+                        });
+                }
             }
             source.Free();
         }
