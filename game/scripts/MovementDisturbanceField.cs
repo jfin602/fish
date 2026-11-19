@@ -71,6 +71,22 @@ public sealed class MovementDisturbanceField
             energy, SimulationSeconds));
     }
 
+    /// <summary>Ordinary Pond uses the scene clock even when its source has no new motor step.</summary>
+    public void StepAt(Vector3 position, Vector3 velocity, float effort, float turn,
+        double delta, int motorStep, double gameSeconds, bool paused)
+    {
+        if (paused || !double.IsFinite(gameSeconds) || gameSeconds < SimulationSeconds ||
+            !double.IsFinite(delta) || delta <= 0 || !Finite(position) || !Finite(velocity)) return;
+        if (motorStep <= _lastMotorStep)
+        {
+            SimulationSeconds = gameSeconds;
+            _events.RemoveAll(cue => SimulationSeconds - cue.CreatedAt >= LifetimeSeconds);
+            return;
+        }
+        SimulationSeconds = gameSeconds - delta;
+        Step(position, velocity, effort, turn, delta, motorStep, false);
+    }
+
     public static float Energy(float speed, float acceleration, float effort, float turn,
         float speedReference = 6f)
     {

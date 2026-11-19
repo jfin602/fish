@@ -47,6 +47,15 @@ public partial class PondSnakeActor : CharacterBody3D
     public int RouteIndex => _routeIndex;
     public int StuckSteps => _stuckSteps;
 
+    public void ForgetTarget(string id, double seconds)
+    {
+        if (_targetId != id) return;
+        _targetId = null;
+        _sensors.Remove(id);
+        _nextHuntAt = Mathf.Max(_nextHuntAt, seconds + 2);
+        Enter(PondSnakeMode.Recover, seconds);
+    }
+
     public static PondSnakeActor Create(Node3D parent, SeabedSurface bed,
         Func<float, float, float> water, string worldId, Vector3 nursery,
         IReadOnlyList<PondFafPlacement> placements)
@@ -156,7 +165,8 @@ public partial class PondSnakeActor : CharacterBody3D
         if (seconds >= _nextHuntAt && Mode != PondSnakeMode.Recover)
         {
             foreach (var target in candidates.Where(Eligible)
-                .OrderBy(t => t.Position.DistanceSquaredTo(GlobalPosition)))
+                .OrderBy(t => t.Id == _targetId ? 0 : 1)
+                .ThenBy(t => t.Position.DistanceSquaredTo(GlobalPosition)))
             {
                 if (target.Position.DistanceTo(GlobalPosition) > 2.35f ||
                     !ReachableHabitat(target.Position)) continue;

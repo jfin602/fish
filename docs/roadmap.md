@@ -322,7 +322,7 @@ P6 develops the **ordinary Freshwater Pond** as the first complete Bass survival
 
 ### G6.6 — Independent multi-species ecosystem
 
-**Result: NOT OBSERVED.** V49.
+**Result: IMPLEMENTED / T2 CANDIDATE at `0.6.10`; NOT GREEN.** V49. [P10 focused evidence](tasks/p6/qualification/p10-ecology.md) records five seeded player-distant NPC catches, a bounded candidate pool, once-only claims, pause/exit and two-world checks. The held-prey diagnostic does not establish unassisted encounter frequency, fairness or real Forward+ frame pacing; P12 native review remains open.
 
 - Legitimate Bluegill, Bass, Pike, frog and snake interactions occur without player targeting; competing predator choices use actual sensed world-space evidence and finite commitment.
 - Preserve prey IDs, once-only death/nutrition, bounded AI costs and physical access. A predator switching to nearby prey may help the player but never guarantees escape.

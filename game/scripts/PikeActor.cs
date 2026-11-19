@@ -13,6 +13,7 @@ public partial class PikeActor : CharacterBody3D
     private Vector3 _steeringDirection = Vector3.Forward;
     private Vector3 _afterCatchGoal;
     public PikeAwareness Mind => _mind;
+    public string StableId { get; private set; } = PikeEncounterAssets.PikeId;
     public Vector3 LastSteeringTarget { get; private set; }
     public float ActualSpeed => Velocity.Length();
 
@@ -33,15 +34,25 @@ public partial class PikeActor : CharacterBody3D
 
     public bool MouthCanReach(PreyActor prey)
     {
-        if (!prey.IsAlive || prey.GetNode<CollisionShape3D>("Collision").Shape is not SphereShape3D sphere)
-            return false;
-        var to = prey.GlobalPosition - MouthPosition;
-        return to.Length() <= sphere.Radius + .13f &&
-            (-GlobalBasis.Z).Dot((prey.GlobalPosition - GlobalPosition).Normalized()) > .65f;
+        if (!prey.IsAlive) return false;
+        var collision = prey.GetNode<CollisionShape3D>("Collision");
+        var local = collision.ToLocal(MouthPosition);
+        var reaches = collision.Shape switch
+        {
+            SphereShape3D sphere => local.Length() <= sphere.Radius + .13f,
+            CapsuleShape3D capsule => local.DistanceTo(new Vector3(0,
+                Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+                    capsule.Height * .5f - capsule.Radius), 0)) <= capsule.Radius + .13f,
+            _ => false,
+        };
+        var toward = prey.GlobalPosition - GlobalPosition;
+        return reaches && toward.LengthSquared() > .000001f &&
+            (-GlobalBasis.Z).Dot(toward.Normalized()) > .65f;
     }
 
-    public void Configure()
+    public void Configure(string? stableId = null)
     {
+        StableId = stableId ?? PikeEncounterAssets.PikeId;
         _patrolOrigin = GlobalPosition;
         ResetActor();
     }

@@ -18,6 +18,8 @@ public partial class PikeEncounter : Node3D
     private PikeActor _pike = null!;
     private readonly List<PreyActor> _prey = new();
     private readonly List<PondBassRival> _bassRivals = new();
+    private readonly PondEcology _ecology = new();
+    private bool _ordinaryPond;
     private readonly List<BluegillSchool> _schools = new();
     private readonly List<BluegillSchool> _preySchool = new();
     private readonly List<PondFoodActor> _food = new();
@@ -38,6 +40,10 @@ public partial class PikeEncounter : Node3D
     private readonly List<WorldSightSensor> _preySight = new();
     private readonly List<WorldSightSensor> _preyPikeSight = new();
     private readonly List<WorldSightSensor> _pikePreySight = new();
+    private readonly Dictionary<string, WorldSightSensor> _pikeRivalSight = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, WorldSightSensor> _bluegillNpcSight = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> _bluegillTargets = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, double> _bluegillNextHuntAt = new(StringComparer.Ordinal);
     private readonly List<MovementDisturbanceField> _preyCues = new();
     private readonly List<MovementDisturbanceField> _pikePreyCues = new();
     private readonly PikeTargetSelector _pikeTargets = new();
@@ -76,6 +82,7 @@ public partial class PikeEncounter : Node3D
     private bool _failed;
     private bool _ended;
     private double _aftermathSeconds;
+    private double _gameSeconds;
     private string _outcome = "active";
     private int _escapeCount;
     private double _escapeFeedbackUntil;
@@ -99,6 +106,30 @@ public partial class PikeEncounter : Node3D
     public PondSnakeActor? Snake => _snake;
     public FeedingLedger Feeding => _feeding;
     public IReadOnlyList<FishPredationEvent> PredationEvents => _predationEvents;
+    public PondEcology Ecology => _ecology;
+    public double GameSeconds => _ordinaryPond ? _gameSeconds : MovementCues?.SimulationSeconds ?? 0;
+    internal void TickFrogForEcologyCheck(double seconds, float delta)
+    {
+        if (!OS.GetCmdlineUserArgs().Contains("--p6-ecology-check"))
+            throw new InvalidOperationException("P6_ECOLOGY_CHECK_ONLY");
+        if (GetTree().Paused || _frog is null || _turbidity is null) return;
+        _gameSeconds = seconds;
+        _ecology.Refresh(EcologyActors(), seconds);
+        var water = new SightEnvironment(WorldEnvironmentProfile.Pond,
+            _fish.PondSurfaceHeightAt(_frog.GlobalPosition.X, _frog.GlobalPosition.Z),
+            _turbidity.Sample, SightWater!.Solar);
+        _frog.Tick(FrogTargets(), water, seconds, delta, CommitFrogCatch);
+    }
+    public PondEcologyDiagnostics EcologyDiagnostics => new(_ecology.ActiveActors,
+        _ecology.Queries, _ecology.CandidateChecks, _ecology.Claims,
+        PikePerceptionSamples + _bluegillNpcSight.Values.Sum(s => s.SampleCount) +
+            _bassRivals.Sum(r => r.SightSamples) + (_frog?.SightSamples ?? 0) +
+            (_snake?.SightSamples ?? 0),
+        _bassRivals.Count(r => r.Hunt.Mode == BluegillThreatMode.Search) +
+            _bluegillThreats.Count(m => m.Mode == BluegillThreatMode.Search) +
+            (_frog?.Mode == PondFrogMode.Notice ? 1 : 0) +
+            (_snake?.Mode == PondSnakeMode.Search ? 1 : 0),
+        _predationEvents.Count);
     public FishBloodFx Blood => _blood;
     public PondGrowthState Growth => _growth;
     public bool IntroActive => _introActive;
@@ -148,12 +179,13 @@ public partial class PikeEncounter : Node3D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_failed || _transitioning || _introActive || MovementCues is null || _pike is null) return;
+        if (_failed || _transitioning || _introActive || GetTree().Paused ||
+            MovementCues is null || _pike is null) return;
         if (_ended)
         {
             if (_caughtByPike) _pike.TickAfterCatch((float)delta);
             UpdatePikeAnimation(delta);
-            var aftermathTime = MovementCues.SimulationSeconds + _aftermathSeconds;
+            var aftermathTime = GameSeconds + _aftermathSeconds;
             foreach (var school in _schools) school.ResetBudget();
             for (var i = 0; i < _prey.Count; i++)
             {
@@ -164,29 +196,53 @@ public partial class PikeEncounter : Node3D
             }
             return;
         }
-        MovementCues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
-            _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
+        if (_ordinaryPond) _gameSeconds += delta;
+        if (_ordinaryPond)
+            MovementCues.StepAt(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+                _fish.PresentationTurn, delta, _fish.MotorStepCount, _gameSeconds, false);
+        else MovementCues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+            _fish.PresentationTurn, delta, _fish.MotorStepCount, false);
         foreach (var cues in _preyCues)
-            cues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
-                _fish.PresentationTurn, delta, _fish.MotorStepCount, GetTree().Paused);
+        {
+            if (_ordinaryPond)
+                cues.StepAt(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+                    _fish.PresentationTurn, delta, _fish.MotorStepCount, _gameSeconds, false);
+            else cues.Step(_fish.GlobalPosition, _fish.Velocity, _fish.PresentationEffort,
+                _fish.PresentationTurn, delta, _fish.MotorStepCount, false);
+        }
         var observed = ObserveFish();
-        var now = MovementCues.SimulationSeconds;
+        var now = GameSeconds;
+        if (_ordinaryPond) _ecology.Refresh(EcologyActors(), now);
         if (_patches is null)
             foreach (var food in _food) food.Tick(now);
         else _patches.Tick(now);
         _pikeCandidates.Clear();
         _pikeCandidates.Add(new PikeCandidate(_growth.Identity, true, true, _growth.Length,
             observed.Sight, observed.Disturbance));
+        var pikeFish = _ordinaryPond
+            ? _ecology.Nearby(_pike.GlobalPosition, 30f, PikeEncounterAssets.PikeId,
+                c => !c.Player && c.Body is PreyActor, _pikeTargets.TargetId)
+            : Array.Empty<PondEcologyCandidate>();
         for (var i = 0; i < _prey.Count; i++)
         {
             var prey = _prey[i];
-            if (!prey.IsAlive) continue;
+            if (!prey.IsAlive || (_ordinaryPond && !pikeFish.Any(c => c.Id == prey.StableId))) continue;
             var radius = ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius;
             var sight = _pikePreySight[i].Observe(_pike.GlobalPosition, -_pike.GlobalBasis.Z,
                 new SightTarget(prey.GlobalPosition, radius, 1f), SightWater!, now, false);
             _pikeCandidates.Add(new PikeCandidate(prey.StableId, false, true, prey.Length,
                 sight, _pikePreyCues[i].Sense(_pike.GlobalPosition, false)));
         }
+        if (_ordinaryPond)
+            foreach (var rival in _bassRivals.Where(r => r.IsAlive &&
+                         pikeFish.Any(c => c.Id == r.StableId)))
+            {
+                var sight = _pikeRivalSight[rival.StableId].Observe(_pike.GlobalPosition,
+                    -_pike.GlobalBasis.Z, new SightTarget(rival.GlobalPosition,
+                        rival.Growth.Body.Radius, 1f), SightWater!, now, false);
+                _pikeCandidates.Add(new PikeCandidate(rival.StableId, false, true,
+                    rival.Length, sight, default));
+            }
         var selected = _pikeTargets.Select(_pikeCandidates, _pike.GlobalPosition, now, false);
         if (selected is { } target && _pike.Mind.TargetId != target.Id)
         {
@@ -216,6 +272,52 @@ public partial class PikeEncounter : Node3D
                 preySight = pikeSight;
             var cue = cues.Sense(actor.GlobalPosition, GetTree().Paused);
             var school = _preySchool[i].For(actor, now);
+            if (_ordinaryPond && actor.Stage == "adult")
+            {
+                if (now < _bluegillNextHuntAt.GetValueOrDefault(actor.StableId))
+                {
+                    actor.Tick(default, default, now, (float)delta, false, school);
+                    continue;
+                }
+                var nearby = _ecology.Nearby(actor.GlobalPosition, 3.2f,
+                    actor.StableId, c => c.Player
+                        ? BluegillPredation.Eligible(actor.SpeciesId, actor.Stage, actor.Length,
+                            c.Species, c.Stage, c.Length)
+                        : PondEcology.BluegillCanEatNpc(actor, c),
+                    _bluegillTargets.GetValueOrDefault(actor.StableId));
+                var currentId = _bluegillTargets.GetValueOrDefault(actor.StableId);
+                if (currentId is not null && !nearby.Any(c => c.Id == currentId))
+                { _bluegillTargets.Remove(actor.StableId); _bluegillThreats[i].Reset(); currentId = null; }
+                PondEcologyCandidate? visible = null;
+                SightEvidence huntSight = default;
+                foreach (var candidate in nearby.OrderBy(c => c.Id == currentId ? 0 : 1))
+                {
+                    var evidence = candidate.Player ? preySight :
+                        ObserveBluegillNpc(actor, candidate, now);
+                    if (!evidence.Detected || evidence.ClearRays == 0) continue;
+                    visible = candidate;
+                    huntSight = evidence;
+                    break;
+                }
+                if (visible is { } found && currentId != found.Id)
+                {
+                    _bluegillTargets[actor.StableId] = found.Id;
+                    _bluegillThreats[i].Reset();
+                }
+                _bluegillThreats[i].Step(huntSight,
+                    visible is { Player: true } ? cue : default, now, false);
+                actor.Tick(default, default, now, (float)delta, false,
+                    school, _bluegillThreats[i].Destination);
+                if (_bluegillThreats[i].StrikeReady && visible is { } victim)
+                {
+                    if (victim.Player && TryBluegillCatch(actor, now)) return;
+                    if (!victim.Player) TryBluegillConsumeNpc(actor, victim, now);
+                }
+                _pikePreyCues[i].StepAt(actor.GlobalPosition, actor.Velocity,
+                    Mathf.Clamp(actor.ActualSpeed / 2f, 0f, 1f), 0f,
+                    delta, actor.MotorStepCount, _gameSeconds, false);
+                continue;
+            }
             if (BluegillPredation.Eligible(actor.SpeciesId, actor.Stage, actor.Length,
                     PondGrowthState.SpeciesId, _growth.Stage, _growth.Length))
             {
@@ -229,9 +331,13 @@ public partial class PikeEncounter : Node3D
                 _bluegillThreats[i].Reset();
                 actor.Tick(preySight, cue, now, (float)delta, GetTree().Paused, school);
             }
-            _pikePreyCues[i].Step(actor.GlobalPosition, actor.Velocity,
+            if (_ordinaryPond)
+                _pikePreyCues[i].StepAt(actor.GlobalPosition, actor.Velocity,
+                    Mathf.Clamp(actor.ActualSpeed / 2f, 0f, 1f), 0f,
+                    delta, actor.MotorStepCount, _gameSeconds, false);
+            else _pikePreyCues[i].Step(actor.GlobalPosition, actor.Velocity,
                 Mathf.Clamp(actor.ActualSpeed / 2f, 0f, 1f), 0f,
-                delta, actor.MotorStepCount, GetTree().Paused);
+                delta, actor.MotorStepCount, false);
         }
         TickShoreHunters(now, (float)delta);
         if (_ended) return;
@@ -247,6 +353,11 @@ public partial class PikeEncounter : Node3D
             {
                 var index = _prey.FindIndex(p => p.StableId == preyTarget.Id && p.IsAlive);
                 if (index >= 0) TryPikeConsumePrey(_prey[index], now);
+                else if (_ordinaryPond)
+                {
+                    var rival = _bassRivals.FirstOrDefault(r => r.StableId == preyTarget.Id && r.IsAlive);
+                    if (rival is not null) TryPikeConsumePrey(rival, now);
+                }
             }
             else if (selected is { IsBass: true })
             {
@@ -257,7 +368,7 @@ public partial class PikeEncounter : Node3D
                     GD.Print($"PIKE_CATCH_CONTACT pike={_pike.GlobalPosition} bass={_fish.GlobalPosition} distance={_pike.GlobalPosition.DistanceTo(_fish.GlobalPosition):F3} mouth={_pike.MouthPosition} bass_radius={_fish.BodyRadius:F3}");
                     _pike.Mind.Catch(now);
                     CommitPredation("pike:bass:" + _growth.Identity,
-                        PikeEncounterAssets.PikeId, _growth.Identity, _pike.MouthPosition, now);
+                        _pike.StableId, _growth.Identity, _pike.MouthPosition, now);
                     Finish("caught", "Caught by the Pike after a committed strike.");
                     return;
                 }
@@ -293,7 +404,7 @@ public partial class PikeEncounter : Node3D
         var paused = GetTree().Paused;
         var sight = PikeSight.Observe(pike.GlobalPosition, -pike.GlobalBasis.Z,
             new SightTarget(_fish.GlobalPosition, _fish.BodyRadius, 1f), SightWater,
-            MovementCues.SimulationSeconds, paused);
+            GameSeconds, paused);
         return new PikeSensoryEvidence(sight, MovementCues.Sense(pike.GlobalPosition, paused));
     }
 
@@ -307,23 +418,36 @@ public partial class PikeEncounter : Node3D
 
     internal bool TryPikeConsumePrey(PreyActor prey, double seconds)
     {
+        if (_ordinaryPond) _ecology.Refresh(EcologyActors(), seconds);
         var index = _prey.IndexOf(prey);
-        if (index < 0 || !prey.IsAlive || !_pike.Mind.StrikeReady ||
+        var rival = prey as PondBassRival;
+        if (index < 0 && (!_ordinaryPond || rival is null || !_bassRivals.Contains(rival)))
+            return false;
+        if (!prey.IsAlive || !_pike.Mind.StrikeReady ||
             _pike.Mind.TargetId != prey.StableId || _failed || _ended || _transitioning ||
             GetTree().Paused) return false;
-        _pikePreySight[index].Reset();
-        var radius = ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius;
-        var close = _pikePreySight[index].Observe(_pike.GlobalPosition,
+        var sensor = index >= 0 ? _pikePreySight[index] : _pikeRivalSight[prey.StableId];
+        sensor.Reset();
+        var radius = index >= 0
+            ? ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius
+            : rival!.Growth.Body.Radius;
+        var close = sensor.Observe(_pike.GlobalPosition,
             -_pike.GlobalBasis.Z, new SightTarget(prey.GlobalPosition, radius, 1f),
             SightWater!, seconds, false);
         if (!close.Detected || close.ClearRays == 0 || !_pike.MouthCanReach(prey) ||
             !PikeStrikeClear(prey)) return false;
         var contact = PreyContact(_pike.MouthPosition, prey);
-        prey.Consume();
-        CommitPredation("pike:bluegill:" + prey.StableId,
-            PikeEncounterAssets.PikeId, prey.StableId, contact, seconds);
-        _preySchool[index].RaiseAlarm(_pike.GlobalPosition, seconds);
-        GD.Print($"PIKE_BLUEGILL_CONSUMED id={prey.StableId} stage={prey.Stage} seconds={seconds:F2}");
+        if (_ordinaryPond)
+        {
+            if (!_ecology.TryClaimNpc(prey.StableId, prey.GetRid(), () =>
+                { prey.Consume(); return true; })) return false;
+        }
+        else prey.Consume();
+        CommitPredation(index >= 0 ? "pike:bluegill:" + prey.StableId :
+                "pike:bass-rival:" + prey.StableId,
+            _pike.StableId, prey.StableId, contact, seconds);
+        if (index >= 0) _preySchool[index].RaiseAlarm(_pike.GlobalPosition, seconds);
+        GD.Print($"PIKE_NPC_CONSUMED id={prey.StableId} stage={prey.Stage} seconds={seconds:F2}");
         _pikeTargets.Remove(prey.StableId);
         _pike.Mind.Retarget("", false);
         return true;
@@ -417,6 +541,8 @@ public partial class PikeEncounter : Node3D
             BloodFxChecks.RunNative(this);
         if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-bass-rivals-check"))
             P6BassRivalChecks.Run(this);
+        if (!_failed && Array.Exists(OS.GetCmdlineUserArgs(), arg => arg == "--p6-ecology-check"))
+            P6EcologyChecks.Run(this);
     }
 
     private void InitializeActors()
@@ -429,6 +555,7 @@ public partial class PikeEncounter : Node3D
             "--pike-sight-check" or "--pike-disturbance-check" or "--pike-ai-check" or
             "--prey-check" or "--bluegill-school-check" or "--feeding-check" or "--auto-feed-boost-check" or "--p6-reticle-check" or "--growth-check" or
             "--blood-fx-check" or "--blood-fx-native-probe" or "--waterline-native-probe" or "--wake-path-check" or "--wake-path-native-probe" or "--wake-ribbon-check" or "--wake-render-native-probe");
+        _ordinaryPond = !legacyCheck;
         var lifeId = legacyCheck ? $"pike-{PikeCoverFixture.Seed}:player-bass" :
             $"pond-{WorldCatalog.Resolve(WorldCatalog.PondId).Bake!.WorldId}:bass-life:{Guid.NewGuid():N}";
         _growth = new PondGrowthState(lifeId,
@@ -495,8 +622,13 @@ public partial class PikeEncounter : Node3D
             _snake = PondSnakeActor.Create(this, bed, _fish.PondSurfaceHeightAt,
                 worldId, NestPosition, placements);
             InitializeBassRivals(worldId);
+            foreach (var rival in _bassRivals)
+                _pikeRivalSight.Add(rival.StableId, new WorldSightSensor(
+                    GetWorld3D().DirectSpaceState, plants, _pike.GetRid(), rival.GetRid()));
         }
-        actor.Configure();
+        actor.Configure(_ordinaryPond
+            ? WorldCatalog.Resolve(WorldCatalog.PondId).Bake!.WorldId + ":pike:deep:0"
+            : null);
         var preferences = new DisplayPreferences();
         preferences.Load();
         _fish.ConfigureMouse(preferences.MouseSensitivity, preferences.InvertMouseY);
@@ -747,7 +879,9 @@ public partial class PikeEncounter : Node3D
                 "Bluegill" + char.ToUpperInvariant(stage[0]) + stage[1..] + index,
                 CollisionLayer = 2, CollisionMask = 1,
                 MotionMode = CharacterBody3D.MotionModeEnum.Floating };
-            body.SetIdentity($"pike-{PikeCoverFixture.Seed}:bluegill-{stage}:{index}",
+            body.SetIdentity(legacyCheck
+                    ? $"pike-{PikeCoverFixture.Seed}:bluegill-{stage}:{index}"
+                    : $"{WorldCatalog.Resolve(WorldCatalog.PondId).Bake!.WorldId}:bluegill-{stage}:{index}",
                 source.Asset.Id, stage, source.Asset.Dimensions[1]);
             AddChild(body);
             body.GlobalPosition = spawn;
@@ -887,20 +1021,64 @@ public partial class PikeEncounter : Node3D
         }
     }
 
-    private readonly record struct BassTarget(string Id, string Stage, float Length,
-        Vector3 Position, float Radius, Rid BodyRid, bool Player, PondBassRival? Actor);
+    private readonly record struct BassTarget(string Id, string Species, string Stage,
+        float Length, Vector3 Position, float Radius, Rid BodyRid, bool Player, PreyActor? Actor);
+
+    private IEnumerable<PondEcologyCandidate> EcologyActors()
+    {
+        if (_growth.Stage != "egg" && !_ended)
+            yield return new PondEcologyCandidate(_growth.Identity,
+                PondGrowthState.SpeciesId, _growth.Stage, _growth.Length,
+                _growth.ColliderRadius, _fish.GetRid(), _fish, true, true);
+        foreach (var prey in _prey.Where(p => p.IsAlive))
+            yield return new PondEcologyCandidate(prey.StableId, prey.SpeciesId,
+                prey.Stage, prey.Length,
+                ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius,
+                prey.GetRid(), prey, false, true);
+        foreach (var rival in _bassRivals.Where(r => r.IsAlive))
+            yield return new PondEcologyCandidate(rival.StableId, rival.SpeciesId,
+                rival.Stage, rival.Length, rival.Growth.Body.Radius,
+                rival.GetRid(), rival, false, true);
+        if (_frog is not null)
+            yield return new PondEcologyCandidate(_frog.StableId, PondFrogActor.SpeciesId,
+                "adult", .24f, .07f, _frog.GetRid(), _frog, false, true);
+        if (_snake is not null)
+            yield return new PondEcologyCandidate(_snake.StableId, PondSnakeActor.SpeciesId,
+                "adult", .9f, .055f, _snake.GetRid(), _snake, false, true);
+    }
 
     private BassTarget[] LivingBassTargets()
     {
         var targets = new List<BassTarget>(_bassRivals.Count + 1);
         if (_growth.Stage != "egg" && !_ended)
-            targets.Add(new BassTarget(_growth.Identity, _growth.Stage, _growth.Length,
+            targets.Add(new BassTarget(_growth.Identity, PondGrowthState.SpeciesId,
+                _growth.Stage, _growth.Length,
                 _fish.GlobalPosition, _growth.ColliderRadius, _fish.GetRid(), true, null));
         foreach (var rival in _bassRivals.Where(r => r.IsAlive))
-            targets.Add(new BassTarget(rival.StableId, rival.Stage, rival.Length,
+            targets.Add(new BassTarget(rival.StableId, rival.SpeciesId,
+                rival.Stage, rival.Length,
                 rival.GlobalPosition, rival.Growth.Body.Radius, rival.GetRid(), false, rival));
+        if (_ordinaryPond)
+            foreach (var prey in _prey.Where(p => p.IsAlive))
+                targets.Add(new BassTarget(prey.StableId, prey.SpeciesId,
+                    prey.Stage, prey.Length, prey.GlobalPosition,
+                    ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius,
+                    prey.GetRid(), false, prey));
         return targets.ToArray();
     }
+
+    private static bool RivalCanEat(PondBassRival rival, BassTarget target) =>
+        target.Species == PondGrowthState.SpeciesId
+            ? BassPredation.Eligible(rival.SpeciesId, rival.Stage, rival.Length,
+                target.Species, target.Stage, target.Length)
+            : FeedingLedger.IsEligiblePrey(target.Species, target.Stage, target.Length,
+                rival.Stage, rival.Length);
+
+    private BassTarget[] NearbyRivalTargets(PondBassRival rival) =>
+        _ecology.Nearby(rival.GlobalPosition, rival.Stage == "adult" ? 6f : 4.8f,
+            rival.StableId, c => c.Player || c.Body is PreyActor, rival.TargetId)
+            .Select(c => new BassTarget(c.Id, c.Species, c.Stage, c.Length,
+                c.Position, c.Radius, c.BodyRid, c.Player, c.Body as PreyActor)).ToArray();
 
     private void TickBassRivals(double now, float delta)
     {
@@ -908,13 +1086,13 @@ public partial class PikeEncounter : Node3D
         foreach (var rival in _bassRivals)
         {
             if (!rival.IsAlive) continue;
-            var targets = LivingBassTargets().Where(t => t.Id != rival.StableId).ToArray();
+            var targets = NearbyRivalTargets(rival);
             var localWater = new SightEnvironment(WorldEnvironmentProfile.Pond,
                 _fish.PondSurfaceHeightAt(rival.GlobalPosition.X, rival.GlobalPosition.Z),
                 _turbidity!.Sample, SightWater!.Solar);
             SightEvidence flee = default;
             foreach (var threat in targets.Where(t => BassPredation.Eligible(
-                         PondGrowthState.SpeciesId, t.Stage, t.Length,
+                         t.Species, t.Stage, t.Length,
                          rival.SpeciesId, rival.Stage, rival.Length)))
             {
                 var seen = rival.Observe(threat.Id, threat.BodyRid, threat.Position,
@@ -924,9 +1102,7 @@ public partial class PikeEncounter : Node3D
             if (flee.Detected) rival.Track(null);
             else
             {
-                var eligible = targets.Where(t => BassPredation.Eligible(
-                    rival.SpeciesId, rival.Stage, rival.Length,
-                    PondGrowthState.SpeciesId, t.Stage, t.Length)).ToArray();
+                var eligible = targets.Where(t => RivalCanEat(rival, t)).ToArray();
                 var current = eligible.FirstOrDefault(t => t.Id == rival.TargetId);
                 if (rival.TargetId is not null && current.Id is null) rival.Track(null);
                 if (rival.TargetId is null)
@@ -1016,6 +1192,11 @@ public partial class PikeEncounter : Node3D
 
     private PondFrogTarget[] FrogTargets()
     {
+        if (_ordinaryPond && _frog is not null)
+            return _ecology.Nearby(_frog.GlobalPosition, 1.35f, _frog.StableId,
+                c => c.Player || c.Body is PreyActor, _frog.TargetId)
+                .Select(c => new PondFrogTarget(c.Id, c.Species, c.Stage, c.Length,
+                    c.Position, c.Radius, c.BodyRid, c.Alive, c.Player)).ToArray();
         var targets = new List<PondFrogTarget>(_prey.Count + 1);
         if (_growth.Stage != "egg")
             targets.Add(new PondFrogTarget(_growth.Identity, PondGrowthState.SpeciesId,
@@ -1031,9 +1212,16 @@ public partial class PikeEncounter : Node3D
         return targets.ToArray();
     }
 
-    private PondSnakeTarget[] SnakeTargets() => FrogTargets()
-        .Select(t => new PondSnakeTarget(t.Id, t.SpeciesId, t.Stage, t.Length,
-            t.Position, t.Radius, t.BodyRid, t.Alive, t.Player)).ToArray();
+    private PondSnakeTarget[] SnakeTargets()
+    {
+        if (_ordinaryPond && _snake is not null)
+            return _ecology.Nearby(_snake.GlobalPosition, 2.4f, _snake.StableId,
+                c => c.Player || c.Body is PreyActor, _snake.TargetId)
+                .Select(c => new PondSnakeTarget(c.Id, c.Species, c.Stage, c.Length,
+                    c.Position, c.Radius, c.BodyRid, c.Alive, c.Player)).ToArray();
+        return FrogTargets().Select(t => new PondSnakeTarget(t.Id, t.SpeciesId,
+            t.Stage, t.Length, t.Position, t.Radius, t.BodyRid, t.Alive, t.Player)).ToArray();
+    }
 
     private void TickShoreHunters(double now, float delta)
     {
@@ -1069,7 +1257,7 @@ public partial class PikeEncounter : Node3D
             if (target.Id != _growth.Identity || target.BodyRid != _fish.GetRid() ||
                 !PlayerContact(mouth, .085f)) return false;
             CommitPredation(_frog.StableId + ":ate:" + target.Id,
-                _frog.StableId, target.Id, mouth, MovementCues!.SimulationSeconds);
+                _frog.StableId, target.Id, mouth, GameSeconds);
             Finish("caught", "Caught by the leopard frog at the shore.", _frog, mouth);
             return true;
         }
@@ -1085,7 +1273,7 @@ public partial class PikeEncounter : Node3D
             if (target.Id != _growth.Identity || target.BodyRid != _fish.GetRid() ||
                 !PlayerContact(mouth, .075f)) return false;
             CommitPredation(_snake.StableId + ":ate:" + target.Id,
-                _snake.StableId, target.Id, mouth, MovementCues!.SimulationSeconds);
+                _snake.StableId, target.Id, mouth, GameSeconds);
             Finish("caught", "Caught by the water snake in the shallows.", _snake, mouth);
             return true;
         }
@@ -1094,12 +1282,19 @@ public partial class PikeEncounter : Node3D
 
     private bool CommitShorePrey(string preyId, Rid body, string hunterId, Vector3 mouth)
     {
-        var prey = _prey.FirstOrDefault(p => p.StableId == preyId);
+        if (_ordinaryPond) _ecology.Refresh(EcologyActors(), GameSeconds);
+        var prey = _prey.Concat<PreyActor>(_bassRivals)
+            .FirstOrDefault(p => p.StableId == preyId);
         if (prey is null || !prey.IsAlive || prey.GetRid() != body) return false;
         var eventId = hunterId + ":ate:" + preyId;
         if (_predationIds.Contains(eventId)) return false;
-        prey.Consume();
-        CommitPredation(eventId, hunterId, preyId, mouth, MovementCues!.SimulationSeconds);
+        if (_ordinaryPond)
+        {
+            if (!_ecology.TryClaimNpc(preyId, body, () =>
+                { prey.Consume(); return true; })) return false;
+        }
+        else prey.Consume();
+        CommitPredation(eventId, hunterId, preyId, mouth, GameSeconds);
         GD.Print($"POND_SHORE_FEED event={eventId} predator={hunterId} prey={preyId}");
         return true;
     }
@@ -1121,15 +1316,69 @@ public partial class PikeEncounter : Node3D
         return true;
     }
 
+    private SightEvidence ObserveBluegillNpc(PreyActor hunter,
+        PondEcologyCandidate target, double now)
+    {
+        var key = hunter.StableId + "|" + target.Id;
+        if (!_bluegillNpcSight.TryGetValue(key, out var sensor))
+        {
+            var cover = PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("Cover"))
+                .Concat(PikeCoverFixture.VisibleSoftCover(GetNode<Node3D>("ShoreGrowth")))
+                .OrderBy(p => p.VisibleBounds.GetCenter().DistanceSquaredTo(hunter.GlobalPosition))
+                .Take(128).ToArray();
+            sensor = new WorldSightSensor(GetWorld3D().DirectSpaceState, cover,
+                hunter.GetRid(), target.BodyRid, 3.2f, 3.2f);
+            _bluegillNpcSight.Add(key, sensor);
+        }
+        return sensor.Observe(hunter.GlobalPosition - hunter.GlobalBasis.Z * .08f,
+            -hunter.GlobalBasis.Z, new SightTarget(target.Position, target.Radius, 1f),
+            SightWater!, now, false);
+    }
+
+    private bool TryBluegillConsumeNpc(PreyActor hunter, PondEcologyCandidate target,
+        double now)
+    {
+        if (!_ordinaryPond || !_ecology.IsAvailable(target.Id, target.BodyRid) ||
+            !PondEcology.BluegillCanEatNpc(hunter, target) ||
+            !_bluegillTargets.TryGetValue(hunter.StableId, out var selected) ||
+            selected != target.Id || target.Body is not PreyActor victim ||
+            !_bluegillThreats[_prey.IndexOf(hunter)].StrikeReady) return false;
+        var mouth = hunter.MouthPosition;
+        var collision = victim.GetNode<CollisionShape3D>("Collision");
+        var local = collision.ToLocal(mouth);
+        var reaches = collision.Shape switch
+        {
+            SphereShape3D sphere => local.Length() <= sphere.Radius + .025f,
+            CapsuleShape3D capsule => local.DistanceTo(new Vector3(0,
+                Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+                    capsule.Height * .5f - capsule.Radius), 0)) <= capsule.Radius + .025f,
+            _ => false,
+        };
+        var toward = target.Position - hunter.GlobalPosition;
+        if (!reaches || toward.LengthSquared() < .000001f ||
+            (-hunter.GlobalBasis.Z).Dot(toward.Normalized()) < .72f ||
+            !ClearPathFrom(hunter.GlobalPosition, mouth, hunter.GetRid()) ||
+            !ClearPathFrom(mouth, target.Position, hunter.GetRid())) return false;
+        if (!_ecology.TryClaimNpc(target.Id, target.BodyRid, () =>
+            { victim.Consume(); return true; })) return false;
+        var eventId = hunter.StableId + ":ate:" + target.Id;
+        CommitPredation(eventId, hunter.StableId, target.Id, mouth, now);
+        _bluegillTargets.Remove(hunter.StableId);
+        _bluegillNextHuntAt[hunter.StableId] = now + 5;
+        _bluegillThreats[_prey.IndexOf(hunter)].Reset();
+        GD.Print($"P6_BLUEGILL_NPC_FEED event={eventId} predator={hunter.StableId} prey={target.Id}");
+        return true;
+    }
+
     internal bool TryBassRivalCatch(PondBassRival predator, string targetId, double now)
     {
+        if (_ordinaryPond) _ecology.Refresh(EcologyActors(), now);
         if (!_bassRivals.Contains(predator) || !predator.IsAlive ||
             _ended || _introActive || _failed || _transitioning || GetTree().Paused ||
             predator.TargetId != targetId || !predator.Hunt.StrikeReady) return false;
         var target = LivingBassTargets().FirstOrDefault(t => t.Id == targetId);
         if (target.Id is null || target.BodyRid == predator.GetRid() ||
-            !BassPredation.Eligible(predator.SpeciesId, predator.Stage, predator.Length,
-                PondGrowthState.SpeciesId, target.Stage, target.Length)) return false;
+            !RivalCanEat(predator, target)) return false;
         var mouth = predator.MouthPosition;
         var toward = target.Position - predator.GlobalPosition;
         if (toward.LengthSquared() < .000001f ||
@@ -1143,18 +1392,39 @@ public partial class PikeEncounter : Node3D
         else
         {
             var collision = target.Actor!.GetNode<CollisionShape3D>("Collision");
-            if (collision.Shape is not CapsuleShape3D capsule) return false;
             var local = collision.ToLocal(mouth);
-            var spine = Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
-                capsule.Height * .5f - capsule.Radius);
-            if (local.DistanceTo(new Vector3(0, spine, 0)) > capsule.Radius + .025f)
-                return false;
+            var reaches = collision.Shape switch
+            {
+                SphereShape3D sphere => local.Length() <= sphere.Radius + .025f,
+                CapsuleShape3D capsule => local.DistanceTo(new Vector3(0,
+                    Mathf.Clamp(local.Y, -capsule.Height * .5f + capsule.Radius,
+                        capsule.Height * .5f - capsule.Radius), 0)) <= capsule.Radius + .025f,
+                _ => false,
+            };
+            if (!reaches) return false;
         }
-        var result = predator.Feeding.TryConsumeBass(new FeedCandidate(target.Id,
-            PondGrowthState.SpeciesId, target.Stage, WorldCatalog.PondId,
-            WorldSession.SelectedWorldId, target.Length, predator.Stage,
-            predator.Length, true), true, now);
-        if (!result.Consumed) return false;
+        var feedCandidate = new FeedCandidate(target.Id, target.Species, target.Stage,
+            WorldCatalog.PondId, WorldSession.SelectedWorldId, target.Length,
+            predator.Stage, predator.Length, true);
+        FeedResult result;
+        if (target.Player)
+        {
+            result = predator.Feeding.TryConsumeBass(feedCandidate, true, now);
+            if (!result.Consumed) return false;
+        }
+        else
+        {
+            result = default;
+            if (!_ecology.TryClaimNpc(target.Id, target.BodyRid, () =>
+            {
+                result = target.Species == PondGrowthState.SpeciesId
+                    ? predator.Feeding.TryConsumeBass(feedCandidate, true, now)
+                    : predator.Feeding.TryConsume(feedCandidate, true, now);
+                if (!result.Consumed) return false;
+                target.Actor!.Consume();
+                return true;
+            })) return false;
+        }
         var eventId = predator.StableId + ":ate:" + target.Id;
         CommitPredation(eventId, predator.StableId, target.Id, mouth, now);
         if (target.Player)
@@ -1165,7 +1435,6 @@ public partial class PikeEncounter : Node3D
         }
         else
         {
-            target.Actor!.Consume();
             GD.Print($"P6_BASS_RIVAL_NPC_FEED event={eventId} predator={predator.StableId} " +
                 $"prey={target.Id} nutrition={predator.Feeding.Nutrition}");
         }
@@ -1190,7 +1459,7 @@ public partial class PikeEncounter : Node3D
         {
             var shellVisual = _eggVisual!;
             var shellResult = _feeding.TryConsumeEggShell(_growth.Identity + ":shell", true,
-                MovementCues?.SimulationSeconds ?? 0);
+                GameSeconds);
             if (shellResult.Consumed)
             {
                 _shellEaten = true;
@@ -1205,7 +1474,7 @@ public partial class PikeEncounter : Node3D
         if (target is null)
         {
             var food = _food.Where(f => f.Available &&
-                    FeedingLedger.FoodAward(f.Kind, _growth.Stage, MovementCues?.SimulationSeconds ?? 0) > 0 &&
+                    FeedingLedger.FoodAward(f.Kind, _growth.Stage, GameSeconds) > 0 &&
                     FoodReachable(f))
                 .OrderBy(f => f.GlobalPosition.DistanceTo(mouth)).FirstOrDefault();
             if (food is not null) return TryBiteFood(food);
@@ -1226,17 +1495,33 @@ public partial class PikeEncounter : Node3D
         if (target is null || !_prey.Contains(target))
             return new(false, "no eligible prey", 0);
         var reachable = PreyReachable(target);
-        var result = _feeding.TryConsume(new FeedCandidate(target.StableId,
+        var candidate = new FeedCandidate(target.StableId,
             target.SpeciesId, target.Stage, WorldCatalog.PondId, WorldSession.SelectedWorldId,
-            target.Length, _growth.Stage, _growth.Length, target.IsAlive), reachable,
-            MovementCues?.SimulationSeconds ?? 0);
+            target.Length, _growth.Stage, _growth.Length, target.IsAlive);
+        FeedResult result;
+        if (_ordinaryPond)
+        {
+            _ecology.Refresh(EcologyActors(), GameSeconds);
+            result = default;
+            if (!_ecology.TryClaimNpc(target.StableId, target.GetRid(), () =>
+            {
+                result = _feeding.TryConsume(candidate, reachable,
+                    GameSeconds);
+                if (!result.Consumed) return false;
+                target.Consume();
+                return true;
+            })) return result.Consumed ? new(false, "prey already claimed", 0) :
+                new(false, "prey unavailable", 0);
+        }
+        else result = _feeding.TryConsume(candidate, reachable,
+            GameSeconds);
         if (result.Consumed)
         {
             var contact = PreyContact(mouth, target);
-            target.Consume();
+            if (!_ordinaryPond) target.Consume();
             CommitPredation("bass:bluegill:" + target.StableId,
                 _growth.Identity, target.StableId, contact,
-                MovementCues?.SimulationSeconds ?? 0);
+                GameSeconds);
             _fish.GetNode<Node3D>("PlayerVisual").GetNode<CatalogFishVisualMotion>("SwimPresentation")
                 .TriggerFeedingCue();
             _fishFeedSound.Play();
@@ -1256,14 +1541,28 @@ public partial class PikeEncounter : Node3D
         if (_failed || _transitioning || _ended || _introActive || GetTree().Paused ||
             !_bassRivals.Contains(rival))
             return new(false, "encounter inactive or foreign Bass", 0);
-        var now = MovementCues?.SimulationSeconds ?? 0;
-        var result = _feeding.TryConsumeBass(new FeedCandidate(rival.StableId,
+        var now = GameSeconds;
+        var candidate = new FeedCandidate(rival.StableId,
             rival.SpeciesId, rival.Stage, WorldCatalog.PondId, WorldSession.SelectedWorldId,
-            rival.Length, _growth.Stage, _growth.Length, rival.IsAlive),
-            RivalReachable(rival), now);
+            rival.Length, _growth.Stage, _growth.Length, rival.IsAlive);
+        var reachable = RivalReachable(rival);
+        FeedResult result;
+        if (_ordinaryPond)
+        {
+            _ecology.Refresh(EcologyActors(), now);
+            result = default;
+            if (!_ecology.TryClaimNpc(rival.StableId, rival.GetRid(), () =>
+            {
+                result = _feeding.TryConsumeBass(candidate, reachable, now);
+                if (!result.Consumed) return false;
+                rival.Consume();
+                return true;
+            })) return new(false, "Bass prey unavailable", 0);
+        }
+        else result = _feeding.TryConsumeBass(candidate, reachable, now);
         if (result.Consumed)
         {
-            rival.Consume();
+            if (!_ordinaryPond) rival.Consume();
             CommitPredation(_growth.Identity + ":ate:" + rival.StableId,
                 _growth.Identity, rival.StableId, MouthPosition(), now);
             _fish.GetNode<Node3D>("PlayerVisual")
@@ -1284,12 +1583,12 @@ public partial class PikeEncounter : Node3D
             target is null || !_food.Contains(target))
             return new(false, "encounter inactive or invalid food", 0);
         var result = _feeding.TryConsumeFood(target.StableId, target.Kind, _growth.Stage,
-            target.Available && FoodReachable(target), MovementCues?.SimulationSeconds ?? 0,
-            MovementCues?.SimulationSeconds ?? 0);
+            target.Available && FoodReachable(target), GameSeconds,
+            GameSeconds);
         if (result.Consumed)
         {
             target.Consume();
-            _patches?.Consumed(target, MovementCues?.SimulationSeconds ?? 0);
+            _patches?.Consumed(target, GameSeconds);
             _smallFeedSound.Play();
             TryAdvanceGrowth();
             GD.Print($"FEED_EVENT id={target.StableId} kind={target.Kind} nutrition={_feeding.Nutrition}");
@@ -1372,7 +1671,7 @@ public partial class PikeEncounter : Node3D
     private System.Collections.Generic.IEnumerable<FoodAimCandidate> GuideFoodCandidates()
     {
         var camera = _fish.GetNode<Camera3D>("CameraRig/Camera3D");
-        var now = MovementCues?.SimulationSeconds ?? 0;
+        var now = GameSeconds;
         var mouth = _fish.MouthPosition;
         var forward = _fish.MouthForward;
         foreach (var food in _food)
@@ -1468,7 +1767,7 @@ public partial class PikeEncounter : Node3D
     private void ShowFeedFeedback(string message)
     {
         _biteFeedback = message;
-        _biteFeedbackUntil = (MovementCues?.SimulationSeconds ?? 0) + 1.6;
+        _biteFeedbackUntil = GameSeconds + 1.6;
     }
 
     private AudioStreamPlayer3D FeedSound(string name, string path, float volumeDb)
@@ -1484,7 +1783,12 @@ public partial class PikeEncounter : Node3D
     private static Vector3 PreyContact(Vector3 mouth, PreyActor prey)
     {
         var center = prey.GlobalPosition;
-        var radius = ((SphereShape3D)prey.GetNode<CollisionShape3D>("Collision").Shape).Radius;
+        var radius = prey.GetNode<CollisionShape3D>("Collision").Shape switch
+        {
+            SphereShape3D sphere => sphere.Radius,
+            CapsuleShape3D capsule => capsule.Radius,
+            _ => 0f,
+        };
         var towardMouth = mouth - center;
         return center + (towardMouth.LengthSquared() > .000001f
             ? towardMouth.Normalized() * radius : Vector3.Zero);
@@ -1495,6 +1799,23 @@ public partial class PikeEncounter : Node3D
     {
         if (!_predationIds.Add(id)) return;
         _predationEvents.Add(new FishPredationEvent(id, predatorId, targetId, contact, seconds));
+        if (_ordinaryPond && targetId != _growth.Identity)
+        {
+            var schoolIndex = _prey.FindIndex(p => p.StableId == targetId);
+            if (schoolIndex >= 0) _preySchool[schoolIndex].RaiseAlarm(contact, seconds);
+            _pikeTargets.Remove(targetId);
+            if (_pike.Mind.TargetId == targetId) _pike.Mind.Retarget("", false);
+            foreach (var rival in _bassRivals)
+                if (rival.TargetId == targetId) rival.Track(null);
+            foreach (var pair in _bluegillTargets.Where(p => p.Value == targetId).ToArray())
+            {
+                _bluegillTargets.Remove(pair.Key);
+                var index = _prey.FindIndex(p => p.StableId == pair.Key);
+                if (index >= 0) _bluegillThreats[index].Reset();
+            }
+            _frog?.ForgetTarget(targetId, seconds);
+            _snake?.ForgetTarget(targetId, seconds);
+        }
         _blood.TryEmit(id, contact);
     }
 
@@ -1623,7 +1944,7 @@ public partial class PikeEncounter : Node3D
         _status.Text = message + " Retry or return to World Select.";
         _resume.Disabled = true;
         _menu.Visible = false;
-        GD.Print($"PIKE_ENCOUNTER_OUTCOME outcome={outcome} seconds={MovementCues?.SimulationSeconds:F2}");
+        GD.Print($"PIKE_ENCOUNTER_OUTCOME outcome={outcome} seconds={GameSeconds:F2}");
     }
 
     private void UpdatePikeAnimation(double delta)
@@ -1671,6 +1992,11 @@ public partial class PikeEncounter : Node3D
 
     private void ResetPrey()
     {
+        _ecology.Reset();
+        _bluegillTargets.Clear();
+        _bluegillNextHuntAt.Clear();
+        _bluegillNpcSight.Clear();
+        _pikeRivalSight.Values.ToList().ForEach(sensor => sensor.Reset());
         foreach (var rival in _bassRivals)
         {
             rival.Track(null);

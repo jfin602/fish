@@ -41,6 +41,16 @@ public partial class PondFrogActor : CharacterBody3D
     public string? TargetId => _targetId;
     public int MotorSteps { get; private set; }
     public int Disengagements { get; private set; }
+    public int SightSamples => _sensors.Values.Sum(sensor => sensor.SampleCount);
+
+    public void ForgetTarget(string id, double seconds)
+    {
+        if (_targetId != id) return;
+        _targetId = null;
+        _sensors.Remove(id);
+        _nextHuntAt = Mathf.Max(_nextHuntAt, seconds + 2);
+        Enter(PondFrogMode.Retreat, seconds);
+    }
 
     public static PondFrogActor Create(Node3D parent, SeabedSurface bed,
         Func<float, float, float> water, string worldId, Vector3 nursery,
@@ -130,7 +140,9 @@ public partial class PondFrogActor : CharacterBody3D
         PondFrogTarget? seen = null;
         if (Mode is not (PondFrogMode.Evade or PondFrogMode.Retreat) && seconds >= _nextHuntAt)
         {
-            foreach (var target in candidates.Where(Eligible).OrderBy(t => t.Position.DistanceSquaredTo(GlobalPosition)))
+            foreach (var target in candidates.Where(Eligible)
+                .OrderBy(t => t.Id == _targetId ? 0 : 1)
+                .ThenBy(t => t.Position.DistanceSquaredTo(GlobalPosition)))
             {
                 if (!ReachableHabitat(target.Position,
                         _water(target.Position.X, target.Position.Z)) ||
